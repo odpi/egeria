@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataEngineEventType describes the different types of events can be consumed by the Data Platform OMAS.
+ * DataEngineEventType describes the different types of events can be consumed by the Data Engine OMAS.
  * Events are limited to assets that are in the zones listed in the supportedZones property
  * passed to the Data Engine OMAS at start up (a null value here means all zones).
  */

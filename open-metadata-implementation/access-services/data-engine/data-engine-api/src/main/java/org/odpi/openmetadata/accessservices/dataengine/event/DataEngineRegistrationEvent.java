@@ -13,6 +13,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The Data engine registration event for registering external source as software server capability.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,10 +23,20 @@ public class DataEngineRegistrationEvent extends DataEngineEventHeader{
 
     private SoftwareServerCapability softwareServerCapability;
 
+    /**
+     * Gets software server capability.
+     *
+     * @return the software server capability
+     */
     public SoftwareServerCapability getSoftwareServerCapability() {
         return softwareServerCapability;
     }
 
+    /**
+     * Sets software server capability.
+     *
+     * @param softwareServerCapability the software server capability
+     */
     public void setSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) {
         this.softwareServerCapability = softwareServerCapability;
     }

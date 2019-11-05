@@ -12,6 +12,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The port implementation event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,11 +22,21 @@ public class PortImplementationEvent extends DataEngineEventHeader{
 
     private PortImplementation portImplementation;
 
+    /**
+     * Gets port implementation.
+     *
+     * @return the port implementation
+     */
     public PortImplementation getPortImplementation() {
 
         return portImplementation;
     }
 
+    /**
+     * Sets port implementation.
+     *
+     * @param portImplementation the port implementation
+     */
     public void setPortImplementation(PortImplementation portImplementation) {
         this.portImplementation = portImplementation;
     }

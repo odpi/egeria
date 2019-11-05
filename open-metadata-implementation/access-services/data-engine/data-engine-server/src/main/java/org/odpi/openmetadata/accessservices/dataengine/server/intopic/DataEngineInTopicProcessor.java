@@ -31,6 +31,10 @@ import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.partitioningBy;
 
+/**
+ * The Data Engine in topic processor is listening events from external data engines about
+ * metadata changes. It will handle different types of events defined in Data Engine OMAS API module.
+ */
 public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineServicesInstance.class);
@@ -62,8 +66,6 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String dataEngineEvent) {
-
-
 
         log.debug("Processing instance event", dataEngineEvent);
 

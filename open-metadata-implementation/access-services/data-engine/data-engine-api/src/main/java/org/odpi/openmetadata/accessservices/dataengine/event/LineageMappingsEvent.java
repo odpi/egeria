@@ -13,6 +13,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The lineage mappings event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,10 +23,20 @@ public class LineageMappingsEvent extends DataEngineEventHeader {
 
     private List<LineageMapping> lineageMappings;
 
+    /**
+     * Gets lineage mappings.
+     *
+     * @return the lineage mappings
+     */
     public List<LineageMapping> getLineageMappings() {
         return lineageMappings;
     }
 
+    /**
+     * Sets lineage mappings.
+     *
+     * @param lineageMappings the lineage mappings
+     */
     public void setLineageMappings(List<LineageMapping> lineageMappings) {
         this.lineageMappings = lineageMappings;
     }
