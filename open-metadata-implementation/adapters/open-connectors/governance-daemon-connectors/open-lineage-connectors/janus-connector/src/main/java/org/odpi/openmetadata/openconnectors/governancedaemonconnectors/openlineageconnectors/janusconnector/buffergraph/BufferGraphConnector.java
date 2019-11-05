@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphStoreConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphConnectorBase;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -29,9 +29,9 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class BufferGraphStoreConnector extends BufferGraphStoreConnectorBase {
+public class BufferGraphConnector extends BufferGraphConnectorBase {
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphStoreConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
     private JanusGraph bufferGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
 

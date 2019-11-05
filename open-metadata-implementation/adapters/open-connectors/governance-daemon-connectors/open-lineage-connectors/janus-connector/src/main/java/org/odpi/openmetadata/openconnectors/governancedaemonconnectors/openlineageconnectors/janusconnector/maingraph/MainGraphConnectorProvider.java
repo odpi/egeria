@@ -5,7 +5,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphStoreProviderBase;
 
-public class MainGraphConnectorStoreProvider extends MainGraphStoreProviderBase {
+public class MainGraphConnectorProvider extends MainGraphStoreProviderBase {
 
     static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
     static final String connectorTypeName = "Janus Graph Connector";
@@ -15,9 +15,9 @@ public class MainGraphConnectorStoreProvider extends MainGraphStoreProviderBase 
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * registry store implementation.
      */
-    public MainGraphConnectorStoreProvider() {
+    public MainGraphConnectorProvider() {
         super();
-        Class connectorClass = MainGraphStoreConnector.class;
+        Class connectorClass = MainGraphConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();

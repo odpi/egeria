@@ -5,7 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 
-public interface BufferGraphStore extends OpenLineageGraphStore {
+public interface BufferGraph extends OpenLineageGraphStore {
 
     /**
      * Process the serialized  information view event

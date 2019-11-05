@@ -8,7 +8,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public interface MainGraphStore extends OpenLineageGraphStore {
+public interface MainGraph extends OpenLineageGraphStore {
 
     /**
      * Process the serialized  information view event

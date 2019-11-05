@@ -5,7 +5,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphStoreProviderBase;
 
-public class BufferGraphConnectorStoreProvider extends BufferGraphStoreProviderBase {
+public class BufferGraphConnectorProvider extends BufferGraphStoreProviderBase {
 
     static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
     static final String connectorTypeName = "Janus Graph Connector";
@@ -15,9 +15,9 @@ public class BufferGraphConnectorStoreProvider extends BufferGraphStoreProviderB
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * registry store implementation.
      */
-    public BufferGraphConnectorStoreProvider() {
+    public BufferGraphConnectorProvider() {
         super();
-        Class connectorClass = BufferGraphStoreConnector.class;
+        Class connectorClass = BufferGraphConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();

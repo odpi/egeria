@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphStore;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
@@ -82,8 +82,8 @@ public class OpenLineageOperationalServices {
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
 
-        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
-        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection);
+        BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
+        MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
 
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
