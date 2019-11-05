@@ -15,6 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 
+/**
+ * The new deployed database schema event will create a new asset on it. .
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,18 +30,38 @@ public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
     private DeployedDatabaseSchema deployedDatabaseSchema;
     private DataPlatform dataPlatform;
 
+    /**
+     * Gets deployed database schema.
+     *
+     * @return the deployed database schema
+     */
     public DeployedDatabaseSchema getDeployedDatabaseSchema() {
         return deployedDatabaseSchema;
     }
 
+    /**
+     * Sets deployed database schema.
+     *
+     * @param deployedDatabaseSchema the deployed database schema
+     */
     public void setDeployedDatabaseSchema(DeployedDatabaseSchema deployedDatabaseSchema) {
         this.deployedDatabaseSchema = deployedDatabaseSchema;
     }
 
+    /**
+     * Gets data platform.
+     *
+     * @return the data platform
+     */
     public DataPlatform getDataPlatform() {
         return dataPlatform;
     }
 
+    /**
+     * Sets data platform.
+     *
+     * @param dataPlatform the data platform
+     */
     public void setDataPlatform(DataPlatform dataPlatform) {
         this.dataPlatform = dataPlatform;
     }

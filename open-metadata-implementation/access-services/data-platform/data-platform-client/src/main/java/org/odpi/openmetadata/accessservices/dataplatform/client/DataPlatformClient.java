@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.client;
 import org.odpi.openmetadata.accessservices.dataplatform.DataPlatformInterface;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -21,13 +21,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 public class DataPlatformClient extends OCFRESTClient implements DataPlatformInterface {
 
     private static final String QUALIFIED_NAME_PARAMETER = "qualifiedName";
-    private static final String SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
-            "/data-platform/users/{1}/software-server-capabilities";
+    private static final String DATA_PLATFORM_REGISTRATION_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-platform/users/{1}/registration";
     private static final String DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/deployed-database-schema";
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
     /**
      * Constructor for no authentication.
@@ -70,20 +69,21 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public GUIDResponse createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, PropertyServerException {
+    public GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
+            InvalidParameterException, PropertyServerException {
 
-            final String methodName = "createSoftwareServerCapability";
+            final String methodName = "createExternalDataPlatform";
 
             invalidParameterHandler.validateUserId(userId, methodName);
 
-            RegistrationRequestBody requestBody = new RegistrationRequestBody();
+            DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
             requestBody.setSoftwareServerCapability(softwareServerCapability);
 
-            return callGUIDPostRESTCall(userId, methodName, SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE, requestBody);
+            return callGUIDPostRESTCall(userId, methodName, DATA_PLATFORM_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
     /**
-     * Create deployed database schema asset.
+     * Create deployed database schema asset from external source.
      *
      * @param userId                 the user id
      * @param deployedDatabaseSchema the deployed database schema
@@ -92,7 +92,8 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * @throws PropertyServerException    the property server exception
      */
     @Override
-    public GUIDResponse createDeployedDatabaseSchema(String userId, DeployedDatabaseSchema deployedDatabaseSchema) throws InvalidParameterException, PropertyServerException {
+    public GUIDResponse createDeployedDatabaseSchema(String userId, DeployedDatabaseSchema deployedDatabaseSchema) throws
+            InvalidParameterException, PropertyServerException {
 
         final String methodName = "createDeployedDatabaseSchema";
 

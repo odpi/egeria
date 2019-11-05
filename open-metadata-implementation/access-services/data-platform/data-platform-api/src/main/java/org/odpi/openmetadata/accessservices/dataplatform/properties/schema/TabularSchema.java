@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TabularSchema extends Source {
 
     private String name;
-    private String disaplayName;
+    private String displayName;
     private List<TabularColumn> tabularColumns;
 
     public String getName() {
@@ -32,12 +32,12 @@ public class TabularSchema extends Source {
         this.name = name;
     }
 
-    public String getDisaplayName() {
-        return disaplayName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisaplayName(String disaplayName) {
-        this.disaplayName = disaplayName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public List<TabularColumn> getTabularColumns() {
@@ -52,7 +52,7 @@ public class TabularSchema extends Source {
     public String toString() {
         return "TabularSchema{" +
                 "name='" + name + '\'' +
-                ", disaplayName='" + disaplayName + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", tabularColumns=" + tabularColumns +
                 ", additionalProperties=" + additionalProperties +
                 ", qualifiedName='" + qualifiedName + '\'' +

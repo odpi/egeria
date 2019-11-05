@@ -6,8 +6,8 @@ import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDataba
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -38,27 +38,28 @@ public class DataPlatformRestServices {
 
 
     /**
-     * Create the software server capability entity
+     * Create the software server capability entity from an external data platforms
      *
      * @param serverName              name of server instance to call
      * @param userId                  the name of the calling user
-     * @param registrationRequestBody properties of the server
+     * @param dataPlatformRegistrationRequestBody properties of the server
      * @return the unique identifier (guid) of the created server
      */
-    public GUIDResponse createSoftwareServerCapability(String serverName, String userId,
-                                             RegistrationRequestBody registrationRequestBody) {
+    public GUIDResponse createExternalDataPlatform(String serverName,
+                                                   String userId,
+                                                   DataPlatformRegistrationRequestBody dataPlatformRegistrationRequestBody) {
 
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createExternalDataPlatform";
 
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (registrationRequestBody == null) {
+            if (dataPlatformRegistrationRequestBody == null) {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-            SoftwareServerCapability softwareServerCapability = registrationRequestBody.getSoftwareServerCapability();
+            SoftwareServerCapability softwareServerCapability = dataPlatformRegistrationRequestBody.getSoftwareServerCapability();
             response.setGUID(handler.createSoftwareServerCapability(softwareServerCapability));
 
         } catch (InvalidParameterException error) {
@@ -76,17 +77,17 @@ public class DataPlatformRestServices {
 
 
     /**
-     * Return the software server capability definition
+     * Return the software server capability definition from an external data platform
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public DataPlatformRegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(String serverName, String userId, String qualifiedName) {
 
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
-        RegistrationRequestBody response = new RegistrationRequestBody();
+        DataPlatformRegistrationRequestBody response = new DataPlatformRegistrationRequestBody();
 
         try {
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);

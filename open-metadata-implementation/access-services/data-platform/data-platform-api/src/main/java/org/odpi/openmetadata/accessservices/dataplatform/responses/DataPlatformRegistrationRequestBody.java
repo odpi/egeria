@@ -15,28 +15,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The Registration request body of Software Server Capability.
+ * The request body of creating the Software Server Capability for external data platform as the source of metadata.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RegistrationRequestBody extends FFDCResponseBase {
+public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequestBody {
 
     private SoftwareServerCapability softwareServerCapability;
 
     /**
      * Instantiates a new Registration request body.
      */
-    public RegistrationRequestBody() {
-    }
-
-    public RegistrationRequestBody(SoftwareServerCapability softwareServerCapability) {
-        this.softwareServerCapability = softwareServerCapability;
-    }
-
-    public RegistrationRequestBody(FFDCResponseBase template, SoftwareServerCapability softwareServerCapability) {
-        super(template);
-        this.softwareServerCapability = softwareServerCapability;
+    public DataPlatformRegistrationRequestBody() {
     }
 
     /**
@@ -58,14 +49,22 @@ public class RegistrationRequestBody extends FFDCResponseBase {
     }
 
     @Override
-    public String toString() {
-        return "RegistrationRequestBody{" +
-                "softwareServerCapability=" + softwareServerCapability +
-                "} " + super.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataPlatformRegistrationRequestBody that = (DataPlatformRegistrationRequestBody) o;
+        return Objects.equals(softwareServerCapability, that.softwareServerCapability);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), softwareServerCapability);
+        return Objects.hash(softwareServerCapability);
+    }
+
+    @Override
+    public String toString() {
+        return "DataPlatformRegistrationRequestBody{" +
+                "softwareServerCapability=" + softwareServerCapability +
+                "} " + super.toString();
     }
 }

@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 public interface DataPlatformInterface {
 
     /**
-     * Create the software server capability entity for registering data platforms.
+     * Create the software server capability entity for registering data platforms as external source.
      *
      * @param userId                   the name of the calling user
      * @param softwareServerCapability the software server capability bean
@@ -25,7 +25,7 @@ public interface DataPlatformInterface {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    GUIDResponse createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
+    GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
             InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException;

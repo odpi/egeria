@@ -13,7 +13,6 @@ import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEven
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesUtils;
@@ -118,8 +117,6 @@ public class DataPlatformOmasListenerTest {
     private EntityDetail businessTerm;
     @Mock
     private OMRSRepositoryContentHelper helper;
-    @Mock
-    private EventPublisher eventPublisher;
 
     @Mock
     private DataPlatformServicesInstance instance;
@@ -145,7 +142,7 @@ public class DataPlatformOmasListenerTest {
         MockitoAnnotations.initMocks(this);
 
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, Collections.EMPTY_LIST, auditLog);
-        listener = new DataPlatformInTopicListener(instance,omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+        listener = new DataPlatformInTopicListener(instance,omEntityDao, auditLog,  enterpriseConnector.getRepositoryHelper());
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
         when(helper.getStringProperty(eq(Constants.DATA_PLATFORM_OMAS_NAME),

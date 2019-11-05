@@ -45,7 +45,7 @@ public class RegistrationHandler {
      */
     public String createSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createExternalDataPlatform";
 
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
 

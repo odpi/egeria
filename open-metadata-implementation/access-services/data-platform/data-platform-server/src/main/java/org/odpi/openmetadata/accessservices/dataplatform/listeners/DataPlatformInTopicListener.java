@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.InformationViewAsset;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
@@ -38,17 +37,15 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMEntityDao omEntityDao;
     private final OMRSAuditLog auditLog;
-    private EventPublisher eventPublisher;
     private OMRSRepositoryHelper repositoryHelper;
     private DataPlatformServicesInstance  instance;
 
 
 
-    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper repositoryHelper) {
+    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, OMRSRepositoryHelper repositoryHelper) {
         this.instance = instance;
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
-        this.eventPublisher = eventPublisher;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -94,10 +91,6 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                             new InstanceProperties());
                     newViewEvent.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
-                eventPublisher.sendEvent(newViewEvent);
-                log.debug("invalid event schema");
-
-
             }
             //TODO: optimize exception handling with specific exception details and actions
         } catch (IOException e) {
