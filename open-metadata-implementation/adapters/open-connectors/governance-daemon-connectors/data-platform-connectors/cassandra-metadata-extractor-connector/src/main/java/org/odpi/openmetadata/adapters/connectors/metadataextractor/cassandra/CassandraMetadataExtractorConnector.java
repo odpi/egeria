@@ -40,7 +40,8 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
 
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
-        this.cassandraDataStoreConnector.initialize(connectorInstanceId, connectionProperties);
+
+        cassandraDataStoreConnector.initialize(connectorInstanceId, connectionProperties);
 
         EndpointProperties endpoint = cassandraDataStoreConnector.getConnection().getEndpoint();
 
@@ -69,7 +70,10 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
             }
         }
 
-        CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener(this.getDataPlatformClient());
+        CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener(
+                this.getDataPlatformClient(),
+                connectionProperties.getUserId());
+
         cassandraDataStoreConnector.startCassandraConnection(cassandraMetadataListener);
 
         this.cqlSession = cassandraDataStoreConnector.getSession();

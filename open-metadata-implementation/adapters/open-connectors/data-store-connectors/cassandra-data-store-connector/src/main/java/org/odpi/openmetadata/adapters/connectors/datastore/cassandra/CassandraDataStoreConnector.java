@@ -69,6 +69,9 @@ public class CassandraDataStoreConnector extends ConnectorBase {
 
         if (endpoint != null ) {
             serverAddresses = endpoint.getAddress();
+            username = connectionProperties.getUserId();
+            password = connectionProperties.getClearPassword();
+
         } else {
             if (omrsAuditLog!=null){
                     auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
@@ -93,7 +96,7 @@ public class CassandraDataStoreConnector extends ConnectorBase {
             CqlSessionBuilder builder = CqlSession.builder();
             builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
             builder.withSchemaChangeListener(schemaChangeListener);
-            //builder.withAuthCredentials(username, password);
+            builder.withAuthCredentials(username, password);
             this.cqlSession = builder.build();
 
         } catch (ExceptionInInitializerError e) {

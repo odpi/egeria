@@ -22,8 +22,9 @@ public class CassandraMetadataListener implements SchemaChangeListener {
     private CassandraMetadataExtractorAuditCode auditLog;
     private DataPlatformClient dataPlatformClient;
 
-    public CassandraMetadataListener(DataPlatformClient dataPlatformClient) {
+    public CassandraMetadataListener(DataPlatformClient dataPlatformClient, String userId) {
         this.dataPlatformClient = dataPlatformClient;
+        this.userId = userId;
     }
 
     @Override
