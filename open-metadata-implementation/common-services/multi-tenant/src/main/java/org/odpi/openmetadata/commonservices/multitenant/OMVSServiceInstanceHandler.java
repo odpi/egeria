@@ -32,4 +32,6 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      * @return exception handler object
      */
     public RESTExceptionHandler getExceptionHandler() { return exceptionHandler; }
+
+
 }
