@@ -10,18 +10,37 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 
 import java.util.Date;
 
+/**
+ * The interface of Data Platform Metadata Extractor.
+ */
 public interface DataPlatformMetadataExtractor {
 
+    /**
+     * Gets data platform software server capability.
+     *
+     * @return the data platform software server capability
+     */
     DataPlatformSoftwareServerCapability getDataPlatformSoftwareServerCapability();
 
+    /**
+     * Gets data platform deployed database schema.
+     *
+     * @return the data platform deployed database schema
+     */
     DataPlatformDeployedDatabaseSchema getDataPlatformDeployedDatabaseSchema();
 
+    /**
+     * Gets data platform tabular schema.
+     *
+     * @return the data platform tabular schema
+     */
     DataPlatformTabularSchema getDataPlatformTabularSchema();
 
+    /**
+     * Gets data platform tabular column.
+     *
+     * @return the data platform tabular column
+     */
     DataPlatformTabularColumn getDataPlatformTabularColumn();
-
-    Date getChangesLastSynced();
-
-    void setChangesLastSynced(Date time) throws OCFRuntimeException;
 
 }

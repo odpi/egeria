@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.properties.schema;
+package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.Source;
 
 import java.util.List;
 
@@ -13,16 +12,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The type TabularSchema.
+ * The type DeployedDatabaseSchema is an asset in Apache Cassandra Database.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TabularSchema extends Source {
+public class DeployedDatabaseSchema extends Source {
 
     private String name;
     private String displayName;
-    private List<TabularColumn> tabularColumns;
+    private List<TabularSchema> tabularSchemaList;
 
     public String getName() {
         return name;
@@ -40,20 +39,20 @@ public class TabularSchema extends Source {
         this.displayName = displayName;
     }
 
-    public List<TabularColumn> getTabularColumns() {
-        return tabularColumns;
+    public List<TabularSchema> getTabularSchemaList() {
+        return tabularSchemaList;
     }
 
-    public void setTabularColumns(List<TabularColumn> tabularColumns) {
-        this.tabularColumns = tabularColumns;
+    public void setTabularSchemaList(List<TabularSchema> tabularSchemaList) {
+        this.tabularSchemaList = tabularSchemaList;
     }
 
     @Override
     public String toString() {
-        return "TabularSchema{" +
+        return "DeployedDatabaseSchema{" +
                 "name='" + name + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", tabularColumns=" + tabularColumns +
+                ", tabularSchemaList=" + tabularSchemaList +
                 ", additionalProperties=" + additionalProperties +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", guid='" + guid + '\'' +

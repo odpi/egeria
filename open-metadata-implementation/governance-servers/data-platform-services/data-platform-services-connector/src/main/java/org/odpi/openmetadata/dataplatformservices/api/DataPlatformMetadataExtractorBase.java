@@ -13,10 +13,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 
 import java.util.Date;
 
+
+/**
+ * Base implementation of a Data Platform Metadata Extractor Connector, implementing all of the required methods
+ * from any Data Platform Metadata Extractor Connector is expected to provide (via the DataPlatformMetadataExtractor).
+ * It is an abstract class as on its own it does absolutely nothing, and therefore a Data Platform Metadata Extractor
+ * Connector needs to extend it and override at least one of the methods to actually do something.
+ */
 public class DataPlatformMetadataExtractorBase extends ConnectorBase implements DataPlatformMetadataExtractor{
 
+    /* The Data Platform OMAS Client side implementation */
     private DataPlatformClient dataPlatformClient;
 
+    /**
+     * Instantiates a new Data platform metadata extractor base.
+     */
     public DataPlatformMetadataExtractorBase() { super(); }
 
     public DataPlatformSoftwareServerCapability getDataPlatformSoftwareServerCapability() {
@@ -35,16 +46,20 @@ public class DataPlatformMetadataExtractorBase extends ConnectorBase implements 
         return null;
     }
 
-    public Date getChangesLastSynced() {
-        return null;
-    }
-
-    public void setChangesLastSynced(Date time) throws OCFRuntimeException { }
-
+    /**
+     * Gets data platform client.
+     *
+     * @return the data platform client
+     */
     public DataPlatformClient getDataPlatformClient() {
         return dataPlatformClient;
     }
 
+    /**
+     * Sets data platform client.
+     *
+     * @param dataPlatformClient the data platform client
+     */
     public void setDataPlatformClient(DataPlatformClient dataPlatformClient) {
         this.dataPlatformClient = dataPlatformClient;
     }

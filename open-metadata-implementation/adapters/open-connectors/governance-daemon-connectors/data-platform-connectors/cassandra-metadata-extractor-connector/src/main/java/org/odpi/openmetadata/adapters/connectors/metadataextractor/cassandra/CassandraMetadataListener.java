@@ -6,7 +6,7 @@ import com.datastax.oss.driver.api.core.metadata.schema.*;
 import com.datastax.oss.driver.api.core.type.UserDefinedType;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.odpi.openmetadata.accessservices.dataplatform.client.DataPlatformClient;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

@@ -11,16 +11,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>data-platform-services-server</artifactId>
+
     <name>Data Platform Services Server</name>
     <description>The implementation of server for Data Platform Service.</description>
-    <artifactId>data-platform-services-server</artifactId>
+
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-services-api</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <artifactId>data-platform-services-connector</artifactId>
         </dependency>
 
         <dependency>

@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+/**
+ * The type View handler.
+ */
 public class ViewHandler implements Callable<View> {
 
 
@@ -33,6 +36,13 @@ public class ViewHandler implements Callable<View> {
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
 
+    /**
+     * Instantiates a new View handler.
+     *
+     * @param event       the event
+     * @param omEntityDao the om entity dao
+     * @param helper      the helper
+     */
     public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
         this.event = event;
         this.omEntityDao = omEntityDao;
@@ -45,7 +55,7 @@ public class ViewHandler implements Callable<View> {
         View view = new View();
 
         if (event.getDerivedColumns() == null || event.getDerivedColumns().isEmpty()) {
-            log.info("Delete existing view as event received has no derived columns");
+            log.debug("Delete existing view as event received has no derived columns");
             deleteView(event);
         } else {
             String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseSource().getName(), event.getTableSource().getSchemaName());
@@ -147,7 +157,7 @@ public class ViewHandler implements Callable<View> {
         try {
             omEntityDao.purgeEntity(proxy);
         } catch (RepositoryErrorException | UserNotAuthorizedException | InvalidParameterException | EntityNotKnownException | EntityNotDeletedException | FunctionNotSupportedException e) {
-            log.error(e.getMessage(), e);
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -192,7 +202,7 @@ public class ViewHandler implements Callable<View> {
             return derivedColumnEntity;
 
         } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
-            log.error("Exception", e);
+            log.debug("Exception", e);
             throw new RuntimeException("Exception creating derived column", e);
         }
 

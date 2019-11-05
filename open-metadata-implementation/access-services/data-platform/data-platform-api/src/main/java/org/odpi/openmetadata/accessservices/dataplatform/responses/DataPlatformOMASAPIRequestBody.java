@@ -37,10 +37,20 @@ public abstract class DataPlatformOMASAPIRequestBody extends FFDCResponseBase im
     }
 
 
+    /**
+     * Gets external source name.
+     *
+     * @return the external source name
+     */
     public String getExternalSourceName() {
         return externalSourceName;
     }
 
+    /**
+     * Sets external source name.
+     *
+     * @param externalSourceName the external source name
+     */
     public void setExternalSourceName(String externalSourceName) {
         this.externalSourceName = externalSourceName;
     }

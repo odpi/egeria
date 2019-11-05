@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cassandra-metadata-extractor-connector</artifactId>
+
     <name>Cassandra Metadata Extractor Connector</name>
     <description>
         The cassandra data platform connector provides support for maintaining
@@ -44,7 +45,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-services-api</artifactId>
+            <artifactId>data-platform-services-connector</artifactId>
         </dependency>
 
         <dependency>

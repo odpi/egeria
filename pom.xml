@@ -157,7 +157,6 @@
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
-        <cassandra.version>3.8.0</cassandra.version>
         <guava.version>23.0</guava.version>
         <tink.version>1.3.0-rc1</tink.version>
         <jsonld.version>0.12.5</jsonld.version>
@@ -165,6 +164,7 @@
         <commons-codec.version>1.13</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
+        <oss.version>4.2.0</oss.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -1744,7 +1744,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-services-api</artifactId>
+                <artifactId>data-platform-services-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1887,7 +1887,8 @@
             <dependency>
                 <groupId>com.datastax.oss</groupId>
                 <artifactId>java-driver-core</artifactId>
-                <version>4.2.0</version>
+                <scope>compile</scope>
+                <version>${oss.version}</version>
             </dependency>
 
             <dependency>

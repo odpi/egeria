@@ -11,9 +11,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Data Platform Services API</name>
-    <description>The implementation of generic APIs for Data Platform Service.</description>
-    <artifactId>data-platform-services-api</artifactId>
+    <artifactId>data-platform-services-connector</artifactId>
+
+    <name>Data Platform Services Connector</name>
+    <description>The implementation of generic connector for data platform metadata extraction.</description>
+
 
     <dependencies>
         <dependency>

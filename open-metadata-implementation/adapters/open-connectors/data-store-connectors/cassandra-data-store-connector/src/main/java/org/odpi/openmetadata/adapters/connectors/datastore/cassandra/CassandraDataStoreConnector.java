@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
+/**
+ * The Cassandra data store connector provides the OCF connection objects for Apache Cassandra Database.
+ */
 public class CassandraDataStoreConnector extends ConnectorBase {
     private static final Logger log = LoggerFactory.getLogger(CassandraDataStoreConnector.class);
     private CassandraDataStoreAuditCode auditLog;
@@ -88,6 +91,8 @@ public class CassandraDataStoreConnector extends ConnectorBase {
 
     /**
      * Set up the Cassandra Cluster Connection with schema change listener to track the metadata changes
+     *
+     * @param schemaChangeListener the schema change listener
      */
     public void startCassandraConnection(SchemaChangeListener schemaChangeListener) {
 

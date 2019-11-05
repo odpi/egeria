@@ -63,17 +63,17 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
 
             if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT) {
                 NewDeployedDatabaseSchemaEvent newDeployedDatabaseSchemaEvent = OBJECT_MAPPER.readValue(eventAsString, NewDeployedDatabaseSchemaEvent.class);
-                log.info("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
+                log.debug("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
 
                 DeployedDatabaseSchemaAssetHandler handler = instance.getDeployedDatabaseSchemaAssetHandler();
                 handler.createDeployedDatabaseSchemaAsset(newDeployedDatabaseSchemaEvent);
-                log.info("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
+                log.debug("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
 
 
             } else if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT) {
 
                 NewViewEvent newViewEvent = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
-                log.info("Started processing NewView event in DataPlatform OMAS");
+                log.debug("Started processing NewView event in DataPlatform OMAS");
                 InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(newViewEvent, omEntityDao);
                 ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper);
                 ExecutorService executor = Executors.newCachedThreadPool();
@@ -105,7 +105,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                     errorCode.getUserAction(),
                     e);
         } catch (Exception e) {
-            log.error("Exception processing event from in topic", e);
+            log.debug("Exception processing event from in topic", e);
             DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
 
             auditLog.logException("processEvent",

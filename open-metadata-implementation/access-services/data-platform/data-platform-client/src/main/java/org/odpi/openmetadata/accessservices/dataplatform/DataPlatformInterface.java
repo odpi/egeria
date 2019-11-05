@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform;
 
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
