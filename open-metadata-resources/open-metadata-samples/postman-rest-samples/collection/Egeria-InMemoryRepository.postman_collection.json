@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0471f6ff-8e9e-4d08-aaba-e2d283896ae5",
-		"name": "Egeria in-mem repo",
+		"name": "Egeria-InMemoryRepository",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
