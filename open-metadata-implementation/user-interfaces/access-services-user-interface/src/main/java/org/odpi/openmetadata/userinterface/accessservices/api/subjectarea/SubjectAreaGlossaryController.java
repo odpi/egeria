@@ -28,6 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/subject-area/glossaries")
+@DependsOn("securityConfig")
 public class SubjectAreaGlossaryController extends SecureController
 {
     private final SubjectArea subjectArea;

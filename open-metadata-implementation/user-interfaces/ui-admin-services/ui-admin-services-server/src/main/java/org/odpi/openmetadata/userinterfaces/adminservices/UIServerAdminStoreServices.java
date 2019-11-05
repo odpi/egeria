@@ -11,16 +11,20 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 import org.odpi.openmetadata.userinterface.adminservices.rest.ConnectionResponse;
+
 import org.odpi.openmetadata.userinterface.adminservices.store.UIServerConfigStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * UIServerAdminStoreServices provides the capability to store and retrieve configuration documents.
+ * UIServerAdminStoreServices provides the capability to configStore and retrieve configuration documents.
  *
  * A configuration document provides the configuration information for a server.  By default, a
  * server's configuration document is stored in its own file.  However, it is possible to override
@@ -41,7 +45,7 @@ public class UIServerAdminStoreServices
      *
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with
-     *                   the real store.
+     *                   the real configStore.
      * @return void response
      */
     public synchronized VoidResponse setConfigurationStoreConnection(String       userId,
@@ -55,8 +59,7 @@ public class UIServerAdminStoreServices
 
         try
         {
-            //TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-            //OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
 
             errorHandler.validateConnection(connection, methodName);
 
@@ -65,11 +68,6 @@ public class UIServerAdminStoreServices
         catch (InvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
         }
-//TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-//        catch (OMAGNotAuthorizedException error)
-//        {
-//            exceptionHandler.captureNotAuthorizedException(response, error);
-//        }
         catch (Throwable   error)
         {
             exceptionHandler.captureRuntimeException(methodName, response, error);
@@ -82,8 +80,8 @@ public class UIServerAdminStoreServices
 
 
     /**
-     * Return the connection object for the configuration store.  Null is returned if the server should
-     * use the default store.
+     * Return the connection object for the configuration configStore.  Null is returned if the server should
+     * use the default configStore.
      *
      * @param userId calling user
      * @return connection response
@@ -98,16 +96,10 @@ public class UIServerAdminStoreServices
 
         try
         {
-            //TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-            //OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
 
             response.setConnection(configurationStoreConnection);
         }
-//TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-//        catch (UserNotAuthorizedException error)
-//        {
-//            exceptionHandler.captureNotAuthorizedException(response, error);
-//        }
         catch (Throwable   error)
         {
             exceptionHandler.captureRuntimeException(methodName, response, error);
@@ -120,7 +112,7 @@ public class UIServerAdminStoreServices
 
 
     /**
-     * Clear the connection object for the configuration store.
+     * Clear the connection object for the configuration configStore.
      *
      * @param userId calling user
      * @return connection response
@@ -135,16 +127,10 @@ public class UIServerAdminStoreServices
 
         try
         {
-            //TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-            //OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
 
             configurationStoreConnection = null;
         }
-//TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-//        catch (UserNotAuthorizedException error)
-//        {
-//            exceptionHandler.captureNotAuthorizedException(response, error);
-//        }
         catch (Throwable   error)
         {
             exceptionHandler.captureRuntimeException(methodName, response, error);
@@ -155,9 +141,8 @@ public class UIServerAdminStoreServices
         return response;
     }
 
-
     /**
-     * Retrieve the connection for the configuration document store.  If a connection has been provided by an
+     * Retrieve the connection for the configuration document configStore.  If a connection has been provided by an
      * external party then return that - otherwise extract the file connector for the server.
      *
      * @param serverName  name of the server
@@ -225,11 +210,9 @@ public class UIServerAdminStoreServices
      * @return  configuration properties
      * @throws OMAGNotAuthorizedException problem with the configuration file
      */
-    UIServerConfig getServerConfig(String   userId,
+    public UIServerConfig getServerConfig(String   userId,
                                        String   serverName,
-                                       String   methodName) throws OMAGNotAuthorizedException
-
-    {
+                                       String   methodName) throws OMAGNotAuthorizedException, OMAGInvalidParameterException {
         UIServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         UIServerConfig        serverConfig      = null;
 
@@ -240,48 +223,37 @@ public class UIServerAdminStoreServices
 
         if (serverConfig == null)
         {
-//TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-//            try
-//            {
-                //OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(userId);
-//            }
-//            catch (UserNotAuthorizedException error)
-//            {
-//                throw new UINotAuthorizedException(error);
-//            }
+            try
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(userId);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw new OMAGNotAuthorizedException(error);
+            }
 
             serverConfig = new UIServerConfig();
             serverConfig.setVersionId(UIServerConfig.VERSION_ONE);
         }
         else
         {
-            String  versionId           = serverConfig.getVersionId();
-            boolean isCompatibleVersion = false;
-
-            if (versionId == null)
+            try
             {
-                versionId = UIServerConfig.VERSION_ONE;
+                OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
+
+                securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
+                                                                                        serverName,
+                                                                                        null,
+                                                                                        serverConfig.getServerSecurityConnection());
+
+                securityVerifier.validateUserAsServerAdmin(userId);
             }
-//TODO Git issue #1584 uncomment and test to activate OpenMetadataPlatformSecurityVerifier
-//            try
-//            {
-//                OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
-//
-//                securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
-//                                                                                        serverName,
-//                                                                                        null,
-//                                                                                        serverConfig.getServerSecurityConnection());
-//
-//                securityVerifier.validateUserAsServerAdmin(userId);
-//            }
-//            catch (InvalidParameterException error)
-//            {
-//                throw new OMAGNotAuthorizedException(error);
-//            }
-//            catch (UserNotAuthorizedException error)
-//            {
-//                throw new UINotAuthorizedException(error);
-//            }
+            catch (InvalidParameterException error)
+            {
+                throw new OMAGInvalidParameterException(error);
+            } catch (UserNotAuthorizedException error) {
+                throw new OMAGNotAuthorizedException(error);
+            }
         }
 
         serverConfig.setLocalServerName(serverName);
@@ -299,7 +271,7 @@ public class UIServerAdminStoreServices
      * @param serverConfig  properties to save
      * @throws OMAGNotAuthorizedException problem with the config file
      */
-    void saveServerConfig(String            serverName,
+    public void saveServerConfig(String            serverName,
                           String            methodName,
                           UIServerConfig  serverConfig) throws OMAGNotAuthorizedException
     {

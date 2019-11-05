@@ -7,20 +7,18 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.GovernanceServerEndpoint;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
+import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * UIServerErrorHandler provides common error handling routines for the ui admin services
  */
-class UIServerErrorHandler
+public class UIServerErrorHandler
 {
 
     private static final String allGovernanceServices = getAllValidGovernanceServerURLMarkers();
@@ -50,7 +48,7 @@ class UIServerErrorHandler
      * @param methodName  method receiving the call
      * @throws OMAGNotAuthorizedException no userId provided
      */
-    void validateUserId(String userId,
+    public void validateUserId(String userId,
                         String serverName,
                         String methodName) throws OMAGNotAuthorizedException
     {
@@ -71,13 +69,13 @@ class UIServerErrorHandler
 
 
     /**
-     * Validate that the server name is not null and save it in the config.
+     * Validate that the server name is not null.
      *
      * @param serverName  serverName passed on a request
      * @param methodName  method being called
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException null server name
      */
-    void validateServerName(String serverName,
+    public void validateServerName(String serverName,
                             String methodName) throws InvalidParameterException
     {
         /*
@@ -107,7 +105,7 @@ class UIServerErrorHandler
      * @param methodName  method being called
      * @throws OMAGConfigurationErrorException incompatible server names
      */
-    void validateConfigServerName(String serverName,
+    public void validateConfigServerName(String serverName,
                                   String configServerName,
                                   String methodName) throws OMAGConfigurationErrorException
     {
@@ -126,6 +124,60 @@ class UIServerErrorHandler
 
         }
     }
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param metadataServerName  metadata server name passed on a request
+     * @param configServerName serverName passed in config (should match request name)
+     * @param methodName  method being called
+     * @throws OMAGConfigurationErrorException incompatible server names
+     */
+    public void validateConfigMetadataServerName(String metadataServerName,
+                                         String configServerName,
+                                         String methodName) throws OMAGConfigurationErrorException
+    {
+        if (!metadataServerName.equals(configServerName))
+        {
+            UIAdminErrorCode errorCode = UIAdminErrorCode.NULL_METADATA_SERVER_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(metadataServerName,
+                    configServerName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+    }
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param metadataServerURL server URL passed on a request
+     * @param configServerName serverName passed in config
+     * @param methodName  method being called
+     * @throws OMAGConfigurationErrorException incompatible server names
+     */
+    public void validateConfigMetadataServeURL(String metadataServerURL,
+                                                 String configServerName,
+                                                 String methodName) throws OMAGConfigurationErrorException
+    {
+        if (!metadataServerURL.equals(configServerName))
+        {
+            UIAdminErrorCode errorCode = UIAdminErrorCode.NULL_METADATA_SERVER_URL;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(metadataServerURL,
+                    configServerName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+    }
 
     /**
      * Validate that the connection is not null.
@@ -135,7 +187,7 @@ class UIServerErrorHandler
      * @param methodName  method called
      * @throws InvalidParameterException the connection is null
      */
-    void validateConnection(Connection connection,
+    public void validateConnection(Connection connection,
                             String     serverName,
                             String     methodName) throws InvalidParameterException
     {
@@ -162,7 +214,7 @@ class UIServerErrorHandler
      * @param methodName  method called
      * @throws InvalidParameterException the connection is null
      */
-    void validateConnection(Connection connection,
+    public void validateConnection(Connection connection,
                             String     methodName) throws InvalidParameterException
     {
         if (connection == null)
@@ -236,6 +288,59 @@ class UIServerErrorHandler
     }
 
     /**
+     * Validate the open lineage server name is not null
+     * @param serverName local UI server name
+     * @param methodName method name
+     * @param openLineageServerName - open lineage server name to check
+     * @throws OMAGConfigurationErrorException open lineage server name is null
+     */
+    public void validateLineageServerName(String serverName, String methodName, String openLineageServerName) throws OMAGConfigurationErrorException{
+        if (openLineageServerName == null) {
+            UIAdminErrorCode errorCode    = UIAdminErrorCode.NULL_OPEN_LINEAGE_SERVER_NAME;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+    /**
+     * Validate the open lineage server URL is not null or does not look like a URL
+     * @param serverName local UI server name
+     * @param methodName method name
+     * @param openLineageServerURL - open lineage server URL to check
+     * @throws OMAGConfigurationErrorException open lineage serverURL is null or invlaid
+     */
+    public void validateLineageServerURL(String serverName, String methodName, String openLineageServerURL) throws OMAGConfigurationErrorException{
+
+        if (openLineageServerURL == null) {
+            UIAdminErrorCode errorCode    = UIAdminErrorCode.NULL_OPEN_LINEAGE_SERVER_URL;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        if (!isURLValid(openLineageServerURL)) {
+            UIAdminErrorCode errorCode = UIAdminErrorCode.INVALID_OPEN_LINEAGE_SERVER_URL;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName, openLineageServerURL);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+    /**
      * Validate the UI server config
      * @param serverName serverName - local server name
      * @param uiServerConfig the UI server config to validate
@@ -244,135 +349,11 @@ class UIServerErrorHandler
      */
     public void validateUIconfiguration(String serverName,
                                         UIServerConfig uiServerConfig,
-                                        String methodName) throws InvalidParameterException{
+                                        String methodName) throws InvalidParameterException {
 
         validateMetadataServerName(serverName, methodName, uiServerConfig.getMetadataServerName());
         validateMetadataServerURL(serverName, methodName, uiServerConfig.getMetadataServerURL());
-        List<GovernanceServerEndpoint> governanceServerEndpoints = uiServerConfig.getGovernanceServerEndpoints();
-        Set<String> governanceServernames = new HashSet<>();
-        for (GovernanceServerEndpoint governanceServerEndpoint:governanceServerEndpoints) {
-            String governanceServiceName = governanceServerEndpoint.getGovernanceServiceName();
-            validateGovernanceServiceName(governanceServiceName,serverName, methodName);
-            validateGovernanceServerURL(governanceServerEndpoint.getServerRootURL(), serverName, methodName);
-            validateGovernanceServerName(governanceServerEndpoint.getServerName(), serverName, methodName);
-            if (governanceServernames.contains(governanceServiceName)) {
-                // more than one definition of the same governance server type
-                UIAdminErrorCode errorCode    = UIAdminErrorCode.DUPLICATE_GOVERNANCE_SERVERS;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName,governanceServiceName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        "governanceServiceName");
-
-            } else {
-                governanceServernames.add(governanceServiceName);
-            }
-        }
     }
-    /**
-     * Validate that the governance server name is not null and matches a governance server.
-     *
-     * @param governanceServiceName  governance name passed on the request
-     * @param serverName  name of this server
-     * @param methodName  method receiving the call
-     * @throws InvalidParameterException the governance server name is not valid
-     */
-    public void validateGovernanceServerName(String governanceServiceName,
-                                              String serverName,
-                                              String methodName) throws InvalidParameterException
-    {
-        if (governanceServiceName == null)
-        {
-            UIAdminErrorCode errorCode    = UIAdminErrorCode.NULL_GOVERNANCE_SERVER_NAME;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),"governanceServiceName");
-        }
-    }
-    /*
-     * Validate that the governance server URL is not null and looks like a URL
-     *
-     * @param governanceServiceName  governance server URL passed on the request
-     * @param serverName  name of this server
-     * @param methodName  method receiving the call
-     * @throws InvalidParameterException the governance server URL is not valid
-     */
-    public void validateGovernanceServerURL(String governanceServiceURL,
-                                              String serverName,
-                                              String methodName) throws InvalidParameterException
-    {
-        if (governanceServiceURL == null)
-        {
-            UIAdminErrorCode errorCode    = UIAdminErrorCode.NULL_GOVERNANCE_SERVER_URL;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),"governanceServiceURL");
-        }
-        if (!isURLValid(governanceServiceURL)) {
-            UIAdminErrorCode errorCode    = UIAdminErrorCode.INVALID_GOVERNANCE_SERVER_URL;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName,governanceServiceURL);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),"governanceServiceURL");
-
-        }
-    }
-    /**
-     * Validate that the governance service name is not valid and matches a governance service. The governance service name is the type of governance server that is being configured.
-     *
-     * @param governanceServiceName  governance service name passed on the request
-     * @param serverName  name of this server
-     * @param methodName  method receiving the call
-     * @throws InvalidParameterException the governance service name is not valid
-     */
-    public void validateGovernanceServiceName(String governanceServiceName,
-                                               String serverName,
-                                               String methodName) throws InvalidParameterException
-    {
-        if (governanceServiceName == null)
-        {
-            UIAdminErrorCode errorCode    = UIAdminErrorCode.NULL_GOVERNANCE_SERVICE_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),"governanceServiceName");
-        }
-       if (!isGovernanceServiceNameValid(governanceServiceName)) {
-           UIAdminErrorCode errorCode    = UIAdminErrorCode.INVALID_GOVERNANCE_SERVICE_NAME;
-           String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,methodName,governanceServiceName,allGovernanceServices);
-
-           throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                   this.getClass().getName(),
-                   methodName,
-                   errorMessage,
-                   errorCode.getSystemAction(),
-                   errorCode.getUserAction(),
-                   "governanceServiceName");
-       }
-    }
-
     /**
      * A non-null string that is expected to be a URL is passed to be validated
      * @param candidateURL candidate url to check for validity
@@ -386,20 +367,6 @@ class UIServerErrorHandler
             } catch (MalformedURLException e) {
                 // catch url error
             }
-        return isValid;
-    }
-
-    /**
-     * check that the supplied governance service name exists in the GovernanceServicesDescription enum.
-     * @param candidateGovernanceServerName
-     * @return true is the supplied name matches a governance service URL marker
-     */
-    private boolean isGovernanceServiceNameValid(String candidateGovernanceServerName) {
-        boolean isValid = false;
-        Set<String> servicesURLMarkers = GovernanceServicesDescription.getGovernanceServersURLMarkers();
-        if (servicesURLMarkers.contains(candidateGovernanceServerName)) {
-            isValid =true;
-        }
         return isValid;
     }
 }
