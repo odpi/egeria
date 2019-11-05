@@ -1,12 +1,16 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage;
+package org.odpi.openmetadata.governanceservers.openlineage.maingraphstore;
 
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public class OpenLineageConnectorBase extends ConnectorBase {
+public class MainGraphStoreConnectorBase extends ConnectorBase implements MainGraphStore{
 
     /**
      * Initialize the connector.
@@ -29,4 +33,28 @@ public class OpenLineageConnectorBase extends ConnectorBase {
         super.start();
     }
 
+    @Override
+    public void addEntity(LineageEvent lineageEvent) {
+
+    }
+
+    @Override
+    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) {
+        return null;
+    }
+
+    @Override
+    public void dumpGraph(String graphName) {
+
+    }
+
+    @Override
+    public String exportGraph(String graphName) {
+        return null;
+    }
+
+    @Override
+    public Object getMainGraph() {
+        return null;
+    }
 }

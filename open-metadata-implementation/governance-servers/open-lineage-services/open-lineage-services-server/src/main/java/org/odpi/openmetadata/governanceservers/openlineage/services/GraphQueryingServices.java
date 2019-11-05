@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
-import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

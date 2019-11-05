@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageProviderBase;
-public class BufferGraphConnectorProvider extends OpenLineageProviderBase {
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphStoreProviderBase;
+
+public class MainGraphConnectorStoreProvider extends MainGraphStoreProviderBase {
 
     static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
     static final String connectorTypeName = "Janus Graph Connector";
@@ -14,9 +15,9 @@ public class BufferGraphConnectorProvider extends OpenLineageProviderBase {
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * registry store implementation.
      */
-    public BufferGraphConnectorProvider() {
+    public MainGraphConnectorStoreProvider() {
         super();
-        Class connectorClass = BufferGraphConnector.class;
+        Class connectorClass = MainGraphStoreConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();
