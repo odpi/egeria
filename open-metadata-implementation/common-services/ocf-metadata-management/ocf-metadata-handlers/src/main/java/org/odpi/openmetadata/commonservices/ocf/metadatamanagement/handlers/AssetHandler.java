@@ -145,6 +145,14 @@ public class AssetHandler
     }
 
 
+    private List<String> getSupportedZones(String      userId,
+                                           String      serviceName) throws InvalidParameterException,
+                                                                           PropertyServerException
+    {
+        return securityVerifier.setSupportedZonesForUser(supportedZones, serviceName, userId);
+    }
+
+
     /**
      * Create an empty asset bean with its header filled out with the correct type information.
      * This bean can then be used with saveAsset() once the qualified name is filled in.
@@ -400,7 +408,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                                                                  assetGUIDParameter,
                                                                  asset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -498,7 +506,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                                                                  assetGUIDParameter,
                                                                  asset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -562,7 +570,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
                                                                  assetGUIDParameter,
                                                                  asset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -809,7 +817,7 @@ public class AssetHandler
         if (originalAsset != null)
         {
             updatedAsset.setZoneMembership(securityVerifier.verifyAssetZones(defaultZones,
-                                                                             supportedZones,
+                                                                             this.getSupportedZones(userId, serviceName),
                                                                              originalAsset,
                                                                              updatedAsset));
 
@@ -965,7 +973,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
                                                                  assetGUIDParameterName,
                                                                  assetBean.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -1029,7 +1037,7 @@ public class AssetHandler
             updatedAsset.setClassifications(assetClassifications);
 
             updatedAsset.setZoneMembership(securityVerifier.verifyAssetZones(defaultZones,
-                                                                             supportedZones,
+                                                                             this.getSupportedZones(userId, serviceName),
                                                                              assetBean,
                                                                              updatedAsset));
 
@@ -1082,7 +1090,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
                                                                  assetGUIDParameterName,
                                                                  originalAsset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -1139,7 +1147,7 @@ public class AssetHandler
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
                                                                  assetGUIDParameterName,
                                                                  originalAsset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -1233,14 +1241,18 @@ public class AssetHandler
         final String assetGUIDParameterName  = "assetGUID";
         final String validatingParameterName = "qualifiedName";
 
-        Asset asset = this.getAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+        Asset asset = this.getAsset(userId,
+                                    this.getSupportedZones(userId, serviceName),
+                                    assetGUID,
+                                    serviceName,
+                                    methodName);
 
         if (asset != null)
         {
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
                                                                  assetGUIDParameterName,
                                                                  asset.getZoneMembership(),
-                                                                 supportedZones,
+                                                                 this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
 
@@ -1778,7 +1790,7 @@ public class AssetHandler
             typeName = subTypeName;
         }
 
-        List<String> zonesForVisibleAssets = securityVerifier.setSupportedZonesForUser(supportedZones, serviceName, userId);
+        List<String> zonesForVisibleAssets = this.getSupportedZones(userId, serviceName);
 
         if (zonesForVisibleAssets.contains(zoneName))
         {
@@ -2022,7 +2034,7 @@ public class AssetHandler
                     try
                     {
                         results.add(validatedVisibleAsset(userId,
-                                                          supportedZones,
+                                                          this.getSupportedZones(userId, serviceName),
                                                           "asset.getGUID()",
                                                           asset,
                                                           serviceName,
@@ -2091,7 +2103,7 @@ public class AssetHandler
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
-        this.verifyAttachment(userId, assetGUID, supportedZones, methodName);
+        this.verifyAttachment(userId, assetGUID, this.getSupportedZones(userId, serviceName), methodName);
     }
 
 
@@ -2689,7 +2701,7 @@ public class AssetHandler
                                                                 UserNotAuthorizedException
     {
         List<RelatedAsset>  relatedAssets = this.getRelatedAssets(userId,
-                                                                  supportedZones,
+                                                                  this.getSupportedZones(userId, serviceName),
                                                                   anchorGUID,
                                                                   0,
                                                                   invalidParameterHandler.getMaxPagingSize(),
