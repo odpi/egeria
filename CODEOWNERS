@@ -15,8 +15,7 @@ open-metadata-distribution @mandy-chessell
 # Implementation
 
 open-metadata-implementation/adapters @mandy-chessell
-open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/igc-rest-client-library @cmgrote
-open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector @cmgrote
+open-metadata-implementation/governance-servers/data-engine-proxy-services @cmgrote
 open-metadata-implementation/adapters/governance-engines-plugins @planetf1
 open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1
 
