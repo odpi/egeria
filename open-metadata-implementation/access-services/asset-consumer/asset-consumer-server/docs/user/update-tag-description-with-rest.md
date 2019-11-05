@@ -5,12 +5,13 @@
 
 ```
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/{{tagGUID}}/update
+```
 
-        TagRequestBody  tagRequestBody = new TagRequestBody();
-        tagRequestBody.setTagDescription(tagDescription);
+```java
+TagRequestBody  tagRequestBody = new TagRequestBody();
+tagRequestBody.setTagDescription(tagDescription);
 
-        VoidResponse
-        
+VoidResponse
 ```
 
 ----

@@ -3,14 +3,20 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -35,39 +41,71 @@ public class ProcessHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
+    private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
+    private final AssetHandler assetHandler;
+
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
+
+    private List<String> supportedZones;
+    private List<String> defaultZones;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName             name of this service
-     * @param serverName              name of the local server
-     * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
-     * @param repositoryHelper        provides utilities for manipulating the repository services objects
-     */
+     * @param serviceName                   name of this service
+     * @param serverName                    name of the local server
+     * @param invalidParameterHandler       handler for managing parameter errors
+     * @param repositoryHandler             manages calls to the repository services
+     * @param repositoryHelper              provides utilities for manipulating the repository services objects
+     * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
+     * @param assetHandler                  provides utilities for manipulating the repository services assets
+     * @param defaultZones                  setting of the default zones for the handler
+     * @param supportedZones                setting of the supported zones for the handler
+     **/
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                          RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+                          RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                          DataEngineRegistrationHandler dataEngineRegistrationHandler, AssetHandler assetHandler,
+                          List<String> defaultZones, List<String> supportedZones) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
+        this.assetHandler = assetHandler;
+        this.supportedZones = supportedZones;
+        this.defaultZones = defaultZones;
+    }
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     * <p>
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier) {
+        this.securityVerifier = securityVerifier;
     }
 
     /**
      * Create the process
      *
-     * @param userId         the name of the calling user
-     * @param qualifiedName  the qualifiedName name of the process
-     * @param processName    the name of the process
-     * @param description    the description of the process
-     * @param latestChange   the description for the latest change done for the process
-     * @param zoneMembership the list of zones of the process
-     * @param displayName    the display name of the process
-     * @param formula        the formula for the process
-     * @param owner          the name of the owner for this process
-     * @param ownerType      the type of the owner for this process
+     * @param userId             the name of the calling user
+     * @param qualifiedName      the qualifiedName name of the process
+     * @param processName        the name of the process
+     * @param description        the description of the process
+     * @param latestChange       the description for the latest change done for the process
+     * @param zoneMembership     the list of zones of the process
+     * @param displayName        the display name of the process
+     * @param formula            the formula for the process
+     * @param owner              the name of the owner for this process
+     * @param ownerType          the type of the owner for this process
+     * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the process in the repository
      *
@@ -77,17 +115,40 @@ public class ProcessHandler {
      */
     public String createProcess(String userId, String qualifiedName, String processName, String description,
                                 String latestChange, List<String> zoneMembership, String displayName, String formula,
-                                String owner, OwnerType ownerType) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException {
+                                String owner, OwnerType ownerType, String externalSourceName) throws
+                                                                                              InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException {
         final String methodName = "createProcess";
 
-        InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
-                latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
+        Process process = createProcessAsset(qualifiedName, processName, description, latestChange, zoneMembership,
+                displayName, formula, owner, ownerType);
+        /*
+         * Initialize the asset's zone membership
+         */
+        zoneMembership = securityVerifier.initializeAssetZones(defaultZones, process);
+        process.setZoneMembership(zoneMembership);
+
+        // todo validate the zone to ensure it is a defined zone and in the supported zones list.
+        securityVerifier.validateUserForAssetCreate(userId, process);
+
+        validateProcessParameters(userId, qualifiedName, methodName);
+
+        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,
+                description, owner, ownerType, zoneMembership, latestChange, formula, null, null, repositoryHelper,
+                serverName, serviceName);
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
+                externalSourceName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
-        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
-                InstanceStatus.DRAFT, methodName);
+        String processGUID = repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(),
+                entityTypeDef.getName(), externalSourceGUID, externalSourceName,
+                builder.getInstanceProperties(methodName), InstanceStatus.DRAFT, methodName);
+
+        addAssetClassifications(userId, process, builder, processGUID);
+
+        return processGUID;
     }
 
     /**
@@ -116,13 +177,23 @@ public class ProcessHandler {
                                                                                         PropertyServerException {
         final String methodName = "updateProcess";
 
-        InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
-                latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
+        EntityDetail processEntity = repositoryHandler.getEntityByGUID(userId, processGUID,
+                ProcessPropertiesMapper.GUID_PROPERTY_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+        ProcessConverter processConverter = new ProcessConverter(processEntity, null, repositoryHelper, methodName);
+        Process originalProcess = processConverter.getProcessBean();
 
-        repositoryHandler.updateEntity(userId, processGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
-                properties, methodName);
+        if (originalProcess != null) {
+            invalidParameterHandler.validateAssetInSupportedZone(processGUID,
+                    ProcessPropertiesMapper.GUID_PROPERTY_NAME, originalProcess.getZoneMembership(), supportedZones,
+                    serviceName, methodName);
+
+            Process updatedProcess = createProcessAsset(qualifiedName, processName, description, latestChange,
+                    zoneMembership, displayName, formula, owner, ownerType);
+
+            assetHandler.updateAsset(userId, originalProcess, processConverter.getAssetAuditHeader(), updatedProcess,
+                    null, null, null, methodName);
+        }
     }
 
     /**
@@ -166,14 +237,15 @@ public class ProcessHandler {
      * Create ProcessPort relationships between a Process asset and the corresponding Ports. Verifies that the
      * relationship is not present before creating it
      *
-     * @param userId      the name of the calling user
-     * @param processGUID the unique identifier of the process
-     * @param portGUID    the unique identifier of the port
+     * @param userId             the name of the calling user
+     * @param processGUID        the unique identifier of the process
+     * @param portGUID           the unique identifier of the port
+     * @param externalSourceName the unique name of the external source
      */
-    public void addProcessPortRelationship(String userId, String processGUID, String portGUID) throws
-                                                                                               InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException {
+    public void addProcessPortRelationship(String userId, String processGUID, String portGUID,
+                                           String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         final String methodName = "addProcessPortRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -187,9 +259,12 @@ public class ProcessHandler {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, portGUID, relationshipTypeDef.getGUID(),
                 relationshipTypeDef.getName(), methodName);
 
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
+                externalSourceName);
+
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), processGUID, portGUID, null,
-                    methodName);
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,
+                    externalSourceName, processGUID, portGUID, null, methodName);
         }
     }
 
@@ -253,25 +328,52 @@ public class ProcessHandler {
         return entities.parallelStream().map(InstanceHeader::getGUID).collect(Collectors.toSet());
     }
 
-    private InstanceProperties buildProcessInstanceProperties(String userId, String qualifiedName, String processName,
-                                                              String description, String latestChange,
-                                                              List<String> zoneMembership, String displayName,
-                                                              String formula, String owner, OwnerType ownerType,
-                                                              String methodName) throws InvalidParameterException {
-
-        validateProcessParameters(userId, qualifiedName, methodName);
-
-        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,
-                description, owner, ownerType, zoneMembership, latestChange, formula, null, null, repositoryHelper,
-                serverName, serviceName);
-
-        return builder.getInstanceProperties(methodName);
-    }
-
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws
                                                                                                    InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
+    }
+
+    private Process createProcessAsset(String qualifiedName, String processName, String description,
+                                       String latestChange, List<String> zoneMembership, String displayName,
+                                       String formula, String owner, OwnerType ownerType) throws
+                                                                                          InvalidParameterException {
+        final String methodName = "createProcessAsset";
+
+        Asset asset = assetHandler.createEmptyAsset(ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName);
+
+        Process process = new Process(asset);
+        process.setDescription(description);
+        process.setName(processName);
+        process.setQualifiedName(qualifiedName);
+        process.setZoneMembership(zoneMembership);
+        process.setOwner(owner);
+        process.setOwnerType(ownerType);
+        process.setLatestChange(latestChange);
+
+        process.setFormula(formula);
+        process.setDisplayName(displayName);
+
+        return process;
+    }
+
+    private void addAssetClassifications(String userId, Process process, ProcessPropertiesBuilder builder,
+                                         String processGUID) throws UserNotAuthorizedException,
+                                                                    PropertyServerException,
+                                                                    InvalidParameterException {
+        final String methodName = "addAssetClassifications";
+
+        if (process.getZoneMembership() != null) {
+            repositoryHandler.classifyEntity(userId, processGUID, AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                    AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME, builder.getZoneMembershipProperties(methodName),
+                    methodName);
+        }
+
+        if (process.getOwner() != null) {
+            repositoryHandler.classifyEntity(userId, processGUID, AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                    AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, builder.getOwnerProperties(methodName),
+                    methodName);
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,7 +23,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @EnableWebSecurity
 @Configuration
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -114,26 +115,4 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         return userDetailsService;
     }
 
-
-    @Bean
-    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
-    @ConditionalOnMissingBean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher();
-    }
-
-
-    @Bean(name="token")
-    @ConditionalOnProperty(name = "authentication.mode", havingValue = "token", matchIfMissing = true)
-    @ConditionalOnMissingBean
-    public TokenAuthService getTokenAuth()  {
-        return new TokenAuthService();
-    }
-
-    @Bean(name="session")
-    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
-    @ConditionalOnMissingBean
-    public SessionAuthService getSessionAuth()  {
-        return new SessionAuthService();
-    }
 }

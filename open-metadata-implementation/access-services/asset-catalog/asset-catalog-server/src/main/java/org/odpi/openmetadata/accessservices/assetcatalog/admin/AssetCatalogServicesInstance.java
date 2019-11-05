@@ -30,13 +30,14 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
      * @throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException a problem occurred during initialization
      */
     AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                 List<String> supportedZones, OMRSAuditLog auditLog) throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException {
-        super(description.getAccessServiceName(), repositoryConnector, auditLog);
+                                 List<String> supportedZones, OMRSAuditLog auditLog,
+                                 String localServerUserId) throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException {
+        super(description.getAccessServiceName(), repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
             relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper);
 
         } else {

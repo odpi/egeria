@@ -49,7 +49,6 @@ The discovered properties for this test show which of the optional capabilities 
 This is the sample output for the Asset type.
 
 ```json
-
 {
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-entity-lifecycle",

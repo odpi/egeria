@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * SchemaTypeHandler manages SchemaType objects.  It runs server-side in
- * OMAS and retrieves SchemaType entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves SchemaType entities through the OMRSRepositoryConnector.
  */
 public class SchemaTypeHandler
 {
@@ -30,6 +30,7 @@ public class SchemaTypeHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private LastAttachmentHandler   lastAttachmentHandler;
 
 
     /**
@@ -40,18 +41,21 @@ public class SchemaTypeHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public SchemaTypeHandler(String                  serviceName,
                              String                  serverName,
                              InvalidParameterHandler invalidParameterHandler,
                              RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper)
+                             OMRSRepositoryHelper    repositoryHelper,
+                             LastAttachmentHandler   lastAttachmentHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.lastAttachmentHandler = lastAttachmentHandler;
     }
 
 
@@ -480,6 +484,60 @@ public class SchemaTypeHandler
         }
     }
 
+    /**
+     * Work through the schema attributes from an external source adding or updating the instances
+     *
+     * @param userId calling userId
+     * @param schemaTypeGUID anchor object
+     * @param schemaAttributes list of nested schema attribute objects or null
+     * @param externalSourceGUID unique identifier of the external source
+     * @param externalSourceName unique name of the external source
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveExternalSchemaAttributes(String                userId,
+                                              String                schemaTypeGUID,
+                                              List<SchemaAttribute> schemaAttributes,
+                                              String                externalSourceGUID,
+                                              String                externalSourceName,
+                                              String                methodName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        if (schemaAttributes != null)
+        {
+            for (SchemaAttribute  schemaAttribute : schemaAttributes)
+            {
+                if (schemaAttribute != null)
+                {
+                    String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute, methodName);
+
+                    if (schemaAttributeGUID == null)
+                    {
+                        schemaAttributeGUID = addExternalSchemaAttribute(userId, schemaAttribute,externalSourceGUID,externalSourceName);
+
+                        repositoryHandler.createExternalRelationship(userId,
+                                                                     SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     schemaTypeGUID,
+                                                                     schemaAttributeGUID,
+                                                                     null,
+                                                                     methodName);
+                    }
+                    else
+                    {
+                        updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
+                    }
+
+                }
+            }
+        }
+    }
+
 
     /**
      * Find out if the schema type object is already stored in the repository.  If the schema type's
@@ -603,6 +661,38 @@ public class SchemaTypeHandler
                                               this.getSchemaAttributeTypeName(schemaAttribute),
                                               builder.getInstanceProperties(methodName),
                                               methodName);
+    }
+
+    /**
+     * Add the schema type from an external source to the repository.
+     *
+     * @param userId   calling userId
+     * @param schemaAttribute object to add
+     * @param externalSourceGUID unique identifier(guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @return unique identifier of the schemaAttribute in the repository.
+     * @throws InvalidParameterException  the schemaAttribute bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    private String addExternalSchemaAttribute(String               userId,
+                                              SchemaAttribute      schemaAttribute,
+                                              String               externalSourceGUID,
+                                              String               externalSourceName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "addExternalSchemaAttribute";
+
+        SchemaAttributeBuilder builder = this.getSchemaAttributeBuilder(schemaAttribute);
+
+        return repositoryHandler.createExternalEntity(userId,
+                                                      this.getSchemaAttributeTypeGUID(schemaAttribute),
+                                                      this.getSchemaAttributeTypeName(schemaAttribute),
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      builder.getInstanceProperties(methodName),
+                                                      methodName);
     }
 
 
@@ -846,6 +936,53 @@ public class SchemaTypeHandler
         return schemaTypeGUID;
     }
 
+    /**
+     * Determine if the SchemaType object is stored in the repository and create it if it is not.
+     * If the schemaType is located, there is no check that the schemaType values are equal to those in
+     * the supplied object.
+     *
+     * @param userId calling userId
+     * @param schemaType object to add
+     * @param schemaAttributes list of nested schema attribute objects or null
+     * @param externalSourceGUID unique identifier(guid) for the external source
+     * @param externalSourceName unique name for the external source
+     * @param methodName calling method
+     *
+     * @return unique identifier of the schemaType in the repository.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  saveExternalSchemaType(String                userId,
+                                          SchemaType            schemaType,
+                                          List<SchemaAttribute> schemaAttributes,
+                                          String                externalSourceGUID,
+                                          String                externalSourceName,
+                                          String                methodName) throws InvalidParameterException,
+                    PropertyServerException,
+                    UserNotAuthorizedException
+    {
+        String schemaTypeGUID = this.findSchemaType(userId, schemaType, methodName);
+
+        if (schemaTypeGUID == null)
+        {
+            schemaTypeGUID = addExternalSchemaType(userId, schemaType, externalSourceGUID, externalSourceName);
+        }
+        else
+        {
+            updateSchemaType(userId, schemaTypeGUID, schemaType);
+        }
+
+        if (schemaAttributes != null)
+        {
+            this.saveExternalSchemaAttributes(userId, schemaTypeGUID, schemaAttributes, externalSourceGUID,
+                    externalSourceName, methodName);
+        }
+
+        return schemaTypeGUID;
+    }
+
 
     /**
      * Add the schema type to the repository.
@@ -871,6 +1008,39 @@ public class SchemaTypeHandler
                                               this.getSchemaTypeTypeName(schemaType),
                                               schemaTypeBuilder.getInstanceProperties(methodName),
                                               methodName);
+    }
+
+
+    /**
+     * Add the schema type from an external source to the repository.
+     *
+     * @param userId   calling userId
+     * @param schemaType object to add
+     * @param externalSourceGUID unique identifier(guid) for the external source
+     * @param externalSourceName unique name for the external source
+     * @return unique identifier of the schemaType in the repository.
+     * @throws InvalidParameterException  the schemaType bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    private String addExternalSchemaType(String                userId,
+                                         SchemaType            schemaType,
+                                         String                externalSourceGUID,
+                                         String                externalSourceName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "addExternalSchemaType";
+
+        SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
+
+        return repositoryHandler.createExternalEntity(userId,
+                                                      this.getSchemaTypeTypeGUID(schemaType),
+                                                      this.getSchemaTypeTypeName(schemaType),
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      schemaTypeBuilder.getInstanceProperties(methodName),
+                                                      methodName);
     }
 
 

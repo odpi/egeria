@@ -5,11 +5,9 @@
 
 Release 1.1 focuses on establishing a secure, multi-tenant platform for
 metadata servers and governance servers.
+There is also a new JanusGraph based metadata repository.
 
 Below are the highlights:
-
-* A [conformance test suite](../open-metadata-conformance-suite)
-  that validates implementations of open metadata repository connectors.
 
 * A [persistent metadata repository](../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector) based on JanusGraph.
 
@@ -27,21 +25,35 @@ Below are the highlights:
   Kubernetes helm charts](../open-metadata-resources/open-metadata-deployment) to deploy
   the platforms and related technology used in the tutorials, samples and labs.
 
+  + Note that currently we do not push release specific docker containers to dockerhub. If you are using the 
+  docker/kubernetes environments it is recommended to work from the 'master' branch instead of this release. This will
+  be addressed in a future release. 
+
 * The [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services) shipped in the [first release](release-notes-1-0.md)
   have been enhanced with REST APIs to query the cohorts that a server
   is connected to.  There are also REST APIs to issue federated queries across
   the cohorts that a metadata server is connected to.
   
-* The [Open Discovery Framework (ODF)](../open-metadata-implementation/frameworks/open-discovery-framework) is now defined and implemented.
-  It complements the [Open Connector Framework (OCF)](../open-metadata-implementation/frameworks/open-connector-framework) delivered in release 1.0.
-  This framework provides the APIs that automated 
-
-* The metadata servers and future governance servers running on the OMAG Server Platform
-  support [metadata-centric security](../open-metadata-implementation/common-services/metadata-security)
-  that is controlled by a connector.
-  
 * There is a new user interface to explore the open metadata types.  It is called the **Type Explorer**.
+
+## Code fixes and changes to released function
+
+*  Release 1.1 fixes a problem in the open metadata cohort registration when
+   there was a metadata server without a local repository.  The wrong registration
+   message was being used which meant that the registration details were not being properly
+   distributed around the cohort.
    
+*  Release 1.1 changed the type of the AdditionalProperties from a map of String to Object to a map of
+   String to String in order to match the open metadata types.  There is a new property called
+   ConfigurationProperties which is a map from String to Object.
+   
+*  Release 1.1 changed the implementation of the data primitive type from
+   a Java Date object to a Java Long object.  This was to overcome a problem
+   deserialization dates from JSON to Java.
+
+
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

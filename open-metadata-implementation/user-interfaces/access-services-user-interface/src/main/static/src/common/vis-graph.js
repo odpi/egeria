@@ -64,13 +64,9 @@ class VisGraph extends PolymerElement {
                        
                <div class="vis-tooltip" style="left: 239px; top: 119px; visibility: hidden; box-sizing: border-box;"><div style="text-align:center;">test</div></div>
           </div>
-          
          
-      
         </div>
-        
-       
-       
+     
     `;
   }
 

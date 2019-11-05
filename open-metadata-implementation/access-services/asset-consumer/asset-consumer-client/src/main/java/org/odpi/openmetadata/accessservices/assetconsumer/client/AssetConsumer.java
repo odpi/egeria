@@ -181,7 +181,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Return a list of assets with the requested name.
+     * Return a list of assets with the requested name.  The name must match exactly.
      *
      * @param userId calling user
      * @param name name to search for
@@ -200,24 +200,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                          int      startFrom,
                                          int      pageSize,
                                          String   methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
 
-        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
-                                                                          name,
-                                                                          serverName,
-                                                                          userId,
-                                                                          startFrom,
-                                                                          pageSize);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUIDs();
+        return retrieveAssets(userId, name, startFrom, pageSize, urlTemplate, methodName);
     }
 
 
@@ -249,8 +237,36 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String methodName = "findAssets";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
 
+        return retrieveAssets(userId, searchString, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    private List<String>  retrieveAssets(String   userId,
+                                         String   searchString,
+                                         int      startFrom,
+                                         int      pageSize,
+                                         String   urlTemplate,
+                                         String   methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                        serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformRootURL + urlTemplate,
                                                                           searchString,
                                                                           serverName,
                                                                           userId,
@@ -935,11 +951,11 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Return the full definition (meaning) of the terms matching the supplied name.
+     * Return the full definition (meaning) of the terms exactly matching the supplied name.
      *
      * @param userId the name of the calling user.
-     * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param term name of term.
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of glossary terms that contain the properties that describe the term and its meaning.
@@ -956,18 +972,74 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getMeaningByName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?startFrom={3}&pageSize={4}";
+
+        return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return the full definition (meaning) of the terms matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return meaning list response or
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<GlossaryTerm> findMeanings(String userId,
+                                           String term,
+                                           int    startFrom,
+                                           int    pageSize) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String   methodName = "findMeanings";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string/{2}?startFrom={3}&pageSize={4}";
+
+        return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return the full definition (meaning) of the terms matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param urlTemplate url template in which the parameters are plugged into
+     * @param methodName calling method
+     *
+     * @return meaning list response or
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private List<GlossaryTerm> retrieveMeanings(String userId,
+                                                String term,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String urlTemplate,
+                                                String methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
         final String   nameParameter = "term";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(term, nameParameter, methodName);
 
-        GlossaryTermListResponse restResult = restClient.callGlossaryTermListGetRESTCall(methodName,
-                                                                                         serverPlatformRootURL + urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         term,
-                                                                                         startFrom,
-                                                                                         pageSize);
+        GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          term,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -975,7 +1047,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         return restResult.getMeanings();
     }
-
 
 
     /*
@@ -1061,12 +1132,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private String createTag(boolean isPublic,
-                             String methodName,
-                             String userId,
-                             String tagName,
-                             String tagDescription) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+                             String  methodName,
+                             String  userId,
+                             String  tagName,
+                             String  tagDescription) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags";
 
@@ -1186,7 +1257,9 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
+     * Removes a tag from the repository.
+     * A private tag can be deleted by its creator and all of the references are lost;
+     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
@@ -1259,11 +1332,11 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of tags exactly matching the supplied name.
      *
      * @param userId the name of the calling user.
-     * @param tag name of tag.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param tag name of tag.
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list
@@ -1280,6 +1353,115 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getTagsByName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+    /**
+     * Return the list of the calling user's private tags exactly matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<InformalTag> getMyTagsByName(String userId,
+                                             String tag,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String   methodName = "getTagsByName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-name?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return the list of tags containing the supplied string in either the name or description.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<InformalTag> findTags(String userId,
+                                      String tag,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        final String   methodName = "findTags";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-search-string?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<InformalTag> findMyTags(String userId,
+                                        String tag,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        final String   methodName = "findTags";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-search-string?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return the list of tags matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag or search string.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param urlTemplate url template in which the parameters are plugged into
+     * @param methodName calling method
+     *
+     * @return meaning list response or
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private List<InformalTag> retrieveTags(String userId,
+                                           String tag,
+                                           int    startFrom,
+                                           int    pageSize,
+                                           String urlTemplate,
+                                           String methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
         final String   nameParameter = "tag";
 
         invalidParameterHandler.validateUserId(userId, methodName);

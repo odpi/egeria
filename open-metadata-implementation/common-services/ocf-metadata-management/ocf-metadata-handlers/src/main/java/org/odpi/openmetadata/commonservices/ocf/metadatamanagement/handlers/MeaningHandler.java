@@ -20,15 +20,8 @@ import java.util.List;
 /**
  * MeaningHandler retrieves a Meaning bean from the GlossaryTerm entity.
  */
-public class MeaningHandler
+public class MeaningHandler extends AttachmentHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -37,18 +30,16 @@ public class MeaningHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public MeaningHandler(String                  serviceName,
                           String                  serverName,
                           InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler       repositoryHandler,
-                          OMRSRepositoryHelper    repositoryHelper)
+                          OMRSRepositoryHelper    repositoryHelper,
+                          LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 

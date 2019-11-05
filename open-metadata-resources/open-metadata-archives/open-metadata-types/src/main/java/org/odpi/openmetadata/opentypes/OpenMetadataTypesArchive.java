@@ -321,6 +321,7 @@ public class OpenMetadataTypesArchive
         this.add0010BaseModel();
         this.add0015LinkedMediaTypes();
         this.add0017ExternalIdentifiers();
+        this.add0019MoreInformation();
         this.add0020PropertyFacets();
         this.add0025Locations();
         this.add0030HostsAndPlatforms();
@@ -1497,6 +1498,75 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0017 External Identifiers define identifiers used to identify this entity in other systems.
+     */
+    private void add0019MoreInformation()
+    {
+        this.archiveBuilder.addRelationshipDef(getMoreInformationRelationship());
+    }
+
+
+    private RelationshipDef getMoreInformationRelationship()
+    {
+        final String guid            = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
+        final String name            = "MoreInformation";
+        final String description     = "Link to indicate that a referenceable provides additional information about another referenceable.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "describes";
+        final String                     end1AttributeDescription     = "Describes this core element.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "providesMoreInformation";
+        final String                     end2AttributeDescription     = "Provides more information about this referenceable.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
     }
@@ -21169,7 +21239,7 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "DesignModel";
-        final String                     end1AttributeName            = "anchorModel";
+        final String                     end1AttributeName            = "owningModel";
         final String                     end1AttributeDescription     = "Owning model.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;

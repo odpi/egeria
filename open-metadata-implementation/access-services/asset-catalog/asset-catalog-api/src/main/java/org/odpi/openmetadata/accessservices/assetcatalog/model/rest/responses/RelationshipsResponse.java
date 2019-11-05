@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,5 +30,19 @@ public class RelationshipsResponse extends AssetCatalogOMASAPIResponse implement
 
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RelationshipsResponse that = (RelationshipsResponse) o;
+        return Objects.equals(relationships, that.relationships);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), relationships);
     }
 }

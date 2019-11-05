@@ -51,6 +51,8 @@ public class OMAGServerAdminForAccessServices
      * Return the list of access services that are configured for this server.
      *
      * @param userId calling user
+     * @param serverName name of server
+     *
      * @return list of access service descriptions
      */
     public RegisteredOMAGServicesResponse getConfiguredAccessServices(String              userId,
@@ -124,7 +126,9 @@ public class OMAGServerAdminForAccessServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param serviceURLMarker access service name used in URL
      * @param accessServiceOptions  property name/value pairs used to configure the access services
+     *
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or

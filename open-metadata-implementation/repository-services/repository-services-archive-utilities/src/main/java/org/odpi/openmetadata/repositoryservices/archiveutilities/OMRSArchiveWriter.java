@@ -202,7 +202,7 @@ public class OMRSArchiveWriter
     protected void writeOpenMetadataArchive(String                   outputFileName,
                                             OpenMetadataArchive      openMetadataArchive)
     {
-        Connection               connection           = getOpenMetadataArchiveFileConnection(outputFileName);
+        Connection               connection               = getOpenMetadataArchiveFileConnection(outputFileName);
 
         OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection);
 

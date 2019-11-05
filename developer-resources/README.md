@@ -9,12 +9,9 @@ This module contains resources to help developers working on the Egeria project.
 * Technology summaries
   * [Spring and Spring Boot](Spring.md) - for building REST APIs
   * [Developer import Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
-  
-  
+* [Postman samples](./Postman-Samples.md)
   
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
-  
-  

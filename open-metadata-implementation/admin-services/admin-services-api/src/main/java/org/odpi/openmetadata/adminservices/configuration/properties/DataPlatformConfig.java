@@ -9,9 +9,10 @@ import java.util.Map;
 
 
 /**
- * The Data platform config class provides the properties for the data-platform-services..
+ * The Data platform config class provides the configuration properties for the data-platform-services.
  */
-public class DataPlatformConfig extends AdminServicesConfigHeader {
+public class DataPlatformConfig extends AdminServicesConfigHeader
+{
 
     /* Properties needed to call the access service REST APIs */
     private String      dataPlatformServerURL;
@@ -32,7 +33,8 @@ public class DataPlatformConfig extends AdminServicesConfigHeader {
     /**
      * Default Constructor
      */
-    public DataPlatformConfig() {
+    public DataPlatformConfig()
+    {
     }
 
     /**
@@ -48,7 +50,7 @@ public class DataPlatformConfig extends AdminServicesConfigHeader {
     }
 
     /**
-     * Copy/clone constructor
+     * Constructor to set up properties in one go
      *
      * @param template object to copy
      */
@@ -126,6 +128,11 @@ public class DataPlatformConfig extends AdminServicesConfigHeader {
         this.dataPlatformConfig = dataPlatformConfig;
     }
 
+    /**
+     * Convert all properties to a string.
+     *
+     * @return string description of object
+     */
     @Override
     public String toString() {
         return "DataPlatformConfig{" +

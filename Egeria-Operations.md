@@ -144,26 +144,79 @@ This release will be available to include in products and other technology throu
 
 In between official releases, the latest build is also available to developers, through the Egeria site.
 
-## Egeria project releases
-
-The Egeria team aim to create an official release of the open metadata and governance capability twice a year.
-This release will be available to include in products and other technology through
-[Maven's Central Repository](https://search.maven.org), or through a download from the ODPi site.
-
-In between official releases, the latest build is also available to developers, through the Egeria site.
-
 ### Release Process Overview
 
-New releases can be created by Egeria maintainers that have the appropriate access
-on [Maven Central](https://oss.sonatype.org) and are set up to sign the release with gpg2.
+Releases are published to [Bintray](https://bintray.com/odpi) where they
+are GPG signed and distributed to [Maven
+Central](https://oss.sonatype.org).
 
 Creating a new release has the following stages:
 
-* Creating a branch of master for the release code.
-* Within the branch removing "-SNAPSHOT" from all of the Egeria version numbers in the pom files and committing with a pull request.
-* Pushing the release to [Maven Central](https://oss.sonatype.org).
-* Documenting the release with a [Git Release](https://github.com/odpi/egeria/releases).
+* Creating a branch off master for the release code.
 * Incrementing the release numbers in the pom files in master and committing through a pull request.
+* Within the branch removing "`-SNAPSHOT`" from all of the Egeria version
+  numbers in the pom files and committing with a pull request.
+* Staging a release through [Azure Pipelines](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine)
+* Verifying release criteria are met on the staged build
+* Promotion of the release from staging to release
+* Distribution of the release to [Bintray](https://bintray.com/odpi), which is then replicated to [Maven Central](https://oss.sonatype.org).
+* Documenting the release with a [Git Release](https://github.com/odpi/egeria/releases).
+
+### Release Process Steps for Maintainers
+
+New releases can be created by Egeria maintainers that have the
+appropriate access on [Azure
+Pipelines](https://dev.azure.com/ODPi/Egeria/_release).
+
+Creating a new release has the following stages following the release
+branch creation:
+
+1. Update the Azure [Release Pipeline](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine) to use the release branch
+   1. Click "`Edit`"
+   1. Click *\_ODPI\_Egeria\_Commit* under the "Artifacts" column
+   1. Modify *Default branch* to be the new release branch
+   1. Click *Save* to the right of the breadcrumb header
+1. Stage a release though [Azure Pipelines](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine)
+   1. Click *Create release*
+   1. Select commit id from *Version* dropdown.
+   1. Click *Create*
+
+   Pulling from the staging repository can be done through Maven with the
+   following settings:
+
+   ```
+   <repositories>
+     <repository>
+       <snapshots>
+         <enabled>false</enabled>
+       </snapshots>
+       <id>central</id>
+       <name>egeria-staging</name>
+       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+     </repository>
+   </repositories>
+   <pluginRepositories>
+     <pluginRepository>
+       <snapshots>
+         <enabled>false</enabled>
+       </snapshots>
+       <id>central</id>
+       <name>egeria-staging</name>
+       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+     </pluginRepository>
+   </pluginRepositories>
+   ```
+
+1. After the community verifies the staged artifacts meet the release
+   criteria, the *Promote to Release* step will be approved (and the
+   *Abandon Release* step canceled)
+   If the artifacts do not meet the criteria, the *Promote to Release*
+   step should be denied, and *Abandon Release* should be
+   approved. The release process should then be started again at step #2
+   from a different commit once changes have been merged.
+1. After the release promotion is approved, the artifacts will be
+   distributed to [Bintray](https://bintray.com/odpi) which will sign
+   them and sync them to [Maven Central](https://oss.sonatype.org).
 
 ## Conflict resolution and voting
 

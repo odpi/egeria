@@ -6,9 +6,7 @@ package org.odpi.openmetadata.repositoryservices.archiveutilities;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * OMRSArchiveHelper provides utility methods to help in the construction of open metadata archives.
@@ -947,8 +945,8 @@ public class OMRSArchiveHelper
      * @param currentList current list of properties extracted from the subtypes
      * @return accumulated list of properties.
      */
-    public List<String>  getPropertiesList(List<TypeDefAttribute>  definedAttributes,
-                                           List<String>            currentList)
+    private List<String>  getPropertiesList(List<TypeDefAttribute>  definedAttributes,
+                                            List<String>            currentList)
     {
         List<String>   newList = currentList;
 
@@ -978,6 +976,133 @@ public class OMRSArchiveHelper
 
 
     /**
+     * Return the list of valid properties for the instance
+     *
+     * @param definedAttributes list of attributes defined for the typedef
+     * @param currentList current list of properties extracted from the subtypes
+     * @return accumulated list of properties.
+     */
+    private List<String>  getUniquePropertiesList(List<TypeDefAttribute>  definedAttributes,
+                                                  List<String>            currentList)
+    {
+        List<String>   newList = currentList;
+
+        if (newList == null)
+        {
+            newList = new ArrayList<>();
+        }
+
+        if (definedAttributes != null)
+        {
+            for (TypeDefAttribute  attribute : definedAttributes)
+            {
+                if (attribute != null)
+                {
+                    if (attribute.isUnique())
+                    {
+                        newList.add(attribute.getAttributeName());
+                    }
+                }
+            }
+        }
+
+        if (newList.isEmpty())
+        {
+            return null;
+        }
+
+        return newList;
+    }
+
+
+    /**
+     * Return an instance properties that only contains the properties that uniquely identify the entity.
+     * This is used when creating entity proxies.
+     *
+     * @param typeName name of instance's type
+     * @param allProperties all of the instance's properties
+     * @return just the unique properties
+     */
+    private InstanceProperties getUniqueProperties(String              typeName,
+                                                   InstanceProperties  allProperties)
+    {
+        InstanceProperties uniqueProperties = null;
+
+        if (allProperties != null)
+        {
+            uniqueProperties = new InstanceProperties();
+
+            uniqueProperties.setEffectiveFromTime(allProperties.getEffectiveFromTime());
+            uniqueProperties.setEffectiveToTime(allProperties.getEffectiveToTime());
+
+            /*
+             * Walk the type hierarchy to pick up the list of unique properties. eg qualifiedName in Referenceable.
+             */
+            TypeDef typeDef = archiveBuilder.getTypeDefByName(typeName);
+
+            if (typeDef != null)
+            {
+                /*
+                 * Determine the list of names of unique properties
+                 */
+                List<String> uniquePropertyNames = this.getUniquePropertiesList(typeDef.getPropertiesDefinition(), null);
+                TypeDef superType = null;
+
+                if (typeDef.getSuperType() != null)
+                {
+                    superType = archiveBuilder.getTypeDefByName(typeDef.getSuperType().getName());
+                }
+
+                while (superType != null)
+                {
+                    uniquePropertyNames = this.getUniquePropertiesList(superType.getPropertiesDefinition(),
+                                                                       uniquePropertyNames);
+
+                    if (superType.getSuperType() != null)
+                    {
+                        superType = archiveBuilder.getTypeDefByName(superType.getSuperType().getName());
+                    }
+                    else
+                    {
+                        superType = null;
+                    }
+                }
+
+                if (uniquePropertyNames != null)
+                {
+                    /*
+                     * Create a new InstanceProperties object containing only the unique properties.
+                     */
+                    Map<String, InstancePropertyValue> allInstancePropertiesMap = allProperties.getInstanceProperties();
+                    Map<String, InstancePropertyValue> uniqueInstancePropertiesMap = new HashMap<>();
+
+                    if (allInstancePropertiesMap != null)
+                    {
+                        for (String propertyName : allInstancePropertiesMap.keySet())
+                        {
+                            if (propertyName != null)
+                            {
+                                if (uniquePropertyNames.contains(propertyName))
+                                {
+                                    uniqueInstancePropertiesMap.put(propertyName, allInstancePropertiesMap.get(propertyName));
+                                }
+                            }
+                        }
+                    }
+
+                    if (! uniqueInstancePropertiesMap.isEmpty())
+                    {
+                        uniqueProperties.setInstanceProperties(uniqueInstancePropertiesMap);
+                    }
+                }
+            }
+        }
+
+        return uniqueProperties;
+    }
+
+
+    /**
      * Returns the instance type object with the fields that can be directly extracted from the
      * supplied type definition.  This leaves the super types and valid properties list that needs
      * to be able to loop through the super types.
@@ -985,7 +1110,7 @@ public class OMRSArchiveHelper
      * @param typeDef supplied typeDef.
      * @return new instance type object
      */
-    public InstanceType getInstanceTypeHeader(TypeDef  typeDef)
+    private InstanceType getInstanceTypeHeader(TypeDef  typeDef)
     {
         InstanceType instanceType = null;
 
@@ -1000,6 +1125,53 @@ public class OMRSArchiveHelper
             instanceType.setTypeDefDescription(typeDef.getDescription());
             instanceType.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
             instanceType.setValidStatusList(typeDef.getValidInstanceStatusList());
+        }
+
+        return instanceType;
+    }
+
+
+    /**
+     * Return the filled out instance type for the new entity.
+     *
+     * @param typeDefName  name of requested type.
+     * @return new instance type.
+     */
+    private InstanceType getInstanceType(String typeDefName)
+    {
+        TypeDef typeDef = archiveBuilder.getTypeDefByName(typeDefName);
+
+        InstanceType instanceType = this.getInstanceTypeHeader(typeDef);
+
+        if (typeDef != null)
+        {
+            List<String>       validProperties = this.getPropertiesList(typeDef.getPropertiesDefinition(), null);
+            List<TypeDefLink>  superTypes      = new ArrayList<>();
+            TypeDef            superType       = null;
+
+            if (typeDef.getSuperType() != null)
+            {
+                superType = archiveBuilder.getTypeDefByName(typeDef.getSuperType().getName());
+            }
+
+            while (superType != null)
+            {
+                validProperties = this.getPropertiesList(superType.getPropertiesDefinition(), validProperties);
+                superTypes.add(new TypeDefLink(superType));
+
+                if (superType.getSuperType() != null)
+                {
+                    superType = archiveBuilder.getTypeDefByName(superType.getSuperType().getName());
+                }
+                else
+                {
+                    superType = null;
+                }
+            }
+
+            instanceType.setTypeDefSuperTypes(superTypes);
+
+            instanceType.setValidInstanceProperties(validProperties);
         }
 
         return instanceType;
@@ -1039,15 +1211,17 @@ public class OMRSArchiveHelper
      * Set up the common fields for an entity or a relationship.
      *
      * @param instanceHeader instance object to fill
-     * @param type type of the object
+     * @param typeName type name of the object
      * @param guid unique identifier
      * @param status instance status
      */
     private void setInstanceHeader(InstanceHeader  instanceHeader,
-                                   InstanceType    type,
+                                   String          typeName,
                                    String          guid,
                                    InstanceStatus  status)
     {
+        InstanceType  type = this.getInstanceType(typeName);
+
         setInstanceAuditHeader(instanceHeader, type, status);
 
         instanceHeader.setGUID(guid);
@@ -1056,24 +1230,143 @@ public class OMRSArchiveHelper
 
 
     /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @return instance properties object.
+     */
+    public InstanceProperties addStringPropertyToInstance(InstanceProperties properties,
+                                                          String             propertyName,
+                                                          String             propertyValue)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (propertyValue != null)
+        {
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+
+            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            primitivePropertyValue.setPrimitiveValue(propertyValue);
+            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+            return resultingProperties;
+        }
+        else
+        {
+            return properties;
+        }
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @return instance properties object.
+     */
+    public InstanceProperties addIntPropertyToInstance(InstanceProperties properties,
+                                                       String             propertyName,
+                                                       int                propertyValue)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (properties == null)
+        {
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @return instance properties object.
+     */
+    public InstanceProperties addBooleanPropertyToInstance(InstanceProperties properties,
+                                                           String             propertyName,
+                                                           boolean            propertyValue)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (properties == null)
+        {
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
      * Return a specific entity detail instance.
      *
-     * @param type type of the entity
+     * @param typeName type name of the entity
      * @param guid unique identifier of the entity
      * @param properties properties (attributes) for the entity
      * @param status instance status
      * @param classifications list of classifications
      * @return assembled entity
      */
-    EntityDetail getEntityDetail(InstanceType          type,
-                                 String                guid,
-                                 InstanceProperties    properties,
-                                 InstanceStatus        status,
-                                 List<Classification>  classifications)
+    public EntityDetail getEntityDetail(String                typeName,
+                                        String                guid,
+                                        InstanceProperties    properties,
+                                        InstanceStatus        status,
+                                        List<Classification>  classifications)
     {
         EntityDetail  entityDetail = new EntityDetail();
 
-        this.setInstanceHeader(entityDetail, type, guid, status);
+        this.setInstanceHeader(entityDetail, typeName, guid, status);
         entityDetail.setProperties(properties);
         entityDetail.setClassifications(classifications);
 
@@ -1084,7 +1377,7 @@ public class OMRSArchiveHelper
     /**
      * Return a specific relationship instance.
      *
-     * @param type type of the relationship
+     * @param typeName type name of the relationship
      * @param guid unique identifier of the relationship
      * @param properties properties (attributes) for the relationship
      * @param status instance status
@@ -1092,16 +1385,16 @@ public class OMRSArchiveHelper
      * @param end2 relationship end 2
      * @return relationship instance
      */
-    Relationship getRelationship(InstanceType          type,
-                                 String                guid,
-                                 InstanceProperties    properties,
-                                 InstanceStatus        status,
-                                 EntityProxy           end1,
-                                 EntityProxy           end2)
+    public Relationship getRelationship(String                typeName,
+                                        String                guid,
+                                        InstanceProperties    properties,
+                                        InstanceStatus        status,
+                                        EntityProxy           end1,
+                                        EntityProxy           end2)
     {
         Relationship  relationship = new Relationship();
 
-        this.setInstanceHeader(relationship, type, guid, status);
+        this.setInstanceHeader(relationship, typeName, guid, status);
         relationship.setProperties(properties);
         relationship.setEntityOneProxy(end1);
         relationship.setEntityTwoProxy(end2);
@@ -1113,16 +1406,17 @@ public class OMRSArchiveHelper
     /**
      * Return a specific classification instance.
      *
-     * @param type type of the classification
+     * @param typeName type name of the classification
      * @param properties properties (attributes) for the classification
      * @param status instance status
      * @return classification instance
      */
-    Classification getClassification(InstanceType          type,
-                                     InstanceProperties    properties,
-                                     InstanceStatus        status)
+    public Classification getClassification(String                typeName,
+                                            InstanceProperties    properties,
+                                            InstanceStatus        status)
     {
         Classification  classification = new Classification();
+        InstanceType    type = this.getInstanceType(typeName);
 
         this.setInstanceAuditHeader(classification, type, status);
         classification.setProperties(properties);
@@ -1134,24 +1428,47 @@ public class OMRSArchiveHelper
     /**
      * Return a specific entity proxy instance.
      *
-     * @param type type of the classification
+     * @param typeName type name of the entity
      * @param guid unique identifier of the entity
      * @param properties unique properties (attributes) for the entity
      * @param status instance status
      * @param classifications list of classifications
      * @return classification instance
      */
-    EntityProxy getEntityProxy(InstanceType          type,
-                               String                guid,
-                               InstanceProperties    properties,
-                               InstanceStatus        status,
-                               List<Classification>  classifications)
+    public EntityProxy getEntityProxy(String                typeName,
+                                      String                guid,
+                                      InstanceProperties    properties,
+                                      InstanceStatus        status,
+                                      List<Classification>  classifications)
     {
         EntityProxy  entityProxy = new EntityProxy();
 
-        this.setInstanceHeader(entityProxy, type, guid, status);
+        this.setInstanceHeader(entityProxy, typeName, guid, status);
         entityProxy.setUniqueProperties(properties);
         entityProxy.setClassifications(classifications);
+
+        return entityProxy;
+    }
+
+
+    /**
+     * Build and entity proxy from an entity.
+     *
+     * @param entity entity to use as a template
+     * @return new entity proxy.
+     */
+    public EntityProxy getEntityProxy(EntityDetail  entity)
+    {
+        EntityProxy  entityProxy = new EntityProxy();
+        String       typeName = entity.getType().getTypeDefName();
+
+        this.setInstanceHeader(entityProxy,
+                               typeName,
+                               entity.getGUID(),
+                               entity.getStatus());
+
+        entityProxy.setUniqueProperties(this.getUniqueProperties(typeName, entity.getProperties()));
+        entityProxy.setClassifications(entity.getClassifications());
 
         return entityProxy;
     }

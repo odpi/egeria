@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -776,7 +777,12 @@ public class OCFMetadataRESTServices
             InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getAttachedTags(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getAttachedTags(userId,
+                                                     assetGUID,
+                                                     AssetMapper.ASSET_TYPE_NAME,
+                                                     elementStart,
+                                                     maxElements,
+                                                     methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1223,6 +1229,72 @@ public class OCFMetadataRESTServices
                                                       maxElements,
                                                       serviceURLName,
                                                       methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Returns the list of related Referenceables that provide more information for this asset, schema, ...
+     *
+     * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId       String   userId of user making request.
+     * @param elementGUID    String   unique id for the element.
+     * @param elementStart int      starting position for fist returned element.
+     * @param maxElements  int      maximum number of elements to return on the call.
+     *
+     * @return a list of related assets or
+     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+
+    public MoreInformationResponse getMoreInformation(String  serverName,
+                                                      String  serviceURLName,
+                                                      String  userId,
+                                                      String  elementGUID,
+                                                      int     elementStart,
+                                                      int     maxElements)
+    {
+        final String        methodName = "getMoreInformation";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        MoreInformationResponse  response = new MoreInformationResponse();
+        OMRSAuditLog             auditLog = null;
+
+        try
+        {
+            ReferenceableHandler handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setList(handler.getMoreInformation(userId,
+                                                        elementGUID,
+                                                        elementStart,
+                                                        maxElements,
+                                                        methodName));
+            response.setStartingFromElement(elementStart);
         }
         catch (InvalidParameterException error)
         {

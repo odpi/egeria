@@ -23,10 +23,11 @@ public class OMRSEventProcessingContext {
      * until all consumers have fully processed the message or the processing timeout
      * has expired
      * 
-     * @param future The future that should be monitored by egeria to detect
+     * @param future The future that should be monitored by Egeria to detect
      *   when the asynchronous processing is complete
      */
-    public static void addAsyncProcessingResult(Future<?> future) {
+    public static void addAsyncProcessingResult(Future<?> future)
+    {
         InternalOMRSEventProcessingContext.getInstance().addAsyncProcessingResult(future);
     }
     
@@ -39,7 +40,8 @@ public class OMRSEventProcessingContext {
     * @param future The future that should be monitored by Egeria to detect
     *   when the asynchronous processing is complete
     */
-    public static void addAsyncProcessingResult(OMRSFuture future) {
+    public static void addAsyncProcessingResult(OMRSFuture future)
+    {
         InternalOMRSEventProcessingContext.getInstance().addAsyncProcessingResult(future);
     }
     
@@ -53,7 +55,8 @@ public class OMRSEventProcessingContext {
      * 
      * @return the current message id
      */
-    public static String getCurrentMessageId() {
+    public static String getCurrentMessageId()
+    {
         return InternalOMRSEventProcessingContext.getInstance().getCurrentMessageId();
     }
 }

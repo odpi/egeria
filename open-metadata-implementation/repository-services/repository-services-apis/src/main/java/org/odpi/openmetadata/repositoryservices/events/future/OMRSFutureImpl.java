@@ -7,11 +7,12 @@ import java.util.concurrent.Future;
 /**
  * Implementation of {@link OMRSFuture}
  */
-public class OMRSFutureImpl implements OMRSFuture {
-    
+public class OMRSFutureImpl implements OMRSFuture
+{
     private final Future<?> wrappedFuture;
      
-    public OMRSFutureImpl(Future<?> future) {
+    public OMRSFutureImpl(Future<?> future)
+    {
         wrappedFuture = future;
     }
     
@@ -20,7 +21,8 @@ public class OMRSFutureImpl implements OMRSFuture {
      * @return whether the processing for the future has completed
      */
     @Override
-    public boolean isDone() {
+    public boolean isDone()
+    {
         return wrappedFuture.isDone();
     }
 }
