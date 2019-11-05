@@ -63,12 +63,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         metadataServerEndpointConfig - the endpoint used to connect to the Metadata server.
  *
  *     </li>
-
  *     <li>
- *         governanceServerEndpoints - these are endpoints that override the governanceServerEndpointConfig for specified governance services
- *
- *         The default value is null;
- *     </li>
+ *         ViewServicesConfig - configuration of the view services
+ *     </li>    
  *
  * </ul>
  */
@@ -80,21 +77,21 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
     public static final String         VERSION_ONE = "V1.0";
 
     /*
+     * Configuration document version number - if not in document then assume V1.0.
+     */
+    private String                    versionId                 = null;
+    /*
      * Default values used when the server configuration does not provide a value.
      */
-    private static final String defaultOrganizationName                = null;
+    private static final String  defaultOrganizationName                = null;
     private static final String  defaultLocalServerUserId              = "UIServer";
     private static final int     defaultMaxPageSize                    = 1000;
     private static final String  defaultLocalServerType = "User Interface for the Open Metadata and Governance Server";
 
     /*
-     * Configuration document version number - if not in document then assume V1.0.
-     */
-    private String                    versionId                 = null;
-
-    /*
      * Values in use by this server.
      */
+    private String                    serviceName = null;
     private String                    localServerId = UUID.randomUUID().toString();
     private String                    localServerName = null;
     private String                    localServerUserId = defaultLocalServerUserId;
@@ -106,9 +103,14 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
     private Connection                serverSecurityConnection = null;
     private String                    metadataServerName;
     private String                    metadataServerURL;
+    private String                    authenticationSource = null;
+    private String                    description = null;
+    private List<Connection>          auditLogConnections            = new ArrayList<>();
 
-    private List<GovernanceServerEndpoint> governanceServerEndpoints = null;
+    // views
+    private List<ViewServiceConfig>   viewServiceConfigs = null;
 
+    // audit
     private List<String>              auditTrail                = null;
 
 
@@ -134,6 +136,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
         if (template != null)
         {
             versionId = template.getVersionId();
+            serviceName = template.getServiceName();
             localServerId = template.getLocalServerId();
             localServerName = template.getLocalServerName();
             localServerURL = template.getLocalServerURL();
@@ -143,10 +146,12 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
             organizationName = template.getOrganizationName();
             maxPageSize = template.getMaxPageSize();
             serverSecurityConnection = template.getServerSecurityConnection();
-            metadataServerName= template.getMetadataServerName();
-            metadataServerURL=template.getMetadataServerURL();
-            governanceServerEndpoints = template.getGovernanceServerEndpoints();
-            auditTrail = template.getAuditTrail();
+            metadataServerName = template.getMetadataServerName();
+            metadataServerURL = template.getMetadataServerURL();
+            // View services
+            viewServiceConfigs = template.getViewServiceConfigs();
+            // audit
+            auditLogConnections = template.getAuditLogConnections();
         }
     }
 
@@ -172,11 +177,22 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
         this.versionId = versionId;
     }
 
+    public String getServiceName() {
+        return serviceName;
+    }
+    /**
+     * Set up the service name (the UI calls the services views).
+     *
+     * @param serviceName name of the service
+     */
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
     /**
-     * Return an unique identifier for this server.
+     * Return the service name (the UI calls the services views).
      *
-     * @return string guid
+     * @return string name of the service
      */
     public String getLocalServerId()
     {
@@ -287,7 +303,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
 
     /**
      * Return the password that the ui server should use on outbound REST calls (this is the password for
-     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * the localServerUserId).  Using userIds and passwords for server authentication is not suitable
      * for production environments.
      *
      * @return password in clear
@@ -300,7 +316,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
 
     /**
      * Set up the password that the ui server should use on outbound REST calls (this is the password for
-     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * the localServerUserId).  Using userIds and passwords for server authentication is not suitable
      * for production environments.
      *
      * @param uiServerPassword password in clear
@@ -375,7 +391,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
     /**
      * The metadata server url
      *
-     * @return metadata servewr URL
+     * @return metadata server URL
      */
     public String getMetadataServerURL() {
         return metadataServerURL;
@@ -390,21 +406,6 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
         this.metadataServerURL = metadataServerURL;
     }
 
-    /**
-     * Set the governance endpoints, which if specified for an governance override the metadata endpoint
-     * return GovernanceServerEndpoint the governance endpoints
-     */
-    public List<GovernanceServerEndpoint> getGovernanceServerEndpoints() {
-        return governanceServerEndpoints;
-    }
-
-    /**
-     * Set the governance endpoints, which if specified for an governance service override the Metadata endpoint
-     * @param governanceServerEndpoints governance endpoints
-     */
-    public void setGovernanceServerEndpoints(List<GovernanceServerEndpoint> governanceServerEndpoints) {
-        this.governanceServerEndpoints = governanceServerEndpoints;
-    }
     /**
      * Return the descriptive name for the server type.
      *
@@ -425,6 +426,103 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
     {
         this.localServerType = localServerType;
     }
+
+    /**
+     * Return the authentication source. The valid values are
+     *  <ul>
+     *   <li> db - to use the h2 database </li>
+     *   <li> ldap - to use LDAP</li>
+     * </ul>
+     *
+     * Any configuration information associated with the specified authentication source should be supplied in UserStoreConfig.
+     *
+     * @return String the name of the authentication source
+     */
+    public String getAuthenticationSource() {
+        return authenticationSource;
+    }
+    /**
+     * Set up the authentication source. The valid values are
+     *  <ul>
+     *   <li> db - to use the h2 database </li>
+     *   <li> ldap - to use LDAP</li>
+     * </ul>
+     *
+     * Any configuration information associated with the specified authentication source should be supplied in UserStoreConfig.
+     *
+     * @param authenticationSource the name of the authentication source
+     */
+    public void setAuthenticationSource(String authenticationSource) {
+        this.authenticationSource = authenticationSource;
+    }
+
+    /**
+     * Server description
+     * @return server description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Set up server description
+     * @param description String description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Return the Connection properties used to create an OCF Connector to the AuditLog.
+     *
+     * @return Connection object
+     */
+    public List<Connection> getAuditLogConnections()
+    {
+        if (auditLogConnections == null)
+        {
+            return null;
+        }
+        else if (auditLogConnections.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return auditLogConnections;
+        }
+    }
+
+    /**
+     * Set up the Connection properties used to create an OCF Connector to the AuditLog.
+     *
+     * @param auditLogConnections list of Connection objects
+     */
+    public void setAuditLogConnections(List<Connection> auditLogConnections)
+    {
+        this.auditLogConnections = auditLogConnections;
+    }
+    /**
+     * Return the configuration for the registered view services.
+     *
+     * @return array of configuration properties one for each view service.
+     */
+    public List<ViewServiceConfig> getViewServiceConfigs()
+    {
+        return viewServiceConfigs;
+    }
+
+
+    /**
+     * Set up the configuration for the registered view services.
+     *
+     * @param viewServiceConfigs array of configuration properties one for each view service
+     */
+    public void setViewServiceConfigs(List<ViewServiceConfig> viewServiceConfigs)
+    {
+        this.viewServiceConfigs = viewServiceConfigs;
+    }
+    
 
     /**
      * Return the list of audit log entries associated with this config file.
@@ -455,68 +553,70 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        return "org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig{" +
-                "localServerId='" + localServerId + '\'' +
+    public String toString() {
+        return "UIServerConfig{" +
+                "versionId='" + versionId + '\'' +
+                ", serverName='" + serviceName + '\'' +
+                ", localServerId='" + localServerId + '\'' +
                 ", localServerName='" + localServerName + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", localServerURL='" + localServerURL + '\'' +
                 ", localServerUserId='" + localServerUserId + '\'' +
                 ", localServerPassword='" + localServerPassword + '\'' +
                 ", localServerType='" + localServerType + '\'' +
+                ", localServerURL='" + localServerURL + '\'' +
                 ", maxPageSize=" + maxPageSize +
-                ", metadataServerName=" + metadataServerName+
-                ", metadataServerURL=" + metadataServerURL +
-                ", governanceServerEndpoints=" + governanceServerEndpoints +
+                ", organizationName='" + organizationName + '\'' +
+                ", serverSecurityConnection=" + serverSecurityConnection +
+                ", authenticationSource='" + authenticationSource + '\'' +
+                ", description=" + description +
+                ", auditTrail=" + auditTrail +
+                ", auditLogConnections=" + auditLogConnections +
+                ", viewServiceConfigs" + viewServiceConfigs + '\'' +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
-
-
-    /**
+/**
      * Validate that an object is equal depending on their stored values.
      *
      * @param objectToCompare object
      * @return boolean result
      */
     @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+    public boolean equals(Object objectToCompare) {
+        if (this == objectToCompare) return true;
+        if (!(objectToCompare instanceof UIServerConfig)) return false;
         UIServerConfig that = (UIServerConfig) objectToCompare;
         return getMaxPageSize() == that.getMaxPageSize() &&
+                Objects.equals(getServiceName(), that.getServiceName()) &&
                 Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
                 Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
-                Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
-                Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
                 Objects.equals(getLocalServerUserId(), that.getLocalServerUserId()) &&
                 Objects.equals(getLocalServerPassword(), that.getLocalServerPassword()) &&
                 Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
+                Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
+                Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
+                Objects.equals(getServerSecurityConnection(), that.getServerSecurityConnection()) &&
                 Objects.equals(getMetadataServerName(), that.getMetadataServerName()) &&
                 Objects.equals(getMetadataServerURL(), that.getMetadataServerURL()) &&
-                Objects.equals(getGovernanceServerEndpoints(), that.getGovernanceServerEndpoints()) &&
-                Objects.equals(getAuditTrail(), that.getAuditTrail());
+                Objects.equals(getAuthenticationSource(), that.getAuthenticationSource()) &&
+                Objects.equals(getDescription(),this.getDescription()) &&
+                Objects.equals(getAuditLogConnections(), that.getAuditLogConnections()) &&
+                Objects.equals(getVersionId(), that.getVersionId()) &&
+                Objects.equals(getViewServiceConfigs(), that.getViewServiceConfigs());
     }
-
-
     /**
      * Return a hash code based on the values of this object.
      *
      * @return in hash code
      */
     @Override
-    public int hashCode()
-    {
-        return Objects.hash(getLocalServerId(), getLocalServerName(), getOrganizationName(),
-                             getLocalServerUserId(), getMaxPageSize(),
-                            getMetadataServerName(), getMetadataServerURL(), getGovernanceServerEndpoints());
+    public int hashCode() {
+        return Objects.hash(getVersionId(),
+                Objects.hash(getServiceName(), getLocalServerId(), getLocalServerName(), getLocalServerUserId(),
+                        getLocalServerPassword(), getLocalServerType(), getLocalServerURL(), getMaxPageSize(),
+                        getOrganizationName(), getServerSecurityConnection(), getMetadataServerName(),
+                        getMetadataServerURL(), getAuthenticationSource(), getAuditLogConnections(), getDescription(),
+                        getViewServiceConfigs(), getAuditTrail()));
     }
+
+
 }

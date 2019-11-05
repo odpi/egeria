@@ -25,7 +25,7 @@ public class UIConfigStoreResource
      *
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with
-     *                   the real store.
+     *                   the real configStore.
      * @return void response
      */
     @RequestMapping(method = RequestMethod.POST, path = "/connection")
@@ -36,10 +36,10 @@ public class UIConfigStoreResource
         return adminStoreAPI.setConfigurationStoreConnection(userId, connection);
     }
 
-//TODO uncomment code and test to be able to get the connection object for the store
+//TODO uncomment code and test to be able to get the connection object for the configStore
 //    /**
-//     * Return the connection object for the configuration store.  Null is returned if the server should
-//     * use the default store.
+//     * Return the connection object for the configuration configStore.  Null is returned if the server should
+//     * use the default configStore.
 //     *
 //     * @param userId calling user
 //     * @return connection response
@@ -53,7 +53,7 @@ public class UIConfigStoreResource
 
 
     /**
-     * Clear the connection object for the configuration store which means the platform uses the default store.
+     * Clear the connection object for the configuration configStore which means the platform uses the default configStore.
      *
      * @param userId calling user
      * @return void response
