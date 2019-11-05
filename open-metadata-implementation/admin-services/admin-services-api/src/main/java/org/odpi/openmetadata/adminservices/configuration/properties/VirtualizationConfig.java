@@ -35,7 +35,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
 
 
     /**
-     * Default constuctor
+     * Default constructor
      */
     public VirtualizationConfig() {
         super();
@@ -44,9 +44,10 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
     /**
      * Copy data from template
      *
-     * @param template
+     * @param template object to copy
      */
     public VirtualizationConfig(VirtualizationConfig template) {
+        super(template);
         if (template != null) {
             this.virtualizationProvider           = template.virtualizationProvider;
             this.virtualizerOutboundTopicName     = template.virtualizerOutboundTopicName;
@@ -69,7 +70,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
 
     /**
      * Set the name of virtualization provider
-     * @param virtualizationProvider
+     * @param virtualizationProvider connector provider
      */
     public void setVirtualizationProvider(String virtualizationProvider) {
         this.virtualizationProvider = virtualizationProvider;
@@ -171,6 +172,12 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
      */
     public void setVirtualizationSolutionConfig(Map<String, Object> virtualizationSolutionConfig) {
         this.virtualizationSolutionConfig = virtualizationSolutionConfig;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "VirtualizationConfig{" + "virtualizationProvider='" + virtualizationProvider + '\'' + ", virtualizerOutboundTopicName='" + virtualizerOutboundTopicName + '\'' + ", virtualizerOutboundTopic=" + virtualizerOutboundTopic + ", virtualizerInboundTopicName='" + virtualizerInboundTopicName + '\'' + ", virtualizerInboundTopic=" + virtualizerInboundTopic + ", virtualizationSolutionConnection=" + virtualizationSolutionConnection + ", virtualizationSolutionConfig=" + virtualizationSolutionConfig + '}';
     }
 
     @Override

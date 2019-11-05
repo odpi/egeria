@@ -9,7 +9,7 @@ community forums and forum contributions, comments and communities.
 
 The process of adding a tag to an object is called [tagging](../../../docs/concepts/attachments/tagging.md).
 
-A Tag can be public (visible to all users) or private (visible only to the user that created it).
+A tag can be public (visible to all users) or private (visible only to the user that created it).
 
 ## Working with tags 
 

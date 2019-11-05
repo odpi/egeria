@@ -37,7 +37,7 @@ public interface AssetConsumerGlossaryInterface
      *
      * @param userId the name of the calling user.
      * @param term name of term.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return meaning list response or
@@ -57,7 +57,7 @@ public interface AssetConsumerGlossaryInterface
      *
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return meaning list response or

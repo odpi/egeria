@@ -16,17 +16,10 @@ import java.util.List;
 
 /**
  * RelatedMediaHandler manages RelatedMedia objects.  It runs server-side in
- * OMAS and retrieves RelatedMedia entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves RelatedMedia entities through the OMRSRepositoryConnector.
  */
-public class RelatedMediaHandler
+public class RelatedMediaHandler extends AttachmentHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -35,18 +28,16 @@ public class RelatedMediaHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public RelatedMediaHandler(String                  serviceName,
                                String                  serverName,
                                InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler       repositoryHandler,
-                               OMRSRepositoryHelper    repositoryHelper)
+                               OMRSRepositoryHelper    repositoryHelper,
+                               LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
