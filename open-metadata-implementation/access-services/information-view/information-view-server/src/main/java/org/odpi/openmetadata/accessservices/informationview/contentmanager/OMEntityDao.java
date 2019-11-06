@@ -174,7 +174,6 @@ public class OMEntityDao {
             String keys = String.join(",", matchProperties.getInstanceProperties().keySet());
             String values = matchProperties.getInstanceProperties().values().stream().map(InstancePropertyValue::valueAsString).collect(Collectors.joining(","));
             throw buildRetrieveEntityException(keys, values, e, this.getClass().getName());
-
         }
         return existingEntities;
     }
