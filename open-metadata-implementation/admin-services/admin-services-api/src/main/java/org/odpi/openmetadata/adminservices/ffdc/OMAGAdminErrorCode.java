@@ -171,6 +171,16 @@ public enum OMAGAdminErrorCode
             "The system is unable to add this connection to the configuration.",
             "Change the call to pass a valid connection.  If you want to clear the connection use the clear version of the method."),
 
+    NULL_VIEW_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-028 ",
+            "The UI server {0} has been passed a null admin services class name for view service {1}",
+            "The system is unable to initialize this view service.",
+            "if the view service should be initialized then set up the appropriate admin services class name and restart the server instance."),
+
+    BAD_VIEW_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-029 ",
+            "The UI server {0} has been passed an invalid admin services class name {1} for view service {2}",
+            "The system is unable to initialize this view service.",
+            "If the view service should be initialized then set up the appropriate admin services class name and restart the server instance."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",
