@@ -17,12 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * The type Information view asset handler.
+ */
 public class InformationViewAssetHandler implements Callable<InformationViewAsset> {
 
 
     private NewViewEvent event;
     private OMEntityDao omEntityDao;
 
+    /**
+     * Instantiates a new Information view asset handler.
+     *
+     * @param event       the event
+     * @param omEntityDao the om entity dao
+     */
     public InformationViewAssetHandler(NewViewEvent event, OMEntityDao omEntityDao) {
         this.event = event;
         this.omEntityDao = omEntityDao;
