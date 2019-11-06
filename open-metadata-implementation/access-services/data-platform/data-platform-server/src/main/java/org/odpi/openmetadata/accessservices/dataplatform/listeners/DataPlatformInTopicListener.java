@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.InformationViewAsset;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
@@ -38,17 +37,15 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMEntityDao omEntityDao;
     private final OMRSAuditLog auditLog;
-    private EventPublisher eventPublisher;
     private OMRSRepositoryHelper repositoryHelper;
     private DataPlatformServicesInstance  instance;
 
 
 
-    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper repositoryHelper) {
+    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, OMRSRepositoryHelper repositoryHelper) {
         this.instance = instance;
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
-        this.eventPublisher = eventPublisher;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -66,19 +63,19 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
 
             if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT) {
                 NewDeployedDatabaseSchemaEvent newDeployedDatabaseSchemaEvent = OBJECT_MAPPER.readValue(eventAsString, NewDeployedDatabaseSchemaEvent.class);
-                log.info("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
+                log.debug("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
 
                 DeployedDatabaseSchemaAssetHandler handler = instance.getDeployedDatabaseSchemaAssetHandler();
                 handler.createDeployedDatabaseSchemaAsset(newDeployedDatabaseSchemaEvent);
-                log.info("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
+                log.debug("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
 
 
             } else if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT) {
 
                 NewViewEvent newViewEvent = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
-                log.info("Started processing NewView event in DataPlatform OMAS");
+                log.debug("Started processing NewView event in DataPlatform OMAS");
                 InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(newViewEvent, omEntityDao);
-                ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper);
+                ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper,auditLog);
                 ExecutorService executor = Executors.newCachedThreadPool();
                 Future<InformationViewAsset> informationViewAssetFuture = executor.submit(informationViewAssetHandler);
                 Future<View> assetCreationFuture = executor.submit(viewsBuilder);
@@ -94,10 +91,6 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                             new InstanceProperties());
                     newViewEvent.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
-                eventPublisher.sendEvent(newViewEvent);
-                log.debug("invalid event schema");
-
-
             }
             //TODO: optimize exception handling with specific exception details and actions
         } catch (IOException e) {
@@ -112,7 +105,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                     errorCode.getUserAction(),
                     e);
         } catch (Exception e) {
-            log.error("Exception processing event from in topic", e);
+            log.debug("Exception processing event from in topic", e);
             DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
 
             auditLog.logException("processEvent",

@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server.spring;
 
-import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRestServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.springframework.web.bind.annotation.*;
@@ -30,26 +31,34 @@ public class DataPlatformOMASResource {
      * @param requestBody properties of the entity
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/software-server-capabilities")
-    public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
-                                                       @PathVariable("userId") String userId,
-                                                       @RequestBody RegistrationRequestBody requestBody) {
-        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+    @PostMapping(path = "/registration")
+    public GUIDResponse createExternalDataPlatform(@PathVariable("serverName") String serverName,
+                                                   @PathVariable("userId") String userId,
+                                                   @RequestBody DataPlatformRegistrationRequestBody requestBody) {
+        return restAPI.createExternalDataPlatform(serverName, userId, requestBody);
     }
 
     /**
-     * Return the software server capability by qualified name.
+     * Return the software server capability entity from an external data platform by qualified name.
      *
      * @param serverName    the server name
      * @param userId        the user id
      * @param qualifiedName the qualified name
      * @return the software server capability by qualified name
      */
-    @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
-    public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerCapabilityByQualifiedName(serverName, userId, qualifiedName);
+    @GetMapping(path = "/software-server-capability/{qualifiedName}")
+    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(@PathVariable String serverName,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String qualifiedName) {
+        return restAPI.getExternalDataPlatformByQualifiedName(serverName, userId, qualifiedName);
     }
+
+    @PostMapping(path = "/deployed-database-schema")
+    public GUIDResponse createDeployedDatabaseSchema(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
+                                                       @RequestBody DeployedDatabaseSchemaRequestBody requestBody) {
+        return restAPI.createDeployedDatabaseSchema(serverName, userId, requestBody);
+    }
+
 
 }
