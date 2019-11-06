@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -26,6 +28,15 @@ public class DeployedDatabaseSchemaAssetHandler {
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
 
+    /**
+     * Instantiates a new Deployed database schema asset handler.
+     *
+     * @param serviceName             the service name
+     * @param serverName              the server name
+     * @param repositoryHelper        the repository helper
+     * @param repositoryHandler       the repository handler
+     * @param invalidParameterHandler the invalid parameter handler
+     */
     public DeployedDatabaseSchemaAssetHandler(String serviceName, String serverName, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler) {
         this.serviceName=serviceName;
         this.serverName=serverName;
@@ -34,6 +45,49 @@ public class DeployedDatabaseSchemaAssetHandler {
         this.invalidParameterHandler = invalidParameterHandler;
     }
 
+    /**
+     * Create deployed database schema asset string.
+     *
+     * @param deployedDatabaseSchema the deployed database schema
+     * @return the string
+     * @throws PropertyServerException    the property server exception
+     * @throws InvalidParameterException  the invalid parameter exception
+     */
+    public String createDeployedDatabaseSchemaAsset(DeployedDatabaseSchema deployedDatabaseSchema)
+            throws PropertyServerException,
+            UserNotAuthorizedException,
+            InvalidParameterException{
+
+        String methodName = "create Deployed Database Schema Asset";
+
+        String qualifiedNameForDeployedDatabaseSchema = deployedDatabaseSchema.getQualifiedName();
+
+        InstanceProperties deployedDbSchemaProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDeployedDatabaseSchema)
+                .withStringProperty(Constants.NAME, deployedDatabaseSchema.getName())
+                .withStringProperty(Constants.OWNER, "Owner Info")
+                .withStringProperty(Constants.DESCRIPTION, "Description")
+                .build();
+
+        invalidParameterHandler.validateName(qualifiedNameForDeployedDatabaseSchema, Constants.QUALIFIED_NAME, methodName);
+
+        return repositoryHandler.createEntity(
+                DATA_PLATFORM_USER_ID,
+                repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID, Constants.DEPLOYED_DATABASE_SCHEMA).getGUID(),
+                Constants.DEPLOYED_DATABASE_SCHEMA,
+                deployedDbSchemaProperties,
+                methodName);
+    }
+
+
+    /**
+     * Create deployed database schema asset.
+     *
+     * @param event the event
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws InvalidParameterException  the invalid parameter exception
+     */
     public void createDeployedDatabaseSchemaAsset(NewDeployedDatabaseSchemaEvent event) throws
             PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -154,11 +208,11 @@ public class DeployedDatabaseSchemaAssetHandler {
                 databaseProperties,
                 methodName);
         String qualifiedNameForDeployedDatabaseSchema = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDatabase, Constants.DEPLOYED_DATABASE_SCHEMA,
-                event.getKeyspace().getKeyspaceName());
+                event.getDeployedDatabaseSchema().getName());
 
         InstanceProperties deployedDbSchemaProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDeployedDatabaseSchema)
-                .withStringProperty(Constants.NAME, event.getKeyspace().getKeyspaceName())
+                .withStringProperty(Constants.NAME, event.getDeployedDatabaseSchema().getName())
                 //TODO: complete database source info from data platform service side
                 .withStringProperty(Constants.OWNER, "Owner Info")
                 .withStringProperty(Constants.DESCRIPTION, "Description")

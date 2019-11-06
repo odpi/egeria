@@ -516,6 +516,7 @@ public class DesignModelArchiveBuilder
     /**
      * Create an element of a concept model.
      *
+     * @param typeName unique name of the element's type
      * @param modelId unique identifier of model (or null)
      * @param groupIds list of model groups to add this element to
      * @param qualifiedName unique name for the model
@@ -655,6 +656,7 @@ public class DesignModelArchiveBuilder
     /**
      * Create a concept attribute.
      *
+     * @param modelId unique identifier for the model element
      * @param groupIds list of model groups to add this element to
      * @param qualifiedName unique name for the model
      * @param displayName display name

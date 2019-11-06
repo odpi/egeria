@@ -136,6 +136,17 @@ public class AssetComment extends AssetElementHeader
 
 
     /**
+     * Return if this comment is private to the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return commentBean.isPublic();
+    }
+
+
+    /**
      * Return an enum that describes the type of comment.
      *
      * @return CommentType enum

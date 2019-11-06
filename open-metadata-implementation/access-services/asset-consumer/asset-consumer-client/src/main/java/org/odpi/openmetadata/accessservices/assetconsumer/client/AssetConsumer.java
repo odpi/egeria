@@ -955,7 +955,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *
      * @param userId the name of the calling user.
      * @param term name of term.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of glossary terms that contain the properties that describe the term and its meaning.
@@ -982,7 +982,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return meaning list response or
@@ -1009,7 +1009,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param urlTemplate url template in which the parameters are plugged into
      * @param methodName calling method
@@ -1257,7 +1257,9 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
+     * Removes a tag from the repository.
+     * A private tag can be deleted by its creator and all of the references are lost;
+     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
@@ -1334,7 +1336,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *
      * @param userId the name of the calling user.
      * @param tag name of tag.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list
@@ -1355,13 +1357,39 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
 
+    /**
+     * Return the list of the calling user's private tags exactly matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<InformalTag> getMyTagsByName(String userId,
+                                             String tag,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String   methodName = "getTagsByName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-name?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
 
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param userId the name of the calling user.
      * @param tag name of tag.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list
@@ -1384,11 +1412,38 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<InformalTag> findMyTags(String userId,
+                                        String tag,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        final String   methodName = "findTags";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-search-string?startFrom={2}&pageSize={3}";
+
+        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+    }
+
+
+    /**
      * Return the list of tags matching the supplied name.
      *
      * @param userId the name of the calling user.
      * @param tag name of tag or search string.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param urlTemplate url template in which the parameters are plugged into
      * @param methodName calling method
