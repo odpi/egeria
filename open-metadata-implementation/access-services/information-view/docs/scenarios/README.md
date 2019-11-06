@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Using the Information View OMAS(IVOMAS)
+# Using the Information View OMAS(IV OMAS)
 
 Below is the list of tasks supported by Information View OMAS.
 
