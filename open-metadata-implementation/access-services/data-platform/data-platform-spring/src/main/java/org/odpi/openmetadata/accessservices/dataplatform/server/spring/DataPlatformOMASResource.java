@@ -39,7 +39,7 @@ public class DataPlatformOMASResource {
     }
 
     /**
-     * Return the software server capability by qualified name.
+     * Return the software server capability entity from an external data platform by qualified name.
      *
      * @param serverName    the server name
      * @param userId        the user id
@@ -47,10 +47,10 @@ public class DataPlatformOMASResource {
      * @return the software server capability by qualified name
      */
     @GetMapping(path = "/software-server-capability/{qualifiedName}")
-    public DataPlatformRegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
-                                                                                          @PathVariable String userId,
-                                                                                          @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerCapabilityByQualifiedName(serverName, userId, qualifiedName);
+    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(@PathVariable String serverName,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String qualifiedName) {
+        return restAPI.getExternalDataPlatformByQualifiedName(serverName, userId, qualifiedName);
     }
 
     @PostMapping(path = "/deployed-database-schema")

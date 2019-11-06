@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.admin;
 
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -223,18 +225,27 @@ public class DataPlatformAdmin extends AccessServiceAdmin
      * Shutdown the access service.
      */
     public void shutdown() {
+
+        DataPlatformAuditCode auditCode;
+
+        final String actionDescription = "shutdown";
+
         try {
             dataPlatformInTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.debug("Error disconnecting data platform topic connector");
-        }
 
+            auditCode = DataPlatformAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(serverName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        }
         if (instance != null) {
             instance.shutdown();
         }
-
-        final String actionDescription = "shutdown";
-        DataPlatformAuditCode auditCode;
 
         auditCode = DataPlatformAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,

@@ -94,7 +94,7 @@ public class RegistrationHandler {
      */
     public SoftwareServerCapability getSoftwareServerCapabilityByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
 
-        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+        final String methodName = "getExternalDataPlatformByQualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);

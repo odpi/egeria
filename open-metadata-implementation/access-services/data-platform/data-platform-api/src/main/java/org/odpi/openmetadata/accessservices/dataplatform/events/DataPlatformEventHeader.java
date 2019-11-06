@@ -29,8 +29,8 @@ public abstract class DataPlatformEventHeader implements java.io.Serializable{
     /* event types for different metadata changes */
     private DataPlatformEventType eventType = null;
 
-    /* unique name for the external data platforms as source */
-    private String externalSouceName;
+    /* unique name for the data platforms as external source */
+    private String externalSourceName;
 
     /**
      * Instantiates a new Data platform event header.
@@ -75,21 +75,21 @@ public abstract class DataPlatformEventHeader implements java.io.Serializable{
     }
 
     /**
-     * Gets external souce name.
+     * Gets external source name.
      *
-     * @return the external souce name
+     * @return the external source name
      */
-    public String getExternalSouceName() {
-        return externalSouceName;
+    public String getExternalSourceName() {
+        return externalSourceName;
     }
 
     /**
-     * Sets external souce name.
+     * Sets external source name.
      *
-     * @param externalSouceName the external souce name
+     * @param externalSourceName the external source name
      */
-    public void setExternalSouceName(String externalSouceName) {
-        this.externalSouceName = externalSouceName;
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 
     @Override
@@ -97,7 +97,7 @@ public abstract class DataPlatformEventHeader implements java.io.Serializable{
         return "DataPlatformEventHeader{" +
                 "eventVersionId=" + eventVersionId +
                 ", eventType=" + eventType +
-                ", externalSouceName='" + externalSouceName + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
                 '}';
     }
 }

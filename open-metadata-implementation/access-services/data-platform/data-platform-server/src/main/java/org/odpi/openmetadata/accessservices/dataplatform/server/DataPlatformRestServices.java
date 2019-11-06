@@ -84,9 +84,9 @@ public class DataPlatformRestServices {
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public DataPlatformRegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(String serverName, String userId, String qualifiedName) {
 
-        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+        final String methodName = "getExternalDataPlatformByQualifiedName";
         DataPlatformRegistrationRequestBody response = new DataPlatformRegistrationRequestBody();
 
         try {

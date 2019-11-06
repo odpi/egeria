@@ -29,7 +29,7 @@ public class CassandraDataStoreConnector extends ConnectorBase {
     private String username = null;
     private String password = null;
     private String serverAddresses = null;
-    private Integer port = 9042;
+    private String port = null;
 
     /**
      * Typical Constructor: Connectors should always have a constructor requiring no parameters and perform
@@ -72,6 +72,7 @@ public class CassandraDataStoreConnector extends ConnectorBase {
 
         if (endpoint != null ) {
             serverAddresses = endpoint.getAddress();
+            port = endpoint.getAdditionalProperties().getProperty("port");
             username = connectionProperties.getUserId();
             password = connectionProperties.getClearPassword();
 
@@ -99,7 +100,7 @@ public class CassandraDataStoreConnector extends ConnectorBase {
         String actionDescription = "start Cassandra Data Store Connection";
         try {
             CqlSessionBuilder builder = CqlSession.builder();
-            builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
+            builder.addContactPoint(new InetSocketAddress(serverAddresses, Integer.valueOf(port)));
             builder.withSchemaChangeListener(schemaChangeListener);
             builder.withAuthCredentials(username, password);
             this.cqlSession = builder.build();

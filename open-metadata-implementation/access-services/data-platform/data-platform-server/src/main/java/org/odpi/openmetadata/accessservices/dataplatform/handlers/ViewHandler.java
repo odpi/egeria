@@ -5,12 +5,15 @@ package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -35,6 +38,7 @@ public class ViewHandler implements Callable<View> {
     private NewViewEvent event;
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
+    private final OMRSAuditLog auditLog;
 
     /**
      * Instantiates a new View handler.
@@ -43,10 +47,11 @@ public class ViewHandler implements Callable<View> {
      * @param omEntityDao the om entity dao
      * @param helper      the helper
      */
-    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
+    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.event = event;
         this.omEntityDao = omEntityDao;
         this.helper = helper;
+        this.auditLog = auditLog;
     }
 
     @Override
@@ -202,7 +207,17 @@ public class ViewHandler implements Callable<View> {
             return derivedColumnEntity;
 
         } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
-            log.debug("Exception", e);
+
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_ENTITY_EXCEPTION;
+
+            auditLog.logException("addDerivedColumn",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(derivedColumn.toString(), e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
             throw new RuntimeException("Exception creating derived column", e);
         }
 
@@ -215,7 +230,17 @@ public class ViewHandler implements Callable<View> {
                     entityGuid2,
                     new InstanceProperties());
         } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
-            log.error(e.getErrorMessage(), e);
+
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+
+            auditLog.logException("addRelationship",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(relationshipTypeName, e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
             throw new RuntimeException(e);
         }
     }

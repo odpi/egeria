@@ -45,7 +45,7 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
 
         EndpointProperties endpoint = cassandraDataStoreConnector.getConnection().getEndpoint();
 
-        if (omrsAuditLog != null & endpoint.getAddress() != null) {
+        if (omrsAuditLog != null & endpoint!= null) {
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_INITIALIZING;
             omrsAuditLog.logRecord(
                     actionDescription,
@@ -57,7 +57,7 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
                     auditLog.getUserAction());
 
         } else {
-            log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
+            log.debug("Errors in the Cassandra server configuration. The address of the server cannot be extracted.", endpoint);
             if (omrsAuditLog != null) {
                 auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
