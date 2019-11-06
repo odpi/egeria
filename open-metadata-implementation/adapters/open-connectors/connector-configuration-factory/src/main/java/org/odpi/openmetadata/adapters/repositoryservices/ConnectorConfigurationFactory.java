@@ -56,7 +56,7 @@ public class ConnectorConfigurationFactory
 
     /**
      * Returns the connection for the open metadata server configuration file.
-     *BufferGraphConnectorStoreProvider
+     *
      * @param serverName  name of the server
      * @return Connection object
      */
