@@ -174,7 +174,7 @@
         <maven-shade.version>3.2.1</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
-        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.2.2</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
@@ -191,7 +191,7 @@
         <rat-plugin.version>0.13</rat-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
