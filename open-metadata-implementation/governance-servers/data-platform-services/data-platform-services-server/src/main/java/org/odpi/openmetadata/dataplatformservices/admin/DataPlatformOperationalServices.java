@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.dataplatformservices.admin;
 
 import org.odpi.openmetadata.accessservices.dataplatform.client.DataPlatformClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformServicesConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorBase;
 import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
@@ -37,7 +37,7 @@ public class DataPlatformOperationalServices {
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector dataPlatformOmasInTopicConnector;
     private DataPlatformMetadataExtractorBase dataPlatformMetadataExtractorBase;
-    private DataPlatformConfig dataPlatformConfig;
+    private DataPlatformServicesConfig dataPlatformServicesConfig;
 
     /**
      * Constructor used at server startup.
@@ -57,17 +57,17 @@ public class DataPlatformOperationalServices {
     /**
      * Initialize.
      *
-     * @param dataPlatformConfig the data platform config
+     * @param dataPlatformServicesConfig the data platform config
      * @param auditLog           the audit log
      * @throws OMAGConfigurationErrorException the omag configuration error exception
      */
-    public void initialize(DataPlatformConfig dataPlatformConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException{
+    public void initialize(DataPlatformServicesConfig dataPlatformServicesConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException{
 
         final String actionDescription = "initialize";
 
-        if (dataPlatformConfig != null) {
+        if (dataPlatformServicesConfig != null) {
             this.auditLog = auditLog;
-            this.dataPlatformConfig=dataPlatformConfig;
+            this.dataPlatformServicesConfig = dataPlatformServicesConfig;
 
             DataPlatformServicesAuditCode auditCode = DataPlatformServicesAuditCode.SERVICE_INITIALIZING;
             auditLog.logRecord(actionDescription,
@@ -84,8 +84,8 @@ public class DataPlatformOperationalServices {
             DataPlatformClient dataPlatformClient;
             try {
                 dataPlatformClient = new DataPlatformClient(
-                        dataPlatformConfig.getDataPlatformServerName(),
-                        dataPlatformConfig.getDataPlatformServerURL(),
+                        dataPlatformServicesConfig.getDataPlatformServerName(),
+                        dataPlatformServicesConfig.getDataPlatformServerURL(),
                         localServerUserId,
                         localServerPassword
                 );
@@ -104,10 +104,10 @@ public class DataPlatformOperationalServices {
             /*
              * Configuring the Data Platform OMAS In Topic connector
              */
-            if (dataPlatformConfig.getDataPlatformServiceOutTopic() != null) {
+            if (dataPlatformServicesConfig.getDataPlatformOmasInTopic() != null) {
                 try {
                     dataPlatformOmasInTopicConnector = getTopicConnector(
-                            dataPlatformConfig.getDataPlatformServiceOutTopic(), auditLog);
+                            dataPlatformServicesConfig.getDataPlatformOmasInTopic(), auditLog);
                     log.debug("Configuring Data Platform OMAS InTopic Connector: ", dataPlatformOmasInTopicConnector);
                 } catch (Exception e) {
                     auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
@@ -124,7 +124,7 @@ public class DataPlatformOperationalServices {
             /*
              * Configuring the Data Platform Metadata Extractor Connector
              */
-            Connection dataPlatformConnection = dataPlatformConfig.getDataPlatformConnection();
+            Connection dataPlatformConnection = dataPlatformServicesConfig.getDataPlatformConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
             if (dataPlatformConnection != null) {
@@ -254,7 +254,7 @@ public class DataPlatformOperationalServices {
      *
      * @return the data platform config
      */
-    public DataPlatformConfig getDataPlatformConfig() {
-        return dataPlatformConfig;
+    public DataPlatformServicesConfig getDataPlatformServicesConfig() {
+        return dataPlatformServicesConfig;
     }
 }
