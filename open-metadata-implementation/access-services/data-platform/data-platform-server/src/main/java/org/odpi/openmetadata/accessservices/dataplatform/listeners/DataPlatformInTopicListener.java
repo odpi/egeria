@@ -75,7 +75,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                 NewViewEvent newViewEvent = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
                 log.debug("Started processing NewView event in DataPlatform OMAS");
                 InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(newViewEvent, omEntityDao);
-                ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper);
+                ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper,auditLog);
                 ExecutorService executor = Executors.newCachedThreadPool();
                 Future<InformationViewAsset> informationViewAssetFuture = executor.submit(informationViewAssetHandler);
                 Future<View> assetCreationFuture = executor.submit(viewsBuilder);
