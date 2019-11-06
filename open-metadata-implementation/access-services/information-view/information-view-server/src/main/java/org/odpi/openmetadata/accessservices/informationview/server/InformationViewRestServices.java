@@ -21,6 +21,7 @@ import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHand
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.responses.DataViewResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.DatabaseListResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.GuidResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.RegistrationResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.ReportResponse;
@@ -28,6 +29,7 @@ import org.odpi.openmetadata.accessservices.informationview.responses.TableColum
 import org.odpi.openmetadata.accessservices.informationview.responses.TableContextResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,11 +55,12 @@ public class InformationViewRestServices {
                                                        String userId,
                                                        ReportRequestBody requestBody) {
 
-        VoidResponse response = new VoidResponse();
+       GuidResponse  response = new GuidResponse();
 
         try {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
-            reportCreator.submitReportModel(userId, requestBody);
+            String guid = reportCreator.submitReportModel(userId, requestBody);
+            response.setGuid(guid);
         }
         catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
@@ -78,17 +81,17 @@ public class InformationViewRestServices {
                                                          String userId,
                                                          DataViewRequestBody requestBody) {
 
-        VoidResponse response = new VoidResponse();
+        GuidResponse response = new GuidResponse();
 
         try {
             DataViewHandler dataViewHandler = instanceHandler.getDataViewHandler(serverName);
-            dataViewHandler.createDataView(userId, requestBody);
+            String guid = dataViewHandler.createDataView(userId, requestBody);
+            response.setGuid(guid);
         }
         catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
-
         return response;
     }
 
