@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.cassandra.Keyspace;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 
 import java.util.Objects;
 
@@ -15,30 +15,52 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 
+/**
+ * The deployed database schema event will create a new asset of DeployedDatabaseSchema from a data platform as an external source. .
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
 
-    private Keyspace keyspace;
+    private DeployedDatabaseSchema deployedDatabaseSchema;
     private DataPlatform dataPlatform;
 
-    public Keyspace getKeyspace() {
-        return keyspace;
+    /**
+     * Gets deployed database schema.
+     *
+     * @return the deployed database schema
+     */
+    public DeployedDatabaseSchema getDeployedDatabaseSchema() {
+        return deployedDatabaseSchema;
     }
 
-    public void setKeyspace(Keyspace keyspace) {
-        this.keyspace = keyspace;
+    /**
+     * Sets deployed database schema.
+     *
+     * @param deployedDatabaseSchema the deployed database schema
+     */
+    public void setDeployedDatabaseSchema(DeployedDatabaseSchema deployedDatabaseSchema) {
+        this.deployedDatabaseSchema = deployedDatabaseSchema;
     }
 
+    /**
+     * Gets data platform.
+     *
+     * @return the data platform
+     */
     public DataPlatform getDataPlatform() {
         return dataPlatform;
     }
 
+    /**
+     * Sets data platform.
+     *
+     * @param dataPlatform the data platform
+     */
     public void setDataPlatform(DataPlatform dataPlatform) {
         this.dataPlatform = dataPlatform;
     }
@@ -46,7 +68,7 @@ public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
     @Override
     public String toString() {
         return "NewDeployedDatabaseSchemaEvent{" +
-                "keyspace=" + keyspace +
+                "deployedDatabaseSchema=" + deployedDatabaseSchema +
                 ", dataPlatform=" + dataPlatform +
                 "} " + super.toString();
     }
@@ -56,12 +78,12 @@ public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewDeployedDatabaseSchemaEvent that = (NewDeployedDatabaseSchemaEvent) o;
-        return Objects.equals(keyspace, that.keyspace) &&
+        return Objects.equals(deployedDatabaseSchema, that.deployedDatabaseSchema) &&
                 Objects.equals(dataPlatform, that.dataPlatform);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyspace, dataPlatform);
+        return Objects.hash(deployedDatabaseSchema, dataPlatform);
     }
 }
