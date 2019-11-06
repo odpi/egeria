@@ -70,12 +70,12 @@ public enum UIAdminErrorCode
             "The system is unable to configure the local server.",
             "The metadata server URL is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
-    NULL_GOVERNANCE_SERVER_URL(400, "UI-ADMIN-400-009 ",
+    NULL_OPEN_LINEAGE_SERVER_URL(400, "UI-ADMIN-400-009 ",
             "UI Server {0} has been called by {1} with a null governance server URL",
             "The system is unable to configure the local server.",
             "The governance server URL is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
-    INVALID_GOVERNANCE_SERVER_URL(400, "UI-ADMIN-400-010 ",
+    INVALID_OPEN_LINEAGE_SERVER_URL(400, "UI-ADMIN-400-010 ",
             "UI Server {0} has been called by {1} with an invalid governance Server URL {2}",
             "The system is unable to configure the local server.",
             "The governance server URL that is supplied by the caller to the UI Server is not a valid value. This call needs to be corrected before the server can operate correctly. The valid governance server names are {2}"),
@@ -85,10 +85,10 @@ public enum UIAdminErrorCode
             "The system is unable to initialize the local server instance.",
             "Retry the request with server configuration."),
 
-    NULL_REPOSITORY_CONFIG(400, "UI-ADMIN-400-012 ",
-            "The UI Server {0} has been passed a configuration document with no open metadata repository services configuration",
+    NULL_USER_STORE_CONFIG(400, "UI-ADMIN-400-012 ",
+            "The UI Server {0} has been passed a configuration document with no open metadata user store configuration",
             "The system is unable to initialize the local server instance.",
-            "Use the administration services to add the repository services configuration."),
+            "Use the administration services to add the user store configuration."),
 
     BAD_CONFIG_FILE(400, "UI-ADMIN-400-013 ",
             "The UI Server {0} is not able to open its configuration file {1} due to the following error: {2}",
@@ -100,12 +100,7 @@ public enum UIAdminErrorCode
             "The system has ignored this value.",
             "The maximum page size must be a number greater than zero.  Retry the request with a valid value."),
 
-    NULL_METADATA_COLLECTION_NAME(400, "UI-ADMIN-400-017 ",
-            "UI Server {0} has been called with a null metadata collection name",
-            "The system is unable to add this metadata collection name to the configuration document for the local server.",
-            "The metadata collection name is optional.  If it is not set up then the local server name is used instead."),
-
-    NULL_GOVERNANCE_SERVER_NAME(400, "UI-ADMIN-400-018 ",
+    NULL_OPEN_LINEAGE_SERVER_NAME(400, "UI-ADMIN-400-018 ",
             "UI Server {0} has been called by {1} with a null governance server name",
             "The system is unable to add this governance server name to the configuration document for the local server.",
             "The governance server name is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
@@ -114,26 +109,56 @@ public enum UIAdminErrorCode
             "UI Server {0} has been called with a configuration document that has no services configured",
             "The requested server provides no function.",
             "Use the administration services to add configuration for OMAG services to the server's configuration document."),
-    DUPLICATE_GOVERNANCE_SERVERS(400, "UI-ADMIN-400-020 ",
-            "UI Server {0} has been called by {1} with more than one Governance Server defined with the same governance service name {2}. All the supplied governance service names need to be different",
-            "The requested server provides no function.",
-            "The governance server name is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
     INCOMPATIBLE_CONFIG_FILE(400, "UI-ADMIN-400-022 ",
             "The configuration document for UI Server {0} is at version {1} which is not compatible with this UI Server Platform which supports versions {2}",
             "The system is unable to add this governance server name to the configuration document for the local server.",
             "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/migrating-configuration-documents.html"),
 
+    INVALID_SOURCE_AUTHENTICATION(400, "UI-ADMIN-400-023 ",
+            "The configuration document for UI Server {0} with an invalid sourceAuthentication {1}",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The source authentication is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
-    NULL_CONNECTION(400, "UI-ADMIN-400-026 ",
+    INCORRECT_USER_STORE_FOR_LDAP(400, "UI-ADMIN-400-024 ",
+            "The configuration document for UI Server {0} has been called by {1} with an incorrect user configStore. User configStore class {2} was passed, but {3} was expected",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_URL_FOR_LDAP_USER_STORE(400, "UI-ADMIN-400-025 ",
+            "The configuration document for UI Server {0} has been called by {1} with a null URL for the LDAP user configStore.",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
+
+    INVALID_URL_FOR_LDAP_USER_STORE(400, "UI-ADMIN-400-026 ",
+            "The configuration document for UI Server {0} has been called by {1} with invalid URL {2} for the LDAP user configStore.",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
+
+    H2_WITH_USER_STORE(400, "UI-ADMIN-400-027 ",
+            "The configuration document for UI Server {0} has been called by {1} with a user configStore config, which is not required for db source authentication",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_USER_STORE_FOR_LDAP(400, "UI-ADMIN-400-029 ",
+        "The configuration document for UI Server {0} has been called by {1} with specifying LDAP source authentication with a null user configStore.",
+        "The system is unable to add this governance server name to the configuration document for the local server.",
+        "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_CONNECTION(400, "UI-ADMIN-400-030 ",
             "UI Server {0} has been called with a null connection for method {1}",
             "The system is unable to add this connection to the configuration.",
             "Change the call to pass a valid connection.  If you want to clear the connection use the clear version of the method."),
 
-    NULL_PLATFORM_CONNECTION(400, "UI-ADMIN-400-027 ",
+    NULL_PLATFORM_CONNECTION(400, "UI-ADMIN-400-031 ",
             "The UI Server platform has been called with a null connection for method {0}",
             "The system is unable to add this connection to the configuration.",
             "Change the call to pass a valid connection.  If you want to clear the connection use the clear version of the method."),
+
+    NULL_SOURCE_AUTHENTICATION(400, "UI-ADMIN-400-032 ",
+            "The configuration document for UI Server {0} has been called by {1} without a source authentication.",
+            "The system is unable to add this governance server name to the configuration document for the local server.",
+            "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
     UNEXPECTED_EXCEPTION(500, "UI-ADMIN-500-001 ",
             "Method {1} for UI Server {0} returned an unexpected exception of {2} with message {3}",
@@ -143,8 +168,16 @@ public enum UIAdminErrorCode
     UNEXPECTED_PLATFORM_EXCEPTION(500, "UI-ADMIN-500-002 ",
             "Method {1} returned an unexpected exception of {1} with message {2}",
             "The system is unable to configure the UI Server.",
+            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
+    SERVICE_NOT_INITIALIZED(500, "UI-ADMIN-500-003 ",
+            "UI Service not initializes ",
+            "The system is unable to start the UI Server.",
             "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue.")
+
+
+
             ;
+
 
     private int    httpErrorCode;
     private String errorMessageId;
