@@ -20752,7 +20752,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getValidValueDefinitionEntity());
         this.archiveBuilder.addEntityDef(getValidValuesSetEntity());
 
-        this.archiveBuilder.addRelationshipDef(getValidValueAssignmentRelationship());
+        this.archiveBuilder.addRelationshipDef(getValidValuesAssignmentRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesMemberRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesImplementationRelationship());
     }
@@ -20858,10 +20858,10 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getValidValueAssignmentRelationship()
+    private RelationshipDef getValidValuesAssignmentRelationship()
     {
         final String guid            = "c5d48b73-eadd-47db-ab64-3be99b2fb32d";
-        final String name            = "ValidValueAssignment";
+        final String name            = "ValidValuesAssignment";
         final String description     = "Links a referenceable to its valid values.";
         final String descriptionGUID = null;
 
@@ -20908,6 +20908,23 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "strictRequirement";
+        final String attribute1Description     = "Only values from the ValidValues set/definition are allowed.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
