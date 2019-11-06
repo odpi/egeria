@@ -5,9 +5,10 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,17 +18,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Process implements Serializable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+public class Process extends Asset {
     private static final long serialVersionUID = 1L;
 
     private String qualifiedName;
     private String name;
-    private String description;
-    private String latestChange;
-    private List<String> zoneMembership;
-    private String displayName;
-    private String owner;
-    private OwnerType ownerType;
     private String formula;
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
@@ -63,6 +59,10 @@ public class Process implements Serializable {
         this(qualifiedName, name, description, latestChange, zoneMembership, displayName, formula, owner, ownerType,
                 portImplementations, portAliases, lineageMappings);
         this.updateSemantic = updateSemantic;
+    }
+
+    public Process(Asset asset) {
+        super(asset);
     }
 
     public String getQualifiedName() {

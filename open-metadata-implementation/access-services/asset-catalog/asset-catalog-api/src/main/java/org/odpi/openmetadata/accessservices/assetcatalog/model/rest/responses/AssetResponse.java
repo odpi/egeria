@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,5 +27,19 @@ public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
     public void setAssets(List<Term> assets) {
         this.assets = assets;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AssetResponse that = (AssetResponse) o;
+        return Objects.equals(assets, that.assets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), assets);
     }
 }

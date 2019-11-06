@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -17,26 +18,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Relationship extends Asset implements Serializable {
+public class Relationship extends Element implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Asset fromEntity;
-    private Asset toEntity;
+    private Element fromEntity;
+    private Element toEntity;
 
-    public Asset getFromEntity() {
+    public Element getFromEntity() {
         return fromEntity;
     }
 
-    public void setFromEntity(Asset fromEntity) {
+    public void setFromEntity(Element fromEntity) {
         this.fromEntity = fromEntity;
     }
 
-    public Asset getToEntity() {
+    public Element getToEntity() {
         return toEntity;
     }
 
-    public void setToEntity(Asset toEntity) {
+    public void setToEntity(Element toEntity) {
         this.toEntity = toEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Relationship that = (Relationship) o;
+        return Objects.equals(fromEntity, that.fromEntity) &&
+                Objects.equals(toEntity, that.toEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), fromEntity, toEntity);
     }
 }

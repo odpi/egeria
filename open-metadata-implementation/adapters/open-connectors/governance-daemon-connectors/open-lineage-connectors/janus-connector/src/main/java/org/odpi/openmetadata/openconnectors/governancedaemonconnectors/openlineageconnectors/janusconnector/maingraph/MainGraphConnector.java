@@ -7,7 +7,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
@@ -18,12 +17,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.*;
-import org.odpi.openmetadata.governanceservers.openlineage.model.edges.LineageEdge;
-import org.odpi.openmetadata.governanceservers.openlineage.model.vertices.*;
+import org.odpi.openmetadata.governanceservers.openlineage.model.*;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.GraphVertexMapper;
@@ -34,8 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
@@ -168,44 +162,62 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     private LineageVertex abstractVertex(Vertex originalVertex) {
         String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
         String nodeType = originalVertex.label();
+        String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
         String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+        LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType, displayName, guid);
+        Map<String, String> attributes = null;
 
         switch (nodeType) {
             case NODE_LABEL_COLUMN:
-                ColumnVertex columnVertex = new ColumnVertex(nodeID, nodeType, guid);
-                setColumnProperties(originalVertex, columnVertex);
-                return columnVertex;
+                attributes = setColumnProperties(originalVertex, lineageVertex);
+                break;
             case NODE_LABEL_TABLE:
-                TableVertex tableVertex = new TableVertex(nodeID, nodeType, guid);
-                setTableProperties(originalVertex, tableVertex);
-                return tableVertex;
+                attributes = setTableProperties(originalVertex, lineageVertex);
+                break;
             case NODE_LABEL_PROCESS:
-                ProcessVertex processVertex = new ProcessVertex(nodeID, nodeType, guid);
-                return processVertex;
+                attributes = setProcessProperties(originalVertex, lineageVertex);
+                break;
             case NODE_LABEL_SUB_PROCESS:
-                SubProcessVertex subProcessVertex = new SubProcessVertex(nodeID, nodeType, guid);
-                return subProcessVertex;
+                attributes = setSubProcessProperties(originalVertex, lineageVertex);
+                break;
             case NODE_LABEL_GLOSSARYTERM:
-                GlossaryTermVertex glossaryTermVertex = new GlossaryTermVertex(nodeID, nodeType, guid);
-                setGlossaryTermProperties(originalVertex, glossaryTermVertex);
-                return glossaryTermVertex;
+                attributes = setGlossaryTermProperties(originalVertex, lineageVertex);
+                break;
             default:
-                return null;
         }
+        lineageVertex.setAttributes(attributes);
+        return lineageVertex;
     }
 
-    private void setGlossaryTermProperties(Vertex originalVertex, GlossaryTermVertex glossaryTermVertex) {
-        glossaryTermVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
+    private Map< String, String> setSubProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+        Map<String, String> attributes = new HashMap<>();
+        return  attributes;
     }
 
-    private void setTableProperties(Vertex originalVertex, TableVertex tableVertex) {
-        tableVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
-        tableVertex.setGlossaryTerm(originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString());
+    private Map< String, String> setProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+        Map<String, String> attributes = new HashMap<>();
+        return  attributes;
     }
 
-    private void setColumnProperties(Vertex originalVertex, ColumnVertex columnVertex) {
-        columnVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
-        columnVertex.setGlossaryTerm(originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString());
+    private Map< String, String> setGlossaryTermProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+        Map<String, String> attributes = new HashMap<>();
+        return  attributes;
+    }
+
+    private Map< String, String> setTableProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+        Map<String, String> attributes = new HashMap<>();
+        String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
+        if(originalGlossaryTerm != null)
+            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        return attributes;
+    }
+
+    private Map< String, String> setColumnProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+        Map<String, String> attributes = new HashMap<>();
+        String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
+        if(originalGlossaryTerm != null)
+        attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        return attributes;
     }
 
     /**
@@ -227,16 +239,17 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        LineageResponse lineageResponse = new LineageResponse();
+        List<LineageVertex> lineageVertices = new ArrayList<>();
+        List<LineageEdge> lineageEdges = new ArrayList<>();
 
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
+        lineageVertices.add(queriedVertex);
 
-        lineageResponse.addVertex(queriedVertex);
-        addSourceCondensation(lineageResponse, sourcesList, originalQueriedVertex, queriedVertex);
-
+        addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
+        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
-
 
 
     /**
@@ -257,13 +270,16 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        LineageResponse lineageResponse = new LineageResponse();
-
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-        lineageResponse.addVertex(queriedVertex);
 
-        addDestinationCondensation(lineageResponse, destinationsList, originalQueriedVertex, queriedVertex);
+        List<LineageVertex> lineageVertices = new ArrayList<>();
+        List<LineageEdge> lineageEdges = new ArrayList<>();
 
+        lineageVertices.add(queriedVertex);
+
+        addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
+        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
 
@@ -289,23 +305,26 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                 repeat(outE(edgeLabel).inV()).dedup().toList();
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
-
-        LineageResponse lineageResponse = new LineageResponse();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-        lineageResponse.addVertex(queriedVertex);
 
-        addSourceCondensation(lineageResponse, sourcesList, originalQueriedVertex, queriedVertex);
-        addDestinationCondensation(lineageResponse, destinationsList, originalQueriedVertex, queriedVertex);
+        List<LineageVertex> lineageVertices = new ArrayList<>();
+        List<LineageEdge> lineageEdges = new ArrayList<>();
+        lineageVertices.add(queriedVertex);
+        addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
+        addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
 
-    private void addSourceCondensation(LineageResponse lineageResponse, List<Vertex> sourcesList, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
+    private void addSourceCondensation(List<Vertex> sourcesList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            CondensedVertex condensedVertex = new CondensedVertex("condensedSource", NODE_LABEL_CONDENSED, "");
-            lineageResponse.addVertex(condensedVertex);
+            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED, "Condensed", "");
+            lineageVertices.add(condensedVertex);
 
             for (Vertex originalVertex : sourcesList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
@@ -314,24 +333,25 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                         newVertex.getNodeID(),
                         condensedVertex.getNodeID()
                 );
-                if (newVertex != null) {
-                    lineageResponse.addVertex(newVertex);
-                }
-                if (newEdge != null) {
-                    lineageResponse.addEdge(newEdge);
-                }
+                if (newVertex != null)
+                    lineageVertices.add(newVertex);
+                if (newEdge != null)
+                    lineageEdges.add(newEdge);
             }
-            LineageEdge lineageEdge = new LineageEdge(
+            LineageEdge sourceEdge = new LineageEdge(
                     EDGE_LABEL_CONDENSED,
                     condensedVertex.getNodeID(),
                     queriedVertex.getNodeID()
             );
-            lineageResponse.addEdge(lineageEdge);
+            lineageEdges.add(sourceEdge);
         }
     }
-    private void addDestinationCondensation(LineageResponse lineageResponse, List<Vertex> destinationsList, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
+
+    private void addDestinationCondensation(List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
+        //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
+        //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            CondensedVertex condensedDestinationVertex = new CondensedVertex("condensedDestination", NODE_LABEL_CONDENSED, "");
+            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED, "Condensed", "");
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(
@@ -339,22 +359,21 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                         condensedDestinationVertex.getNodeID(),
                         newVertex.getNodeID()
                 );
-                if (newVertex != null) {
-                    lineageResponse.addVertex(newVertex);
-                }
-                if (newEdge != null) {
-                    lineageResponse.addEdge(newEdge);
-                }
+                if (newVertex != null)
+                    lineageVertices.add(newVertex);
+                if (newEdge != null)
+                    lineageEdges.add(newEdge);
             }
             LineageEdge destinationEdge = new LineageEdge(
                     EDGE_LABEL_CONDENSED,
                     queriedVertex.getNodeID(),
                     condensedDestinationVertex.getNodeID()
             );
-            lineageResponse.addVertex(condensedDestinationVertex);
-            lineageResponse.addEdge(destinationEdge);
+            lineageVertices.add(condensedDestinationVertex);
+            lineageEdges.add(destinationEdge);
         }
     }
+
 
     /**
      * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
@@ -382,18 +401,23 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
 
-        LineageResponse lineageResponse = new LineageResponse();
+        List<LineageVertex> lineageVertices = new ArrayList<>();
+        List<LineageEdge> lineageEdges = new ArrayList<>();
 
         while (originalVertices.hasNext()) {
             LineageVertex newVertex = abstractVertex(originalVertices.next());
-            if (newVertex != null)
-                lineageResponse.addVertex(newVertex);
+            if (newVertex != null) {
+                lineageVertices.add(newVertex);
+            }
         }
         while (originalEdges.hasNext()) {
             LineageEdge newLineageEdge = abstractEdge(originalEdges.next());
-            if (newLineageEdge != null)
-                lineageResponse.addEdge(newLineageEdge);
+            if (newLineageEdge != null) {
+                lineageEdges.add(newLineageEdge);
+            }
         }
+        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
 
@@ -418,19 +442,6 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         return edgeLabel;
     }
 
-    /**
-     * Copy properties from one vertex to another.
-     *
-     * @param originalVertex The vertex to be copied from.
-     * @param newVertex      The vertex to be copied to.
-     */
-    private void copyVertexProperties(Vertex originalVertex, Vertex newVertex) {
-        final Iterator<VertexProperty<Object>> iterator = originalVertex.properties();
-        while (iterator.hasNext()) {
-            VertexProperty oldVertexProperty = iterator.next();
-            newVertex.property(oldVertexProperty.key(), oldVertexProperty.value());
-        }
-    }
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.

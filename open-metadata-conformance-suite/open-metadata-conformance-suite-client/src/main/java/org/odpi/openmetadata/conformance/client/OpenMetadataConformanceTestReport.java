@@ -209,7 +209,7 @@ public class OpenMetadataConformanceTestReport
             ObjectMapper objectMapper     = new ObjectMapper();
             String       jsonString       = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(testLabResults);
 
-            FileUtils.writeStringToFile(resultsStoreFile, jsonString, false);
+            FileUtils.writeStringToFile(resultsStoreFile, jsonString, (String)null,false);
         }
         catch (Throwable  exc)
         {

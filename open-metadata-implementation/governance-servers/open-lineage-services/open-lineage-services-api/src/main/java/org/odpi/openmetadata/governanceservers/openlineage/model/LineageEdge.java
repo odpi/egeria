@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.model.edges;
+package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,14 +33,10 @@ public class LineageEdge {
     public String getEdgeType() {
         return edgeType;
     }
-
     public String getSourceNodeID() {
         return sourceNodeID;
     }
-
     public String getDestinationNodeID() {
         return destinationNodeID;
     }
-
-
 }
