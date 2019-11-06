@@ -165,6 +165,7 @@
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.2.0</oss.version>
+        <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -1921,6 +1922,12 @@
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>${googlefindbugs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${spotbugs-annotations.version}</version>
             </dependency>
 
         </dependencies>
