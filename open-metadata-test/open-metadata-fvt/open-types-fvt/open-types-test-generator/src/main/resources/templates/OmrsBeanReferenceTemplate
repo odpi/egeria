@@ -50,8 +50,8 @@ public class <$$uname$$>Reference extends Reference implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(<$$uname$$>Reference.class);
     private static final String className = <$$uname$$>Reference.class.getName();
 
-    final static protected String relationship_Type = "<$$relationshiptype$$>";
-    protected <$$urelatedendtype$$> <$$relatedendtype$$> =null;
+    final static private String relationship_Type = "<$$relationshiptype$$>";
+    private <$$urelatedendtype$$> <$$relatedendtype$$> =null;
 
 <$Relationship$$
     public <$$uname$$>Reference(<$$uRelationshipName$$> <$$RelationshipName$$>) {
