@@ -145,8 +145,8 @@ public class OpenLineageService {
                                             .orElseGet(Stream::empty)
                                             .map(e -> {Edge newEdge = new Edge(e.getSourceNodeID(),
                                                                                e.getDestinationNodeID());
-                                                                                newEdge.setLabel(e.getEdgeType());
-                                                                                return newEdge;})
+                                                                               newEdge.setLabel(e.getEdgeType());
+                                                                               return newEdge;})
                                             .collect(Collectors.toList());
 
         graphData.put(EDGES_LABEL, listEdges);

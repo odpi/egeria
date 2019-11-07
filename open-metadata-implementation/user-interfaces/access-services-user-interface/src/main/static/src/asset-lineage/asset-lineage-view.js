@@ -77,7 +77,7 @@ class AssetLineageView extends PolymerElement {
             },
             usecases:{
                 type: Array,
-                value:['ultimateSource','endToEnd', 'ultimateDestination','glossaryLineage','sourceAndDestination' ]
+                value:['ultimateSource','endToEnd','ultimateDestination','glossaryLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -202,7 +202,7 @@ class AssetLineageView extends PolymerElement {
 
     _useCaseChanged() {
          window.location.href=window.location.href.replace(this.subview, this.usecase);
-         this.subview  =  this.usecase;
+         this.subview = this.usecase;
          window.dispatchEvent(new CustomEvent('location-changed'));
          this._reload(this.usecase, this.$.viewsMenu.value);
     }

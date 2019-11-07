@@ -11,6 +11,13 @@ import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 import '@vaadin/vaadin-button/vaadin-button.js';
+import '@vaadin/vaadin-grid/vaadin-grid-tree-column.js';
+import '@vaadin/vaadin-text-field/vaadin-text-field.js';
+import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
+import 'multiselect-combo-box/multiselect-combo-box.js';
+import '@vaadin/vaadin-item/vaadin-item.js';
+import '@vaadin/vaadin-menu-bar/vaadin-menu-bar.js';
+import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 
@@ -34,6 +41,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
+      <token-ajax id="tokenAjaxTypes" last-response="{{items}}"></token-ajax>
       
       <iron-form id="searchForm">
         <form method="get">
@@ -43,9 +51,14 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
                 </paper-input>
             </div>
+            <div>
             <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
                 <iron-icon icon="search"></iron-icon>
             </vaadin-button>
+             
+             <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+             </multiselect-combo-box>
+           </div>
         </form>
        </iron-form>
         <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
@@ -106,14 +119,28 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 type: Array,
                 notify: true
             },
-            item: Object
+            item: Object,
+            items:{
+                type: Object,
+                notify: true
+
+            }
         };
+    }
+
+
+    ready() {
+        super.ready();
+        this.$.tokenAjaxTypes.url = '/api/types';
+        this.$.tokenAjaxTypes._go();
+        // var combo = this.$.combo.querySelector("combo");
+        // combo.items = this.types;
     }
 
     _search() {
         this.$.searchForm.validate();
         console.log('searching: '+ this.q);
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q;
+        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + this.$.combo.selectedItems;
         this.$.tokenAjax._go();
     }
 
@@ -129,9 +156,12 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             composed: true,
             detail: {page: "asset-lineage",
                      subview: "ultimateSource"
-                    }}));
+            }}));
     }
 
+    _getTypesNames(allTypes){
+        return Object.keys(allTypes);
+    }
 
     attached() {
         this.loadResources(
