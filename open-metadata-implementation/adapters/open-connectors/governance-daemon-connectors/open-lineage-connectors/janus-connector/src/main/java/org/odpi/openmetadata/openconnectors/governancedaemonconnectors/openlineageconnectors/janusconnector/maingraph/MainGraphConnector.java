@@ -15,8 +15,7 @@ import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
@@ -34,7 +33,7 @@ import java.util.*;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class MainGraphConnector extends OpenLineageConnectorBase implements MainGraphStore {
+public class MainGraphConnector extends MainGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
     private JanusGraph bufferGraph;

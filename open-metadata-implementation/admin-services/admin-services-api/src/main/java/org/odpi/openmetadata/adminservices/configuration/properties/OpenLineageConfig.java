@@ -29,12 +29,12 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private String inTopicName;
     private Connection inTopicConnection;
 
-    private String     openLineageProvider;
-    private String     openLineageProviderMain;
-    private Connection openLineageBufferGraphConnection;
-    private Connection openLineageMainGraphConnection;
+    private String openLineageProviderBuffer;
+    private String openLineageProviderMain;
     private Map<String, Object> bufferGraphConfig;
     private Map<String, Object> mainGraphConfig;
+    private Connection openLineageBufferGraphConnection;
+    private Connection openLineageMainGraphConnection;
 
     /**
      * Default constructor
@@ -59,7 +59,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             lineageServerURL = template.lineageServerURL;
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
-            openLineageProvider = template.openLineageProvider;
+            openLineageProviderBuffer = template.openLineageProviderBuffer;
             openLineageProviderMain = template.openLineageProviderMain;
             openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
             openLineageMainGraphConnection = template.openLineageMainGraphConnection;
@@ -87,7 +87,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     }
 
     /**
-     *  Return the name of the Open Lineage Connector
+     * Return the name of the Open Lineage Connector
      *
      * @return the name of the open lineage connector
      */
@@ -165,7 +165,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      * For example, the output topic of Governance Engine OMAS can be provided
      * (e.g. "open-metadata.access-services.GovernanceEngine.outTopic")
      *
-     * @return  Connection for In Topic
+     * @return Connection for In Topic
      */
     public Connection getInTopicConnection() {
         return inTopicConnection;
@@ -174,7 +174,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Open Lineage.
      *
-     * @param inTopicConnection  Connection for In Topic
+     * @param inTopicConnection Connection for In Topic
      */
     public void setInTopicConnection(Connection inTopicConnection) {
         this.inTopicConnection = inTopicConnection;
@@ -185,17 +185,17 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      *
      * @return String Class name
      */
-    public String getOpenLineageProvider() {
-        return openLineageProvider;
+    public String getOpenLineageProviderBuffer() {
+        return openLineageProviderBuffer;
     }
 
     /**
      * Set up the Open Lineage Connector Provider class
      *
-     * @param openLineageProvider String Connector Provider class name
+     * @param openLineageProviderBuffer String Connector Provider class name
      */
-    public void setOpenLineageProvider(String openLineageProvider) {
-        this.openLineageProvider = openLineageProvider;
+    public void setOpenLineageProviderBuffer(String openLineageProviderBuffer) {
+        this.openLineageProviderBuffer = openLineageProviderBuffer;
     }
 
     /**
@@ -253,7 +253,6 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     }
 
 
-
     /**
      * Return the configuration properties for BufferGraph that will be used for Open Lineage
      *
@@ -299,7 +298,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
-                ", openLineageProvider='" + openLineageProvider + '\'' +
+                ", openLineageProviderBuffer='" + openLineageProviderBuffer + '\'' +
                 ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
                 ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
                 ", bufferGraphConfig=" + bufferGraphConfig +
@@ -318,7 +317,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
                 Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
-                Objects.equals(openLineageProvider, that.openLineageProvider) &&
+                Objects.equals(openLineageProviderBuffer, that.openLineageProviderBuffer) &&
                 Objects.equals(openLineageBufferGraphConnection, that.openLineageBufferGraphConnection) &&
                 Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection) &&
                 Objects.equals(bufferGraphConfig, that.bufferGraphConfig) &&
@@ -328,10 +327,10 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName,
-                            openLineageDescription, lineageServerURL,
-                            inTopicName, inTopicConnection,
-                            openLineageProvider, openLineageBufferGraphConnection,
-                            openLineageMainGraphConnection, bufferGraphConfig,
-                            mainGraphConfig);
+                openLineageDescription, lineageServerURL,
+                inTopicName, inTopicConnection,
+                openLineageProviderBuffer, openLineageBufferGraphConnection,
+                openLineageMainGraphConnection, bufferGraphConfig,
+                mainGraphConfig);
     }
 }

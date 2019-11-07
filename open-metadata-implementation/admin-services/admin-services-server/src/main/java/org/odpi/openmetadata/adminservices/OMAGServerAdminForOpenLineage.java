@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class OMAGServerAdminForOpenLineage {
 
             openLineageConfig.setOpenLineageBufferGraphConnection(
                     connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageConfig.getOpenLineageProvider(),
+                            openLineageConfig.getOpenLineageProviderBuffer(),
                             serverConfig.getLocalServerURL(),
                             openLineageConfig.getBufferGraphConfig())
             );
