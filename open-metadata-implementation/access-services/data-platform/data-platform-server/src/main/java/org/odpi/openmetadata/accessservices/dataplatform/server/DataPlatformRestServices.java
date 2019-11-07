@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -35,29 +38,28 @@ public class DataPlatformRestServices {
 
 
     /**
-     * Create the software server capability entity
+     * Create the software server capability entity from an external data platforms
      *
      * @param serverName              name of server instance to call
      * @param userId                  the name of the calling user
-     * @param registrationRequestBody properties of the server
+     * @param dataPlatformRegistrationRequestBody properties of the server
      * @return the unique identifier (guid) of the created server
      */
-    public GUIDResponse createSoftwareServer(String serverName, String userId,
-                                             RegistrationRequestBody registrationRequestBody) {
+    public GUIDResponse createExternalDataPlatform(String serverName,
+                                                   String userId,
+                                                   DataPlatformRegistrationRequestBody dataPlatformRegistrationRequestBody) {
 
-        final String methodName = "createSoftwareServer";
-
-        log.debug("Calling method: {}", methodName);
+        final String methodName = "createExternalDataPlatform";
 
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (registrationRequestBody == null) {
+            if (dataPlatformRegistrationRequestBody == null) {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-            SoftwareServerCapability softwareServerCapability = registrationRequestBody.getSoftwareServerCapability();
+            SoftwareServerCapability softwareServerCapability = dataPlatformRegistrationRequestBody.getSoftwareServerCapability();
             response.setGUID(handler.createSoftwareServerCapability(softwareServerCapability));
 
         } catch (InvalidParameterException error) {
@@ -75,17 +77,17 @@ public class DataPlatformRestServices {
 
 
     /**
-     * Return the software server capability definition
+     * Return the software server capability definition from an external data platform
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(String serverName, String userId, String qualifiedName) {
 
-        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
-        RegistrationRequestBody response = new RegistrationRequestBody();
+        final String methodName = "getExternalDataPlatformByQualifiedName";
+        DataPlatformRegistrationRequestBody response = new DataPlatformRegistrationRequestBody();
 
         try {
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
@@ -99,6 +101,42 @@ public class DataPlatformRestServices {
         } catch (UserNotAuthorizedException error) {
             dataPlatformInstanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        return response;
+    }
+
+    /**
+     * Create deployed database schema guid response.
+     *
+     * @param serverName                        the server name
+     * @param userId                            the user id
+     * @param deployedDatabaseSchemaRequestBody the deployed database schema request body
+     * @return the guid response
+     */
+    public GUIDResponse createDeployedDatabaseSchema(String serverName, String userId,
+                                                     DeployedDatabaseSchemaRequestBody deployedDatabaseSchemaRequestBody) {
+
+        final String methodName = "createDeployedDatabaseSchema";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (deployedDatabaseSchemaRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+            DeployedDatabaseSchemaAssetHandler handler = dataPlatformInstanceHandler.getDeployedDatabaseSchemaAssetHandler(userId, serverName, methodName);
+            DeployedDatabaseSchema deployedDatabaseSchema = deployedDatabaseSchemaRequestBody.getDeployedDatabaseSchema();
+            response.setGUID(handler.createDeployedDatabaseSchemaAsset(deployedDatabaseSchema));
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;

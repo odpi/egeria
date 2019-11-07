@@ -5,12 +5,15 @@ package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -25,6 +28,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+/**
+ * The type View handler.
+ */
 public class ViewHandler implements Callable<View> {
 
 
@@ -32,11 +38,20 @@ public class ViewHandler implements Callable<View> {
     private NewViewEvent event;
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
+    private final OMRSAuditLog auditLog;
 
-    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
+    /**
+     * Instantiates a new View handler.
+     *
+     * @param event       the event
+     * @param omEntityDao the om entity dao
+     * @param helper      the helper
+     */
+    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.event = event;
         this.omEntityDao = omEntityDao;
         this.helper = helper;
+        this.auditLog = auditLog;
     }
 
     @Override
@@ -45,7 +60,7 @@ public class ViewHandler implements Callable<View> {
         View view = new View();
 
         if (event.getDerivedColumns() == null || event.getDerivedColumns().isEmpty()) {
-            log.info("Delete existing view as event received has no derived columns");
+            log.debug("Delete existing view as event received has no derived columns");
             deleteView(event);
         } else {
             String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseSource().getName(), event.getTableSource().getSchemaName());
@@ -147,7 +162,7 @@ public class ViewHandler implements Callable<View> {
         try {
             omEntityDao.purgeEntity(proxy);
         } catch (RepositoryErrorException | UserNotAuthorizedException | InvalidParameterException | EntityNotKnownException | EntityNotDeletedException | FunctionNotSupportedException e) {
-            log.error(e.getMessage(), e);
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -192,7 +207,17 @@ public class ViewHandler implements Callable<View> {
             return derivedColumnEntity;
 
         } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
-            log.error("Exception", e);
+
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_ENTITY_EXCEPTION;
+
+            auditLog.logException("addDerivedColumn",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(derivedColumn.toString(), e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
             throw new RuntimeException("Exception creating derived column", e);
         }
 
@@ -205,7 +230,17 @@ public class ViewHandler implements Callable<View> {
                     entityGuid2,
                     new InstanceProperties());
         } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
-            log.error(e.getErrorMessage(), e);
+
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+
+            auditLog.logException("addRelationship",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(relationshipTypeName, e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
             throw new RuntimeException(e);
         }
     }
