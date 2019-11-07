@@ -16,6 +16,24 @@ or a little less freedom of action for the original developer.
 
 As such, these guidelines exist to remind us of these broader responsibilities.
 
+## Java
+
+The minimum level required to build & run Egeria is Java 8. 
+ The code is also buildable under Java 11, but is configured for Java 8 language level and bytecode. It is also runnable under Java 11. 
+ 
+ Non-LTS releases are not tested.
+ 
+ The Java distributions we are using include:
+   * Azul zulu - as provided by Azure Pipelines. 
+  * openjdk - from Ubuntu distributions 
+  * Adoptopenjdk openjdk (with hotspot)
+  * Adoptopenjdk openjdk (with J9)  
+  
+ All automated builds are performed on Linux (Ubuntu) only using the Azul vm provided by Azure pipelines.
+  
+  Most developers use MacOS, but Windows should work also.
+ 
+ Problems with any of these should be raised as issues.
 ## License text in files
 
 All files for Egeria should have a license included.  We are using the Apache 2.0 license,
