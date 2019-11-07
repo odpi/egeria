@@ -17,7 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes
         ({
-          @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
+          @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
+          @JsonSubTypes.Type(value = LineageResponse.class, name = "LineageResponse")
         })
 public class OpenLineageAPIResponse {
 
