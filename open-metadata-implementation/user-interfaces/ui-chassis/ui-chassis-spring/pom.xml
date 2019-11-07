@@ -323,7 +323,7 @@
                                 <configuration>
                                     <nodeVersion>${node.version}</nodeVersion>
                                     <npmVersion>${npm.version}</npmVersion>
-                                    <workingDirectory>../ui-chassis-spring/tools</workingDirectory>
+                                    <workingDirectory>tools</workingDirectory>
                                     <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
                                     <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
                                 </configuration>
@@ -336,7 +336,7 @@
                                 </goals>
                                 <configuration>
                                     <arguments>install polymer-cli --prefix .</arguments>
-                                    <workingDirectory>../ui-chassis-spring/tools</workingDirectory>
+                                    <workingDirectory>tools</workingDirectory>
                                 </configuration>
                             </execution>
                             <execution>
@@ -347,7 +347,7 @@
                                 </goals>
                                 <configuration>
                                     <arguments>install ../src/main/static --prefix .</arguments>
-                                    <workingDirectory>../ui-chassis-spring/tools</workingDirectory>
+                                    <workingDirectory>tools</workingDirectory>
                                 </configuration>
                             </execution>
                         </executions>
