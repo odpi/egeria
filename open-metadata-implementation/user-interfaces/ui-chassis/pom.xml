@@ -3,32 +3,25 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>user-interfaces</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.2-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata User Interfaces</name>
-    <description>
-        Implementation of the supplied user interfaces that work with the open metadata standard clients and
-        interfaces.
-    </description>
-
-    <artifactId>user-interfaces</artifactId>
-
+    <artifactId>ui-chassis</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>ui-admin-services</module>
-        <module>ui-chassis</module>
-    </modules>
 
+    <name>UI Chassis</name>
+    <description>
+        The UI chassis provides an "empty" server to host the view services.
+    </description>
+    <modules>
+        <module>ui-chassis-spring</module>
+    </modules>
 
 </project>
