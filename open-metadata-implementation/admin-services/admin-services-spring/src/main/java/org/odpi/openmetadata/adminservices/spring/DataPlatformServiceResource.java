@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerDataPlatformService;
-import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformServicesConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +18,9 @@ public class DataPlatformServiceResource {
     @RequestMapping(method = RequestMethod.POST, path = "/data-platform-service/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
-                                                @RequestBody DataPlatformConfig dataPlatformConfig)
+                                                @RequestBody DataPlatformServicesConfig dataPlatformServicesConfig)
     {
-        return adminAPI.setDataPlatformServiceConfig(userId, serverName, dataPlatformConfig);
+        return adminAPI.setDataPlatformServiceConfig(userId, serverName, dataPlatformServicesConfig);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/data-platform-service")

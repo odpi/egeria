@@ -79,6 +79,11 @@ public enum DataPlatformAuditCode {
             "The Data Platform Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+    SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-DATA-PLATFORM-0012",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Data Platform Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}",
+            "The access service detected an error during the shut down of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, try to shut down the server.")
     ;
 
 

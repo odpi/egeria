@@ -19,9 +19,9 @@ to the Data Platform OMAS.
     ```json
     {
         "class": "DataPlatformConfig",
-        "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
+        "dataPlatformGUIDs": "296bc645-2043-499c-bcd9-ecff90e46899",
         "dataPlatformServerURL":"127.0.0.1",
-        "dataPlatformServerOutTopicName": "omas.dataplatform.inTopic",
+        "dataPlatformOmasInTopicName": "omas.dataplatform.inTopic",
         "dataPlatformServerName":"Apache Cassandra"
     }
     ```
@@ -32,7 +32,7 @@ to the Data Platform OMAS.
     http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/data-platform-service/configuration
     ```
 
-    The object *dataPlatformConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
+    The object *dataPlatformServicesConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
     The authentication information should be modified based on the information needed by the connector.
 
 1. Start the instance of the OMAG Server Platform
