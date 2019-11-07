@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage;
+package org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore;
 
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 
-public class OpenLineageConnectorBase extends ConnectorBase {
+public class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
 
     /**
      * Initialize the connector.
@@ -29,4 +30,18 @@ public class OpenLineageConnectorBase extends ConnectorBase {
         super.start();
     }
 
+    @Override
+    public void addEntity(LineageEvent lineageEvent) {
+
+    }
+
+    @Override
+    public void schedulerTask() {
+
+    }
+
+    @Override
+    public void setMainGraph(Object mainGraph) {
+
+    }
 }
