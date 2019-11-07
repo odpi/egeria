@@ -30,33 +30,32 @@ public class ProjectScopeRelationship extends Line {
     private static final Logger log = LoggerFactory.getLogger(ProjectScopeRelationship.class);
     private static final String className = ProjectScopeRelationship.class.getName();
 
-   //public java.util.Set<String> propertyNames = new HashSet<>();
-      public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+      private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
           "scopeDescription",
       // Terminate the list
           null
       };
-      public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+      private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
           "scopeDescription",
        // Terminate the list
           null
       };
-      public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
+      private static final String[] ENUM_NAMES_SET_VALUES = new String[] {
 
            // Terminate the list
             null
       };
-      public static final String[] MAP_NAMES_SET_VALUES = new String[] {
+      private static final String[] MAP_NAMES_SET_VALUES = new String[] {
 
            // Terminate the list
            null
       };
-      public static final Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-      public static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-      public static final Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-      public static final Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-      protected String projectGuid;
-      protected String nodeGuid;
+      private static final Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
+      private static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
+      private static final Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
+      private static final Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      private String projectGuid;
+      private String nodeGuid;
 
 
     public ProjectScopeRelationship() {
