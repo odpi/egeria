@@ -108,7 +108,7 @@ services:
         depends_on:
             - datalake
         image: 'odpi/egeria:latest'
-        command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
+        command: /bin/bash -c "java -jar /opt/egeria/ui-chassis-spring.jar"
         environment:
             - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
