@@ -14,16 +14,39 @@ to the Data Platform OMAS.
 1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
 1. Configure the Data Platform:
 
-    **POST** following JSON object (following shows an example for IBM DataStage)
+    **POST** following JSON object (following shows an example for Apache Cassandra)
 
     ```json
-    {
-        "class": "DataPlatformConfig",
-        "dataPlatformGUIDs": "296bc645-2043-499c-bcd9-ecff90e46899",
-        "dataPlatformServerURL":"127.0.0.1",
-        "dataPlatformOmasInTopicName": "omas.dataplatform.inTopic",
-        "dataPlatformServerName":"Apache Cassandra"
-    }
+        {
+          "class": "DataPlatformServicesConfig",
+          "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
+          "dataPlatformServerURL":"127.0.0.1",
+          "dataPlatformOmasInTopicName": "omas.dataplatform.inTopic",
+          "dataPlatformServerName":"Apache Cassandra Database",
+          "dataPlatformConnectionProvider": "org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider",
+          "dataPlatformConnection":{
+            "class": "Connection",
+            "displayName": "Apache Cassandra Database",
+            "description": "Distributed wide-column database",
+            "connectorType": {
+              "class": "ConnectorType",
+              "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider"
+            },
+            "endpoint": {
+              "class": "Endpoint",
+              "address": "127.0.0.1",
+              "protocol": "https",
+              "additionalProperties":{
+                "port":"9042"
+              }
+            },
+            "userId": "test",
+            "clearPassword": "test",
+            "configurationProperties": {
+              "defaultZones": [ "x", "y", "z" ]
+            }
+          }
+        }
     ```
     
     to the following address
