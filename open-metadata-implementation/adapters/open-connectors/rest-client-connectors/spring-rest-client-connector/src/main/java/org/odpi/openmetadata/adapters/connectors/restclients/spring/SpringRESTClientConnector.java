@@ -14,9 +14,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 /**
@@ -24,7 +28,7 @@ import java.nio.charset.Charset;
  */
 public class SpringRESTClientConnector extends RESTClientConnector
 {
-    private RestTemplate restTemplate             = new RestTemplate();
+    private RestTemplate restTemplate;
     private String       serverName               = null;
     private String       serverPlatformURLRoot    = null;
     private HttpHeaders  basicAuthorizationHeader = null;
@@ -37,6 +41,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
     public SpringRESTClientConnector()
     {
         super();
+        restTemplate = new RestTemplate();
+        // Ensure that the REST template always uses UTF-8
+        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+        converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
+        converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
 

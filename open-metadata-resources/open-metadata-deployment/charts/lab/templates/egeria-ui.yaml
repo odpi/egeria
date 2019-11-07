@@ -62,7 +62,7 @@ spec:
           command:
             - "/bin/bash"
             - "-c"
-            - "java -jar /opt/egeria/access-services-user-interface.jar"
+            - "java -jar /opt/egeria/ui-chassis-spring.jar"
           ports:
             - containerPort: 8443
           readinessProbe:
