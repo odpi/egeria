@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
+import org.odpi.openmetadata.accessservices.dataplatform.properties.Source;
 
 public class EndpointSource extends Source {
     private String networkAddress;

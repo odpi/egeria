@@ -26,6 +26,7 @@
     <modules>
         <module>gaian-connector</module>
         <module>file-connectors</module>
+        <module>cassandra-data-store-connector</module>
     </modules>
 
 
