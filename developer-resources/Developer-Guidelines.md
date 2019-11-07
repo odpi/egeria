@@ -24,7 +24,7 @@ The minimum level required to build & run Egeria is Java 8.
  Non-LTS releases are not tested.
  
  The Java distributions we are using include:
-   * Azul zulu - as provided by Azure Pipelines. 
+  * Azul zulu - as provided by Azure Pipelines. 
   * openjdk - from Ubuntu distributions 
   * Adoptopenjdk openjdk (with hotspot)
   * Adoptopenjdk openjdk (with J9)  
