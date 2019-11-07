@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageProviderBase;
-public class BufferGraphConnectorProvider extends OpenLineageProviderBase {
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphStoreProviderBase;
+
+public class BufferGraphConnectorProvider extends BufferGraphStoreProviderBase {
 
     static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
     static final String connectorTypeName = "Janus Graph Connector";
