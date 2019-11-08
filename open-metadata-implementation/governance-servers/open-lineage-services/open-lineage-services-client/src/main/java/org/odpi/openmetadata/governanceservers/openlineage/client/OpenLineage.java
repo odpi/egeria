@@ -11,16 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-/**
- * The Asset Catalog Open Metadata Access Service (OMAS) provides an interface to search for assets including
- * data stores, event feeds, APIs and data sets, related assets and relationships.
- * Also, it can return the connection details for the asset metadata.
- * The Asset Catalog OMAS includes:
- * <ul>
- * <li>Client-side  provides language-specific client packages to make it easier for data tools and applications to call the interface.</li>
- * <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
- * </ul>
- */
+
 public class OpenLineage extends FFDCRESTClient implements OpenLineageInterface {
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/open-lineage/users/{1}";
@@ -33,7 +24,7 @@ public class OpenLineage extends FFDCRESTClient implements OpenLineageInterface 
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
     /**
-     * Create a new AssetConsumer client.
+     * Create a new OpenLineage client.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
