@@ -8,9 +8,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
@@ -108,7 +108,7 @@ public class OpenLineageOperationalServices {
 
     }
 
-    private OpenLineageGraphStore getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
+    private OpenLineageGraph getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
@@ -116,7 +116,7 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
+                return (OpenLineageGraph) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 getError(auditLog, OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR, ACTION_DESCRIPTION, ACTION_DESCRIPTION);

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
-public interface OpenLineageGraphStore {
+public interface OpenLineageGraph {
 
     void start() throws ConnectorCheckedException;
 }

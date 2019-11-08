@@ -15,7 +15,7 @@ import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;

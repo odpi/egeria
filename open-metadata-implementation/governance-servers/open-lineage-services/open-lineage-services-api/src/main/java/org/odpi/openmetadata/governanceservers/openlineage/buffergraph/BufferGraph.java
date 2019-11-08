@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore;
+package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
 
-public interface BufferGraph extends OpenLineageGraphStore {
+public interface BufferGraph extends OpenLineageGraph {
 
     /**
      * Process the serialized  information view event

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;

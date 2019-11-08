@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraphStoreProviderBase;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphStoreProviderBase;
 
 public class BufferGraphConnectorProvider extends BufferGraphStoreProviderBase {
 

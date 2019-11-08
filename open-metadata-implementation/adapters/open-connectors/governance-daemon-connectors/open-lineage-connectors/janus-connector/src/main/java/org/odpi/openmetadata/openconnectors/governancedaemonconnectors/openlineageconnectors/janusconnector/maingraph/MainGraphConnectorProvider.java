@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphStoreProviderBase;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphStoreProviderBase;
 
 public class MainGraphConnectorProvider extends MainGraphStoreProviderBase {
 

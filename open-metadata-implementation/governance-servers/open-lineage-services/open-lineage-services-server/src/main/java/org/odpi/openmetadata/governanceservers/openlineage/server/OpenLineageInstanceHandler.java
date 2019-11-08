@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.governanceservers.openlineage.exception.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 
 class OpenLineageInstanceHandler

@@ -7,9 +7,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
