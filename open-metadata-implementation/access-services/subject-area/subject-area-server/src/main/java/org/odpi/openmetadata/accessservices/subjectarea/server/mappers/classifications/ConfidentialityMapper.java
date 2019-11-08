@@ -56,7 +56,7 @@ public class ConfidentialityMapper extends ClassificationMapper{
             confidentiality.setStatus(status);
         }
 
-        return Confidentiality.PROPERTY_NAMES_SET;
+        return Confidentiality.getPropertyNames();
     }
 
     @Override

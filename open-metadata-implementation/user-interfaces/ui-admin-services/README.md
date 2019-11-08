@@ -23,12 +23,12 @@ with body:
    "viewServiceConfigs":[
    	 {
          "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig",
-         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.accessservices.admin.AssetSearchViewAdmin",
-           "viewServiceId":1010
+         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.uichassis.springboot.admin.AssetSearchViewAdmin",
+          "viewServiceId":1010
       },
        {
          "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig",
-         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.accessservices.admin.OpenLineageViewAdmin",
+         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.uichassis.springboot.admin.OpenLineageViewAdmin",
          "viewServiceId":1020,
          "viewServiceOptions":{
             "openLineageServerName":"lin1",
@@ -37,13 +37,13 @@ with body:
       },
       {
          "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig",
-         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.accessservices.admin.SubjectAreaViewAdmin",
+         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.uichassis.springboot.admin.SubjectAreaViewAdmin",
          "viewServiceId":1030
       },
 
       {
          "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig",
-         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.accessservices.admin.TypeExplorerViewAdmin",
+         "viewServiceAdminClass":"org.odpi.openmetadata.userinterface.uichassis.springboot.admin.TypeExplorerViewAdmin",
          "viewServiceId":1040
       }
 
