@@ -22,12 +22,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
     <build>
