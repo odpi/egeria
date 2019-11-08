@@ -81,29 +81,6 @@
 
             <build>
                 <plugins>
-                    <!--plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <phase>generate-sources</phase>
-                                <configuration>
-                                    <mainClass>org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator</mainClass>
-                                    <includePluginDependencies>false</includePluginDependencies>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>org.slf4j.simpleLogger.defaultLogLevel</key>
-                                            <value>debug</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin -->
-
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
@@ -126,6 +103,19 @@
                                         </java>
                                     </target>
                                 </configuration>
+                            </execution>
+                            <execution>
+                                <id>createemptydocsource</id>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <target>
+                                        <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
+                                        <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
