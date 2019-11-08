@@ -57,6 +57,7 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
      * @param additionalProperties  additional properties about the individual.
      *
      * @return InstanceProperties object
+     * @throws InvalidParameterException bad property
      */
     public  InstanceProperties getPersonEntityProperties(String              name,
                                                          String              fullName,

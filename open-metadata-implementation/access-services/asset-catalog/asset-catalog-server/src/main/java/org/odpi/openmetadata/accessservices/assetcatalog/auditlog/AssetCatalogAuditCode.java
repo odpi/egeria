@@ -6,6 +6,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 import java.text.MessageFormat;
 
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.THE_NORMAL_OPERATION_OF_THE_SERVICE;
+
 /**
  * The AssetConsumerAuditCode is used to define the message content for the OMRS Audit Log.
  * <p>
@@ -20,36 +22,36 @@ import java.text.MessageFormat;
  * </ul>
  */
 public enum AssetCatalogAuditCode {
-    SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0001",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
-            "The local server has started up a new instance of the Asset Catalog OMAS.",
-            "No action is required.  This is part of the normal operation of the service."),
-
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Catalog OMAS has completed initialization of a new instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            THE_NORMAL_OPERATION_OF_THE_SERVICE),
 
-    SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
+    SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0001",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-            "The local server has requested shut down of an Asset Catalog OMAS instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
+            "The local server has started up a new instance of the Asset Catalog OMAS.",
+            THE_NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CATALOG-0005",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Asset Catalog Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),;
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+            "The local server has requested shut down of an Asset Catalog OMAS instance.",
+            THE_NORMAL_OPERATION_OF_THE_SERVICE),
+    ;
 
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
     private String logMessage;
     private String systemAction;
     private String userAction;
-
 
     /**
      * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in

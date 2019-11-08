@@ -25,6 +25,10 @@ Below are the highlights:
   Kubernetes helm charts](../open-metadata-resources/open-metadata-deployment) to deploy
   the platforms and related technology used in the tutorials, samples and labs.
 
+  + Note that currently we do not push release specific docker containers to dockerhub. If you are using the 
+  docker/kubernetes environments it is recommended to work from the 'master' branch instead of this release. This will
+  be addressed in a future release. 
+
 * The [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services) shipped in the [first release](release-notes-1-0.md)
   have been enhanced with REST APIs to query the cohorts that a server
   is connected to.  There are also REST APIs to issue federated queries across

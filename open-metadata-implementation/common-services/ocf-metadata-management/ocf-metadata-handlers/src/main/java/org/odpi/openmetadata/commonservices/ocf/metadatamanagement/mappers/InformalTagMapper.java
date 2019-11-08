@@ -13,6 +13,7 @@ public class InformalTagMapper
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";             /* from InformalTag entity and AttachedTag relationship*/
     public static final String TAG_NAME_PROPERTY_NAME                    = "tagName";              /* from InformalTag entity */
     public static final String TAG_DESCRIPTION_PROPERTY_NAME             = "tagDescription";       /* from InformalTag entity */
+    public static final String USER_PROPERTY_NAME                        = "createdBy";            /* From Audit Header */
 
     public static final String REFERENCEABLE_TO_TAG_TYPE_GUID            = "4b1641c4-3d1a-4213-86b2-d6968b6c65ab";
     public static final String REFERENCEABLE_TO_TAG_TYPE_NAME            = "AttachedTag";

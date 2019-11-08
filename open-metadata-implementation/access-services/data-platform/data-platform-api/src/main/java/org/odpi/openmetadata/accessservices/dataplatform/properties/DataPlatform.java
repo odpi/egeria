@@ -2,94 +2,57 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
+import org.odpi.openmetadata.accessservices.dataplatform.properties.Source;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * DataPlatform defines an endpoint and connectors for the runtime environment for a collection of data assets.
  */
-public class DataPlatform implements Serializable
+public class DataPlatform extends Source
 {
     /*
      * Lists of objects that make up the infrastructure for the asset.
      */
+    private String                 name = null;
     private Endpoint               dataPlatformEndpoint  = null;
     private List<ConnectorType>    dataPlatformConnectorType = null;
 
-
-    /**
-     * Default constructor.
-     */
-    public DataPlatform()
-    {
-
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Copy/clone constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the infrastructure clone to point to the
-     * asset clone and not the original asset.
-     *
-     * @param templateDataPlatform - template object to copy
-     */
-    public DataPlatform( DataPlatform templateDataPlatform)
-    {
-        /*
-         * Only create a child object if the template is not null.
-         */
-
-        if (templateDataPlatform != null)
-        {
-            dataPlatformEndpoint = templateDataPlatform.getDataPlatformEndpoint();
-        }
+    public void setName(String name) {
+        this.name = name;
     }
 
-
-    /**
-     * Return the endpoint defined for this data platform.  This value must be set for this to be a
-     * valid data platform definition.
-     *
-     * @return Endpoint definition
-     */
-    public Endpoint getDataPlatformEndpoint()
-    {
+    public Endpoint getDataPlatformEndpoint() {
         return dataPlatformEndpoint;
     }
 
-
-    /**
-     * Set up the endpoint defined for this data platform.  This value must be set for this to be a
-     * valid data platform definition.
-     *
-     * @param dataPlatformEndpoint - Endpoint definition
-     */
-    public void setDataPlatformEndpoint(Endpoint dataPlatformEndpoint)
-    {
+    public void setDataPlatformEndpoint(Endpoint dataPlatformEndpoint) {
         this.dataPlatformEndpoint = dataPlatformEndpoint;
     }
 
-
-    /**
-     * Return the connector type defined for this data platform.  This value must be set for this to be a
-     * valid data platform definition.
-     *
-     * @return the data platform connector type
-     */
     public List<ConnectorType> getDataPlatformConnectorType() {
         return dataPlatformConnectorType;
     }
 
-
-    /**
-     * Set up the endpoint defined for this data platform.  This value must be set for this to be a
-     * valid data platform definition.
-     *
-     * @param dataPlatformConnectorType the data platform connector type
-     */
     public void setDataPlatformConnectorType(List<ConnectorType> dataPlatformConnectorType) {
         this.dataPlatformConnectorType = dataPlatformConnectorType;
+    }
+
+    @Override
+    public String toString() {
+        return "DataPlatform{" +
+                "name='" + name + '\'' +
+                ", dataPlatformEndpoint=" + dataPlatformEndpoint +
+                ", dataPlatformConnectorType=" + dataPlatformConnectorType +
+                ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", guid='" + guid + '\'' +
+                "} " + super.toString();
     }
 }

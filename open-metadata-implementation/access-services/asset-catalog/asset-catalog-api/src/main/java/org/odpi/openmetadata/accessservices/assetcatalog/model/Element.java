@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -252,5 +253,31 @@ public class Element implements Serializable {
 
     public void setParentElement(List<Element> parentElement) {
         this.parentElement = parentElement;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Element element = (Element) o;
+        return Objects.equals(guid, element.guid) &&
+                Objects.equals(typeDefName, element.typeDefName) &&
+                Objects.equals(typeDefGUID, element.typeDefGUID) &&
+                Objects.equals(metadataCollectionId, element.metadataCollectionId) &&
+                Objects.equals(name, element.name) &&
+                Objects.equals(createdBy, element.createdBy) &&
+                Objects.equals(createTime, element.createTime) &&
+                Objects.equals(updatedBy, element.updatedBy) &&
+                Objects.equals(updateTime, element.updateTime) &&
+                Objects.equals(version, element.version) &&
+                Objects.equals(status, element.status) &&
+                Objects.equals(url, element.url) &&
+                Objects.equals(properties, element.properties) &&
+                Objects.equals(parentElement, element.parentElement);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guid, typeDefName, typeDefGUID, metadataCollectionId, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, parentElement);
     }
 }

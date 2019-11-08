@@ -3,7 +3,7 @@
 
 # Feedback
 
-Consumers of metadata (typically individuals) are able to attach feedback elements to
+Consumers of metadata (typically individuals) are able to attach feedback to
 other open metadata elements that are [referenceable](../referenceable.md).
 
 This feedback includes:

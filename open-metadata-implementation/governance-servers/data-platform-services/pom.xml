@@ -13,6 +13,7 @@
 
     <artifactId>data-platform-services</artifactId>
 
+    <name>Data Platform Services</name>
     <description>
         The Data Platform services enable data platforms can synchronize and maintain the metadata of the data assets to
         Data Platform OMAS.
@@ -21,6 +22,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>data-platform-services-server</module>
-        <module>data-platform-services-api</module>
+        <module>data-platform-services-connector</module>
     </modules>
 </project>
