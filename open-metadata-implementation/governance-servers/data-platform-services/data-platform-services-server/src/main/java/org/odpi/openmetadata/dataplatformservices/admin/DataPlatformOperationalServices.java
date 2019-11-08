@@ -103,12 +103,12 @@ public class DataPlatformOperationalServices {
 
             /*
              * Configuring the Data Platform OMAS In Topic connector
-             */
-            if (dataPlatformServicesConfig.getDataPlatformOmasInTopic() != null) {
+             *//*
+            if (dataPlatformServicesConfig.getDataPlatformOmasInTopicName() != null) {
                 try {
                     dataPlatformOmasInTopicConnector = getTopicConnector(
                             dataPlatformServicesConfig.getDataPlatformOmasInTopic(), auditLog);
-                    log.debug("Configuring Data Platform OMAS InTopic Connector: ", dataPlatformOmasInTopicConnector);
+                    log.debug("Configuring Data Platform OMAS InTopic Connector: ", dataPlatformOmasInTopicConnector.toString());
                 } catch (Exception e) {
                     auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
@@ -119,7 +119,7 @@ public class DataPlatformOperationalServices {
                             auditCode.getSystemAction(),
                             auditCode.getUserAction());
                 }
-            }
+            }*/
 
             /*
              * Configuring the Data Platform Metadata Extractor Connector

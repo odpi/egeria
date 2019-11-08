@@ -22,7 +22,7 @@ public class OMAGServerDataPlatformService {
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
-    private static final String defaultDataPlatformInTopicName = "OMRSTopic.server.omas.open-metadata.access-services.DataPlatform.inTopic";
+    private static final String defaultDataPlatformInTopicName = "OMRSTopic.server.omas.omas.dataplatform.inTopic";
 
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -34,6 +34,10 @@ public class OMAGServerDataPlatformService {
 
         try
         {
+            log.info("user id: ",                    userId);
+            log.info("serverName: ",                 serverName);
+            log.info("dataPlatformServicesConfig: ", dataPlatformServicesConfig.toString());
+
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -41,30 +45,31 @@ public class OMAGServerDataPlatformService {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
 
-            dataPlatformServicesConfig.setDataPlatformOmasInTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultDataPlatformInTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getConfigurationProperties()
-                    )
-            );
-
-            Map<String, Object> additionalProperties = new HashMap<>();
-            additionalProperties.put("serverAddress", dataPlatformServicesConfig.getDataPlatformServerURL());
-
-            dataPlatformServicesConfig.setDataPlatformConnection(
-                    connectorConfigurationFactory.getDataPlatformConnection(
-                            serverName,
-                            dataPlatformServicesConfig.getDataPlatformServerName(),
-                            additionalProperties
-                    )
-            );
+            if (dataPlatformServicesConfig.getDataPlatformOmasInTopicName()==null) {
+                dataPlatformServicesConfig.setDataPlatformOmasInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                defaultDataPlatformInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getConfigurationProperties()
+                        )
+                );
+            } else {
+                dataPlatformServicesConfig.setDataPlatformOmasInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getConfigurationProperties()
+                        )
+                );
+            }
 
             serverConfig.setDataPlatformServicesConfig(dataPlatformServicesConfig);
-
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
         }

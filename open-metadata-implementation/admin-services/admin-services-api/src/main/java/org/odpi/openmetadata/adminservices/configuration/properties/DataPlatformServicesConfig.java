@@ -17,16 +17,16 @@ public class DataPlatformServicesConfig extends AdminServicesConfigHeader
     private String      dataPlatformServerURL;
     private String      dataPlatformServerName;
 
-    private String      dataPlatformConnectionProvider   = null;
-    private Connection  dataPlatformConnection = null;
-    private String      dataPlatformGUID = null;
+    private String      dataPlatformConnectionProvider;
+    private Connection  dataPlatformConnection;
+    private String      dataPlatformGUID;
 
     /* Connection for topic that send out topics */
     private String      dataPlatformOmasInTopicName;
     private Connection  dataPlatformOmasInTopic;
 
     /* Properties for a data platform  */
-    private Map<String, Object> dataPlatformConfig = null;
+    private Map<String, Object> dataPlatformConfig;
 
 
     /**
