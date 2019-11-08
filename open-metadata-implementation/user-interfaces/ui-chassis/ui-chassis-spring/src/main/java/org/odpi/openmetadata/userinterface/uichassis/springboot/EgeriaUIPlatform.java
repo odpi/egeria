@@ -61,7 +61,7 @@ public class EgeriaUIPlatform {
 
     @Bean
     public OpenLineage getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
-                                      @Value("${open.lineage.server.name}") String serverName)  {
+                                      @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         return new OpenLineage(serverName, serverUrl);
     }
 
