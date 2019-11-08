@@ -1233,6 +1233,7 @@ public class OMRSArchiveBuilder
      * Retrieve an entity from the archive.
      *
      * @param guid unique identifier
+     * @return requested entity
      */
     public EntityDetail getEntity(String   guid)
     {
@@ -1316,6 +1317,7 @@ public class OMRSArchiveBuilder
      * Retrieve an entity from the archive.
      *
      * @param guid unique identifier
+     * @return requested relationship
      */
     public Relationship getRelationship(String   guid)
     {
