@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class OpenLineageRestServices {
             graphQueryingServices.dumpGraph(graph);
         } catch (PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());
-            response.setExceptionErrorMessage(e.getReportedErrorMessage());
+            response.setExceptionErrorMessage(e.getErrorMessage());
             response.setRelatedHTTPCode(e.getReportedHTTPCode());
             response.setExceptionUserAction(e.getReportedUserAction());
         }

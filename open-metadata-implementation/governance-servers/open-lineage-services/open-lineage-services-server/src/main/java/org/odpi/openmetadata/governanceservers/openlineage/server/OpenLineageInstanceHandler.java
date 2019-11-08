@@ -6,9 +6,8 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.governanceservers.openlineage.exception.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 
-class OpenLineageInstanceHandler
-{
-    private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
+class OpenLineageInstanceHandler {
+    private static OpenLineageServicesInstanceMap instanceMap = new OpenLineageServicesInstanceMap();
 
     public GraphQueryingServices queryHandler(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
@@ -26,7 +25,9 @@ class OpenLineageInstanceHandler
         OpenLineageErrorCode errorCode = OpenLineageErrorCode.SERVICE_NOT_INITIALIZED;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
-        throw new PropertyServerException(this.getClass().getName(),
+        throw new PropertyServerException(
+                500,
+                this.getClass().getName(),
                 methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
