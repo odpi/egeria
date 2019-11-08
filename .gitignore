@@ -132,3 +132,8 @@ Gemfile
 
 # Jupyter notebook temp/update files
 **/.ipynb_checkpoints
+
+# Java core files
+Snap*.trc
+javacore*.txt
+jitdump*dmp

@@ -392,7 +392,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
                         .emit().
-                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().bothV())
+                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 

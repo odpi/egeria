@@ -38,7 +38,7 @@ public class <$$uname$$>References implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(<$$uname$$>References.class);
     private static final String className = <$$uname$$>References.class.getName();
 
-    public static final String[] REFERENCE_NAMES_SET_VALUES = new String[] {
+    protected static final String[] REFERENCE_NAMES_SET_VALUES = new String[] {
              <$$$
              "<$$PropertyName$$>",
              $$$>
@@ -46,7 +46,7 @@ public class <$$uname$$>References implements Serializable {
              null
     };
 
-     public static final String[] RELATIONSHIP_NAMES_SET_VALUES = new String[] {
+     protected static final String[] RELATIONSHIP_NAMES_SET_VALUES = new String[] {
               <$$$
              "<$$uRelationshipName$$>",
               $$$>
@@ -94,9 +94,9 @@ public class <$$uname$$>References implements Serializable {
         }
      }
 
-    public static final Set<String> REFERENCE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(REFERENCE_NAMES_SET_VALUES)));
+    protected static final Set<String> REFERENCE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(REFERENCE_NAMES_SET_VALUES)));
     // there may be duplicate strings in RELATIONSHIP_NAMES_SET_VALUES, the following line deduplicates the Strings into a Set.
-    public static final Set<String> RELATIONSHIP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(RELATIONSHIP_NAMES_SET_VALUES)));
+    protected static final Set<String> RELATIONSHIP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(RELATIONSHIP_NAMES_SET_VALUES)));
 // Singular properties
 <$SingleAttr$$
     private <$$uSingleReferenceName$$>Reference <$$singleReferenceName$$>;

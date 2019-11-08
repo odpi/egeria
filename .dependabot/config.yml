@@ -22,7 +22,7 @@ update_configs:
       - "grahamwallis"
       - "davidradl"
   - package_manager: "javascript"
-    directory: "/open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static"
+    directory: "/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
