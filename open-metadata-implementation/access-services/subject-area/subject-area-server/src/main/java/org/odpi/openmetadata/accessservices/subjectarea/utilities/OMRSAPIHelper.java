@@ -1345,10 +1345,10 @@ public class OMRSAPIHelper {
     public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
                   // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         if (offset == null) {
-            offset = new Integer(0);
+            offset = 0;
         }
         if (pageSize == null) {
-            pageSize = new Integer(0);
+            pageSize = 0;
         }
         if (sequencingProperty !=null) {
             try {
@@ -1390,10 +1390,10 @@ public class OMRSAPIHelper {
                                                                Integer pageSize
                                                                ) {
         if (offset == null) {
-            offset = new Integer(0);
+            offset = 0;
         }
         if (pageSize == null) {
-            pageSize = new Integer(0);
+            pageSize = 0;
         }
       
         TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);

@@ -153,10 +153,10 @@ public class SubjectAreaGlossaryController extends SecureController
         try {
 
             if (offset == null) {
-                offset = new Integer(0);
+                offset = 0;
             }
             if (pageSize == null) {
-               pageSize = new Integer(0);
+               pageSize = 0;
             }
             List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             GlossariesResponse glossariesResponse = new GlossariesResponse();

@@ -26,7 +26,7 @@ public class TestStarRating
      */
     private boolean isUniqueOrdinal(int  ordinal)
     {
-        Integer       newOrdinal = new Integer(ordinal);
+        Integer       newOrdinal = ordinal;
 
         if (existingOrdinals.contains(newOrdinal))
         {

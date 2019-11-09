@@ -676,7 +676,7 @@ public class OmrsBeanGenerator {
                                         attrValue = "new java.util.Date()";
                                     } else if (uppercaseattributeType.equals("INT")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Integer");
-                                        attrValue = "new Integer(" + attributeNumber + ")";
+                                        attrValue = String.valueOf(0);
                                     } else if (uppercaseattributeType.equals("LONG")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
                                         attrValue = "new Long(" + attributeNumber + ")";
@@ -749,7 +749,7 @@ public class OmrsBeanGenerator {
                                     attrValue = "new java.util.Date()";
                                 } else if (uppercaseattributeType.equals("INT")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Integer");
-                                    attrValue = "new Integer(" + attributeNumber + ")";
+                                    attrValue = String.valueOf(attributeNumber);
                                 } else if (uppercaseattributeType.equals("LONG")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
                                     attrValue = "new Long(" + attributeNumber + ")";

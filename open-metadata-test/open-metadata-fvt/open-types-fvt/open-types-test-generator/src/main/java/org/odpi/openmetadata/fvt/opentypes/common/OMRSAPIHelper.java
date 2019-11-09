@@ -512,10 +512,10 @@ public class OMRSAPIHelper {
     public static List<EntityDetail> findEntitiesByType(OMRSAPIHelper oMRSAPIHelper, String serverName, String userId, String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, SequencingOrder sequencingOrder, String sequencingProperty, String methodName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         if (offset == null) {
-            offset = new Integer(0);
+            offset = 0;
         }
         if (pageSize == null) {
-            pageSize = new Integer(0);
+            pageSize = 0;
         }
         if (sequencingProperty !=null) {
             try {
