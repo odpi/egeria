@@ -117,6 +117,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param securityVerifier new security verifier
      */
+    // todo make use of this method
     public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
     {
         super.setSecurityVerifier(securityVerifier);
@@ -4043,9 +4044,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         super.saveReferenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
 
         /*
-         * Save entity
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
          */
-        realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+        if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Save entity
+             */
+            realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+        }
     }
 
 
@@ -4228,9 +4237,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
         /*
-         * Save relationship
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
          */
-        realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+        if (relationship.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Save relationship
+             */
+            realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+        }
     }
 
 
