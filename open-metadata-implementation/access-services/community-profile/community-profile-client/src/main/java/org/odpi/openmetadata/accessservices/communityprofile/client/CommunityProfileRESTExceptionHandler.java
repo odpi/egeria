@@ -14,12 +14,12 @@ import java.util.Map;
 /**
  * RESTExceptionHandler detects exceptions encoded a REST response and throws the appropriate Java exception.
  */
-class RESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler
+class CommunityProfileRESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler
 {
     /**
      * Default constructor
      */
-    RESTExceptionHandler()
+    CommunityProfileRESTExceptionHandler()
     {
     }
 
