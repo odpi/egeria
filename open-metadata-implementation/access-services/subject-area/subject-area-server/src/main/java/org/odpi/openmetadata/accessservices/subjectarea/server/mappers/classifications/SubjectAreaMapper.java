@@ -32,7 +32,7 @@ public class SubjectAreaMapper extends ClassificationMapper{
         SubjectArea canonicalVocabulary = (SubjectArea)omasClassification;
         String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"name",omrsClassificationProperties,"");
         canonicalVocabulary.setName(stringValue);
-        return SubjectArea.PROPERTY_NAMES_SET;
+        return SubjectArea.getPropertyNames();
     }
 
     @Override

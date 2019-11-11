@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -90,13 +90,13 @@ public class AssetCatalogRelationshipServiceTest {
         Relationship relationshipsResponse = new Relationship();
         relationshipsResponse.setTypeDefName(RELATIONSHIP_TYPE);
         relationshipsResponse.setGuid("d1213-dabcf-dafc");
-        relationshipsResponse.setFromEntity(mockAsset(FIRST_GUID));
-        relationshipsResponse.setToEntity(mockAsset(SECOND_GUID));
+        relationshipsResponse.setFromEntity(mockElement(FIRST_GUID));
+        relationshipsResponse.setToEntity(mockElement(SECOND_GUID));
         return relationshipsResponse;
     }
 
-    private Asset mockAsset(String guid) {
-        Asset asset = new Asset();
+    private Element mockElement(String guid) {
+        Element asset = new Element();
         asset.setGuid(guid);
         return asset;
     }

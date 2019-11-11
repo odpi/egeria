@@ -102,6 +102,17 @@ public class AssetRating extends AssetElementHeader
 
 
     /**
+     * Return if this rating is private to the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return ratingBean.isPublic();
+    }
+
+
+    /**
      * Return the user id of the person who created the rating.  Null means the user id is not known.
      *
      * @return String user

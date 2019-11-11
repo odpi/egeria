@@ -36,6 +36,8 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public DigitalArchitectureEvent(DigitalArchitectureEvent template)
     {

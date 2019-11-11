@@ -72,7 +72,7 @@ public class RetentionMapper extends ClassificationMapper{
             }
         }
 
-        return Retention.PROPERTY_NAMES_SET;
+        return Retention.getPropertyNames();
     }
 
     @Override

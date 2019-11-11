@@ -41,6 +41,8 @@ public class LastAttachment extends ElementHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public LastAttachment(LastAttachment template)
     {

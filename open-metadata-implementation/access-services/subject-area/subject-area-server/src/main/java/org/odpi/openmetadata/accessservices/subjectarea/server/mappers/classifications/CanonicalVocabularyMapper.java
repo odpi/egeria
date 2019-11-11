@@ -32,7 +32,7 @@ public class CanonicalVocabularyMapper extends ClassificationMapper{
         CanonicalVocabulary canonicalVocabulary = (CanonicalVocabulary)omasClassification;
         String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"scope",omrsClassificationProperties,"");
         canonicalVocabulary.setScope(stringValue);
-        return CanonicalVocabulary.PROPERTY_NAMES_SET;
+        return CanonicalVocabulary.getPropertyNames();
     }
     @Override
     protected org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification createOmasClassification() {

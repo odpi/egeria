@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -22,12 +22,12 @@ public class OMAGServerDataPlatformService {
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
-    private static final String defaultOutTopicName = "OMRSTopic.server.omas.open-metadata.access-services.DataPlatform.inTopic";
+    private static final String defaultDataPlatformInTopicName = "OMRSTopic.server.omas.open-metadata.access-services.DataPlatform.inTopic";
 
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public VoidResponse setDataPlatformServiceConfig(String userId, String serverName, DataPlatformConfig dataPlatformConfig)
+    public VoidResponse setDataPlatformServiceConfig(String userId, String serverName, DataPlatformServicesConfig dataPlatformServicesConfig)
     {
         String methodName = "setDataPlatformServiceConfig";
         VoidResponse response = new VoidResponse();
@@ -41,29 +41,29 @@ public class OMAGServerDataPlatformService {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
 
-            dataPlatformConfig.setDataPlatformServerOutTopic(
+            dataPlatformServicesConfig.setDataPlatformOmasInTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultOutTopicName,
+                            defaultDataPlatformInTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            dataPlatformConfig.getDataPlatformServerOutTopicName(),
+                            dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getConfigurationProperties()
                     )
             );
 
             Map<String, Object> additionalProperties = new HashMap<>();
-            additionalProperties.put("serverAddress",dataPlatformConfig.getDataPlatformServerURL());
+            additionalProperties.put("serverAddress", dataPlatformServicesConfig.getDataPlatformServerURL());
 
-            dataPlatformConfig.setDataPlatformConnection(
+            dataPlatformServicesConfig.setDataPlatformConnection(
                     connectorConfigurationFactory.getDataPlatformConnection(
                             serverName,
-                            dataPlatformConfig.getDataPlatformServerName(),
+                            dataPlatformServicesConfig.getDataPlatformServerName(),
                             additionalProperties
                     )
             );
 
-            serverConfig.setDataPlatformConfig(dataPlatformConfig);
+            serverConfig.setDataPlatformServicesConfig(dataPlatformServicesConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
@@ -95,8 +95,8 @@ public class OMAGServerDataPlatformService {
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            DataPlatformConfig dataPlatformConfig = serverConfig.getDataPlatformConfig();
-            this.setDataPlatformServiceConfig(userId, serverName, dataPlatformConfig);
+            DataPlatformServicesConfig dataPlatformServicesConfig = serverConfig.getDataPlatformServicesConfig();
+            this.setDataPlatformServiceConfig(userId, serverName, dataPlatformServicesConfig);
         }
         catch (OMAGInvalidParameterException error)
         {
