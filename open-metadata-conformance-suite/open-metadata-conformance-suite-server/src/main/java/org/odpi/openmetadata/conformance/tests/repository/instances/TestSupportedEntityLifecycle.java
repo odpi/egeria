@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -77,6 +78,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertionMsg25 = " entity retrieved following restore ";
     private static final String assertion26    = testCaseId + "-26";
     private static final String assertionMsg26 = " entity purged.";
+    private static final String assertion27    = testCaseId + "-27";
+    private static final String assertionMsg27 = " historical retrieval returned correct version of entity ";
+
 
     private static final String discoveredProperty_undoSupport       = " undo support";
     private static final String discoveredProperty_softDeleteSupport = " soft delete support";
@@ -346,6 +350,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 testTypeName + assertionMsg19,
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
                 assertCondition(((undoneEntity != null) && (undoneEntity.getVersion() >= nextVersion)),
                                 assertion20,
                                 testTypeName + assertionMsg20 + nextVersion,
@@ -365,12 +370,18 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
 
         /*
+         * Catch the current time for a later historic query test, then sleep for a second so we are sure that time has moved on
+         */
+        Date preDeleteDate = new Date();
+        EntityDetail preDeleteEntity= metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+
+        /*
          * Test that the entity can be soft deleted, that the soft deleted entity has a higher version.
          * Verify that the soft deleted entity cannot be retrieved, but can be restored and thatthe restored entity has
          * a valid version (higher than when it was deleted).
          * Check that the restored entity can be retrieved.
          */
-
 
         try
         {
@@ -378,6 +389,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                                                          newEntity.getType().getTypeDefGUID(),
                                                                          newEntity.getType().getTypeDefName(),
                                                                          newEntity.getGUID());
+
             super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
                                         "Enabled",
                                         RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
@@ -409,6 +421,11 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
+
+
+
+
+
 
 
             /*
@@ -476,6 +493,52 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+        }
+
+
+        /*
+         * Perform a historic get of the entity - this should return the entity even though it has now been [deleted and] purged
+         * The time for the query is the time set just before the delete operation above.
+         */
+        try
+        {
+            EntityDetail earlierEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID(), preDeleteDate);
+
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+                    "Enabled",
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+            /*
+             * Check that the earlierEntity is not null and that the entity matches the copy saved at preDeleteDate.
+             */
+            assertCondition( ( (earlierEntity != null)  && earlierEntity.equals(preDeleteEntity)),
+                    assertion27,
+                    testTypeName + assertionMsg27,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+
+        }
+        catch (EntityNotKnownException exception)
+        {
+            /*
+             * If it supports historical retrieval, the repository should have returned the entity, hence fail the test
+             */
+            assertCondition((false),
+                    assertion27,
+                    testTypeName + assertionMsg27,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+                    "Disabled",
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
         }
 
         super.setSuccessMessage("Entities can be managed through their lifecycle");

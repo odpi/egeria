@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -48,8 +49,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
 
 
-    private Map<String, List<String>>  entitySubTypes = new HashMap<>();
-    private Map<String, List<List<EntityDetail>>>  entityInstances = new HashMap<>();
+    private Map<String, List<String>>              entitySubTypes          = new HashMap<>();
+    private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
+    private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
+    private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
 
     /**
      * Constructor receives key information from the configuration services.
@@ -505,8 +508,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         }
     }
 
+
     /**
-     * Add the specified sybtype to the list for the named entity type
+     * Add the specified subtype to the list for the named entity type
      * @param entityTypeName
      * @param subTypeName
      */
@@ -533,6 +537,93 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
         return subTypeList;
     }
+
+    /**
+     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified
+     * @param entityTypeName
+     * @param relationshipTypeName
+     */
+    public void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end) {
+
+        List<List<String>> bothEndLists = this.entityRelationshipTypes.get(entityTypeName);
+        if (bothEndLists == null) {
+            List<String> end1List = new ArrayList<>();
+            List<String> end2List = new ArrayList<>();
+            bothEndLists = new ArrayList<>();
+            bothEndLists.add(end1List);
+            bothEndLists.add(end2List);
+            this.entityRelationshipTypes.put(entityTypeName,bothEndLists);
+        }
+        if (end == 1) {
+            List<String> end1List = bothEndLists.get(0);
+            end1List.add(relationshipTypeName);
+        }
+        else if (end == 2) {
+            List<String> end1List = bothEndLists.get(1);
+            end1List.add(relationshipTypeName);
+        }
+    }
+
+    /**
+     * Return the list of endtypes for the named relationship type
+     * @param entityTypeName
+     * @return
+     */
+    public List<List<String>> getEntityRelationshipTypes(String entityTypeName) {
+
+        List<List<String>> relTypeLists = this.entityRelationshipTypes.get(entityTypeName);
+        return relTypeLists;
+    }
+
+    /**
+     * Return the set of supported entity type names
+     * @return
+     */
+    public Set<String> getEntityTypeNames() {
+
+        Set<String> keySet = this.entityRelationshipTypes.keySet();
+        return keySet;
+    }
+
+
+
+    /**
+     * Set the pair of end types as the list for the named relationship type
+     * @param relationshipTypeName
+     * @param end1TypeName
+     * @param end2TypeName
+     */
+    public void addRelationshipEndTypes(String relationshipTypeName, String end1TypeName, String end2TypeName) {
+
+        List<String> endTypeList= new ArrayList<>();
+        endTypeList.add(end1TypeName);
+        endTypeList.add(end2TypeName);
+        this.relationshipEndTypes.put(relationshipTypeName, endTypeList);
+
+    }
+
+    /**
+     * Return the list of endtypes for the named relationship type
+     * @param relationshipTypeName
+     * @return
+     */
+    public List<String> getRelationshipEndTypes(String relationshipTypeName) {
+
+        List<String> endTypeList = this.relationshipEndTypes.get(relationshipTypeName);
+        return endTypeList;
+    }
+
+    /**
+     * Return the set of supported relationship type names
+     * @return
+     */
+    public Set<String> getRelationshipTypeNames() {
+
+        Set<String> keySet = this.relationshipEndTypes.keySet();
+        return keySet;
+    }
+
+
 
 
     /**

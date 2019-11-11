@@ -57,6 +57,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1588,99 +1589,7 @@ class GraphOMRSMetadataStore {
         gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
 
 
-
-
-        //*
-        // * There is one namespace covering both type-defined properties (the ones defined by a TypeDefAttribute in the TypeDef) and
-        // * the 'core properties' - fields like 'guid', 'createdBy' which are common to all instances regardless of type.
-        // *
-        // * MatchProperties are supplied using the short property name for each property, but the short names need to be qualified
-        // * to convert them into the unique property keys used in the graph.
-        // *
-        // * Type-specific properties are stored in the graph using their 'qualified property names' - which means the short name is
-        // * prefixed by the name of the type in which the property is defined.
-        // *
-        // * Core properties are prefixed by a prefix that indicates the type of graph element in which they appear. This ensures that
-        // * property keys are unique across vertices and edges (ad hence across all the global indexes) which makes startup and
-        // * index creation faster. They are not qualified by Type in case it is necessary to support cross-type graph queries, e.g.
-        // * find all the entities (of any type) that were createdBy 'admin'.
-        // *
-        // * Returning to the point about 'one namespace', the caller can provide a mix of type-specific and core properties, all
-        // * expressed using their short names. Any property (short) names that match type-specific properties are used in that
-        // * context, and any other property (short) names are assumed to be core properties. If a caller includes a property by
-        // * short name that is neither a type-defined nor core property then the search will fail - which is OK because the
-        // * match properties contain a condition that cannot be satisfied.
-        // *
-        // * In this find method it is necessary to map the provided short names to the qualified names in order to hit the indexes.
-        // *
-        // * For the type of entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-        // *
-        //
-        //TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        //Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
-        //
-        // // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
-        //if (matchProperties != null) {
-        //    List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
-        //    Iterator<String> propNames = matchProperties.getPropertyNames();
-        //    while (propNames.hasNext()) {
-        //        // Assume that mapping is String for all properties (core or type-specific) - some core properties may use Full-Text; see below...
-        //        GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
-        //        String propName = propNames.next();
-        //        String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
-        //
-        //
-        //        if (qualifiedPropertyName == null) {
-        //            // Assume this is a core property - if it is not then it's OK - the graph will reject.
-        //            // Because we are searching for entities prefix using the vertex prefix.
-        //            qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + propName;
-        //            mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
-        //        } else {  // issue_1521
-        //            qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
-        //        }
-        //        InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
-        //        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-        //        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-        //            // Primitives will have been stored in the graph as such
-        //            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-        //            PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
-        //            Object primValue = ppv.getPrimitiveValue();
-        //            log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-        //            DefaultGraphTraversal t = new DefaultGraphTraversal();
-        //            switch (pCat) {
-        //                case OM_PRIMITIVE_TYPE_STRING:
-        //                    // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-        //                    String searchString = convertSearchStringToJanusRegex((String) primValue);
-        //                    log.debug("{} primitive match property search string ", methodName, searchString);
-        //
-        //                    // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-        //                    if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-        //                        t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
-        //                    } else {
-        //                        if (!fullMatch) {
-        //                            // A partial match is sufficient...i.e. a value containing the search value as a substring will match
-        //                            String ANYCHARS = ".*";
-        //                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-        //                        } else {
-        //                            // Must be a full match...
-        //                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));
-        //                        }
-        //                    }
-        //                    break;
-        //                default:
-        //                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, primValue);
-        //                    break;
-        //            }
-        //            log.debug("{} primitive match property has property criterion {}", methodName, t);
-        //            propCriteria.add(t);
-        //        } else {
-        //            log.debug("{} non-primitive match property {} ignored", propName);
-        //        }
-        //    }
-        //}
-
         /*
-         * TODO - core property inclusion in a match properties object is not supported (currently)
          *
          * There are two origins of properties stored on an instance vertex in the graph -
          *   1. core properties from the audit header
@@ -1718,8 +1627,10 @@ class GraphOMRSMetadataStore {
          */
 
 
-         // TODO - not supported yet
-         // Set<String> corePropertyNames = corePropertyTypes.keySet();
+        // TODO - core property inclusion in a match properties object is not supported (currently - pending TDA/core name clashes being resolved)
+        // When that is resolved, uncomment the following line (and remove the null one below it).
+        // Set<String> corePropertyNames = corePropertyTypes.keySet();
+        Set<String> corePropertyNames = new HashSet<>();  // temporary line of code - to be removed
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
@@ -1749,24 +1660,24 @@ class GraphOMRSMetadataStore {
 
                 /*
                  * Check if this is a core property (from InstanceAuditHeader)
+                 * Core properties take precedence over TDAs (in the event of a name clash)
                  */
 
-                //if (corePropertyNames.contains(propName)) {
-                //    /*
-                //     * Treat the match property as a reference to a core property
-                //     */
-                //
-                //
-                //    // TODO - There is a problem with this clause - it is not clear yet how a caller would pass the value of the property - MPs are InstanceProperties and as such they
-                //    // might not cover the Java classes we define for some core properties in the InstanecAuditHeader. Need to talk to Mandy about whether this is practical.
-                //    // For now avoid passing any property in a MP that has a name matching a core property. Difficult if you are a PropertyFacet tester!! :-)
-                //
-                //    propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
-                //    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
-                //}
-                //else
+                if (corePropertyNames.contains(propName)) {
 
-                if (typeDefinedPropertyNames.contains(propName)) {
+                    /*
+                     * Treat the match property as a reference to a core property
+                     *
+                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
+                     * primiitve def category of string.
+                     */
+
+                    propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
+                    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+
+                }
+                else if (typeDefinedPropertyNames.contains(propName)) {
 
                     /*
                      * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
@@ -1780,12 +1691,10 @@ class GraphOMRSMetadataStore {
 
                             /*
                              * The match property name matches the name of a type-defined attribute
-                             */
-
-
-                            /*
+                             *
                              * Check types match - i.e. that the match property instance property has the same type as the type-defined attribute
                              */
+
                             PrimitiveDefCategory mpCat = OM_PRIMITIVE_TYPE_UNKNOWN;
                             InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
                             InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
@@ -1814,11 +1723,13 @@ class GraphOMRSMetadataStore {
                                 String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
                                 propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
                                 mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
-                                break;  // TODO consider moving this break to below if cat match  no point looking for more props of same name - see relationship code
+
                             }
                             /*
-                             * Types do not match - continue to search property def for match - if none then drop through to catch all below
+                             * If types matched the code above will have set propNameToSearch. If the types did not match we should give up on this property - there should not be
+                             * another property defined with the same name. In either case break out of the property for loop and drop through to catch all below
                              */
+                            break;
                         }
                     }
                     /*
@@ -1967,22 +1878,18 @@ class GraphOMRSMetadataStore {
         if (!suffixed || str.length()>2) {
             prefixed = str.startsWith(".*");
         }
-        //System.out.println("suffixed = "+suffixed+" prefixed = "+prefixed);
 
         String  innerString = str;
         if (suffixed)
         {
             innerString = innerString.substring(0, innerString.length() - 2);
-            //System.out.println("suffix removed innerString = "+innerString);
         }
         if (prefixed)
         {
             innerString = innerString.substring(2);
-            //System.out.println("prefix removed innerString = "+innerString);
         }
         if (innerString.length() ==0 ) {
             // There is nothing left after removing any suffix and prefix - return the original string
-            //System.out.println("No residual innerString");
             return str;
         }
 
@@ -1996,13 +1903,11 @@ class GraphOMRSMetadataStore {
                 return null;
             }
             else {
-                //System.out.println("Exact match processing");
                 innerString = innerString.substring(2, innerString.length() - 2);
                 StringBuilder literalisedStringBldr = new StringBuilder();
                 // Literalise individual special chars
                 for (int i = 0; i < innerString.length(); i++) {
                     Character c = innerString.charAt(i);
-                    //System.out.println("process char "+c);
                     // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
                     // so the '-' character has no special meaning
                     switch (c) {
@@ -2020,7 +1925,6 @@ class GraphOMRSMetadataStore {
                         case '+':
                         case '?':
                         case '\\':  // single backslash escaped for Java
-                            //System.out.println("escape char "+c);
                             literalisedStringBldr.append('\\').append(c);
                             break;
                         default:
@@ -2032,7 +1936,6 @@ class GraphOMRSMetadataStore {
         }
         else {
             // Not exact match - leave innerString as is
-            //System.out.println("Non-exact processing");
             // i.e. add no escaping - treat the inner string as a regex
             literalisedString = innerString;
         }
@@ -2079,7 +1982,6 @@ class GraphOMRSMetadataStore {
         }
 
         /*
-         * TODO - core property inclusion in a match properties object is not supported (currently)
          *
          * There are two origins of properties stored on an instance vertex in the graph -
          *   1. core properties from the audit header
@@ -2116,9 +2018,10 @@ class GraphOMRSMetadataStore {
          * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
          */
 
-
-        // TODO - not supported yet
+        // TODO - core property inclusion in a match properties object is not supported (currently - pending TDA/core name clashes being resolved)
+        // When that is resolved, uncomment the following line (and remove the null one below it).
         // Set<String> corePropertyNames = corePropertyTypes.keySet();
+        Set<String> corePropertyNames = new HashSet<>();  // temporary line of code - to be removed
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
@@ -2151,22 +2054,21 @@ class GraphOMRSMetadataStore {
                  * Check if this is a core property (from InstanceAuditHeader)
                  */
 
-                //if (corePropertyNames.contains(propName)) {
-                //    /*
-                //     * Treat the match property as a reference to a core property
-                //     */
-                //
-                //
-                //    // TODO - There is a problem with this clause - it is not clear yet how a caller would pass the value of the property - MPs are InstanceProperties and as such they
-                //    // might not cover the Java classes we define for some core properties in the InstanecAuditHeader. Need to talk to Mandy about whether this is practical.
-                //    // For now avoid passing any property in a MP that has a name matching a core property. Difficult if you are a PropertyFacet tester!! :-)
-                //
-                //    propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
-                //    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
-                //}
-                //else
+                if (corePropertyNames.contains(propName)) {
 
-                if (typeDefinedPropertyNames.contains(propName)) {
+                    /*
+                     * Treat the match property as a reference to a core property
+                     *
+                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
+                     * primiitve def category of string.
+                     */
+
+                    propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
+                    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+
+                }
+                else if (typeDefinedPropertyNames.contains(propName)) {
 
                     /*
                      * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
@@ -2809,18 +2711,25 @@ class GraphOMRSMetadataStore {
         final String entTypeGUIDsParameterName = "entityTypeGUIDs";
         final String relTypeGUIDsParameterName = "relationshipTypeGUIDs";
 
+        boolean limited = true;
 
         log.debug("{} entityGUID = {}, entityTypeGUIDs = {}, relationshipTypeGUIDs = {}, limitResultsByStatus = {}, limitResultsByClassification = {}, level = {}",
                 methodName, entityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, level);
 
         /*
-         * Starting at the entity wth entityGUID, traverse relationships and other entities, filtering by instance types and statuses
+         * Starting at the entity with entityGUID, traverse relationships and other entities, filtering by instance types and statuses
          * and classifications, if specified. Traverse to a maximum depth specified by level.
          * The root entity is always included regardless of the entityTypeGUIDs.
          *
          * Only EntityDetail objects are returned in InstanceGraph.entities, but EntityProxy objects are traversed and are embedded in InstanceGraph.relationships.
          */
 
+        if (level == -1) {
+            /*
+             * Traversal limiting is disabled. This traversal will continue until it has no graph left to traverse. This is expensive on large graphs!
+             */
+            limited = false;
+        }
 
         List<EntityDetail> entities = new ArrayList<>();
         List<Relationship> relationships = new ArrayList<>();
@@ -2968,6 +2877,7 @@ class GraphOMRSMetadataStore {
                         errorMessage,
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
+
             } else {
 
                 // Find the root vertex
@@ -2979,7 +2889,10 @@ class GraphOMRSMetadataStore {
                     entityMapper.mapVertexToEntityDetail(rootVertex, rootEntity);
                     entities.add(rootEntity);
                     g.tx().commit();
+
                 } catch (EntityProxyOnlyException | RepositoryErrorException e) {
+
+
                     log.error("{} caught exception whilst trying to map entity with GUID {}, exception {}", methodName, entityGUID, e.getMessage());
                     g.tx().rollback();
                     GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
@@ -2994,154 +2907,166 @@ class GraphOMRSMetadataStore {
                             errorMessage,
                             errorCode.getSystemAction(),
                             errorCode.getUserAction());
-                }
-
-
-                // Reset the traversal - not sure if this is strictly necessary
-
-                g = instanceGraph.traversal();
-
-                DefaultGraphTraversal repeatTraversal = new DefaultGraphTraversal<>();
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.bothE("Relationship");
-
-                // Optionally filter relationships by status
-                if (statusWithin) {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
-                } else {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
-                }
-
-                // Optionally filter by relationship type
-                if (relationshipsWithin) {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, within(relationshipTypeNames));
-                }
-
-                // Project the relationships and move on to the inVertex for each relationship...
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("r").otherV();
-
-                // Optionally filter entities by status
-                if (statusWithin) {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
-                } else {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
-                }
-
-                // Exclude EntityProxy vertices... or not... for now the traversal will traverse a proxy but only include it
-                // in the relationship reported, not in the entities list.
-                // repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
-
-                // Optionally filter by entity type
-                if (entitiesWithin) {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
-                }
-
-                // Optionally filter (entities) by classification
-                if (classificationWithin) {
-                    //  where(out("Classifier").has("vcclassificationName",within("MobileAsset","Confidentiality"))).
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.where(out("Classifier").has(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, within(classificationNames)));
 
                 }
 
-                // Project the traversed TO entities (only, not the entities we have traversed FROM)...
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("e");
+                if (level != 0) {
 
-                // Include simplePath to avoid back-tracking
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.simplePath();
+                    // Reset the traversal - not sure if this is strictly necessary
 
-                // Construct the overall traversal
+                    g = instanceGraph.traversal();
 
-                t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(repeatTraversal).times(level).emit().select("r", "e");
+                    DefaultGraphTraversal repeatTraversal = new DefaultGraphTraversal<>();
+                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.bothE("Relationship");
 
-                while (t.hasNext()) {
+                    // Optionally filter relationships by status
+                    if (statusWithin) {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
+                    } else {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
+                    }
 
-                    Map<String, Element> resTuple = (Map<String, Element>) t.next();
-                    Edge edge = (Edge) resTuple.get("r");
-                    Vertex vertex = (Vertex) resTuple.get("e");
+                    // Optionally filter by relationship type
+                    if (relationshipsWithin) {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, within(relationshipTypeNames));
+                    }
 
-                    log.debug("{} subgraph has edge {} and vertex {}", methodName, edge, vertex);
+                    // Project the relationships and move on to the inVertex for each relationship...
+                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("r").otherV();
 
-                    if (edge != null && vertex != null) {
+                    // Optionally filter entities by status
+                    if (statusWithin) {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
+                    } else {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
+                    }
 
-                        log.debug("{} save the relationship for edge {}", methodName, edge);
+                    // Exclude EntityProxy vertices... or not... for now the traversal will traverse a proxy but only include it
+                    // in the relationship reported, not in the entities list.
+                    // repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
 
-                        Relationship relationship = new Relationship();
-                        relationshipMapper.mapEdgeToRelationship(edge, relationship);
-                        relationships.add(relationship);
+                    // Optionally filter by entity type
+                    if (entitiesWithin) {
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
+                    }
 
-                        // Get the end entities and add them to the relationship as proxies.
+                    // Optionally filter (entities) by classification
+                    if (classificationWithin) {
+                        //  where(out("Classifier").has("vcclassificationName",within("MobileAsset","Confidentiality"))).
+                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.where(out("Classifier").has(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, within(classificationNames)));
 
-                        try {
+                    }
 
-                            /* Map the discovered entities - need a proxy for each end of the relationship,
-                             * plus, if the entity is an EntityDetail then you need to add that to
-                             * entities list in the InstanceGraph too.
-                             */
+                    // Project the traversed TO entities (only, not the entities we have traversed FROM)...
+                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("e");
 
-                            // Start with the outVertex
-                            Vertex vout = edge.outVertex();
+                    // Include simplePath to avoid back-tracking
+                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.simplePath();
 
-                            if (vout != null) {
-                                log.debug("{} Create proxy for end 1 entity vertex {}", methodName, vout);
-                                EntityProxy entityOneProxy = new EntityProxy();
-                                entityMapper.mapVertexToEntityProxy(vout, entityOneProxy);
-                                log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
-                                relationship.setEntityOneProxy(entityOneProxy);
+                    // Construct the overall traversal
 
+                    if (limited) {
+
+                        t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(repeatTraversal).times(level).emit().select("r", "e");
+
+                    }
+                    else {
+
+                        t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(repeatTraversal).emit().select("r", "e");
+                    }
+
+                    while (t.hasNext()) {
+
+                        Map<String, Element> resTuple = (Map<String, Element>) t.next();
+                        Edge edge = (Edge) resTuple.get("r");
+                        Vertex vertex = (Vertex) resTuple.get("e");
+
+                        log.debug("{} subgraph has edge {} and vertex {}", methodName, edge, vertex);
+
+                        if (edge != null && vertex != null) {
+
+                            log.debug("{} save the relationship for edge {}", methodName, edge);
+
+                            Relationship relationship = new Relationship();
+                            relationshipMapper.mapEdgeToRelationship(edge, relationship);
+                            relationships.add(relationship);
+
+                            // Get the end entities and add them to the relationship as proxies.
+
+                            try {
+
+                                /* Map the discovered entities - need a proxy for each end of the relationship,
+                                 * plus, if the entity is an EntityDetail then you need to add that to
+                                 * entities list in the InstanceGraph too.
+                                 */
+
+                                // Start with the outVertex
+                                Vertex vout = edge.outVertex();
+
+                                if (vout != null) {
+                                    log.debug("{} Create proxy for end 1 entity vertex {}", methodName, vout);
+                                    EntityProxy entityOneProxy = new EntityProxy();
+                                    entityMapper.mapVertexToEntityProxy(vout, entityOneProxy);
+                                    log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
+                                    relationship.setEntityOneProxy(entityOneProxy);
+
+                                }
+
+                                // Move to the inVertex
+                                Vertex vin = edge.inVertex();
+
+                                if (vin != null) {
+                                    log.debug("{} Create proxy for end 2 entity vertex {}", methodName, vin);
+                                    EntityProxy entityTwoProxy = new EntityProxy();
+                                    entityMapper.mapVertexToEntityProxy(vin, entityTwoProxy);
+                                    log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
+                                    relationship.setEntityTwoProxy(entityTwoProxy);
+
+                                }
+
+                                /*
+                                 * You only add the arrived-at entity if it is not a proxy. This
+                                 * is the vertex from the tuple above. Only need to add the arrived-at
+                                 * vertex to the InstanceGraph because the traversed-from vertex will
+                                 * already have been added (it is either the root or has been
+                                 * traversed through already).
+                                 */
+
+                                log.debug("{} Create entity detail for remote vertex {}", methodName, vertex);
+
+                                if (!entityMapper.isProxy(vertex)) {
+                                    EntityDetail entityDetail = new EntityDetail();
+                                    entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
+                                    log.debug("{} entityDetail {}", methodName, entityDetail);
+                                    entities.add(entityDetail);
+                                }
+                            } catch (EntityProxyOnlyException | RepositoryErrorException e) {
+                                /* This catch block abandons the whole traversal and neighbourhood search.
+                                 * This may be a little draconian ut presumably better to know that something
+                                 * is wrong rather than plough on in ignorance.
+                                 */
+                                log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
+                                g.tx().rollback();
+                                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
+
+                                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                                        this.getClass().getName(),
+                                        repositoryName);
+
+                                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                                        this.getClass().getName(),
+                                        methodName,
+                                        errorMessage,
+                                        errorCode.getSystemAction(),
+                                        errorCode.getUserAction());
                             }
-
-                            // Move to the inVertex
-                            Vertex vin = edge.inVertex();
-
-                            if (vin != null) {
-                                log.debug("{} Create proxy for end 2 entity vertex {}", methodName, vin);
-                                EntityProxy entityTwoProxy = new EntityProxy();
-                                entityMapper.mapVertexToEntityProxy(vin, entityTwoProxy);
-                                log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
-                                relationship.setEntityTwoProxy(entityTwoProxy);
-
-                            }
-
-                            /*
-                             * You only add the arrived-at entity if it is not a proxy. This
-                             * is the vertex from the tuple above. Only need to add the arrived-at
-                             * vertex to the InstanceGraph because the traversed-from vertex will
-                             * already have been added (it is either the root or has been
-                             * traversed through already).
-                             */
-
-                            log.debug("{} Create entity detail for remote vertex {}", methodName, vertex);
-
-                            if (!entityMapper.isProxy(vertex)) {
-                                EntityDetail entityDetail = new EntityDetail();
-                                entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
-                                log.debug("{} entityDetail {}", methodName, entityDetail);
-                                entities.add(entityDetail);
-                            }
-                        } catch (EntityProxyOnlyException | RepositoryErrorException e) {
-                            /* This catch block abandons the whole traversal and neighbourhood search.
-                             * This may be a little draconian ut presumably better to know that something
-                             * is wrong rather than plough on in ignorance.
-                             */
-                            log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
-                            g.tx().rollback();
-                            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
-
-                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
-                                    this.getClass().getName(),
-                                    repositoryName);
-
-                            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                    this.getClass().getName(),
-                                    methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction());
                         }
                     }
+                    g.tx().commit();
                 }
             }
 
-            g.tx().commit();
+
 
             // Construct the InstanceGraph from entities and relationships
             subGraph.setEntities(entities);
@@ -3282,7 +3207,16 @@ class GraphOMRSMetadataStore {
                     EntityDetail rootEntity = new EntityDetail();
                     entityMapper.mapVertexToEntityDetail(rootVertex, rootEntity);
                     log.debug("{} mapped root entity {}", methodName, rootEntity);
-                    // No need to add rootEntity to InstanceGraph.entities - it will be included in the paths discovered below.
+
+                    /*
+                     * No need to add rootEntity to InstanceGraph.entities - it will be included in the paths discovered below.
+                     * There is one exception - which is when the caller has passed the same GUID for both start and end - in
+                     * this case we should return just the start/end entity; but the traversals will not find any paths, so in this
+                     * case (only) we should add the entity to the result.
+                     */
+                    if (startEntityGUID.equals(endEntityGUID))
+                        entities.add(rootEntity);
+
                     g.tx().commit();
 
                 } catch (EntityProxyOnlyException | RepositoryErrorException e) {

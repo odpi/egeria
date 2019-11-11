@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -80,6 +81,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     private static final String assertionMsg23 = " relationship retrieved following restore ";
     private static final String assertion24    = testCaseId + "-24";
     private static final String assertionMsg24 = " relationship purged.";
+    private static final String assertion25    = testCaseId + "-25";
+    private static final String assertionMsg25 = " historical retrieval returned correct version relationship ";
 
     private static final String discoveredProperty_undoSupport       = " undo support";
     private static final String discoveredProperty_softDeleteSupport = " soft delete support";
@@ -226,6 +229,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                         RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
 
+        System.out.println("RELATIONSHIP LIFECYCLE TEST newRelationship GUID "+newRelationship.getGUID()+" VER "+ newRelationship.getVersion());
+
         /*
          * Update relationship status
          */
@@ -256,6 +261,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                         RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
 
                 nextVersion = updatedRelationship.getVersion() + 1;
+
+                System.out.println("RELATIONSHIP LIFECYCLE TEST updatedRelationship after status change has VER "+ updatedRelationship.getVersion());
+
             }
         }
 
@@ -277,6 +285,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
         }
 
+
+
         /*
          * Modify the relationship such that it has the minimum set of properties possible. If any properties are defined as
          * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
@@ -292,6 +302,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             Relationship minPropertiesRelationship = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
                     newRelationship.getGUID(),
                     minRelationshipProps);
+
+            System.out.println("RELATIONSHIP LIFECYCLE TEST minPropertiesRelationship after prop minimisation has VER "+ minPropertiesRelationship.getVersion());
 
 
             /*
@@ -309,7 +321,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
             /*
-             * Check that the returned entity has the new version number...
+             * Check that the returned relationship has the new version number...
              */
             verifyCondition(((minPropertiesRelationship != null) && (minPropertiesRelationship.getVersion() >= nextVersion)),
                     assertion16,
@@ -324,7 +336,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
              */
             try
             {
-                Relationship undoneRelationship= metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
+                Relationship undoneRelationship = metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
 
                 super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
                         "Enabled",
@@ -345,6 +357,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 nextVersion = undoneRelationship.getVersion() + 1;
 
+                System.out.println("RELATIONSHIP LIFECYCLE TEST undoneRelationship after prop restoration has VER "+ undoneRelationship.getVersion());
+
+
             }
             catch (FunctionNotSupportedException exception)
             {
@@ -355,6 +370,17 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             }
         }
+
+
+
+        /*
+         * Catch the current time for a later historic query test, then sleep for a second so we are sure that time has moved on
+         */
+        Date preDeleteDate = new Date();
+        Relationship preDeleteRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+        System.out.println("RELATIONSHIP LIFECYCLE TEST preDeleteRelationship : "+ preDeleteRelationship);
+        //Thread.sleep(1000);
+
 
         /*
          * Test that the relationship can be soft deleted, and that the soft deleted relationship has a higher version.
@@ -380,7 +406,11 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             testTypeName + assertionMsg19 + nextVersion,
                             RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
                             RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
+
             nextVersion = deletedRelationship.getVersion() + 1;
+
+            System.out.println("RELATIONSHIP LIFECYCLE TEST deletedRelationship after soft delete has VER "+ deletedRelationship.getVersion());
+
 
             try
             {
@@ -391,6 +421,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                 testTypeName + assertionMsg20,
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
             }
             catch (RelationshipNotKnownException exception)
             {
@@ -401,8 +432,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
 
-
-            nextVersion = deletedRelationship.getVersion() + 1;
 
             Relationship restoredRelationship = metadataCollection.restoreRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
 
@@ -417,6 +446,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     testTypeName + assertionMsg22 + nextVersion,
                     RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
                     RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
+
+            System.out.println("RELATIONSHIP LIFECYCLE TEST restoredRelationship after restore has VER "+ restoredRelationship.getVersion());
+
 
             /*
              * Verify that relationship can be retrieved following restore
@@ -440,10 +472,16 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                         RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
         }
 
+
+        System.out.println("RELATIONSHIP LIFECYCLE TEST purge relationship ");
+
+
         metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
                                              newRelationship.getType().getTypeDefGUID(),
                                              newRelationship.getType().getTypeDefName(),
                                              newRelationship.getGUID());
+
+        System.out.println("RELATIONSHIP LIFECYCLE TEST purged relationship ");
 
         try
         {
@@ -462,6 +500,55 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             testTypeName + assertionMsg24,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+
+        /*
+         * Perform a historic get of the relationship - this should return the relationship even though it has now been [deleted and] purged
+         * The time for the query is the time set just before the delete operation above.
+         */
+        try
+        {
+            Relationship earlierRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID(), preDeleteDate);
+
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+                    "Enabled",
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+            System.out.println("------------------------------------------------------------------------------------");
+            System.out.println("RELATIONSHIP LIFECYCLE TEST historicRelationship : "+ earlierRelationship);
+
+            /*
+             * Check that the earlierRelationship is not null and that the relationship matches the copy saved at preDeleteDate.
+             */
+            assertCondition( ( (earlierRelationship != null)  && earlierRelationship.equals(preDeleteRelationship)),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+
+        }
+        catch (RelationshipNotKnownException exception)
+        {
+            /*
+             * If it supports historical retrieval, the repository should have returned the relationship, hence fail the test
+             */
+            assertCondition((false),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+                    "Disabled",
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
         }
 
         super.setSuccessMessage("Relationships can be managed through their lifecycle");

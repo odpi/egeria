@@ -3487,13 +3487,15 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     matchingProperties ++;
                 }
-                if (this.checkDatePropertyValue(propertyMap, effectiveFromPropertyName, instanceProperties.getEffectiveFromTime()))
-                {
-                    matchingProperties ++;
-                }
-                if (this.checkDatePropertyValue(propertyMap, effectiveToPropertyName, instanceProperties.getEffectiveToTime()))
-                {
-                    matchingProperties ++;
+                if (instanceProperties != null) {
+
+                    if (this.checkDatePropertyValue(propertyMap, effectiveFromPropertyName, instanceProperties.getEffectiveFromTime())) {
+                        matchingProperties++;
+                    }
+                    if (this.checkDatePropertyValue(propertyMap, effectiveToPropertyName, instanceProperties.getEffectiveToTime())) {
+                        matchingProperties++;
+                    }
+
                 }
             }
         }

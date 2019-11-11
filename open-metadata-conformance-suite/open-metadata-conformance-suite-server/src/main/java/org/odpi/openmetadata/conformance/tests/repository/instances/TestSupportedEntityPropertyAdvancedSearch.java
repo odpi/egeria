@@ -86,6 +86,22 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
     private static final String assertion16     = testCaseId + "-16";
     private static final String assertionMsg16  = " search contained only valid results.";
 
+    /* Test 7 */
+    private static final String assertion17     = testCaseId + "-17";
+    private static final String assertionMsg17  = " value search returned results.";
+    private static final String assertion18     = testCaseId + "-18";
+    private static final String assertionMsg18  = " value search contained all expected results.";
+    private static final String assertion19     = testCaseId + "-19";
+    private static final String assertionMsg19  = " value search contained only valid results.";
+
+    /* Test 8 */
+    private static final String assertion20     = testCaseId + "-20";
+    private static final String assertionMsg20  = " value search returned results.";
+    private static final String assertion21     = testCaseId + "-21";
+    private static final String assertionMsg21 = " value search contained all expected results.";
+    private static final String assertion22     = testCaseId + "-22";
+    private static final String assertionMsg22  = " value search contained only valid results.";
+
 
 
     private static final String discoveredProperty_searchSupport       = " advanced search support";
@@ -203,12 +219,17 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
          *
          * These tests are only run for types with at least one String property; the first String property is searched using a Regex.
          *
+         * findEntitiesByProperty()
          *   1. Use instanceProperties with <propertyName> of first String property, MatchCriteria set to ALL - this should return all entities in sets 0, 1 & 2
          *   2. Similar to test 1 but with MatchCriteria set to NONE - this should not return any return entities in sets 0, 1 or 2
          *   3. Use instanceProperties with <propertyName>\.[0] of first String property - this should return all and only entities in set 0
          *   4. Similar to test 3 but with MatchCriteria set to NONE - this should not return any return entities in sets 1 & 2
          *   5. Use instanceProperties with <propertyName>\.[^12] of first String property - this should return all and only entities in set 0
          *   6. Similar to test 5 but with MatchCriteria set to NONE - this should not return any return entities in sets 1 & 2
+         *
+         * findEntitiesByPropertyValue()
+         *   7. Use searchCriteria regex that will match first string property in set 0 - this should return all and only entities in set 0
+         *   8. Use searchCriteria regex that will match first string property in sets 1 and 2 - this should return all and only entities in set 1 and 2
          *
          */
 
@@ -478,8 +499,8 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
         assertCondition((contamination == false),
                 assertion3,
                 testTypeName + assertionMsg3,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -540,8 +561,8 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
         assertCondition((contamination == false),
                 assertion4,
                 testTypeName + assertionMsg4,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -841,7 +862,13 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
          *  This should return all and only entities in sets 1 & 2 only.
          */
 
+
         matchCriteria = MatchCriteria.NONE;
+
+        matchProperties = new InstanceProperties();
+        matchProperties = this.addStringPropertyToInstance(matchProperties, this.firstStringAttributeName, regex);  // deliberately using name as value too
+        fromElement = 0;
+
 
 
         result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
@@ -922,6 +949,186 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
                 testTypeName + assertionMsg16,
                 RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
+
+        /* ------------------------------------------------------------------------------------- */
+
+        /*
+         *  Test 7. Use searchCriteria regex that will match first string property in set 0 - this should return all and only entities in set 0
+         *
+         */
+
+        regex = this.firstStringAttributeName+"\\.0";
+        String searchCriteria = regex;
+        fromElement = 0;
+
+
+        result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                entityDef.getGUID(),
+                searchCriteria,
+                fromElement,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0);
+
+
+        /*
+         * Verify that the result of the above search is not empty
+         */
+
+        assertCondition((result != null),
+                assertion17,
+                testTypeName + assertionMsg17,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+        /*
+         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         */
+
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(entitySet_0);
+        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
+        if (subTypeNames != null) {
+            for (String subTypeName : subTypeNames) {
+                List<EntityDetail> subTypeInstances;
+                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
+                if (subTypeInstances != null)
+                    expectedResult.addAll(subTypeInstances);
+            }
+        }
+
+        assertCondition((result.containsAll(expectedResult)),
+                assertion18,
+                testTypeName + assertionMsg18,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+
+        /*
+         * Verify that any extra instances in the result are valid
+         */
+
+        contamination = false;
+
+        if (result != null && (result.size() > expectedResult.size())) {
+            /*
+             * There are additional results.
+             */
+            for (EntityDetail ent : result) {
+                if (!(expectedResult.contains(ent))) {
+                    /*
+                     * This instance is not a member of the expected result set, so check that it is a viable result
+                     */
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), firstStringAttributeName, regex, MatchCriteria.ALL);
+                    if (!match)
+                        contamination = true;
+
+                }
+            }
+        }
+
+        assertCondition((contamination == false),
+                assertion19,
+                testTypeName + assertionMsg19,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+
+        /* ------------------------------------------------------------------------------------- */
+
+        /*
+         *  Test 8. Use searchCriteria regex that will match the overlapping property in sets 1 ad 2 - this should return all entities in sets 1 and 2
+         *
+         */
+
+        regex = this.firstStringAttributeName+"\\.1";
+        searchCriteria = regex;
+        fromElement = 0;
+
+
+        result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                entityDef.getGUID(),
+                searchCriteria,
+                fromElement,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0);
+
+
+        /*
+         * Verify that the result of the above search is not empty
+         */
+
+        assertCondition((result != null),
+                assertion20,
+                testTypeName + assertionMsg20,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+        /*
+         * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
+         */
+
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(entitySet_1);
+        expectedResult.addAll(entitySet_2);
+        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
+        if (subTypeNames != null) {
+            for (String subTypeName : subTypeNames) {
+                List<EntityDetail> subTypeInstances;
+                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 1);
+                if (subTypeInstances != null)
+                    expectedResult.addAll(subTypeInstances);
+                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 2);
+                if (subTypeInstances != null)
+                    expectedResult.addAll(subTypeInstances);
+            }
+        }
+
+        assertCondition((result.containsAll(expectedResult)),
+                assertion21,
+                testTypeName + assertionMsg21,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+
+        /*
+         * Verify that any extra instances in the result are valid
+         */
+
+        contamination = false;
+
+        if (result != null && (result.size() > expectedResult.size())) {
+            /*
+             * There are additional results.
+             */
+            for (EntityDetail ent : result) {
+                if (!(expectedResult.contains(ent))) {
+                    /*
+                     * This instance is not a member of the expected result set, so check that it is a viable result
+                     */
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), firstStringAttributeName, regex, MatchCriteria.ALL);
+                    if (!match)
+                        contamination = true;
+
+                }
+            }
+        }
+
+        assertCondition((contamination == false),
+                assertion22,
+                testTypeName + assertionMsg22,
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_VALUE_SEARCH.getRequirementId());
+
+
 
 
 

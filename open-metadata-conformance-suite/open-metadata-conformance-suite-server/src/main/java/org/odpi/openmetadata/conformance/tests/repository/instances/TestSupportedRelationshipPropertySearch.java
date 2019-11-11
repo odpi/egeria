@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+
 
 /**
  * Test that all defined entities can be retrieved by property searches
@@ -98,21 +100,35 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
     /* Assertions for single set tests */
 
     private static final String assertion21     = testCaseId + "-21";
-    private static final String assertionMsg21  = " search returned results.";
+    private static final String assertionMsg21  = " value search returned results.";
     private static final String assertion22     = testCaseId + "-22";
-    private static final String assertionMsg22  = " search contained all expected results.";
+    private static final String assertionMsg22  = " value search contained all expected results.";
     private static final String assertion23     = testCaseId + "-23";
-    private static final String assertionMsg23  = " search contained only valid results.";
+    private static final String assertionMsg23  = " value search contained only valid results.";
 
     private static final String assertion24     = testCaseId + "-24";
-    private static final String assertionMsg24  = " search returned results.";
+    private static final String assertionMsg24  = " value search returned results.";
     private static final String assertion25     = testCaseId + "-25";
-    private static final String assertionMsg25  = " search contained all expected results.";
+    private static final String assertionMsg25  = " value search contained all expected results.";
     private static final String assertion26     = testCaseId + "-26";
-    private static final String assertionMsg26  = " search contained only valid results.";
+    private static final String assertionMsg26  = " value search contained only valid results.";
 
     private static final String assertion27     = testCaseId + "-27";
-    private static final String assertionMsg27  = " search return only valid results.";
+    private static final String assertionMsg27  = " search returned results.";
+    private static final String assertion28     = testCaseId + "-28";
+    private static final String assertionMsg28  = " search contained all expected results.";
+    private static final String assertion29     = testCaseId + "-29";
+    private static final String assertionMsg29  = " search contained only valid results.";
+
+    private static final String assertion30     = testCaseId + "-30";
+    private static final String assertionMsg30  = " search returned results.";
+    private static final String assertion31     = testCaseId + "-31";
+    private static final String assertionMsg31  = " search contained all expected results.";
+    private static final String assertion32     = testCaseId + "-32";
+    private static final String assertionMsg32  = " search contained only valid results.";
+
+    private static final String assertion33     = testCaseId + "-33";
+    private static final String assertionMsg33  = " search return only valid results.";
 
     private static final String discoveredProperty_searchSupport = " search support";
 
@@ -251,6 +267,7 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          * MatchProperties with all properties and matchCriteria == ALL. This tests that every property is correctly compared.
          * In the following tests, all String values are passed by the repository helper's exact match helper method
          *
+         * findEntitiesByProperty()
          *   1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only relationships in set 0
          *   2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only relationships in set 0
          *   3. Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only relationships in sets 1 & 2
@@ -258,6 +275,10 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          *   5. Use instanceProperties for set 1 & matchCriteria ANY  - this should return all and only relationships in sets 1 & 2
          *   6. Use instanceProperties for set 1 & matchCriteria NONE  - this should return all and only relationships in set 0
          *   7. Similar to test 1 (above) but tests typeGUID filtering - compares the number of instances returned
+         *
+         * findEntitiesByPropertyValue()
+         *   8. Use searchCriteria that will match first string property in set 0 - this should return all and only relationships in set 0
+         *   9. Use searchCriteria that will match first string property in sets 1 and 2 - this should return all and only relationships in set 1 and 2
          *
          * This testcase does not perform regular expression searches; they are in the corresponding advanced-search testcase.
          *
@@ -1046,6 +1067,203 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
 
 
+        /* ------------------------------------------------------------------------------------- */
+
+        /*
+         *  Test 8. Use searchCriteria set to value of first string property for set 0 - this should return all and only relationships in set 0
+         */
+
+        /*
+         * For consistency and maintainability, the search value is derived using the same utilities that the value generator uses.
+         */
+        String searchCriteria = null;
+        String stringPropName = null;
+        if (this.attrList != null || !(this.attrList.isEmpty())) {
+
+            /*
+             * Only run the test if the TypeDef has attributes (even inherited ones), otherwise it is not possible to perform a find by property value on instances of that type.
+             */
+
+            stringPropName = typeDefHasAtLeastOneStringProperty(attrList);
+            PrimitivePropertyValue stringPropPPV = getPrimitivePropertyValue(stringPropName, new PrimitiveDef(OM_PRIMITIVE_TYPE_STRING), "0");
+            String stringValue = (String) stringPropPPV.getPrimitiveValue();
+            searchCriteria = this.literaliseStringProperty(stringValue);
+
+            fromElement = 0;
+
+            /*
+             * Since this is a non-regex test we need to ask the repo helper to provide a literalised string for each of our string values
+             */
+
+
+            result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    searchCriteria,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    0);
+
+
+
+            /*
+             * Verify that the result of the above search is not empty
+             */
+
+            assertCondition((result != null),
+                    assertion21,
+                    testTypeName + assertionMsg21,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+
+            /*
+             * Verify that the result of the above search includes all set_0 relationships of the current type
+             */
+
+            expectedResult = new ArrayList<>();
+            expectedResult.addAll(relationshipSet_0);
+
+            assertCondition((result.containsAll(expectedResult)),
+                    assertion22,
+                    testTypeName + assertionMsg22,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+
+            /*
+             * Verify that any extra instances in the result are valid
+             */
+
+            contamination = false;
+
+            if (result != null && (result.size() > expectedResult.size())) {
+                /*
+                 * There are additional results.
+                 */
+                for (Relationship rel : result) {
+                    if (!(expectedResult.contains(rel))) {
+                        /*
+                         * This instance is not a member of the expected result set, so check that it is a viable result.
+                         * To do this we set up a matchProperties with just the string parameter from above.
+                         */
+                        InstanceProperties verifyProperties = addStringPropertyToInstance(null, stringPropName, searchCriteria);
+                        boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), verifyProperties, MatchCriteria.ALL);
+                        if (!match)
+                            contamination = true;
+
+                    }
+                }
+            }
+
+
+            assertCondition((contamination == false),
+                    assertion23,
+                    testTypeName + assertionMsg23,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+        }
+
+
+        /* ------------------------------------------------------------------------------------- */
+
+        /*
+         *  Test 9. Use searchCriteria set to value of overlapping string property for sets 1 & 2 - this should return entities in set 1 and 2
+         */
+
+        /*
+         * For consistency and maintainability, the search value is derived using the same utilities that the value generator uses.
+         */
+        searchCriteria = null;
+        stringPropName = null;
+        if (this.attrList != null || !(this.attrList.isEmpty())) {
+
+            /*
+             * Only run the test if the TypeDef has attributes (even inherited ones), otherwise it is not possible to perform a find by property value on instances of that type.
+             */
+
+            stringPropName = typeDefHasAtLeastOneStringProperty(attrList);
+            PrimitivePropertyValue stringPropPPV = getPrimitivePropertyValue(stringPropName, new PrimitiveDef(OM_PRIMITIVE_TYPE_STRING), "1");
+            String stringValue = (String) stringPropPPV.getPrimitiveValue();
+            searchCriteria = this.literaliseStringProperty(stringValue);
+
+            fromElement = 0;
+
+            /*
+             * Since this is a non-regex test we need to ask the repo helper to provide a literalised string for each of our string values
+             */
+
+
+            result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    searchCriteria,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    0);
+
+
+
+            /*
+             * Verify that the result of the above search is not empty
+             */
+
+            assertCondition((result != null),
+                    assertion24,
+                    testTypeName + assertionMsg24,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+
+            /*
+             * Verify that the result of the above search includes all set_1 and set_2 relationships of the current type
+             */
+
+            expectedResult = new ArrayList<>();
+            expectedResult.addAll(relationshipSet_1);
+            expectedResult.addAll(relationshipSet_2);
+
+            assertCondition((result.containsAll(expectedResult)),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+
+            /*
+             * Verify that any extra instances in the result are valid
+             */
+
+            contamination = false;
+
+            if (result != null && (result.size() > expectedResult.size())) {
+                /*
+                 * There are additional results.
+                 */
+                for (Relationship rel : result) {
+                    if (!(expectedResult.contains(rel))) {
+                        /*
+                         * This instance is not a member of the expected result set, so check that it is a viable result.
+                         * To do this we set up a matchProperties with just the string parameter from above.
+                         */
+                        InstanceProperties verifyProperties = addStringPropertyToInstance(null, stringPropName, searchCriteria);
+                        boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), verifyProperties, MatchCriteria.ALL);
+                        if (!match)
+                            contamination = true;
+
+                    }
+                }
+            }
+
+
+            assertCondition((contamination == false),
+                    assertion26,
+                    testTypeName + assertionMsg26,
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+        }
+
+
 
         /*
          * Completion of searches - indicate success of testcase.
@@ -1096,8 +1314,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          */
 
         assertCondition((result != null),
-                assertion21,
-                testTypeName + assertionMsg21,
+                assertion27,
+                testTypeName + assertionMsg27,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1106,8 +1324,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          */
 
         assertCondition((result.containsAll(relationshipSet_0)),
-                assertion22,
-                testTypeName + assertionMsg22,
+                assertion28,
+                testTypeName + assertionMsg28,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1139,8 +1357,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         }
 
         assertCondition((contamination == false),
-                assertion23,
-                testTypeName + assertionMsg23,
+                assertion29,
+                testTypeName + assertionMsg29,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1182,8 +1400,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          */
 
         assertCondition((result != null),
-                assertion24,
-                testTypeName + assertionMsg24,
+                assertion30,
+                testTypeName + assertionMsg30,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1192,8 +1410,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
          */
 
         assertCondition((result.containsAll(relationshipSet_0)),
-                assertion25,
-                testTypeName + assertionMsg25,
+                assertion31,
+                testTypeName + assertionMsg31,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1225,8 +1443,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         }
 
         assertCondition((contamination == false),
-                assertion26,
-                testTypeName + assertionMsg26,
+                assertion32,
+                testTypeName + assertionMsg32,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1285,8 +1503,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         }
 
         assertCondition((contamination == false),
-                assertion27,
-                testTypeName + assertionMsg27,
+                assertion33,
+                testTypeName + assertionMsg33,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1681,10 +1899,10 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            primitivePropertyValue.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValue.setPrimitiveValue(propertyValue);
-            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+            primitivePropertyValue.setTypeName(OM_PRIMITIVE_TYPE_STRING.getName());
+            primitivePropertyValue.setTypeGUID(OM_PRIMITIVE_TYPE_STRING.getGUID());
 
             resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -1693,6 +1911,18 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             return properties;
         }
     }
+
+    /*
+     *  Method to literalise a string value for exact match.
+     *
+     */
+    public String literaliseStringProperty(String value)
+    {
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        String litValue = repositoryHelper.getExactMatchRegex(value);
+        return litValue;
+    }
+
 
 
     /*
@@ -1737,7 +1967,7 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
                     if (ipCat == InstancePropertyCategory.PRIMITIVE) {
                         PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
                         PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
+                        if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
                             PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
                             // Literalise the string
                             String currentValue = (String) ppv.getPrimitiveValue();
@@ -1776,7 +2006,7 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
                 case PRIMITIVE:
                     PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
                     PrimitiveDefCategory pdCat = primitiveDef.getPrimitiveDefCategory();
-                    if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                    if (pdCat == OM_PRIMITIVE_TYPE_STRING)
                         return attributeName;
                     break;
             }

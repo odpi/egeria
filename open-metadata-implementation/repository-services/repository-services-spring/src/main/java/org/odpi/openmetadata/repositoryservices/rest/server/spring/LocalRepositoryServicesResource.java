@@ -1028,7 +1028,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}/history")
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationship/{guid}/history")
 
     public  RelationshipResponse getRelationship(@PathVariable String         serverName,
                                                  @PathVariable String         userId,

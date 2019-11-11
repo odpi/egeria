@@ -1322,6 +1322,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
@@ -1389,6 +1409,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
@@ -1451,6 +1491,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete - ok to restore entity
          */
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(entityGUID);
+        restoredEntity.setUpdatedBy(userId);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
@@ -1702,7 +1743,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail  entity  = repositoryStore.getEntity(deletedEntityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, entity, methodName);
-
         repositoryValidator.validateEntityIsDeleted(repositoryName, entity, methodName);
 
         /*
@@ -2053,19 +2093,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
             entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
         }
-        // TODO - clean up
-        //*
-        // * Ensure that the home metadataCollectionID is in the proxy....
-        // */
-        //if (entityOneProxy.getMetadataCollectionId() == null) {
-        //    entityOneProxy.setMetadataCollectionId(metadataCollectionId);
-        //}
-        ///*
-        // * Ensure that the home metadataCollectionName is in the proxy....
-        // */
-        //if (entityOneProxy.getMetadataCollectionName() == null) {
-        //    entityOneProxy.setMetadataCollectionName(repositoryName);
-        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
@@ -2083,19 +2110,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
             entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
         }
-        // TODO - clean up
-        //*
-        // * Ensure that the home metadataCollectionID is in the proxy....
-        // */
-        //if (entityTwoProxy.getMetadataCollectionId() == null) {
-        //    entityTwoProxy.setMetadataCollectionId(metadataCollectionId);
-        //}
-        ///*
-        // * Ensure that the home metadataCollectionName is in the proxy....
-        // */
-        //if (entityTwoProxy.getMetadataCollectionName() == null) {
-        //    entityTwoProxy.setMetadataCollectionName(repositoryName);
-        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
@@ -2202,19 +2216,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
             entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
         }
-        // TODO - clean up
-        //*
-        // * Ensure that the home metadataCollectionID is in the proxy....
-        // */
-        //if (entityOneProxy.getMetadataCollectionId() == null) {
-        //    entityOneProxy.setMetadataCollectionId(metadataCollectionId);
-        //}
-        ///*
-        // * Ensure that the home metadataCollectionName is in the proxy....
-        // */
-        //if (entityOneProxy.getMetadataCollectionName() == null) {
-        //    entityOneProxy.setMetadataCollectionName(repositoryName);
-        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
@@ -2232,19 +2233,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
             entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
         }
-        // TODO - clean up
-        //*
-        // * Ensure that the home metadataCollectionID is in the proxy....
-        // */
-        //if (entityTwoProxy.getMetadataCollectionId() == null) {
-        //    entityTwoProxy.setMetadataCollectionId(metadataCollectionId);
-        //}
-        ///*
-        // * Ensure that the home metadataCollectionName is in the proxy....
-        // */
-        // if (entityTwoProxy.getMetadataCollectionName() == null) {
-        //     entityTwoProxy.setMetadataCollectionName(repositoryName);
-        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
@@ -2302,6 +2290,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate relationship
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
@@ -2362,11 +2370,34 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Locate relationship
          */
+
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
 
-        repositoryValidator.validateInstanceType(repositoryName, relationship);
+        repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, relationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
-        String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, relationship);
 
         TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
 
@@ -2379,6 +2410,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+
         Relationship   updatedRelationship = new Relationship(relationship);
 
         updatedRelationship.setProperties(properties);
@@ -2420,6 +2452,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Restore previous version
          */
         Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(relationshipGUID);
+        restoredRelationship.setUpdatedBy(userId);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, restoredRelationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
@@ -2586,7 +2619,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation is complete.  It is ok to restore the relationship.
          */
 
-        Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(deletedRelationshipGUID);
+
+        Relationship restoredRelationship = new Relationship(relationship);
+
+        restoredRelationship.setStatus(relationship.getStatusOnDelete());
+        restoredRelationship.setStatusOnDelete(null);
+
+        restoredRelationship = repositoryHelper.incrementVersion(userId, relationship, restoredRelationship);
+
+        repositoryStore.updateRelationshipInStore(restoredRelationship);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
@@ -2648,6 +2689,27 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail  entity  = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
 
         /*
          * Validation complete - ok to make changes
@@ -2745,6 +2807,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                        entity.getClassifications(),
                                                        newTypeDefSummary.getName(),
                                                        methodName);
+
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes
@@ -2895,6 +2977,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
         /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        /*
          * Validation complete - ok to make changes
          */
         Relationship   updatedRelationship = new Relationship(relationship);
@@ -2973,6 +3075,26 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                       newTypeDefSummary,
                                                       relationship.getProperties(),
                                                       methodName);
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes
@@ -3172,7 +3294,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         if (entity != null)
         {
             repositoryStore.removeReferenceEntityFromStore(entityGUID);
-            repositoryStore.addEntityProxyToStore(repositoryHelper.getNewEntityProxy(repositoryName, entity));
         }
         else
         {
