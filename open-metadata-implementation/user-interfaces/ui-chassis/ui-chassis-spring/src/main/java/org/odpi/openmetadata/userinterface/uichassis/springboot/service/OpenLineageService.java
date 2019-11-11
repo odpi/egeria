@@ -5,7 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
+import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -39,7 +39,7 @@ public class OpenLineageService {
     public static final String EDGES_LABEL = "edges";
     public static final String NODES_LABEL = "nodes";
     public static final String GLOSSARY_TERM = "glossaryTerm";
-    private final OpenLineage openLineageClient;
+    private final OpenLineageClient openLineageClient;
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
     @Value("${open.lineage.graph.source}")
     private GraphName graphName;
@@ -50,7 +50,7 @@ public class OpenLineageService {
      * @param openLineageClient client to connect to open lineage services
      */
     @Autowired
-    public OpenLineageService(OpenLineage openLineageClient) {
+    public OpenLineageService(OpenLineageClient openLineageClient) {
         this.openLineageClient = openLineageClient;
         mapper = new com.fasterxml.jackson.databind.ObjectMapper();
     }
