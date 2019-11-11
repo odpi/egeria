@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.dataplatformservices.admin;
 
-import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreConnector;
-import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
-import org.odpi.openmetadata.dataplatformservices.listener.DataPlatformServicesCassandraListener;
+import org.odpi.openmetadata.accessservices.dataplatform.client.DataPlatformClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformServicesConfig;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorBase;
 import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -15,6 +17,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The DataPlatformOperationalServices is responsible for initializing different Data Platform Metadata Extractor
+ * Connectors. It is implemented as the bridge between Data Platforms and Egeria Data Platform OMAS by REST APIs from
+ * Data Platform OMAS Client or Data Platform OMAS InTopic asynchronous events.
+ */
 public class DataPlatformOperationalServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformOperationalServices.class);
@@ -22,15 +29,15 @@ public class DataPlatformOperationalServices {
 
     private String localServerName;               /* Initialized in constructor */
     private String localServerUserId;             /* Initialized in constructor */
+    private String localServerPassword;           /* Initialized in constructor */
     private String localServerType;               /* Initialized in constructor */
     private String localOrganizationName;         /* Initialized in constructor */
     private String localServerURL;                /* Initialized in constructor */
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector dataPlatformServiceOutTopicConnector;
-    private CassandraStoreConnector cassandraStoreConnector;
-    private DataPlatformServicesCassandraListener dataPlatformServicesCassandraListener;
-    private DataPlatformConfig dataPlatformConfig;
+    private OpenMetadataTopicConnector dataPlatformOmasInTopicConnector;
+    private DataPlatformMetadataExtractorBase dataPlatformMetadataExtractorBase;
+    private DataPlatformServicesConfig dataPlatformServicesConfig;
 
     /**
      * Constructor used at server startup.
@@ -47,13 +54,20 @@ public class DataPlatformOperationalServices {
         this.localServerURL = localServerURL;
     }
 
-    public void initialize(DataPlatformConfig dataPlatformConfig, OMRSAuditLog auditLog) {
+    /**
+     * Initialize.
+     *
+     * @param dataPlatformServicesConfig the data platform config
+     * @param auditLog           the audit log
+     * @throws OMAGConfigurationErrorException the omag configuration error exception
+     */
+    public void initialize(DataPlatformServicesConfig dataPlatformServicesConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException{
 
         final String actionDescription = "initialize";
 
-        if (dataPlatformConfig != null) {
+        if (dataPlatformServicesConfig != null) {
             this.auditLog = auditLog;
-            this.dataPlatformConfig=dataPlatformConfig;
+            this.dataPlatformServicesConfig = dataPlatformServicesConfig;
 
             DataPlatformServicesAuditCode auditCode = DataPlatformServicesAuditCode.SERVICE_INITIALIZING;
             auditLog.logRecord(actionDescription,
@@ -63,19 +77,40 @@ public class DataPlatformOperationalServices {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            log.info(auditCode.toString());
 
             /*
-             * Configuring the Data Platform Services out topic connector
+             * Configuring the Data Platform OMAS client
              */
-            if (dataPlatformConfig.getDataPlatformServerOutTopic() != null) {
-                try {
-                    dataPlatformServiceOutTopicConnector = getTopicConnector(dataPlatformConfig.getDataPlatformServerOutTopic(), auditLog);
-                    dataPlatformServicesCassandraListener = new DataPlatformServicesCassandraListener(auditLog, dataPlatformServiceOutTopicConnector,dataPlatformConfig);
-                    dataPlatformServiceOutTopicConnector.registerListener(dataPlatformServicesCassandraListener);
+            DataPlatformClient dataPlatformClient;
+            try {
+                dataPlatformClient = new DataPlatformClient(
+                        dataPlatformServicesConfig.getDataPlatformServerName(),
+                        dataPlatformServicesConfig.getDataPlatformServerURL(),
+                        localServerUserId,
+                        localServerPassword
+                );
 
+                log.debug("Configuring the Data Platform OMAS Client: ", dataPlatformClient);
+            } catch (InvalidParameterException error) {
+                throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
+                        this.getClass().getName(),
+                        actionDescription,
+                        error.getErrorMessage(),
+                        error.getReportedSystemAction(),
+                        error.getReportedUserAction(),
+                        error);
+            }
+
+            /*
+             * Configuring the Data Platform OMAS In Topic connector
+             */
+            if (dataPlatformServicesConfig.getDataPlatformOmasInTopic() != null) {
+                try {
+                    dataPlatformOmasInTopicConnector = getTopicConnector(
+                            dataPlatformServicesConfig.getDataPlatformOmasInTopic(), auditLog);
+                    log.debug("Configuring Data Platform OMAS InTopic Connector: ", dataPlatformOmasInTopicConnector);
                 } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_IN_TOPIC_CONNECTION;
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -87,28 +122,35 @@ public class DataPlatformOperationalServices {
             }
 
             /*
-             * Configuring the Cassandra connector
+             * Configuring the Data Platform Metadata Extractor Connector
              */
-            Connection dataPlatformConnection = dataPlatformConfig.getDataPlatformConnection();
+            Connection dataPlatformConnection = dataPlatformServicesConfig.getDataPlatformConnection();
+            ConnectorBroker connectorBroker = new ConnectorBroker();
 
             if (dataPlatformConnection != null) {
                 try {
-                    ConnectorBroker connectorBroker = new ConnectorBroker();
-                    cassandraStoreConnector =(CassandraStoreConnector) connectorBroker.getConnector(dataPlatformConnection);
-                    log.info("Found connection: " + dataPlatformConnection);
-                    cassandraStoreConnector.registerListener(dataPlatformServicesCassandraListener);
+                    dataPlatformMetadataExtractorBase =(DataPlatformMetadataExtractorBase) connectorBroker.getConnector(dataPlatformConnection);
+                    dataPlatformMetadataExtractorBase.setDataPlatformClient(dataPlatformClient);
+                    log.debug("The following Data Platform Metadata Extractor has been configured: ", dataPlatformMetadataExtractorBase);
                 } catch (Exception e) {
-                    log.error("Error in initializing Cassandra connector: ", e);
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
+                    auditLog.logRecord(actionDescription,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
                 }
             }
 
             /*
-             Starting the Out Topic Connector
+             Starting the Data Platform In Topic Connector
              */
-            if (dataPlatformServiceOutTopicConnector != null) {
+            if (dataPlatformOmasInTopicConnector != null) {
                 try {
-                    dataPlatformServiceOutTopicConnector.start();
-                    auditCode = DataPlatformServicesAuditCode.OUTBOUND_TOPIC_CONNECTOR_INITIALIZED;
+                    dataPlatformOmasInTopicConnector.start();
+                    auditCode = DataPlatformServicesAuditCode.DP_OMAS_IN_TOPIC_CONNECTION_INITIALIZED;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -118,7 +160,7 @@ public class DataPlatformOperationalServices {
                             auditCode.getUserAction());
 
                 } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_IN_TOPIC_CONNECTION;
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -149,10 +191,9 @@ public class DataPlatformOperationalServices {
     public boolean disconnect(boolean permanent) {
         DataPlatformServicesAuditCode auditCode;
         try {
-
-            // Disconnect the cassandra connector
-            cassandraStoreConnector.disconnect();
-            dataPlatformServiceOutTopicConnector.disconnect();
+            // Disconnect the data platform connector
+            dataPlatformMetadataExtractorBase.disconnect();
+            dataPlatformOmasInTopicConnector.disconnect();
             auditCode = DataPlatformServicesAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
@@ -208,7 +249,12 @@ public class DataPlatformOperationalServices {
         }
     }
 
-    public DataPlatformConfig getDataPlatformConfig() {
-        return dataPlatformConfig;
+    /**
+     * Gets data platform config.
+     *
+     * @return the data platform config
+     */
+    public DataPlatformServicesConfig getDataPlatformServicesConfig() {
+        return dataPlatformServicesConfig;
     }
 }

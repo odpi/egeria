@@ -13,10 +13,15 @@
 
     <artifactId>data-platform-services-server</artifactId>
 
+    <name>Data Platform Services Server</name>
+    <description>The implementation of server for Data Platform Service.</description>
+
+
     <dependencies>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-open-metadata-connector</artifactId>
+            <artifactId>data-platform-services-connector</artifactId>
         </dependency>
 
         <dependency>
@@ -41,20 +46,9 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-api</artifactId>
+            <artifactId>data-platform-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.datastax.cassandra</groupId>
-            <artifactId>cassandra-driver-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
+
     </dependencies>
 
 </project>

@@ -52,7 +52,7 @@ public class <$$uRelationshipName$$>Mapper {
                                                case PRIMITIVE:
                                                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                                    actualValue = primitivePropertyValue.getPrimitiveValue();
-                                                   if (<$$uRelationshipName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
+                                                   if (<$$uRelationshipName$$>.getAttributePropertyNames().contains(name)) {
                                                       <$$Attr$$
                                                       if (name.equals("<$$AttrName$$>")) {
                                                            <$$RelationshipName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
@@ -71,7 +71,7 @@ public class <$$uRelationshipName$$>Mapper {
                                                case ENUM:
                                                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                                                    String symbolicName = enumPropertyValue.getSymbolicName();
-                                                   if (<$$uRelationshipName$$>.ENUM_NAMES_SET.contains(name)) {
+                                                   if (<$$uRelationshipName$$>.getEnumPropertyNames().contains(name)) {
                                                        <$$Enum$$
                                                         if (name.equals("<$$EnumName$$>")) {
                                                               <$$uEnumType$$> <$$EnumName$$> = <$$uEnumType$$>.valueOf(symbolicName);
@@ -91,7 +91,7 @@ public class <$$uRelationshipName$$>Mapper {
                        
                                                    break;
                                                case MAP:
-                                                    if (<$$RelationshipName$$>.MAP_NAMES_SET.contains(name)) {
+                                                    if (<$$uRelationshipName$$>.getMapPropertyNames().contains(name)) {
                                                         MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                                                         InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
 

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * SchemaTypeHandler manages SchemaType objects.  It runs server-side in
- * OMAS and retrieves SchemaType entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves SchemaType entities through the OMRSRepositoryConnector.
  */
 public class SchemaTypeHandler
 {
@@ -30,6 +30,7 @@ public class SchemaTypeHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private LastAttachmentHandler   lastAttachmentHandler;
 
 
     /**
@@ -40,18 +41,21 @@ public class SchemaTypeHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public SchemaTypeHandler(String                  serviceName,
                              String                  serverName,
                              InvalidParameterHandler invalidParameterHandler,
                              RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper)
+                             OMRSRepositoryHelper    repositoryHelper,
+                             LastAttachmentHandler   lastAttachmentHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.lastAttachmentHandler = lastAttachmentHandler;
     }
 
 
@@ -486,6 +490,8 @@ public class SchemaTypeHandler
      * @param userId calling userId
      * @param schemaTypeGUID anchor object
      * @param schemaAttributes list of nested schema attribute objects or null
+     * @param externalSourceGUID unique identifier of the external source
+     * @param externalSourceName unique name of the external source
      * @param methodName calling method
      *
      * @throws InvalidParameterException the bean properties are invalid

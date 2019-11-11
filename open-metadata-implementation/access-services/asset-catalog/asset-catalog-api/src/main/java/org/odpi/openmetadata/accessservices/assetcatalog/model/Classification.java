@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -134,5 +135,29 @@ public class Classification implements Serializable {
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classification that = (Classification) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(origin, that.origin) &&
+                Objects.equals(originGUID, that.originGUID) &&
+                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updatedBy, that.updatedBy) &&
+                Objects.equals(updateTime, that.updateTime) &&
+                Objects.equals(version, that.version) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(typeDefName, that.typeDefName) &&
+                Objects.equals(typeDefDescription, that.typeDefDescription) &&
+                Objects.equals(properties, that.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, origin, originGUID, createdBy, createTime, updatedBy, updateTime, version, status, typeDefName, typeDefDescription, properties);
     }
 }

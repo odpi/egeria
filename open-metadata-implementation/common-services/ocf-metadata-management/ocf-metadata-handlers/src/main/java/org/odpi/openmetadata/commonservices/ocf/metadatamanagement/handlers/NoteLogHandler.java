@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * NoteLogHandler manages NoteLog objects.  It runs server-side in
- * OMAS and retrieves NoteEntry entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves NoteEntry entities through the OMRSRepositoryConnector.
  */
-public class NoteLogHandler
+public class NoteLogHandler extends AttachmentHandlerBase
 {
     private String                  serviceName;
     private String                  serverName;
@@ -36,18 +36,16 @@ public class NoteLogHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public NoteLogHandler(String                  serviceName,
                           String                  serverName,
                           InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler       repositoryHandler,
-                          OMRSRepositoryHelper    repositoryHelper)
+                          OMRSRepositoryHelper    repositoryHelper,
+                          LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -68,17 +66,12 @@ public class NoteLogHandler
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  anchorGUID,
-                                                                  ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                  NoteLogMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID,
-                                                                  NoteLogMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_NAME,
-                                                                  methodName);
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      NoteLogMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID,
+                                      NoteLogMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_NAME,
+                                      methodName);
     }
 
 

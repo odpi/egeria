@@ -24,15 +24,10 @@ import java.util.List;
 
 /**
  * ConnectionHandler retrieves Connection objects from the property server.  It runs server-side in the
- * OMAS and retrieves Connections through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves Connections through the OMRSRepositoryConnector.
  */
-public class ConnectionHandler
+public class ConnectionHandler extends AttachmentHandlerBase
 {
-    private String                  serviceName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private String                  serverName;
-    private InvalidParameterHandler invalidParameterHandler;
-    private RepositoryHandler       repositoryHandler;
     private EndpointHandler         endpointHandler;
     private ConnectorTypeHandler    connectorTypeHandler;
 
@@ -47,19 +42,16 @@ public class ConnectionHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler handler for interfacing with the repository services
      * @param repositoryHelper    helper utilities for managing repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public ConnectionHandler(String                  serviceName,
                              String                  serverName,
                              InvalidParameterHandler invalidParameterHandler,
                              RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper)
+                             OMRSRepositoryHelper    repositoryHelper,
+                             LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.repositoryHelper = repositoryHelper;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-
-        this.repositoryHandler = repositoryHandler;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
 
         this.endpointHandler = new EndpointHandler(serviceName,
                                                    serverName,
@@ -110,17 +102,12 @@ public class ConnectionHandler
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  anchorGUID,
-                                                                  AssetMapper.ASSET_TYPE_NAME,
-                                                                  AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                  AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                  methodName);
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      AssetMapper.ASSET_TYPE_NAME,
+                                      AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                      AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                      methodName);
     }
 
 

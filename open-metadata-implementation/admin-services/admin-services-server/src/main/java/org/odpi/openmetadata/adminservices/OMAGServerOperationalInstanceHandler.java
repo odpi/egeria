@@ -12,14 +12,15 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
  * an OMAG server service instance.  The instance map is thread-safe.  Instances are added
  * and removed during server initialization and termination.
  */
-class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInstanceHandler
+public class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInstanceHandler
 {
     /**
      * Constructor passes the service name that is used on all calls to this instance.
      *
      * @param serviceName unique identifier for this service with a human meaningful value
      */
-    OMAGServerOperationalInstanceHandler(String       serviceName)
+
+    public OMAGServerOperationalInstanceHandler(String serviceName)
     {
         super(serviceName);
     }
@@ -36,11 +37,12 @@ class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInstanceHand
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    protected OMAGOperationalServicesInstance getServerServiceInstance(String  userId,
-                                                                       String  serverName,
-                                                                       String  serviceOperationName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+    public OMAGOperationalServicesInstance getServerServiceInstance(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName)
+            throws InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         return (OMAGOperationalServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
     }

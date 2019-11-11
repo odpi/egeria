@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
-import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
@@ -82,8 +82,8 @@ public class OpenLineageOperationalServices {
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
 
-        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection,"buffer");
-        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection,"main");
+        BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
+        MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
 
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
@@ -108,7 +108,7 @@ public class OpenLineageOperationalServices {
 
     }
 
-    private OpenLineageGraphStore getGraphConnector(Connection connection,String type) throws OMAGConfigurationErrorException {
+    private OpenLineageGraphStore getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
@@ -116,12 +116,7 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                if (type.equals("buffer")){
-                    return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
-                }
-                else if (type.equals("main")){
-                    return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
-                }
+                return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 getError(auditLog, OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR, ACTION_DESCRIPTION, ACTION_DESCRIPTION);

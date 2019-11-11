@@ -148,8 +148,8 @@ public class MainGraphFactory extends IndexingFactory {
 
     private void createIndexes(JanusGraph graph){
 
-        checkAndAddLabelVertexOrEdge(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph, Vertex.class);
-        createCompositeIndexForProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph,Vertex.class);
-        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph, Edge.class);
+        createCompositeIndexForVertexProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph);
+        createCompositeIndexForVertexProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph);
+        createCompositeIndexForVertexProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph);
     }
 }
