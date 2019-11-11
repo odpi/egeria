@@ -26,8 +26,8 @@ Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not con
 
 **Additional configuration**
 
-* vdc/values.yaml is the main place to configure preferences. It is recommended to only change what you need
-* vdc/templates/configmap.yaml currently contains some additional configuration which is not pulled in from values. 
+* odpi-egeria-vdc/values.yaml is the main place to configure preferences. It is recommended to only change what you need
+* odpi-egeria-vdc/templates/configmap.yaml currently contains some additional configuration which is not pulled in from values. 
 **Required helm repositories (prereq)**
 
 ```
@@ -39,8 +39,8 @@ helm repo update
 
 ```
 cd open-metadata-resources/open-metadata-deployment/charts
-helm dependency update vdc
-helm install vdc --name vdc
+helm dependency update odpi-egeria-vdc
+helm install odpi-egeria-vdc --name vdc
 ```
 
 Note: If name is not specified an auto-generated name like 'slippery-lizard' will be used.

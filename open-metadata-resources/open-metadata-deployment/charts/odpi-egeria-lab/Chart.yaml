@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-name: lab
+name: odpi-egeria-lab
 description: Egeria lab environment
 apiVersion: v1
 version: 1.0.0

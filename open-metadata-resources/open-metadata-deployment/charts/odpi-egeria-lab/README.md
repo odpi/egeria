@@ -35,8 +35,8 @@ From one directory level above the location of this README, run the following:
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm dep update lab
-helm install lab lab
+helm dep update odpi-egeria-lab
+helm install lab odpi-egeria-lab
 ```
 
 Example transcript:
@@ -53,7 +53,7 @@ $ helm repo update
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "bitnami" chart repository
 Update Complete. ⎈ Happy Helming!⎈
-$ helm dep update lab
+$ helm dep update odpi-egeria-lab
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "bitnami" chart repository
 Update Complete. ⎈Happy Helming!⎈
@@ -65,13 +65,13 @@ Deleting outdated chart
 Now we can actually do the deployment with
 
 ```bash
-helm install lab lab
+helm install lab odpi-egeria-lab
 ```
 
 which will look like:
 
 ```text
-$ helm install lab lab                                                                                  <<<
+$ helm install lab odpi-egeria-lab                                                                                <<<
 NAME: lab
 LAST DEPLOYED: 2019-09-14 15:12:35.663861002 +0000 UTC m=+0.131192396
 NAMESPACE: egeria
@@ -181,7 +181,7 @@ service:
 
 and then change the port numbers accordingly.
 You can then deploy using
-`helm install lab lab -f lab.yaml` which will override standard defaults with your choices
+`helm install lab odpi-egeria-lab -f lab.yaml` which will override standard defaults with your choices
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
