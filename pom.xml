@@ -137,8 +137,8 @@
         <kafka.version>2.3.1</kafka.version>
         <janus.version>0.4.0</janus.version>
         <gremlin.version>3.4.1</gremlin.version>
-        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
-        <spring.version>5.2.0.RELEASE</spring.version>
+        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+        <spring.version>5.2.1.RELEASE</spring.version>
         <tomcat.version>9.0.27</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.4</commons-collections.version>
@@ -157,7 +157,6 @@
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
-        <cassandra.version>3.8.0</cassandra.version>
         <guava.version>23.0</guava.version>
         <tink.version>1.3.0-rc1</tink.version>
         <jsonld.version>0.12.5</jsonld.version>
@@ -165,6 +164,8 @@
         <commons-codec.version>1.13</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
+        <oss.version>4.2.0</oss.version>
+        <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -173,7 +174,7 @@
         <maven-shade.version>3.2.1</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
-        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.2.2</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
@@ -190,7 +191,7 @@
         <rat-plugin.version>0.13</rat-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
@@ -1723,7 +1724,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cassandra-open-metadata-connector</artifactId>
+                <artifactId>cassandra-data-store-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cassandra-metadata-extractor-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1731,6 +1739,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-platform-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-services-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1871,10 +1886,10 @@
             </dependency>
 
             <dependency>
-                <groupId>com.datastax.cassandra</groupId>
-                <artifactId>cassandra-driver-core</artifactId>
-                <version>${cassandra.version}</version>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-core</artifactId>
                 <scope>compile</scope>
+                <version>${oss.version}</version>
             </dependency>
 
             <dependency>
@@ -1907,6 +1922,12 @@
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>${googlefindbugs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${spotbugs-annotations.version}</version>
             </dependency>
 
         </dependencies>

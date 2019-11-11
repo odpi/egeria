@@ -43,7 +43,7 @@ public class <$$uname$$> extends ClassificationBean {
     private Map<String, Object> extraAttributes;
 
 
- public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+ private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
     <$$$
         "<$$PropertyName$$>",
     $$$>
@@ -51,7 +51,7 @@ public class <$$uname$$> extends ClassificationBean {
     // Terminate the list
         null
     };
-    public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
      <$Attr$$
         "<$$AttrName$$>",
      $Attr$$>
@@ -59,7 +59,7 @@ public class <$$uname$$> extends ClassificationBean {
      // Terminate the list
         null
     };
-    public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
+    private static final String[] ENUM_NAMES_SET_VALUES = new String[] {
      <$Enum$$
          "<$$EnumName$$>",
      $Enum$$>
@@ -67,7 +67,7 @@ public class <$$uname$$> extends ClassificationBean {
          // Terminate the list
           null
     };
-    public static final String[] MAP_NAMES_SET_VALUES = new String[] {
+    private static final String[] MAP_NAMES_SET_VALUES = new String[] {
      <$Map$$
          "<$$MapName$$>",
      $Map$$>
@@ -76,10 +76,10 @@ public class <$$uname$$> extends ClassificationBean {
          null
     };
     // note the below definitions needs to be fully qualified
-    public static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-    public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-    public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-    public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
     /**
      * Default constructor
      */
@@ -136,6 +136,40 @@ public class <$$uname$$> extends ClassificationBean {
 
 
    $$$>
+
+    /**
+     * <$$uname$$> property names
+     * @return Set of Strings of the <$$uname$$> property names
+     */
+    public static java.util.Set<String> getPropertyNames() {
+         return PROPERTY_NAMES_SET;
+    }
+
+    /**
+     * <$$uname$$> map property names
+     * @return Set of Strings of the <$$uname$$> map property names
+     */
+    public static java.util.Set<String> getMapPropertyNames() {
+         return MAP_NAMES_SET;
+    }
+
+    /**
+     * <$$uname$$> enum property names
+     * @return Set of Strings of the <$$uname$$> enum property names
+     */
+    public static java.util.Set<String> getEnumPropertyNames() {
+         return ENUM_NAMES_SET;
+    }
+
+    /**
+     * <$$uname$$> attribute property names
+     * @return Set of Strings of the <$$uname$$> attribute property names
+     */
+    public static java.util.Set<String> getAttributePropertyNames() {
+         return ATTRIBUTE_NAMES_SET;
+    }
+
+
 
     /**
       * Get the extra attributes - ones that are in addition to the standard types.

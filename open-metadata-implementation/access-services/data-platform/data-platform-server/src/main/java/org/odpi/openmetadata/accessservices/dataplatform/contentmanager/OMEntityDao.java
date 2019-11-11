@@ -180,7 +180,7 @@ public class OMEntityDao {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            log.info("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
+            log.debug("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
             existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
                     typeDef.getGUID(),
                     matchProperties,
@@ -382,14 +382,12 @@ public class OMEntityDao {
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, zoneRestricted);
-            log.info("Entity with qualified name {} added", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            log.debug("Entity with qualified name {} added", qualifiedName);
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
-            log.info("Entity with qualified name {} already exists", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            log.debug("Entity with qualified name {} already exists", qualifiedName);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
-                log.info("Updating entity with qualified name {} ", qualifiedName);
+                log.debug("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties, zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             } else {
@@ -438,11 +436,9 @@ public class OMEntityDao {
         relationship = getRelationship(relationshipType, guid1, guid2);
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
-            log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            log.debug("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
         } else {
-            log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            log.debug("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
         }
 
         return relationship;
@@ -481,7 +477,6 @@ public class OMEntityDao {
             classification.setProperties(classificationProperties);
             return classification;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_CLASSIFICATION_EXCEPTION;
             auditLog.logException("getClassification",
                     errorCode.getErrorMessageId(),
@@ -498,9 +493,9 @@ public class OMEntityDao {
 
     public void purgeRelationship(Relationship relationship) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException {
         if (relationship == null || relationship.getGUID() == null || relationship.getType() == null) {
-            log.info("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
+            log.debug("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
         } else {
-            log.info("Purge relationship with guid {}", relationship.getGUID());
+            log.debug("Purge relationship with guid {}", relationship.getGUID());
             enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
             enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
         }
@@ -508,9 +503,9 @@ public class OMEntityDao {
 
     public void purgeEntity(EntitySummary entitySummary) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, EntityNotDeletedException, FunctionNotSupportedException {
         if (entitySummary == null || entitySummary.getGUID() == null || entitySummary.getType() == null) {
-            log.info("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
+            log.debug("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
         } else {
-            log.info("Purge entity with guid {}", entitySummary.getGUID());
+            log.debug("Purge entity with guid {}", entitySummary.getGUID());
             enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
             enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }

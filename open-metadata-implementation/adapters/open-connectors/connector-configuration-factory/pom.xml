@@ -102,10 +102,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-open-metadata-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>virtualization-services-api</artifactId>
         </dependency>
     </dependencies>

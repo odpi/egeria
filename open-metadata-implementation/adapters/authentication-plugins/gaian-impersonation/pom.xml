@@ -13,11 +13,6 @@
     <description>Apache Derby/Gaian authentication module to support user auth by proxy (impersonation)</description>
     <packaging>jar</packaging>
 
-    <properties>
-        <gaian.version>2.1.8</gaian.version>
-        <derby.version>10.8.3.1</derby.version>
-    </properties>
-
     <parent>
         <artifactId>authentication-plugins</artifactId>
         <groupId>org.odpi.egeria</groupId>
