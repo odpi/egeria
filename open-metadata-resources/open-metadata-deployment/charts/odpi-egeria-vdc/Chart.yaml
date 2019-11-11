@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-name: vdc
+name: odpi-egeria-vdc
 description: Egeria VDC Environment
 apiVersion: v1
 version: 0.1.11
