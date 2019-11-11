@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.DataEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -80,6 +81,50 @@ public class DataEngineRegistrationHandler {
         ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(qualifiedName, name, description,
                 type, version, patchLevel, source, null, null, repositoryHelper,
                 serviceName, serverName);
+
+        InstanceProperties properties = builder.getInstanceProperties(methodName);
+
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
+                methodName);
+    }
+
+    /**
+     * Create the software server capability entity from an external data engine
+     *
+     * @param userId                    the name of the calling user
+     * @param softwareServerCapability  the entity of external data engine
+     *
+     * @return unique identifier of the external data engine in the repository
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
+            InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
+        final String methodName = "createExternalDataEngine";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(softwareServerCapability.getQualifiedName(), DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
+
+        ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(
+                softwareServerCapability.getQualifiedName(),
+                softwareServerCapability.getDisplayName(),
+                softwareServerCapability.getDescription(),
+                softwareServerCapability.getEngineType(),
+                softwareServerCapability.getEngineVersion(),
+                softwareServerCapability.getPatchLevel(),
+                softwareServerCapability.getSource(),
+                null,
+                null,
+                repositoryHelper,
+                serviceName,
+                serverName);
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
