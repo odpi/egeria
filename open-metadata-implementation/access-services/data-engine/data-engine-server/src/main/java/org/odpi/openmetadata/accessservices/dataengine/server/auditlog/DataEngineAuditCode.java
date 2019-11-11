@@ -48,6 +48,14 @@ public enum DataEngineAuditCode {
             "The access service detected an error during the start up of a specific server instance.  " +
                     "Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem. " +
+                    " Once this is resolved, restart the server."),
+    ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-DATA-ENGINE-0006",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
+                    "message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  " +
+                    "Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server.");
 
     private final String logMessageId;
