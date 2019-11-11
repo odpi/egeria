@@ -2156,12 +2156,12 @@
             </testResource>
         </testResources>
 
-        <!-- Default compiler options - enable deprecation information -->
+        <!-- Default compiler options - enable additional lint checks -->
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <compilerArgument>-Xlint:deprecation</compilerArgument>
+                    <compilerArgument>-Xlint:all</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
             </plugin>
