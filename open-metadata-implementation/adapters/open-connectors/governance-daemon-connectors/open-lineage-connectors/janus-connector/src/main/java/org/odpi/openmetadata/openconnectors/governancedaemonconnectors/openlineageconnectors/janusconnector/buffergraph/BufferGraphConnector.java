@@ -72,8 +72,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 BufferGraphFactory bufferGraphFactory = new BufferGraphFactory();
                 this.bufferGraph = bufferGraphFactory.openBufferGraph(connectionProperties);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -96,7 +96,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                         verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
                     }
                 }
-            );
+        );
 
         verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
     }
@@ -111,7 +111,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         for (String guid : guidList) {
 //            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("vepropdisplayName","initial_load");
 //            if(!initial.hasNext()) {
-            if(guid.equals("3c4ad6ea-18c7-4fad-94fb-8ab692b2824e")){
+            if(guid.equals("0cb86d8a-8acc-4ddb-a5a9-e00ccd90d3d9")){
 
                 List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
                         .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
@@ -128,10 +128,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                         String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
                         String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
 
-
                         if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                            MainGraphMapper mainGraphMapper = new MainGraphMapper();
-                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid,mainGraph);
+                            MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
+                            mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
                         }
                     }
                 }
@@ -226,7 +225,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     }
                     nextVertex = vert;
                 }
-              
+
 
                 return findPathForOutputAsset(nextVertex, g,v);
             }
@@ -243,10 +242,10 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 this.getClass().getName());
 
         throw new JanusConnectorException(this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
 

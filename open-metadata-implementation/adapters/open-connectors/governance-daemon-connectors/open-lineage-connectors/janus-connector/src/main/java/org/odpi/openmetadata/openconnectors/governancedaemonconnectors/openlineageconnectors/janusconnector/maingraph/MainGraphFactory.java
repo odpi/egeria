@@ -2,13 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.accessservices.assetlineage.Vertex;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.IndexingFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.IndexingFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -17,14 +16,12 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_LABEL;
 
 public class MainGraphFactory extends IndexingFactory {
 
@@ -45,6 +42,7 @@ public class MainGraphFactory extends IndexingFactory {
                 set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
                 set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
                 set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
+                set("storage.transactions",false).
                 set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
 
 
@@ -113,9 +111,7 @@ public class MainGraphFactory extends IndexingFactory {
 
             management.commit();
 
-//            createIndexes(graph);
-
-
+            createIndexes(graph);
 
         } catch (Exception e) {
 
@@ -148,8 +144,6 @@ public class MainGraphFactory extends IndexingFactory {
 
     private void createIndexes(JanusGraph graph){
 
-        createCompositeIndexForVertexProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph);
-        createCompositeIndexForVertexProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph);
-        createCompositeIndexForVertexProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph);
+        createCompositeIndexForProperty(PROPERTY_NAME_NODE_ID,PROPERTY_KEY_ENTITY_NODE_ID,true,graph, Vertex.class);
     }
 }

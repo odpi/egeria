@@ -60,10 +60,10 @@ public class BufferGraphFactory extends IndexingFactory {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, BufferGraphFactory.class.getName());
             System.out.println(e.getMessage());
             throw new JanusConnectorException(BufferGraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
 
@@ -79,10 +79,10 @@ public class BufferGraphFactory extends IndexingFactory {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, BufferGraphFactory.class.getName());
 
             throw new JanusConnectorException(BufferGraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
 
@@ -126,17 +126,17 @@ public class BufferGraphFactory extends IndexingFactory {
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
             throw new JanusConnectorException(BufferGraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
     private <T extends Enum<T>> Set<String> schemaBasedOnGraphType(Class<T> aEnum){
-           return Stream.of(aEnum.getEnumConstants())
-                    .map(Enum::name)
-                    .collect(Collectors.toSet());
+        return Stream.of(aEnum.getEnumConstants())
+                .map(Enum::name)
+                .collect(Collectors.toSet());
     }
 
     private JanusGraphManagement checkAndAddLabelVertexOrEdge(Set<String> labels, JanusGraphManagement management){

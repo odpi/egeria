@@ -215,7 +215,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Map<String, String> attributes = new HashMap<>();
         String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
         if(originalGlossaryTerm != null)
-        attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
         return attributes;
     }
 
