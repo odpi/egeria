@@ -91,7 +91,7 @@ spec:
             - "start.sh"
           args:
             - jupyter
-            - notebook
+            - lab
             - "--NotebookApp.token=''"
           env:
             - name: corePlatformURL

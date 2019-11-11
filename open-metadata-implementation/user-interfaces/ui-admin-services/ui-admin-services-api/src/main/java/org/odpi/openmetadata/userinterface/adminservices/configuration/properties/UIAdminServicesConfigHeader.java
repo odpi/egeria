@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = UIServerConfig.class, name = "org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig"),
-        // TODO add user repository
+        @JsonSubTypes.Type(value = ViewServiceConfig.class, name = "org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig")
 })
 public class UIAdminServicesConfigHeader implements Serializable
 {

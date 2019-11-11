@@ -33,7 +33,7 @@ public class TaxonomyMapper extends ClassificationMapper{
         Taxonomy taxonomy = (Taxonomy)omasClassification;
         String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"organizingPrinciple",omrsClassificationProperties,"");
         taxonomy.setOrganizingPrinciple(stringValue);
-        return Taxonomy.PROPERTY_NAMES_SET;
+        return Taxonomy.getPropertyNames();
     }
 
     @Override
