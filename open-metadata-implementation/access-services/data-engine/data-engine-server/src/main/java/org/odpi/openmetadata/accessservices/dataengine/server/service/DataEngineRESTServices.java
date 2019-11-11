@@ -315,12 +315,12 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
+    public void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
         response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
         failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
     }
 
-    private List<GUIDResponse> getGuidResponses(ProcessListResponse response, List<GUIDResponse> createdProcesses) {
+    public List<GUIDResponse> getGuidResponses(ProcessListResponse response, List<GUIDResponse> createdProcesses) {
         response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
 
         return createdProcesses;
@@ -335,7 +335,7 @@ public class DataEngineRESTServices {
         response.setExceptionProperties(guidResponse.getExceptionProperties());
     }
 
-    private void updateProcessStatus(String userId, String serverName, GUIDResponse response,
+    public void updateProcessStatus(String userId, String serverName, GUIDResponse response,
                                      InstanceStatus instanceStatus) {
         final String methodName = "updateProcessStatus";
 
@@ -356,7 +356,7 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: {} with response: {}", methodName, response.toString());
     }
 
-    private List<GUIDResponse> createOrUpdateProcesses(String userId, String serverName, List<Process> processes,
+    public List<GUIDResponse> createOrUpdateProcesses(String userId, String serverName, List<Process> processes,
                                                        String externalSourceName) {
         Predicate<? super Process> hasPortImplementationsPredicate =
                 process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
@@ -462,7 +462,7 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created process
      */
-    private GUIDResponse createOrUpdateProcess(String userId, String serverName, Process process,
+    public GUIDResponse createOrUpdateProcess(String userId, String serverName, Process process,
                                                String externalSourceName) {
         final String methodName = "createOrUpdateProcess";
 
@@ -716,7 +716,7 @@ public class DataEngineRESTServices {
         return schemaTypeGUID;
     }
 
-    private String createOrUpdatePortImplementationWithSchemaType(String userId,
+    public String createOrUpdatePortImplementationWithSchemaType(String userId,
                                                                   String serverName,
                                                                   PortImplementation portImplementation,
                                                                   String externalSourceName )throws
@@ -772,7 +772,7 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: {} with void response: {}", methodName);
     }
 
-    private String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias,
+    public String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias,
                                                          String externalSourceName) throws
                                                                                     InvalidParameterException,
                                                                                     PropertyServerException,
