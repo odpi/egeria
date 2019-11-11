@@ -12,7 +12,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 
-public class OpenLineage extends FFDCRESTClient implements OpenLineageInterface {
+public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInterface {
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/open-lineage/users/{1}";
 
@@ -30,12 +30,12 @@ public class OpenLineage extends FFDCRESTClient implements OpenLineageInterface 
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException if parameter validation fails
      */
-    public OpenLineage(String serverName, String serverPlatformURLRoot)
+    public OpenLineageClient(String serverName, String serverPlatformURLRoot)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot);
     }
 
-    public OpenLineage(String serverName, String serverPlatformURLRoot, String userId, String password)
+    public OpenLineageClient(String serverName, String serverPlatformURLRoot, String userId, String password)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
