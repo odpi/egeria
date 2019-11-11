@@ -11,13 +11,7 @@ import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 import '@vaadin/vaadin-button/vaadin-button.js';
-import '@vaadin/vaadin-grid/vaadin-grid-tree-column.js';
-import '@vaadin/vaadin-text-field/vaadin-text-field.js';
-import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
 import 'multiselect-combo-box/multiselect-combo-box.js';
-import '@vaadin/vaadin-item/vaadin-item.js';
-import '@vaadin/vaadin-menu-bar/vaadin-menu-bar.js';
-import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 
