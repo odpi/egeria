@@ -22,10 +22,6 @@
 
     <artifactId>asset-lineage-server</artifactId>
 
-    <properties>
-        <junit.version>4.12</junit.version>
-    </properties>
-
     <dependencies>
 
         <dependency>

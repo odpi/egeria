@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 public class LineageEdge {
 
+    public LineageEdge(){}
+
     protected String edgeType;
     protected String sourceNodeID;
     protected String destinationNodeID;
