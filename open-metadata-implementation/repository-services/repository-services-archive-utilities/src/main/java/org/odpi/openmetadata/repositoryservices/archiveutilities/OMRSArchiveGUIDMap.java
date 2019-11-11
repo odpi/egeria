@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -55,7 +54,7 @@ public class OMRSArchiveGUIDMap
 
             idToGUIDMap = objectMapper.readValue(idFileContents, Map.class);
         }
-        catch (IOException   ioException)
+        catch (Throwable   error)
         {
             idToGUIDMap = new HashMap<>();
         }
@@ -107,7 +106,7 @@ public class OMRSArchiveGUIDMap
 
                 String mapContents = objectMapper.writeValueAsString(idToGUIDMap);
 
-                FileUtils.writeStringToFile(idFile, mapContents, false);
+                FileUtils.writeStringToFile(idFile, mapContents, (String)null,false);
             }
 
         }

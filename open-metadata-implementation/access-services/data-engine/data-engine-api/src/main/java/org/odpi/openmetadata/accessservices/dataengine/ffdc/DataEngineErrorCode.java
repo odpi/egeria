@@ -34,7 +34,17 @@ public enum DataEngineErrorCode {
     INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-005 ",
             "The port type passed for the {0} is invalid, or different from {1}",
             "The system is unable to create a new PortDelegation relation the request without equal types between the ports.",
-            "Correct the code in the caller to provide the correct port type.");
+            "Correct the code in the caller to provide the correct port type."),
+    PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
+            "The data engine event {0} could not be processed. Error: {1}",
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema."),
+    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
+            "The data engine event {0} could not be parsed. Error: {1}",
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema.");
+
+
     private int HTTPErrorCode;
     private String errorMessageId;
     private String errorMessage;

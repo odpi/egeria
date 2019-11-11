@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Referenceable metadata element
+# Referenceable 
 
-A referenceable metadata element is an element that is significant enough to need
+A **referenceable** is a the description of a resource that is significant enough to need
 its own unique name so that it can be referred to accurately in different contexts
 (typically outside of open metadata).
 
@@ -21,7 +21,7 @@ two different objects.
 
 * [GUIDs](guid.md)
 * [Referenceable Open Metadata Type](../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)
-
+* [Assets](assets)
 
 
 

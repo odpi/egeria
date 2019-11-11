@@ -149,17 +149,17 @@ public class OMAGServerOperationalServices
             /*
              * Next verify that there are services configured.
              */
-            RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
-            List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
-            ConformanceSuiteConfig    conformanceSuiteConfig    = configuration.getConformanceSuiteConfig();
-            DiscoveryServerConfig     discoveryServerConfig     = configuration.getDiscoveryServerConfig();
-            OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
-            SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
-            SecurityOfficerConfig     securityOfficerConfig     = configuration.getSecurityOfficerConfig();
-            StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
-            VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
-            DataEngineProxyConfig     dataEngineProxyConfig     = configuration.getDataEngineProxyConfig();
-            DataPlatformConfig        dataPlatformConfig        = configuration.getDataPlatformConfig();
+            RepositoryServicesConfig  repositoryServicesConfig    = configuration.getRepositoryServicesConfig();
+            List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
+            ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
+            DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
+            OpenLineageConfig         openLineageConfig           = configuration.getOpenLineageConfig();
+            SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
+            SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
+            StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();
+            VirtualizationConfig      virtualizationConfig        = configuration.getVirtualizationConfig();
+            DataEngineProxyConfig     dataEngineProxyConfig       = configuration.getDataEngineProxyConfig();
+            DataPlatformServicesConfig dataPlatformServicesConfig = configuration.getDataPlatformServicesConfig();
 
             if ((repositoryServicesConfig == null) &&
                     (accessServiceConfigList == null) &&
@@ -171,7 +171,7 @@ public class OMAGServerOperationalServices
                     (stewardshipServicesConfig == null) &&
                     (virtualizationConfig == null) &&
                     (dataEngineProxyConfig == null) &&
-                    (dataPlatformConfig == null))
+                    (dataPlatformServicesConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -593,7 +593,7 @@ public class OMAGServerOperationalServices
             /*
              * Initialize the Data Platform Services.
              */
-            if (dataPlatformConfig != null)
+            if (dataPlatformServicesConfig != null)
             {
                 DataPlatformOperationalServices dataPlatformOperationalServices = new DataPlatformOperationalServices(
                         configuration.getLocalServerName(),
@@ -602,7 +602,7 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerURL());
 
                 instance.setOperationalDataPlatformServices(dataPlatformOperationalServices);
-                dataPlatformOperationalServices.initialize(dataPlatformConfig,
+                dataPlatformOperationalServices.initialize(dataPlatformServicesConfig,
                         operationalRepositoryServices.getAuditLog(
                                 GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceCode(),
                                 GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),

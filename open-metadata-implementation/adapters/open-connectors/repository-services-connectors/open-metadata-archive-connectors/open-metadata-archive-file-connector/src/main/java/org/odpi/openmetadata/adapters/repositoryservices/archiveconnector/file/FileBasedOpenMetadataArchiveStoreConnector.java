@@ -118,7 +118,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
                 String archiveStoreFileContents = objectMapper.writeValueAsString(archiveContents);
 
-                FileUtils.writeStringToFile(archiveStoreFile, archiveStoreFileContents, false);
+                FileUtils.writeStringToFile(archiveStoreFile, archiveStoreFileContents, (String)null,false);
             }
         }
         catch (IOException   ioException)

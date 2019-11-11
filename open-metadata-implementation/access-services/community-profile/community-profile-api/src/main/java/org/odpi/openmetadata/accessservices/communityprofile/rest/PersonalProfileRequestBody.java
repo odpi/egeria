@@ -82,12 +82,22 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
     }
 
 
+    /**
+     * Return the unique identifier for the originating system.
+     *
+     * @return string
+     */
     public String getOriginatingSystemGUID()
     {
         return originatingSystemGUID;
     }
 
 
+    /**
+     * Set up the unique identifier for the originating system
+     *
+     * @param originatingSystemGUID string
+     */
     public void setOriginatingSystemGUID(String originatingSystemGUID)
     {
         this.originatingSystemGUID = originatingSystemGUID;
@@ -120,7 +130,7 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
      * Standard method.
      *
      * @param objectToCompare object to compare
-     * @return
+     * @return boolean
      */
     @Override
     public boolean equals(Object objectToCompare)

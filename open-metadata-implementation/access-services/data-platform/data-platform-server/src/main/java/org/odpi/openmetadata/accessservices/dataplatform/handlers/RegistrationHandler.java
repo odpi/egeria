@@ -19,6 +19,9 @@ import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.
 import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.*;
 
 
+/**
+ * The type Registration handler.
+ */
 public class RegistrationHandler {
 
     private String serviceName;
@@ -26,6 +29,14 @@ public class RegistrationHandler {
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
 
+    /**
+     * Instantiates a new Registration handler.
+     *
+     * @param serviceName             the service name
+     * @param repositoryHelper        the repository helper
+     * @param repositoryHandler       the repository handler
+     * @param invalidParameterHandler the invalid parameter handler
+     */
     public RegistrationHandler(String serviceName, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler) {
         this.serviceName = serviceName;
         this.repositoryHelper = repositoryHelper;
@@ -45,7 +56,7 @@ public class RegistrationHandler {
      */
     public String createSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createExternalDataPlatform";
 
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
 
@@ -77,12 +88,13 @@ public class RegistrationHandler {
      * @param userId        the user id
      * @param qualifiedName the qualified name
      * @return the software server capability entity
+     * @throws InvalidParameterException  the invalid parameter exception
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
     public SoftwareServerCapability getSoftwareServerCapabilityByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
 
-        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+        final String methodName = "getExternalDataPlatformByQualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
