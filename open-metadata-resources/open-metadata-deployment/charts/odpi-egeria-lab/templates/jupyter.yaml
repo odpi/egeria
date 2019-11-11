@@ -100,6 +100,8 @@ spec:
               value: "http://{{ .Release.Name }}-datalake:8080"
             - name: devPlatformURL
               value: "http://{{ .Release.Name }}-dev:8080"
+            - name: factoryPlatformURL
+              value: "http://{{ .Release.Name }}-factory:8080"
             - name: eventBusURLroot
               value: "{{ .Release.Name }}-kafka:9092"
           ports:
