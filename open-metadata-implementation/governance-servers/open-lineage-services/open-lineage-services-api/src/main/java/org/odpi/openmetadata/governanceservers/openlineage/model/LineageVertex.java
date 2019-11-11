@@ -25,6 +25,7 @@ public class LineageVertex {
     private String guid;
     private Map<String, String> attributes;
 
+    public LineageVertex(){}
 
     public LineageVertex(String nodeID, String nodeType, String displayName, String guid) {
         this.nodeID = nodeID;

@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 public class LineageResponse extends OpenLineageAPIResponse{
 
+    public LineageResponse(){}
+
     private LineageVerticesAndEdges lineageVerticesAndEdges;
 
     public LineageResponse(LineageVerticesAndEdges lineageVerticesAndEdges) {
