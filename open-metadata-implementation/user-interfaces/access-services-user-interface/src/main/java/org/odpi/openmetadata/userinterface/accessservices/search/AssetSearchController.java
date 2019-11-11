@@ -31,10 +31,10 @@ public class AssetSearchController {
      * @return list of assets
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/search")
-    public List<Term> searchAssets(@RequestParam("searchCriteria") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
+    public List<Term> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
-        if(CollectionUtils.isNotEmpty(types) && !types.contains("all")) {
+        if(CollectionUtils.isNotEmpty(types) ) {
             searchParameters.setEntityTypeGUIDs(types);
         }
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
@@ -43,7 +43,7 @@ public class AssetSearchController {
     @RequestMapping(method = RequestMethod.GET, path = "/types")
     public Map<String, String> getTypes()  {
         Map<String, String> types = new HashMap();
-        types.put("All", "all");
+        types.put("Process", "d8f33bd7-afa9-4a11-a8c7-07dcec83c050");
         types.put("RelationalTable", "ce7e72b8-396a-4013-8688-f9d973067425");
         types.put("RelationalColumn", "aa8d5470-6dbc-4648-9e2f-045e5df9d2f9");
         types.put("GlossaryTerm", "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a");

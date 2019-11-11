@@ -46,18 +46,19 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
-            <div style="width: 200pt; display: inline-block">
-                <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
-                    <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-                </paper-input>
-            </div>
-            <div>
-            <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
-                <iron-icon icon="search"></iron-icon>
-            </vaadin-button>
+           <div>
+                <div style="width: 200pt; display: inline-block">
+                    <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
+                        <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
+                    </paper-input>
+                </div>
+         
+                <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
+                    <iron-icon icon="search"></iron-icon>
+                </vaadin-button>
              
-             <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
-             </multiselect-combo-box>
+                <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+                </multiselect-combo-box>
            </div>
         </form>
        </iron-form>
@@ -133,14 +134,20 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         super.ready();
         this.$.tokenAjaxTypes.url = '/api/types';
         this.$.tokenAjaxTypes._go();
-        // var combo = this.$.combo.querySelector("combo");
-        // combo.items = this.types;
+
     }
 
     _search() {
         this.$.searchForm.validate();
         console.log('searching: '+ this.q);
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + this.$.combo.selectedItems;
+        var guids = [];
+        var itemsMap = new Map(Object.entries(this.items))
+
+        this.$.combo.selectedItems.forEach(function(item){
+            guids.push( itemsMap.get(item));
+        });
+
+        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + guids;
         this.$.tokenAjax._go();
     }
 
