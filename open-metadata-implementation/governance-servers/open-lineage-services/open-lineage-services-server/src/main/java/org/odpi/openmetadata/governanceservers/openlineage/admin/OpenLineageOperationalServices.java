@@ -2,20 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
-import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageInstance;
+import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -45,7 +45,7 @@ public class OpenLineageOperationalServices {
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector inTopicConnector;
     private OpenLineageConfig openLineageConfig;
-    private OpenLineageServicesInstance instance;
+    private OpenLineageInstance instance;
 
     /**
      * Constructor used at server startup.
@@ -99,12 +99,12 @@ public class OpenLineageOperationalServices {
             log.error("Could not start the main graph connector.");
         }
         //TODO check for null
-        GraphStoringServices graphStoringServices = new GraphStoringServices(bufferGraphConnector);
-        GraphQueryingServices graphServices = new GraphQueryingServices(mainGraphConnector);
+        StoringServices storingServices = new StoringServices(bufferGraphConnector);
+        OpenLineageHandler graphServices = new OpenLineageHandler(mainGraphConnector);
 
-        this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
+        this.instance = new OpenLineageInstance(graphServices, localServerName);
 
-        startEventBus(graphStoringServices);
+        startEventBus(storingServices);
 
     }
 
@@ -126,11 +126,11 @@ public class OpenLineageOperationalServices {
     }
 
 
-    private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {
+    private void startEventBus(StoringServices storingServices) throws OMAGConfigurationErrorException {
         inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);
         if (inTopicConnector != null) {
 
-            OpenMetadataTopicListener governanceEventListener = new InTopicListener(graphStoringServices, auditLog);
+            OpenMetadataTopicListener governanceEventListener = new InTopicListener(storingServices, auditLog);
             inTopicConnector.registerListener(governanceEventListener);
 
             startTopic(inTopicConnector, openLineageConfig.getInTopicName());

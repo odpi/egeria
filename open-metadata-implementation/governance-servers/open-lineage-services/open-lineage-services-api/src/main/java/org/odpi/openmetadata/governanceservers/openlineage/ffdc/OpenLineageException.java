@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.governanceservers.openlineage.exception;
+package org.odpi.openmetadata.governanceservers.openlineage.ffdc;
 
 /**
  * OpenLineageException provides a checked exception for reporting errors found when using

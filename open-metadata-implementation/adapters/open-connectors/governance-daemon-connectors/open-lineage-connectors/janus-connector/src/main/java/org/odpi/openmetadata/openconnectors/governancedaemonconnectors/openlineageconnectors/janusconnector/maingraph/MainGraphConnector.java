@@ -56,18 +56,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         initializeGraphDB();
     }
 
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    public void start() throws ConnectorCheckedException {
-        super.start();
-    }
-
-
     private void initializeGraphDB() {
-
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB) {
             case "berkeleydb":
@@ -90,10 +79,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         }
     }
 
-    @Override
-    public void addEntity(LineageEvent lineageEvent) {
-
-    }
 
     /**
      * Returns a lineage subgraph.

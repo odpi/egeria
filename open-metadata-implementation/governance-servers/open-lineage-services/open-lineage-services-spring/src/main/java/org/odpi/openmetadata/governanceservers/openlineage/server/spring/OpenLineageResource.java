@@ -3,14 +3,13 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/open-lineage/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/open-lineage/users/{userId}/open-lineage/{openLineageGUID}")
 public class OpenLineageResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
@@ -61,8 +60,9 @@ public class OpenLineageResource {
     @GetMapping(path = "/dump/sources/{graph}")
     public VoidResponse dumpGraph(@PathVariable("userId") String userId,
                                   @PathVariable("serverName") String serverName,
+                                  @PathVariable("openLineageGUID") String openLineageGUID,
                                   @PathVariable("graph") String graph) {
-        return restAPI.dumpGraph(serverName, userId, graph);
+        return restAPI.dumpGraph(serverName, userId, openLineageGUID, graph);
     }
 
     /**

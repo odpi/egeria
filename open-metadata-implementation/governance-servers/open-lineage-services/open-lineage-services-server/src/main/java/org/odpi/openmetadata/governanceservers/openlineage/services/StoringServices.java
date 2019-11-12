@@ -8,14 +8,14 @@ import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfigur
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GraphStoringServices {
+public class StoringServices {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphStoringServices.class);
+    private static final Logger log = LoggerFactory.getLogger(StoringServices.class);
 
     private BufferGraph bufferGraph;
     private JobConfiguration jobConfiguration;
 
-    public GraphStoringServices(BufferGraph graphStore) {
+    public StoringServices(BufferGraph graphStore) {
         this.bufferGraph = graphStore;
         this.jobConfiguration = new JobConfiguration(graphStore);
 

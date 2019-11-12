@@ -17,7 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 class DiscoveryServerInstanceHandler extends GovernanceServerServiceInstanceHandler
 {
     /**
-     * Default constructor registers the access service
+     * Default constructor registers the governance server
      */
     DiscoveryServerInstanceHandler()
     {

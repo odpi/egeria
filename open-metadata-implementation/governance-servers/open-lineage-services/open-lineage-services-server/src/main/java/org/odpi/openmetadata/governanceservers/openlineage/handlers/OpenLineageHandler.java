@@ -1,20 +1,17 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.services;
+package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class GraphQueryingServices {
+public class OpenLineageHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphStoringServices.class);
     private MainGraph mainGraph;
 
-    public GraphQueryingServices(MainGraph mainGraph) {
+    public OpenLineageHandler(MainGraph mainGraph) {
         this.mainGraph = mainGraph;
     }
 
@@ -50,4 +47,22 @@ public class GraphQueryingServices {
         return mainGraph.exportGraph(graphName);
     }
 
+
+    /**
+     * Confirms termination of the Open Lineage server..
+     */
+    public void terminate()
+    {
+        final String             actionDescription = "terminate";
+        DiscoveryServerAuditCode auditCode;
+
+        auditCode = DiscoveryServerAuditCode.ENGINE_SHUTDOWN;
+        auditLog.logRecord(actionDescription,
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(discoveryEngineGUID, serverName),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
+    }
 }

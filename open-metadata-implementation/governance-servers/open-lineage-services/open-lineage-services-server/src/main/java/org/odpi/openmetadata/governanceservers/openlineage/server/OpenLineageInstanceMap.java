@@ -12,9 +12,9 @@ import java.util.Map;
  *
  * Instances of this class call the synchronized static methods to work with the map.
  */
-public class OpenLineageServicesInstanceMap
+public class OpenLineageInstanceMap
 {
-    private static  Map<String, OpenLineageServicesInstance>  instanceMap = new HashMap<>();
+    private static  Map<String, OpenLineageInstance>  instanceMap = new HashMap<>();
 
 
     /**
@@ -24,7 +24,7 @@ public class OpenLineageServicesInstanceMap
      * @param instance instance object
      */
     static synchronized void  setNewInstanceForJVM(String                            serverName,
-                                                   OpenLineageServicesInstance   instance)
+                                                   OpenLineageInstance instance)
     {
         instanceMap.put(serverName, instance);
     }
@@ -36,9 +36,9 @@ public class OpenLineageServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    private static synchronized OpenLineageServicesInstance getInstanceForJVM(String    serverName)
+    private static synchronized OpenLineageInstance getInstanceForJVM(String    serverName)
     {
-        OpenLineageServicesInstance instance = instanceMap.get(serverName);
+        OpenLineageInstance instance = instanceMap.get(serverName);
 
         return instance;
     }
@@ -60,7 +60,7 @@ public class OpenLineageServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public OpenLineageServicesInstance getInstance(String serverName) {
-        return OpenLineageServicesInstanceMap.getInstanceForJVM(serverName);
+    public OpenLineageInstance getInstance(String serverName) {
+        return OpenLineageInstanceMap.getInstanceForJVM(serverName);
     }
 }

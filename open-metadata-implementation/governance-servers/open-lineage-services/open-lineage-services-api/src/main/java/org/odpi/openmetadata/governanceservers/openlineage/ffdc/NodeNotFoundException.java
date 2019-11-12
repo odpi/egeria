@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.governanceservers.openlineage.exception;
+package org.odpi.openmetadata.governanceservers.openlineage.ffdc;
 
 /**
  * The AssetNotFoundException is thrown by the Asset Catalog OMAS when the asset passed on a request
