@@ -26,8 +26,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -283,14 +285,31 @@ public class DataEngineSchemaTypeHandler {
 
             schemaAttribute.setQualifiedName(qualifiedName);
             schemaAttribute.setAttributeName(displayName);
-            schemaAttribute.setCardinality(attribute.getCardinality());
-            schemaAttribute.setElementPosition(attribute.getElementPosition());
             schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
 
+            Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
+            schemaAttribute.setAdditionalProperties(attributeProperties);
             schemaAttributes.add(schemaAttribute);
         }
 
         return schemaAttributes;
+    }
+
+    private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY,
+                String.valueOf(attribute.getMaxCardinality()));
+        additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY,
+                String.valueOf(attribute.getMinCardinality()));
+        additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES,
+                String.valueOf(attribute.isAllowsDuplicateValues()));
+        additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES,
+                String.valueOf(attribute.isOrderedValues()));
+        additionalProperties.put(SchemaTypePropertiesMapper.POSITION,
+                String.valueOf(attribute.getPosition()));
+
+        return  additionalProperties;
     }
 
     private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author,

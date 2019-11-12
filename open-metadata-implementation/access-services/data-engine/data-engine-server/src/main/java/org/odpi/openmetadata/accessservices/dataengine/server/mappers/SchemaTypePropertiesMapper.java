@@ -12,4 +12,10 @@ public class SchemaTypePropertiesMapper {
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
     public static final String GUID_PROPERTY_NAME = "guid";
+
+    public static final String MIN_CARDINALITY = "minCardinality";
+    public static final String MAX_CARDINALITY = "maxCardinality";
+    public static final String ALLOWS_DUPLICATES = "allowsDuplicateValues";
+    public static final String ORDERED_VALUES = "orderedValues";
+    public static final String POSITION = "position";
 }
