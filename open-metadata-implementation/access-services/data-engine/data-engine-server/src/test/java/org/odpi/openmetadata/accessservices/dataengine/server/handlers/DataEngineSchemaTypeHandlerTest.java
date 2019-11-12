@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
@@ -97,6 +98,9 @@ class DataEngineSchemaTypeHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
+        mockFindSchemaAttribute(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID);
+        mockTypeDef(SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME,
+                SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
 
         String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
@@ -110,6 +114,10 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
         verify(invalidParameterHandler, times(1)).validateName(NAME,
                 SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(repositoryHandler, times(1)).classifyEntity(USER, ATTRIBUTE_GUID,
+                SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME,
+                SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, null,
+                "addTypeEmbeddedAttributeClassifications");
     }
 
     @Test

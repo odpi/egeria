@@ -197,7 +197,7 @@ public class DataEngineSchemaTypeHandler {
     private void addTypeEmbeddedAttributeClassification(String userId, List<Attribute> newAttributes) throws
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException {
-        final String methodName = "addTypeEmbeddedAttributeClassification";
+        final String methodName = "addTypeEmbeddedAttributeClassifications";
         for (Attribute newAttribute : newAttributes) {
             String schemaAttributeGUID = findSchemaAttribute(userId, newAttribute.getQualifiedName());
 
@@ -304,7 +304,6 @@ public class DataEngineSchemaTypeHandler {
 
             schemaAttribute.setQualifiedName(qualifiedName);
             schemaAttribute.setAttributeName(displayName);
-            schemaAttribute.setElementPosition(Integer.valueOf(attribute.getPosition()));
             schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
 
             Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
