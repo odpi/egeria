@@ -64,7 +64,7 @@ public class <$$uEntityName$$>Mapper {
                         case PRIMITIVE:
                             PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                             actualValue = primitivePropertyValue.getPrimitiveValue();
-                            if (<$$EntityName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
+                            if (<$$uEntityName$$>.getAttributePropertyNames().contains(name)) {
                                <$$Attr$$
                                if (name.equals("<$$AttrName$$>")) {
                                    <$$EntityName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
@@ -82,7 +82,7 @@ public class <$$uEntityName$$>Mapper {
                         case ENUM:
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
-                            if (<$$EntityName$$>.ENUM_NAMES_SET.contains(name)) {
+                            if (<$$uEntityName$$>.getEnumPropertyNames().contains(name)) {
                                 <$$Enum$$
                                  if (name.equals("<$$EnumName$$>")) {
                                       <$$uEnumType$$> <$$EnumName$$> = <$$uEnumType$$>.valueOf(symbolicName);
@@ -100,7 +100,7 @@ public class <$$uEntityName$$>Mapper {
 
                             break;
                         case MAP:
-                            if (<$$EntityName$$>.MAP_NAMES_SET.contains(name)) {
+                            if (<$$uEntityName$$>.getMapPropertyNames().contains(name)) {
                                  MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                                  InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
 

@@ -12,6 +12,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The process to port list event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -21,18 +24,38 @@ public class ProcessToPortListEvent extends DataEngineEventHeader{
 
     private List<String> ports;
 
+    /**
+     * Gets process guid.
+     *
+     * @return the process guid
+     */
     public String getProcessGUID() {
         return processGUID;
     }
 
+    /**
+     * Sets process guid.
+     *
+     * @param processGUID the process guid
+     */
     public void setProcessGUID(String processGUID) {
         this.processGUID = processGUID;
     }
 
+    /**
+     * Gets ports.
+     *
+     * @return the ports
+     */
     public List<String> getPorts() {
         return ports;
     }
 
+    /**
+     * Sets ports.
+     *
+     * @param ports the ports
+     */
     public void setPorts(List<String> ports) {
         this.ports = ports;
     }

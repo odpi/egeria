@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataEngineEventType describes the different types of events can be consumed by the Data Platform OMAS.
+ * DataEngineEventType describes the different types of events can be consumed by the Data Engine OMAS.
  * Events are limited to assets that are in the zones listed in the supportedZones property
  * passed to the Data Engine OMAS at start up (a null value here means all zones).
  */
@@ -23,13 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum DataEngineEventType implements Serializable
 {
     UNKNOWN_DATA_ENGINE_EVENT               (0,  "Unknown Data Engine Job Event",  "An event that is not recognized by the local server."),
-    DATA_ENGINE_REGISTRATION_EVENT          (1,  "DataEngineRegistrationEvent",      "An event that a data engine job has been created."),
-    LINEAGE_MAPPINGS_EVENT                  (2,  "LineageMappingsEvent",  "An event that  an existing data engine job has been updated ."),
-    PORT_ALIAS_EVENT                        (3,  "PortAliasEvent",      "An event that a data engine job has been created."),
-    PORT_IMPLEMENTATION_EVENT               (4,  "PortImplementationEvent",  "An event that  an existing data engine job has been updated ."),
-    PROCESS_TO_PORT_LIST_EVENT              (5,  "ProcessToPortListEvent",      "An event that a data engine job has been created."),
-    PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that  an existing data engine job has been updated ."),
-    PROCESS_LIST_EVENT                      (7,  "ProcessListEvent",  "An event that  an existing data engine job has been updated .");
+    DATA_ENGINE_REGISTRATION_EVENT          (1,  "DataEngineRegistrationEvent",      "An event that register a data engine as external source."),
+    LINEAGE_MAPPINGS_EVENT                  (2,  "LineageMappingsEvent",  "An event that add or update lineage mappings."),
+    PORT_ALIAS_EVENT                        (3,  "PortAliasEvent",      "An event that add or update port alias"),
+    PORT_IMPLEMENTATION_EVENT               (4,  "PortImplementationEvent",  "An event that create or update port implementations."),
+    PROCESS_TO_PORT_LIST_EVENT              (5,  "ProcessToPortListEvent",      "An event that assign process to a port list."),
+    PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that create or update processes.");
 
     private static final long     serialVersionUID = 1L;
 

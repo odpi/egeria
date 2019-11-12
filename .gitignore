@@ -121,10 +121,10 @@ open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/ma
 log
 # m2 repo used by linux foundation build
 **/m2repo*/**
-# ignore github pages file and site.
-_site/**
-_layouts/**
+
+# ignore github pages build file and site.
 Gemfile
+
 # vscode editor
 **/.vscode*/**
 **/.factorypath
@@ -132,3 +132,8 @@ Gemfile
 
 # Jupyter notebook temp/update files
 **/.ipynb_checkpoints
+
+# Java core files
+Snap*.trc
+javacore*.txt
+jitdump*dmp

@@ -25,6 +25,8 @@ public class LineageVerticesAndEdges  {
     private List<LineageVertex> lineageVertices;
     private List<LineageEdge> lineageEdges;
 
+    public LineageVerticesAndEdges(){}
+
     public LineageVerticesAndEdges(List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges) {
         this.lineageVertices = lineageVertices;
         this.lineageEdges = lineageEdges;

@@ -12,6 +12,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The Schema type event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,10 +22,20 @@ public class SchemaTypeEvent extends DataEngineEventHeader{
 
     private SchemaType schemaType;
 
+    /**
+     * Gets schema type.
+     *
+     * @return the schema type
+     */
     public SchemaType getSchemaType() {
         return schemaType;
     }
 
+    /**
+     * Sets schema type.
+     *
+     * @param schemaType the schema type
+     */
     public void setSchemaType(SchemaType schemaType) {
         this.schemaType = schemaType;
     }

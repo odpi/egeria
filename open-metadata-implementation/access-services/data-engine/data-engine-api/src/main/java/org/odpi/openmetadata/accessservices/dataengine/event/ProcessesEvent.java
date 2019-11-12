@@ -13,6 +13,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The processes event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,10 +23,20 @@ public class ProcessesEvent extends DataEngineEventHeader{
 
     private List<Process> processes;
 
+    /**
+     * Gets processes.
+     *
+     * @return the processes
+     */
     public List<Process> getProcesses() {
         return processes;
     }
 
+    /**
+     * Sets processes.
+     *
+     * @param processes the processes
+     */
     public void setProcesses(List<Process> processes) {
         this.processes = processes;
     }
