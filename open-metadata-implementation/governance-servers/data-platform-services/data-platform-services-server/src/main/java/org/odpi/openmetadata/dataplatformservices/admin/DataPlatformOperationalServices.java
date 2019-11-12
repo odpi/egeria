@@ -36,7 +36,7 @@ public class DataPlatformOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector dataPlatformOmasInTopicConnector;
-    private DataPlatformMetadataExtractorBase dataPlatformMetadataExtractorBase;
+    private DataPlatformMetadataExtractorBase dataPlatformConnector;
     private DataPlatformServicesConfig dataPlatformServicesConfig;
 
     /**
@@ -90,7 +90,7 @@ public class DataPlatformOperationalServices {
                         localServerPassword
                 );
 
-                log.debug("Configuring the Data Platform OMAS Client: ", dataPlatformClient);
+                log.debug("Configuring the Data Platform OMAS Client: {}", dataPlatformClient);
             } catch (InvalidParameterException error) {
                 throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
                         this.getClass().getName(),
@@ -102,8 +102,34 @@ public class DataPlatformOperationalServices {
             }
 
             /*
+             * Configuring the Data Platform Metadata Extractor Connector
+             */
+            Connection dataPlatformConnection = dataPlatformServicesConfig.getDataPlatformConnection();
+
+            if (dataPlatformConnection != null) {
+                log.info("Found Data Platform connection: "+ dataPlatformServicesConfig.getDataPlatformConnection());
+
+                try {
+                    ConnectorBroker connectorBroker = new ConnectorBroker();
+                    dataPlatformConnector =(DataPlatformMetadataExtractorBase) connectorBroker.getConnector(dataPlatformConnection);
+                    dataPlatformConnector.setDataPlatformClient(dataPlatformClient);
+                    log.debug("The following Data Platform Metadata Extractor has been configured: {}", this.dataPlatformConnector);
+                } catch (Exception e) {
+                    log.error ("Exception in creating the Data Platform Connector: ", e);
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DATA_PLATFORM_CONNECTION;
+                    auditLog.logRecord(actionDescription,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+                }
+            }
+
+            /*
              * Configuring the Data Platform OMAS In Topic connector
-             *//*
+             */
             if (dataPlatformServicesConfig.getDataPlatformOmasInTopicName() != null) {
                 try {
                     dataPlatformOmasInTopicConnector = getTopicConnector(
@@ -119,33 +145,10 @@ public class DataPlatformOperationalServices {
                             auditCode.getSystemAction(),
                             auditCode.getUserAction());
                 }
-            }*/
-
-            /*
-             * Configuring the Data Platform Metadata Extractor Connector
-             */
-            Connection dataPlatformConnection = dataPlatformServicesConfig.getDataPlatformConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            if (dataPlatformConnection != null) {
-                try {
-                    dataPlatformMetadataExtractorBase =(DataPlatformMetadataExtractorBase) connectorBroker.getConnector(dataPlatformConnection);
-                    dataPlatformMetadataExtractorBase.setDataPlatformClient(dataPlatformClient);
-                    log.debug("The following Data Platform Metadata Extractor has been configured: ", dataPlatformMetadataExtractorBase);
-                } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
-                    auditLog.logRecord(actionDescription,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-                }
             }
 
             /*
-             Starting the Data Platform In Topic Connector
+             * Starting the Data Platform In Topic Connector
              */
             if (dataPlatformOmasInTopicConnector != null) {
                 try {
@@ -192,7 +195,7 @@ public class DataPlatformOperationalServices {
         DataPlatformServicesAuditCode auditCode;
         try {
             // Disconnect the data platform connector
-            dataPlatformMetadataExtractorBase.disconnect();
+            dataPlatformConnector.disconnect();
             dataPlatformOmasInTopicConnector.disconnect();
             auditCode = DataPlatformServicesAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
