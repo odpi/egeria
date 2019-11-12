@@ -135,8 +135,8 @@ public class SchemaTypeHandler
     {
         SchemaAttribute   schemaAttribute = new SchemaAttribute();
 
-        setElementType(SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_GUID,
-                       SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME,
+        setElementType(SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID,
+                       SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
                        schemaAttribute);
 
         return schemaAttribute;

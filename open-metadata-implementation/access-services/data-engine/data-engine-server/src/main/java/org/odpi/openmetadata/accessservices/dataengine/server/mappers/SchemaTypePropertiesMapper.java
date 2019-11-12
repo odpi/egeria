@@ -18,4 +18,6 @@ public class SchemaTypePropertiesMapper {
     public static final String ALLOWS_DUPLICATES = "allowsDuplicateValues";
     public static final String ORDERED_VALUES = "orderedValues";
     public static final String POSITION = "position";
+    public static final String TYPE_EMBEDDED_ATTRIBUTE_NAME = "TypeEmbeddedAttribute";
+    public static final String DATA_TYPE = "dataType";
 }

@@ -114,9 +114,12 @@ public class DataEngineSchemaTypeHandler {
 
         List<SchemaAttribute> newSchemaAttributes = createTabularColumns(attributeList);
 
-        //TODO add TypeEmbeddedAttribute classifications - after SchemaTypeHandler optimizations
-        return schemaTypeHandler.saveExternalSchemaType(userId, newSchemaType, newSchemaAttributes,
+        //TODO refactor to create the classifications through SchemaTypeHandler
+        String schemaTypeGUID = schemaTypeHandler.saveExternalSchemaType(userId, newSchemaType, newSchemaAttributes,
                 externalSourceGUID, externalSourceName, methodName);
+        addTypeEmbeddedAttributeClassification(userId, attributeList);
+
+        return schemaTypeGUID;
     }
 
     /**
@@ -189,6 +192,22 @@ public class DataEngineSchemaTypeHandler {
         }
 
         schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
+    }
+
+    private void addTypeEmbeddedAttributeClassification(String userId, List<Attribute> newAttributes) throws
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException {
+        final String methodName = "addTypeEmbeddedAttributeClassification";
+        for (Attribute newAttribute : newAttributes) {
+            String schemaAttributeGUID = findSchemaAttribute(userId, newAttribute.getQualifiedName());
+
+            TypeDef classificationTypeDef = repositoryHelper.getTypeDefByName(userId,
+                    SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
+            InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
+                    SchemaTypePropertiesMapper.DATA_TYPE, newAttribute.getDataType(), methodName);
+            repositoryHandler.classifyEntity(userId, schemaAttributeGUID, classificationTypeDef.getGUID(),
+                    classificationTypeDef.getName(), properties, methodName);
+        }
     }
 
     private String findSchemaAttribute(String userId, String qualifiedName) throws UserNotAuthorizedException,
@@ -285,6 +304,7 @@ public class DataEngineSchemaTypeHandler {
 
             schemaAttribute.setQualifiedName(qualifiedName);
             schemaAttribute.setAttributeName(displayName);
+            schemaAttribute.setElementPosition(Integer.valueOf(attribute.getPosition()));
             schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
 
             Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
@@ -298,11 +318,25 @@ public class DataEngineSchemaTypeHandler {
     private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
         Map<String, String> additionalProperties = new HashMap<>();
 
-        additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY, attribute.getMaxCardinality());
-        additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY, attribute.getMinCardinality());
-        additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES, attribute.getAllowsDuplicateValues());
-        additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
-        additionalProperties.put(SchemaTypePropertiesMapper.POSITION, attribute.getPosition());
+        if (attribute.getMaxCardinality() != null) {
+            additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY, attribute.getMaxCardinality());
+        }
+        if (attribute.getMinCardinality() != null) {
+            additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY, attribute.getMinCardinality());
+        }
+        if (attribute.getAllowsDuplicateValues() != null) {
+            additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES,
+                    attribute.getAllowsDuplicateValues());
+        }
+
+        if (attribute.getOrderedValues() != null) {
+            additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
+        }
+
+        if (attribute.getPosition() != null) {
+            additionalProperties.put(SchemaTypePropertiesMapper.POSITION, attribute.getPosition());
+        }
+
 
         return additionalProperties;
     }
