@@ -100,7 +100,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
-                        ATTRIBUTE_DISPLAY_NAME, "1", 1, null, null, null)),
+                        ATTRIBUTE_DISPLAY_NAME, "1", "1", null, null, null, null, null, null)),
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
@@ -137,7 +137,7 @@ class DataEngineSchemaTypeHandlerTest {
                 dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                         ENCODING_STANDARD, USAGE, VERSION,
                         Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
-                                ATTRIBUTE_DISPLAY_NAME, "1", 1, null, null, null)),
+                                ATTRIBUTE_DISPLAY_NAME, "1", "1", null, null, null, null, null, null)),
                         EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));

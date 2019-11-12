@@ -19,11 +19,11 @@ public class Attribute implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
     private String displayName;
-    private int minCardinality;
-    private int maxCardinality;
-    private boolean allowsDuplicateValues;
-    private boolean orderedValues;
-    private int position;
+    private String minCardinality;
+    private String maxCardinality;
+    private String allowsDuplicateValues;
+    private String orderedValues;
+    private String position;
     private String defaultValueOverride;
     private String dataType;
     private String defaultValue;
@@ -31,8 +31,8 @@ public class Attribute implements Serializable {
     public Attribute() {
     }
 
-    public Attribute(String qualifiedName, String displayName, int minCardinality, int maxCardinality,
-                     boolean allowsDuplicateValues, boolean orderedValues, int position, String defaultValueOverride,
+    public Attribute(String qualifiedName, String displayName, String minCardinality, String maxCardinality,
+                     String allowsDuplicateValues, String orderedValues, String position, String defaultValueOverride,
                      String dataType, String defaultValue) {
         this.qualifiedName = qualifiedName;
         this.displayName = displayName;
@@ -62,43 +62,43 @@ public class Attribute implements Serializable {
         this.displayName = displayName;
     }
 
-    public int getMinCardinality() {
+    public String getMinCardinality() {
         return minCardinality;
     }
 
-    public void setMinCardinality(int minCardinality) {
+    public void setMinCardinality(String minCardinality) {
         this.minCardinality = minCardinality;
     }
 
-    public int getMaxCardinality() {
+    public String getMaxCardinality() {
         return maxCardinality;
     }
 
-    public void setMaxCardinality(int maxCardinality) {
+    public void setMaxCardinality(String maxCardinality) {
         this.maxCardinality = maxCardinality;
     }
 
-    public boolean isAllowsDuplicateValues() {
+    public String getAllowsDuplicateValues() {
         return allowsDuplicateValues;
     }
 
-    public void setAllowsDuplicateValues(boolean allowsDuplicateValues) {
+    public void setAllowsDuplicateValues(String allowsDuplicateValues) {
         this.allowsDuplicateValues = allowsDuplicateValues;
     }
 
-    public boolean isOrderedValues() {
+    public String getOrderedValues() {
         return orderedValues;
     }
 
-    public void setOrderedValues(boolean orderedValues) {
+    public void setOrderedValues(String orderedValues) {
         this.orderedValues = orderedValues;
     }
 
-    public int getPosition() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 
@@ -131,11 +131,11 @@ public class Attribute implements Serializable {
         return "Attribute{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", minCardinality=" + minCardinality +
-                ", maxCardinality=" + maxCardinality +
-                ", allowsDuplicateValues=" + allowsDuplicateValues +
-                ", orderedValues=" + orderedValues +
-                ", position=" + position +
+                ", minCardinality='" + minCardinality + '\'' +
+                ", maxCardinality='" + maxCardinality + '\'' +
+                ", allowsDuplicateValues='" + allowsDuplicateValues + '\'' +
+                ", orderedValues='" + orderedValues + '\'' +
+                ", position='" + position + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
@@ -147,13 +147,13 @@ public class Attribute implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attribute attribute = (Attribute) o;
-        return minCardinality == attribute.minCardinality &&
-                maxCardinality == attribute.maxCardinality &&
-                allowsDuplicateValues == attribute.allowsDuplicateValues &&
-                orderedValues == attribute.orderedValues &&
-                position == attribute.position &&
-                Objects.equals(qualifiedName, attribute.qualifiedName) &&
+        return Objects.equals(qualifiedName, attribute.qualifiedName) &&
                 Objects.equals(displayName, attribute.displayName) &&
+                Objects.equals(minCardinality, attribute.minCardinality) &&
+                Objects.equals(maxCardinality, attribute.maxCardinality) &&
+                Objects.equals(allowsDuplicateValues, attribute.allowsDuplicateValues) &&
+                Objects.equals(orderedValues, attribute.orderedValues) &&
+                Objects.equals(position, attribute.position) &&
                 Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
                 Objects.equals(dataType, attribute.dataType) &&
                 Objects.equals(defaultValue, attribute.defaultValue);
@@ -161,6 +161,7 @@ public class Attribute implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues, position, defaultValueOverride, dataType, defaultValue);
+        return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues,
+                orderedValues, position, defaultValueOverride, dataType, defaultValue);
     }
 }

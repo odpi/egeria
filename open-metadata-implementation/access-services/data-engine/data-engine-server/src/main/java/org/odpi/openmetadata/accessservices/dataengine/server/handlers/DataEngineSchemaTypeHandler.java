@@ -298,18 +298,13 @@ public class DataEngineSchemaTypeHandler {
     private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
         Map<String, String> additionalProperties = new HashMap<>();
 
-        additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY,
-                String.valueOf(attribute.getMaxCardinality()));
-        additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY,
-                String.valueOf(attribute.getMinCardinality()));
-        additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES,
-                String.valueOf(attribute.isAllowsDuplicateValues()));
-        additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES,
-                String.valueOf(attribute.isOrderedValues()));
-        additionalProperties.put(SchemaTypePropertiesMapper.POSITION,
-                String.valueOf(attribute.getPosition()));
+        additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY, attribute.getMaxCardinality());
+        additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY, attribute.getMinCardinality());
+        additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES, attribute.getAllowsDuplicateValues());
+        additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
+        additionalProperties.put(SchemaTypePropertiesMapper.POSITION, attribute.getPosition());
 
-        return  additionalProperties;
+        return additionalProperties;
     }
 
     private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author,
