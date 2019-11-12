@@ -132,7 +132,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.29</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.10.0</jackson.version>
+        <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.3.1</kafka.version>
         <janus.version>0.4.0</janus.version>
@@ -164,7 +164,7 @@
         <commons-codec.version>1.13</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.2.0</oss.version>
+        <oss.version>4.3.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
 
         <!-- Versions of plugins -->
@@ -176,7 +176,7 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
-        <owasp.version>5.2.2</owasp.version>
+        <owasp.version>5.2.3</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.2</maven-download.version>
