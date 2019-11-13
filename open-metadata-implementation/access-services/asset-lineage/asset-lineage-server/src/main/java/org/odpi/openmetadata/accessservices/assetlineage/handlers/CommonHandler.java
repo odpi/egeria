@@ -82,10 +82,10 @@ public class CommonHandler {
      *
      * @return List of the relationships if found, empty list if not found
      */
-    public List<Relationship> getRelationshipByType(String userId, String assetGuid,
-                                                    String relationshipType, String typeDefName) throws UserNotAuthorizedException,
+    public List<Relationship> getRelationshipsByType(String userId, String assetGuid,
+                                                     String relationshipType, String typeDefName) throws UserNotAuthorizedException,
                                                                                                         PropertyServerException{
-        final String methodName = "getRelationshipByType";
+        final String methodName = "getRelationshipsByType";
         String typeGuid = getTypeName(userId, relationshipType);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
@@ -146,8 +146,8 @@ public class CommonHandler {
      * @param relationship     the relationship of the parent node
      * @return Entity which is the child of the relationship, null if there is no Entity
      */
-    protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity,
-                                                         Relationship relationship, AssetContext graph) throws InvalidParameterException,
+    protected EntityDetail buildEdgeByStartEntity(String userId, EntityDetail startEntity,
+                                                  Relationship relationship, AssetContext graph) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 

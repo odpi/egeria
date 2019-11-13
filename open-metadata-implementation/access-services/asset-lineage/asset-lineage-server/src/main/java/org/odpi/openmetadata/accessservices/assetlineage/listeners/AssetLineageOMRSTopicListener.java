@@ -173,10 +173,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         final String methodName = "processNewEntity";
 
         try {
+            //TODO: CHECK PROCESS
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
             }
             else {
+                //TODO: CHECK ASSET CONTEXT
                 getAssetContext(entityDetail, serviceOperationName);
             }
         }

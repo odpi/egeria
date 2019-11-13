@@ -77,7 +77,8 @@ public final class Constants {
         processRelationshipsTypes.put(PORT_ALIAS, PORT_DELEGATION);
         processRelationshipsTypes.put(PORT_IMPLEMENTATION, PORT_SCHEMA);
         processRelationshipsTypes.put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
-        processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
-        processRelationshipsTypes.put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
+        processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, LINEAGE_MAPPING);
+     /*   processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
+        processRelationshipsTypes.put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);*/
     }
 }

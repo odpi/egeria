@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
@@ -149,7 +148,7 @@ public class ProcessHandler {
                                                                String relationshipType, String typeDefName) throws UserNotAuthorizedException,
                                                                                                                    PropertyServerException,
                                                                                                                    InvalidParameterException {
-        List<Relationship> relationships = commonHandler.getRelationshipByType(userId, guid, relationshipType,typeDefName);
+        List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, guid, relationshipType,typeDefName);
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
         if (startEntity == null) return Collections.emptyList();
@@ -161,7 +160,7 @@ public class ProcessHandler {
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
                 continue;
             }
-            EntityDetail endEntity = commonHandler.writeEntitiesAndRelationships(userId,startEntity,relationship,graph);
+            EntityDetail endEntity = commonHandler.buildEdgeByStartEntity(userId,startEntity,relationship,graph);
             if(endEntity == null) return Collections.emptyList();
             entityDetails.add(endEntity);
         }
@@ -206,6 +205,7 @@ public class ProcessHandler {
         return result;
     }
 
+    //TODO can be replaced by schema handler
     private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
@@ -221,6 +221,7 @@ public class ProcessHandler {
         return getSchemaAttributes(result,userId);
     }
 
+    //TODO can be replaced by schema handler
     private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
@@ -232,9 +233,11 @@ public class ProcessHandler {
                                                                                             entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }
-        return getTabularColumnTypes(result,userId);
+        return endRelationship(result,userId);
     }
 
+/*
+    //TODO will be gone
     private List<EntityDetail> getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException {
@@ -252,7 +255,7 @@ public class ProcessHandler {
             }
         }
         return endRelationship(result,userId);
-    }
+    }*/
 
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));

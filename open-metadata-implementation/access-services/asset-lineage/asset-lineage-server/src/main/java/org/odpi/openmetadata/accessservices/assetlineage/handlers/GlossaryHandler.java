@@ -139,7 +139,7 @@ public class GlossaryHandler {
                                                                           GLOSSARY_TERM,
                                                                           methodName);
 
-            entityDetails.add(commonHandler.writeEntitiesAndRelationships(userId, glossaryTerm, relationship, graph));
+            entityDetails.add(commonHandler.buildEdgeByStartEntity(userId, glossaryTerm, relationship, graph));
         }
         return entityDetails.isEmpty();
     }
