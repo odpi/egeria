@@ -76,7 +76,7 @@ class InMemoryEntityNeighbourhood
         /*
          * limit the level to 100 in case the algorithm gets into a circularity - hopefully this is sufficiently high for in memory demo use cases.
          */
-        if (level < 1 || level > 100)
+        if (level < 0 || level > 100)
         {
             level = 100;
         }
@@ -323,48 +323,48 @@ class InMemoryEntityNeighbourhood
      */
     private void createGraph(Set<String> entities, Set<String> visitedEntities, Set<String> visitedRelationships, int currentLevel) throws TypeErrorException
     {
+
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)
         {
-            Set<String> relationships = this.entityToRelationships.get(entityGuid);
-            if (relationships != null)
-            {
-                for (String relationshipGuid : relationships)
-                {
-                    Relationship relationship = this.relationshipStore.get(relationshipGuid);
-                    /*
-                     * Check to see if we have already visited this relationship
-                     */
-                    if (!visitedRelationships.contains(relationshipGuid))
-                    {
-                        if (verifyRelationshipForEntityNeighbourhood(relationship))
-                        {
-                            /*
-                             * valid relationship and entities
-                             */
-                            graphEntities.add(entityGuid);
-                            final String end1Guid = getEnd1EntityGUID(relationship);
-                            final String end2Guid = getEnd2EntityGUID(relationship);
-                            graphRelationships.add(relationshipGuid);
-                            /*
-                             * add the entities - one end will already be there so will be replaced.
-                             */
-                            graphEntities.add(end1Guid);
-                            graphEntities.add(end2Guid);
-                            /*
-                             * if we have not see the other end then we need to traverse to it.
-                             */
-                            if (end1Guid.equals(entityGuid) && !visitedEntities.contains(end2Guid))
-                            {
-                                nextEntitySet.add(end2Guid);
+            if (this.level ==0) {
+                graphEntities.add(entityGuid);
+            }
+            else {
+                Set<String> relationships = this.entityToRelationships.get(entityGuid);
+                if (relationships != null) {
+                    for (String relationshipGuid : relationships) {
+                        Relationship relationship = this.relationshipStore.get(relationshipGuid);
+                        /*
+                         * Check to see if we have already visited this relationship
+                         */
+                        if (!visitedRelationships.contains(relationshipGuid)) {
+                            if (verifyRelationshipForEntityNeighbourhood(relationship)) {
+                                /*
+                                 * valid relationship and entities
+                                 */
+                                graphEntities.add(entityGuid);
+                                final String end1Guid = getEnd1EntityGUID(relationship);
+                                final String end2Guid = getEnd2EntityGUID(relationship);
+                                graphRelationships.add(relationshipGuid);
+                                /*
+                                 * add the entities - one end will already be there so will be replaced.
+                                 */
+                                graphEntities.add(end1Guid);
+                                graphEntities.add(end2Guid);
+                                /*
+                                 * if we have not see the other end then we need to traverse to it.
+                                 */
+                                if (end1Guid.equals(entityGuid) && !visitedEntities.contains(end2Guid)) {
+                                    nextEntitySet.add(end2Guid);
+                                }
+                                if (end2Guid.equals(entityGuid) && !visitedEntities.contains(end1Guid)) {
+                                    nextEntitySet.add(end1Guid);
+                                }
+                                visitedEntities.add(end1Guid);
+                                visitedEntities.add(end2Guid);
+                                visitedRelationships.add(relationshipGuid);
                             }
-                            if (end2Guid.equals(entityGuid) && !visitedEntities.contains(end1Guid))
-                            {
-                                nextEntitySet.add(end1Guid);
-                            }
-                            visitedEntities.add(end1Guid);
-                            visitedEntities.add(end2Guid);
-                            visitedRelationships.add(relationshipGuid);
                         }
                     }
                 }
