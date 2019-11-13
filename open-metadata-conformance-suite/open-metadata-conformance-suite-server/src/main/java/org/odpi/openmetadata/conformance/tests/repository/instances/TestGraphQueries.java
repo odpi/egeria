@@ -761,10 +761,16 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 EntityDetail entityToDelete = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), nodeKey);
 
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                        entityToDelete.getType().getTypeDefGUID(),
-                        entityToDelete.getType().getTypeDefName(),
-                        nodeKey);
+                try {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            entityToDelete.getType().getTypeDefGUID(),
+                            entityToDelete.getType().getTypeDefName(),
+                            nodeKey);
+
+                }
+                catch (FunctionNotSupportedException exc) {
+                    /* NO OP - continue with purge */
+                }
 
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
                         entityToDelete.getType().getTypeDefGUID(),

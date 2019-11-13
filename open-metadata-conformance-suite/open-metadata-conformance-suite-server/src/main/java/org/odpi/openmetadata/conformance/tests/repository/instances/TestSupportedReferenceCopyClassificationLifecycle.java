@@ -78,7 +78,7 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
         /*
          * Create an entity reference copy of the entity type.
-         * To do this, a local entity is createdm, copied and deleted/purged. The copy is modified (to look remote)
+         * To do this, a local entity is created, copied and deleted/purged. The copy is modified (to look remote)
          * and is saved as a reference copy
          */
 
