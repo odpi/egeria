@@ -14,6 +14,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Security Officer Services</name>
+    <description>Security Officer Server manages security tags and other operational security settings</description>
+
     <artifactId>security-officer-services</artifactId>
     <packaging>pom</packaging>
 
