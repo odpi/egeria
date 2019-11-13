@@ -200,6 +200,7 @@ class InMemoryOMRSMetadataStore
 
         Map<String, Relationship>  timeWarpedRelationshipStore = new HashMap<>();
 
+
         /*
          * First step through the current relationship store and extract all of the relationships that were
          * last updated before the asOfTime.
@@ -362,6 +363,7 @@ class InMemoryOMRSMetadataStore
      */
     synchronized void updateRelationshipInStore(Relationship    relationship)
     {
+
         Relationship    oldRelationship = relationshipStore.put(relationship.getGUID(), relationship);
 
         if (oldRelationship != null)
@@ -415,7 +417,6 @@ class InMemoryOMRSMetadataStore
                 versionNumber = currentVersionOfRelationship.getVersion() + 1;
             }
 
-            int  elementPosition = 0;
 
             for (Relationship relationship : relationshipHistoryStore)
             {
@@ -427,14 +428,23 @@ class InMemoryOMRSMetadataStore
                         {
                             versionNumber = relationship.getVersion() + 1;
                         }
-                        relationship.setVersion(versionNumber);
-                        relationshipHistoryStore.remove(elementPosition);
-                        relationshipStore.put(guid, relationship);
-                        return relationship;
+                        /*
+                         * Clone the head (most recent) version in the history, set its version number to the next version
+                         * and insert the new clone into the current store (under key GUID). Also, take the 'current version'
+                         * (as was at start of method) and shunt that into the history. Do not remove anything from the history.
+                         * Remember also to set the updateTime to NOW - otherwise the historical copy will appear to have been
+                         * updated longer ago than was really the case.
+                         */
+                        Relationship newRelationship = new Relationship(relationship);
+                        newRelationship.setVersion(versionNumber);
+                        Date restoreTime = new Date();
+                        newRelationship.setUpdateTime(restoreTime);
+                        relationshipStore.put(guid, newRelationship);
+                        relationshipHistoryStore.add(0, currentVersionOfRelationship);
+                        return newRelationship;
+
                     }
                 }
-
-                elementPosition ++;
             }
         }
 
@@ -462,8 +472,6 @@ class InMemoryOMRSMetadataStore
                 versionNumber = currentVersionOfEntity.getVersion() + 1;
             }
 
-            int  elementPosition = 0;
-
             for (EntityDetail entity : entityHistoryStore)
             {
                 if (entity != null)
@@ -474,14 +482,25 @@ class InMemoryOMRSMetadataStore
                         {
                             versionNumber = entity.getVersion() + 1;
                         }
-                        entity.setVersion(versionNumber);
-                        entityHistoryStore.remove(elementPosition);
-                        entityStore.put(guid, entity);
-                        return entity;
+
+                        /*
+                         * Clone the head (most recent) version in the history, set its version number to the next version
+                         * and insert the new clone into the current store (under key GUID). Also, take the 'current version'
+                         * (as was at start of method) and shunt that into the history. Do not remove anything from the history.
+                         * Remember also to set the updateTime to NOW - otherwise the historical copy will appear to have been
+                         * updated longer ago than was really the case.
+                         *
+                         */
+                        EntityDetail newEntity = new EntityDetail(entity);
+                        newEntity.setVersion(versionNumber);
+                        Date restoreTime = new Date();
+                        newEntity.setUpdateTime(restoreTime);
+                        entityStore.put(guid, newEntity);
+                        entityHistoryStore.add(0, currentVersionOfEntity);
+                        return newEntity;
+
                     }
                 }
-
-                elementPosition ++;
             }
         }
 
