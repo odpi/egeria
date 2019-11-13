@@ -218,7 +218,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 type: String,
                 reflectToAttribute: true
             },
-            subroute2: Object,
+            subroute2: {
+                type: String,
+                reflectToAttribute: true
+            },
             pages: {
                 type: Array,
                 value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
@@ -275,10 +278,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
         crumbs.push(allCrumbs.get('home'));
         crumbs.push(allCrumbs.get(page));
-        if(this.subviewData.subview != null && this.subviewData.subview != undefined ){
+        if(page == 'asset-lineage' && this.subview  && this.subview.path ){
             crumbs.push({label: this.subviewData.subview, href:  "/" + this.subviewData.subview });
         }
-        if(this.subrouteData2.guid != null && this.subrouteData2.guid != undefined ){
+        if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
             crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
         }
         this.crumbs = crumbs;
