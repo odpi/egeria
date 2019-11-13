@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -16,12 +17,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 public class RelationshipHandlerTest {
 
@@ -77,6 +81,73 @@ public class RelationshipHandlerTest {
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(FIRST_GUID, "entity1GUID", methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(SECOND_GUID, "entity2GUID", methodName);
+    }
+
+    @Test
+    public void getRelationshipBetweenEntities_throwsUserNotAuthorizedException()
+            throws PropertyServerException, UserNotAuthorizedException {
+        String methodName = "getRelationshipBetweenEntities";
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
+
+        UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "", "");
+        doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
+                FIRST_GUID,
+                "",
+                SECOND_GUID,
+                RELATIONSHIP_TYPE_GUID,
+                RELATIONSHIP_TYPE,
+                methodName);
+
+        assertThrows(UserNotAuthorizedException.class, () ->
+                relationshipHandler.getRelationshipBetweenEntities(USER,
+                        FIRST_GUID,
+                        SECOND_GUID,
+                        RELATIONSHIP_TYPE));
+
+    }
+
+    @Test
+    public void getRelationshipBetweenEntities_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+
+        String methodName = "getRelationshipBetweenEntities";
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
+
+        InvalidParameterException mockedException =  new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", "", "");
+
+        doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
+
+        assertThrows(InvalidParameterException.class, () ->
+                relationshipHandler.getRelationshipBetweenEntities(USER,
+                        FIRST_GUID,
+                        SECOND_GUID,
+                        RELATIONSHIP_TYPE));
+        
+    }
+
+    @Test
+    public void getRelationshipBetweenEntities_throwsPropertyServerException()
+            throws UserNotAuthorizedException, PropertyServerException {
+        String methodName = "getRelationshipBetweenEntities";
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
+
+        PropertyServerException mockedException = new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "");
+
+        doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
+                FIRST_GUID,
+                "",
+                SECOND_GUID,
+                RELATIONSHIP_TYPE_GUID,
+                RELATIONSHIP_TYPE,
+                methodName);
+
+        assertThrows(PropertyServerException.class, () ->
+                relationshipHandler.getRelationshipBetweenEntities(USER,
+                        FIRST_GUID,
+                        SECOND_GUID,
+                        RELATIONSHIP_TYPE));
+
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {

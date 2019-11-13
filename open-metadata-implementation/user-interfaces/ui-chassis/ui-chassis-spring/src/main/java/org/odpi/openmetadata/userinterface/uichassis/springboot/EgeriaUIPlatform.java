@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
+import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
@@ -60,9 +60,9 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public OpenLineage getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
-                                      @Value("${open.lineage.server.name}") String serverName)  {
-        return new OpenLineage(serverName, serverUrl);
+    public OpenLineageClient getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
+                                            @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        return new OpenLineageClient(serverName, serverUrl);
     }
 
     @Bean
