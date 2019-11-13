@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -37,7 +39,7 @@ public class OpenLineageService {
     public static final String EDGES_LABEL = "edges";
     public static final String NODES_LABEL = "nodes";
     public static final String GLOSSARY_TERM = "glossaryTerm";
-    private final OpenLineage openLineageClient;
+    private final OpenLineageClient openLineageClient;
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
     @Value("${open.lineage.graph.source}")
     private GraphName graphName;
@@ -48,13 +50,9 @@ public class OpenLineageService {
      * @param openLineageClient client to connect to open lineage services
      */
     @Autowired
-    public OpenLineageService(OpenLineage openLineageClient) {
+    public OpenLineageService(OpenLineageClient openLineageClient) {
         this.openLineageClient = openLineageClient;
         mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-    }
-
-    public String generateMockGraph(String userId){
-        return openLineageClient.generateMockGraph(userId);
     }
 
     /**
@@ -65,7 +63,14 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
     public Map<String, Object> getUltimateSource(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
+        LineageVerticesAndEdges response = null;
+        try {
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         return processResponse(response);
     }
 
@@ -77,7 +82,14 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the end to end flow
      */
     public Map<String, Object> getEndToEndLineage(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
+        LineageVerticesAndEdges response = null;
+        try {
+            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         return processResponse(response);
     }
 
@@ -89,7 +101,14 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
     public Map<String, Object> getUltimateDestination(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
+        LineageVerticesAndEdges response = null;
+        try {
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         return processResponse(response);
 
     }
@@ -102,7 +121,14 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
     public Map<String, Object> getGlossaryLineage(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
+        LineageVerticesAndEdges response = null;
+        try {
+            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         return processResponse(response);
     }
 
@@ -115,7 +141,14 @@ public class OpenLineageService {
      */
     public Map<String, Object> getSourceAndDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response =
-                openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
+                null;
+        try {
+            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         return processResponse(response);
     }
 
