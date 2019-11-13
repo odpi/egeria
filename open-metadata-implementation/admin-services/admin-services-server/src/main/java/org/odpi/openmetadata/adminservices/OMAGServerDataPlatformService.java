@@ -34,10 +34,6 @@ public class OMAGServerDataPlatformService {
 
         try
         {
-            log.info("user id: {}",                    userId);
-            log.info("serverName: {}",                 serverName);
-            log.info("dataPlatformServicesConfig: {}", dataPlatformServicesConfig.toString());
-
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -58,7 +54,7 @@ public class OMAGServerDataPlatformService {
                         )
                 );
                 dataPlatformServicesConfig.setDataPlatformOmasInTopicName(
-                        dataPlatformServicesConfig.getDataPlatformConnection().getEndpoint().getAddress());
+                        dataPlatformServicesConfig.getDataPlatformOmasInTopic().getEndpoint().getAddress());
             } else {
                 dataPlatformServicesConfig.setDataPlatformOmasInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(

@@ -89,7 +89,6 @@ public class DataPlatformOperationalServices {
                         localServerUserId,
                         localServerPassword
                 );
-
                 log.debug("Configuring the Data Platform OMAS Client: {}", dataPlatformClient);
             } catch (InvalidParameterException error) {
                 throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
