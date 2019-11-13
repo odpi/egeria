@@ -176,7 +176,7 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
-        <owasp.version>5.2.3</owasp.version>
+        <owasp.version>5.2.4</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.2</maven-download.version>
@@ -2156,12 +2156,12 @@
             </testResource>
         </testResources>
 
-        <!-- Default compiler options - enable deprecation information -->
+        <!-- Default compiler options - enable additional lint checks -->
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <compilerArgument>-Xlint:deprecation</compilerArgument>
+                    <compilerArgument>-Xlint:all</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
             </plugin>
