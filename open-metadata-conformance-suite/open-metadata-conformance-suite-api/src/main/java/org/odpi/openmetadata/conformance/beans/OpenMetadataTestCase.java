@@ -34,7 +34,14 @@ public abstract class OpenMetadataTestCase
     protected ExceptionBean       exceptionBean          = null;
     protected String              successMessage         = null;
 
-
+    /*
+     * Enumerated type for control of multi-phase tests
+     */
+    public static enum TestPhase {
+        CREATE,
+        EXECUTE,
+        CLEAN
+    }
 
     /**
      * Default constructor
@@ -270,7 +277,7 @@ public abstract class OpenMetadataTestCase
     {
         if (condition)
         {
-            successfulAssertions.add(assertionMessage);
+            successfulAssertions.add(assertionId + ": " + assertionMessage);
             workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
             return;
         }
@@ -351,7 +358,7 @@ public abstract class OpenMetadataTestCase
 
     /**
      * Request from the workbench to execute this test and generate a result object.  This method is used for
-     * synchronous test cases.
+     * synchronous test cases. This variant of the method calls the parameter-less run method of the testcase.
      */
     public void executeTest()
     {
@@ -386,6 +393,44 @@ public abstract class OpenMetadataTestCase
         this.logTestEnd(methodName);
     }
 
+    /**
+     * Request from the workbench to execute this test and generate a result object.  This method is used for
+     * synchronous test cases. This variant of the method accepts a test phase parameter to allow explicit
+     * execution of create, execute and clean phases
+     */
+    public void executeTest(TestPhase phase)
+    {
+        final String methodName = "executeTest";
+
+        this.logTestStart(methodName);
+
+        try
+        {
+            /*
+             * Delegate to subclass including the test phase to run
+             */
+            this.run(phase);
+        }
+        catch (AssertionFailureException   exception)
+        {
+        }
+        catch (Throwable   exception)
+        {
+            String   assertionMessage = "test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName();
+
+            this.unsuccessfulAssertions.add(assertionMessage);
+
+            exceptionBean = new ExceptionBean();
+
+            exceptionBean.setErrorMessage(exception.getMessage());
+            exceptionBean.setExceptionClassName(exception.getClass().getName());
+
+            workPad.addUnexpectedException(defaultProfileId, defaultRequirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage, exceptionBean);
+        }
+
+        this.logTestEnd(methodName);
+    }
+
 
     /**
      * Method implemented by the actual test case.
@@ -393,6 +438,18 @@ public abstract class OpenMetadataTestCase
      * @throws Exception something went wrong with the test.
      */
     protected abstract void run() throws Exception;
+
+    /**
+     * Method implemented by the actual test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    protected void run(TestPhase phase) throws Exception
+    {
+        /*
+         * Method is overloaded by any multi-phase testcase
+         */
+    }
 
 
     /**
