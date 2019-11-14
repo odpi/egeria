@@ -23,7 +23,7 @@ public class Attribute implements Serializable {
     private String maxCardinality;
     private String allowsDuplicateValues;
     private String orderedValues;
-    private String position;
+    private int position;
     private String defaultValueOverride;
     private String dataType;
     private String defaultValue;
@@ -32,7 +32,7 @@ public class Attribute implements Serializable {
     }
 
     public Attribute(String qualifiedName, String displayName, String minCardinality, String maxCardinality,
-                     String allowsDuplicateValues, String orderedValues, String position, String defaultValueOverride,
+                     String allowsDuplicateValues, String orderedValues, int position, String defaultValueOverride,
                      String dataType, String defaultValue) {
         this.qualifiedName = qualifiedName;
         this.displayName = displayName;
@@ -94,11 +94,11 @@ public class Attribute implements Serializable {
         this.orderedValues = orderedValues;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 

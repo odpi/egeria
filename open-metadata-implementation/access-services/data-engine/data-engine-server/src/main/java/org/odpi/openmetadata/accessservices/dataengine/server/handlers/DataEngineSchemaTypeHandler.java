@@ -305,6 +305,7 @@ public class DataEngineSchemaTypeHandler {
             schemaAttribute.setQualifiedName(qualifiedName);
             schemaAttribute.setAttributeName(displayName);
             schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
+            schemaAttribute.setElementPosition(attribute.getPosition());
 
             Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
             schemaAttribute.setAdditionalProperties(attributeProperties);
@@ -315,6 +316,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
+        //TODO add these values as regular properties in ocf SchemaAttribute
         Map<String, String> additionalProperties = new HashMap<>();
 
         if (attribute.getMaxCardinality() != null) {
@@ -331,11 +333,6 @@ public class DataEngineSchemaTypeHandler {
         if (attribute.getOrderedValues() != null) {
             additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
         }
-
-        if (attribute.getPosition() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.POSITION, attribute.getPosition());
-        }
-
 
         return additionalProperties;
     }
