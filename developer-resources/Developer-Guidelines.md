@@ -34,6 +34,14 @@ The minimum level required to build & run Egeria is Java 8.
   Most developers use MacOS, but Windows should work also.
  
  Problems with any of these should be raised as issues.
+## Build warnings
+
+Build output should be checked for any warnings ie '[WARNING]' and these should be eliminated. 
+
+For example the java compiler is set to use '-Xlint:all' and may report warnings about deprecated function, unsafe casts, unchecked conversions etc which should be addressed.
+
+Other tools used in the build may also result in warnings which should also be addressed, whilst testcases should ensure output is captured to avoid such warnings appear in the build logs.
+
 ## License text in files
 
 All files for Egeria should have a license included.  We are using the Apache 2.0 license,
@@ -81,6 +89,8 @@ package and its content.
 Java code files may have additional comments, particularly where the processing is complex.
 The most useful comments are those that describe the purpose, or intent of the code,
 rather than a description of what each line of code is doing.
+
+The output from a build should be checked to ensure there are no javadoc warnings - for example about undocumented parameters or exceptions.
 
 ## Dependent libraries
 
