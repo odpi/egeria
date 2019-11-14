@@ -2220,6 +2220,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             setLocalProvenance(entity);
 
+
             /*
              * OK to send out
              */
@@ -3030,6 +3031,41 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             setLocalProvenance(relationship);
 
             /*
+             * Ensure that for each EntityProxy, the home metadataCollectionID and metadataCollectionName are set.
+             */
+            EntityProxy endOneProxy = relationship.getEntityOneProxy();
+            EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
+
+            /*
+             * Note that these proxies are clones - so we need to set back intot he relationship when modified.
+             */
+            if (endOneProxy != null) {
+
+                if (endOneProxy.getMetadataCollectionId() == null) {
+                    endOneProxy.setMetadataCollectionId(metadataCollectionId);
+                }
+                if (endOneProxy.getMetadataCollectionName() == null) {
+                    endOneProxy.setMetadataCollectionName(repositoryName);
+                }
+                relationship.setEntityOneProxy(endOneProxy);
+            }
+
+            if (endTwoProxy != null) {
+
+                if (endTwoProxy.getMetadataCollectionId() == null) {
+                    endTwoProxy.setMetadataCollectionId(metadataCollectionId);
+                }
+                if (endTwoProxy.getMetadataCollectionName() == null) {
+                    endTwoProxy.setMetadataCollectionName(repositoryName);
+                }
+                relationship.setEntityTwoProxy(endTwoProxy);
+            }
+
+
+
+
+
+            /*
              * OK to send out
              */
             if (produceEventsForRealConnector)
@@ -3124,6 +3160,38 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             setLocalProvenance(relationship);
             relationship.setReplicatedBy(metadataCollectionId);
+
+            /*
+             * Ensure that for each EntityProxy, the home metadataCollectionID and metadataCollectionName are set.
+             */
+            EntityProxy endOneProxy = relationship.getEntityOneProxy();
+            EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
+
+            /*
+             * Note that these proxies are clones - so we need to set back intot he relationship when modified.
+             */
+            if (endOneProxy != null) {
+
+                if (endOneProxy.getMetadataCollectionId() == null) {
+                    endOneProxy.setMetadataCollectionId(metadataCollectionId);
+                }
+                if (endOneProxy.getMetadataCollectionName() == null) {
+                    endOneProxy.setMetadataCollectionName(repositoryName);
+                }
+                relationship.setEntityOneProxy(endOneProxy);
+            }
+
+            if (endTwoProxy != null) {
+
+                if (endTwoProxy.getMetadataCollectionId() == null) {
+                    endTwoProxy.setMetadataCollectionId(metadataCollectionId);
+                }
+                if (endTwoProxy.getMetadataCollectionName() == null) {
+                    endTwoProxy.setMetadataCollectionName(repositoryName);
+                }
+                relationship.setEntityTwoProxy(endTwoProxy);
+            }
+
 
             /*
              * OK to send out

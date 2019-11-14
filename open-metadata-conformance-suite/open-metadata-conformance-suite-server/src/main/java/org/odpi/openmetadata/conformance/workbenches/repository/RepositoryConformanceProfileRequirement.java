@@ -182,7 +182,17 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
     PROCESS_REHOMED_EVENT         (42, "Process re-homed event",
                                    "The technology under test supports the receipt/processing of instance re-homed events from other members of the cohort.",
                                    "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/rehome-instance/process-rehomed-event",
-                                   RepositoryConformanceProfile.REHOME_INSTANCE);
+                                   RepositoryConformanceProfile.REHOME_INSTANCE),
+    ADVANCED_PROPERTY_SEARCH      (43, "Advanced property search",
+                                   "The technology under test supports the use of regular expressions within match properties to search for metadata instances.",
+                                   "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/advanced-property-search",
+                                   RepositoryConformanceProfile.ADVANCED_SEARCH),
+    ADVANCED_VALUE_SEARCH         (44, "Advanced value search",
+                                   "The technology under test supports the use of regular expressions within match criteria to search for metadata instances.",
+                                  "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/advanced-value-search",
+                                   RepositoryConformanceProfile.ADVANCED_SEARCH);
+
+
 
     private static final long serialVersionUID = 1L;
 
