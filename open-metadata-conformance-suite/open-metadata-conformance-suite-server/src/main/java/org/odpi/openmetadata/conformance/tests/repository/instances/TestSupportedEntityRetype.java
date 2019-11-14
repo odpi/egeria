@@ -119,6 +119,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
+
+
         /*
          * Generate property values for all the type's defined properties, including inherited properties
          * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -126,23 +128,24 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          * entity that is logically complete - versus an instance with just the locally-defined properties.
          */
 
-        InstanceProperties instanceProperties =  super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+        InstanceProperties instanceProperties = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
 
         EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              entityDef.getGUID(),
-                                                              instanceProperties,
-                                                              null,
-                                                              null);
+                entityDef.getGUID(),
+                instanceProperties,
+                null,
+                null);
+
 
         assertCondition((newEntity != null),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                assertion1,
+                testTypeName + assertionMsg1,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
-       /*
-        * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
-        */
+        /*
+         * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
+         */
 
 
 
@@ -151,10 +154,10 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          */
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                        assertion2,
-                        testTypeName + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                assertion2,
+                testTypeName + assertionMsg2,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
 
@@ -181,8 +184,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
              * No subtyeps - ignore this type
              */
             return;
-        }
-        else {
+        } else {
             /*
              * This type has subtyeps - retype the entity instance to each subtype and back again.
              */
@@ -362,8 +364,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
-
-
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addDiscoveredProperty(testTypeName + discoveredProperty_retypeSupport,
@@ -372,7 +372,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
                 }
-
 
 
             }
@@ -404,7 +403,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                 newEntity.getType().getTypeDefGUID(),
                 newEntity.getType().getTypeDefName(),
                 newEntity.getGUID());
-
 
 
         super.setSuccessMessage("Entities can be reidentified");

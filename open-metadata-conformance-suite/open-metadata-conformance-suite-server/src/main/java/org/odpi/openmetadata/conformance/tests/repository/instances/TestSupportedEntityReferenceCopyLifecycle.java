@@ -352,6 +352,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
             }
+
         }
 
 

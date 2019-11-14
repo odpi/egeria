@@ -86,6 +86,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
+
+
         /*
          * Generate property values for all the type's defined properties, including inherited properties
          * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -94,20 +96,21 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              entityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                              null,
-                                                              null);
+                entityDef.getGUID(),
+                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                null,
+                null);
+
 
         assertCondition((newEntity != null),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                assertion1,
+                testTypeName + assertionMsg1,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-       /*
-        * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
-        */
+        /*
+         * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
+         */
 
 
 
@@ -116,10 +119,10 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                        assertion2,
-                        testTypeName + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                assertion2,
+                testTypeName + assertionMsg2,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
 
 
@@ -132,7 +135,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         String newGUID = UUID.randomUUID().toString();
 
-        long  nextVersion = newEntity.getVersion() + 1;
+        long nextVersion = newEntity.getVersion() + 1;
 
         EntityDetail reIdentifiedEntity = null;
 
@@ -162,10 +165,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg4 + nextVersion,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        }
-
-        catch (FunctionNotSupportedException exception)
-        {
+        } catch (FunctionNotSupportedException exception) {
 
             super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
                     "Disabled",
@@ -178,8 +178,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the entity can no longer be retrieved under its original GUID.
          */
 
-        try
-        {
+        try {
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
@@ -187,9 +186,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg5,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        }
-        catch (EntityNotKnownException exception)
-        {
+        } catch (EntityNotKnownException exception) {
             assertCondition((true),
                     assertion5,
                     testTypeName + assertionMsg5,
@@ -202,17 +199,14 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the relationship can be retrieved under its new GUID.
          */
 
-        try
-        {
+        try {
             assertCondition((reIdentifiedEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newGUID))),
                     assertion6,
                     testTypeName + assertionMsg6,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        }
-        catch (EntityNotKnownException exception)
-        {
+        } catch (EntityNotKnownException exception) {
             assertCondition((false),
                     assertion6,
                     testTypeName + assertionMsg6,
@@ -248,7 +242,6 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                 newEntity.getType().getTypeDefGUID(),
                 newEntity.getType().getTypeDefName(),
                 newGUID);
-
 
 
         super.setSuccessMessage("Entities can be reidentified");

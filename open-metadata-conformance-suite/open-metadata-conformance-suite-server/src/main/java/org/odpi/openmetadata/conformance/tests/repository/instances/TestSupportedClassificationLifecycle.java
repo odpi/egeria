@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 
@@ -69,7 +70,13 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
+
+
+
         EntityDetail testEntity = addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, testEntityDef);
+
+
+
 
         assertCondition((testEntity.getClassifications() == null),
                         assertion1,

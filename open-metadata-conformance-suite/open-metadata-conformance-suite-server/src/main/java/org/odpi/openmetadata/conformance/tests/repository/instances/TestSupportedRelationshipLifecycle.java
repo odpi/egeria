@@ -128,18 +128,20 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        EntityDef     end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
-        EntityDetail  end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-        EntityDef     end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
-        EntityDetail  end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+
+        EntityDef end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        EntityDetail end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+        EntityDef end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        EntityDetail end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
 
         Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                                                                          relationshipDef.getGUID(),
-                                                                          super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
-                                                                          end1.getGUID(),
-                                                                          end2.getGUID(),
-                                                                          null);
+                                                                 relationshipDef.getGUID(),
+                                                                 super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                                                                 end1.getGUID(),
+                                                                 end2.getGUID(),
+                                                                null);
 
         assertCondition((newRelationship != null),
                         assertion1,

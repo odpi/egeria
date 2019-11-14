@@ -132,8 +132,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                               entityDef.getGUID(),
                                                               super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                              null,
-                                                              null);
+                                                             null,
+                                                             null);
+
+
 
         assertCondition((newEntity != null),
                         assertion1,
