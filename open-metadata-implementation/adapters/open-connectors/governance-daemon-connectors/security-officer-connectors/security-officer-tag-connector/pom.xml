@@ -13,6 +13,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Security Officer Tag Connector</name>
+    <description>Security Officer Tag Connector provides the implementation for
+        calculation of the security tags classification assigned to the schema elements.
+    </description>
+
     <artifactId>security-officer-tag-connector</artifactId>
     <dependencies>
         <dependency>
