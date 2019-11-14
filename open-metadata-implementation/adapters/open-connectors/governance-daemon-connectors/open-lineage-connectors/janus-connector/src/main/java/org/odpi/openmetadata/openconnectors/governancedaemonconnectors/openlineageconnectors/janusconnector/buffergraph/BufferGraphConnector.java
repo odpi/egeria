@@ -111,11 +111,10 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         for (String guid : guidList) {
 //            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("vepropdisplayName","initial_load");
 //            if(!initial.hasNext()) {
-            if(guid.equals("0cb86d8a-8acc-4ddb-a5a9-e00ccd90d3d9")){
-
+//            if(guid.equals("4c89ce29-948c-4467-acad-94e4edc52022")){
+            if(guid.equals("a85ab15d-8ddf-4aad-a0fd-d41acf4bbc5a")){
                 List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
                         .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
-                        .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
                         .toList();
 
                 Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
@@ -127,7 +126,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     if (columnOut != null && columnOut.hasNext()) {
                         String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
                         String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-
                         if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
                             MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
                             mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
@@ -231,7 +229,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             }
             return end;}
         catch (Exception e){
-            log.debug("Vertex does not exitst");
+            log.debug("Vertex does not exitst + {}",startingVertex.id());
             return null;
         }
     }

@@ -3,7 +3,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.janusgraph.core.JanusGraph;
@@ -74,17 +76,30 @@ public class MainGraphMapper {
         Vertex newColumnIn = null;
         Vertex newColumnOut = null;
 
-        if(!columnIn.hasNext()){
-            newColumnIn = checkAssetVertex(mainG,bufferG,columnInVertex);
-        }
+        System.out.println("Column in " + columnInVertex.property("vepropdisplayName").value());
+        System.out.println("Column out " + columnOutVertex.property("vepropdisplayName").value());
+        System.out.println("PRocess out " + process.property("vepropdisplayName").value());
 
-        if(!columnOut.hasNext()){
-            newColumnOut=  checkAssetVertex(mainG,bufferG,columnOutVertex);
-        }
-        mainG.tx().commit();
-        bufferG.tx().commit();
+        if(columnInVertex.property("vepropdisplayName").value().equals("LNAME")) {
+            if (!columnIn.hasNext()) {
+                newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
+            }
 
-        addProcess(newColumnIn,newColumnOut,process);
+            if (!columnOut.hasNext()) {
+                newColumnOut = checkAssetVertex(mainG, bufferG, columnOutVertex);
+            }
+            mainG.tx().commit();
+            bufferG.tx().commit();
+
+            if (newColumnIn == null) {
+                newColumnIn = columnIn.next();
+            }
+
+            if (newColumnOut == null) {
+                newColumnOut = columnOut.next();
+            }
+            addProcess(newColumnIn, newColumnOut, process);
+        }
     }
 
     private Vertex checkAssetVertex(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex){
@@ -153,23 +168,44 @@ public class MainGraphMapper {
     private void getGlossaryTerm(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex asset){
 
         Iterator<Vertex> glossaryTermBuffer = bufferG.V()
-                .has(PROPERTY_KEY_ENTITY_GUID,
-                        asset.property(PROPERTY_KEY_ENTITY_GUID).value().toString())
-                .bothE("SemanticAssignment")
-                .outV();
+                                                     .has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value().toString())
+                                                     .bothE("SemanticAssignment")
+                                                     .outV();
+
         if(glossaryTermBuffer.hasNext()) {
-            Vertex glossaryTermBufferVertex = glossaryTermBuffer.next();
-            Iterator<Vertex> glossaryTermMain = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,
-                    glossaryTermBufferVertex.property(PROPERTY_KEY_ENTITY_GUID).value());
+            String guidGlossary = glossaryTermBuffer.next().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
 
-            if(!glossaryTermMain.hasNext()){
-                Vertex glossaryNew = mainG.addV(NODE_LABEL_GLOSSARYTERM).property(PROPERTY_KEY_ENTITY_NODE_ID,
-                        asset.property(PROPERTY_KEY_ENTITY_NODE_ID).value()).next();
-                copyVertexProperties(glossaryTermBufferVertex,glossaryNew);
-
-                asset.addEdge(EDGE_LABEL_SEMANTIC,glossaryNew);
-            }
+           Vertex glossaryMain =   mainG.V().has(PROPERTY_KEY_ENTITY_GUID, guidGlossary).
+                    fold().
+                    coalesce(unfold(),
+                            addV(NODE_LABEL_GLOSSARYTERM)).property(PROPERTY_KEY_ENTITY_NODE_ID,guidGlossary).next();
+            mainG.V(asset.id()).as("v").
+                        V(glossaryMain.id()).
+                        coalesce(__.outE(EDGE_LABEL_SEMANTIC).where(inV().as("v")),
+                                addE(EDGE_LABEL_SEMANTIC).from("v")).next();
         }
+
+        //TODO copy glossaryterm
+
+//        if(glossaryTermBuffer.hasNext()) {
+//            Vertex glossaryTermBufferVertex = glossaryTermBuffer.next();
+//            Iterator<Vertex> glossaryTermMain = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,
+//                    glossaryTermBufferVertex.property(PROPERTY_KEY_ENTITY_GUID).value());
+//
+//            if(!glossaryTermMain.hasNext()){
+//                Vertex glossaryNew = mainG.addV(NODE_LABEL_GLOSSARYTERM).property(PROPERTY_KEY_ENTITY_NODE_ID,
+//                        glossaryTermBufferVertex.property(PROPERTY_KEY_ENTITY_GUID).value()).next();
+//                copyVertexProperties(glossaryTermBufferVertex,glossaryNew);
+//
+//                asset.addEdge(EDGE_LABEL_SEMANTIC,glossaryNew);
+//            }
+//            else{
+//                mainG.V(asset.id()).as("v").
+//                        V(glossaryTermMain.next().id()).
+//                        coalesce(__.inE(EDGE_LABEL_SEMANTIC).where(outV().as("v")),
+//                                addE(EDGE_LABEL_SEMANTIC).from("v"));
+//            }
+//        }
     }
 
     /**
@@ -189,8 +225,11 @@ public class MainGraphMapper {
 
 
         //check gia null columni nand out
-        if(mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, columnInVertex
-                .property(PROPERTY_KEY_ENTITY_NODE_ID).value()).bothE(EDGE_LABEL_COLUMN_AND_PROCESS).has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
+//        if(mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, columnInVertex
+//                .property(PROPERTY_KEY_ENTITY_NODE_ID).value()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
+//            return;
+//        }
+        if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
         }
 
@@ -281,7 +320,12 @@ public class MainGraphMapper {
         if(!tableVertex.hasNext()){
             table.addEdge(EDGE_LABEL_TABLE_AND_PROCESS,process);
         }
-        column.addEdge(EDGE_LABEL_INCLUDED_IN,table);
+
+        Iterator<Vertex> columnVertex = mainG.V(column.id()).outE(EDGE_LABEL_INCLUDED_IN).inV().has(PROPERTY_KEY_ENTITY_GUID, table.property(PROPERTY_KEY_ENTITY_GUID).value());
+        if(!columnVertex.hasNext()) {
+            column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
+        }
+
     }
 }
 
