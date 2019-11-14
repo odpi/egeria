@@ -71,8 +71,7 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
         }
 
         CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener(
-                this.getDataPlatformClient(),
-                connectionProperties.getUserId());
+                this.getDataPlatformClient(), connectionProperties.getUserId());
 
         cassandraDataStoreConnector.startCassandraConnection(cassandraMetadataListener);
 
