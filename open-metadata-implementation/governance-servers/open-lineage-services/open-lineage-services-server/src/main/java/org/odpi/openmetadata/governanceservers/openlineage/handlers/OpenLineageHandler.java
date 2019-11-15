@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
@@ -24,7 +25,7 @@ public class OpenLineageHandler {
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) {
+    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
         return mainGraph.lineage(graphName, scope, view, guid);
     }
 
@@ -47,22 +48,4 @@ public class OpenLineageHandler {
         return mainGraph.exportGraph(graphName);
     }
 
-
-    /**
-     * Confirms termination of the Open Lineage server..
-     */
-    public void terminate()
-    {
-        final String             actionDescription = "terminate";
-        DiscoveryServerAuditCode auditCode;
-
-        auditCode = DiscoveryServerAuditCode.ENGINE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(discoveryEngineGUID, serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-    }
 }

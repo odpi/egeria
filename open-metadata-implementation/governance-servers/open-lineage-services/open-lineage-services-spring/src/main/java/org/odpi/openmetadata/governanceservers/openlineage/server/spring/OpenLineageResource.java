@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/open-lineage/users/{userId}/open-lineage/{openLineageGUID}")
+@RequestMapping("/servers/{serverName}/open-metadata/open-lineage/users/{userId}")
 public class OpenLineageResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
@@ -60,9 +60,8 @@ public class OpenLineageResource {
     @GetMapping(path = "/dump/sources/{graph}")
     public VoidResponse dumpGraph(@PathVariable("userId") String userId,
                                   @PathVariable("serverName") String serverName,
-                                  @PathVariable("openLineageGUID") String openLineageGUID,
                                   @PathVariable("graph") String graph) {
-        return restAPI.dumpGraph(serverName, userId, openLineageGUID, graph);
+        return restAPI.dumpGraph(serverName, userId, graph);
     }
 
     /**

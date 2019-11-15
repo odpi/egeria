@@ -18,16 +18,16 @@ public class BufferGraphJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) {
-        LocalDateTime localTime = LocalDateTime.now();
-        System.out.println("Run QuartzJob at " + localTime);
-
-        JobKey key = context.getJobDetail().getKey();
-
-        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-
-        BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
-
-        performTask(bufferGraph);
+//        LocalDateTime localTime = LocalDateTime.now();
+//        System.out.println("Run QuartzJob at " + localTime);
+//
+//        JobKey key = context.getJobDetail().getKey();
+//
+//        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+//
+//        BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
+//
+//        performTask(bufferGraph);
     }
 
     private void performTask(BufferGraph bufferGraph){

@@ -38,41 +38,54 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OpenLineageServerErrorCode
 {
-    NO_CONFIG_DOC(400,"OMAS-OPEN-LINEAGE-SERVER-400-001",
+
+    NO_CONFIG_DOC(400,"OPEN-LINEAGE-SERVER-400-001",
             "Open Lineage server {0} does not have a configuration document",
             "The server is not able to retrieve its configuration.  It fails to start.",
-            "Add the open lineage configuration to the open lineage server's configuration document."),
+            "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
-    NO_OMAS_SERVER_URL(400,"OMAS-OPEN-LINEAGE-SERVER-400-002",
-            "Open Lineage server {0} is not configured with the platform URL root for the Discovery Engine OMAS",
-            "The server is not able to retrieve its configuration.  It fails to start.",
-            "Add the configuration for the platform URL root to this open lineage server's configuration document."),
-
-    NO_OMAS_SERVER_NAME(400, "OMAS-OPEN-LINEAGE-SERVER-400-003",
-            "Open Lineage server {0} is not configured with the name for the server running the Discovery Engine OMAS",
-            "The server is not able to retrieve its configuration.  It fails to start.",
-            "Add the configuration for the server name to this open lineage server's configuration document."),
-
-    NO_DISCOVERY_ENGINES(400,"OMAS-OPEN-LINEAGE-SERVER-400-004",
-            "Open Lineage server {0} is configured with no open lineage servicess",
-            "The server is not able to run any open lineage requests.  It fails to start.",
-            "Add the configuration for at least one open lineage services to this open lineage server."),
-
-    UNKNOWN_DISCOVERY_ENGINE(400, "OPEN-LINEAGE-SERVER-400-005 ",
-            "Discovery engine {0} is not running in the open lineage server {1}",
-            "The open lineage services requested on a request is not known to the open lineage server.",
+    OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(404, "OPEN-LINEAGE-SERVER-400-002 ",
+            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
+            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the open lineage server.  Once the cause is resolved, retry the open lineage request."),
 
-    SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-006",
-            "The open lineage services services are unable to initialize a new instance of open lineage server {0}; error message is {1}",
-            "The open lineage services services detected an error during the start up of a specific open lineage server instance.  Its open lineage services are not available for the server.",
+    SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-003",
+            "The open lineage  services are unable to initialize a new instance of open lineage server {0}; error message is {1}",
+            "The open lineage  services detected an error during the start up of a specific open lineage server instance.  Its open lineage services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    NO_DISCOVERY_ENGINES_STARTED(400,"OMAS-OPEN-LINEAGE-SERVER-400-007",
-            "Open Lineage server {0} is unable to start any open lineage servicess",
-            "The server is not able to run any open lineage requests.  It fails to start.",
-            "Add the configuration for at least one open lineage services to this open lineage server.");
+    GRAPH_INITIALIZATION_ERROR(400, "OPEN-LINEAGE-SERVICES-004",
+            "The graph database could not be initialized for open metadata repository {0}",
+            "The system was unable to initialize.",
+            "Please raise a github issue."),
 
+    CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVICES-005",
+            "Graph cannot be opened with that configuration",
+            "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
+            "The system was unable to open the graph repository graph database " +
+                    "Please check that the graph database exists and is not in use by another process."),
+
+    NO_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-006",
+            "Error retrieving inTopic Connector",
+            "IError retrieving inTopic Connector",
+            "The system was unable to obtain a connector for the eventbus. " +
+                    "Please verify the topic specifications in the configuration."),
+
+    NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-006",
+            "Error retrieving queried node",
+            "The queried node was not found in the lineage graph.",
+            "Please verify the queried GUID"),
+
+    LINEAGE_CYCLE(503, "OPEN-LINEAGE-SERVICES-007",
+            "A possible cycle in the lineage graph has been detected. ",
+            "No nodes were returned by the lineage query. This could mean that the ultimate sources/destinations of the " +
+                    "queried node are included in a cyclic data flow. This is not supported by Open lineage Services.",
+            "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
+
+    PROCESS_EVENT_EXCEPTION(503, "OPEN-LINEAGE-SERVICES-008",
+            "Event {0} could not be consumed. Error: {1}",
+            "The system is unable to process the request.",
+            "Verify the topic configuration.");
 
     private int    httpErrorCode;
     private String errorMessageId;

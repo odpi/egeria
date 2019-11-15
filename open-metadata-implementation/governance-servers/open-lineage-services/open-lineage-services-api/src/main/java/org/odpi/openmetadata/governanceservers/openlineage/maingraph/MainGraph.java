@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.maingraph;
 
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -18,7 +19,7 @@ public interface MainGraph extends OpenLineageGraph {
      * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    LineageResponse lineage(String graphName, Scope scope, View view, String guid);
+    LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException;
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.

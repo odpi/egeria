@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 
 
@@ -15,41 +16,35 @@ import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageH
  * Open Lineage instances.  The instance map is thread-safe.  Instances are added
  * and removed by the OpenLineageOperationalServices class.
  */
-class OpenLineageInstanceHandler extends GovernanceServerServiceInstanceHandler {
-
-    private static OpenLineageInstanceMap instanceMap = new OpenLineageInstanceMap();
+class OpenLineageInstanceHandler extends OMAGServerServiceInstanceHandler {
 
     /**
      * Default constructor registers the governance server
      */
-    OpenLineageInstanceHandler(){
+    OpenLineageInstanceHandler() {
         super(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
     }
 
 
     /**
-     * Retrieve the specific handler for the Open Lineage Services.
+     * Retrieve the handler for the Open Lineage Services.
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param openLineageGUID unique identifier of the Open Lineage server
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public OpenLineageHandler queryHandler(String userId,
-                                           String serverName,
-                                           String openLineageGUID,
-                                           String serviceOperationName) throws PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException, InvalidParameterException {
+    public OpenLineageHandler getOpenLineageHandler(String userId,
+                                                    String serverName,
+                                                    String serviceOperationName) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, OpenLineageException {
 
-        OpenLineageInstance instance = (OpenLineageInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        OpenLineageServerInstance instance = (OpenLineageServerInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-
-        if (instance != null)
-        {
-            return instance.getOpenLineage(openLineageGUID);
+        if (instance != null) {
+            return instance.getOpenLineageHandler();
         }
 
         return null;

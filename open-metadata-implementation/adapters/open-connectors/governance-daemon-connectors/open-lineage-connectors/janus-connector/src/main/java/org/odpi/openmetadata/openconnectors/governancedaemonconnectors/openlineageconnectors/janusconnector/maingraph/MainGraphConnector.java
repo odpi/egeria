@@ -12,9 +12,9 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -37,7 +37,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
     private JanusGraph bufferGraph;
-    private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
     private JanusGraph historyGraph;
 
@@ -89,9 +88,23 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) {
-
+    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
+        String methodName = "MainGraphConnector.lineage";
         Graph graph = getJanusGraph(graphName);
+        GraphTraversalSource g = graph.traversal();
+        try {
+            g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        } catch (NoSuchElementException e) {
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
         switch (scope) {
             case SOURCE_AND_DESTINATION:
                 return sourceAndDestination(graph, view, guid);
@@ -107,6 +120,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 log.error(scope + " is not a valid lineage query");
                 return null;
         }
+
     }
 
 
@@ -173,34 +187,34 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return lineageVertex;
     }
 
-    private Map< String, String> setSubProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setSubProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setGlossaryTermProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setGlossaryTermProperties(Vertex originalVertex, LineageVertex lineageVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setTableProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setTableProperties(Vertex originalVertex, LineageVertex lineageVertex) {
         Map<String, String> attributes = new HashMap<>();
         String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
+        if (originalGlossaryTerm != null)
             attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
         return attributes;
     }
 
-    private Map< String, String> setColumnProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setColumnProperties(Vertex originalVertex, LineageVertex lineageVertex) {
         Map<String, String> attributes = new HashMap<>();
         String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
-        attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        if (originalGlossaryTerm != null)
+            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
         return attributes;
     }
 
@@ -213,7 +227,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateSource(Graph graph, View view, String guid) {
+    private LineageResponse ultimateSource(Graph graph, View view, String guid) throws OpenLineageException {
+        String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
@@ -221,6 +236,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV().simplePath()).
                 dedup().toList();
+
+        detectProblematicCycle(methodName, sourcesList);
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
@@ -236,6 +253,18 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return lineageResponse;
     }
 
+    private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
+        if(vertexList.size() == 0){
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.LINEAGE_CYCLE;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
 
     /**
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
@@ -246,13 +275,16 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateDestination(Graph graph, View view, String guid) {
+    private LineageResponse ultimateDestination(Graph graph, View view, String guid) throws OpenLineageException {
+        String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
                 dedup().toList();
+
+        detectProblematicCycle(methodName, destinationsList);
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
@@ -278,7 +310,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse sourceAndDestination(Graph graph, View view, String guid) {
+    private LineageResponse sourceAndDestination(Graph graph, View view, String guid) throws OpenLineageException {
+        String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
@@ -291,6 +324,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
                 dedup().toList();
+
+        detectProblematicCycle(methodName, sourcesList);
+        detectProblematicCycle(methodName, destinationsList);
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);

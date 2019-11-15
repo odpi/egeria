@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpenLineageConfig extends AdminServicesConfigHeader {
+public class OpenLineageServerConfig extends AdminServicesConfigHeader {
 
     private int openLineageId = 0;
     private String openLineageName;
@@ -39,7 +39,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     /**
      * Default constructor
      */
-    public OpenLineageConfig() {
+    public OpenLineageServerConfig() {
         super();
     }
 
@@ -49,7 +49,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      *
      * @param template fixed properties about open lineage
      */
-    public OpenLineageConfig(OpenLineageConfig template) {
+    public OpenLineageServerConfig(OpenLineageServerConfig template) {
         super(template);
 
         if (template != null) {
@@ -310,7 +310,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OpenLineageConfig that = (OpenLineageConfig) o;
+        OpenLineageServerConfig that = (OpenLineageServerConfig) o;
         return openLineageId == that.openLineageId &&
                 Objects.equals(openLineageName, that.openLineageName) &&
                 Objects.equals(openLineageDescription, that.openLineageDescription) &&

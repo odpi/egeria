@@ -6,8 +6,8 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsBufferGraph;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsBufferGraph;
 import org.slf4j.Logger;
@@ -25,9 +25,9 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
     private static final Logger log = LoggerFactory.getLogger(BerkeleyBufferJanusFactory.class);
 
 
-    public static JanusGraph openBufferGraph(){
+    public static JanusGraph openBufferGraph() throws OpenLineageException {
 
-        final String methodName = "open";
+        final String methodName = "openBufferGraph";
         JanusGraph janusGraph;
 
         final String storagePath = "./egeria-lineage-repositories/buffer/berkeley";
@@ -45,11 +45,11 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
 
         } catch (Exception e) {
             log.error("{} could not open graph stored at {}", "open", storagePath);
-            OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.CANNOT_OPEN_GRAPH_DB;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, BerkeleyBufferJanusFactory.class.getName());
 
-            throw new OpenLineageException(400,
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     BerkeleyBufferJanusFactory.class.getName(),
                     methodName,
                     errorMessage,
@@ -72,7 +72,7 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
         return janusGraph;
     }
 
-    private static void initializeGraph(JanusGraph graph){
+    private static void initializeGraph(JanusGraph graph) throws OpenLineageException {
 
         final String methodName = "initializeGraph";
         /*
@@ -106,9 +106,9 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
 
         } catch (Exception e) {
 
-            OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
-            throw new OpenLineageException(400,
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     BerkeleyBufferJanusFactory.class.getName(),
                     methodName,
                     errorMessage,
