@@ -4415,7 +4415,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "ac406bf8-e53e-49f1-9088-2af28bcbd285";
         final String name            = "PersonRole";
-        final String description     = "An role performed by one or more individuals.";
+        final String description     = "A role performed by one or more individuals.";
         final String descriptionGUID = null;
 
         final String superTypeName = "Referenceable";
@@ -16508,7 +16508,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "ac406bf8-e53e-49f1-9088-2af28eeee285";
         final String name            = "AssetOwner";
-        final String description     = "An role defining a responsibility to manage an asset.";
+        final String description     = "A role defining a responsibility to manage an asset.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";
@@ -16525,7 +16525,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "c6fe40af-cdd6-4ca7-98c4-353d2612921f";
         final String name            = "SubjectAreaOwner";
-        final String description     = "An role defining a responsibility to manage an asset.";
+        final String description     = "A role defining a responsibility to manage an asset.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";
