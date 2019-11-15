@@ -32,10 +32,13 @@ POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-
       "dataType": "INTEGER"
     }
    ]
-  }
+  },
+  "externalSourceName": "dataEngine"
 }
 ```
-
+`externalSourceName` - qualifiedName of the external data engine tool.
+ Note that you need to register the data engine tool with [register-data-engine-tool](register-data-engine-tool.md) 
+ before creating any schema type.
 `GUIDResponse` - response containing the schema type guid, with status and error message if failing.
 
 
