@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -116,12 +118,13 @@ public class ContextHandler {
 
         //TODO check for Table entities
         if (isComplexSchemaType.isPresent()) {
-//            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
+        //setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
         }
 
         if(hasSchemaAttributeType(typeDefName)) {
-            //TODO Change it to new classification
+
             buildGraphByRelationshipType(userId, entityDetail, LINEAGE_MAPPING, typeDefName);
+            commonHandler.buildGraphEdgeByClassificationType(userId, entityDetail, TYPE_EMBEDDED_ATTRIBUTE, graph);
         }
 
         List<EntityDetail> schemaAttributes = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
@@ -131,10 +134,6 @@ public class ContextHandler {
                 setAssetDetails(userId, schemaAttribute);
             } else {
                 buildAssetContext(userId, schemaAttribute);
-/*                List<EntityDetail> schemaAttributeTypeEntities = buildGraphByRelationshipType(userId, schemaAttribute,
-                                                                                                 LINEAGE_MAPPING,
-                                                                                                 schemaAttribute.getType().getTypeDefName());*/
-
             }
         }
     }
@@ -148,14 +147,12 @@ public class ContextHandler {
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
-            EntityDetail endEntity = commonHandler.buildEdgeByStartEntity(userId, startEntity, relationship, graph);
+            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
             if(endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);
         }
-
         return entityDetails;
-
     }
 
     private void setAssetDetails(String userId, EntityDetail startEntity) throws InvalidParameterException,

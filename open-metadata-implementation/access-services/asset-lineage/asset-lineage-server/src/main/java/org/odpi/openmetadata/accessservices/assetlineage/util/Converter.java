@@ -292,7 +292,7 @@ public class Converter {
     }
 
     public DataType getColumnTypeValue(EntityDetail columnType) {
-        PrimitivePropertyValue value = (PrimitivePropertyValue) columnType.getProperties().getPropertyValue(Constants.TYPE);
+        PrimitivePropertyValue value = (PrimitivePropertyValue) columnType.getProperties().getPropertyValue(Constants.DATA_TYPE);
 
         if (value != null) {
             PrimitiveDefCategory primitiveValue = value.getPrimitiveDefCategory();

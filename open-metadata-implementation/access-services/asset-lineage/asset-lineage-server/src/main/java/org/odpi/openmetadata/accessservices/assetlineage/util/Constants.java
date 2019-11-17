@@ -65,10 +65,14 @@ public final class Constants {
     public static final String CONNECTOR_PROVIDER_CLASS_NAME = "connectorProviderClassName";
     public static final String SECURED_PROPERTIES = "securedProperties";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
-    public static final String TYPE = "dataType";
+    public static final String DATA_TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
 
+    //Classification Types
+    public static final String CLASSIFIED_ENTITY = "ClassifiedEntity";
+    public static final String CLASSIFIED_ENTITY_GUID = "b04047c5-50fc-4010-a07a-544bead159dc";
+    public static final String TYPE_EMBEDDED_ATTRIBUTE = "TypeEmbeddedAttribute";
 
     // Map of entities to relationship types
     public static final Map<String, String> processRelationshipsTypes = new HashMap<>();

@@ -2,27 +2,28 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class CommonHandler {
 
@@ -61,13 +62,13 @@ public class CommonHandler {
     /**
      * Query about the entity in the repositories based on the Guid
      *
-     * @param userId    String - userId of user making request.
-     * @param guid guid of the asset we need to retrieve from a repository
+     * @param userId String - userId of user making request.
+     * @param guid   guid of the asset we need to retrieve from a repository
      * @return optional with entity details if found, empty optional if not found
      */
     public Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         String methodName = "getEntityDetails";
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, PROCESS, methodName));
     }
@@ -75,25 +76,24 @@ public class CommonHandler {
     /**
      * Query about the relationships of an entity based on the type of the relationship
      *
-     * @param userId    String - userId of user making request.
-     * @param assetGuid guid of the asset we need to retrieve the relationships
+     * @param userId           String - userId of user making request.
+     * @param assetGuid        guid of the asset we need to retrieve the relationships
      * @param relationshipType the type of the relationship
-     * @param typeDefName type of the Entity
-     *
+     * @param typeDefName      type of the Entity
      * @return List of the relationships if found, empty list if not found
      */
     public List<Relationship> getRelationshipsByType(String userId, String assetGuid,
                                                      String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-                                                                                                        PropertyServerException{
+            PropertyServerException {
         final String methodName = "getRelationshipsByType";
         String typeGuid = getTypeName(userId, relationshipType);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                                    assetGuid,
-                                                                                    typeDefName,
-                                                                                    typeGuid,
-                                                                                    relationshipType,
-                                                                                    methodName);
+                assetGuid,
+                typeDefName,
+                typeGuid,
+                relationshipType,
+                methodName);
 
         if (relationships != null) {
             return relationships;
@@ -105,12 +105,11 @@ public class CommonHandler {
     /**
      * Retrieves guid for a specific type
      *
-     * @param userId    String - userId of user making request.
+     * @param userId      String - userId of user making request.
      * @param typeDefName type of the Entity
-     *
      * @return Guid of the type if found, null String if not found
      */
-    public String getTypeName (String userId, String typeDefName){
+    public String getTypeName(String userId, String typeDefName) {
         final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {
@@ -121,35 +120,35 @@ public class CommonHandler {
 
 
     public EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
-                                                                                                                    PropertyServerException,
-                                                                                                                    UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
 
         String methodName = "getEntityAtTheEnd";
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
             return repositoryHandler.getEntityByGUID(userId,
-                                                     relationship.getEntityTwoProxy().getGUID(),
-                                                     GUID_PARAMETER,
-                                      relationship.getEntityTwoProxy().getType().getTypeDefName(), methodName);
+                    relationship.getEntityTwoProxy().getGUID(),
+                    GUID_PARAMETER,
+                    relationship.getEntityTwoProxy().getType().getTypeDefName(), methodName);
         } else {
             return repositoryHandler.getEntityByGUID(userId,
-                                                     relationship.getEntityOneProxy().getGUID(),
-                                                     GUID_PARAMETER,
-                                      relationship.getEntityOneProxy().getType().getTypeDefName(), methodName);
+                    relationship.getEntityOneProxy().getGUID(),
+                    GUID_PARAMETER,
+                    relationship.getEntityOneProxy().getType().getTypeDefName(), methodName);
         }
     }
 
     /**
      * Adds entities and relationships for the process Context structure
      *
-     * @param userId           String - userId of user making request.
-     * @param startEntity      parent entity of the relationship
-     * @param relationship     the relationship of the parent node
+     * @param userId       String - userId of user making request.
+     * @param startEntity  parent entity of the relationship
+     * @param relationship the relationship of the parent node
      * @return Entity which is the child of the relationship, null if there is no Entity
      */
-    protected EntityDetail buildEdgeByStartEntity(String userId, EntityDetail startEntity,
-                                                  Relationship relationship, AssetContext graph) throws InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException {
+    protected EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
+                                                        Relationship relationship, AssetContext graph) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
 
         Converter converter = new Converter();
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
@@ -162,11 +161,79 @@ public class CommonHandler {
         graph.addVertex(startVertex);
         graph.addVertex(endVertex);
 
-        GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(),relationship.getGUID(),startVertex, endVertex);
+        GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
         graph.addEdge(edge);
 
         return endEntity;
     }
 
+    public List<LineageEntity> buildGraphEdgeByClassificationType(String userId,
+                                                                  EntityDetail startEntity,
+                                                                  String classificationType,
+                                                                  AssetContext graph) {
 
+        List<LineageEntity> classificationLineageEntities = new ArrayList<>();
+        //check the Schema Attribute Entity whether it has Type Embedded Attribute Classification
+
+        for(Classification classification : startEntity.getClassifications())
+        {
+            if(classification.getType().getTypeDefName().equals(classificationType)){
+
+                LineageEntity lineageEntity = new LineageEntity();
+                mapClassificationsToLineageEntity(classification, lineageEntity);
+                classificationLineageEntities.add(lineageEntity);
+                log.debug("Adding Classification {} ", classification.toString());
+            }
+        }
+
+        if (classificationLineageEntities.isEmpty()) return null;
+
+        Converter converter = new Converter();
+        LineageEntity startVertex = converter.createEntity(startEntity);
+
+
+        for (LineageEntity endVertex : classificationLineageEntities) {
+
+            graph.addVertex(startVertex);
+            graph.addVertex(endVertex);
+
+            GraphContext edge = new GraphContext(classificationType, CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
+            graph.addEdge(edge);
+
+        }
+
+        return classificationLineageEntities;
+
+    }
+
+
+    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) {
+
+        final String methodName = "mapClassificationsToLineageEntity";
+
+        Converter converter = new Converter();
+
+        try {
+
+            lineageEntity.setGuid(classification.getClassificationOriginGUID());
+            lineageEntity.setVersion(classification.getVersion());
+            lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
+            lineageEntity.setCreatedBy(classification.getCreatedBy());
+            lineageEntity.setUpdatedBy(classification.getUpdatedBy());
+            lineageEntity.setCreateTime(classification.getCreateTime());
+            lineageEntity.setUpdateTime(classification.getUpdateTime());
+            lineageEntity.setProperties(converter.getMapProperties(classification.getProperties()));
+
+            log.debug("Classfication mapping for lineage entity {}: ", lineageEntity);
+
+        } catch (Throwable exc) {
+
+            AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
+                    this.getClass().getName());
+
+            log.error("Caught exception from classification mapper {}", errorMessage);
+        }
+
+    }
 }
