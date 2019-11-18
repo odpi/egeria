@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
@@ -91,30 +92,43 @@ public class OpenLineageServerOperationalServices {
 
         BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
         MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
-
+        try {
+            mainGraphConnector.initializeGraphDB();
+        } catch (OpenLineageException e) {
+            logAudit(OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
+            throwError(OpenLineageServerErrorCode.CANNOT_OPEN_GRAPH_DB, methodName);
+        }
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
         try {
             bufferGraphConnector.start();
-        } catch (ConnectorCheckedException e) {
+        } catch (
+                ConnectorCheckedException e) {
             log.error("Could not start the buffer graph connector.");
         }
         try {
             mainGraphConnector.start();
-        } catch (ConnectorCheckedException e) {
+        } catch (
+                ConnectorCheckedException e) {
             log.error("Could not start the main graph connector.");
         }
+
         //TODO check for null
         StoringServices storingServices = new StoringServices(bufferGraphConnector);
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(mainGraphConnector);
 
-        this.openLineageServerInstance = new OpenLineageServerInstance(
+        this.openLineageServerInstance = new
+
+                OpenLineageServerInstance(
                 localServerName,
                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+
                 maxPageSize,
                 openLineageHandler);
+
         startEventBus(storingServices);
+
     }
 
     private OpenLineageGraph getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {

@@ -23,28 +23,28 @@ public class BerkeleyJanusFactory {
     private static final Logger log = LoggerFactory.getLogger(BerkeleyJanusFactory.class);
 
 
-    public static JanusGraph openMainGraph() throws RepositoryErrorException, OpenLineageException {
+    public static JanusGraph openMainGraph() throws OpenLineageException {
         final String storagePath = "./egeria-lineage-repositories/main/berkeley";
         final String indexPath = "./egeria-lineage-repositories/main/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
 
-    public static JanusGraph openHistoryGraph() throws RepositoryErrorException, OpenLineageException {
+    public static JanusGraph openHistoryGraph() throws OpenLineageException {
         final String storagePath = "./egeria-lineage-repositories/history/berkeley";
         final String indexPath = "./egeria-lineage-repositories/history/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
 
-    public static JanusGraph openMockGraph() throws RepositoryErrorException, OpenLineageException {
+    public static JanusGraph openMockGraph() throws OpenLineageException {
         final String storagePath = "./egeria-lineage-repositories/mock/berkeley";
         final String indexPath = "./egeria-lineage-repositories/mock/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
 
-    private static JanusGraph getJanusGraph(String storagePath, String indexPath) throws RepositoryErrorException, OpenLineageException {
+    private static JanusGraph getJanusGraph(String storagePath, String indexPath) throws OpenLineageException {
         JanusGraph janusGraph;
         final String methodName = "openBufferGraph";
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
@@ -71,21 +71,12 @@ public class BerkeleyJanusFactory {
                     errorCode.getUserAction());
         }
 
-
-        try {
             log.info("Updating graph schema, if necessary");
             initializeGraph(janusGraph);
-        }
-        catch (RepositoryErrorException e) {
-            log.error("{} Caught exception during graph initialize operation", "open");
-            throw e;
-        }
-
-
         return janusGraph;
     }
 
-    private static void initializeGraph(JanusGraph graph) throws RepositoryErrorException, OpenLineageException {
+    private static void initializeGraph(JanusGraph graph) throws  OpenLineageException {
 
         final String methodName = "initializeGraph";
         /*

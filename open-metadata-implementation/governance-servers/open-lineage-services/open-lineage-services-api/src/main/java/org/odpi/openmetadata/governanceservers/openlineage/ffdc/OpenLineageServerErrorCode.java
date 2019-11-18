@@ -44,20 +44,36 @@ public enum OpenLineageServerErrorCode
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
-    OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(404, "OPEN-LINEAGE-SERVER-400-002 ",
-            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
-            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the open lineage server.  Once the cause is resolved, retry the open lineage request."),
+    INVALID_SCOPE(400,"OPEN-LINEAGE-SERVER-400-002",
+            "Invalid scope argument",
+            "The scope value passed in the lineage query was nog recognized.",
+            "Consult an Egeria maintainer for a list of allowed scope values"),
+
+    INVALID_VIEW(400,"OPEN-LINEAGE-SERVER-400-003",
+            "Invalid view argument",
+            "The view value passed in the lineage query was nog recognized.",
+            "Consult an Egeria maintainer for a list of allowed view values"),
+
+    INVALID_SOURCE(400,"OPEN-LINEAGE-SERVER-400-003",
+            "Invalid sources argument",
+            "The source value passed in the lineage query was nog recognized.",
+            "Consult an Egeria maintainer for a list of allowed source values"),
+
 
     SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-003",
             "The open lineage  services are unable to initialize a new instance of open lineage server {0}; error message is {1}",
             "The open lineage  services detected an error during the start up of a specific open lineage server instance.  Its open lineage services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    GRAPH_INITIALIZATION_ERROR(400, "OPEN-LINEAGE-SERVICES-004",
+    GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-004",
             "The graph database could not be initialized for open metadata repository {0}",
             "The system was unable to initialize.",
             "Please raise a github issue."),
+
+    OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(500, "OPEN-LINEAGE-SERVER-500-001 ",
+            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
+            "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the open lineage server.  Once the cause is resolved, retry the open lineage request."),
 
     CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVICES-005",
             "Graph cannot be opened with that configuration",

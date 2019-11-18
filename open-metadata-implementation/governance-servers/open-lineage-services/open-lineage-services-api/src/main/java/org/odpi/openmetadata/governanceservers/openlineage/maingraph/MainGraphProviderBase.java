@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.maingraph;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 
-public class MainGraphStoreProviderBase extends ConnectorProviderBase {
+public class MainGraphProviderBase extends ConnectorProviderBase {
 
-    public MainGraphStoreProviderBase(){super();}
+    public MainGraphProviderBase(){super();}
 }

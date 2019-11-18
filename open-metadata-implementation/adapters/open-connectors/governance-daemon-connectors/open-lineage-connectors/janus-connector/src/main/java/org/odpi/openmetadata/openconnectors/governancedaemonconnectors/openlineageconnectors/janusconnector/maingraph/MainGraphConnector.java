@@ -20,8 +20,8 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.GraphVertexMapper;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private JanusGraph bufferGraph;
     private JanusGraph mainGraph;
     private JanusGraph historyGraph;
-
     private JanusGraph mockGraph;
 
     /**
@@ -50,23 +49,17 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      */
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-
         super.initialize(connectorInstanceId, connectionProperties);
-        initializeGraphDB();
     }
 
-    private void initializeGraphDB() {
+    public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB) {
             case "berkeleydb":
-                try {
                     this.mainGraph = BerkeleyJanusFactory.openMainGraph();
                     this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
                     this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
                     this.mockGraph = BerkeleyJanusFactory.openMockGraph();
-                } catch (Exception e) {
-                    log.error("{} Could not open graph database", "JanusConnector"); //TODO  elaborate error
-                }
                 break;
             case "cassandra":
                 FactoryForTesting factoryForTesting = new FactoryForTesting();
@@ -103,25 +96,32 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-
-
-        switch (scope) {
-            case SOURCE_AND_DESTINATION:
-                return sourceAndDestination(graph, view, guid);
-            case END_TO_END:
-                return endToEnd(graph, view, guid);
-            case ULTIMATE_SOURCE:
-                return ultimateSource(graph, view, guid);
-            case ULTIMATE_DESTINATION:
-                return ultimateDestination(graph, view, guid);
-            case GLOSSARY:
-                return glossary(graph, guid);
-            default:
-                log.error(scope + " is not a valid lineage query");
-                return null;
+        String edgeLabel = getEdgeLabel(view);
+        try {
+            switch (scope) {
+                case SOURCE_AND_DESTINATION:
+                    return sourceAndDestination(graph, edgeLabel, guid);
+                case END_TO_END:
+                    return endToEnd(graph, edgeLabel, guid);
+                case ULTIMATE_SOURCE:
+                    return ultimateSource(graph, edgeLabel, guid);
+                case ULTIMATE_DESTINATION:
+                    return ultimateDestination(graph, edgeLabel, guid);
+                case GLOSSARY:
+                    return glossary(graph, guid);
+            }
+        } catch (NullPointerException e) {
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
-
+        return null;
     }
+
 
 
     /**
@@ -129,13 +129,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view  The view queried by the user: tableview, columnview.
+     * @param edgeLabel  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse endToEnd(Graph graph, View view, String guid) {
+    private LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(view);
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -223,14 +222,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view  The view queried by the user: tableview, columnview.
+     * @param edgeLabel  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateSource(Graph graph, View view, String guid) throws OpenLineageException {
+    private LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(view);
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
@@ -254,7 +252,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
-        if(vertexList.size() == 0){
+        if (vertexList.size() == 0) {
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.LINEAGE_CYCLE;
             throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -271,14 +269,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view  The view queried by the user: tableview, columnview.
+     * @param edgeLabel  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateDestination(Graph graph, View view, String guid) throws OpenLineageException {
+    private LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(view);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
@@ -306,14 +303,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view  The view queried by the user: tableview, columnview.
+     * @param edgeLabel  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse sourceAndDestination(Graph graph, View view, String guid) throws OpenLineageException {
+    private LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(view);
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
@@ -451,17 +447,28 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param view The view queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-    private String getEdgeLabel(View view) {
+    private String getEdgeLabel(View view) throws OpenLineageException {
+        String methodName = "MainGraphConnector.getEdgeLabel";
         String edgeLabel = "";
-        switch (view) {
-            case TABLE_VIEW:
-                edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
-                break;
-            case COLUMN_VIEW:
-                edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
-                break;
-            default:
-                log.error(view + " is not a valid lineage view");
+        try {
+            switch (view) {
+                case TABLE_VIEW:
+                    edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
+                    break;
+                case COLUMN_VIEW:
+                    edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
+                    break;
+            }
+        }
+        catch (NullPointerException e){
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_VIEW;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
         }
         return edgeLabel;
     }
@@ -472,7 +479,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      *
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(String graphName) {
+    public void dumpGraph(String graphName) throws OpenLineageException {
         JanusGraph graph = getJanusGraph(graphName);
         try {
             graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
@@ -487,7 +494,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    public String exportGraph(String graphName) {
+    public String exportGraph(String graphName) throws OpenLineageException {
         JanusGraph graph = getJanusGraph(graphName);
         return janusGraphToGraphson(graph);
     }
@@ -517,24 +524,34 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param graphNameText The name of the queried graph.
      * @return The Graph object.
      */
-    private JanusGraph getJanusGraph(String graphNameText) {
+    private JanusGraph getJanusGraph(String graphNameText) throws OpenLineageException {
+        String methodName = "MainGraphConnector.getJanusGraph";
         JanusGraph graph = null;
         GraphName graphName = GraphName.fromString(graphNameText);
-        switch (graphName) {
-            case MAIN:
-                graph = mainGraph;
-                break;
-            case BUFFER:
-                graph = bufferGraph;
-                break;
-            case HISTORY:
-                graph = historyGraph;
-                break;
-            case MOCK:
-                graph = mockGraph;
-                break;
-            default:
-                log.error(graphNameText + " is not a valid graph");
+        try {
+            switch (graphName) {
+                case MAIN:
+                    graph = mainGraph;
+                    break;
+                case BUFFER:
+                    graph = bufferGraph;
+                    break;
+                case HISTORY:
+                    graph = historyGraph;
+                    break;
+                case MOCK:
+                    graph = mockGraph;
+                    break;
+            }
+        }
+        catch(NullPointerException e){
+                OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
+                throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorCode.getFormattedErrorMessage(),
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
         }
         return graph;
     }

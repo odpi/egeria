@@ -34,7 +34,7 @@ public class OpenLineageHandler {
      *
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(String graphName) {
+    public void dumpGraph(String graphName) throws OpenLineageException {
         mainGraph.dumpGraph(graphName);
     }
 
@@ -44,7 +44,7 @@ public class OpenLineageHandler {
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    public String exportGraph(String graphName) {
+    public String exportGraph(String graphName) throws OpenLineageException {
         return mainGraph.exportGraph(graphName);
     }
 

@@ -33,6 +33,10 @@ public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
         super.start();
     }
 
+    @Override
+    public void initializeGraphDB() throws OpenLineageException {
+
+    }
 
     @Override
     public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
@@ -40,12 +44,12 @@ public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
     }
 
     @Override
-    public void dumpGraph(String graphName) {
+    public void dumpGraph(String graphName) throws OpenLineageException {
 
     }
 
     @Override
-    public String exportGraph(String graphName) {
+    public String exportGraph(String graphName) throws OpenLineageException {
         return null;
     }
 

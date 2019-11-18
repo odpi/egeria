@@ -26,8 +26,9 @@ public interface MainGraph extends OpenLineageGraph {
      *
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    void dumpGraph(String graphName);
+    void dumpGraph(String graphName) throws OpenLineageException;
 
+    void initializeGraphDB() throws OpenLineageException;
 
     /**
      * Return an entire graph, in GraphSon format.
@@ -35,7 +36,7 @@ public interface MainGraph extends OpenLineageGraph {
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    String exportGraph(String graphName);
+    String exportGraph(String graphName) throws OpenLineageException;
 
     Object getMainGraph();
 }

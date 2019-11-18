@@ -39,9 +39,6 @@ public class OpenLineageRestServices {
         } catch (Throwable error) {
             openLineageExceptionHandler.captureThrowable(response, error, methodName);
         }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
         return response;
     }
 
