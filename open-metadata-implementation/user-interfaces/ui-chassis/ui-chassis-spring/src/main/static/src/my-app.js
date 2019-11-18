@@ -147,7 +147,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
-                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/ultimateSource">Asset Lineage</a></div>
+                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
@@ -182,7 +182,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" subview="{{subviewData.subview}}"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" subview="[[subviewData.subview]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
