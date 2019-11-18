@@ -231,8 +231,6 @@ public class ProcessHandler {
                                                                                             processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                                                                             entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
-
-            commonHandler.buildGraphEdgeByClassificationType(userId, entityDetail, TYPE_EMBEDDED_ATTRIBUTE, graph);
         }
         return endRelationship(result,userId);
     }

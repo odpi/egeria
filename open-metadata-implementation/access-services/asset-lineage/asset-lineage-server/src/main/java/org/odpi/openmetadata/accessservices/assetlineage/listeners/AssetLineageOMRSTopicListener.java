@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
@@ -123,7 +124,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(), serviceOperationName);
-
+                    case CLASSIFIED_ENTITY_EVENT:
+                        processClassifiedEntityEvent(instanceEvent.getEntity(), serviceOperationName);
                     case NEW_RELATIONSHIP_EVENT:
                         break;
 //                  case DELETE_PURGED_RELATIONSHIP_EVENT:
@@ -196,6 +198,37 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     }
 
+    private void processClassifiedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
+
+        final String methodName = "processClassifiedEntityEvent";
+
+        try {
+            getClassificationContext(entityDetail, serviceOperationName);
+
+        }
+        catch (Exception e){
+            log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
+            }
+
+        }
+
+    private void getClassificationContext(EntityDetail entityDetail, String serviceOperationName) throws
+            InvalidParameterException, PropertyServerException, UserNotAuthorizedException{
+
+        ClassificationHandler classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, serviceOperationName);
+        Map<String, Set<GraphContext>>  classificationContext = classificationHandler.getAssetContextByClassification(
+                serverName,
+                serverUserName,
+                entityDetail.getGUID(),
+                entityDetail.getType().getTypeDefName());
+
+        LineageEvent event = new LineageEvent();
+        event.setAssetContext(classificationContext);
+        event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
+        publisher.publishRelationshipEvent(event);
+    }
+
+
     /**
      * Takes the context for a Process and publishes the event to the Cohort
      *
@@ -265,7 +298,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         )
             return true;
 
-        final List<String> types = Arrays.asList(PROCESS_PORT, PORT_DELEGATION, PORT_SCHEMA, SCHEMA_TYPE, SCHEMA_ATTRIBUTE_TYPE, ATTRIBUTE_FOR_SCHEMA, LINEAGE_MAPPING);
+        final List<String> types = Arrays.asList(PROCESS_PORT, PORT_DELEGATION, PORT_SCHEMA, SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA, LINEAGE_MAPPING);
 
         return types.contains(relationship.getType().getTypeDefName());
     }

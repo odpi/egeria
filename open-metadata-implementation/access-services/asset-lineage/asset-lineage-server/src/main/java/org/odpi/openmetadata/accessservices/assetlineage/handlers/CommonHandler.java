@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
@@ -15,9 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,75 +162,5 @@ public class CommonHandler {
         graph.addEdge(edge);
 
         return endEntity;
-    }
-
-    public List<LineageEntity> buildGraphEdgeByClassificationType(String userId,
-                                                                  EntityDetail startEntity,
-                                                                  String classificationType,
-                                                                  AssetContext graph) {
-
-        List<LineageEntity> classificationLineageEntities = new ArrayList<>();
-        //check the Schema Attribute Entity whether it has Type Embedded Attribute Classification
-
-        for(Classification classification : startEntity.getClassifications())
-        {
-            if(classification.getType().getTypeDefName().equals(classificationType)){
-
-                LineageEntity lineageEntity = new LineageEntity();
-                mapClassificationsToLineageEntity(classification, lineageEntity);
-                classificationLineageEntities.add(lineageEntity);
-                log.debug("Adding Classification {} ", classification.toString());
-            }
-        }
-
-        if (classificationLineageEntities.isEmpty()) return null;
-
-        Converter converter = new Converter();
-        LineageEntity startVertex = converter.createEntity(startEntity);
-
-
-        for (LineageEntity endVertex : classificationLineageEntities) {
-
-            graph.addVertex(startVertex);
-            graph.addVertex(endVertex);
-
-            GraphContext edge = new GraphContext(classificationType, CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
-            graph.addEdge(edge);
-
-        }
-
-        return classificationLineageEntities;
-
-    }
-
-
-    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) {
-
-        final String methodName = "mapClassificationsToLineageEntity";
-
-        Converter converter = new Converter();
-
-        try {
-
-            lineageEntity.setGuid(classification.getClassificationOriginGUID());
-            lineageEntity.setVersion(classification.getVersion());
-            lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
-            lineageEntity.setCreatedBy(classification.getCreatedBy());
-            lineageEntity.setUpdatedBy(classification.getUpdatedBy());
-            lineageEntity.setCreateTime(classification.getCreateTime());
-            lineageEntity.setUpdateTime(classification.getUpdateTime());
-            lineageEntity.setProperties(converter.getMapProperties(classification.getProperties()));
-
-            log.debug("Classfication mapping for lineage entity {}: ", lineageEntity);
-
-        } catch (Throwable exc) {
-
-            AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
-                    this.getClass().getName());
-
-            log.error("Caught exception from classification mapper {}", errorMessage);
-        }
-
     }
 }

@@ -78,7 +78,7 @@ public class ContextHandler {
                                                 ENTITY_NOT_FOUND.getSystemAction(),
                                                 ENTITY_NOT_FOUND.getUserAction());
             }
-            buildAssetContext(userId,entityDetail.get());
+            buildAssetContext(userId, entityDetail.get());
             return graph;
 
         }
@@ -104,7 +104,6 @@ public class ContextHandler {
     }
 
 
-    //TODO: Cong - Schema Updates
     private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                     PropertyServerException,
                                                                                     InvalidParameterException,
@@ -123,17 +122,19 @@ public class ContextHandler {
 
         if(hasSchemaAttributeType(typeDefName)) {
 
+            /* Build the lineage graph of schema attributes as nodes with lineage mapping relationship as edge between them */
             buildGraphByRelationshipType(userId, entityDetail, LINEAGE_MAPPING, typeDefName);
-            commonHandler.buildGraphEdgeByClassificationType(userId, entityDetail, TYPE_EMBEDDED_ATTRIBUTE, graph);
+
         }
 
-        List<EntityDetail> schemaAttributes = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
-        for (EntityDetail schemaAttribute : schemaAttributes) {
+        List<EntityDetail> schemaTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
 
-            if (isComplexSchemaType(userId, schemaAttribute.getType().getTypeDefName()).isPresent()) {
-                setAssetDetails(userId, schemaAttribute);
+        for (EntityDetail schemaTypeEntity : schemaTypeEntities) {
+
+            if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName()).isPresent()) {
+                setAssetDetails(userId, schemaTypeEntity);
             } else {
-                buildAssetContext(userId, schemaAttribute);
+                buildAssetContext(userId, schemaTypeEntity);
             }
         }
     }
