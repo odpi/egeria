@@ -194,6 +194,7 @@
         <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
+        <license-plugin.version>2.0.0</license-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -2057,6 +2058,12 @@
                 </plugin>
 
                 <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-plugin.version}</version>
+                </plugin>
+
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${maven-clean-plugin.version}</version>
@@ -2550,6 +2557,50 @@
                     <url>https://odpi.jfrog.io/odpi/egeria-snapshot</url>
                 </snapshotRepository>
             </distributionManagement>
+        </profile>
+        <profile>
+            <id>license</id>
+            <activation>
+                <property>
+                    <name>license</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>third-party-parent</id>
+                                <inherited>false</inherited>
+                                <configuration>
+                                    <acceptPomPackaging>true</acceptPomPackaging>
+                                    <includedScopes>compile,runtime</includedScopes>
+                                    <outputDirectory>${project.basedir}/licenses</outputDirectory>
+                                    <thirdPartyFilename>THIRD_PARTY-full.txt</thirdPartyFilename>
+                                </configuration>
+                                <goals>
+                                    <goal>aggregate-add-third-party</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>third-party-module</id>
+                                <inherited>true</inherited>
+                                <configuration>
+                                    <acceptPomPackaging>false</acceptPomPackaging>
+                                    <includedScopes>compile,runtime</includedScopes>
+                                    <outputDirectory>${project.build.directory}/generated-sources/license</outputDirectory>
+                                    <thirdPartyFilename>THIRD_PARTY.txt</thirdPartyFilename>
+                                </configuration>
+                                <goals>
+                                    <goal>add-third-party</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
