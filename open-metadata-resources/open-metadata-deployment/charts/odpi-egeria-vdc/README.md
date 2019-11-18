@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-**Chart for full VDC stack**
+# Chart for full Egeria Virtual Data Connector
 
 This helm chart will deploy the following components:
 * Apache Kafka
@@ -20,23 +20,23 @@ You will require a kubernetes environment to install to. Testing has been done s
 
 This chart should work with other providers with the exception of the definitions around ingress/load balancing - which are how ports are made available external to the cluster
 
-**Caveats**
+## Caveats
 
 Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not configured
 
-**Additional configuration**
+## Additional configuration
 
 * odpi-egeria-vdc/values.yaml is the main place to configure preferences. It is recommended to override values by creating a separate file and adding '-f myconfig.yml' or similar.
 * odpi-egeria-vdc/templates/configmap.yaml currently contains some additional configuration which is not pulled in from values. 
 
-**Required helm repositories (prereq)**
+## Required helm repositories (prereq)
 
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 
-**Installing a chart**
+## Installing a chart
 
 ```
 cd open-metadata-resources/open-metadata-deployment/charts
@@ -44,7 +44,7 @@ helm dependency update odpi-egeria-vdc
 helm install odpi-egeria-vdc vdc
 ```
 
-**Kafka**
+## Kafka
 
 By default this chart uses the bitnami kafka chart. 
 
@@ -76,14 +76,15 @@ When Egeria configures it's connector to use kafka, it will now set the followin
 "sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
 "sasl.mechanism":"PLAIN"
 ```
-
+This fragment is generated using the parameters above by the template code in [kafkaext.tpl](templates/kafkaext.tpl).
 For other cloud providers, you will need to update templates/_kafkaext.tpl and consider contributing back to the project!
 
-**Load Balancing & Ingress**
+## Load Balancing & Ingress
 
-***IBM Cloud***
+The current chart will by default use NodePort for external access. To configure an external load balancer / ingress service refer
+to documentation specific to the cloud provider:
 
-See https://cloud.ibm.com/docs/containers/cs_ingress.html#ingress
+* IBM Cloud - See https://cloud.ibm.com/docs/containers/cs_ingress.html#ingress
 
 
 
