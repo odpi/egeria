@@ -22,12 +22,13 @@ This chart should work with other providers with the exception of the definition
 
 **Caveats**
 
-Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not configrred
+Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not configured
 
 **Additional configuration**
 
-* odpi-egeria-vdc/values.yaml is the main place to configure preferences. It is recommended to only change what you need
+* odpi-egeria-vdc/values.yaml is the main place to configure preferences. It is recommended to override values by creating a separate file and adding '-f myconfig.yml' or similar.
 * odpi-egeria-vdc/templates/configmap.yaml currently contains some additional configuration which is not pulled in from values. 
+
 **Required helm repositories (prereq)**
 
 ```
@@ -40,14 +41,47 @@ helm repo update
 ```
 cd open-metadata-resources/open-metadata-deployment/charts
 helm dependency update odpi-egeria-vdc
-helm install odpi-egeria-vdc --name vdc
+helm install odpi-egeria-vdc vdc
 ```
 
-Note: If name is not specified an auto-generated name like 'slippery-lizard' will be used.
+**Kafka**
 
-*** Load Balancing & Ingress ***
+By default this chart uses the bitnami kafka chart. 
 
-IBM Cloud
+The chart can also be configured to use an external provider. So far this has only been tested with IBM Event Streams.
+
+First create a kubernetes secret with the API key needed to use the kafka service, replacing 'MyReallyLongAPIKey' accordingly:
+
+```
+kubectl create secret generic auth-vdc-kafka --from-literal=username=token --from-literal=password=MyReallyLongAPIKey
+```
+Configure the following configuration overrides, replacing the 'brokers' value with the list of kafka brokers for your cloud service. The secret created above is also used.
+```
+kafka:
+  internal:
+    enabled: false
+  external:
+    enabled: true
+    provider: "IBMEventStreams"
+    brokers: "broker1:9093, broker2:9093, broker3:9093"
+    secret: auth-vdc-kafka
+```
+
+When Egeria configures it's connector to use kafka, it will now set the following properties in addition to the list of brokers:
+```
+"security.protocol":"SASL_SSL",
+"ssl.protocol":"TLSv1.2",
+"ssl.enabled.protocols":"TLSv1.2",
+"ssl.endpoint.identification.algorithm":"HTTPS",
+"sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
+"sasl.mechanism":"PLAIN"
+```
+
+For other cloud providers, you will need to update templates/_kafkaext.tpl and consider contributing back to the project!
+
+**Load Balancing & Ingress**
+
+***IBM Cloud***
 
 See https://cloud.ibm.com/docs/containers/cs_ingress.html#ingress
 
