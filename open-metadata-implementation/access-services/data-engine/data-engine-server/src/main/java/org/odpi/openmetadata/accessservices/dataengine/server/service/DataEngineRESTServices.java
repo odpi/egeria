@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
@@ -719,14 +718,13 @@ public class DataEngineRESTServices {
                 portImplementation.getQualifiedName());
 
         if (StringUtils.isEmpty(portImplementationGUID)) {
-            portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation.getQualifiedName(),
-                    portImplementation.getDisplayName(), portImplementation.getPortType(), externalSourceName);
+            portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation,
+                    externalSourceName);
         } else {
-            portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
-                    portImplementation.getDisplayName(), portImplementation.getPortType());
+            portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation);
 
             if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
-                deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.getSchemaTypeForPort(userId,
+                deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.findSchemaTypeForPort(userId,
                         portImplementationGUID));
             }
         }
@@ -770,11 +768,9 @@ public class DataEngineRESTServices {
         String portAliasGUID = portHandler.findPortAlias(userId, portAlias.getQualifiedName());
 
         if (StringUtils.isEmpty(portAliasGUID)) {
-            portAliasGUID = portHandler.createPortAlias(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName(), portAlias.getPortType(), externalSourceName);
+            portAliasGUID = portHandler.createPortAlias(userId, portAlias, externalSourceName);
         } else {
-            portHandler.updatePortAlias(userId, portAliasGUID, portAlias.getQualifiedName(), portAlias.getDisplayName(),
-                    portAlias.getPortType());
+            portHandler.updatePortAlias(userId, portAliasGUID, portAlias);
         }
 
         if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {

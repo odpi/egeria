@@ -53,14 +53,13 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
     private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
 
     /**
-     * The constructor is given the connection to the out topic for Data Engine OMAS
-     * along with classes for testing and manipulating instances.
+     * The constructor is given the connection to the out topic for Data Engine OMAS along with classes for
+     * testing and manipulating instances.
      *
      * @param instance server instance
      * @param auditLog audit log
      */
-    public DataEngineInTopicProcessor(DataEngineServicesInstance instance,
-                                      OMRSAuditLog auditLog) {
+    public DataEngineInTopicProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) {
         super();
         this.auditLog = auditLog;
         this.instance = instance;
@@ -186,8 +185,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
             log.debug("Calling method: {}", methodName);
 
-            dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(),
-                    serverName, portAliasEvent.getPort(), portAliasEvent.getExternalSourceName());
+            dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName,
+                    portAliasEvent.getPort(), portAliasEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             log.debug("Exception in parsing PortAliasEvent from in Data Engine In Topic", e);

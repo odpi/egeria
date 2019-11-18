@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
@@ -36,12 +38,12 @@ public class PortHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName                       name of this service
-     * @param serverName                        name of the local server
-     * @param invalidParameterHandler           handler for managing parameter errors
-     * @param repositoryHandler                 manages calls to the repository services
-     * @param repositoryHelper                  provides utilities for manipulating the repository services objects
-     * @param dataEngineRegistrationHandler     provides calls for retrieving external data engine guid
+     * @param serviceName                   name of this service
+     * @param serverName                    name of the local server
+     * @param invalidParameterHandler       handler for managing parameter errors
+     * @param repositoryHandler             manages calls to the repository services
+     * @param repositoryHelper              provides utilities for manipulating the repository services objects
+     * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      */
     public PortHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                        RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
@@ -51,17 +53,15 @@ public class PortHandler {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-        this.dataEngineRegistrationHandler= dataEngineRegistrationHandler;
+        this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
     }
 
     /**
      * Create the port implementation
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the port
-     * @param displayName   the display name of the port
-     * @param portType      the type of the port
-     * @param externalSourceName     the unique name of the external source
+     * @param userId             the name of the calling user
+     * @param portImplementation the port implementation values
+     * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the port implementation in the repository
      *
@@ -69,21 +69,21 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createPortImplementation(String userId, String qualifiedName, String displayName,
-                                           PortType portType, String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return createPort(userId, qualifiedName, displayName, portType,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, externalSourceName);
+    public String createPortImplementation(String userId, PortImplementation portImplementation,
+                                           String externalSourceName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
+        return createPort(userId, portImplementation.getQualifiedName(), portImplementation.getDisplayName(),
+                portImplementation.getPortType(), PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                externalSourceName);
     }
 
     /**
      * Create the port alias
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the port
-     * @param displayName   the display name of the port
-     * @param portType      the type of the port
-     * @param externalSourceName     the unique name of the external source
+     * @param userId             the name of the calling user
+     * @param portAlias          the port alias values
+     * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the port alias in the repository
      *
@@ -91,63 +91,61 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createPortAlias(String userId, String qualifiedName, String displayName, PortType portType,
-                                  String externalSourceName ) throws
-                                                              InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException {
-        return createPort(userId, qualifiedName, displayName, portType, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
-                externalSourceName);
+    public String createPortAlias(String userId, PortAlias portAlias, String externalSourceName) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException {
+        return createPort(userId, portAlias.getQualifiedName(), portAlias.getDisplayName(), portAlias.getPortType(),
+                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, externalSourceName);
     }
 
     /**
      * Update the port implementation
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the port
-     * @param displayName   the display name of the port
-     * @param portType      the type of the port
+     * @param userId             the name of the calling user
+     * @param portGUID           the unique identifier of the port
+     * @param portImplementation the port implementation new values
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void updatePortImplementation(String userId, String portGUID, String qualifiedName, String displayName,
-                                         PortType portType) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException {
-        updatePort(userId, portGUID, qualifiedName, displayName, portType,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+    public void updatePortImplementation(String userId, String portGUID, PortImplementation portImplementation) throws
+                                                                                                                InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException {
+        updatePort(userId, portGUID, portImplementation.getQualifiedName(), portImplementation.getDisplayName(),
+                portImplementation.getPortType(), PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
     }
 
     /**
      * Update the port alias
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the port
-     * @param displayName   the display name of the port
-     * @param portType      the type of the port
+     * @param userId    the name of the calling user
+     * @param portGUID  the unique identifier of the port
+     * @param portAlias the port alias new values
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void updatePortAlias(String userId, String portGUID, String qualifiedName, String displayName,
-                                PortType portType) throws InvalidParameterException, UserNotAuthorizedException,
-                                                          PropertyServerException {
-        updatePort(userId, portGUID, qualifiedName, displayName, portType, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+    public void updatePortAlias(String userId, String portGUID, PortAlias portAlias) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException {
+        updatePort(userId, portGUID, portAlias.getQualifiedName(), portAlias.getDisplayName(), portAlias.getPortType(),
+                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
     }
 
 
     /**
      * Create the port
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the port
-     * @param displayName   the display name of the port
-     * @param portType      the type of the port
-     * @param entityTpeName the type name
-     * @param externalSourceName     the unique name of the external source
+     * @param userId             the name of the calling user
+     * @param qualifiedName      the qualifiedName name of the port
+     * @param displayName        the display name of the port
+     * @param portType           the type of the port
+     * @param entityTpeName      the type name
+     * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the port in the repository
      *
@@ -158,17 +156,18 @@ public class PortHandler {
     private String createPort(String userId, String qualifiedName, String displayName, PortType portType,
                               String entityTpeName, String externalSourceName)
             throws InvalidParameterException, UserNotAuthorizedException,
-            PropertyServerException {
+                   PropertyServerException {
         final String methodName = "createPort";
 
         InstanceProperties properties = buildPortInstanceProperties(userId, qualifiedName, displayName, portType,
                 methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
+                externalSourceName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTpeName);
         return repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(),
-                externalSourceGUID, externalSourceName,properties, methodName);
+                externalSourceGUID, externalSourceName, properties, methodName);
     }
 
     /**
@@ -202,17 +201,19 @@ public class PortHandler {
      * Create a PortSchema relationship between a Port and the corresponding SchemaType. Verifies that the
      * relationship is not present before creating it
      *
-     * @param userId         the name of the calling user
-     * @param portGUID       the unique identifier of the port
-     * @param schemaTypeGUID the unique identifier of the schema type
-     * @param externalSourceName     the unique name of the external source
+     * @param userId             the name of the calling user
+     * @param portGUID           the unique identifier of the port
+     * @param schemaTypeGUID     the unique identifier of the schema type
+     * @param externalSourceName the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addPortSchemaRelationship(String userId, String portGUID, String schemaTypeGUID, String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void addPortSchemaRelationship(String userId, String portGUID, String schemaTypeGUID,
+                                          String externalSourceName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException {
 
         final String methodName = "addPortSchemaRelationship";
 
@@ -220,12 +221,13 @@ public class PortHandler {
         invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
+                externalSourceName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                 PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
         createRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef,
-                methodName,externalSourceGUID, externalSourceName);
+                methodName, externalSourceGUID, externalSourceName);
 
     }
 
@@ -241,10 +243,10 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String getSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException {
-        final String methodName = "getSchemaTypeForPort";
+    public String findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException {
+        final String methodName = "findSchemaTypeForPort";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
@@ -264,22 +266,23 @@ public class PortHandler {
     }
 
     /**
-     * Create a PortDelegation relationship between two ports. Verifies that the
-     * relationship is not present before creating it
+     * Create a PortDelegation relationship between two ports. Verifies that the relationship is not present
+     * before creating it
      *
-     * @param userId      the name of the calling user
-     * @param portGUID    the unique identifier of the source port
-     * @param portType    the type of the source port
-     * @param delegatesTo the unique identifier of the target port
-     * @param externalSourceName     the unique name of the external source
+     * @param userId             the name of the calling user
+     * @param portGUID           the unique identifier of the source port
+     * @param portType           the type of the source port
+     * @param delegatesTo        the unique identifier of the target port
+     * @param externalSourceName the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addPortDelegationRelationship(String userId, String portGUID, PortType portType,
-                                              String delegatesTo, String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void addPortDelegationRelationship(String userId, String portGUID, PortType portType, String delegatesTo,
+                                              String externalSourceName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException {
 
         final String methodName = "addPortDelegationRelationship";
 
@@ -288,7 +291,8 @@ public class PortHandler {
         invalidParameterHandler.validateName(delegatesTo, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
+                externalSourceName);
 
         EntityDetail delegatedPort = getPortEntityDetailByQualifiedName(userId, delegatesTo);
         String delegatedPortType = getPortType(delegatedPort);
@@ -297,7 +301,8 @@ public class PortHandler {
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                     PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME);
 
-            createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME,relationshipTypeDef,
+            createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME,
+                    relationshipTypeDef,
                     methodName, externalSourceGUID, externalSourceName);
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
@@ -449,7 +454,8 @@ public class PortHandler {
     }
 
     private void createRelationship(String userId, String firstGUID, String secondGUID, String firstEntityTypeName,
-                                    TypeDef relationshipTypeDef, String methodName, String externalSourceGUID, String externalSourceName)
+                                    TypeDef relationshipTypeDef, String methodName, String externalSourceGUID,
+                                    String externalSourceName)
             throws UserNotAuthorizedException, PropertyServerException {
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID,
@@ -457,8 +463,9 @@ public class PortHandler {
                 methodName);
 
         if (relationship == null) {
-            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName,
-                   firstGUID, secondGUID, null, methodName);
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,
+                    externalSourceName,
+                    firstGUID, secondGUID, null, methodName);
         }
     }
 
