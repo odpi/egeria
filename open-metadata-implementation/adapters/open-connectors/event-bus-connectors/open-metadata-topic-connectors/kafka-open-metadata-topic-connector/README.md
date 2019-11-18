@@ -12,11 +12,11 @@ Java Objects as JSON payloads.
 
 | Property Name | Property Value |
 |---------------|----------------|
-| bootstrap.servers | localhost:59092 |
+| bootstrap.servers | localhost:9092 |
 | acks              | all |
-| retries | 0 |
+| retries | 1 |
 | batch.size | 16384 |
-| linger.ms | 1 |
+| linger.ms | 0 |
 | buffer.memory | 33554432 |
 | max.request.size | 10485760 |
 | key.serializer | org.apache.kafka.common.serialization.StringSerializer |
@@ -28,10 +28,10 @@ Java Objects as JSON payloads.
 
 | Property Name | Property Value |
 |----------------|-----------------|
-| bootstrap.servers | localhost:59092 |
-| zookeeper.session.timeout.ms | 400 |
-| zookeeper.sync.time.ms | 200 |
-| fetch.message.max.bytes | 10485760 |
+| bootstrap.servers | localhost:9092 |
+| enable.auto.commit | true |
+| auto.commit.interval.ms | 1000 |
+| session.timeout.ms | 30000 |
 | max.partition.fetch.bytes | 10485760 |
 | key.deserializer | org.apache.kafka.common.serialization.StringDeserializer |
 | value.deserializer| org.apache.kafka.common.serialization.StringDeserializer |
