@@ -2254,6 +2254,7 @@
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
+                        <exclude>**/LICENSE*.txt</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2562,7 +2563,7 @@
             <id>license</id>
             <activation>
                 <property>
-                    <name>license</name>
+                    <name>!skipLicense</name>
                 </property>
             </activation>
             <build>
