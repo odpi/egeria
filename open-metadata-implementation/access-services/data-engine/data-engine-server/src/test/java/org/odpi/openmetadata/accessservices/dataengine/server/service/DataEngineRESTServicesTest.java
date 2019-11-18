@@ -818,7 +818,7 @@ class DataEngineRESTServicesTest {
 
     private PortAliasRequestBody mockPortAliasRequestBody() {
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        requestBody.setPort(new PortAlias(NAME, QUALIFIED_NAME, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME));
+        requestBody.setPortAlias(new PortAlias(NAME, QUALIFIED_NAME, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME));
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }

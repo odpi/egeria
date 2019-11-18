@@ -250,8 +250,8 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            response.setGUID(createOrUpdatePortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPort(),
-                    portAliasRequestBody.getExternalSourceName()));
+            response.setGUID(createOrUpdatePortAliasWithDelegation(userId, serverName,
+                    portAliasRequestBody.getPortAlias(), portAliasRequestBody.getExternalSourceName()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
