@@ -125,9 +125,8 @@ class DataEngineRESTServicesTest {
                                            UserNotAuthorizedException {
         mockRegistrationHandler("createExternalDataEngine");
 
-        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME,
-                DESCRIPTION,
-                TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE))).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -148,11 +147,9 @@ class DataEngineRESTServicesTest {
         String methodName = "createExternalDataEngine";
         mockRegistrationHandler(methodName);
 
-        InvalidParameterException mockedException = mockException(InvalidParameterException.class,
-                methodName);
-        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME,
-                DESCRIPTION,
-                TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
+        InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE))).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -174,9 +171,8 @@ class DataEngineRESTServicesTest {
         mockRegistrationHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME,
-                DESCRIPTION,
-                TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE))).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 

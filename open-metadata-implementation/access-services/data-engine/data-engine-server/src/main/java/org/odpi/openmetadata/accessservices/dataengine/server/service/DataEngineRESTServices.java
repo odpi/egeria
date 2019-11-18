@@ -90,12 +90,7 @@ public class DataEngineRESTServices {
             DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
                     methodName);
 
-            SoftwareServerCapability softwareServerCapability = requestBody.getSoftwareServerCapability();
-            response.setGUID(handler.createExternalDataEngine(userId, softwareServerCapability.getQualifiedName(),
-                    softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(),
-                    softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(),
-                    softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource()));
-
+            response.setGUID(handler.createExternalDataEngine(userId, requestBody.getSoftwareServerCapability()));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
