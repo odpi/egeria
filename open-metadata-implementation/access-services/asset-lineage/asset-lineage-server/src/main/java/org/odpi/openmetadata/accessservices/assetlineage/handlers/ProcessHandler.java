@@ -205,8 +205,7 @@ public class ProcessHandler {
         }
         return result;
     }
-
-    //TODO can be replaced by schema handler
+    
     private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
@@ -222,7 +221,6 @@ public class ProcessHandler {
         return getSchemaAttributes(result,userId);
     }
 
-    //TODO can be replaced by schema handler
     private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
@@ -233,30 +231,11 @@ public class ProcessHandler {
                                                                                             processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                                                                             entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
+
+            commonHandler.buildGraphEdgeByClassificationType(userId, entityDetail, TYPE_EMBEDDED_ATTRIBUTE, graph);
         }
         return endRelationship(result,userId);
     }
-
-/*
-    //TODO will be gone
-    private List<EntityDetail> getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException {
-        List<EntityDetail>  result = new ArrayList<>();
-        for (EntityDetail entityDetail : entityDetails) {
-            List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                                                                          processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                          entityDetail.getType().getTypeDefName());
-
-            newListOfEntityDetails = newListOfEntityDetails.stream().filter(entity -> entity.getType().getTypeDefName().equals(TABULAR_COLUMN_TYPE)).collect(Collectors.toList());
-
-            if(!newListOfEntityDetails.isEmpty()){
-                Optional<EntityDetail> first = newListOfEntityDetails.stream().findFirst();
-                result.add(first.orElse(null));
-            }
-        }
-        return endRelationship(result,userId);
-    }*/
 
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));
