@@ -6,10 +6,15 @@ package org.odpi.openmetadata.accessservices.dataengine.server.intopic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.event.*;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeException;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -26,7 +31,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.partitioningBy;
@@ -76,7 +83,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
             try {
                 this.serverName = instance.getServerName();
 
-                DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineEventHeader.class);
+                DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent,
+                        DataEngineEventHeader.class);
 
                 if ((dataEngineEventHeader != null)) {
                     switch (dataEngineEventHeader.getEventType()) {
@@ -122,7 +130,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
         final String methodName = "processDataEngineRegistrationEvent";
         try {
-            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
+            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
+                    DataEngineRegistrationEvent.class);
             instance.getDataEngineRegistrationHandler().createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), dataEngineRegistrationEvent.getSoftwareServerCapability());
 
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
@@ -144,7 +153,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
         final String methodName = "processLineageMappingsEvent";
         try {
-            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
+            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
+                    LineageMappingsEvent.class);
 
             log.debug("Calling method: {}", methodName);
 
@@ -197,7 +207,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
         final String methodName = "processPortImplementationEvent";
         try {
-            PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
+            PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
+                    PortImplementationEvent.class);
 
             log.debug("Calling method: {}", methodName);
 
@@ -225,7 +236,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
 
         final String methodName = "processProcessToPortListEvent";
         try {
-            ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessToPortListEvent.class);
+            ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
+                    ProcessToPortListEvent.class);
 
             log.debug("Calling method: {}", methodName);
 
@@ -283,7 +295,7 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
             try {
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
                         lineageMapping.getTargetAttribute(), externalSouceName);
-            } catch (PropertyServerException | NoSchemaAttributeException | UserNotAuthorizedException | InvalidParameterException
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException
                     e) {
                 log.debug("Exception in parsing event from in Data Engine In Topic", e);
                 DataEngineErrorCode errorCode = DataEngineErrorCode.PROCESS_EVENT_EXCEPTION;
@@ -324,7 +336,8 @@ public class DataEngineInTopicProcessor implements OpenMetadataTopicListener {
         Map<Boolean, List<GUIDResponse>> mappedResponses =
                 guidResponses.parallelStream().collect(partitioningBy(processStatusPredicate));
 
-        List<GUIDResponse> createdProcesses = dataEngineRESTServices.getGuidResponses(response, mappedResponses.get(Boolean.TRUE));
+        List<GUIDResponse> createdProcesses = dataEngineRESTServices.getGuidResponses(response,
+                mappedResponses.get(Boolean.TRUE));
 
         dataEngineRESTServices.handleFailedProcesses(response, mappedResponses.get(Boolean.FALSE));
 

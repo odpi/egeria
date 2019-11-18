@@ -4415,7 +4415,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "ac406bf8-e53e-49f1-9088-2af28bcbd285";
         final String name            = "PersonRole";
-        final String description     = "An role performed by one or more individuals.";
+        final String description     = "A role performed by one or more individuals.";
         final String descriptionGUID = null;
 
         final String superTypeName = "Referenceable";
@@ -16508,7 +16508,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "ac406bf8-e53e-49f1-9088-2af28eeee285";
         final String name            = "AssetOwner";
-        final String description     = "An role defining a responsibility to manage an asset.";
+        final String description     = "A role defining a responsibility to manage an asset.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";
@@ -16525,7 +16525,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "c6fe40af-cdd6-4ca7-98c4-353d2612921f";
         final String name            = "SubjectAreaOwner";
-        final String description     = "An role defining a responsibility to manage an asset.";
+        final String description     = "A role defining a responsibility to manage an asset.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";
@@ -22559,7 +22559,7 @@ public class OpenMetadataTypesArchive
          */
         final String guid            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
         final String name            = "LineageMapping";
-        final String description     = "A link between two schema types.";
+        final String description     = "A link between two schema attributes.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -22576,9 +22576,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaType";
+        final String                     end1EntityType               = "SchemaAttribute";
         final String                     end1AttributeName            = "sourceElement";
-        final String                     end1AttributeDescription     = "Source Schema.";
+        final String                     end1AttributeDescription     = "Source Attribute.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -22593,9 +22593,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaType";
+        final String                     end2EntityType               = "SchemaAttribute";
         final String                     end2AttributeName            = "targetElement";
-        final String                     end2AttributeDescription     = "Target Schema.";
+        final String                     end2AttributeDescription     = "Target Attribute.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
