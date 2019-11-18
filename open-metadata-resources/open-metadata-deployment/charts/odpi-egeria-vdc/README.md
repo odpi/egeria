@@ -79,6 +79,8 @@ When Egeria configures it's connector to use kafka, it will now set the followin
 This fragment is generated using the parameters above by the template code in [kafkaext.tpl](templates/kafkaext.tpl).
 For other cloud providers, you will need to update templates/_kafkaext.tpl and consider contributing back to the project!
 
+Topics may need to be manually configured - for more details see [topic connector readme](../../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/README.md)
+
 ## Load Balancing & Ingress
 
 The current chart will by default use NodePort for external access. To configure an external load balancer / ingress service refer

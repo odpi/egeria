@@ -61,3 +61,30 @@ There are 2 key pieces of information that are provided in the documentation for
 "sasl.mechanism":"PLAIN"
 ```
 An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](../../../../../../open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-vdc/README.md) 
+
+## Topic Creation
+
+In addition many enterprise kafka services do not allow automatic topic creation
+
+You will need to manually create topics of the following form
+
+BASE_TOPIC_NAME is the value used for topicURLRoot when configuring the egeria event bus. For example 'egeria'
+
+### Cohort topics
+
+For each cohort being used (such as cocoCohort):
+ * BASE_TOPIC_NAME.omag.openmetadata.repositoryservices.cohort.COHORT_NAME.OMRSTopic
+ 
+### OMAS Topics
+These need to be done FOR EACH SERVER configured in the environment. (For example for coco pharmaceuticals this might include cocoMDS1, cocoMDS2, cocoMDS3 etc).
+
+It also needs to be done FOR EACH OMAS configured (assetconsumer, dataplatform, governanceengine etc)
+
+ * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.inTopic
+ * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.OutTopic
+
+
+One way to configure is to initially run against a kafka service which allows auto topic creation, then make note of the kafka
+topics that have been created - so that they can be replicated on the restricted setup.
+
+In addition review the Egeria Audit Log for any events beginning OCF-KAFKA_TOPIC_CONNECTOR so that action may be taken if for example topics are found to be missing.
