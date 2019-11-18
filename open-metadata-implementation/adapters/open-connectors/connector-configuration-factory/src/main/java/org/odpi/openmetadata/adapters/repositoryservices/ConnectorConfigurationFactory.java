@@ -834,7 +834,7 @@ public class ConnectorConfigurationFactory
         endpointProperties.put("connectorProviderName", connectorProviderClassName);
         endpoint.setAdditionalProperties(endpointProperties);
 
-        String connectionName = "Cassandra.Connection." + serverName;
+        String connectionName = connection.getDisplayName();
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);

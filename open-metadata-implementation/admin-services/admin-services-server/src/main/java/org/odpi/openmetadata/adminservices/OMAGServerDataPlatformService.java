@@ -22,8 +22,8 @@ public class OMAGServerDataPlatformService {
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
-    private static final String defaultDataPlatformInTopicName = "OMRSTopic.server.omas.open-metadata.access-services.DataPlatform.inTopic";
-
+    private static final String defaultDataPlatformInTopicName = "omas.dataplatform.inTopic";
+    private static final String defaultInTopicName = "InTopic";
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -39,32 +39,35 @@ public class OMAGServerDataPlatformService {
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
 
-            dataPlatformServicesConfig.setDataPlatformOmasInTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultDataPlatformInTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getConfigurationProperties()
-                    )
-            );
-
-            Map<String, Object> additionalProperties = new HashMap<>();
-            additionalProperties.put("serverAddress", dataPlatformServicesConfig.getDataPlatformServerURL());
-
-            dataPlatformServicesConfig.setDataPlatformConnection(
-                    connectorConfigurationFactory.getDataPlatformConnection(
-                            serverName,
-                            dataPlatformServicesConfig.getDataPlatformServerName(),
-                            additionalProperties
-                    )
-            );
-
+            if (dataPlatformServicesConfig.getDataPlatformOmasInTopicName()==null) {
+                dataPlatformServicesConfig.setDataPlatformOmasInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                defaultInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                defaultDataPlatformInTopicName,
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getConfigurationProperties()
+                        )
+                );
+                dataPlatformServicesConfig.setDataPlatformOmasInTopicName(
+                        dataPlatformServicesConfig.getDataPlatformOmasInTopic().getEndpoint().getAddress());
+            } else {
+                dataPlatformServicesConfig.setDataPlatformOmasInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                defaultInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getConfigurationProperties()
+                        )
+                );
+            }
             serverConfig.setDataPlatformServicesConfig(dataPlatformServicesConfig);
-
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
         }
