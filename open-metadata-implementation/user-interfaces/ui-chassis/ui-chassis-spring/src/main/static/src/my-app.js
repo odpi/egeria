@@ -174,13 +174,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
                       </div>
                       <div style="float: right"><user-options></user-options></div>
-
                     </app-toolbar>
+                  </app-header>
                   <div class="breadcrumb">
                      <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
                   </div>
-                  </app-header>
-                 
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
@@ -278,12 +276,14 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
         crumbs.push(allCrumbs.get('home'));
         crumbs.push(allCrumbs.get(page));
-        if(page == 'asset-lineage' && this.subview  && this.subview.path ){
-            crumbs.push({label: this.subviewData.subview, href:  "/" + this.subviewData.subview });
+        if(page == 'asset-lineage' && this.subview && this.subview.path ){
+            crumbs.push({label: this.subviewData.subview, href: "/" + this.subviewData.subview });
         }
-        if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
-            crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
-        }
+        // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
+        //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
+        // }//TODO to create new service to get displayName instead of displaying the gui
+
+
         this.crumbs = crumbs;
 
     }

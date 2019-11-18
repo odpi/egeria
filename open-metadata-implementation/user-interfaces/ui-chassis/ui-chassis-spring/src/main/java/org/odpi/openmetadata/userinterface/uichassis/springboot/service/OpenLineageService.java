@@ -53,10 +53,6 @@ public class OpenLineageService {
         mapper = new com.fasterxml.jackson.databind.ObjectMapper();
     }
 
-    public String generateMockGraph(String userId){
-        return openLineageClient.generateMockGraph(userId);
-    }
-
     /**
      *
      * @param userId id of the user triggering the request

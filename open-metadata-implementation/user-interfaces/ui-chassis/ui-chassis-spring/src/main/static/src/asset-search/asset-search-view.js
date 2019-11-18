@@ -27,7 +27,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px 20px;
+          padding: 2px 20px;
         }
         vaadin-grid {
           height: calc(100vh - 130px);
