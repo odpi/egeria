@@ -325,7 +325,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        requestBody.setPort(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
+        requestBody.setPortAlias(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
        
         requestBody.setExternalSourceName(externalSourceName);
 
@@ -341,7 +341,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        requestBody.setPort(portAlias);
+        requestBody.setPortAlias(portAlias);
        
         requestBody.setExternalSourceName(externalSourceName);
 

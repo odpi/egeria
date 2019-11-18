@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -34,6 +35,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
     int       successfulExecutionCount = 0;
     int       unSuccessfulExecutionCount = 0;
+
+
 
 
     /**
@@ -552,6 +555,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
         return metadataCollection.addEntity(userId, entityDef.getGUID(), properties, null, null );
     }
+
+
 
 
 
