@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineInTopicListener;
-import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineEventProcessor;
+import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;

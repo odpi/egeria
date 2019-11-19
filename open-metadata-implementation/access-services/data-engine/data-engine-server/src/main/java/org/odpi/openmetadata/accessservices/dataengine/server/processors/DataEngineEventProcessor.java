@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataengine.server.listeners;
+package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEv
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -137,13 +138,11 @@ public class DataEngineEventProcessor {
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-//            FFDCResponseBase response = new FFDCResponseBase();
-//            dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(), )
-//          //  createOrUpdateProcesses(processesEvent);
-//
+            ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(),
+                    serverName, processesEvent.getProcesses(), processesEvent.getExternalSourceName());
+            validateResponse(response, dataEngineEvent, methodName);
 
-
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | DataEngineException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
             logException(dataEngineEvent, methodName, e);
         }
