@@ -742,7 +742,7 @@ public class ConnectorConfigurationFactory
      * @param serverName name of the real repository server
      * @param connectorProviderClassName the class name of the
      * @param virtualizationSolutionConfig related configuration
-     * @return
+     * @return connection object
      */
     public Connection getVirtualizationSolutionConnection (String              serverName,
                                                            String              connectorProviderClassName,
@@ -809,7 +809,7 @@ public class ConnectorConfigurationFactory
      * @param serverName name of the real repository server
      * @param connectorProviderClassName the class name of the
      * @param dataPlatformConfigurationProperties related configuration
-     * @return
+     * @return connection object
      */
     public Connection getDataPlatformConnection (String              serverName,
                                                  String              connectorProviderClassName,
@@ -852,6 +852,7 @@ public class ConnectorConfigurationFactory
      * Return the connection.  This is used by open lineage graph connectors.
      *
      * @param serverName  name of the real repository server
+     * @param connectorProviderClassName name of the connector provider's implementation
      * @param url  url for the Open Lineage Server
      * @param configurationProperties name value pairs for the connection
      * @return Connection object
