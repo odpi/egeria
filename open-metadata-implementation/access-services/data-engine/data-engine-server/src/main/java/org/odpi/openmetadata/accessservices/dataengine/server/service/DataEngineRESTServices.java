@@ -49,7 +49,7 @@ import static java.util.stream.Collectors.partitioningBy;
  * (OMAS). This service provide the functionality to create processes, ports with schema types and corresponding
  * relationships.
  */
-public class DataEngineRESTServices {
+public class DataEngineRESTServices extends DataEngineServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
 
@@ -86,10 +86,9 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
-                    methodName);
+            response.setGUID(super.createExternalDataEngine(userId, serverName,
+                    requestBody.getSoftwareServerCapability()));
 
-            response.setGUID(handler.createExternalDataEngine(userId, requestBody.getSoftwareServerCapability()));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -161,7 +160,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            String newSchemaTypeGUID = createOrUpdateSchemaType(userId, serverName,
+            String newSchemaTypeGUID = super.createOrUpdateSchemaType(userId, serverName,
                     schemaTypeRequestBody.getSchemaType(), schemaTypeRequestBody.getExternalSourceName());
 
             response.setGUID(newSchemaTypeGUID);
@@ -201,7 +200,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            String portImplementationGUID = createOrUpdatePortImplementationWithSchemaType(userId, serverName,
+            String portImplementationGUID = super.createOrUpdatePortImplementationWithSchemaType(userId, serverName,
                     portImplementationRequestBody.getPortImplementation(),
                     portImplementationRequestBody.getExternalSourceName());
 
@@ -244,7 +243,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            response.setGUID(createOrUpdatePortAliasWithDelegation(userId, serverName,
+            response.setGUID(super.createOrUpdatePortAliasWithDelegation(userId, serverName,
                     portAliasRequestBody.getPortAlias(), portAliasRequestBody.getExternalSourceName()));
 
         } catch (InvalidParameterException error) {
@@ -390,12 +389,8 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-
-            for (String portGUID : portListRequestBody.getPorts()) {
-                processHandler.addProcessPortRelationship(userId, processGuid, portGUID,
-                        portListRequestBody.getExternalSourceName());
-            }
+            super.addPortsToProcess(userId, serverName, processGuid, portListRequestBody.getPorts(),
+                    portListRequestBody.getExternalSourceName());
 
             response.setGUID(processGuid);
         } catch (InvalidParameterException error) {
@@ -433,7 +428,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            addLineageMappings(userId, serverName, lineageMappingsRequestBody.getLineageMappings(), response,
+            super.addLineageMappings(userId, serverName, lineageMappingsRequestBody.getLineageMappings(), response,
                     lineageMappingsRequestBody.getExternalSourceName());
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -516,7 +511,7 @@ public class DataEngineRESTServices {
                     Stream.concat(portImplementationGUIDs.stream(), portAliasGUIDs.stream()).collect(Collectors.toSet()), response,
                     externalSourceName);
 
-            addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
+            super.addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
 
             response.setGUID(processGUID);
         } catch (InvalidParameterException error) {
@@ -648,139 +643,4 @@ public class DataEngineRESTServices {
 
         return portAliasGUIDs;
     }
-
-    private void addLineageMappings(String userId, String serverName, List<LineageMapping> lineageMappings,
-                                    FFDCResponseBase response, String externalSourceName)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        final String methodName = "addLineageMappings";
-
-        log.debug("Calling method: {}", methodName);
-
-        if (CollectionUtils.isEmpty(lineageMappings)) {
-            return;
-        }
-
-        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-
-        lineageMappings.parallelStream().forEach(lineageMapping -> {
-            try {
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
-                        lineageMapping.getTargetAttribute(), externalSourceName);
-            } catch (InvalidParameterException error) {
-                restExceptionHandler.captureInvalidParameterException(response, error);
-            } catch (PropertyServerException error) {
-                restExceptionHandler.capturePropertyServerException(response, error);
-            } catch (UserNotAuthorizedException error) {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
-            }
-        });
-    }
-
-    private String createOrUpdateSchemaType(String userId, String serverName, SchemaType schemaType,
-                                            String externalSourceName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException {
-        final String methodName = "createOrUpdateSchemaType";
-
-        log.debug("Calling method: {}", methodName);
-
-        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-
-        String schemaTypeGUID = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(userId,
-                schemaType.getQualifiedName(), schemaType.getDisplayName(), schemaType.getAuthor(),
-                schemaType.getEncodingStandard(), schemaType.getUsage(), schemaType.getVersionNumber(),
-                schemaType.getAttributeList(), externalSourceName);
-
-        log.debug("Returning from method: {} with response: {}", methodName, schemaTypeGUID);
-
-        return schemaTypeGUID;
-    }
-
-    public String createOrUpdatePortImplementationWithSchemaType(String userId,
-                                                                 String serverName,
-                                                                 PortImplementation portImplementation,
-                                                                 String externalSourceName) throws
-                                                                                            InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException {
-        final String methodName = "createOrUpdatePortImplementationWithSchemaType";
-
-        log.debug("Calling method: {}", methodName);
-
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        String schemaTypeGUID = createOrUpdateSchemaType(userId, serverName, portImplementation.getSchemaType(),
-                externalSourceName);
-
-        String portImplementationGUID = portHandler.findPortImplementation(userId,
-                portImplementation.getQualifiedName());
-
-        if (StringUtils.isEmpty(portImplementationGUID)) {
-            portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation,
-                    externalSourceName);
-        } else {
-            portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation);
-
-            if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
-                deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.findSchemaTypeForPort(userId,
-                        portImplementationGUID));
-            }
-        }
-
-        portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, externalSourceName);
-
-        log.debug("Returning from method: {} with response: {}", methodName, portImplementationGUID);
-
-        return portImplementationGUID;
-    }
-
-    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID,
-                                          String oldSchemaTypeGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException {
-        final String methodName = "deleteObsoleteSchemaType";
-
-        log.debug("Calling method: {}", methodName);
-
-        if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
-            DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                    instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-
-            dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeGUID);
-        }
-
-        log.debug("Returning from method: {} with void response: {}", methodName);
-    }
-
-    public String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias,
-                                                        String externalSourceName) throws
-                                                                                   InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException {
-        final String methodName = "createOrUpdatePortAliasWithDelegation";
-
-        log.debug("Calling method: {}", methodName);
-
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        String portAliasGUID = portHandler.findPortAlias(userId, portAlias.getQualifiedName());
-
-        if (StringUtils.isEmpty(portAliasGUID)) {
-            portAliasGUID = portHandler.createPortAlias(userId, portAlias, externalSourceName);
-        } else {
-            portHandler.updatePortAlias(userId, portAliasGUID, portAlias);
-        }
-
-        if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
-            portHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(),
-                    portAlias.getDelegatesTo(), externalSourceName);
-        }
-
-        log.debug("Returning from method: {} with response: {}", methodName, portAliasGUID);
-
-        return portAliasGUID;
-    }
-
 }
