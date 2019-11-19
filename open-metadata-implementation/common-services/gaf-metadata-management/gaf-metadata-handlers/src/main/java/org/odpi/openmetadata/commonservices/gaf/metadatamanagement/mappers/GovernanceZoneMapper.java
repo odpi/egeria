@@ -11,7 +11,7 @@ public class GovernanceZoneMapper
     public static final String ZONE_TYPE_NAME                           = "GovernanceZone";
     /* Referenceable */
 
-    public static final String DISPLAY_NAME_PROPERTY_NAME                = "name";                                 /* from GovernanceZone entity */
+    public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";                                 /* from GovernanceZone entity */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from GovernanceZone entity */
     public static final String CRITERIA_PROPERTY_NAME                    = "criteria";                             /* from GovernanceZone entity */
 
