@@ -32,7 +32,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private List<AccessServiceAdmin>            operationalAccessServiceAdminList   = new ArrayList<>();
     private ConformanceSuiteOperationalServices operationalConformanceSuiteServices = null;
     private DiscoveryServerOperationalServices  operationalDiscoveryServer          = null;
-    private OpenLineageServerOperationalServices openLineageServerOperationalServices = null;
+    private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
     private StewardshipOperationalServices      operationalStewardshipServices      = null;
     private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
     private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
@@ -188,23 +188,23 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
-     * Set up the running instance of the discovery engine.
+     * Set up the running instance of the Open Lineage Services server.
      *
      * @param openLineageOperationalServices OpenLineageOperationalServices object
      */
-    void setOpenLineageServerOperationalServices(OpenLineageServerOperationalServices openLineageOperationalServices)
+    void setOpenLineageOperationalServices(OpenLineageServerOperationalServices openLineageOperationalServices)
     {
-        this.openLineageServerOperationalServices = openLineageServerOperationalServices;
+        this.openLineageOperationalServices = openLineageOperationalServices;
     }
 
 
     /**
-     * Return the running instance of the discovery engine.
+     * Return the running instance of the Open Lineage Services server.
      *
      * @return DiscoveryServerOperationalServices object
      */
-    OpenLineageServerOperationalServices getOpenLineageServerOperationalServices() {
-        return openLineageServerOperationalServices;
+    OpenLineageServerOperationalServices getOpenLineageOperationalServices() {
+        return openLineageOperationalServices;
     }
 
 

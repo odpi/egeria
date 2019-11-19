@@ -460,7 +460,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Initialize the Open Lineage Services.  This is a governance server for the storing and querying of heterogenous lineage.
+             * Initialize the Open Lineage Services.  This is a governance server for the storing and querying of asset lineage.
              */
             if (openLineageServerConfig != null)
             {
@@ -469,7 +469,7 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerUserId(),
                         configuration.getLocalServerPassword(),
                         configuration.getMaxPageSize());
-                instance.setOperationalOpenLineageServices(operationalOpenLineageServer);
+                instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
                 operationalOpenLineageServer.initialize(openLineageServerConfig,
                         operationalRepositoryServices.getAuditLog(
                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
@@ -691,9 +691,9 @@ public class OMAGServerOperationalServices
         /*
          * Shutdown the open lineage services
          */
-        if (instance.getOperationalOpenLineageServices() != null)
+        if (instance.getOpenLineageOperationalServices() != null)
         {
-             instance.getOperationalOpenLineageServices().disconnect(permanentDeactivation);
+             instance.getOpenLineageOperationalServices().disconnect(permanentDeactivation);
         }
 
         /*
