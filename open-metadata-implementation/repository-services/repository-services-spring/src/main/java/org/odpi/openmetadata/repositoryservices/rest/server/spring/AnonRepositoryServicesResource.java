@@ -44,7 +44,7 @@ public class AnonRepositoryServicesResource
 
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName)
     {
-        @SuppressWarnings("deprecated")
+        @SuppressWarnings("deprecation")
         MetadataCollectionIdResponse response = restAPI.getMetadataCollectionId(serverName);
         return response;
     }
