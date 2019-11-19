@@ -6,6 +6,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -70,6 +71,8 @@ public class OpenLineageService {
             e.printStackTrace();
         } catch (PropertyServerException e) {
             e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -89,6 +92,8 @@ public class OpenLineageService {
             e.printStackTrace();
         } catch (PropertyServerException e) {
             e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -107,6 +112,8 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
             e.printStackTrace();
         }
         return processResponse(response);
@@ -128,6 +135,8 @@ public class OpenLineageService {
             e.printStackTrace();
         } catch (PropertyServerException e) {
             e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -147,6 +156,8 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
             e.printStackTrace();
         }
         return processResponse(response);

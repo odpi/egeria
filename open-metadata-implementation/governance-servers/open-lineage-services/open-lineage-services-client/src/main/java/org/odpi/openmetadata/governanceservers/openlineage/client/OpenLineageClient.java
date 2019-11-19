@@ -5,11 +5,13 @@ package org.odpi.openmetadata.governanceservers.openlineage.client;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 
 
 public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInterface {
@@ -21,7 +23,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String LINEAGE_SCOPES = "/scopes/{3}";
     private static final String LINEAGE_VIEWS = "/views/{4}";
     private static final String LINEAGE_ENTITIES = "/entities/{5}";
-    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
+    private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
      * Create a new OpenLineage client.
@@ -48,7 +50,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                                            Scope scope,
                                            View view,
                                            String guid)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "lineage";
         LineageResponse lineageResponse = callGetRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot +
@@ -66,9 +68,10 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
     private void detectExceptions(String methodName,
                                   LineageResponse response)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, response);
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
+        openLineageExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
+        openLineageExceptionHandler.detectAndThrowPropertyServerException(methodName, response);
+        openLineageExceptionHandler.detectAndThrowOpenLineagexception(methodName, response);
     }
 
 }
