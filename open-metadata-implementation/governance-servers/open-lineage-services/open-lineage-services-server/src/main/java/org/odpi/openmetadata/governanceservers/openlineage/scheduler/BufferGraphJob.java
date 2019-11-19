@@ -4,9 +4,13 @@ package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
 
 public class BufferGraphJob implements Job {
 
@@ -14,16 +18,16 @@ public class BufferGraphJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) {
-//        LocalDateTime localTime = LocalDateTime.now();
-//        System.out.println("Run QuartzJob at " + localTime);
-//
-//        JobKey key = context.getJobDetail().getKey();
-//
-//        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-//
-//        BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
-//
-//        performTask(bufferGraph);
+        LocalDateTime localTime = LocalDateTime.now();
+        System.out.println("Run QuartzJob at " + localTime);
+
+        JobKey key = context.getJobDetail().getKey();
+
+        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+
+        BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
+
+        performTask(bufferGraph);
     }
 
     private void performTask(BufferGraph bufferGraph){
