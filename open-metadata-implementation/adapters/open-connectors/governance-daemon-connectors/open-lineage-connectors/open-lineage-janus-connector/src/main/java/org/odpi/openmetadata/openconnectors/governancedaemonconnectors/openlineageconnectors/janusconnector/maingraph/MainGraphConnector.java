@@ -55,10 +55,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB) {
             case "berkeleydb":
-                    this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                    this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
-                    this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                    this.mockGraph = BerkeleyJanusFactory.openMockGraph();
+                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
+                this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
+                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
+                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
                 break;
             case "cassandra":
                 FactoryForTesting factoryForTesting = new FactoryForTesting();
@@ -69,7 +69,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 break;
         }
     }
-
 
     /**
      * Returns a lineage subgraph.
@@ -122,14 +121,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
 
-
     /**
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param edgeLabel  The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
+     * @param edgeLabel The view queried by the user: tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
     private LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
@@ -220,9 +218,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param edgeLabel  The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
+     * @param edgeLabel The view queried by the user: tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
     private LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
@@ -267,9 +265,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param edgeLabel  The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
+     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
+     * @param edgeLabel The view queried by the user: tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
     private LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
@@ -301,9 +299,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param edgeLabel  The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
+     * @param edgeLabel The view queried by the user: tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
     private LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
@@ -338,59 +336,63 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return lineageResponse;
     }
 
-    private void addSourceCondensation(List<Vertex> sourcesList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
+    private void addSourceCondensation(List<Vertex> sourcesList,
+                                       List<LineageVertex> lineageVertices,
+                                       List<LineageEdge> lineageEdges,
+                                       Vertex originalQueriedVertex,
+                                       LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED, "Condensed", "");
-            lineageVertices.add(condensedVertex);
+        if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID)))
+            return;
+        LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED, "Condensed", "");
+        lineageVertices.add(condensedVertex);
 
-            for (Vertex originalVertex : sourcesList) {
-                LineageVertex newVertex = abstractVertex(originalVertex);
-                LineageEdge newEdge = new LineageEdge(
-                        EDGE_LABEL_CONDENSED,
-                        newVertex.getNodeID(),
-                        condensedVertex.getNodeID()
-                );
-                if (newVertex != null)
-                    lineageVertices.add(newVertex);
-                if (newEdge != null)
-                    lineageEdges.add(newEdge);
-            }
-            LineageEdge sourceEdge = new LineageEdge(
+        for (Vertex originalVertex : sourcesList) {
+            LineageVertex newVertex = abstractVertex(originalVertex);
+            LineageEdge newEdge = new LineageEdge(
                     EDGE_LABEL_CONDENSED,
-                    condensedVertex.getNodeID(),
-                    queriedVertex.getNodeID()
+                    newVertex.getNodeID(),
+                    condensedVertex.getNodeID()
             );
-            lineageEdges.add(sourceEdge);
+            if (newVertex != null)
+                lineageVertices.add(newVertex);
+            if (newEdge != null)
+                lineageEdges.add(newEdge);
         }
+        LineageEdge sourceEdge = new LineageEdge(
+                EDGE_LABEL_CONDENSED,
+                condensedVertex.getNodeID(),
+                queriedVertex.getNodeID()
+        );
+        lineageEdges.add(sourceEdge);
     }
 
     private void addDestinationCondensation(List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED, "Condensed", "");
-            for (Vertex originalVertex : destinationsList) {
-                LineageVertex newVertex = abstractVertex(originalVertex);
-                LineageEdge newEdge = new LineageEdge(
-                        EDGE_LABEL_CONDENSED,
-                        condensedDestinationVertex.getNodeID(),
-                        newVertex.getNodeID()
-                );
-                if (newVertex != null)
-                    lineageVertices.add(newVertex);
-                if (newEdge != null)
-                    lineageEdges.add(newEdge);
-            }
-            LineageEdge destinationEdge = new LineageEdge(
+        if (destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID)))
+            return;
+        LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED, "Condensed", "");
+        for (Vertex originalVertex : destinationsList) {
+            LineageVertex newVertex = abstractVertex(originalVertex);
+            LineageEdge newEdge = new LineageEdge(
                     EDGE_LABEL_CONDENSED,
-                    queriedVertex.getNodeID(),
-                    condensedDestinationVertex.getNodeID()
+                    condensedDestinationVertex.getNodeID(),
+                    newVertex.getNodeID()
             );
-            lineageVertices.add(condensedDestinationVertex);
-            lineageEdges.add(destinationEdge);
+            if (newVertex != null)
+                lineageVertices.add(newVertex);
+            if (newEdge != null)
+                lineageEdges.add(newEdge);
         }
+        LineageEdge destinationEdge = new LineageEdge(
+                EDGE_LABEL_CONDENSED,
+                queriedVertex.getNodeID(),
+                condensedDestinationVertex.getNodeID()
+        );
+        lineageVertices.add(condensedDestinationVertex);
+        lineageEdges.add(destinationEdge);
     }
 
 
@@ -458,8 +460,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
                     break;
             }
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_VIEW;
             throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -542,15 +543,14 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     graph = mockGraph;
                     break;
             }
-        }
-        catch(NullPointerException e){
-                OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
-                throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorCode.getFormattedErrorMessage(),
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+        } catch (NullPointerException e) {
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
         return graph;
     }

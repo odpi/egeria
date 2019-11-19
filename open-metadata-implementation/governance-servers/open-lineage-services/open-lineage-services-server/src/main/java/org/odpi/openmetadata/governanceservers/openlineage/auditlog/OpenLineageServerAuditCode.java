@@ -44,6 +44,12 @@ public enum OpenLineageServerAuditCode {
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
+    ERROR_INITIALIZING_GRAPH_CONNECTOR("OPEN-LINEAGE-0005",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to initialize the graph connector for Open Lineage Services for server {0}",
+            "The connector could not be initialized.",
+            "Review the exception and resolve the configuration. "),
+
     ERROR_INITIALIZING_CONNECTOR("OPEN-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Open Lineage Services connector {0} for server instance {1}; error message was: {2}",
@@ -68,6 +74,12 @@ public enum OpenLineageServerAuditCode {
             "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
             "The system was unable to open the graph repository graph database " +
                     "Please check that the graph database exists and is not in use by another process."),
+
+    PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-001",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Event {0} could not be consumed. Error: {1}",
+            "The system is unable to process the request.",
+            "Verify the topic configuration.")
 
     ;
 

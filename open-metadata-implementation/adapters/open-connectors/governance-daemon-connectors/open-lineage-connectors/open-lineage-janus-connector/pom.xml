@@ -62,11 +62,6 @@
             <artifactId>asset-lineage-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
