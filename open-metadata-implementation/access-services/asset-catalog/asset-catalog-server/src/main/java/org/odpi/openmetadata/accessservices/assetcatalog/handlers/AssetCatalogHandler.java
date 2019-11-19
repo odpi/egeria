@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Connection;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -409,7 +409,7 @@ public class AssetCatalogHandler {
      * @throws PagingErrorException                                                               -  is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException     - is thrown by the OMAG Service when a parameter is null or an invalid value.
      */
-    public List<Term> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
+    public List<AssetElements> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException,
@@ -442,9 +442,9 @@ public class AssetCatalogHandler {
      *                                                                                     metadata repository to retrieve properties about the connection and/or connector.
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
      */
-    public Term buildContextByType(String userId,
-                                   String entityGUID,
-                                   String entityTypeDefName)
+    public AssetElements buildContextByType(String userId,
+                                            String entityGUID,
+                                            String entityTypeDefName)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
@@ -466,7 +466,7 @@ public class AssetCatalogHandler {
         if (typeDefName.equals(GLOSSARY_TERM)) {
             return getContextForGlossaryTerm(userId, entityDetail);
         } else {
-            Term term = buildTerm(entityDetail);
+            AssetElements assetElements = buildTerm(entityDetail);
             if (superTypes.contains(SCHEMA_ELEMENT)) {
                 getContextForSchemaElement(userId, entityDetail, assetElement);
             } else if (superTypes.contains(DEPLOYED_API)) {
@@ -481,8 +481,8 @@ public class AssetCatalogHandler {
                 getContextForDataSet(userId, entityDetail, assetElement);
             }
 
-            term.setElements(Collections.singletonList(assetElement));
-            return term;
+            assetElements.setElements(Collections.singletonList(assetElement));
+            return assetElements;
         }
     }
 
@@ -510,15 +510,15 @@ public class AssetCatalogHandler {
         findAsset(userId, Collections.singletonList(entityDetail), assetElement);
     }
 
-    private Term getContextForGlossaryTerm(String userId,
-                                           EntityDetail glossaryTerm)
+    private AssetElements getContextForGlossaryTerm(String userId,
+                                                    EntityDetail glossaryTerm)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForGlossaryTerm";
 
         if (glossaryTerm == null) {
             return null;
         }
-        Term term = buildTerm(glossaryTerm);
+        AssetElements assetElements = buildTerm(glossaryTerm);
 
         List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId,
                 glossaryTerm.getGUID(),
@@ -530,7 +530,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (CollectionUtils.isEmpty(schemas)) {
-            return term;
+            return assetElements;
         }
 
         List<AssetElement> assets = new ArrayList<>(schemas.size());
@@ -545,9 +545,9 @@ public class AssetCatalogHandler {
             assets.add(assetElement);
         }
 
-        term.setElements(assets);
+        assetElements.setElements(assets);
 
-        return term;
+        return assetElements;
     }
 
     private void getContextForDeployedAPI(String userId,
@@ -1199,18 +1199,18 @@ public class AssetCatalogHandler {
         return buildTerm(entityDetail);
     }
 
-    private Term buildTerm(EntityDetail entity) {
+    private AssetElements buildTerm(EntityDetail entity) {
         if (entity == null) {
             return null;
         }
 
-        Term term = new Term();
-        term.setGuid(entity.getGUID());
-        term.setTypeDefGUID(entity.getType().getTypeDefGUID());
-        term.setTypeDefName(entity.getType().getTypeDefName());
-        term.setProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
+        AssetElements assetElements = new AssetElements();
+        assetElements.setGuid(entity.getGUID());
+        assetElements.setTypeDefGUID(entity.getType().getTypeDefGUID());
+        assetElements.setTypeDefName(entity.getType().getTypeDefName());
+        assetElements.setProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
 
-        return term;
+        return assetElements;
     }
 
     private Optional<TypeDef> isComplexSchemaType(String typeDefName) {

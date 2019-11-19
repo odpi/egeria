@@ -4,9 +4,9 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -120,7 +120,7 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException there is a problem with the parameters
      */
-    public List<Term> searchAssets(String user, String searchCriteria, SearchParameters searchParameters)
+    public List<AssetElements> searchAssets(String user, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
             return assetCatalog.searchByType(user, searchCriteria, searchParameters).getAssets();
@@ -130,7 +130,7 @@ public class AssetCatalogOMASService {
         }
     }
 
-    public List<Term> getAssetContext(String userId, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    public List<AssetElements> getAssetContext(String userId, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
             return assetCatalog.getAssetContext(userId, assetId, assetType).getAssets();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
