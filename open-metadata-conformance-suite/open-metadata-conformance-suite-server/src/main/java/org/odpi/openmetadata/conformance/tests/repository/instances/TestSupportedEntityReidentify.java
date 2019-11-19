@@ -6,6 +6,7 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -247,6 +249,85 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         super.setSuccessMessage("Entities can be reidentified");
     }
 
+
+    /**
+     * Method to clean any instance created by the test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    public void cleanup() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Find any entities of the given type def and delete them....
+         */
+
+        int fromElement = 0;
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
+        int resultSize = 0;
+
+        do {
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
+
+
+            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                    entityDef.getGUID(),
+                    emptyMatchProperties,
+                    MatchCriteria.ANY,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
+
+
+            if (entities == null) {
+                /*
+                 * There are no instances of this type reported by the repository.
+                 */
+                return;
+
+            }
+
+            /*
+             * Report how many entities were left behind at the end of the test run
+             */
+
+            resultSize = entities.size();
+
+            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
+
+            for (EntityDetail entity : entities) {
+
+                /*
+                 * Try soft delete (ok if it fails) and purge.
+                 */
+
+                try {
+                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            entity.getType().getTypeDefGUID(),
+                            entity.getType().getTypeDefName(),
+                            entity.getGUID());
+
+                } catch (FunctionNotSupportedException exception) {
+                    /* OK - had to try soft; continue to purge */
+                }
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        entity.getType().getTypeDefGUID(),
+                        entity.getType().getTypeDefName(),
+                        entity.getGUID());
+
+                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
+
+            }
+        } while (resultSize >= pageSize);
+
+    }
 
     /**
      * Determine if properties are as expected.
