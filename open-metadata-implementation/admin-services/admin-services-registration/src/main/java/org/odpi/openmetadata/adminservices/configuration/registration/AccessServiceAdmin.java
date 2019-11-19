@@ -105,7 +105,8 @@ public abstract class AccessServiceAdmin
             {
                 try
                 {
-                    List<String>  zoneList =  (List<String>)zoneListObject;
+                    @SuppressWarnings("unchecked")
+                    List<String> zoneList = (List<String>) zoneListObject;
 
                     auditCode = OMAGAuditCode.SUPPORTED_ZONES;
                     auditLog.logRecord(methodName,
@@ -175,6 +176,7 @@ public abstract class AccessServiceAdmin
             {
                 try
                 {
+                    @SuppressWarnings("unchecked")
                     List<String>  zoneList =  (List<String>)zoneListObject;
 
                     auditCode = OMAGAuditCode.DEFAULT_ZONES;

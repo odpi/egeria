@@ -4,11 +4,13 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.rest.FileSystemResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.FolderResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueConsumersResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValuesResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -59,13 +61,21 @@ class AssetOwnerRESTClient extends ODFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return FileSystemResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
     FileSystemResponse callFileSystemGetRESTCall(String    methodName,
                                                  String    urlTemplate,
-                                                 Object... params) throws PropertyServerException
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        return this.callGetRESTCall(methodName, FileSystemResponse.class, urlTemplate, params);
+        FileSystemResponse restResult = this.callGetRESTCall(methodName, FileSystemResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -77,68 +87,127 @@ class AssetOwnerRESTClient extends ODFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return FolderResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
     FolderResponse callFolderGetRESTCall(String    methodName,
                                          String    urlTemplate,
-                                         Object... params) throws PropertyServerException
+                                         Object... params) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        return this.callGetRESTCall(methodName, FolderResponse.class, urlTemplate, params);
+        FolderResponse restResult = this.callGetRESTCall(methodName, FolderResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
+
+
+
     /**
-     * Issue a GET REST call that returns a Zone List object.
+     * Issue a GET REST call that returns a ValidValuesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ZoneListResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @return ValidValueResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ZoneListResponse callZoneListGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws PropertyServerException
+    ValidValueResponse callValidValueGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        return this.callGetRESTCall(methodName, ZoneListResponse.class, urlTemplate, params);
+        ValidValueResponse restResult = this.callGetRESTCall(methodName, ValidValueResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
     /**
-     * Issue a GET REST call that returns a ZoneResponse object.
+     * Issue a GET REST call that returns a ValidValuesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ZoneResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @return ValidValuesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ZoneResponse callZoneGetRESTCall(String    methodName,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
+    ValidValuesResponse callValidValuesGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        return this.callGetRESTCall(methodName, ZoneResponse.class, urlTemplate, params);
+        ValidValuesResponse restResult = this.callGetRESTCall(methodName, ValidValuesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
     /**
-     * Issue a POST REST call that returns a ZoneResponse object.
+     * Issue a POST REST call that returns a ValidValuesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the REST call - contains most of the parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ZoneResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @return ValidValuesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ZoneResponse callZonePostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
+    ValidValuesResponse callValidValuesPostRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object    requestBody,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        return this.callPostRESTCall(methodName, ZoneResponse.class, urlTemplate, requestBody, params);
+        ValidValuesResponse restResult = this.callPostRESTCall(methodName, ValidValuesResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+    /**
+     * Issue a GET REST call that returns a ValidValueConsumersResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ValidValueConsumersResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    ValidValueConsumersResponse callValidValueConsumersGetRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        ValidValueConsumersResponse restResult = this.callGetRESTCall(methodName, ValidValueConsumersResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 }

@@ -13,11 +13,23 @@ that contains the definition.
   [Java](../../../asset-consumer-client/docs/user/java-client/get-meaning-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-meaning-with-rest.md)
 
-* **getMeaningByName** - Returns the full definition (meaning) of the terms matching the supplied name.
+* **getMeaningsByName** - Returns a list of the full definition (meaning) of the terms matching the supplied name.
 
   Implementation: 
   [Java](../../../asset-consumer-client/docs/user/java-client/get-meaning-by-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-meaning-by-name-with-rest.md)
+           
+* **findMeanings** - Returns a list of the full definition (meaning) of the terms matching the supplied search string - this search string may include wild card characters.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/find-meanings-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/find-meanings-with-rest.md)
+           
+* **getAssetsByMeaning** - Returns a list of unique identifiers for Assets that are linked to the supplied term.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-assets-by-meaning-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-assets-by-meaning-with-rest.md)
            
 
 ----

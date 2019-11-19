@@ -41,17 +41,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>odf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
         </dependency>
 
         <!-- Spring for REST APIs -->

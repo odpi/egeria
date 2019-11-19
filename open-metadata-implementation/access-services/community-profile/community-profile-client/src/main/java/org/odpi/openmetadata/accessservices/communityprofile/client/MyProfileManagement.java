@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.Personal
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.CountResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -24,12 +23,12 @@ import java.util.Map;
  */
 public class MyProfileManagement implements MyPersonalProfileInterface
 {
-    private String     serverName;               /* Initialized in constructor */
-    private String     omasServerURL;            /* Initialized in constructor */
-    private RESTClient restClient;               /* Initialized in constructor */
+    private String                     serverName;               /* Initialized in constructor */
+    private String                     omasServerURL;            /* Initialized in constructor */
+    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+    private InvalidParameterHandler              invalidParameterHandler = new InvalidParameterHandler();
+    private CommunityProfileRESTExceptionHandler exceptionHandler        = new CommunityProfileRESTExceptionHandler();
 
 
     /**
@@ -49,7 +48,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL);
+        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL);
     }
 
 
@@ -75,7 +74,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
+        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL, userId, password);
     }
 
 
@@ -103,10 +102,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
                                                                                        omasServerURL + urlTemplate,
                                                                                        userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getPersonalProfile();
     }
@@ -139,10 +134,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
                                                                    omasServerURL + urlTemplate,
                                                                    userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getCount();
     }
@@ -193,29 +185,27 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         requestBody.setAdditionalProperties(additionalProperties);
 
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callGUIDPostRESTCall(methodName,
+                                        omasServerURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
     }
 
 
     /**
-     * Create or update the profile for the requesting user.
+     * Delete the profile for the requesting user.
      *
      * @param userId the name of the calling user.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void      deleteMyProfile(String              userId,
                                      String              qualifiedName) throws InvalidParameterException,
+                                                                               NoProfileForUserException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
@@ -231,15 +221,11 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         PersonalProfileValidatorRequestBody requestBody = new PersonalProfileValidatorRequestBody();
         requestBody.setQualifiedName(qualifiedName);
 
-        VoidResponse restResult = restClient. callVoidPostRESTCall(methodName,
-                                                                   omasServerURL + urlTemplate,
-                                                                   requestBody,
-                                                                   serverName,
-                                                                   userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient. callVoidPostRESTCall(methodName,
+                                         omasServerURL + urlTemplate,
+                                         requestBody,
+                                         serverName,
+                                         userId);
     }
 
 

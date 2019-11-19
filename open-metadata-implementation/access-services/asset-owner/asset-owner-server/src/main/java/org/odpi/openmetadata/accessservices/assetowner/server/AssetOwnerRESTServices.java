@@ -4,13 +4,12 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
@@ -18,16 +17,13 @@ import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.Disc
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssetOwner provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
@@ -39,11 +35,9 @@ import java.util.List;
 public class AssetOwnerRESTServices
 {
     private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
-
-    private static final Logger log = LoggerFactory.getLogger(AssetOwnerRESTServices.class);
-
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-
+    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger              restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AssetOwnerRESTServices.class),
+                                                                                   instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -80,7 +74,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addAssetToCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         OMRSAuditLog auditLog = null;
@@ -106,25 +100,12 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -151,7 +132,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addSchemaToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         OMRSAuditLog auditLog = null;
@@ -174,25 +155,12 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -218,7 +186,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addSchemaAttributesToSchema";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -240,25 +208,12 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -286,6 +241,8 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addConnectionToAsset";
 
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
 
@@ -311,28 +268,14 @@ public class AssetOwnerRESTServices
             }
 
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /*
@@ -340,6 +283,53 @@ public class AssetOwnerRESTServices
      * AssetClassificationInterface
      * ==============================================
      */
+
+
+    /**
+     * Create a simple relationship between a glossary term and an Asset description.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that is being described
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody null request body to satisfy POST request.
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  addSemanticAssignment(String          serverName,
+                                               String          userId,
+                                               String          assetGUID,
+                                               String          glossaryTermGUID,
+                                               NullRequestBody requestBody)
+    {
+        final String   methodName = "addSemanticAssignment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.saveSemanticAssignment(userId,
+                                           assetGUID,
+                                           glossaryTermGUID,
+                                           methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
@@ -367,6 +357,8 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addSemanticAssignment";
 
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
 
@@ -382,25 +374,113 @@ public class AssetOwnerRESTServices
                                            methodName);
 
         }
-        catch (InvalidParameterException error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException error)
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  removeSemanticAssignment(String          serverName,
+                                                  String          userId,
+                                                  String          assetGUID,
+                                                  String          glossaryTermGUID,
+                                                  NullRequestBody requestBody)
+    {
+        final String   methodName = "removeSemanticAssignment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeSemanticAssignment(userId,
+                                             assetGUID,
+                                             glossaryTermGUID,
+                                             methodName);
+
         }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  removeSemanticAssignment(String          serverName,
+                                                  String          userId,
+                                                  String          assetGUID,
+                                                  String          glossaryTermGUID,
+                                                  String          assetElementGUID,
+                                                  NullRequestBody requestBody)
+    {
+        final String   methodName = "removeSemanticAssignment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeSemanticAssignment(userId,
+                                             assetGUID,
+                                             glossaryTermGUID,
+                                             assetElementGUID,
+                                             methodName);
+
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -425,7 +505,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "addAssetOrigin";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -449,56 +529,37 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
 
-    /*
-     * ==============================================
-     * AssetVisibilityInterface
-     * ==============================================
-     */
-
-
     /**
-     * Create a definition of a governance zone.  The qualified name of these governance zones can be added
-     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
-     * to indicate which zone(s) they belong to.
+     * Remove the asset origin classification to an asset.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody other properties for a governance zone
+     * @param assetGUID unique identifier of asset
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse  createGovernanceZone(String          serverName,
-                                              String          userId,
-                                              ZoneRequestBody requestBody)
+    public VoidResponse  removeAssetOrigin(String                serverName,
+                                           String                userId,
+                                           String                assetGUID,
+                                           NullRequestBody       requestBody)
     {
-        final String   methodName = "createGovernanceZone";
+        final String   methodName = "addAssetOrigin";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -508,150 +569,23 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.createGovernanceZone(userId,
-                                             requestBody.getQualifiedName(),
-                                             requestBody.getDisplayName(),
-                                             requestBody.getDescription(),
-                                             requestBody.getCriteria(),
-                                             requestBody.getAdditionalProperties(),
-                                             requestBody.getExtendedProperties(),
-                                             methodName);
+                handler.removeAssetOrigin(userId, assetGUID, methodName);
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-    /**
-     * Return information about all of the governance zones.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
-     *
-     * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public ZoneListResponse getGovernanceZones(String   serverName,
-                                               String   userId,
-                                               int      startingFrom,
-                                               int      maximumResults)
-    {
-        final String   methodName = "getGovernanceZones";
-
-        ZoneListResponse response = new ZoneListResponse();
-        OMRSAuditLog auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
-
-            response.setGovernanceZone(handler.getGovernanceZones(userId,
-                                                                  startingFrom,
-                                                                  maximumResults,
-                                                                  methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return information about a specific governance zone.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param qualifiedName unique name for the zone
-     *
-     * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public ZoneResponse getGovernanceZone(String   serverName,
-                                          String   userId,
-                                          String   qualifiedName)
-    {
-        final String   methodName = "getGovernanceZone";
-
-        ZoneResponse response = new ZoneResponse();
-        OMRSAuditLog auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
-
-            response.setGovernanceZone(handler.getGovernanceZone(userId,
-                                                                 qualifiedName,
-                                                                 methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-        return response;
-    }
-
 
 
     /**
@@ -675,7 +609,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "updateAssetZones";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -690,28 +624,14 @@ public class AssetOwnerRESTServices
                                      assetZones,
                                      methodName);
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -734,7 +654,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "updateAssetOwner";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -757,25 +677,212 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException error)
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  addSecurityTags(String                  serverName,
+                                         String                  userId,
+                                         String                  assetGUID,
+                                         SecurityTagsRequestBody requestBody)
+    {
+        final String   methodName = "addSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                handler.addSecurityTags(userId,
+                                        assetGUID,
+                                        requestBody.getSecurityLabels(),
+                                        requestBody.getSecurityProperties(),
+                                        methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  addSecurityTags(String                  serverName,
+                                         String                  userId,
+                                         String                  assetGUID,
+                                         String                  assetElementGUID,
+                                         SecurityTagsRequestBody requestBody)
+    {
+        final String   methodName = "addSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                handler.addSecurityTags(userId,
+                                        assetGUID,
+                                        assetElementGUID,
+                                        requestBody.getSecurityLabels(),
+                                        requestBody.getSecurityProperties(),
+                                        methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the security tags classification from an asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  removeSecurityTags(String                serverName,
+                                            String                userId,
+                                            String                assetGUID,
+                                            NullRequestBody       requestBody)
+    {
+        final String   methodName = "removeSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeSecurityTags(userId,
+                                       assetGUID,
+                                       methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the security tags classification to one of an asset's elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element where the security tags need to be removed.
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  removeSecurityTags(String                serverName,
+                                            String                userId,
+                                            String                assetGUID,
+                                            String                assetElementGUID,
+                                            NullRequestBody       requestBody)
+    {
+        final String   methodName = "removeSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeSecurityTags(userId,
+                                       assetGUID,
+                                       assetElementGUID,
+                                       methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -809,7 +916,7 @@ public class AssetOwnerRESTServices
     {
         final String methodName    = "getAssetsByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AssetsResponse response = new AssetsResponse();
         OMRSAuditLog   auditLog = null;
@@ -822,25 +929,12 @@ public class AssetOwnerRESTServices
             response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -868,7 +962,7 @@ public class AssetOwnerRESTServices
     {
         final String methodName    = "findAssets";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AssetsResponse response = new AssetsResponse();
         OMRSAuditLog   auditLog = null;
@@ -881,25 +975,12 @@ public class AssetOwnerRESTServices
             response.setAssets(handler.findAssets(userId, searchString, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -926,7 +1007,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "getDiscoveryAnalysisReports";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryAnalysisReportListResponse response = new DiscoveryAnalysisReportListResponse();
         OMRSAuditLog auditLog = null;
@@ -942,25 +1023,12 @@ public class AssetOwnerRESTServices
                                                                                      maxPageSize,
                                                                                      methodName));
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -989,48 +1057,36 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "getDiscoveryReportAnnotations";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
         OMRSAuditLog auditLog = null;
 
-        AnnotationStatus  annotationStatus = null;
-        if (requestBody != null)
-        {
-            annotationStatus = requestBody.getAnnotationStatus();
-        }
-
         try
         {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
 
-            response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
-                                                                          discoveryReportGUID,
-                                                                          annotationStatus,
-                                                                          startingFrom,
-                                                                          maximumResults,
-                                                                          methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
+                                                                              discoveryReportGUID,
+                                                                              requestBody.getAnnotationStatus(),
+                                                                              startingFrom,
+                                                                              maximumResults,
+                                                                              methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1060,7 +1116,7 @@ public class AssetOwnerRESTServices
     {
         final String   methodName = "getExtendedAnnotations";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
         OMRSAuditLog auditLog = null;
@@ -1083,25 +1139,12 @@ public class AssetOwnerRESTServices
                                                                    maximumResults,
                                                                    methodName));
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1136,7 +1179,7 @@ public class AssetOwnerRESTServices
     {
         final String methodName = "deleteAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
@@ -1148,25 +1191,12 @@ public class AssetOwnerRESTServices
 
             handler.removeAsset(userId, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

@@ -27,8 +27,6 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
     OMRSRepositoryEventBuilder(String eventProcessorName)
     {
         super(eventProcessorName);
-
-        this.eventProcessorName = eventProcessorName;
     }
 
 
@@ -724,6 +722,41 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
     }
 
 
+    /**
+     * An entity has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the version of the entity that has been purged.
+     */
+    public void processPurgedEntityEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
+                                         EntityDetail entity)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.PURGED_ENTITY_EVENT,
+                                                                entity);
+
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
 
     /**
      * A deleted entity has been permanently removed from the repository.  This request can not be undone.
@@ -1184,6 +1217,40 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
         this.sendInstanceEvent(sourceName, instanceEvent);
     }
 
+
+    /**
+     * A relationship has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param relationship  details of the  relationship that has been purged.
+     */
+    public void processPurgedRelationshipEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               Relationship relationship)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.PURGED_RELATIONSHIP_EVENT,
+                                                                relationship);
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
 
 
     /**
