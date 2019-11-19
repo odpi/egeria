@@ -304,7 +304,7 @@ public class DataEngineRESTServices {
 
             handleFailedProcesses(response, mappedResponses.get(Boolean.FALSE));
 
-            createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
+            createdProcesses.forEach(guidResponse -> updateProcessStatus(userId, serverName,
                     guidResponse, InstanceStatus.ACTIVE));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -368,7 +368,9 @@ public class DataEngineRESTServices {
         Consumer<Process> processConsumer = process -> guidResponses.add(createOrUpdateProcess(userId, serverName,
                 process, externalSourceName));
         partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
-        partitionedProcesses.get(Boolean.FALSE).parallelStream().forEach(processConsumer);
+        // processes that have port aliases can not be processed in parallel, as multiple processes can define the
+        // same port alias
+        partitionedProcesses.get(Boolean.FALSE).forEach(processConsumer);
 
         return guidResponses;
     }
@@ -636,7 +638,7 @@ public class DataEngineRESTServices {
         if (CollectionUtils.isNotEmpty(portAliases)) {
 
             // port aliases can not be processed in parallel, as multiple processes can define the same port alias
-            portAliases.forEach(portAlias ->
+            portAliases.parallelStream().forEach(portAlias ->
             {
                 try {
                     portAliasGUIDs.add(createOrUpdatePortAliasWithDelegation(userId, serverName, portAlias, externalSourceName));

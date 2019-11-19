@@ -80,7 +80,7 @@ public class MainGraphMapper {
         System.out.println("Column out " + columnOutVertex.property("vepropdisplayName").value());
         System.out.println("PRocess out " + process.property("vepropdisplayName").value());
 
-        if(columnInVertex.property("vepropdisplayName").value().equals("LNAME")) {
+//        if(columnOutVertex.property("vepropdisplayName").value().equals("LOCATION")) {
             if (!columnIn.hasNext()) {
                 newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
             }
@@ -100,7 +100,7 @@ public class MainGraphMapper {
             }
             addProcess(newColumnIn, newColumnOut, process);
         }
-    }
+//    }
 
     private Vertex checkAssetVertex(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex){
         Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN)

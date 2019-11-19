@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addV;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory.openBufferGraph;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
@@ -111,18 +113,48 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         for (String guid : guidList) {
 //            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("vepropdisplayName","initial_load");
 //            if(!initial.hasNext()) {
-//            if(guid.equals("4c89ce29-948c-4467-acad-94e4edc52022")){
-            if(guid.equals("a85ab15d-8ddf-4aad-a0fd-d41acf4bbc5a")){
+//            if(guid.equals("367b5acc-afae-4715-9543-1ffd364dd7cc")){
+//            if(guid.equals("306504bc-f184-46af-95d5-a03bbdb47dc7")){
                 List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
                         .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
+                        .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
                         .toList();
 
                 Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
                 for (Vertex vertex : inputPath) {
                     String vertexGuid = vertex.value(PROPERTY_KEY_ENTITY_GUID);
-                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").in("LineageMapping");
+                    List<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").in("LineageMapping").toList();
+//
+
+
+//                    List<Vertex> glossaryMain =    g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).
+//                            fold().
+//                            coalesce(unfold(),
+//                                    __.out("SchemaAttributeType").in("LineageMapping")).toList();
+                    Vertex vertexToStart = null;
+
+                    if(r != null){
+                        for(Vertex v: r){
+                            List<Vertex> intialProcess = g.V(v.id()).bothE("SchemaAttributeType")
+                            .otherV().bothE("AttributeForSchema")
+                            .otherV().inE("PortSchema").otherV()
+                            .inE("PortDelegation").otherV().
+                    inE("ProcessPort").otherV().has("veguid",process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+
+                            if(!intialProcess.isEmpty()){
+                                vertexToStart = v;
+                                break;
+                            }
+                        }
+                    }
+
                     Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").next();
-                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(),g,startingVertex);
+//                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).next();
+                    Iterator<Vertex> columnOut = null;
+                    if(vertexToStart != null){
+                        columnOut  = findPathForOutputAsset(vertexToStart,g,startingVertex);
+
+                    }
                     if (columnOut != null && columnOut.hasNext()) {
                         String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
                         String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
@@ -132,7 +164,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                         }
                     }
                 }
-            }
+//            }
         }
         g.tx().commit();
     }
