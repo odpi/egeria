@@ -13,6 +13,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Security Officer Connectors</name>
+    <description>Security Officer Connector provides a common implementation for the
+        Security connectors that determines the security tags classification assigned to the schema elements.
+    </description>
+
     <artifactId>security-officer-connectors</artifactId>
     <packaging>pom</packaging>
 

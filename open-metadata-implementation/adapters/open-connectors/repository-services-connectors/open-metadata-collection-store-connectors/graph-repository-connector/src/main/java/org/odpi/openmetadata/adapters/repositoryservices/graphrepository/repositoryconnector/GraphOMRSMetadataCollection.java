@@ -17,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
@@ -56,6 +55,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * @param repositoryHelper     - class used to build type definitions and instances.
      * @param repositoryValidator  - class used to validate type definitions and instances.
      * @param metadataCollectionId - unique Identifier of the metadata collection Id.
+     * @param auditLog             - logging destination
      */
     public GraphOMRSMetadataCollection(GraphOMRSRepositoryConnector parentConnector,
                                        String                       repositoryName,
@@ -314,7 +314,17 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Process operation
          */
-        return graphStore.getRelationshipFromStore(guid);
+        Relationship relationship;
+        try {
+            relationship = graphStore.getRelationshipFromStore(guid);
+            repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+        }
+        catch (RelationshipNotKnownException e) {
+            log.error("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
+            relationship = null;
+        }
+        return relationship;
+
     }
 
     // getEntitySummary
@@ -410,7 +420,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Validation complete - ok to create new instance
          */
         Relationship relationship = repositoryHelper.getNewRelationship(repositoryName,
-                null,
+                metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
                 userId,
                 typeDef.getName(),
@@ -627,6 +637,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
@@ -719,7 +731,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
-
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
@@ -794,6 +806,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
+
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
@@ -877,6 +891,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
+
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
@@ -1037,6 +1053,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String  methodName = "purgeRelationship";
         final String  parameterName  = "deletedRelationshipGUID";
 
+
         /*
          * Validate parameters
          */
@@ -1060,6 +1077,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validation is complete - ok to remove the relationship
          */
+
         graphStore.removeRelationshipFromStore(relationship.getGUID());
     }
 
@@ -1110,18 +1128,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         List<Relationship> entityRelationships = new ArrayList<>();
 
         if (asOfTime != null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            log.error("{} does not support asOfTime searches", methodName);
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
         List<Relationship> filteredRelationships = new ArrayList<>();
@@ -1229,8 +1238,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.debug("{}: checking entity type {}", methodName, typeDef.getName());
-
                 String actualTypeName = typeDef.getName();
 
                 // If entityTypeGUID parameter is not null there is an expected type, so check whether the
@@ -1240,11 +1247,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
-
 
                 }
 
@@ -1329,19 +1333,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         if (asOfTime != null) {
             log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
+
+
+        //if (asOfTime != null) {
+        //    log.error("{} does not support asOfTime searches", methodName);
+        //
+        //    OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        //
+        //    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+        //            this.getClass().getName(),
+        //            repositoryName);
+        //
+        //    throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+        //            this.getClass().getName(),
+        //            methodName,
+        //            errorMessage,
+        //            errorCode.getSystemAction(),
+        //            errorCode.getUserAction());
+        //}
 
         /*
          * Perform operation
@@ -1487,18 +1498,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         if (asOfTime != null) {
             log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
 
@@ -1522,8 +1522,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.info("{}: checking entity type {}", methodName, typeDef.getName());
-
                 String actualTypeName = typeDef.getName();
 
                 // If entityTypeGUID parameter is not null there is an expected type, so check whether the
@@ -1533,10 +1531,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.info("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.info("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
 
                 }
 
@@ -1623,18 +1619,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         if (asOfTime != null) {
             log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
         /*
@@ -1944,21 +1929,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
         if (asOfTime != null) {
-            // Not supported
-            log.error("{} does not support asOfTime parameter", methodName);
+            log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
 
@@ -1982,8 +1955,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.debug("{}: checking entity type {}", methodName, typeDef.getName());
-
                 String actualTypeName = typeDef.getName();
 
                 // If entityTypeGUID parameter is not null there is an expected type, so check whether the
@@ -1993,11 +1964,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
-
 
                 }
 
@@ -2215,6 +2183,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String  methodName = "deleteRelationship";
         final String  parameterName = "obsoleteRelationshipGUID";
 
+
         /*
          * Validate parameters
          */
@@ -2338,6 +2307,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     errorCode.getUserAction());
         }
 
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
         /*
          * Validation complete - ok to make changes
          */
@@ -2389,9 +2360,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          */
         EntityDetail entity = null;
         try {
+
             entity = graphStore.getEntityDetailFromStore(entityGUID);
 
             repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+
+            repositoryValidator.validateEntityCanBeRehomed(repositoryName, metadataCollectionId, entity, methodName);
+
         }
         catch (EntityProxyOnlyException e) {
             log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
@@ -2463,6 +2438,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
             repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
 
+            repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
             repositoryValidator.validateInstanceType(repositoryName,
                     entity,
                     currentTypeDefParameterName,
@@ -2495,6 +2472,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
+
 
         /*
          * Validation complete - ok to make changes
@@ -2544,6 +2522,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
+
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
 
         /*
          * Validation complete - ok to make changes
@@ -2596,6 +2577,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName,
                 relationship,
                 currentTypeDefParameterName,
@@ -2609,6 +2592,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 newTypeDefSummary,
                 relationship.getProperties(),
                 methodName);
+
 
         /*
          * Validation complete - ok to make changes
@@ -2660,6 +2644,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
+        repositoryValidator.validateRelationshipCanBeRehomed(repositoryName, metadataCollectionId, relationship, methodName);
+
         /*
          * Validation complete - ok to make changes
          */
@@ -2707,6 +2693,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
             repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
             repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+            
         }
         catch (EntityProxyOnlyException e) {
             log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
@@ -3034,27 +3021,15 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
         if (asOfTime != null) {
-            // Not supported
-            log.error("{} does not support asOfTime parameter", methodName);
+            log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
         /*
          * Perform operation
          */
-        InstanceGraph adjacentGraph = this.getEntityNeighborhood( userId, startEntityGUID, entityTypeGUIDs, null, limitResultsByStatus, limitResultsByClassification, null, 1);
+        InstanceGraph adjacentGraph = this.getEntityNeighborhood( userId, startEntityGUID, entityTypeGUIDs, null, limitResultsByStatus, limitResultsByClassification, null, -1);
 
         if (adjacentGraph != null) {
 
@@ -3096,21 +3071,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
         if (asOfTime != null) {
-            // Not supported
-            log.error("{} does not support asOfTime parameter", methodName);
+            log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
 

@@ -75,7 +75,8 @@ required to search multiple repositories using a single request.
 ## Walk-through of the VDC use case
 
 Figure 1 shows a mock-up of
-the **[catalog search UI](../../../open-metadata-implementation/user-interfaces/access-services-user-interface/README.md)** that the VDC supports.
+
+the **[catalog search UI](../../../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/README.md)** that the VDC supports.
 A person can enter search queries and a list of potential data
 sources are displayed on the left-hand side of the screen.
 Selecting one of the search results causes more details of the metadata for

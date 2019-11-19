@@ -12,18 +12,40 @@ to the Data Platform OMAS.
 ## OMAG Server Platform configuration
 
 1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
-1. Configure the Data Platform:
+2. Configure the Data Platform:
 
-    **POST** following JSON object (following shows an example for IBM DataStage)
+    **POST** following JSON object (following shows an example for Apache Cassandra Database)
 
     ```json
-    {
-        "class": "DataPlatformConfig",
-        "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
-        "dataPlatformServerURL":"127.0.0.1",
-        "dataPlatformServerOutTopicName": "omas.dataplatform.inTopic",
-        "dataPlatformServerName":"Apache Cassandra"
-    }
+        {
+          "class": "DataPlatformServicesConfig",
+          "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
+          "dataPlatformServerURL":"127.0.0.1",
+          "dataPlatformServerName":"ING Cassandra Hotel",
+          "dataPlatformConnectionProvider": "org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.CassandraMetadataExtractorProvider",
+          "dataPlatformConnection":{
+            "class": "Connection",
+            "displayName": "Apache Cassandra Database",
+            "description": "Distributed wide-column database",
+            "connectorType": {
+              "class": "ConnectorType",
+              "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.CassandraMetadataExtractorProvider"
+            },
+            "endpoint": {
+              "class": "Endpoint",
+              "address": "127.0.0.1",
+              "protocol": "https",
+              "additionalProperties":{
+                "port":"9999"
+              }
+            },
+            "userId": "cassandra",
+            "clearPassword": "cassandra",
+            "configurationProperties": {
+              "defaultZones": [ "x", "y", "z" ]
+            }
+          }
+        }
     ```
     
     to the following address
@@ -32,10 +54,10 @@ to the Data Platform OMAS.
     http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/data-platform-service/configuration
     ```
 
-    The object *dataPlatformConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
+    The object *dataPlatformServicesConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
     The authentication information should be modified based on the information needed by the connector.
 
-1. Start the instance of the OMAG Server Platform
+3. Start the instance of the OMAG Server Platform
 
     **POST** to the following address
     

@@ -27,6 +27,7 @@ public class ConfigAccessServicesResource
      * Return the list of access services that are configured for this server.
      *
      * @param userId calling user
+     * @param serverName name of server
      * @return list of access service descriptions
      */
     @RequestMapping(method = RequestMethod.GET, path = "/access-services/configuration")

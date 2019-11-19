@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
@@ -835,7 +834,7 @@ public class ConnectorConfigurationFactory
         endpointProperties.put("connectorProviderName", connectorProviderClassName);
         endpoint.setAdditionalProperties(endpointProperties);
 
-        String connectionName = "Cassandra.Connection." + serverName;
+        String connectionName = connection.getDisplayName();
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
@@ -843,8 +842,7 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
 
-        CassandraStoreProvider cassandraStoreProvider= new CassandraStoreProvider();
-        connection.setConnectorType(cassandraStoreProvider.getConnectorType());
+
         return connection;
     }
 
