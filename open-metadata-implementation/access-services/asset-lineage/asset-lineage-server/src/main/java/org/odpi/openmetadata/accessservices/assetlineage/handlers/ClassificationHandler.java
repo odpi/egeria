@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +21,14 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.CLASSIFIED_ENTITY_GUID;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.TYPE_EMBEDDED_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
+/**
+ * The Classification handler
+ */
 public class ClassificationHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
-    private static final String GUID_PARAMETER = "guid";
 
     private String serviceName;
     private String serverName;
@@ -37,30 +39,54 @@ public class ClassificationHandler {
     private AssetContext graph;
 
 
-    public ClassificationHandler( String serviceName,
-                                  String serverName,
-                                  InvalidParameterHandler invalidParameterHandler,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  RepositoryHandler repositoryHandler) {
+    /**
+     * Instantiates a new Classification handler.
+     *
+     * @param serviceName             the service name
+     * @param serverName              the server name
+     * @param invalidParameterHandler the invalid parameter handler
+     * @param repositoryHelper        the repository helper
+     * @param repositoryHandler       the repository handler
+     */
+    public ClassificationHandler(String serviceName,
+                                 String serverName,
+                                 InvalidParameterHandler invalidParameterHandler,
+                                 OMRSRepositoryHelper repositoryHelper,
+                                 RepositoryHandler repositoryHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
+        this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
     }
 
 
-    public Map<String, Set<GraphContext>> getAssetContextByClassification(String serverName, String userId, String guid, String type) {
+    /**
+     * Gets asset context from the entity by classification type.
+     *
+     * @param serverName         the server name
+     * @param userId             the user id
+     * @param entityGuid         the entity guid for retrieving the classifications attached to it
+     * @param classificationType the classification type for building the asset context
+     * @return the asset context by classification
+     */
+    public Map<String, Set<GraphContext>> getAssetContextByClassification(String serverName, String userId, String entityGuid, String classificationType) {
 
         graph = new AssetContext();
 
+        String methodName = "getAssetContextByClassification";
+
         try {
-            Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid, type);
+
+            invalidParameterHandler.validateUserId(userId, methodName);
+            invalidParameterHandler.validateGUID(entityGuid, GUID_PARAMETER, methodName);
+
+            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, entityGuid, classificationType);
             if (!entityDetail.isPresent()) {
 
                 log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
-                        "Classified Entity not found with guid {}", guid);
+                        "Classified Entity not found with guid {}", entityGuid);
 
                 throw new AssetLineageException(
                         ENTITY_NOT_FOUND.getHTTPErrorCode(),
@@ -74,8 +100,7 @@ public class ClassificationHandler {
             buildGraphEdgeByClassificationType(userId, entityDetail.get(), TYPE_EMBEDDED_ATTRIBUTE, graph);
 
             return graph.getNeighbors();
-        }
-        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException  e) {
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
                     e.getReportingClassName(),
                     e.getReportingActionDescription(),
@@ -85,42 +110,56 @@ public class ClassificationHandler {
         }
     }
 
-    public List<LineageEntity> buildGraphEdgeByClassificationType(String userId,
+    /**
+     * Build graph edge by classification type list.
+     *
+     * @param userId             the user id
+     * @param startEntity        the start entity
+     * @param classificationType the classification type
+     * @param graph              the graph
+     * @return the list
+     */
+    private List<LineageEntity> buildGraphEdgeByClassificationType(String userId,
                                                                   EntityDetail startEntity,
                                                                   String classificationType,
                                                                   AssetContext graph) {
 
-        List<LineageEntity> classificationLineageEntities = new ArrayList<>();
+        List<LineageEntity> classificationEntities = new ArrayList<>();
 
-        for(Classification classification : startEntity.getClassifications())
-        {
-            if(classification.getType().getTypeDefName().equals(classificationType)){
+        if (startEntity.getStatus() == InstanceStatus.ACTIVE) {
 
-                LineageEntity lineageEntity = new LineageEntity();
-                mapClassificationsToLineageEntity(classification, lineageEntity);
-                classificationLineageEntities.add(lineageEntity);
-                log.debug("Adding Classification {} ", classification.toString());
+            for (Classification classification : startEntity.getClassifications()) {
+                if (classification.getType().getTypeDefName().equals(classificationType)) {
+
+                    LineageEntity lineageEntity = new LineageEntity();
+
+                    //TODO: Set the classification guid to a new one?
+                    lineageEntity.setGuid(UUID.randomUUID().toString());
+
+                    mapClassificationsToLineageEntity(classification, lineageEntity);
+                    classificationEntities.add(lineageEntity);
+                    log.debug("Adding Classification {} ", classification.toString());
+                }
             }
-        }
 
-        if (classificationLineageEntities.isEmpty()) return null;
+            if (classificationEntities.isEmpty()) return null;
 
-        Converter converter = new Converter();
-        LineageEntity startVertex = converter.createEntity(startEntity);
+            Converter converter = new Converter();
+            LineageEntity startVertex = converter.createEntity(startEntity);
 
+            for (LineageEntity endVertex : classificationEntities) {
 
-        for (LineageEntity endVertex : classificationLineageEntities) {
+                graph.addVertex(startVertex);
+                graph.addVertex(endVertex);
 
-            graph.addVertex(startVertex);
-            graph.addVertex(endVertex);
+                GraphContext edge = new GraphContext(classificationType, CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
+                //TODO: set the edge GUID to start entity now
+                edge.setRelationshipGuid(startEntity.getGUID());
+                graph.addEdge(edge);
 
-            GraphContext edge = new GraphContext(classificationType, CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
-            graph.addEdge(edge);
-
-        }
-
-        return classificationLineageEntities;
-
+            }
+            return classificationEntities;
+        } return null;
     }
 
     private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) {
@@ -131,7 +170,6 @@ public class ClassificationHandler {
 
         try {
 
-            lineageEntity.setGuid(classification.getClassificationOriginGUID());
             lineageEntity.setVersion(classification.getVersion());
             lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
             lineageEntity.setCreatedBy(classification.getCreatedBy());
@@ -152,13 +190,4 @@ public class ClassificationHandler {
         }
 
     }
-
-    private Optional<EntityDetail> getEntityDetails(String userId, String guid,String type) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER,type, methodName));
-    }
-
-
 }

@@ -10,6 +10,7 @@ public final class Constants {
     }
 
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
+    public static final String GUID_PARAMETER = "guid";
 
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
     public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";

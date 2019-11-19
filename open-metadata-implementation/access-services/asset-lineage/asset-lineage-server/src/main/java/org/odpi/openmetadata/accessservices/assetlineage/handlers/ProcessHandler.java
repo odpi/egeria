@@ -69,7 +69,7 @@ public class ProcessHandler {
 
         try {
 
-            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid);
+            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid, PROCESS);
             if (!entityDetail.isPresent()) {
                 log.error("Entity with guid {} was not found in any metadata repository", processGuid);
 

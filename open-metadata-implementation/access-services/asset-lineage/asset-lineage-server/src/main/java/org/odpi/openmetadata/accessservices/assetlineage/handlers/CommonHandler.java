@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.security.util.ManifestEntryVerifier;
 
 import java.util.*;
 
@@ -59,37 +60,48 @@ public class CommonHandler {
     /**
      * Query about the entity in the repositories based on the Guid
      *
-     * @param userId String - userId of user making request.
-     * @param guid   guid of the asset we need to retrieve from a repository
+     * @param userId    String - userId of user making request.
+     * @param guid      guid of the asset we need to retrieve from a repository
+     * @param typeName  the name of the Open Metadata type for getting details
      * @return optional with entity details if found, empty optional if not found
      */
-    public Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException,
+    public Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
+
         String methodName = "getEntityDetails";
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, PROCESS, methodName));
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
+
+        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, typeName, methodName));
     }
 
     /**
      * Query about the relationships of an entity based on the type of the relationship
      *
-     * @param userId           String - userId of user making request.
-     * @param assetGuid        guid of the asset we need to retrieve the relationships
-     * @param relationshipType the type of the relationship
-     * @param typeDefName      type of the Entity
+     * @param userId                String - userId of user making request.
+     * @param assetGuid             guid of the asset we need to retrieve the relationships
+     * @param relationshipTypeName  the type of the relationship
+     * @param entityTypeName        the type of the entity
      * @return List of the relationships if found, empty list if not found
      */
     public List<Relationship> getRelationshipsByType(String userId, String assetGuid,
-                                                     String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-            PropertyServerException {
+                                                     String relationshipTypeName, String entityTypeName) throws
+            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+
         final String methodName = "getRelationshipsByType";
-        String typeGuid = getTypeName(userId, relationshipType);
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
+
+        String typeGuid = getTypeName(userId, relationshipTypeName);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
-                typeDefName,
+                entityTypeName,
                 typeGuid,
-                relationshipType,
+                relationshipTypeName,
                 methodName);
 
         if (relationships != null) {
@@ -121,6 +133,7 @@ public class CommonHandler {
             UserNotAuthorizedException {
 
         String methodName = "getEntityAtTheEnd";
+
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
             return repositoryHandler.getEntityByGUID(userId,
                     relationship.getEntityTwoProxy().getGUID(),

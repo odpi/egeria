@@ -28,7 +28,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
 public class ContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
-    private static final String GUID_PARAMETER = "guid";
+
 
     private String serviceName;
     private String serverName;
@@ -64,8 +64,15 @@ public class ContextHandler {
 
     public AssetContext getAssetContext(String serverName, String userId, String guid, String type) {
 
+        String methodName = "getAssetContext";
+
         graph = new AssetContext();
+
         try {
+
+            invalidParameterHandler.validateUserId(userId, methodName);
+            invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
+
             Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid, type);
             if (!entityDetail.isPresent()) {
                 log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
