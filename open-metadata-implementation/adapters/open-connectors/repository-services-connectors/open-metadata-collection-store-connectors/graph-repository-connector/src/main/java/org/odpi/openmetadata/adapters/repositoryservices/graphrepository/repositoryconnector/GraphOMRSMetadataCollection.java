@@ -2771,7 +2771,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
 
         /*
          * Save entity
@@ -2861,7 +2861,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
 
         /*

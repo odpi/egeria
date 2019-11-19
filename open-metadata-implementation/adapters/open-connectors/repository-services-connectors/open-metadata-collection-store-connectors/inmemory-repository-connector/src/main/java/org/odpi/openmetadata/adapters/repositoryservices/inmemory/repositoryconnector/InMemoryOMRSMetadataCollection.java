@@ -3167,7 +3167,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
 
         repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());

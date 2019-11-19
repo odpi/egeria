@@ -2607,6 +2607,83 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * or entities that have come from open metadata archives.
      *
      * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void deleteEntityReferenceCopy(String         userId,
+                                           EntityDetail   entity) throws InvalidParameterException,
+                                                                         RepositoryErrorException,
+                                                                         TypeErrorException,
+                                                                         PropertyErrorException,
+                                                                         HomeEntityException,
+                                                                         EntityConflictException,
+                                                                         InvalidEntityException,
+                                                                         FunctionNotSupportedException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName  = "deleteEntityReferenceCopy";
+
+        validateClient(methodName);
+        omrsClient.deleteEntityReferenceCopy(userId, entity);
+    }
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void purgeEntityReferenceCopy(String         userId,
+                                          EntityDetail   entity) throws InvalidParameterException,
+                                                                        RepositoryErrorException,
+                                                                        TypeErrorException,
+                                                                        PropertyErrorException,
+                                                                        HomeEntityException,
+                                                                        EntityConflictException,
+                                                                        InvalidEntityException,
+                                                                        FunctionNotSupportedException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName  = "purgeEntityReferenceCopy";
+
+        validateClient(methodName);
+        omrsClient.purgeEntityReferenceCopy(userId, entity);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
      * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
@@ -2712,6 +2789,90 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         validateClient(methodName);
         omrsClient.saveRelationshipReferenceCopy(userId, relationship);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the serverName is not permitted to perform this operation.
+     */
+    public  void deleteRelationshipReferenceCopy(String         userId,
+                                                 Relationship   relationship) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     TypeErrorException,
+                                                                                     EntityNotKnownException,
+                                                                                     PropertyErrorException,
+                                                                                     HomeRelationshipException,
+                                                                                     RelationshipConflictException,
+                                                                                     InvalidRelationshipException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName  = "deleteRelationshipReferenceCopy";
+
+        validateClient(methodName);
+        omrsClient.deleteRelationshipReferenceCopy(userId, relationship);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the serverName is not permitted to perform this operation.
+     */
+    public  void purgeRelationshipReferenceCopy(String         userId,
+                                                Relationship   relationship) throws InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    TypeErrorException,
+                                                                                    EntityNotKnownException,
+                                                                                    PropertyErrorException,
+                                                                                    HomeRelationshipException,
+                                                                                    RelationshipConflictException,
+                                                                                    InvalidRelationshipException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName  = "purgeRelationshipReferenceCopy";
+
+        validateClient(methodName);
+        omrsClient.purgeRelationshipReferenceCopy(userId, relationship);
     }
 
 

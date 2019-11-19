@@ -94,7 +94,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * in read in a back-level version of the OMRS.  The default is 0 to indicate that the instance came from
      * a version of the OMRS that does not have a version number encoded.
      */
-    long headerVersion = 0;
+    private long headerVersion = 0;
 
     /*
      * Summary information about this element's type
@@ -194,12 +194,14 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * should not process events from a source that is more advanced because it does not have the ability
      * to receive all of the header properties.
      *
-     * @param headerVersion
+     * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
+     * to the audit header.
      */
     public void setHeaderVersion(long headerVersion)
     {
         this.headerVersion = headerVersion;
     }
+
 
     /**
      * Return the type of this instance.  This identifies the type definition (TypeDef) that determines its properties.

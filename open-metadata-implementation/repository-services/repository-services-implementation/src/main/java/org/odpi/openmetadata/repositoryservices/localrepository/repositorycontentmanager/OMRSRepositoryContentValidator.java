@@ -921,6 +921,24 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getUserAction());
         }
 
+        if (typeDef.getHeaderVersion() > TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.UNSUPPORTED_TYPE_HEADER_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(methodName,
+                                                                            sourceName,
+                                                                            typeDef.getName(),
+                                                                            Long.toString(typeDef.getHeaderVersion()),
+                                                                            Long.toString(typeDef.getHeaderVersion()));
+
+            throw new InvalidTypeDefException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
         validateTypeDefIds(sourceName,
                            parameterName + ".getGUID",
                            parameterName + ".getName",
@@ -1202,6 +1220,25 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction());
         }
+
+        if (attributeTypeDef.getHeaderVersion() > TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.UNSUPPORTED_TYPE_HEADER_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(methodName,
+                                                                            sourceName,
+                                                                            attributeTypeDef.getName(),
+                                                                            Long.toString(attributeTypeDef.getHeaderVersion()),
+                                                                            Long.toString(attributeTypeDef.getHeaderVersion()));
+
+            throw new InvalidTypeDefException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
 
         validateAttributeTypeDefIds(sourceName,
                                     parameterName + ".getGUID",
@@ -3644,6 +3681,26 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             OMRSErrorCode errorCode = OMRSErrorCode.LOCAL_ENTITY_PROXY;
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(sourceName, proxyParameterName, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+
+        if (entityProxy.getHeaderVersion() > InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.UNSUPPORTED_INSTANCE_HEADER_VERSION;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName,
+                                                         "EntityProxy",
+                                                         sourceName,
+                                                         entityProxy.getGUID(),
+                                                         entityProxy.getType().getTypeDefName(),
+                                                         Long.toString(entityProxy.getHeaderVersion()),
+                                                         Long.toString(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION));
 
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                                 this.getClass().getName(),

@@ -3701,6 +3701,48 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove or
+     * soft delete relationships attached to the entity
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    public  void deleteEntityReferenceCopy(String         userId,
+                                           EntityDetail   entity) throws FunctionNotSupportedException
+    {
+        final String  methodName = "deleteEntityReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove
+     * relationships attached to the entity.
+     *
+     * This method is called when a remote repository calls the variant of purgeEntity that
+     * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
+     * However it may also be used to purge after a soft-delete.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    public  void purgeEntityReferenceCopy(String         userId,
+                                          EntityDetail   entity) throws FunctionNotSupportedException
+    {
+        final String    methodName = "purgeEntityReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
      * @param userId unique identifier for requesting server.
@@ -3757,6 +3799,46 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                               Relationship   relationship) throws FunctionNotSupportedException
     {
         final String    methodName = "saveRelationshipReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    public  void deleteRelationshipReferenceCopy(String         userId,
+                                                 Relationship   relationship) throws FunctionNotSupportedException
+    {
+        final String  methodName = "deleteRelationshipReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
+     * This method is called when a remote repository calls the variant of purgeRelationship that
+     * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
+     * However it may also be used to purge after a soft-delete.
+     *
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship the purged relationship.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    public  void purgeRelationshipReferenceCopy(String         userId,
+                                                Relationship   relationship) throws FunctionNotSupportedException
+    {
+        final String  methodName = "purgeRelationshipReferenceCopy";
 
         throwNotEnterpriseFunction(methodName);
     }

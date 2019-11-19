@@ -2694,6 +2694,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Purge entity
          */
+        EntityDetail entity = realMetadataCollection.isEntityKnown(userId, deletedEntityGUID);
 
         realMetadataCollection.purgeEntity(userId,
                                            typeDefGUID,
@@ -2702,14 +2703,27 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (produceEventsForRealConnector)
         {
-            outboundRepositoryEventProcessor.processPurgedEntityEvent(repositoryName,
-                                                                      metadataCollectionId,
-                                                                      localServerName,
-                                                                      localServerType,
-                                                                      localOrganizationName,
-                                                                      typeDefGUID,
-                                                                      typeDefName,
-                                                                      deletedEntityGUID);
+            if (entity == null)
+            {
+                outboundRepositoryEventProcessor.processPurgedEntityEvent(repositoryName,
+                                                                          metadataCollectionId,
+                                                                          localServerName,
+                                                                          localServerType,
+                                                                          localOrganizationName,
+                                                                          typeDefGUID,
+                                                                          typeDefName,
+                                                                          deletedEntityGUID);
+            }
+            else /* no soft delete occurred before */
+            {
+                outboundRepositoryEventProcessor.processPurgedEntityEvent(repositoryName,
+                                                                          metadataCollectionId,
+                                                                          localServerName,
+                                                                          localServerType,
+                                                                          localOrganizationName,
+                                                                          entity);
+
+            }
         }
     }
 
@@ -3422,18 +3436,33 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Purge relationship
          */
+        Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, deletedRelationshipGUID);
+
         realMetadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
 
         if (produceEventsForRealConnector)
         {
-            outboundRepositoryEventProcessor.processPurgedRelationshipEvent(repositoryName,
-                                                                            metadataCollectionId,
-                                                                            localServerName,
-                                                                            localServerType,
-                                                                            localOrganizationName,
-                                                                            typeDefGUID,
-                                                                            typeDefName,
-                                                                            deletedRelationshipGUID);
+            if (relationship == null)
+            {
+                outboundRepositoryEventProcessor.processPurgedRelationshipEvent(repositoryName,
+                                                                                metadataCollectionId,
+                                                                                localServerName,
+                                                                                localServerType,
+                                                                                localOrganizationName,
+                                                                                typeDefGUID,
+                                                                                typeDefName,
+                                                                                deletedRelationshipGUID);
+            }
+            else
+            {
+                outboundRepositoryEventProcessor.processPurgedRelationshipEvent(repositoryName,
+                                                                                metadataCollectionId,
+                                                                                localServerName,
+                                                                                localServerType,
+                                                                                localOrganizationName,
+                                                                                relationship);
+
+            }
         }
     }
 
@@ -4041,7 +4070,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
 
         /*
          * Validate that this instance is not from a future version of this OMRS with header values that
@@ -4055,6 +4084,102 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              */
             realMetadataCollection.saveEntityReferenceCopy(userId, entity);
         }
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove or
+     * soft delete relationships attached to the entity.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void deleteEntityReferenceCopy(String         userId,
+                                           EntityDetail   entity) throws InvalidParameterException,
+                                                                         RepositoryErrorException,
+                                                                         TypeErrorException,
+                                                                         PropertyErrorException,
+                                                                         HomeEntityException,
+                                                                         EntityConflictException,
+                                                                         InvalidEntityException,
+                                                                         FunctionNotSupportedException,
+                                                                         UserNotAuthorizedException
+    {
+        final String  methodName = "deleteEntityReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        super.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+
+        /*
+         * Pass request to real repository
+         */
+        realMetadataCollection.deleteEntityReferenceCopy(userId, entity);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove or
+     * soft delete relationships attached to the entity
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void purgeEntityReferenceCopy(String         userId,
+                                          EntityDetail   entity) throws InvalidParameterException,
+                                                                        RepositoryErrorException,
+                                                                        TypeErrorException,
+                                                                        PropertyErrorException,
+                                                                        HomeEntityException,
+                                                                        EntityConflictException,
+                                                                        InvalidEntityException,
+                                                                        FunctionNotSupportedException,
+                                                                        UserNotAuthorizedException
+    {
+        final String  methodName = "purgeEntityReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+
+        /*
+         * Pass request to real repository
+         */
+        realMetadataCollection.deleteEntityReferenceCopy(userId, entity);
     }
 
 
@@ -4234,7 +4359,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
         /*
          * Validate that this instance is not from a future version of this OMRS with header values that
@@ -4248,6 +4373,106 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              */
             realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
         }
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void deleteRelationshipReferenceCopy(String         userId,
+                                                 Relationship   relationship) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     TypeErrorException,
+                                                                                     EntityNotKnownException,
+                                                                                     PropertyErrorException,
+                                                                                     HomeRelationshipException,
+                                                                                     RelationshipConflictException,
+                                                                                     InvalidRelationshipException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String  methodName = "deleteRelationshipReferenceCopy";
+        final String  instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+
+        /*
+         * Delete relationship
+         */
+        realMetadataCollection.deleteRelationshipReferenceCopy(userId, relationship);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void purgeRelationshipReferenceCopy(String         userId,
+                                                Relationship   relationship) throws InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    TypeErrorException,
+                                                                                    EntityNotKnownException,
+                                                                                    PropertyErrorException,
+                                                                                    HomeRelationshipException,
+                                                                                    RelationshipConflictException,
+                                                                                    InvalidRelationshipException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "purgeRelationshipReferenceCopy";
+        final String instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+
+        /*
+         * Purge relationship
+         */
+        realMetadataCollection.purgeRelationshipReferenceCopy(userId, relationship);
     }
 
 
