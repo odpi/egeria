@@ -2795,6 +2795,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * entity instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -2870,6 +2871,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * when the metadataCollection is called to rehome an entity instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -3028,6 +3030,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * when the metadataCollection is called to update the status or properties of a relationship instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -3103,6 +3106,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * when the metadataCollection is called to rehome a relationship instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
