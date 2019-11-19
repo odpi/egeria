@@ -4,10 +4,9 @@ package org.odpi.openmetadata.accessservices.dataplatform.admin;
 
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
-import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * DataPlatformAdmin manages the start up and shutdown of the Data Platform OMAS.   During start up,
+ * DataPlatformAdmin manages the start up and shutdown of the Data Platform OMAS. During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
 public class DataPlatformAdmin extends AccessServiceAdmin
@@ -36,7 +36,6 @@ public class DataPlatformAdmin extends AccessServiceAdmin
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAdmin.class);
     private OpenMetadataTopicConnector dataPlatformInTopicConnector;
-    private OpenMetadataTopicConnector dataPlatformOutTopicConnector;
     private OMRSAuditLog auditLog = null;
     private String serverName = null;
     private DataPlatformServicesInstance instance = null;
@@ -88,38 +87,16 @@ public class DataPlatformAdmin extends AccessServiceAdmin
             this.serverName=instance.getServerName();
 
             String inTopicName = getTopicName(accessServiceConfig.getAccessServiceInTopic());
-            String outTopicName = getTopicName(accessServiceConfig.getAccessServiceOutTopic());
             dataPlatformInTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfig.getAccessServiceInTopic());
-            dataPlatformOutTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfig.getAccessServiceOutTopic());
 
             OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
-            EventPublisher eventPublisher = null;
-
-            if (enterpriseOMRSTopicConnector != null) {
-                auditCode = DataPlatformAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(serverName),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-
-                eventPublisher = new EventPublisher(dataPlatformOutTopicConnector, auditLog);
-                DataPlatformEnterpriseOmrsEventListener dataPlatformEnterpriseOmrsEventListener = new DataPlatformEnterpriseOmrsEventListener(eventPublisher, auditLog);
-                enterpriseOMRSTopicConnector.registerListener(dataPlatformEnterpriseOmrsEventListener);
-            }
-
 
             if (dataPlatformInTopicConnector != null) {
-                OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(instance, omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+                OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(instance, omEntityDao, auditLog, enterpriseConnector.getRepositoryHelper());
                 this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
                 startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
             }
 
-            if (dataPlatformOutTopicConnector != null) {
-                startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_OUT_TOPIC, actionDescription, outTopicName, dataPlatformOutTopicConnector);
-            }
 
             auditCode = DataPlatformAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -248,19 +225,27 @@ public class DataPlatformAdmin extends AccessServiceAdmin
      * Shutdown the access service.
      */
     public void shutdown() {
+
+        DataPlatformAuditCode auditCode;
+
+        final String actionDescription = "shutdown";
+
         try {
             dataPlatformInTopicConnector.disconnect();
-            dataPlatformOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting data platform topic connector");
-        }
 
+            auditCode = DataPlatformAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(serverName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        }
         if (instance != null) {
             instance.shutdown();
         }
-
-        final String actionDescription = "shutdown";
-        DataPlatformAuditCode auditCode;
 
         auditCode = DataPlatformAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,

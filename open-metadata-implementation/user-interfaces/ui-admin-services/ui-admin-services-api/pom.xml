@@ -23,7 +23,6 @@
         with the user interface open metadata administration services.
     </description>
 
-
     <dependencies>
 
         <dependency>
@@ -40,15 +39,19 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
-        <dependency>
-             <groupId>org.odpi.egeria</groupId>
-             <artifactId>admin-services-api</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

@@ -126,6 +126,21 @@ public class SchemaTypeHandler
         return schemaAttribute;
     }
 
+    /**
+     * Return a schema attribute object with the type set up.
+     *
+     * @return new object
+     */
+    public SchemaAttribute  getEmptyTabularColumn()
+    {
+        SchemaAttribute   schemaAttribute = new SchemaAttribute();
+
+        setElementType(SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID,
+                       SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
+                       schemaAttribute);
+
+        return schemaAttribute;
+    }
 
     /**
      * Is there an attached schema for the Asset?
@@ -395,7 +410,7 @@ public class SchemaTypeHandler
                                                                                         methodName);
 
         List<SchemaAttribute>  results = new ArrayList<>();
-        
+
         if (entities != null)
         {
             for (EntityDetail schemaAttributeEntity : entities)
@@ -413,7 +428,7 @@ public class SchemaTypeHandler
                     {
                         attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity.getGUID(), methodName);
                     }
-                    
+
                     SchemaAttributeConverter converter = new SchemaAttributeConverter(schemaAttributeEntity,
                                                                                       attributeType,
                                                                                       null,  // TODO
@@ -891,7 +906,7 @@ public class SchemaTypeHandler
 
         return null;
     }
-    
+
 
     /**
      * Determine if the SchemaType object is stored in the repository and create it if it is not.
@@ -1237,9 +1252,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaType(String userId, 
-                                 String schemaTypeGUID) throws InvalidParameterException, 
-                                                               PropertyServerException, 
+    public void removeSchemaType(String userId,
+                                 String schemaTypeGUID) throws InvalidParameterException,
+                                                               PropertyServerException,
                                                                UserNotAuthorizedException
     {
         final String methodName        = "removeSchemaType";
@@ -1264,9 +1279,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaAttribute(String userId, 
-                                      String schemaAttributeGUID) throws InvalidParameterException, 
-                                                                         PropertyServerException, 
+    public void removeSchemaAttribute(String userId,
+                                      String schemaAttributeGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         final String methodName        = "removeSchemaAttribute";

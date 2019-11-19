@@ -68,12 +68,16 @@ POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-
         }
       ],
       "portAliases": []
-    }]
+    }],
+    "externalSourceName": "dataEngine"
  }
 ```
 
-`GUIDListResponse` - response containing the list of created processes guids and
-the list of failed processes guids, with status and error message if failing.
+`externalSourceName` - qualifiedName of the external data engine tool.
+ Note that you need to register the data engine tool with [register-data-engine-tool](register-data-engine-tool.md) 
+ before creating any process.
+`GUIDListResponse` - response containing the list of created processes GUIDs and
+the list of failed processes GUId, with status and error message if failing.
 
 
 ----
