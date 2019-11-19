@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -17,11 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.util.ManifestEntryVerifier;
 
 import java.util.*;
-
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class CommonHandler {
 

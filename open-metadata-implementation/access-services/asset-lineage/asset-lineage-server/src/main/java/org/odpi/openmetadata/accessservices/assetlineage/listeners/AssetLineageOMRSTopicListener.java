@@ -124,8 +124,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(), serviceOperationName);
+                        break;
                     case CLASSIFIED_ENTITY_EVENT:
                         processClassifiedEntityEvent(instanceEvent.getEntity(), serviceOperationName);
+                        break;
                     case NEW_RELATIONSHIP_EVENT:
                         break;
 //                  case DELETE_PURGED_RELATIONSHIP_EVENT:
@@ -155,13 +157,37 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
-    private void processUpdatedEntityEvent(EntityDetail entityDetail,String serviceOperationName) {
+    private void processUpdatedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
 
-        if(entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")){
+        if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")) {
             processNewEntity(entityDetail, serviceOperationName);
 
-        }else{
-            log.info("Event is ignored as the process is not a ready yet");
+        }
+    }
+
+    private void processClassifiedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
+
+        String methodName = "processClassifiedEntityEvent";
+        final String typeDefName = entityDetail.getType().getTypeDefName();
+
+        try {
+            if (!isValidEntityEvent(typeDefName)) {
+                getClassificationContext(entityDetail, serviceOperationName);
+
+            } else {
+                log.info("Event is ignored as the process is not a ready yet");
+            }
+
+        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+            log.error("Exception in processing the classified entities for the access service failed at {}, " +
+                      "Exception message is: {}", methodName, e.getMessage());
+
+            throw new AssetLineageException(e.getReportedHTTPCode(),
+                    e.getReportingClassName(),
+                    e.getReportingActionDescription(),
+                    e.getErrorMessage(),
+                    e.getReportedSystemAction(),
+                    e.getReportedUserAction());
         }
     }
 
@@ -171,61 +197,44 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param entityDetail         entity to get context
      * @param serviceOperationName name of the calling operation
      */
-    private void processNewEntity(EntityDetail entityDetail,String serviceOperationName) {
+    private void processNewEntity(EntityDetail entityDetail, String serviceOperationName) {
         final String methodName = "processNewEntity";
 
         try {
             //TODO: CHECK PROCESS
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
-            }
-            else {
+            } else {
                 //TODO: CHECK ASSET CONTEXT
                 getAssetContext(entityDetail, serviceOperationName);
             }
+        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+            log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
+
+            throw new AssetLineageException(e.getReportedHTTPCode(),
+                    e.getReportingClassName(),
+                    e.getReportingActionDescription(),
+                    e.getErrorMessage(),
+                    e.getReportedSystemAction(),
+                    e.getReportedUserAction());
         }
-        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-                log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
-
-                throw new AssetLineageException(e.getReportedHTTPCode(),
-                                                e.getReportingClassName(),
-                                                e.getReportingActionDescription(),
-                                                e.getErrorMessage(),
-                                                e.getReportedSystemAction(),
-                                                e.getReportedUserAction());
-            }
-
-
     }
 
-    private void processClassifiedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
-
-        final String methodName = "processClassifiedEntityEvent";
-
-        try {
-            getClassificationContext(entityDetail, serviceOperationName);
-
-        }
-        catch (Exception e){
-            log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
-            }
-
-        }
-
     private void getClassificationContext(EntityDetail entityDetail, String serviceOperationName) throws
-            InvalidParameterException, PropertyServerException, UserNotAuthorizedException{
+            InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         ClassificationHandler classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>>  classificationContext = classificationHandler.getAssetContextByClassification(
+        Map<String, Set<GraphContext>> classificationContext = classificationHandler.getAssetContextByClassification(
                 serverName,
                 serverUserName,
-                entityDetail.getGUID(),
-                entityDetail.getType().getTypeDefName());
+                entityDetail);
 
-        LineageEvent event = new LineageEvent();
-        event.setAssetContext(classificationContext);
-        event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
-        publisher.publishRelationshipEvent(event);
+        if (!classificationContext.isEmpty()){
+            LineageEvent event = new LineageEvent();
+            event.setAssetContext(classificationContext);
+            event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
+            publisher.publishRelationshipEvent(event);
+        }
     }
 
 
@@ -236,11 +245,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param serviceOperationName name of the calling operation
      */
     private void getContextForProcess(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
 
         ProcessHandler processHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>>  processContext = processHandler.getProcessContext(serverUserName, entityDetail.getGUID());
+        Map<String, Set<GraphContext>> processContext = processHandler.getProcessContext(serverUserName, entityDetail.getGUID());
 
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
@@ -249,23 +258,21 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
-        ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName,serverName,serviceOperationName);
-        AssetContext assetContext = newContextHandler.getAssetContext(serverName,serverUserName,technicalGuid,entityDetail.getType().getTypeDefName());
+        ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
+        AssetContext assetContext = newContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
 
-        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName,serverName,serviceOperationName);
-        Map<String,Set<GraphContext>> context =  glossaryHandler.getGlossaryTerm(technicalGuid,serviceOperationName,entityDetail,assetContext);
+        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
+        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext);
 //        getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
 
         LineageEvent event = new LineageEvent();
-        if(context.size() != 0){
+        if (context.size() != 0) {
             event.setAssetContext(context);
-        }
-        else
-        {
+        } else {
             event.setAssetContext(assetContext.getNeighbors());
         }
 
@@ -275,7 +282,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
 
     private boolean isValidEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(GLOSSARY_TERM,TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
+        final List<String> types = Arrays.asList(GLOSSARY_TERM, TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
         return types.contains(typeDefName);
     }
 

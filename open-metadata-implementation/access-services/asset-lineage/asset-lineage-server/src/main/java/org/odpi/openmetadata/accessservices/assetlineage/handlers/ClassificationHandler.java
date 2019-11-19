@@ -11,8 +11,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -21,8 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 /**
@@ -69,127 +65,123 @@ public class ClassificationHandler {
      *
      * @param serverName         the server name
      * @param userId             the user id
-     * @param entityGuid         the entity guid for retrieving the classifications attached to it
-     * @param classificationType the classification type for building the asset context
+     * @param entityDetail       the entity for retrieving the classifications attached to it
      * @return the asset context by classification
      */
-    public Map<String, Set<GraphContext>> getAssetContextByClassification(String serverName, String userId, String entityGuid, String classificationType) {
+    public Map<String, Set<GraphContext>> getAssetContextByClassification(String serverName, String userId, EntityDetail entityDetail) {
 
-        graph = new AssetContext();
 
-        String methodName = "getAssetContextByClassification";
 
-        try {
+        if (entityDetail.getClassifications().isEmpty() && checkLineageClassificationTypes(entityDetail)) {
 
-            invalidParameterHandler.validateUserId(userId, methodName);
-            invalidParameterHandler.validateGUID(entityGuid, GUID_PARAMETER, methodName);
+            graph = new AssetContext();
 
-            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, entityGuid, classificationType);
-            if (!entityDetail.isPresent()) {
+            String methodName = "getAssetContextByClassification";
 
-                log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
-                        "Classified Entity not found with guid {}", entityGuid);
+            try {
 
-                throw new AssetLineageException(
-                        ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        "Retrieving Classified Entity",
-                        ENTITY_NOT_FOUND.getErrorMessage(),
-                        ENTITY_NOT_FOUND.getSystemAction(),
-                        ENTITY_NOT_FOUND.getUserAction());
-            }
+                invalidParameterHandler.validateUserId(userId, methodName);
+                invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
 
-            buildGraphEdgeByClassificationType(userId, entityDetail.get(), TYPE_EMBEDDED_ATTRIBUTE, graph);
+                buildGraphContextByClassificationType(entityDetail, graph);
 
-            return graph.getNeighbors();
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            throw new AssetLineageException(e.getReportedHTTPCode(),
-                    e.getReportingClassName(),
-                    e.getReportingActionDescription(),
-                    e.getErrorMessage(),
-                    e.getReportedSystemAction(),
-                    e.getReportedUserAction());
+                return graph.getNeighbors();
+
+            } catch (InvalidParameterException e) {
+                throw new AssetLineageException(e.getReportedHTTPCode(),
+                        e.getReportingClassName(),
+                        e.getReportingActionDescription(),
+                        e.getErrorMessage(),
+                        e.getReportedSystemAction(),
+                        e.getReportedUserAction()); }
+        } else {
+
+            log.info("No valid lineage classification found from entity {} ", entityDetail.getGUID());
+            return null;
         }
     }
 
-    /**
-     * Build graph edge by classification type list.
-     *
-     * @param userId             the user id
-     * @param startEntity        the start entity
-     * @param classificationType the classification type
-     * @param graph              the graph
-     * @return the list
-     */
-    private List<LineageEntity> buildGraphEdgeByClassificationType(String userId,
-                                                                  EntityDetail startEntity,
-                                                                  String classificationType,
-                                                                  AssetContext graph) {
-
-        List<LineageEntity> classificationEntities = new ArrayList<>();
-
-        if (startEntity.getStatus() == InstanceStatus.ACTIVE) {
-
-            for (Classification classification : startEntity.getClassifications()) {
-                if (classification.getType().getTypeDefName().equals(classificationType)) {
-
-                    LineageEntity lineageEntity = new LineageEntity();
-
-                    //TODO: Set the classification guid to a new one?
-                    lineageEntity.setGuid(UUID.randomUUID().toString());
-
-                    mapClassificationsToLineageEntity(classification, lineageEntity);
-                    classificationEntities.add(lineageEntity);
-                    log.debug("Adding Classification {} ", classification.toString());
+        private boolean checkLineageClassificationTypes (EntityDetail entityDetail){
+            for (String classificationType : qualifiedLineageClassifications) {
+                if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType))) {
+                    return true;
                 }
             }
-
-            if (classificationEntities.isEmpty()) return null;
-
-            Converter converter = new Converter();
-            LineageEntity startVertex = converter.createEntity(startEntity);
-
-            for (LineageEntity endVertex : classificationEntities) {
-
-                graph.addVertex(startVertex);
-                graph.addVertex(endVertex);
-
-                GraphContext edge = new GraphContext(classificationType, CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
-                //TODO: set the edge GUID to start entity now
-                edge.setRelationshipGuid(startEntity.getGUID());
-                graph.addEdge(edge);
-
-            }
-            return classificationEntities;
-        } return null;
-    }
-
-    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) {
-
-        final String methodName = "mapClassificationsToLineageEntity";
-
-        Converter converter = new Converter();
-
-        try {
-
-            lineageEntity.setVersion(classification.getVersion());
-            lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
-            lineageEntity.setCreatedBy(classification.getCreatedBy());
-            lineageEntity.setUpdatedBy(classification.getUpdatedBy());
-            lineageEntity.setCreateTime(classification.getCreateTime());
-            lineageEntity.setUpdateTime(classification.getUpdateTime());
-            lineageEntity.setProperties(converter.getMapProperties(classification.getProperties()));
-
-            log.debug("Classfication mapping for lineage entity {}: ", lineageEntity);
-
-        } catch (Throwable exc) {
-
-            AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
-                    this.getClass().getName());
-
-            log.error("Caught exception from classification mapper {}", errorMessage);
+            return false;
         }
 
+        /**
+         * Build graph edge by classification type list.
+         *
+         * @param startEntity        the start entity
+         * @param graph              the graph
+         * @return the list
+         */
+        private List<LineageEntity> buildGraphContextByClassificationType (EntityDetail startEntity,
+                                                                           AssetContext graph){
+
+            List<LineageEntity> classificationEntities = new ArrayList<>();
+
+            if (startEntity.getStatus() == InstanceStatus.ACTIVE) {
+                for (Classification classification : startEntity.getClassifications()) {
+                    if (qualifiedLineageClassifications.contains(classification.getName())) {
+
+                        LineageEntity lineageEntity = new LineageEntity();
+
+                        //TODO: Set the classification guid to random now
+                        lineageEntity.setGuid(UUID.randomUUID().toString());
+
+                        mapClassificationsToLineageEntity(classification, lineageEntity);
+                        classificationEntities.add(lineageEntity);
+                        log.debug("Adding Classification {} ", classification.toString());
+                    }
+                }
+
+                Converter converter = new Converter();
+                LineageEntity startVertex = converter.createEntity(startEntity);
+
+                for (LineageEntity endVertex : classificationEntities) {
+
+                    graph.addVertex(startVertex);
+                    graph.addVertex(endVertex);
+
+                    GraphContext edge = new GraphContext(endVertex.getTypeDefName(), CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
+
+                    //TODO: set the edge GUID to random now
+                    edge.setRelationshipGuid(UUID.randomUUID().toString());
+                    graph.addEdge(edge);
+
+                }
+                return classificationEntities;
+            }
+            return null;
+        }
+
+        private void mapClassificationsToLineageEntity (Classification classification, LineageEntity lineageEntity){
+
+            final String methodName = "mapClassificationsToLineageEntity";
+
+            Converter converter = new Converter();
+
+            try {
+                lineageEntity.setVersion(classification.getVersion());
+                lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
+                lineageEntity.setCreatedBy(classification.getCreatedBy());
+                lineageEntity.setUpdatedBy(classification.getUpdatedBy());
+                lineageEntity.setCreateTime(classification.getCreateTime());
+                lineageEntity.setUpdateTime(classification.getUpdateTime());
+                lineageEntity.setProperties(converter.getMapProperties(classification.getProperties()));
+
+                log.debug("Classfication mapping for lineage entity {}: ", lineageEntity);
+
+            } catch (Throwable exc) {
+
+                AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
+                        this.getClass().getName());
+
+                log.error("Caught exception from classification mapper {}", errorMessage);
+            }
+
+        }
     }
-}

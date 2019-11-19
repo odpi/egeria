@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -74,6 +77,12 @@ public final class Constants {
     public static final String CLASSIFIED_ENTITY = "ClassifiedEntity";
     public static final String CLASSIFIED_ENTITY_GUID = "b04047c5-50fc-4010-a07a-544bead159dc";
     public static final String TYPE_EMBEDDED_ATTRIBUTE = "TypeEmbeddedAttribute";
+
+    public static final List<String> qualifiedLineageClassifications = new ArrayList<>();
+
+    static {
+        qualifiedLineageClassifications.add(TYPE_EMBEDDED_ATTRIBUTE);
+    }
 
     // Map of entities to relationship types
     public static final Map<String, String> processRelationshipsTypes = new HashMap<>();
