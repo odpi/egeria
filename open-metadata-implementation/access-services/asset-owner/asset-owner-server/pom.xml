@@ -67,6 +67,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>multi-tenant</artifactId>
         </dependency>
 

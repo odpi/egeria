@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
@@ -146,7 +145,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @param qualifiedName unique name for the report
      * @param displayName short name for the report
      * @param description description of the report
-     * @param creationDate data of the report
+     * @param creationDate date of the report
      * @param analysisParameters analysis parameters passed to the discovery service
      * @param discoveryRequestStatus current status of the discovery processing
      * @param assetGUID unique identifier of the asset being analysed
@@ -208,10 +207,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                                         userId,
                                                                                                         assetGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnalysisReport();
     }
 
@@ -246,10 +241,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                                         serverName,
                                                                                                         userId,
                                                                                                         updatedReport.getGUID());
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAnalysisReport();
     }
@@ -341,10 +332,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                                        userId,
                                                                                                        discoveryReportGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnalysisReport();
     }
 
@@ -392,10 +379,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                       assetGUID,
                                                                                       Integer.toString(startingFrom),
                                                                                       Integer.toString(maximumResults));
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAnnotations();
     }
@@ -466,10 +449,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                      Integer.toString(startingFrom),
                                                                                      Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnnotations();
     }
 
@@ -513,10 +492,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                      Integer.toString(startingFrom),
                                                                                      Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnnotations();
     }
 
@@ -554,10 +529,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                              userId,
                                                                              annotationGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnnotation();
     }
 
@@ -594,10 +565,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                   serverName,
                                                                   userId,
                                                                   discoveryReportGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUID();
     }
@@ -639,10 +606,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                               discoveryReportGUID,
                                                                               anchorAnnotationGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUID();
     }
 
@@ -674,18 +637,14 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  discoveryReportGUID,
-                                                                  annotationGUID,
-                                                                  anchorGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        discoveryReportGUID,
+                                        annotationGUID,
+                                        anchorGUID);
     }
 
 
@@ -716,18 +675,14 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  discoveryReportGUID,
-                                                                  annotationGUID,
-                                                                  anchorGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        discoveryReportGUID,
+                                        annotationGUID,
+                                        anchorGUID);
     }
 
 
@@ -766,11 +721,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                               userId,
                                                                               discoveryReportGUID,
                                                                               annotation.getGUID());
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getAnnotation();
     }
 
@@ -798,17 +748,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  discoveryReportGUID,
-                                                                  annotationGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        discoveryReportGUID,
+                                        annotationGUID);
     }
 
 

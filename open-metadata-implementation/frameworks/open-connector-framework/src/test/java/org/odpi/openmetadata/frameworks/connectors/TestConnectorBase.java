@@ -65,7 +65,7 @@ public class TestConnectorBase
         testConnection.setDisplayName("Test");
         testConnection.setConnectorType(testConnType);
 
-        Map<String, Object>  securedProperties = new HashMap();
+        Map<String, Object>  securedProperties = new HashMap<>();
         securedProperties.put("testProperty", "testPropertyValue");
         testConnection.setSecuredProperties(securedProperties);
 

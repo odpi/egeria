@@ -116,7 +116,6 @@ public enum OMAGCommonAuditCode
     }
 
 
-
     /**
      * Returns a description of the action taken by the system when the condition that caused this exception was
      * detected.
@@ -137,5 +136,17 @@ public enum OMAGCommonAuditCode
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OMAGCommonAuditCode{" + "logMessageId='" + logMessageId + '\'' + ", severity=" + severity + ", logMessage='" + logMessage + '\'' + ", systemAction='" + systemAction + '\'' + ", userAction='" + userAction + '\'' + '}';
     }
 }

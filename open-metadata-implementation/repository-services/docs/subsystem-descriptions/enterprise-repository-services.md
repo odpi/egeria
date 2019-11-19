@@ -3,9 +3,9 @@
 
 # Enterprise Repository Services
 
-The enterprise repository services support the virtual metadata collection
-that includes the metadata from all of the repositories that are members of
-the cohort(s) that the local server belongs to.  They include the following components.
+The **enterprise repository services** support the federating metadata collection that is able to retrieve
+metadata from all of the repositories that are members of
+the cohort(s) that the local metadata server belongs to.  They include the following components.
 
 * **[Enterprise Connector Manager](../component-descriptions/enterprise-connector-manager.md)** - Manages the list of open metadata repositories
 that the Enterprise OMRS Repository Connector should call to retrieve an enterprise view of the metadata collections
@@ -18,7 +18,8 @@ supported by these repositories.
   registered with the OMRS Enterprise Connector Manager on behalf of the Enterprise OMRS Repository Connector.
   * Enterprise OMRS Connector Properties - Provides the connected asset properties for the Enterprise OMRS Repository Connector.
   
-  
+The enterprise repository services are enabled automatically in a metadata server when one or more
+[Open Metadata Access Services (OMASs)](../../../access-services) are configured.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

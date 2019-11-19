@@ -121,6 +121,8 @@ public class OMRSInstanceEvent extends OMRSEvent
         	this.typeDefGUID = type.getTypeDefGUID();
         	this.typeDefName = type.getTypeDefName();
         }
+
+        this.instanceGUID = entity.getGUID();
     }
 
 
@@ -131,7 +133,9 @@ public class OMRSInstanceEvent extends OMRSEvent
      * @param originalEntity original value of the entity
      * @param newEntity new values for entity that changed
      */
-    public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType, EntityDetail originalEntity, EntityDetail newEntity)
+    public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
+                             EntityDetail          originalEntity,
+                             EntityDetail          newEntity)
     {
         super(OMRSEventCategory.INSTANCE);
 
@@ -145,6 +149,8 @@ public class OMRSInstanceEvent extends OMRSEvent
         	this.typeDefGUID = type.getTypeDefGUID();
         	this.typeDefName = type.getTypeDefName();
         }
+
+        this.instanceGUID = originalEntity.getGUID();
     }
 
 
@@ -167,6 +173,8 @@ public class OMRSInstanceEvent extends OMRSEvent
         	this.typeDefGUID = type.getTypeDefGUID();
         	this.typeDefName = type.getTypeDefName();
         }
+
+        this.instanceGUID = relationship.getGUID();
     }
 
 
@@ -193,6 +201,8 @@ public class OMRSInstanceEvent extends OMRSEvent
         	this.typeDefGUID = type.getTypeDefGUID();
         	this.typeDefName = type.getTypeDefName();
         }
+
+        this.instanceGUID = originalRelationship.getGUID();
     }
 
 
