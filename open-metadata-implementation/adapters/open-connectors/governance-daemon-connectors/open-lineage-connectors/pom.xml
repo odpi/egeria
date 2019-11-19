@@ -14,7 +14,7 @@
     <artifactId>open-lineage-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>janus-connector</module>
+        <module>open-lineage-janus-connector</module>
     </modules>
 
 </project>
