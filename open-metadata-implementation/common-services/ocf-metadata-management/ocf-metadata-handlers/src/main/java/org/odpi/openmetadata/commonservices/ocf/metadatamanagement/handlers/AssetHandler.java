@@ -535,7 +535,63 @@ public class AssetHandler
 
     /**
      * Create a simple relationship between a glossary term and an element in an Asset description (typically
-     * a field in the schema).
+     * an attribute in the schema).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that is being described
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveSemanticAssignment(String          userId,
+                                        String          assetGUID,
+                                        String          glossaryTermGUID,
+                                        String          methodName)  throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String  assetGUIDParameter = "assetGUID";
+        final String  glossaryTermGUIDParameter = "glossaryTermGUID";
+
+        Asset  asset = this.retrieveAssetFromRepositoryByGUID(userId,
+                                                              assetGUID,
+                                                              assetGUIDParameter,
+                                                              null,
+                                                              methodName);
+
+        if (asset != null)
+        {
+            invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
+                                                                 assetGUIDParameter,
+                                                                 asset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            securityVerifier.validateUserForAssetAttachmentUpdate(userId, asset);
+
+            repositoryHandler.validateEntityGUID(userId,
+                                                 glossaryTermGUID,
+                                                 MeaningMapper.MEANING_TYPE_NAME,
+                                                 methodName,
+                                                 glossaryTermGUIDParameter);
+
+            repositoryHandler.createRelationship(userId,
+                                                 ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                 assetGUID,
+                                                 glossaryTermGUID,
+                                                 null,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Create a simple relationship between a glossary term and an element in an Asset description (typically
+     * an attribute in the schema).
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that is being described
@@ -591,6 +647,128 @@ public class AssetHandler
             repositoryHandler.createRelationship(userId,
                                                  ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                                  assetElementGUID,
+                                                 glossaryTermGUID,
+                                                 null,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSemanticAssignment(String    userId,
+                                          String    assetGUID,
+                                          String    glossaryTermGUID,
+                                          String    assetElementGUID,
+                                          String    methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String  assetGUIDParameter = "assetGUID";
+        final String  glossaryTermGUIDParameter = "glossaryTermGUID";
+        final String  assetElementGUIDParameter = "assetElementGUID";
+
+        Asset  asset = this.retrieveAssetFromRepositoryByGUID(userId,
+                                                              assetGUID,
+                                                              assetGUIDParameter,
+                                                              null,
+                                                              methodName);
+
+        if (asset != null)
+        {
+            invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
+                                                                 assetGUIDParameter,
+                                                                 asset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            securityVerifier.validateUserForAssetAttachmentUpdate(userId, asset);
+
+            repositoryHandler.validateEntityGUID(userId,
+                                                 glossaryTermGUID,
+                                                 MeaningMapper.MEANING_TYPE_NAME,
+                                                 methodName,
+                                                 glossaryTermGUIDParameter);
+
+            repositoryHandler.validateEntityGUID(userId,
+                                                 assetElementGUID,
+                                                 ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                                 methodName,
+                                                 assetElementGUIDParameter);
+
+            repositoryHandler.createRelationship(userId,
+                                                 ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                 assetElementGUID,
+                                                 glossaryTermGUID,
+                                                 null,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSemanticAssignment(String    userId,
+                                          String    assetGUID,
+                                          String    glossaryTermGUID,
+                                          String    methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String  assetGUIDParameter = "assetGUID";
+        final String  glossaryTermGUIDParameter = "glossaryTermGUID";
+        final String  assetElementGUIDParameter = "assetElementGUID";
+
+        Asset  asset = this.retrieveAssetFromRepositoryByGUID(userId,
+                                                              assetGUID,
+                                                              assetGUIDParameter,
+                                                              null,
+                                                              methodName);
+
+        if (asset != null)
+        {
+            invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
+                                                                 assetGUIDParameter,
+                                                                 asset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            securityVerifier.validateUserForAssetAttachmentUpdate(userId, asset);
+
+            repositoryHandler.validateEntityGUID(userId,
+                                                 glossaryTermGUID,
+                                                 MeaningMapper.MEANING_TYPE_NAME,
+                                                 methodName,
+                                                 glossaryTermGUIDParameter);
+
+            repositoryHandler.createRelationship(userId,
+                                                 ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                 assetGUID,
                                                  glossaryTermGUID,
                                                  null,
                                                  methodName);
@@ -1055,6 +1233,32 @@ public class AssetHandler
 
 
     /**
+     * Remove the asset origin classification to an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeAssetOrigin(String                userId,
+                                   String                assetGUID,
+                                   String                methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        // todo validate parameters and set up last attachment
+
+        repositoryHandler.declassifyEntity(userId,
+                                           assetGUID,
+                                           AssetMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                           AssetMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                           methodName);
+    }
+
+
+    /**
      * Update the zones for a specific asset. The method needs to build a before an after image of the
      * asset to perform a security check before the update is pushed to the repository.
      *
@@ -1108,6 +1312,112 @@ public class AssetHandler
                              null,
                              methodName);
         }
+    }
+
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties,
+                                 String                methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+    }
+
+
+
+
+    /**
+     * Remove the security tags classification to an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSecurityTags(String                userId,
+                                    String                assetGUID,
+                                    String                methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        // todo validate parameters and set up last attachment
+
+        repositoryHandler.declassifyEntity(userId,
+                                           assetGUID,
+                                           ReferenceableMapper.SECURITY_TAG_TYPE_GUID,
+                                           ReferenceableMapper.SECURITY_TAG_TYPE_NAME,
+                                           methodName);
+    }
+
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 String                assetElementGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties,
+                                 String                methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Remove the security tags classification to an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element where the security tags need to be removed.
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSecurityTags(String                userId,
+                                    String                assetGUID,
+                                    String                assetElementGUID,
+                                    String                methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        // todo validate parameters and set up last attachment
+
+        repositoryHandler.declassifyEntity(userId,
+                                           assetElementGUID,
+                                           ReferenceableMapper.SECURITY_TAG_TYPE_GUID,
+                                           ReferenceableMapper.SECURITY_TAG_TYPE_NAME,
+                                           methodName);
     }
 
 
@@ -2463,6 +2773,61 @@ public class AssetHandler
         verifyAttachment(userId, assetGUID, methodName);
 
         informalTagHandler.removeTagFromAnchor(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, tagGUID, methodName);
+    }
+
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
+     * of its schema elements.
+     *
+     * @param userId the name of the calling user.
+     * @param tagGUID unique identifier of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param methodName calling method
+     *
+     * @return asset guid list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetsByTag(String userId,
+                                       String tagGUID,
+                                       int    startFrom,
+                                       int    pageSize,
+                                       String methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        // todo
+        return null;
+    }
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
+     * fields in the schema.
+     *
+     * @param userId the name of the calling user.
+     * @param termGUID unique identifier of term.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param methodName calling method
+     *
+     * @return asset guid list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetsByMeaning(String userId,
+                                           String termGUID,
+                                           int    startFrom,
+                                           int    pageSize,
+                                           String methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        // todo
+        return null;
     }
 
 

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * AssetOnboardingResource supports the server-side capture of REST calls to add new asset definitions.
+ * FileSystemOnboardingResource supports the server-side capture of REST calls to add new file-based asset definitions.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
@@ -513,6 +513,7 @@ public class FileSystemOnboardingResource
     {
         return restAPI.addAvroFileToCatalog(serverName, userId, requestBody);
     }
+
 
     /*
      * ==============================================

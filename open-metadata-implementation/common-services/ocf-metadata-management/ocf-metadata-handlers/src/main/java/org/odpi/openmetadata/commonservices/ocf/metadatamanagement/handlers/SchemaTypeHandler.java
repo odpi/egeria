@@ -468,17 +468,16 @@ public class SchemaTypeHandler
                         schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
 
                         repositoryHandler.createRelationship(userId,
-                                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                schemaTypeGUID,
-                                schemaAttributeGUID,
-                                null,
-                                methodName);
+                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                             schemaTypeGUID,
+                                                             schemaAttributeGUID,
+                                                             null,
+                                                             methodName);
                     }
                     else
                     {
                         updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
                     }
-
                 }
             }
         }

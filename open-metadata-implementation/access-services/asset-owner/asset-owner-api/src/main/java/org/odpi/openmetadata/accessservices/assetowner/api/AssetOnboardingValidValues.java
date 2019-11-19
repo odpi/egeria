@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.ValidValueConsumer;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AssetOnboardingValidValuesSet provides the API operations to create and maintain lists of valid
+ * AssetOnboardingValidValues provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all of the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
-public interface AssetOnboardingValidValuesSet
+public interface AssetOnboardingValidValues
 {
     /**
      * Create a new valid value set.  This just creates the Set itself.  Members are added either as they are
@@ -56,11 +56,12 @@ public interface AssetOnboardingValidValuesSet
      * Create a new valid value definition.
      *
      * @param userId calling user.
-     * @param setGUID unique identifier of the set to attach this to - null means do not attach to any set.
+     * @param setGUID unique identifier of the set to attach this to.
      * @param qualifiedName unique name.
      * @param displayName displayable descriptive name.
      * @param description further information.
      * @param usage how/when should this value be used.
+     * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties properties that need to be populated into a subtype.
@@ -253,6 +254,7 @@ public interface AssetOnboardingValidValuesSet
      * @param userId calling user.
      * @param validValueGUID unique identifier of the valid value.
      * @param consumerGUID unique identifier of the element to link to.
+     * @param strictRequirement the valid values defines the only values that are permitted.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -260,9 +262,10 @@ public interface AssetOnboardingValidValuesSet
      */
     void    assignValidValueToConsumer(String   userId,
                                        String   validValueGUID,
-                                       String   consumerGUID) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+                                       String   consumerGUID,
+                                       boolean  strictRequirement) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -302,21 +305,22 @@ public interface AssetOnboardingValidValuesSet
 
 
     /**
-     * Retrieve a specific valid value from the repository.
+     * Retrieve a specific valid value from the repository.  Duplicates may be returned if
+     * multiple valid values have been assigned the same qualified name.
      *
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
      *
-     * @return Valid value bean
+     * @return Valid value beans
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValue   getValidValueByName(String   userId,
-                                     String   validValueName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    List<ValidValue>   getValidValueByName(String   userId,
+                                           String   validValueName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
     /**
@@ -393,18 +397,18 @@ public interface AssetOnboardingValidValuesSet
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
-     * @return list of valid value beans
+     * @return list of referenceable beans
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<Referenceable> getValidValuesConsumers(String   userId,
-                                                String   validValueGUID,
-                                                int      startFrom,
-                                                int      pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+    List<ValidValueConsumer> getValidValuesConsumers(String   userId,
+                                                     String   validValueGUID,
+                                                     int      startFrom,
+                                                     int      pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -415,7 +419,7 @@ public interface AssetOnboardingValidValuesSet
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
-     * @return list of valid value beans
+     * @return list of asset beans
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.

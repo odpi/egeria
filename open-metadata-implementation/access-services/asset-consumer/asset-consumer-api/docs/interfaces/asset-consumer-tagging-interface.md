@@ -40,11 +40,29 @@ any number of assets (including none).
   [Java](../../../asset-consumer-client/docs/user/java-client/get-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-tag-with-rest.md)
 
-* **getTagsByName** - Return the list of tags matching the supplied name.
+* **getTagsByName** - Return the list of tags exactly matching the supplied name.
 
   Implementation: 
   [Java](../../../asset-consumer-client/docs/user/java-client/get-tags-by-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-tags-by-name-with-rest.md)
+
+* **getMyTagsByName** - Return the list of the calling user's private tags exactly matching the supplied name.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-my-tags-by-name-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-my-tags-by-name-with-rest.md)
+
+* **findTags** - Return the list of tags matching the supplied search string.  This search string may contain wild card characters.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/find-tags-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/find-tags-with-rest.md)
+
+* **findMyTags** - Return the list of the calling user's private tags matching the supplied search string.  This search string may contain wild card characters.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/find-my-tags-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/find-my-tags-with-rest.md)
 
 * **addTagToAsset** - Adds a tag (either private of public) to an asset.
 
@@ -57,6 +75,13 @@ any number of assets (including none).
   Implementation: 
   [Java](../../../asset-consumer-client/docs/user/java-client/remove-tag-from-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/remove-tag-from-asset-with-rest.md)
+
+* **getAssetsByTag** - Return the list of assets linked to the supplied tag.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-assets-by-tag-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-assets-by-tag-with-rest.md)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

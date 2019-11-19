@@ -17,7 +17,7 @@ where the Asset Consumer OMAS is running and its [server name](../../../../../do
 
 Here is a code example with the user id and password specified:
 
-```java
+```
 AssetConsumer   client = new AssetConsumer("cocoMDS1",
                                            "http://localhost:8081",
                                            "cocoUI",
@@ -43,6 +43,7 @@ metadata properties that describe them:
 * [**get connector using a supplied connection guid**](get-connector-by-guid-with-java.md)
 * [**get connector using a supplied connection name**](get-connector-by-name-with-java.md)
 * [**get connector using a supplied asset guid**](get-connector-by-asset-guid-with-java.md)
+* [**find assets**](find-assets-with-java.md)
 
 Provide feedback, on either the content of the asset, or the metadata properties:
 
@@ -53,7 +54,7 @@ Provide feedback, on either the content of the asset, or the metadata properties
 * [**add like to an asset's properties**](add-like-to-asset-with-java.md)
 * [**remove like from an asset's properties**](remove-like-from-asset-with-java.md)
 * [**add review and/or star rating to an asset's properties**](add-review-to-asset-with-java.md)
-* [**update review and/or star rating assigned to an asset's properties**](update-review-on-asset-with-java.md)
+* [**update review and/or star rating assigned to an asset's properties**](find-tags-with-java.md)
 * [**remove review/star rating from an asset's properties**](remove-review-from-asset-with-java.md)
 
 Maintain tags that add more information about the asset to the metadata properties:
@@ -63,14 +64,19 @@ Maintain tags that add more information about the asset to the metadata properti
 * [**update a tag's description**](update-tag-description-with-java.md)
 * [**delete a tag and all of the links to assets**](delete-tag-with-java.md)
 * [**get the tag definition of a tag using a supplied guid**](get-tag-with-java.md)
-* [**get a list of tags using a supplied search string**](get-tags-by-name-with-java.md)
+* [**get a list of tags using a supplied name**](get-tags-by-name-with-java.md)
+* [**get a list of private tags created by the caller using a supplied name**](get-tags-by-name-with-java.md)
+* [**get a list of tags using a supplied search string**](find-tags-with-java.md)
 * [**link a tag to an asset's properties**](add-tag-to-asset-with-java.md)
 * [**remove the link to tag from an asset's properties**](remove-tag-from-asset-with-java.md)
+* [**get assets attached to a specific tag**](get-assets-by-tag-with-java.md)
 
 Retrieve additional information about the meaning of data associated with the asset.
 
 * [**get full description of meaning using a supplied search string**](get-meaning-by-name-with-java.md)
 * [**get full description of meaning using a glossary term guid**](get-meaning-with-java.md)
+* [**get a list of possible meanings for a term**](find-meanings-with-java.md)
+* [**get assets attached to a specific glossary term](get-assets-by-meaning-with-java.md)
 
 Add an audit log message about the asset:
 
