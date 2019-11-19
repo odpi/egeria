@@ -72,7 +72,7 @@ public class ClassificationHandler {
 
 
 
-        if (entityDetail.getClassifications().isEmpty() && checkLineageClassificationTypes(entityDetail)) {
+        if (! entityDetail.getClassifications().isEmpty() && checkLineageClassificationTypes(entityDetail)) {
 
             graph = new AssetContext();
 

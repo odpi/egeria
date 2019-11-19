@@ -171,7 +171,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
         try {
-            if (!isValidEntityEvent(typeDefName)) {
+            if (isValidEntityEvent(typeDefName)) {
                 getClassificationContext(entityDetail, serviceOperationName);
 
             } else {
