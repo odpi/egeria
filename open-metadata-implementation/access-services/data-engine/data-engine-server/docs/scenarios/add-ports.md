@@ -9,11 +9,14 @@ Add existing ports to processes. Creates the ProcessPort relationship for all po
 POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes/{{process-guid}}/ports
 
 {
-	"class": "PortListRequestBody",
-	"ports":["port1Guid", "port2Guid"]
+	"ports":["port1Guid", "port2Guid"],
+	"externalSourceName": "dataEngine"
 }
 ```
 
+`externalSourceName` - qualifiedName of the external data engine tool.
+ Note that you need to register the data engine tool with [register-data-engine-tool](register-data-engine-tool.md) 
+ before adding ports to processes.
 `GUIDResponse` - response containing the process guid, with status and error message if failing.
 
 

@@ -74,11 +74,13 @@ public class GraphOMRSGraphFactory {
         // you will need to configure the component-scan otherwise Spring boot tries to autoconfigure a
         // REST client which fails (on HttpHost).
 
+        final String serverRepositoryPath = repositoryName + "-graph-repository";
+
         final String storageBackend = "berkeleyje";
-        final String storagePath = "./egeria-graph-repository/berkeley";
+        final String storagePath = "./"+serverRepositoryPath+"/berkeley";
 
         final String indexBackend = "lucene";
-        final String indexPath = "./egeria-graph-repository/searchindex";
+        final String indexPath = "./"+serverRepositoryPath+"/searchindex";
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend", storageBackend).
