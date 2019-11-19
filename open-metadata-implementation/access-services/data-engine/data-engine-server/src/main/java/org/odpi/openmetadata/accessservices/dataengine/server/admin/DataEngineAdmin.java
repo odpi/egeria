@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
-import org.odpi.openmetadata.accessservices.dataengine.server.intopic.DataEngineInTopicProcessor;
+import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineInTopicListener;
+import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineEventProcessor;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -29,7 +30,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
     private DataEngineServicesInstance instance;
     private String serverName;
     private OpenMetadataTopicConnector dataEngineInTopicConnector;
-    private DataEngineInTopicProcessor dataEngineInTopicProcessor;
+    private DataEngineInTopicListener dataEngineInTopicListener;
 
     /**
      * Initialize the access service.
@@ -52,7 +53,6 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                 auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                 auditCode.getUserAction());
         try {
-
             this.auditLog = auditLog;
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
@@ -66,13 +66,12 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                     serverUserName, repositoryConnector.getMaxPageSize());
             serverName = instance.getServerName();
 
-
-            if (accessServiceConfig.getAccessServiceInTopic() != null)
-            {
-
-                dataEngineInTopicConnector = initializeDataEngineTopicConnector(accessServiceConfig.getAccessServiceInTopic());
-                dataEngineInTopicProcessor = new DataEngineInTopicProcessor(instance, auditLog);
-                dataEngineInTopicConnector.registerListener(dataEngineInTopicProcessor);
+            if (accessServiceConfig.getAccessServiceInTopic() != null) {
+                dataEngineInTopicConnector = initializeDataEngineTopicConnector(
+                        accessServiceConfig.getAccessServiceInTopic());
+                DataEngineEventProcessor dataEngineEventProcessor = new DataEngineEventProcessor(instance, auditLog);
+                dataEngineInTopicListener = new DataEngineInTopicListener(auditLog, dataEngineEventProcessor);
+                dataEngineInTopicConnector.registerListener(dataEngineInTopicListener);
                 dataEngineInTopicConnector.start();
             }
 
@@ -114,13 +113,15 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      * Returns the connector created from topic connection properties
      *
      * @param topicConnection properties of the topic connection
+     *
      * @return the connector created based on the topic connection properties
      */
     private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
         try {
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
+            OpenMetadataTopicConnector topicConnector =
+                    (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
 
             topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR));
 
@@ -147,6 +148,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      * Returns the topic created based on connection properties
      *
      * @param topicConnection properties of the topic
+     *
      * @return the topic created based on the connection properties
      */
     private OpenMetadataTopicConnector initializeDataEngineTopicConnector(Connection topicConnection) {
