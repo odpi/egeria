@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+name: Mark stale issues and pull requests
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  stale:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/stale@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: >
+  This issue has been automatically marked as stale because it has not had
+  recent activity. It will be closed in 30 days if no further activity occurs. Thank you
+  for your contributions.
+        stale-pr-message: >
+  This PR has been automatically marked as stale because it has not had
+  recent activity. It will be closed in 30 days if no further activity occurs. Thank you
+  for your contributions.
+        stale-issue-label: 'no-issue-activity'
+        stale-pr-label: 'no-pr-activity'
+        days-before-stale: 180
+        days-before-close: 30
+        exempt-issue-label: 'pinned'
+        exempt-pr-label: 'pinned'
+        operations-per-run: 30
