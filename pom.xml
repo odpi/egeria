@@ -207,6 +207,8 @@
         <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
 
+        <gaiandb.url>https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true</gaiandb.url>
+
     </properties>
 
     <dependencyManagement>
@@ -2603,6 +2605,7 @@
                             <execution>
                                 <id>third-party-parent</id>
                                 <inherited>false</inherited>
+                                <phase>verify</phase>
                                 <configuration>
                                     <acceptPomPackaging>true</acceptPomPackaging>
                                     <includedScopes>compile,runtime</includedScopes>
@@ -2616,6 +2619,7 @@
                             <execution>
                                 <id>third-party-module</id>
                                 <inherited>true</inherited>
+                                <phase>verify</phase>
                                 <configuration>
                                     <acceptPomPackaging>false</acceptPomPackaging>
                                     <includedScopes>compile,runtime</includedScopes>
@@ -2631,8 +2635,100 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>thirdPartyLocalRepo</id>
+            <activation>
+                <property>
+                    <name>!skipThirdPartyLocalRepo</name>
+                </property>
+            </activation>
+            <!-- The following steps obtain the required Gaian libraries by retrieving, unpacking the distribution and installing into the local maven repo -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <url>
+                                        ${gaiandb.url}
+                                    </url>
+                                    <outputFileName>GAIANDB_V2.1.8_20160523.zip</outputFileName>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <target>
+                                        <unzip src="${project.build.directory}/GAIANDB_V2.1.8_20160523.zip"
+                                               dest="${project.build.directory}">
+                                            <patternset>
+                                                <include name="**/GAIANDB.jar"/>
+                                                <include name="**/derby.jar"/>
+                                            </patternset>
+                                        </unzip>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>install-derby</id>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <groupId>org.apache.derby</groupId>
+                                    <artifactId>derby</artifactId>
+                                    <version>${derby.version}</version>
+                                    <packaging>jar</packaging>
+                                    <file>${project.build.directory}/lib/derby.jar</file>
+                                    <generatePom>true</generatePom>
+                                </configuration>
+                                <goals>
+                                    <goal>install-file</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>install-gaian</id>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <groupId>com.ibm.gaiandb</groupId>
+                                    <artifactId>gaian</artifactId>
+                                    <version>${gaian.version}</version>
+                                    <packaging>jar</packaging>
+                                    <file>${project.build.directory}/lib/GAIANDB.jar</file>
+                                    <generatePom>true</generatePom>
+                                </configuration>
+                                <goals>
+                                    <goal>install-file</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-
-
-
 </project>
