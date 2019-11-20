@@ -28,6 +28,11 @@ It includes the following operations:
   Implementation: 
   [Java](../../../asset-consumer-client/docs/user/java-client/get-connector-by-guid-with-java.md)
 
+* **getConnectorForAsset** - Returns the connector corresponding to the supplied asset.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-connector-by-asset-guid-with-java.md)
+
 * **getConnectorByConnection** - Returns the connector corresponding to the supplied connection.
 
   Implementation: 

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
+import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -18,7 +18,7 @@ public class CreateGovernanceZoneSample
     private String  serverURLRoot;
     private String  clientUserId;
 
-    private AssetOwner client = null;
+    private GovernanceZoneManager client = null;
 
     /**
      * Set up the parameters for the sample.
@@ -80,7 +80,7 @@ public class CreateGovernanceZoneSample
     {
         try
         {
-            client = new AssetOwner(serverName, serverURLRoot);
+            client = new GovernanceZoneManager(serverName, serverURLRoot);
 
             GovernanceZoneSampleDefinitions[] zoneSampleDefinitions = GovernanceZoneSampleDefinitions.values();
 

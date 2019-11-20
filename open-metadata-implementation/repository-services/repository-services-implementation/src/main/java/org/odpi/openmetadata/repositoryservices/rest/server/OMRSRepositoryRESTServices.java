@@ -90,41 +90,28 @@ import java.util.Map;
  */
 public class OMRSRepositoryRESTServices
 {
-    private static final String                                serviceName       = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
-    private static final Logger                                log               = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
-    private static       OMRSRepositoryServicesInstanceHandler instanceHandler   = new OMRSRepositoryServicesInstanceHandler(serviceName);
-    private static final String                                anonymousUserId   = "anon"; // TODO add to config
+    private static final String                                serviceName     = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
+    private static final Logger                                log             = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
+    private static       OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final String                                anonymousUserId = "anon"; // TODO add to config
 
 
     /**
      * Set up the local repository connector that will service the local repository REST Calls.
      *
-     * @param localServerName name of this local server
-     * @param localRepositoryConnector link to the local repository responsible for servicing the REST calls.
-     *                                 If localRepositoryConnector is null when a REST calls is received, the request
-     *                                 is rejected.
+     * @param localServerName               name of this local server
+     * @param localRepositoryConnector      link to the local repository responsible for servicing the REST calls.
+     *                                      If localRepositoryConnector is null when a REST calls is received, the request
+     *                                      is rejected.
      * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
-     * @param metadataHighwayManager manager of the cohort managers
-     * @param localServerURL URL of the local server
-     * @param auditLog auditLog destination
-     * @param maxPageSize max number of results to return on single request.
+     * @param metadataHighwayManager        manager of the cohort managers
+     * @param localServerURL                URL of the local server
+     * @param auditLog                      auditLog destination
+     * @param maxPageSize                   max number of results to return on single request.
      */
-    public static void setServerRepositories(String                          localServerName,
-                                             LocalOMRSRepositoryConnector    localRepositoryConnector,
-                                             OMRSRepositoryConnector         enterpriseRepositoryConnector,
-                                             OMRSMetadataHighwayManager      metadataHighwayManager,
-                                             String                          localServerURL,
-                                             OMRSAuditLog                    auditLog,
-                                             int                             maxPageSize)
+    public static void setServerRepositories(String localServerName, LocalOMRSRepositoryConnector localRepositoryConnector, OMRSRepositoryConnector enterpriseRepositoryConnector, OMRSMetadataHighwayManager metadataHighwayManager, String localServerURL, OMRSAuditLog auditLog, int maxPageSize)
     {
-        new OMRSRepositoryServicesInstance(localServerName,
-                                           localRepositoryConnector,
-                                           enterpriseRepositoryConnector,
-                                           metadataHighwayManager,
-                                           localServerURL,
-                                           serviceName,
-                                           auditLog,
-                                           maxPageSize);
+        new OMRSRepositoryServicesInstance(localServerName, localRepositoryConnector, enterpriseRepositoryConnector, metadataHighwayManager, localServerURL, serviceName, auditLog, maxPageSize);
     }
 
 
@@ -133,7 +120,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param localServerName name of the server to stop
      */
-    public static void stopInboundRESTCalls(String   localServerName)
+    public static void stopInboundRESTCalls(String localServerName)
     {
         new OMRSRepositoryServicesInstanceHandler(serviceName).removeInstance(localServerName);
     }
@@ -142,12 +129,11 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the URL for the requested instance.
      *
-     * @param localServerName  name of the local server that the requesting OMRS instance belongs to
-     * @param guid unique identifier of the instance
+     * @param localServerName name of the local server that the requesting OMRS instance belongs to
+     * @param guid            unique identifier of the instance
      * @return url
      */
-    public static String  getEntityURL(String      localServerName,
-                                       String...   guid)
+    public static String getEntityURL(String localServerName, String... guid)
     {
         final String methodName = "getEntityURL";
 
@@ -184,12 +170,11 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the URL for the requested instance.
      *
-     * @param localServerName  name of the local server that the requesting OMRS instance belongs to
-     * @param guid unique identifier of the instance
+     * @param localServerName name of the local server that the requesting OMRS instance belongs to
+     * @param guid            unique identifier of the instance
      * @return url
      */
-    public static String  getRelationshipURL(String      localServerName,
-                                             String...   guid)
+    public static String getRelationshipURL(String localServerName, String... guid)
     {
         final String methodName = "getRelationshipURL";
 
@@ -228,9 +213,9 @@ public class OMRSRepositoryRESTServices
     /**
      * Common constructor
      *
-     * @param localRepository  is this request for the local repository?
+     * @param localRepository is this request for the local repository?
      */
-    public OMRSRepositoryRESTServices(boolean   localRepository)
+    public OMRSRepositoryRESTServices(boolean localRepository)
     {
         this.localRepository = localRepository;
     }
@@ -250,7 +235,7 @@ public class OMRSRepositoryRESTServices
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     @Deprecated
-    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName)
+    public MetadataCollectionIdResponse getMetadataCollectionId(String serverName)
     {
         return this.getMetadataCollectionId(serverName, anonymousUserId);
     }
@@ -262,14 +247,13 @@ public class OMRSRepositoryRESTServices
      * identify the home repository of a metadata instance.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId calling user
+     * @param userId     calling user
      * @return String metadata collection id.
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
-    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName,
-                                                                String     userId)
+    public MetadataCollectionIdResponse getMetadataCollectionId(String serverName, String userId)
     {
-        final  String   methodName = "getMetadataCollectionId";
+        final String methodName = "getMetadataCollectionId";
 
         log.debug("Calling method: " + methodName);
 
@@ -281,19 +265,19 @@ public class OMRSRepositoryRESTServices
 
             response.setMetadataCollectionId(metadataCollection.getMetadataCollectionId(userId));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
             captureInvalidParameterException(response, error);
         }
-        catch (UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException error)
         {
             captureUserNotAuthorizedException(response, error);
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Throwable error)
         {
             captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
@@ -316,21 +300,20 @@ public class OMRSRepositoryRESTServices
      * and classifications.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
+     * @param userId     unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * InvalidParameterException the uerId is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGalleryResponse getAllTypes(String   serverName,
-                                              String   userId)
+    public TypeDefGalleryResponse getAllTypes(String serverName, String userId)
     {
-        final  String   methodName = "getAllTypes";
+        final String methodName = "getAllTypes";
 
         log.debug("Calling method: " + methodName);
 
-        TypeDefGalleryResponse  response = new TypeDefGalleryResponse();
+        TypeDefGalleryResponse response = new TypeDefGalleryResponse();
 
         try
         {
@@ -343,11 +326,11 @@ public class OMRSRepositoryRESTServices
                 response.setTypeDefs(typeDefGallery.getTypeDefs());
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
             captureInvalidParameterException(response, error);
         }
@@ -372,23 +355,21 @@ public class OMRSRepositoryRESTServices
      * arbitrary string of characters and ampersand for an arbitrary character.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param name name of the TypeDefs to return (including wildcard characters).
+     * @param userId     unique identifier for requesting user.
+     * @param name       name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation or
      * InvalidParameterException the name of the TypeDef is null.
      */
-    public TypeDefGalleryResponse findTypesByName(String   serverName,
-                                                  String   userId,
-                                                  String   name)
+    public TypeDefGalleryResponse findTypesByName(String serverName, String userId, String name)
     {
-        final  String   methodName = "findTypesByName";
+        final String methodName = "findTypesByName";
 
         log.debug("Calling method: " + methodName);
 
-        TypeDefGalleryResponse  response = new TypeDefGalleryResponse();
+        TypeDefGalleryResponse response = new TypeDefGalleryResponse();
 
         try
         {
@@ -402,7 +383,7 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -429,19 +410,17 @@ public class OMRSRepositoryRESTServices
      * Returns all of the TypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param category find parameters used to limit the returned results.
+     * @param userId     unique identifier for requesting user.
+     * @param category   find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypeDefsByCategory(String            serverName,
-                                                      String            userId,
-                                                      TypeDefCategory   category)
+    public TypeDefListResponse findTypeDefsByCategory(String serverName, String userId, TypeDefCategory category)
     {
-        final  String   methodName = "findTypeDefsByCategory";
+        final String methodName = "findTypeDefsByCategory";
 
         log.debug("Calling method: " + methodName);
 
@@ -453,7 +432,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDefs(metadataCollection.findTypeDefsByCategory(userId, category));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -480,19 +459,17 @@ public class OMRSRepositoryRESTServices
      * Returns all of the AttributeTypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param category find parameters used to limit the returned results.
+     * @param userId     unique identifier for requesting user.
+     * @param category   find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                   serverName,
-                                                                        String                   userId,
-                                                                        AttributeTypeDefCategory category)
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String serverName, String userId, AttributeTypeDefCategory category)
     {
-        final  String   methodName = "findAttributeTypeDefsByCategory";
+        final String methodName = "findAttributeTypeDefsByCategory";
 
         log.debug("Calling method: " + methodName);
 
@@ -504,7 +481,7 @@ public class OMRSRepositoryRESTServices
 
             response.setAttributeTypeDefs(metadataCollection.findAttributeTypeDefsByCategory(userId, category));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -530,8 +507,8 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
+     * @param serverName    unique identifier for requested server.
+     * @param userId        unique identifier for requesting user.
      * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -539,11 +516,9 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypeDefsByProperty(String            serverName,
-                                                      String            userId,
-                                                      TypeDefProperties matchCriteria)
+    public TypeDefListResponse findTypeDefsByProperty(String serverName, String userId, TypeDefProperties matchCriteria)
     {
-        final  String   methodName = "findTypeDefsByProperty";
+        final String methodName = "findTypeDefsByProperty";
 
         log.debug("Calling method: " + methodName);
 
@@ -555,7 +530,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDefs(metadataCollection.findTypeDefsByProperty(userId, matchCriteria));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -581,40 +556,33 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the types that are linked to the elements from the specified standard.
      *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param standard name of the standard null means any.
+     * @param serverName   unique identifier for requested server.
+     * @param userId       unique identifier for requesting user.
+     * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
-     * @param identifier identifier of the element in the standard null means any.
+     * @param identifier   identifier of the element in the standard null means any.
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypesByExternalID(String    serverName,
-                                                     String    userId,
-                                                     String    standard,
-                                                     String    organization,
-                                                     String    identifier)
+    public TypeDefListResponse findTypesByExternalID(String serverName, String userId, String standard, String organization, String identifier)
     {
-        final  String   methodName = "findTypesByExternalID";
+        final String methodName = "findTypesByExternalID";
 
         log.debug("Calling method: " + methodName);
 
-        TypeDefListResponse  response = new TypeDefListResponse();
+        TypeDefListResponse response = new TypeDefListResponse();
 
         try
         {
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<TypeDef> typeDefs = metadataCollection.findTypesByExternalID(userId,
-                                                                              standard,
-                                                                              organization,
-                                                                              identifier);
+            List<TypeDef> typeDefs = metadataCollection.findTypesByExternalID(userId, standard, organization, identifier);
             response.setTypeDefs(typeDefs);
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -640,8 +608,8 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDefs that match the search criteria.
      *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
+     * @param serverName     unique identifier for requested server.
+     * @param userId         unique identifier for requesting user.
      * @param searchCriteria String search criteria.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -649,11 +617,9 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse searchForTypeDefs(String   serverName,
-                                                 String   userId,
-                                                 String   searchCriteria)
+    public TypeDefListResponse searchForTypeDefs(String serverName, String userId, String searchCriteria)
     {
-        final  String   methodName = "searchForTypeDefs";
+        final String methodName = "searchForTypeDefs";
 
         log.debug("Calling method: " + methodName);
 
@@ -665,7 +631,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDefs(metadataCollection.searchForTypeDefs(userId, searchCriteria));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -692,21 +658,19 @@ public class OMRSRepositoryRESTServices
      * Return the TypeDef identified by the GUID.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param guid String unique id of the TypeDef.
+     * @param userId     unique identifier for requesting user.
+     * @param guid       String unique id of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
+     * the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse getTypeDefByGUID(String    serverName,
-                                            String    userId,
-                                            String    guid)
+    public TypeDefResponse getTypeDefByGUID(String serverName, String userId, String guid)
     {
-        final  String   methodName = "getTypeDefByGUID";
+        final String methodName = "getTypeDefByGUID";
 
         log.debug("Calling method: " + methodName);
 
@@ -718,7 +682,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDef(metadataCollection.getTypeDefByGUID(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -749,21 +713,19 @@ public class OMRSRepositoryRESTServices
      * Return the AttributeTypeDef identified by the GUID.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param guid String unique id of the TypeDef
+     * @param userId     unique identifier for requesting user.
+     * @param guid       String unique id of the TypeDef
      * @return AttributeTypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
+     * the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public AttributeTypeDefResponse getAttributeTypeDefByGUID(String    serverName,
-                                                              String    userId,
-                                                              String    guid)
+    public AttributeTypeDefResponse getAttributeTypeDefByGUID(String serverName, String userId, String guid)
     {
-        final  String   methodName = "getAttributeTypeDefByGUID";
+        final String methodName = "getAttributeTypeDefByGUID";
 
         log.debug("Calling method: " + methodName);
 
@@ -775,7 +737,7 @@ public class OMRSRepositoryRESTServices
 
             response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByGUID(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -802,26 +764,23 @@ public class OMRSRepositoryRESTServices
     }
 
 
-
     /**
      * Return the TypeDef identified by the unique name.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param name String name of the TypeDef.
+     * @param userId     unique identifier for requesting user.
+     * @param name       String name of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
+     * the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse getTypeDefByName(String    serverName,
-                                            String    userId,
-                                            String    name)
+    public TypeDefResponse getTypeDefByName(String serverName, String userId, String name)
     {
-        final  String   methodName = "getTypeDefByName";
+        final String methodName = "getTypeDefByName";
 
         log.debug("Calling method: " + methodName);
 
@@ -833,7 +792,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDef(metadataCollection.getTypeDefByName(userId, name));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -864,21 +823,19 @@ public class OMRSRepositoryRESTServices
      * Return the AttributeTypeDef identified by the unique name.
      *
      * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param name String name of the TypeDef.
+     * @param userId     unique identifier for requesting user.
+     * @param name       String name of the TypeDef.
      * @return AttributeTypeDefResponse:
      * AttributeTypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
+     * the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  AttributeTypeDefResponse getAttributeTypeDefByName(String    serverName,
-                                                               String    userId,
-                                                               String    name)
+    public AttributeTypeDefResponse getAttributeTypeDefByName(String serverName, String userId, String name)
     {
-        final  String   methodName = "getAttributeTypeDefByName";
+        final String methodName = "getAttributeTypeDefByName";
 
         log.debug("Calling method: " + methodName);
 
@@ -890,7 +847,7 @@ public class OMRSRepositoryRESTServices
 
             response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByName(userId, name));
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
@@ -916,6 +873,45 @@ public class OMRSRepositoryRESTServices
         return response;
     }
 
+
+    /**
+     * Log the fact that types are being maintained though the API rather than through an open metadata archive.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param methodName calling method
+     * @param typeName unique name of the type
+     * @param typeGUID unique identifier of the type
+     *
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws RepositoryErrorException the service name is not know - indicating a logic error
+     */
+    private void logDynamicTypeManagement(String serverName,
+                                          String userId,
+                                          String methodName,
+                                          String typeName,
+                                          String typeGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  RepositoryErrorException
+    {
+        OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
+
+        if (instance !=null)
+        {
+            OMRSAuditLog auditLog = instance.getAuditLog();
+
+            OMRSAuditCode auditCode = OMRSAuditCode.AD_HOC_TYPE_DEFINITION;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(typeName, typeGUID, serverName, userId, methodName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+
+    }
 
     /**
      * Create a collection of related types.
@@ -950,6 +946,31 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addTypeDefGallery(userId, newTypes);
+
+            List<TypeDef>          typeDefs = newTypes.getTypeDefs();
+            if (typeDefs != null)
+            {
+                for (TypeDef typeDef : typeDefs)
+                {
+                    if (typeDef != null)
+                    {
+                        this.logDynamicTypeManagement(serverName, userId, methodName, typeDef.getName(), typeDef.getGUID());
+                    }
+                }
+            }
+
+            List<AttributeTypeDef> attributeTypeDefs = newTypes.getAttributeTypeDefs();
+            if (attributeTypeDefs != null)
+            {
+                for (AttributeTypeDef  attributeTypeDef : attributeTypeDefs)
+                {
+                    if (attributeTypeDef != null)
+                    {
+                        this.logDynamicTypeManagement(serverName, userId, methodName, attributeTypeDef.getName(), attributeTypeDef.getGUID());
+                    }
+                }
+            }
+
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1027,6 +1048,8 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addTypeDef(userId, newTypeDef);
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, newTypeDef.getName(), newTypeDef.getGUID());
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1104,6 +1127,8 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, newAttributeTypeDef.getName(), newAttributeTypeDef.getGUID());
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1318,6 +1343,8 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(metadataCollection.updateTypeDef(userId, typeDefPatch));
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeName(), typeDefPatch.getTypeDefGUID());
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1394,6 +1421,8 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, obsoleteTypeDefName, obsoleteTypeDefGUID);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1466,6 +1495,8 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, obsoleteTypeDefName, obsoleteTypeDefGUID);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1553,6 +1584,8 @@ public class OMRSRepositoryRESTServices
                                                                      originalTypeDefName,
                                                                      newTypeDefGUID,
                                                                      newTypeDefName));
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, originalTypeDefName, originalTypeDefGUID);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1636,6 +1669,8 @@ public class OMRSRepositoryRESTServices
                                                                                        originalAttributeTypeDefName,
                                                                                        newAttributeTypeDefGUID,
                                                                                        newAttributeTypeDefName));
+
+            this.logDynamicTypeManagement(serverName, userId, methodName, originalAttributeTypeDefName, originalAttributeTypeDefGUID);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -6534,6 +6569,179 @@ public class OMRSRepositoryRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
+     * @param entity the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse deleteEntityReferenceCopy(String                        serverName,
+                                                  String                        userId,
+                                                  EntityDetail                  entity)
+    {
+        final  String   methodName = "deleteEntityReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.deleteEntityReferenceCopy(userId, entity);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (HomeEntityException error)
+        {
+            captureHomeEntityException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param entity the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse purgeEntityReferenceCopy(String                        serverName,
+                                                 String                        userId,
+                                                 EntityDetail                  entity)
+    {
+        final  String   methodName = "purgeEntityReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.purgeEntityReferenceCopy(userId, entity);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (HomeEntityException error)
+        {
+            captureHomeEntityException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -6792,6 +7000,190 @@ public class OMRSRepositoryRESTServices
     }
 
 
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param relationship the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse deleteRelationshipReferenceCopy(String                        serverName,
+                                                        String                        userId,
+                                                        Relationship                  relationship)
+    {
+        final  String   methodName = "deleteRelationshipReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.deleteRelationshipReferenceCopy(userId, relationship);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (InvalidRelationshipException error)
+        {
+            captureInvalidRelationshipException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (HomeRelationshipException error)
+        {
+            captureHomeRelationshipException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (RelationshipConflictException error)
+        {
+            captureRelationshipConflictException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param relationship the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse purgeRelationshipReferenceCopy(String                        serverName,
+                                                       String                        userId,
+                                                       Relationship                  relationship)
+    {
+        final  String   methodName = "purgeRelationshipReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.deleteRelationshipReferenceCopy(userId, relationship);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (InvalidRelationshipException error)
+        {
+            captureInvalidRelationshipException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (HomeRelationshipException error)
+        {
+            captureHomeRelationshipException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (RelationshipConflictException error)
+        {
+            captureRelationshipConflictException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
 
 
     /**

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryCo
 import org.odpi.openmetadata.conformance.beans.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -53,6 +54,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
     private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
     private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
+    private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
     /**
      * Constructor receives key information from the configuration services.
@@ -662,6 +664,47 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public void removeEntityInstanceSets(String entityTypeName) {
 
         this.entityInstances.remove(entityTypeName);
+
+    }
+
+
+
+    /**
+     * Remember the sets of instances for a given relationship type. This is to support
+     * @param relationshipTypeName
+     * @param set_0
+     * @param set_1
+     * @param set_2
+     */
+    public void addRelationshipInstanceSets(String relationshipTypeName, List<Relationship> set_0, List<Relationship> set_1, List<Relationship> set_2) {
+
+        List<List<Relationship>> setsList = new ArrayList<>();
+        setsList.add(set_0);
+        setsList.add(set_1);
+        setsList.add(set_2);
+        this.relationshipInstances.put(relationshipTypeName,setsList);
+    }
+
+    /**
+     * Retrieve relationship instances for the given type for the given instance set
+     * @param relationshipTypeName
+     */
+    public List<Relationship> getRelationshipInstanceSet(String relationshipTypeName, int setId) {
+
+        if (this.relationshipInstances.get(relationshipTypeName) != null) {
+            return this.relationshipInstances.get(relationshipTypeName).get(setId);
+        }
+        else
+            return null;
+    }
+
+    /**
+     * Clean up relationship instances for the given type.
+     * @param relationshipTypeName
+     */
+    public void removeRelationshipInstanceSets(String relationshipTypeName) {
+
+        this.relationshipInstances.remove(relationshipTypeName);
 
     }
 

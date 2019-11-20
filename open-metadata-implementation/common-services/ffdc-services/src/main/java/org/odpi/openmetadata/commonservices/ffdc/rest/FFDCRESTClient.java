@@ -2,23 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
-
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
  * RESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-public class FFDCRESTClient
+public class FFDCRESTClient extends FFDCRESTClientBase
 {
-    protected String              serverName;             /* Initialized in constructor */
-    protected String              serverPlatformURLRoot;  /* Initialized in constructor */
-    protected RESTClientConnector clientConnector;        /* Initialized in constructor */
-
     /**
      * Constructor for no authentication.
      *
@@ -30,32 +23,7 @@ public class FFDCRESTClient
     protected FFDCRESTClient(String serverName,
                              String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(no authentication)";
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        RESTClientFactory factory = new RESTClientFactory(serverName, serverPlatformURLRoot);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Throwable     error)
-        {
-            OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -74,35 +42,7 @@ public class FFDCRESTClient
                              String userId,
                              String password) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(userId and password)";
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           serverPlatformURLRoot,
-                                                           userId,
-                                                           password);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Throwable     error)
-        {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -115,13 +55,21 @@ public class FFDCRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GUIDResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public    GUIDResponse callGUIDGetRESTCall(String    methodName,
                                                String    urlTemplate,
-                                               Object... params) throws PropertyServerException
+                                               Object... params) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        return this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
+        GUIDResponse restResult = this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -135,19 +83,26 @@ public class FFDCRESTClient
      * @param params  a list of parameters that are slotted into the url template.
      *
      * @return GUIDResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public   GUIDResponse callGUIDPostRESTCall(String    methodName,
                                                String    urlTemplate,
                                                Object    requestBody,
-                                               Object... params) throws PropertyServerException
+                                               Object... params) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
+        GUIDResponse restResult = this.callPostRESTCall(methodName,
+                                                        GUIDResponse.class,
+                                                        urlTemplate,
+                                                        requestBody,
+                                                        params);
 
-        return this.callPostRESTCall(methodName,
-                                     GUIDResponse.class,
-                                     urlTemplate,
-                                     requestBody,
-                                     params);
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -159,13 +114,21 @@ public class FFDCRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectionResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public GUIDListResponse callGUIDListGetRESTCall(String    methodName,
                                                     String    urlTemplate,
-                                                    Object... params) throws PropertyServerException
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        return this.callGetRESTCall(methodName, GUIDListResponse.class, urlTemplate, params);
+        GUIDListResponse restResult = this.callGetRESTCall(methodName, GUIDListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -178,14 +141,22 @@ public class FFDCRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GUIDListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public GUIDListResponse callGUIDListPostRESTCall(String     methodName,
                                                      String     urlTemplate,
                                                      Object     requestBody,
-                                                     Object...  params) throws PropertyServerException
+                                                     Object...  params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return this.callPostRESTCall(methodName, GUIDListResponse.class, urlTemplate, requestBody, params);
+        GUIDListResponse restResult = this.callPostRESTCall(methodName, GUIDListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -198,18 +169,26 @@ public class FFDCRESTClient
      * @param params  a list of parameters that are slotted into the url template.
      *
      * @return VoidResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public VoidResponse callVoidPostRESTCall(String    methodName,
                                              String    urlTemplate,
                                              Object    requestBody,
-                                             Object... params) throws PropertyServerException
+                                             Object... params) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return this.callPostRESTCall(methodName,
-                                     VoidResponse.class,
-                                     urlTemplate,
-                                     requestBody,
-                                     params);
+        VoidResponse restResult =  this.callPostRESTCall(methodName,
+                                                         VoidResponse.class,
+                                                         urlTemplate,
+                                                         requestBody,
+                                                         params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -221,160 +200,20 @@ public class FFDCRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return CountResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public CountResponse callCountGetRESTCall(String    methodName,
                                               String    urlTemplate,
-                                              Object... params) throws PropertyServerException
+                                              Object... params) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        return this.callGetRESTCall(methodName, CountResponse.class, urlTemplate, params);
-    }
+        CountResponse restResult =  this.callGetRESTCall(methodName, CountResponse.class, urlTemplate, params);
 
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
-    /**
-     * Issue a GET REST call that returns a response object.
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    protected <T> T callGetRESTCallNoParams(String    methodName,
-                                            Class<T>  returnClass,
-                                            String    urlTemplate) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate);
-        }
-        catch (Throwable error)
-        {
-            logRESTCallException(methodName, error);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a response object.
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    protected  <T> T callGetRESTCall(String    methodName,
-                                     Class<T>  returnClass,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate, params);
-        }
-        catch (Throwable error)
-        {
-            logRESTCallException(methodName, error);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
-     * complex parameters.
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    protected <T> T callPostRESTCallNoParams(String    methodName,
-                                             Class<T>  returnClass,
-                                             String    urlTemplate,
-                                             Object    requestBody) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callPostRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
-        }
-        catch (Throwable error)
-        {
-            logRESTCallException(methodName, error);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
-     * complex parameters.
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    protected  <T> T callPostRESTCall(String    methodName,
-                                      Class<T>  returnClass,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callPostRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
-        }
-        catch (Throwable error)
-        {
-            logRESTCallException(methodName, error);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Provide detailed logging for exceptions.
-     *
-     * @param methodName calling method
-     * @param error resulting exception
-     * @throws PropertyServerException wrapping exception
-     */
-    private void logRESTCallException(String    methodName,
-                                      Throwable error) throws PropertyServerException
-    {
-        OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.CLIENT_SIDE_REST_API_ERROR;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 serverName,
-                                                                                                 serverPlatformURLRoot,
-                                                                                                 error.getMessage());
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
-                                          error);
+        return restResult;
     }
 }

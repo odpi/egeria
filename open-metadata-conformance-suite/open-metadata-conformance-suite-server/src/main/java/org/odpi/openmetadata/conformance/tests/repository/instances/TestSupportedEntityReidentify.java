@@ -6,6 +6,7 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -86,6 +88,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
+
+
         /*
          * Generate property values for all the type's defined properties, including inherited properties
          * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -94,20 +98,21 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              entityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                              null,
-                                                              null);
+                entityDef.getGUID(),
+                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                null,
+                null);
+
 
         assertCondition((newEntity != null),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                assertion1,
+                testTypeName + assertionMsg1,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-       /*
-        * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
-        */
+        /*
+         * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
+         */
 
 
 
@@ -116,10 +121,10 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                        assertion2,
-                        testTypeName + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                assertion2,
+                testTypeName + assertionMsg2,
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
 
 
@@ -132,7 +137,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         String newGUID = UUID.randomUUID().toString();
 
-        long  nextVersion = newEntity.getVersion() + 1;
+        long nextVersion = newEntity.getVersion() + 1;
 
         EntityDetail reIdentifiedEntity = null;
 
@@ -162,10 +167,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg4 + nextVersion,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        }
-
-        catch (FunctionNotSupportedException exception)
-        {
+        } catch (FunctionNotSupportedException exception) {
 
             super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
                     "Disabled",
@@ -178,8 +180,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the entity can no longer be retrieved under its original GUID.
          */
 
-        try
-        {
+        try {
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
@@ -187,9 +188,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg5,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        }
-        catch (EntityNotKnownException exception)
-        {
+        } catch (EntityNotKnownException exception) {
             assertCondition((true),
                     assertion5,
                     testTypeName + assertionMsg5,
@@ -202,17 +201,14 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the relationship can be retrieved under its new GUID.
          */
 
-        try
-        {
+        try {
             assertCondition((reIdentifiedEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newGUID))),
                     assertion6,
                     testTypeName + assertionMsg6,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        }
-        catch (EntityNotKnownException exception)
-        {
+        } catch (EntityNotKnownException exception) {
             assertCondition((false),
                     assertion6,
                     testTypeName + assertionMsg6,
@@ -250,10 +246,88 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                 newGUID);
 
 
-
         super.setSuccessMessage("Entities can be reidentified");
     }
 
+
+    /**
+     * Method to clean any instance created by the test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    public void cleanup() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Find any entities of the given type def and delete them....
+         */
+
+        int fromElement = 0;
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
+        int resultSize = 0;
+
+        do {
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
+
+
+            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                    entityDef.getGUID(),
+                    emptyMatchProperties,
+                    MatchCriteria.ANY,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
+
+
+            if (entities == null) {
+                /*
+                 * There are no instances of this type reported by the repository.
+                 */
+                return;
+
+            }
+
+            /*
+             * Report how many entities were left behind at the end of the test run
+             */
+
+            resultSize = entities.size();
+
+            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
+
+            for (EntityDetail entity : entities) {
+
+                /*
+                 * Try soft delete (ok if it fails) and purge.
+                 */
+
+                try {
+                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            entity.getType().getTypeDefGUID(),
+                            entity.getType().getTypeDefName(),
+                            entity.getGUID());
+
+                } catch (FunctionNotSupportedException exception) {
+                    /* OK - had to try soft; continue to purge */
+                }
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        entity.getType().getTypeDefGUID(),
+                        entity.getType().getTypeDefName(),
+                        entity.getGUID());
+
+                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
+
+            }
+        } while (resultSize >= pageSize);
+
+    }
 
     /**
      * Determine if properties are as expected.
