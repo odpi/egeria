@@ -31,7 +31,7 @@ public class AssetSearchController {
      * @return list of assets
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/search")
-    public List<Term> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
+    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
         if(CollectionUtils.isNotEmpty(types) ) {
