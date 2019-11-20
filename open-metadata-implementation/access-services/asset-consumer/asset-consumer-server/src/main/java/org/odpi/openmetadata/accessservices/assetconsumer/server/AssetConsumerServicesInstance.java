@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
@@ -21,7 +20,6 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-    private GlossaryHandler glossaryHandler;
     private LoggingHandler loggingHandler;
 
     /**
@@ -52,11 +50,6 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            glossaryHandler = new GlossaryHandler(serviceName,
-                                                  serverName,
-                                                  invalidParameterHandler,
-                                                  repositoryHelper,
-                                                  repositoryHandler);
             loggingHandler = new LoggingHandler(auditLog);
         }
         else
@@ -72,17 +65,6 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
                                            errorCode.getUserAction());
 
         }
-    }
-
-
-    /**
-     * Return the specialized glossary handler for Asset Consumer OMAS.
-     *
-     * @return glossary handler
-     */
-    GlossaryHandler getGlossaryHandler()
-    {
-        return glossaryHandler;
     }
 
 

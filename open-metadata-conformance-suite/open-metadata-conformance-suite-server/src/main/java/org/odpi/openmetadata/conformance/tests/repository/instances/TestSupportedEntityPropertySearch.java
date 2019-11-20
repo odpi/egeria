@@ -345,61 +345,66 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
-
         /*
-         * Create two entities for each set. Always create set 0
+         * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
          */
 
-        this.entitySet_0 = new ArrayList<>();
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
+        try {
 
-        if (this.multiSetTest) {
 
-            this.entitySet_1 = new ArrayList<>();
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
+            /*
+             * Create two entities for each set. Always create set 0
+             */
 
-            this.entitySet_2 = new ArrayList<>();
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+            this.entitySet_0 = new ArrayList<>();
+            entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
+            entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
+
+            if (this.multiSetTest) {
+
+                this.entitySet_1 = new ArrayList<>();
+                entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
+                entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
+
+                this.entitySet_2 = new ArrayList<>();
+                entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+                entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+            }
+
+            repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(), this.entitySet_0, this.entitySet_1, this.entitySet_2);
         }
+        catch (FunctionNotSupportedException exception) {
 
-        repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(),this.entitySet_0,this.entitySet_1,this.entitySet_2);
-
+            /*
+             * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
+             * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
+             */
+            return;
+        }
 
     }
 
+
     private void cleanInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        /*
-         * Clean up all entities created by this testcase
-         */
 
-        repositoryConformanceWorkPad.removeEntityInstanceSets(entityDef.getName());
+        List<EntityDetail> workpad_set0 = repositoryConformanceWorkPad.getEntityInstanceSet(entityDef.getName(), 0);
 
+        if (workpad_set0 != null) {
 
-        for (EntityDetail entity : entitySet_0) {
-
-            try {
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            } catch (FunctionNotSupportedException exception) {
-                // NO OP - can proceed to purge
-            }
-
-            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                    entity.getType().getTypeDefGUID(),
-                    entity.getType().getTypeDefName(),
-                    entity.getGUID());
-        }
-
-        if (this.multiSetTest) {
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Clean up all instance sets
+             */
 
 
-            for (EntityDetail entity : entitySet_1) {
+            /*
+             * Clean up all entities created by this testcase
+             */
+
+            repositoryConformanceWorkPad.removeEntityInstanceSets(entityDef.getName());
+
+
+            for (EntityDetail entity : entitySet_0) {
 
                 try {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
@@ -416,23 +421,44 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                         entity.getGUID());
             }
 
-            for (EntityDetail entity : entitySet_2) {
+            if (this.multiSetTest) {
 
-                try {
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+
+                for (EntityDetail entity : entitySet_1) {
+
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                entity.getType().getTypeDefGUID(),
+                                entity.getType().getTypeDefName(),
+                                entity.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+                        // NO OP - can proceed to purge
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
                             entity.getType().getTypeDefGUID(),
                             entity.getType().getTypeDefName(),
                             entity.getGUID());
-                } catch (FunctionNotSupportedException exception) {
-                    // NO OP - can proceed to purge
                 }
 
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            }
+                for (EntityDetail entity : entitySet_2) {
 
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                entity.getType().getTypeDefGUID(),
+                                entity.getType().getTypeDefName(),
+                                entity.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+                        // NO OP - can proceed to purge
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                            entity.getType().getTypeDefGUID(),
+                            entity.getType().getTypeDefName(),
+                            entity.getGUID());
+                }
+
+            }
         }
 
     }
@@ -440,10 +466,20 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
     private void performFinds(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        if (this.multiSetTest)
-            this.performFindsMultiSet(metadataCollection);
-        else
-            this.performFindsSingleSet(metadataCollection);
+
+        List<EntityDetail> workpad_set0 = repositoryConformanceWorkPad.getEntityInstanceSet(entityDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Run the tests
+             */
+
+            if (this.multiSetTest)
+                this.performFindsMultiSet(metadataCollection);
+            else
+                this.performFindsSingleSet(metadataCollection);
+        }
     }
 
 

@@ -93,7 +93,7 @@ public enum OMAGCommonErrorCode
               "The system is unable to process the request without this text field value.",
               "Correct the code in the caller to provide the name."),
 
-    NULL_LOCAL_SERVER_NAME(400, "OMAS-ASSET-OWNER-400-014 ",
+    NULL_LOCAL_SERVER_NAME(400, "OMAG-COMMON-400-014 ",
                            "OMAG server has been called with a null local server name",
                            "The system is unable to configure the local server.",
                            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
@@ -144,7 +144,7 @@ public enum OMAGCommonErrorCode
                        "Ensure the element is no longer in use before retrying the operation."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
-                                 "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",
+                                 "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails.",
                                  "Check that the unique identifier is correct and the property server(s) is/are running."),
 

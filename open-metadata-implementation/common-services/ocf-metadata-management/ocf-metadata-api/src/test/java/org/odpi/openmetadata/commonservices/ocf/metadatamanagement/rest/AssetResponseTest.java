@@ -62,6 +62,7 @@ public class AssetResponseTest
         testObject.setRelatedAssetCount(5);
         testObject.setRelatedMediaReferenceCount(5);
         testObject.setSchemaType(null);
+        testObject.setLastAttachment(null);
 
         return testObject;
     }
@@ -97,6 +98,7 @@ public class AssetResponseTest
         assertTrue(resultObject.getRelatedAssetCount() == 5);
         assertTrue(resultObject.getRelatedMediaReferenceCount() == 5);
         assertTrue(resultObject.getSchemaType() == null);
+        assertTrue(resultObject.getLastAttachment() == null);
     }
 
 

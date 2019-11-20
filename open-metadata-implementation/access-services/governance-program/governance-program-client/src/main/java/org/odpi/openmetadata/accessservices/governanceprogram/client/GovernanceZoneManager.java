@@ -1,0 +1,195 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.governanceprogram.client;
+
+import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceZoneManagerInterface;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceZone;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * GovernanceZoneManager is the client used to manage governance zones.
+ */
+public class GovernanceZoneManager implements GovernanceZoneManagerInterface
+{
+    private String                      serverName;               /* Initialized in constructor */
+    private String                      serverPlatformRootURL;    /* Initialized in constructor */
+    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public GovernanceZoneManager(String serverName,
+                                 String serverPlatformRootURL) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public GovernanceZoneManager(String     serverName,
+                                 String     serverPlatformRootURL,
+                                 String     userId,
+                                 String     password) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL, userId, password);
+    }
+
+    /**
+     * Create a definition of a governance zone.  The qualified name of these governance zones can be added
+     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
+     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * to indicate which zone(s) they belong to.
+     *
+     * @param userId calling user
+     * @param qualifiedName unique name for the zone - used in other configuration
+     * @param displayName short display name for the zone
+     * @param description description of the governance zone
+     * @param criteria the criteria for inclusion in a governance zone
+     * @param additionalProperties additional properties for a governance zone
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  createGovernanceZone(String              userId,
+                                      String              qualifiedName,
+                                      String              displayName,
+                                      String              description,
+                                      String              criteria,
+                                      Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String   methodName = "createGovernanceZone";
+
+        final String   qualifiedNameParameter = "qualifiedName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        ZoneRequestBody requestBody = new ZoneRequestBody();
+
+        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setDisplayName(displayName);
+        requestBody.setDescription(description);
+        requestBody.setAdditionalProperties(additionalProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
+    }
+
+
+
+    /**
+     * Return information about a specific governance zone.
+     *
+     * @param userId calling user
+     * @param qualifiedName unique name for the zone
+     *
+     * @return properties of the governance zone
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public GovernanceZone getGovernanceZone(String   userId,
+                                            String   qualifiedName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String   methodName = "getGovernanceZone";
+
+        final String   qualifiedNameParameter = "qualifiedName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones/name/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        ZoneResponse restResult = restClient.callZoneGetRESTCall(methodName,
+                                                                 serverPlatformRootURL + urlTemplate,
+                                                                 serverName,
+                                                                 userId,
+                                                                 qualifiedName);
+
+        return restResult.getGovernanceZone();
+    }
+
+
+    /**
+     * Return information about the defined governance zones.
+     *
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<GovernanceZone> getGovernanceZones(String   userId,
+                                                   int      startingFrom,
+                                                   int      maximumResults) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String   methodName = "getGovernanceZones";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones?startingFrom={4}&maximumResults={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        ZoneListResponse restResult = restClient.callZoneListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         Integer.toString(startingFrom),
+                                                                         Integer.toString(maximumResults));
+
+        return restResult.getGovernanceZones();
+    }
+
+}

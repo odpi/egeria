@@ -6,7 +6,9 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -21,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupporte
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -128,18 +131,20 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        EntityDef     end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
-        EntityDetail  end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-        EntityDef     end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
-        EntityDetail  end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+
+        EntityDef end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        EntityDetail end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+        EntityDef end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        EntityDetail end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
 
         Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                                                                          relationshipDef.getGUID(),
-                                                                          super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
-                                                                          end1.getGUID(),
-                                                                          end2.getGUID(),
-                                                                          null);
+                                                                 relationshipDef.getGUID(),
+                                                                 super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                                                                 end1.getGUID(),
+                                                                 end2.getGUID(),
+                                                                null);
 
         assertCondition((newRelationship != null),
                         assertion1,
@@ -229,7 +234,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                         RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
 
-        System.out.println("RELATIONSHIP LIFECYCLE TEST newRelationship GUID "+newRelationship.getGUID()+" VER "+ newRelationship.getVersion());
 
         /*
          * Update relationship status
@@ -262,7 +266,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 nextVersion = updatedRelationship.getVersion() + 1;
 
-                System.out.println("RELATIONSHIP LIFECYCLE TEST updatedRelationship after status change has VER "+ updatedRelationship.getVersion());
 
             }
         }
@@ -302,8 +305,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             Relationship minPropertiesRelationship = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
                     newRelationship.getGUID(),
                     minRelationshipProps);
-
-            System.out.println("RELATIONSHIP LIFECYCLE TEST minPropertiesRelationship after prop minimisation has VER "+ minPropertiesRelationship.getVersion());
 
 
             /*
@@ -357,8 +358,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 nextVersion = undoneRelationship.getVersion() + 1;
 
-                System.out.println("RELATIONSHIP LIFECYCLE TEST undoneRelationship after prop restoration has VER "+ undoneRelationship.getVersion());
-
 
             }
             catch (FunctionNotSupportedException exception)
@@ -378,8 +377,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
          */
         Date preDeleteDate = new Date();
         Relationship preDeleteRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
-        System.out.println("RELATIONSHIP LIFECYCLE TEST preDeleteRelationship : "+ preDeleteRelationship);
-        //Thread.sleep(1000);
 
 
         /*
@@ -409,7 +406,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             nextVersion = deletedRelationship.getVersion() + 1;
 
-            System.out.println("RELATIONSHIP LIFECYCLE TEST deletedRelationship after soft delete has VER "+ deletedRelationship.getVersion());
 
 
             try
@@ -447,8 +443,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
                     RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
 
-            System.out.println("RELATIONSHIP LIFECYCLE TEST restoredRelationship after restore has VER "+ restoredRelationship.getVersion());
-
 
             /*
              * Verify that relationship can be retrieved following restore
@@ -473,15 +467,11 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         }
 
 
-        System.out.println("RELATIONSHIP LIFECYCLE TEST purge relationship ");
-
 
         metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
                                              newRelationship.getType().getTypeDefGUID(),
                                              newRelationship.getType().getTypeDefName(),
                                              newRelationship.getGUID());
-
-        System.out.println("RELATIONSHIP LIFECYCLE TEST purged relationship ");
 
         try
         {
@@ -516,8 +506,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 
-            System.out.println("------------------------------------------------------------------------------------");
-            System.out.println("RELATIONSHIP LIFECYCLE TEST historicRelationship : "+ earlierRelationship);
 
             /*
              * Check that the earlierRelationship is not null and that the relationship matches the copy saved at preDeleteDate.
@@ -551,9 +539,171 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         }
 
+
+        /*
+         * Relationship was purged - clean up the entities.....
+         *
+         */
+
+
+        try {
+
+            /*
+             * Delete both end entities.
+             * Deleting either entity first would delete the relationship, but it has already been deleted as part of the test
+             * this sequence is a little more orderly.
+             */
+
+
+            metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                    end1.getType().getTypeDefGUID(),
+                    end1.getType().getTypeDefName(),
+                    end1.getGUID());
+
+            metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                    end2.getType().getTypeDefGUID(),
+                    end2.getType().getTypeDefName(),
+                    end2.getGUID());
+
+
+        } catch (FunctionNotSupportedException exception) {
+            // NO OP - can proceed to purge
+        }
+
+
+        metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                end1.getType().getTypeDefGUID(),
+                end1.getType().getTypeDefName(),
+                end1.getGUID());
+
+        metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                end2.getType().getTypeDefGUID(),
+                end2.getType().getTypeDefName(),
+                end2.getGUID());
+
+
+
+
+
         super.setSuccessMessage("Relationships can be managed through their lifecycle");
     }
 
+
+
+    /**
+     * Method to clean any instance created by the test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    public void cleanup() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Find any relationships of the given type def and delete them....
+         */
+
+        int fromElement = 0;
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
+        int resultSize = 0;
+
+        do {
+
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
+
+
+            List<Relationship> relationships = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    emptyMatchProperties,
+                    MatchCriteria.ANY,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
+
+
+            if (relationships == null) {
+                /*
+                 * There are no instances of this type reported by the repository.
+                 */
+                return;
+
+            }
+
+            /*
+             * Report how many relationships were left behind at the end of the test run
+             */
+
+            System.out.println("At completion of testcase "+testTypeName+", there were " + relationships.size() + " relationships found");
+
+            for (Relationship relationship : relationships) {
+
+
+                /*
+                 * Local variables for end2
+                 */
+                EntityProxy end1;
+                EntityProxy end2;
+
+
+                end1 = relationship.getEntityOneProxy();
+                end2 = relationship.getEntityTwoProxy();
+
+
+                try {
+
+                    /*
+                     * Delete the relationship and then both end entities.
+                     * Deleting either entity first would delete the relationship, but
+                     * this sequence is a little more orderly.
+                     */
+
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                            relationship.getType().getTypeDefGUID(),
+                            relationship.getType().getTypeDefName(),
+                            relationship.getGUID());
+
+
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            end1.getType().getTypeDefGUID(),
+                            end1.getType().getTypeDefName(),
+                            end1.getGUID());
+
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            end2.getType().getTypeDefGUID(),
+                            end2.getType().getTypeDefName(),
+                            end2.getGUID());
+
+
+                } catch (FunctionNotSupportedException exception) {
+                    // NO OP - can proceed to purge
+                }
+
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                        relationship.getType().getTypeDefGUID(),
+                        relationship.getType().getTypeDefName(),
+                        relationship.getGUID());
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        end1.getType().getTypeDefGUID(),
+                        end1.getType().getTypeDefName(),
+                        end1.getGUID());
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        end2.getType().getTypeDefGUID(),
+                        end2.getType().getTypeDefName(),
+                        end2.getGUID());
+
+
+                System.out.println("Relationship wth GUID " + relationship.getGUID() + " removed");
+            }
+
+        } while (resultSize >= pageSize);
+
+    }
 
     /**
      * Determine if properties are as expected.

@@ -147,7 +147,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
-                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/ultimateSource">Asset Lineage</a></div>
+                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
@@ -174,17 +174,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
                       </div>
                       <div style="float: right"><user-options></user-options></div>
-
                     </app-toolbar>
+                  </app-header>
                   <div class="breadcrumb">
                      <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
                   </div>
-                  </app-header>
-                 
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" subview="{{subviewData.subview}}"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" subview="[[subviewData.subview]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
@@ -218,7 +216,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 type: String,
                 reflectToAttribute: true
             },
-            subroute2: Object,
+            subroute2: {
+                type: String,
+                reflectToAttribute: true
+            },
             pages: {
                 type: Array,
                 value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
@@ -275,12 +276,14 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
         crumbs.push(allCrumbs.get('home'));
         crumbs.push(allCrumbs.get(page));
-        if(this.subviewData.subview != null && this.subviewData.subview != undefined ){
-            crumbs.push({label: this.subviewData.subview, href:  "/" + this.subviewData.subview });
+        if(page == 'asset-lineage' && this.subview && this.subview.path ){
+            crumbs.push({label: this.subviewData.subview, href: "/" + this.subviewData.subview });
         }
-        if(this.subrouteData2.guid != null && this.subrouteData2.guid != undefined ){
-            crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
-        }
+        // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
+        //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
+        // }//TODO to create new service to get displayName instead of displaying the gui
+
+
         this.crumbs = crumbs;
 
     }
