@@ -3818,7 +3818,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                         InstanceProperties   instanceProperties,
                                                         MatchCriteria        matchCriteria) throws InvalidParameterException
     {
-        if (matchProperties != null)
+        if (matchProperties != null && matchProperties.getInstanceProperties() != null)
         {
             int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
                                      this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader, instanceProperties);
