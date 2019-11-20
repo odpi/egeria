@@ -30,6 +30,7 @@
         <module>repository-handler</module>
         <module>ocf-metadata-management</module>
         <module>odf-metadata-management</module>
+        <module>gaf-metadata-management</module>
     </modules>
 
     <dependencies>

@@ -3,8 +3,8 @@
 
 # Data Store Connectors
 
-Data Store Connectors contain OCF connectors to data stores on different
-data platforms:
+The Data Store Connectors module contains connectors to different types of data stores.  These connectors implement the
+[Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) **Connector** interface.
 
 * **[avro-file-connector](avro-file-connector)** provides connector to read files
 that have an [Apache Avro](https://avro.apache.org/https://avro.apache.org/) format.

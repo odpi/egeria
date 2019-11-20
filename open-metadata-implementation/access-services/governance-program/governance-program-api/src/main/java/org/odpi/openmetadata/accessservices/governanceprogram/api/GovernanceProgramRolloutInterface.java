@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZone;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneDefinition;
 
 /**
  * The GovernanceProgramRolloutInterface covers the definition and management of the campaigns and projects
@@ -14,7 +14,7 @@ public interface GovernanceProgramRolloutInterface
     void updateGovernanceZone();
     void deleteGovernanceZone();
 
-    GovernanceZone getGovernanceZone(String  zoneGUID);
+    GovernanceZoneDefinition getGovernanceZone(String  zoneGUID);
 
     void assignGovernanceDefinitionToZone();
 
