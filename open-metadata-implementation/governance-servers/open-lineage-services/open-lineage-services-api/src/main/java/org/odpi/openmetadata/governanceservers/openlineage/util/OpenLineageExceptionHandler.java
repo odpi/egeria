@@ -22,7 +22,7 @@ public class OpenLineageExceptionHandler extends RESTExceptionHandler {
      *
      * @param methodName name of the method called
      * @param restResult response from the rest call.  This generated in the remote server.
-     * @throws PropertyServerException encoded exception from the server
+     * @throws OpenLineageException encoded exception from the server
      */
     public void detectAndThrowOpenLineagexception(String methodName,
                                                   FFDCResponseBase restResult) throws OpenLineageException {
