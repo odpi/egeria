@@ -235,6 +235,7 @@ public class OMRSRepositoryRESTServices
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     @Deprecated
+    @SuppressWarnings("deprecated")
     public MetadataCollectionIdResponse getMetadataCollectionId(String serverName)
     {
         return this.getMetadataCollectionId(serverName, anonymousUserId);
