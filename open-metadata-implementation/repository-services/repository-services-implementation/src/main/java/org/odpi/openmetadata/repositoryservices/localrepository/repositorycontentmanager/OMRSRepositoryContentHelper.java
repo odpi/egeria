@@ -778,6 +778,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         EntityDetail entity = new EntityDetail();
         String       guid   = UUID.randomUUID().toString();
 
+        entity.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         entity.setInstanceProvenanceType(provenanceType);
         entity.setMetadataCollectionId(metadataCollectionId);
         entity.setCreateTime(new Date());
@@ -826,6 +827,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             {
                 Classification classification = new Classification();
 
+                classification.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
                 classification.setName(classificationTypeName);
                 classification.setCreateTime(new Date());
                 classification.setCreatedBy(userName);
@@ -895,6 +897,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         Relationship relationship = new Relationship();
         String       guid         = UUID.randomUUID().toString();
 
+        relationship.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         relationship.setInstanceProvenanceType(provenanceType);
         relationship.setMetadataCollectionId(metadataCollectionId);
         relationship.setCreateTime(new Date());
@@ -1434,10 +1437,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                     if (entityProperties != null)
                     {
-                        List<TypeDefAttribute> propertiesDefinition =
-                                repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
-                                                                                    typeDef,
-                                                                                    methodName);
+                        List<TypeDefAttribute> propertiesDefinition = repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
+                                                                                                                          typeDef,
+                                                                                                                          methodName);
                         InstanceProperties uniqueAttributes = new InstanceProperties();
 
                         if (propertiesDefinition != null)

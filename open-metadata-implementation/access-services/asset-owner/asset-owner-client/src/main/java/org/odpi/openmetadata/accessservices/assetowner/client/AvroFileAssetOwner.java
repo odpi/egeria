@@ -28,7 +28,6 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
     private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
 
 
     /**
@@ -85,35 +84,6 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
      */
 
 
-    private void addAvroSchemaToCatalog(String    userId,
-                                        String    assetGUID,
-                                        String    fullPath) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Ensure the schema associated with an Avro file is correct.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier for the Avro file's asset in the catalog
-     *
-     * @throws InvalidParameterException full path or assetId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void refreshAvroSchemaInCatalog(String    userId,
-                                           String    assetGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        // todo
-    }
-
-
     /**
      * Add a simple asset description linked to a connection object for a Avro file.
      *
@@ -153,18 +123,6 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
                                                                           serverName,
                                                                           userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        List<String> fileAssetGUIDs = restResult.getGUIDs();
-        if ((fileAssetGUIDs != null) && (! fileAssetGUIDs.isEmpty()))
-        {
-            String fileAssetGUID = fileAssetGUIDs.get(fileAssetGUIDs.size() - 1);
-
-            this.addAvroSchemaToCatalog(userId, fileAssetGUID, fullPath);
-        }
-
-        return fileAssetGUIDs;
+        return restResult.getGUIDs();
     }
 }

@@ -14,6 +14,10 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * access service in the server and it can be configured and used.
  */
 class AssetCatalogRegistration {
+
+    private AssetCatalogRegistration() {
+    }
+
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */

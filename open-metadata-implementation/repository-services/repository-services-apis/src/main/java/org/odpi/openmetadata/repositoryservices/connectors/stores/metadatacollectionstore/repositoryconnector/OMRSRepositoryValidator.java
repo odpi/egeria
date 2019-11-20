@@ -1085,6 +1085,7 @@ public interface OMRSRepositoryValidator
      * entity instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -1094,11 +1095,13 @@ public interface OMRSRepositoryValidator
                                     InstanceHeader instance,
                                     String         methodName) throws InvalidParameterException;
 
+
     /**
      * Verify that an entity instance can be rehomed by the metadataCollection. This method is used
      * when the metadataCollection is called to rehome an entity instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -1141,6 +1144,7 @@ public interface OMRSRepositoryValidator
      * when the metadataCollection is called to update the status or properties of a relationship instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status
@@ -1150,11 +1154,13 @@ public interface OMRSRepositoryValidator
                                           InstanceHeader instance,
                                           String         methodName) throws InvalidParameterException;
 
+
     /**
      * Verify that a relationship instance can be rehomed by the metadataCollection. This method is used
      * when the metadataCollection is called to rehome a relationship instance.
      *
      * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
      * @param instance  instance to validate
      * @param methodName  name of calling method
      * @throws InvalidParameterException  the entity is in deleted status

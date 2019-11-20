@@ -89,9 +89,9 @@ public interface PersonalProfileManagementInterface
      * @param userId the name of the calling user.
      * @param profileGUID unique identifier for the profile.
      * @param qualifiedName personnel/serial/unique employee number of the individual.
-     * @throws InvalidParameterException the qualifiedName or guid is null.
+     * @throws InvalidParameterException the qualifiedName or guid is null or not recognized
      * @throws NoProfileForUserException unable to locate the profile for this userId.
-     * @throws PropertyServerException the server is not available.
+     * @throws PropertyServerException the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     void   deletePersonalProfile(String              userId,

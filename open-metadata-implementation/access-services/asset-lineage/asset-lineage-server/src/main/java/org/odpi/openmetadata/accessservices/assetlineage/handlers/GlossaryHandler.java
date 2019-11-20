@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class GlossaryHandler {
 
@@ -63,14 +62,22 @@ public class GlossaryHandler {
      * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.
      *
      * @param assetGuid guid of the asset that has been created
-     * @param userID    String - userId of user making request.
+     * @param userId    String - userId of user making request.
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
      */
-    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
+    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
+                                                          String userId,
+                                                          EntityDetail entityDetail,
+                                                          AssetContext assetContext) throws InvalidParameterException{
 
+        String methodName = "getGlossaryTerm";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
+                
         try {
             graph = assetContext;
-            boolean glossary = getGlossary(userID, assetGuid, entityDetail.getType().getTypeDefName());
+            boolean glossary = getGlossary(userId, assetGuid, entityDetail.getType().getTypeDefName());
 
             if (!glossary) {
                 log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
@@ -139,7 +146,7 @@ public class GlossaryHandler {
                                                                           GLOSSARY_TERM,
                                                                           methodName);
 
-            entityDetails.add(commonHandler.writeEntitiesAndRelationships(userId, glossaryTerm, relationship, graph));
+            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph));
         }
         return entityDetails.isEmpty();
     }

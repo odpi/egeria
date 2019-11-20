@@ -53,7 +53,11 @@ public enum AssetLineageErrorCode {
     RELATIONSHIP_NOT_FOUND(404, "OMAS-ASSET-LINEAGE-404-010",
             "Cannot get the relationships from repository, relationship does not exist.",
             "The system is unable to get the relationships for the queried entity.",
-            "Check if the relationship queried is available on the repository in the cohort.");
+            "Check if the relationship queried is available on the repository in the cohort."),
+    CLASSIFICATION_MAPPING_ERROR(400, "OMAS-ASSET-LINEAGE-404-011 ",
+            "The attempt to map a lineage entity and a classification failed because the properties could not be mapped for classification with name {0} in {1} method of class {2} to asset lineage omas {3}",
+            "The system was unable to perform the classification mapping request.",
+            "Correct the caller's code and retry the request.");
 
     public int getHTTPErrorCode()
     {

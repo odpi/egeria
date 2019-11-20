@@ -42,7 +42,7 @@ public class ReportHandler {
      * @param payload - object describing the report
      * @throws ReportSubmitException
      */
-    public void submitReportModel(String userId, ReportRequestBody payload) throws ReportSubmitException {
+    public String submitReportModel(String userId, ReportRequestBody payload) throws ReportSubmitException {
         try {
             if (log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
@@ -80,7 +80,7 @@ public class ReportHandler {
             } else {
                 reportUpdater.updateReport(userId, payload, payload.getRegistrationGuid(), payload.getRegistrationQualifiedName(), reportWrapper.getEntityDetail());
             }
-
+            return reportWrapper.getEntityDetail().getGUID();
         } catch (EntityNotKnownException | UserNotAuthorizedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | EntityNotDeletedException e) {
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),

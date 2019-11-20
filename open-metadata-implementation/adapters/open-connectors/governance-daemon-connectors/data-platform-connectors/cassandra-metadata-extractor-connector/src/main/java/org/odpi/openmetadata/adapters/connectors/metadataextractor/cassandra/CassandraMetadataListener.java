@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedData
 import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class CassandraMetadataListener implements SchemaChangeListener {
             //TODO: map tabularSchemaType and tabularColumn from keyspace metadata
 
             dataPlatformClient.createDeployedDatabaseSchema(userId, deployedDatabaseSchema);
-        } catch (InvalidParameterException | PropertyServerException | NullPointerException e){
+        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException | NullPointerException e){
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_CREATING_KEYSPACE;
             omrsAuditLog.logRecord(
                     actionDescription,

@@ -56,9 +56,9 @@ public class MoreInformationResponse extends PagedResponse
 
 
     /**
-     * Return the list of glossary terms in the response.
+     * Return the list of more information links in the response.
      *
-     * @return list of glossary terms
+     * @return list of more information links
      */
     public List<Referenceable> getList()
     {
@@ -85,7 +85,7 @@ public class MoreInformationResponse extends PagedResponse
 
 
     /**
-     * Set up the list of glossary terms for the response.
+     * Set up the list of more information links for the response.
      *
      * @param list list
      */
