@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Term extends Element {
+public class AssetElements extends Element {
 
     private List<AssetElement> elements;
 
@@ -31,8 +31,8 @@ public class Term extends Element {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Term term = (Term) o;
-        return Objects.equals(elements, term.elements);
+        AssetElements assetElements = (AssetElements) o;
+        return Objects.equals(elements, assetElements.elements);
     }
 
     @Override

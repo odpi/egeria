@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.search;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -28,7 +28,7 @@ public class AssetSearchController {
      * @return list of assets
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<Term> searchAssets(@RequestParam("searchCriteria") String searchCriteria) throws PropertyServerException, InvalidParameterException {
+    public List<AssetElements> searchAssets(@RequestParam("searchCriteria") String searchCriteria) throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return assetCatalogOMASService.searchAssets(user, searchCriteria, new SearchParameters());
     }
