@@ -2,60 +2,34 @@
 
 /* Copyright Contributors to the ODPi Egeria project. */
 import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polymer-element.js";
+import { ThemableMixin } from '../../node_modules/@vaadin/vaadin-themable-mixin';
+import { ElementMixin } from '../../node_modules/@vaadin/vaadin-element-mixin';
+import "../../node_modules/@vaadin/vaadin-lumo-styles/typography.js";
 import '../shared-styles.js';
 import {} from '@polymer/polymer/lib/elements/dom-repeat.js';
+import "../../node_modules/@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js";
+import "../../node_modules/@vaadin/vaadin-element-mixin/vaadin-element-mixin.js";
+import './breadcrumb-element.js';
 
-class BreadCrumb extends PolymerElement{
+class BreadCrumb extends ElementMixin(ThemableMixin(PolymerElement)){
   static get template() {
     return html`
-        <style>
-    .breadcrumbs {
-            background-color: #eeeeee;
-    }    
-    
-    .crumb,
-    .crumb-separator {
-            padding: 4px;
-            cursor: default;
-            color: var(--app-secondary-color);
-    }
-    .crumb {
-            border: 1px solid transparent;
-            border-radius: 4px;
-            text-decoration: underline;
-            
-            color: var(--app-secondary-color);
-       
+     <style include="lumo-typography">
+       .hidden {
+          display: none;
         }
-    .crumb:hover,
-    .crumb:focus {
-            background-color: #f2f2f2;
-            border: 1px solid #d4d4d4;
+       .breadcrumbs {
+          padding: 2px 20px;
         }
-    .crumb:active {
-            background-color: #e9e9e9;
-            border: 1px solid #d4d4d4;
-        }
-    .crumb:nth-last-child(2) {
-            background-color: #d4d4d4;
-            border: 1px solid #d4d4d4;
-        }
-    .crumb-separator:last-child {
-            display: none;
-        }   
-    </style>
-        <div class="breadcrumbs"  on-keypress="{{_onKeypress}}">
+      </style>
+        <div class="breadcrumbs">
             <dom-repeat items="{{crumbs}}">
             <template id="crumbs" >
-            <span class="crumb"
-                    idx="{{item.idx}}" 
-                    href="{{item.href}}"
-                    on-click="_onActivateCrumb"
-                    tabIndex="0">{{item.value}} </span>
-                    <span class="crumb-separator">&gt;</span>
+                <breadcrumb-element href="[[item.href]]" label="[[item.value]]"></breadcrumb-element>
             </template>
             </dom-repeat>
-        </div>`;
+        </div>
+`;
     }
 
     static get properties() {
@@ -70,14 +44,10 @@ class BreadCrumb extends PolymerElement{
         };
     }
 
-    attached() {
-
-    }
-
-
-    activateCrumb(self, crumb) {
-        window.location.href = crumb.href;
-        window.location.reload();
+    ready() {
+        super.ready();
+        this.setAttribute('aria-label', 'breadcrumb');
+        this.setAttribute('role', 'navigation');
     }
 
     renderItems(self, items) {
@@ -100,16 +70,6 @@ class BreadCrumb extends PolymerElement{
     setItems(items) {
         this.items = items;
         this.crumbs = this.renderItems(this, items);
-    };
-
-   _onActivateCrumb (event) {
-        this.activateCrumb(this, event.target);
-    };
-    _onKeypress (event) {
-        //'Enter' is pressed
-        if (event.keyCode == 13) {
-            activateCrumb(this, event.target);
-        }
     };
 
 }

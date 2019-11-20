@@ -205,10 +205,10 @@ AssetCatalogClientTest {
         when(connector.callPostRESTCall(eq("searchByType"),
                 eq(AssetResponse.class),
                 anyString(),
+                eq(searchParameters),
                 eq(SERVER_NAME),
                 eq(USER_ID),
-                eq(SEARCH_CRITERIA),
-                eq(searchParameters))).thenReturn(response);
+                eq(SEARCH_CRITERIA))).thenReturn(response);
 
         AssetResponse assetResponse = assetCatalog.searchByType(USER_ID, SEARCH_CRITERIA, searchParameters);
 
