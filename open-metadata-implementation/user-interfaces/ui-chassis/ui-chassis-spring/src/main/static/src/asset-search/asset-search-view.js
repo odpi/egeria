@@ -11,6 +11,7 @@ import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 import '@vaadin/vaadin-button/vaadin-button.js';
+import 'multiselect-combo-box/multiselect-combo-box.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 
@@ -26,7 +27,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px 20px;
+          padding: 2px 20px;
         }
         vaadin-grid {
           height: calc(100vh - 130px);
@@ -34,18 +35,25 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
+      <token-ajax id="tokenAjaxTypes" last-response="{{items}}"></token-ajax>
       
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
-            <div style="width: 200pt; display: inline-block">
-                <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
-                    <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-                </paper-input>
-            </div>
-            <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
-                <iron-icon icon="search"></iron-icon>
-            </vaadin-button>
+           <div>
+                <div style="width: 200pt; display: inline-block">
+                    <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
+                        <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
+                    </paper-input>
+                </div>
+         
+                <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
+                    <iron-icon icon="search"></iron-icon>
+                </vaadin-button>
+             
+                <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+                </multiselect-combo-box>
+           </div>
         </form>
        </iron-form>
         <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
@@ -106,14 +114,34 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 type: Array,
                 notify: true
             },
-            item: Object
+            item: Object,
+            items:{
+                type: Object,
+                notify: true
+
+            }
         };
+    }
+
+
+    ready() {
+        super.ready();
+        this.$.tokenAjaxTypes.url = '/api/types';
+        this.$.tokenAjaxTypes._go();
+
     }
 
     _search() {
         this.$.searchForm.validate();
         console.log('searching: '+ this.q);
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q;
+        var guids = [];
+        var itemsMap = new Map(Object.entries(this.items))
+
+        this.$.combo.selectedItems.forEach(function(item){
+            guids.push( itemsMap.get(item));
+        });
+
+        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + guids;
         this.$.tokenAjax._go();
     }
 
@@ -129,9 +157,12 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             composed: true,
             detail: {page: "asset-lineage",
                      subview: "ultimateSource"
-                    }}));
+            }}));
     }
 
+    _getTypesNames(allTypes){
+        return Object.keys(allTypes);
+    }
 
     attached() {
         this.loadResources(

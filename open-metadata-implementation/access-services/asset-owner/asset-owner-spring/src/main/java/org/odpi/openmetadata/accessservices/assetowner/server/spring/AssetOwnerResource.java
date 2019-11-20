@@ -3,19 +3,15 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
-
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.springframework.web.bind.annotation.*;
 
@@ -159,6 +155,36 @@ public class AssetOwnerResource
 
 
     /**
+     * Create a simple relationship between a glossary term and an Asset description.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that is being described
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody null request body to satisfy POST request.
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}")
+
+    public VoidResponse  addSemanticAssignment(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @PathVariable String          assetGUID,
+                                               @PathVariable String          glossaryTermGUID,
+                                               @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.addSemanticAssignment(serverName,
+                                             userId,
+                                             assetGUID,
+                                             glossaryTermGUID,
+                                             requestBody);
+    }
+
+
+    /**
      * Create a simple relationship between a glossary term and an element in an Asset description (typically
      * a field in the schema).
      *
@@ -174,7 +200,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/elements/{assetElementGUID}")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}")
 
     public VoidResponse  addSemanticAssignment(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -193,6 +219,63 @@ public class AssetOwnerResource
 
 
     /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/delete")
+
+    VoidResponse  removeSemanticAssignment(@PathVariable String          serverName,
+                                           @PathVariable String          userId,
+                                           @PathVariable String          assetGUID,
+                                           @PathVariable String          glossaryTermGUID,
+                                           @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.removeSemanticAssignment(serverName, userId, assetGUID, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}/delete")
+
+    public VoidResponse  removeSemanticAssignment(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @PathVariable String          assetGUID,
+                                                  @PathVariable String          glossaryTermGUID,
+                                                  @PathVariable String          assetElementGUID,
+                                                  @PathVariable NullRequestBody requestBody)
+    {
+        return restAPI.removeSemanticAssignment(serverName, userId, assetGUID, glossaryTermGUID, assetElementGUID, requestBody);
+    }
+
+
+    /**
+     * Set up the labels that classify an asset's origin.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
@@ -215,83 +298,28 @@ public class AssetOwnerResource
     }
 
 
-    /*
-     * ==============================================
-     * AssetVisibilityInterface
-     * ==============================================
-     */
-
-
     /**
-     * Create a definition of a governance zone.  The qualified name of these governance zones can be added
-     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
-     * to indicate which zone(s) they belong to.
+     * Remove the asset origin classification to an asset.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody other properties for a governance zone
+     * @param assetGUID unique identifier of asset
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-zones/")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/origin/delete")
 
-    public VoidResponse  createGovernanceZone(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @RequestBody  ZoneRequestBody requestBody)
+    public VoidResponse  removeAssetOrigin(@PathVariable String                serverName,
+                                           @PathVariable String                userId,
+                                           @PathVariable String                assetGUID,
+                                           @RequestBody  NullRequestBody       requestBody)
     {
-        return restAPI.createGovernanceZone(serverName, userId, requestBody);
+        return restAPI.removeAssetOrigin(serverName, userId, assetGUID, requestBody);
     }
-
-
-    /**
-     * Return information about all of the governance zones.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
-     *
-     * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-zones/")
-
-    public ZoneListResponse getGovernanceZones(@PathVariable String   serverName,
-                                               @PathVariable String   userId,
-                                               @RequestParam int      startingFrom,
-                                               @RequestParam int      maximumResults)
-    {
-        return restAPI.getGovernanceZones(serverName, userId, startingFrom, maximumResults);
-    }
-
-
-    /**
-     * Return information about a specific governance zone.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param qualifiedName unique name for the zone
-     *
-     * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-zones/name/{qualifiedName}")
-
-    public ZoneResponse getGovernanceZone(@PathVariable String   serverName,
-                                          @PathVariable String   userId,
-                                          @PathVariable String   qualifiedName)
-    {
-        return restAPI.getGovernanceZone(serverName, userId, qualifiedName);
-    }
-
 
 
     /**
@@ -343,6 +371,105 @@ public class AssetOwnerResource
         return restAPI.updateAssetOwner(serverName, userId, assetGUID, requestBody);
     }
 
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/security-tags")
+
+    public VoidResponse  addSecurityTags(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @PathVariable String                  assetGUID,
+                                         @RequestBody  SecurityTagsRequestBody requestBody)
+    {
+        return restAPI.addSecurityTags(serverName, userId, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags")
+
+    public VoidResponse  addSecurityTags(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @PathVariable String                  assetGUID,
+                                         @PathVariable String                  assetElementGUID,
+                                         @RequestBody  SecurityTagsRequestBody requestBody)
+    {
+        return restAPI.addSecurityTags(serverName, userId, assetGUID, assetElementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the security tags classification from an asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/security-tags/delete")
+
+    public VoidResponse  removeSecurityTags(String                serverName,
+                                            String                userId,
+                                            String                assetGUID,
+                                            NullRequestBody       requestBody)
+    {
+        return restAPI.removeSecurityTags(serverName, userId, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the security tags classification to one of an asset's elements.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element where the security tags need to be removed.
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags/delete")
+
+    public VoidResponse  removeSecurityTags(String                serverName,
+                                            String                userId,
+                                            String                assetGUID,
+                                            String                assetElementGUID,
+                                            NullRequestBody       requestBody)
+    {
+        return restAPI.removeSecurityTags(serverName, userId, assetGUID, assetElementGUID, requestBody);
+    }
 
 
     /*

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogE
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -639,9 +639,9 @@ public class AssetCatalogHandlerTest {
                 SequencingOrder.ANY,
                 PAGE_SIZE)).thenReturn(mockEntities());
 
-        List<Term> terms = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
-        assertEquals(FIRST_GUID, terms.get(0).getGuid());
-        assertEquals(ASSET_TYPE, terms.get(0).getTypeDefName());
+        List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
+        assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
+        assertEquals(ASSET_TYPE, assetElements.get(0).getTypeDefName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(), searchParams.getPageSize(), methodName);
         verify(invalidParameterHandler, times(1)).validateObject(searchParams, "searchParameter", methodName);
@@ -841,10 +841,10 @@ public class AssetCatalogHandlerTest {
         mockMetadataCollection();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
-        Term term = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
+        AssetElements assetElements = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
 
-        assertEquals(FIRST_GUID, term.getGuid());
-        assertEquals(ASSET_TYPE, term.getTypeDefName());
+        assertEquals(FIRST_GUID, assetElements.getGuid());
+        assertEquals(ASSET_TYPE, assetElements.getTypeDefName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
     }
 

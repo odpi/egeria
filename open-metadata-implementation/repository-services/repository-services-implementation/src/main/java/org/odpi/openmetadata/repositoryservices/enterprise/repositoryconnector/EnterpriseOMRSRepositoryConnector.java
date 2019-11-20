@@ -347,9 +347,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             if (! localMetadataCollectionId.equals(entity.getMetadataCollectionId()))
             {
-                localEventProcessor.processRetrievedEntitySummary(repositoryName,
-                                                                  localMetadataCollectionId,
-                                                                  entity);
+                localEventProcessor.processRetrievedEntityDetail(repositoryName,
+                                                                 localMetadataCollectionId,
+                                                                 entity);
             }
         }
     }

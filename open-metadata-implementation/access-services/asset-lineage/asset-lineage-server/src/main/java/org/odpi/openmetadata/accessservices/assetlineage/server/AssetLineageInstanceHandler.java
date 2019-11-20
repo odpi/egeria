@@ -2,15 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.server;
 
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 
 /**
  * AssetLineageInstanceHandler retrieves information from the instance map for the
@@ -115,6 +113,29 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
 
         if (instance != null) {
             return instance.getProcessHandler();
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve classification handler for the access service.
+     *
+     * @param userId               the user id
+     * @param serverName           the server name
+     * @param serviceOperationName the service operation name
+     * @return the classification handler
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     */
+    public ClassificationHandler getClassificationHandler(String userId, String serverName, String serviceOperationName) throws
+            InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null) {
+            return instance.getClassificationHandler();
         }
 
         return null;

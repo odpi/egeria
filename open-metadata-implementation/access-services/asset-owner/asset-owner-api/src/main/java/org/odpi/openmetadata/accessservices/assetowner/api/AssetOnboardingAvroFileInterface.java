@@ -36,20 +36,4 @@ public interface AssetOnboardingAvroFileInterface
                                       String fullPath) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException;
-
-
-    /**
-     * Ensure the schema associated with an Avro file is correct.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier for the Avro file's asset in the catalog
-     *
-     * @throws InvalidParameterException full path or assetId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void refreshAvroSchemaInCatalog(String    userId,
-                                    String    assetGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
 }

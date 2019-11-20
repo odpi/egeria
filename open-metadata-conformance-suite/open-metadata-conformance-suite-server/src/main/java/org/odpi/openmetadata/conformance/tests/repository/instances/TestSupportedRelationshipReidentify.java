@@ -6,7 +6,9 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -16,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -306,6 +309,123 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                 entityTwo.getGUID());
 
         super.setSuccessMessage("Relationships can be reidentified");
+    }
+
+
+
+    /**
+     * Method to clean any instance created by the test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    public void cleanup() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Find any relationships of the given type def and delete them....
+         */
+
+        int fromElement = 0;
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
+        int resultSize = 0;
+
+        do {
+
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
+
+
+            List<Relationship> relationships = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    emptyMatchProperties,
+                    MatchCriteria.ANY,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
+
+
+            if (relationships == null) {
+                /*
+                 * There are no instances of this type reported by the repository.
+                 */
+                return;
+
+            }
+
+            /*
+             * Report how many relationships were left behind at the end of the test run
+             */
+
+            System.out.println("At completion of testcase "+testTypeName+", there were " + relationships.size() + " relationships found");
+
+            for (Relationship relationship : relationships) {
+
+
+                /*
+                 * Local variables for end2
+                 */
+                EntityProxy end1;
+                EntityProxy end2;
+
+
+                end1 = relationship.getEntityOneProxy();
+                end2 = relationship.getEntityTwoProxy();
+
+
+                try {
+
+                    /*
+                     * Delete the relationship and then both end entities.
+                     * Deleting either entity first would delete the relationship, but
+                     * this sequence is a little more orderly.
+                     */
+
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                            relationship.getType().getTypeDefGUID(),
+                            relationship.getType().getTypeDefName(),
+                            relationship.getGUID());
+
+
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            end1.getType().getTypeDefGUID(),
+                            end1.getType().getTypeDefName(),
+                            end1.getGUID());
+
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            end2.getType().getTypeDefGUID(),
+                            end2.getType().getTypeDefName(),
+                            end2.getGUID());
+
+
+                } catch (FunctionNotSupportedException exception) {
+                    // NO OP - can proceed to purge
+                }
+
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                        relationship.getType().getTypeDefGUID(),
+                        relationship.getType().getTypeDefName(),
+                        relationship.getGUID());
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        end1.getType().getTypeDefGUID(),
+                        end1.getType().getTypeDefName(),
+                        end1.getGUID());
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        end2.getType().getTypeDefGUID(),
+                        end2.getType().getTypeDefName(),
+                        end2.getGUID());
+
+
+                System.out.println("Relationship wth GUID " + relationship.getGUID() + " removed");
+            }
+
+        } while (resultSize >= pageSize);
+
     }
 
 

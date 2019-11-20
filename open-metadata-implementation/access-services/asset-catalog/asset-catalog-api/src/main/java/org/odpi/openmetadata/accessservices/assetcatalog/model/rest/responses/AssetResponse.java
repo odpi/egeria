@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
-    private List<Term> assets = new ArrayList<>();
+    private List<AssetElements> assets = new ArrayList<>();
 
-    public List<Term> getAssets() {
+    public List<AssetElements> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<Term> assets) {
+    public void setAssets(List<AssetElements> assets) {
         this.assets = assets;
     }
 

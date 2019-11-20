@@ -39,84 +39,83 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
 /**
  * Test that all defined relationships can be retrieved by property searches.
  */
-public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryConformanceTestCase
-{
+public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryConformanceTestCase {
     private static final String testCaseId = "repository-relationship-property-advanced-search";
     private static final String testCaseName = "Repository relationship property advanced search test case";
 
 
     /* Test 1 */
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " search returned results.";
-    private static final String assertion2     = testCaseId + "-02";
-    private static final String assertionMsg2  = " search contained all expected results.";
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = " search contained only valid results.";
+    private static final String assertion1 = testCaseId + "-01";
+    private static final String assertionMsg1 = " search returned results.";
+    private static final String assertion2 = testCaseId + "-02";
+    private static final String assertionMsg2 = " search contained all expected results.";
+    private static final String assertion3 = testCaseId + "-03";
+    private static final String assertionMsg3 = " search contained only valid results.";
 
     /* Test 2 */
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " search contained only valid results.";
+    private static final String assertion4 = testCaseId + "-04";
+    private static final String assertionMsg4 = " search contained only valid results.";
 
     /* Test 3 */
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " search returned results.";
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " search contained all expected results.";
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " search contained only valid results.";
+    private static final String assertion5 = testCaseId + "-05";
+    private static final String assertionMsg5 = " search returned results.";
+    private static final String assertion6 = testCaseId + "-06";
+    private static final String assertionMsg6 = " search contained all expected results.";
+    private static final String assertion7 = testCaseId + "-07";
+    private static final String assertionMsg7 = " search contained only valid results.";
 
     /* Test 4 */
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " search returned results.";
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " search contained all expected results.";
-    private static final String assertion10    = testCaseId + "-10";
+    private static final String assertion8 = testCaseId + "-08";
+    private static final String assertionMsg8 = " search returned results.";
+    private static final String assertion9 = testCaseId + "-09";
+    private static final String assertionMsg9 = " search contained all expected results.";
+    private static final String assertion10 = testCaseId + "-10";
     private static final String assertionMsg10 = " search contained only valid results.";
 
     /* Test 5 */
-    private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = " search returned results.";
-    private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = " search contained all expected results.";
-    private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " search contained only valid results.";
+    private static final String assertion11 = testCaseId + "-11";
+    private static final String assertionMsg11 = " search returned results.";
+    private static final String assertion12 = testCaseId + "-12";
+    private static final String assertionMsg12 = " search contained all expected results.";
+    private static final String assertion13 = testCaseId + "-13";
+    private static final String assertionMsg13 = " search contained only valid results.";
 
     /* Test 6 */
-    private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = " search returned results.";
-    private static final String assertion15     = testCaseId + "-15";
+    private static final String assertion14 = testCaseId + "-14";
+    private static final String assertionMsg14 = " search returned results.";
+    private static final String assertion15 = testCaseId + "-15";
     private static final String assertionMsg15 = " search contained all expected results.";
-    private static final String assertion16     = testCaseId + "-16";
-    private static final String assertionMsg16  = " search contained no unexpected results.";
+    private static final String assertion16 = testCaseId + "-16";
+    private static final String assertionMsg16 = " search contained no unexpected results.";
 
     /* Test 7 */
-    private static final String assertion17     = testCaseId + "-17";
-    private static final String assertionMsg17  = " value search returned results.";
-    private static final String assertion18     = testCaseId + "-18";
+    private static final String assertion17 = testCaseId + "-17";
+    private static final String assertionMsg17 = " value search returned results.";
+    private static final String assertion18 = testCaseId + "-18";
     private static final String assertionMsg18 = " value search contained all expected results.";
-    private static final String assertion19     = testCaseId + "-19";
-    private static final String assertionMsg19  = " value search contained no unexpected results.";
+    private static final String assertion19 = testCaseId + "-19";
+    private static final String assertionMsg19 = " value search contained no unexpected results.";
 
     /* Test 8 */
-    private static final String assertion20     = testCaseId + "-20";
-    private static final String assertionMsg20  = " value search returned results.";
-    private static final String assertion21     = testCaseId + "-21";
+    private static final String assertion20 = testCaseId + "-20";
+    private static final String assertionMsg20 = " value search returned results.";
+    private static final String assertion21 = testCaseId + "-21";
     private static final String assertionMsg21 = " value search contained all expected results.";
-    private static final String assertion22     = testCaseId + "-22";
-    private static final String assertionMsg22  = " value search contained no unexpected results.";
+    private static final String assertion22 = testCaseId + "-22";
+    private static final String assertionMsg22 = " value search contained no unexpected results.";
 
-    private static final String discoveredProperty_searchSupport       = " advanced search support";
+    private static final String discoveredProperty_searchSupport = " advanced search support";
 
-    private String            metadataCollectionId;
-    private Map<String, EntityDef>       entityDefs;
-    private RelationshipDef   relationshipDef;
+    private String metadataCollectionId;
+    private Map<String, EntityDef> entityDefs;
+    private RelationshipDef relationshipDef;
     private List<TypeDefAttribute> attrList;
 
-    private String            testTypeName;
+    private String testTypeName;
 
 
-    private boolean           multiSetTest = false;
-    private String            firstStringAttributeName = null;
+    private boolean multiSetTest = false;
+    private String firstStringAttributeName = null;
 
 
     private InstanceProperties instProps0;
@@ -136,24 +135,24 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
      *
-     * @param workPad place for parameters and results
+     * @param workPad         place for parameters and results
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipPropertyAdvancedSearch(RepositoryConformanceWorkPad workPad,
-                                                           Map<String, EntityDef>       entityDefs,
-                                                           RelationshipDef              relationshipDef)
+                                                           Map<String, EntityDef> entityDefs,
+                                                           RelationshipDef relationshipDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
-        this.entityDefs      = entityDefs;
+        this.entityDefs = entityDefs;
         this.relationshipDef = relationshipDef;
 
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
-                                                    testCaseId,
-                                                    testCaseName);
+                testCaseId,
+                testCaseName);
 
         this.instProps0 = null;
         this.instProps1 = null;
@@ -179,7 +178,7 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
     protected void run() throws Exception
     {
 
-       throw new Exception("This is a multi--phase testcase; please invoke it with a phase parameter");
+        throw new Exception("This is a multi--phase testcase; please invoke it with a phase parameter");
     }
 
     /**
@@ -257,13 +256,13 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
         switch (phase) {
 
             case CREATE:
-                this.createInstances( metadataCollection );
+                this.createInstances(metadataCollection);
                 break;
             case EXECUTE:
-                this.performFinds( metadataCollection );
+                this.performFinds(metadataCollection);
                 break;
             case CLEAN:
-                this.cleanInstances( metadataCollection );
+                this.cleanInstances(metadataCollection);
                 break;
         }
     }
@@ -297,20 +296,37 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
         }
 
         /*
-         * Create two relationships for each set.
+         * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
          */
 
-        this.relationshipSet_0 = new ArrayList<>();
-        this.populateRelationshipSet(metadataCollection, this.relationshipSet_0, this.instProps0);
+        try {
 
-        if (this.multiSetTest) {
 
-            this.relationshipSet_1 = new ArrayList<>();
-            this.populateRelationshipSet(metadataCollection, this.relationshipSet_1, this.instProps1);
+            /*
+             * Create two relationships for each set.
+             */
 
-            this.relationshipSet_2 = new ArrayList<>();
-            this.populateRelationshipSet(metadataCollection, this.relationshipSet_2, this.instProps2);
+            this.relationshipSet_0 = new ArrayList<>();
+            this.populateRelationshipSet(metadataCollection, this.relationshipSet_0, this.instProps0);
 
+            if (this.multiSetTest) {
+
+                this.relationshipSet_1 = new ArrayList<>();
+                this.populateRelationshipSet(metadataCollection, this.relationshipSet_1, this.instProps1);
+
+                this.relationshipSet_2 = new ArrayList<>();
+                this.populateRelationshipSet(metadataCollection, this.relationshipSet_2, this.instProps2);
+
+            }
+
+        } catch (
+                FunctionNotSupportedException exception) {
+
+            /*
+             * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
+             * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
+             */
+            return;
         }
 
     }
@@ -348,17 +364,25 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
     private void cleanInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        /*
-         * Clean up all relationships (and their associated entities) created by this testcase
-         */
 
-        this.cleanRelationshipSet(metadataCollection, relationshipSet_0);
-        if (this.multiSetTest) {
-            this.cleanRelationshipSet(metadataCollection, relationshipSet_1);
-            this.cleanRelationshipSet(metadataCollection, relationshipSet_2);
+        List<Relationship> workpad_set0 = repositoryConformanceWorkPad.getRelationshipInstanceSet(relationshipDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Clean up all instance sets
+             */
+            /*
+             * Clean up all relationships (and their associated entities) created by this testcase
+             */
+
+            this.cleanRelationshipSet(metadataCollection, relationshipSet_0);
+            if (this.multiSetTest) {
+                this.cleanRelationshipSet(metadataCollection, relationshipSet_1);
+                this.cleanRelationshipSet(metadataCollection, relationshipSet_2);
+            }
+
         }
-
-
     }
 
 
@@ -424,13 +448,23 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
     private void performFinds(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        if (this.multiSetTest)
-            this.performFindsMultiSet(metadataCollection);
-        else {
+
+        List<Relationship> workpad_set0 = repositoryConformanceWorkPad.getRelationshipInstanceSet(relationshipDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
             /*
-             * If not multiSet it is because there is no string property - so no possibility of performing a regex test
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Run the tests
              */
-            return;
+
+            if (this.multiSetTest)
+                this.performFindsMultiSet(metadataCollection);
+            else {
+                /*
+                 * If not multiSet it is because there is no string property - so no possibility of performing a regex test
+                 */
+                return;
+            }
         }
     }
 
