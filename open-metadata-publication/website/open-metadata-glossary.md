@@ -40,6 +40,10 @@
 * [Archives for Open Metadata](../../open-metadata-resources/open-metadata-archives)
   * [Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
 * [Asset](../../open-metadata-implementation/access-services/docs/concepts/assets/README.md)
+  * [Governance Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
+  * [Attachments](../../open-metadata-implementation/access-services/docs/concepts/attachments)
+  * [Feedback](../../open-metadata-implementation/access-services/docs/concepts/feedback)
+  * [Open Metadata Type](open-metadata-types/0010-Base-Model.md)
 * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
 * [Asset Consumer](../../open-metadata-implementation/access-services/docs/concepts/user-roles/asset-consumer.md)
 * [Asset Consumer OMAS](../../open-metadata-implementation/access-services/asset-consumer)
@@ -52,6 +56,7 @@
 
 ## B
 
+* [Basic File Connector](../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector)
 
 ## C
 
@@ -97,6 +102,7 @@
 * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
 * [Data Science OMAS](../../open-metadata-implementation/access-services/data-science)
 * [Data Store Connectors](../../open-metadata-implementation/adapters/open-connectors/data-store-connectors)
+* [defaultZones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 * [Demos](../../open-metadata-resources)
 * [Design Model OMAS](../../open-metadata-implementation/access-services/design-model)
 * [DevOps OMAS](../../open-metadata-implementation/access-services/dev-ops)
@@ -136,6 +142,7 @@
 * [Governance Engines Plugins](../../open-metadata-implementation/adapters/governance-engines-plugins)
 * [Governance Program OMAS](../../open-metadata-implementation/access-services/governance-program)
 * [Governance Servers](../../open-metadata-implementation/governance-servers)
+* [Governance Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 * [Graph Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)
 * [GUIDs](basic-concepts/guid.md)
   * [Access services GUIDs](../../open-metadata-implementation/access-services/docs/concepts/guid.md)
@@ -341,6 +348,7 @@
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
 * [Stewardship Action OMAS](../../open-metadata-implementation/access-services/stewardship-action)
 * [Subject Area OMAS](../../open-metadata-implementation/access-services/subject-area)
+* [supportedZones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
 
 
@@ -385,6 +393,8 @@
 
 ## Z
 
+* Zones
+  * [Governance Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
 
 ----

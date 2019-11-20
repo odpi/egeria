@@ -108,8 +108,8 @@ public interface AssetConsumerFeedbackInterface
                              CommentType commentType,
                              String      commentText,
                              boolean     isPublic) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException;
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException;
 
 
     /**
@@ -134,8 +134,8 @@ public interface AssetConsumerFeedbackInterface
                            CommentType commentType,
                            String      commentText,
                            boolean     isPublic) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException;
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException;
 
 
     /**
@@ -158,8 +158,8 @@ public interface AssetConsumerFeedbackInterface
                          CommentType commentType,
                          String      commentText,
                          boolean     isPublic) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException;
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException;
 
 
     /**

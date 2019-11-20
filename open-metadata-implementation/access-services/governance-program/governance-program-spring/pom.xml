@@ -39,6 +39,11 @@
             <artifactId>governance-program-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
+        </dependency>
+
         <!-- Spring for REST APIs -->
 
         <dependency>

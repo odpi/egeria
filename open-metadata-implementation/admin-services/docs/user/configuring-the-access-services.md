@@ -5,17 +5,24 @@
 
 The [Open Metadata Access Services (OMASs)](../../../access-services) provide the domain-specific
 APIs for metadata management and governance.
+They run in a metadata server and typically offer a REST API, Java client and an event-based interface for
+asynchronous interaction.
 
-#### Enable the access services
+## Prerequisite configuration
 
-To enable the access services (and the enterprise
-repository services that support them) use the following command.
+The access service configuration depends on the definitions of the [event bus](configuring-event-bus.md)
+and the [local server's userId](configuring-omag-server-basic-properties.md).
+  
+## Enable the access services
+
+To enable all of the access services (and the [Enterprise Repository Services](../../../repository-services/docs/subsystem-descriptions/enterprise-repository-services.md)
+that support them) with default configuration values use the following command.
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
 ```
 
-#### Disable the access services
+## Disable the access services
 
 
 The access services can be disabled with the following command.

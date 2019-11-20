@@ -46,7 +46,7 @@ Sample:
                     "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STATE",
                     "name": "STATE",
                     "position": 20,
-                    "businessTerm": {
+                    "businessTerms": [{
                         "guid": "6662c0f2.e1b1ec6c.00263phfe.hdcsrms.095jod.69a74ckl4hrfodcsgeu2d",
                         "name": "State",
                         "description": "",
@@ -55,7 +55,7 @@ Sample:
                         "summary": "",
                         "examples": "",
                         "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=State"
-                    },
+                    }],
                     "isNullable": false,
                     "isUnique": false,
                     "isPrimaryKey": false
@@ -65,7 +65,7 @@ Sample:
                     "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=EMPSTATUS",
                     "name": "EMPSTATUS",
                     "position": 4,
-                    "businessTerm": {
+                    "businessTerms": [{
                         "guid": "6662c0f2.e1b1ec6c.00263pfrb.66t5p8c.jk5353.69k7s3u2do49odaavci58",
                         "name": "Employee Status",
                         "description": "",
@@ -74,7 +74,7 @@ Sample:
                         "summary": "Employee Status represents current various status that an employee could have. Possible values: 1=Student; 2=Temporary-Assignment; 3=Board-Advisor; 4=Sabbatical; 5=Executive; 6=Part-Time-Perm; 7=Full-Time-Perm; 8=Left; 9=Retired; 10=DIS",
                         "examples": "",
                         "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Employee Status"
-                    },
+                    }],
                     "isNullable": false,
                     "isUnique": false,
                     "isPrimaryKey": false
@@ -84,7 +84,7 @@ Sample:
                     "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=TAXP",
                     "name": "TAXP",
                     "position": 22,
-                    "businessTerm": {
+                    "businessTerms": [{
                         "guid": "6662c0f2.e1b1ec6c.00263phg8.gdtncls.audklp.e6or1vj80e3j7mgaqignr",
                         "name": "Tax State",
                         "description": "",
@@ -93,7 +93,7 @@ Sample:
                         "summary": "",
                         "examples": "",
                         "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Tax State"
-                    },
+                    }],
                     "isNullable": false,
                     "isUnique": false,
                     "isPrimaryKey": false
@@ -103,7 +103,7 @@ Sample:
                     "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=BONUS",
                     "name": "BONUS",
                     "position": 16,
-                    "businessTerm": {
+                    "businessTerms": [{
                         "guid": "6662c0f2.e1b1ec6c.00263ph59.aqte17n.28ed5t.81mkudrsucorsqicli64s",
                         "name": "Discretionary Bonus",
                         "description": "",
@@ -112,7 +112,7 @@ Sample:
                         "summary": "",
                         "examples": "",
                         "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Discretionary Bonus"
-                    },
+                    }],
                     "isNullable": false,
                     "isUnique": false,
                     "isPrimaryKey": false
@@ -122,7 +122,7 @@ Sample:
                     "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STREET",
                     "name": "STREET",
                     "position": 18,
-                    "businessTerm": {
+                    "businessTerms": [{
                         "guid": "6662c0f2.e1b1ec6c.00263ph63.beh4unk.9jn1qm.db96h9bqgj8gkjoj7qhh6",
                         "name": "Street",
                         "description": "",
@@ -131,7 +131,7 @@ Sample:
                         "summary": "",
                         "examples": "",
                         "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Street"
-                    },
+                    }],
                     "isNullable": false,
                     "isUnique": false,
                     "isPrimaryKey": false

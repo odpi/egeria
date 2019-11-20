@@ -464,8 +464,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
             //OMRSAsyncEventProcessingContext so that the event will not be
             //treated as consumed quite yet.
             
-            BufferedInstanceEvent event = new BufferedInstanceEvent(instanceEvent, InternalOMRSEventProcessingContext.getInstance()
-                    .getCurrentMessageId());
+            BufferedInstanceEvent event = new BufferedInstanceEvent(instanceEvent,
+                                                                    InternalOMRSEventProcessingContext.getInstance().getCurrentMessageId());
             instanceEventBuffer.add(event);
             InternalOMRSEventProcessingContext context = InternalOMRSEventProcessingContext.getInstance();
             context.addAsyncProcessingResult(event.getFuture());
@@ -724,6 +724,37 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                              originatorServerType,
                                              originatorOrganizationName,
                                              entity);
+        }
+    }
+
+
+    /**
+     * An entity has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the version of the entity that has been purged.
+     */
+    public void processPurgedEntityEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
+                                         EntityDetail entity)
+    {
+        if (repositoryValidator.validEntity(sourceName, entity))
+        {
+            super.processPurgedEntityEvent(sourceName,
+                                           originatorMetadataCollectionId,
+                                           originatorServerName,
+                                           originatorServerType,
+                                           originatorOrganizationName,
+                                           entity);
         }
     }
 
@@ -1146,6 +1177,37 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                                    originatorServerType,
                                                    originatorOrganizationName,
                                                    relationship);
+        }
+    }
+
+
+    /**
+     * A relationship has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param relationship  details of the  relationship that has been purged.
+     */
+    public void processPurgedRelationshipEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               Relationship relationship)
+    {
+        if (repositoryValidator.validRelationship(sourceName, relationship))
+        {
+            super.processPurgedRelationshipEvent(sourceName,
+                                                 originatorMetadataCollectionId,
+                                                 originatorServerName,
+                                                 originatorServerType,
+                                                 originatorOrganizationName,
+                                                 relationship);
         }
     }
 

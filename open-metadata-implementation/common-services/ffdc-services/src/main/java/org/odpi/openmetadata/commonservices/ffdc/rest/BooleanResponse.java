@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BooleanResponse extends FFDCResponseBase
 {
-    private boolean   flag = false;
+    private boolean   flag = true;
 
 
     /**
@@ -60,7 +60,7 @@ public class BooleanResponse extends FFDCResponseBase
 
 
     /**
-     * set up the boolean result.
+     * Set up the boolean result.
      *
      * @param flag boolean
      */

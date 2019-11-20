@@ -98,6 +98,7 @@ public class OMRSArchiveHelper
     {
         PrimitiveDef  primitiveDef = new PrimitiveDef(primitiveDefCategory);
 
+        primitiveDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         primitiveDef.setGUID(primitiveDefCategory.getGUID());
         primitiveDef.setName(primitiveDefCategory.getName());
         primitiveDef.setVersion(versionNumber);
@@ -125,6 +126,7 @@ public class OMRSArchiveHelper
     {
         CollectionDef   collectionDef = new CollectionDef(CollectionDefCategory.OM_COLLECTION_ARRAY);
 
+        collectionDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         collectionDef.setGUID(guid);
         collectionDef.setName("array<" + arrayType.getName() + ">");
         collectionDef.setDescription(description);
@@ -160,6 +162,7 @@ public class OMRSArchiveHelper
     {
         CollectionDef   collectionDef = new CollectionDef(CollectionDefCategory.OM_COLLECTION_MAP);
 
+        collectionDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         collectionDef.setGUID(guid);
         collectionDef.setName("map<" + propertyKeyType.getName() + "," + propertyValueType.getName() + ">");
         collectionDef.setDescription(description);
@@ -192,6 +195,7 @@ public class OMRSArchiveHelper
     {
         EnumDef  enumDef = new EnumDef();
 
+        enumDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         enumDef.setGUID(guid);
         enumDef.setName(name);
         enumDef.setDescription(description);
@@ -220,6 +224,7 @@ public class OMRSArchiveHelper
     {
         EnumElementDef   enumElementDef = new EnumElementDef();
 
+        enumElementDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         enumElementDef.setOrdinal(ordinal);
         enumElementDef.setValue(value);
         enumElementDef.setDescription(description);
@@ -247,6 +252,8 @@ public class OMRSArchiveHelper
                                           String                  descriptionGUID)
     {
         EntityDef entityDef = new EntityDef();
+
+        entityDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
 
         /*
          * Set up the parameters supplied by the caller.
@@ -296,6 +303,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -329,6 +337,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -362,6 +371,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -395,6 +405,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -428,6 +439,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -461,6 +473,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -495,6 +508,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -529,6 +543,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -563,6 +578,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -597,6 +613,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -631,6 +648,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -665,6 +683,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -699,6 +718,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -734,6 +754,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -769,6 +790,7 @@ public class OMRSArchiveHelper
     {
         TypeDefAttribute     attribute = new TypeDefAttribute();
 
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         attribute.setAttributeName(attributeName);
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
@@ -805,6 +827,8 @@ public class OMRSArchiveHelper
                                                    ClassificationPropagationRule propagationRule)
     {
         RelationshipDef relationshipDef = new RelationshipDef();
+
+        relationshipDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
 
         /*
          * Set up the parameters supplied by the caller.
@@ -860,6 +884,7 @@ public class OMRSArchiveHelper
     {
         RelationshipEndDef  relationshipEndDef = new RelationshipEndDef();
 
+        relationshipEndDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
         relationshipEndDef.setEntityType(entityType);
         relationshipEndDef.setAttributeName(attributeName);
         relationshipEndDef.setAttributeDescription(attributeDescription);
@@ -892,6 +917,8 @@ public class OMRSArchiveHelper
                                                   boolean                       propagatable)
     {
         ClassificationDef classificationDef = new ClassificationDef();
+
+        classificationDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
 
         /*
          * Set up the parameters supplied by the caller.
@@ -1189,6 +1216,7 @@ public class OMRSArchiveHelper
                                         InstanceType         type,
                                         InstanceStatus       status)
     {
+        instanceAuditHeader.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         instanceAuditHeader.setCreatedBy(originatorName);
         instanceAuditHeader.setCreateTime(creationDate);
         instanceAuditHeader.setInstanceLicense(license);

@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
@@ -70,7 +69,7 @@ public class ProcessHandler {
 
         try {
 
-            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid);
+            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid, PROCESS);
             if (!entityDetail.isPresent()) {
                 log.error("Entity with guid {} was not found in any metadata repository", processGuid);
 
@@ -149,7 +148,7 @@ public class ProcessHandler {
                                                                String relationshipType, String typeDefName) throws UserNotAuthorizedException,
                                                                                                                    PropertyServerException,
                                                                                                                    InvalidParameterException {
-        List<Relationship> relationships = commonHandler.getRelationshipByType(userId, guid, relationshipType,typeDefName);
+        List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, guid, relationshipType,typeDefName);
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
         if (startEntity == null) return Collections.emptyList();
@@ -161,8 +160,9 @@ public class ProcessHandler {
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
                 continue;
             }
-            EntityDetail endEntity = commonHandler.writeEntitiesAndRelationships(userId,startEntity,relationship,graph);
+            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph);
             if(endEntity == null) return Collections.emptyList();
+
             entityDetails.add(endEntity);
         }
 
@@ -205,7 +205,7 @@ public class ProcessHandler {
         }
         return result;
     }
-
+    
     private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
@@ -231,25 +231,6 @@ public class ProcessHandler {
                                                                                             processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                                                                             entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
-        }
-        return getTabularColumnTypes(result,userId);
-    }
-
-    private List<EntityDetail> getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException {
-        List<EntityDetail>  result = new ArrayList<>();
-        for (EntityDetail entityDetail : entityDetails) {
-            List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                                                                          processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                          entityDetail.getType().getTypeDefName());
-
-            newListOfEntityDetails = newListOfEntityDetails.stream().filter(entity -> entity.getType().getTypeDefName().equals(TABULAR_COLUMN_TYPE)).collect(Collectors.toList());
-
-            if(!newListOfEntityDetails.isEmpty()){
-                Optional<EntityDetail> first = newListOfEntityDetails.stream().findFirst();
-                result.add(first.orElse(null));
-            }
         }
         return endRelationship(result,userId);
     }

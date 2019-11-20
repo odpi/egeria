@@ -85,6 +85,7 @@ following interfaces:
 * **OpenMetadataAssetSecurity** - validates what a user is allowed to do with to Assets.
   The methods are given access to the whole asset to allow a variety of values to be tested.
   
+  * **setSupportedZonesForUser** - Provides an opportunity to override the deployed module setting of [**supportedZones**](../../access-services/docs/concepts/governance-zones) for a user specific list.
   * **validateUserForAssetCreate** - Tests for whether a specific user should have the right to create an asset.
   * **validateUserForAssetRead** - Tests for whether a specific user should have read access to a specific asset.
   * **validateUserForAssetDetailUpdate** - Tests for whether a specific user should have the right to update an asset.

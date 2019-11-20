@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconne
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -270,19 +272,36 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case PURGED_ENTITY_EVENT:
-                    this.logIncomingEvent(instanceEventType,
-                                          instanceEvent.getInstanceGUID(),
-                                          instanceEventOriginator,
-                                          instanceEvent,
-                                          methodName);
-                    this.processPurgedEntityEvent(cohortName,
-                                                  instanceEventOriginator.getMetadataCollectionId(),
-                                                  instanceEventOriginator.getServerName(),
-                                                  instanceEventOriginator.getServerType(),
-                                                  instanceEventOriginator.getOrganizationName(),
-                                                  instanceEvent.getTypeDefGUID(),
-                                                  instanceEvent.getTypeDefName(),
-                                                  instanceEvent.getInstanceGUID());
+                    if (instanceEvent.getEntity() == null)
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getInstanceGUID(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName);
+                        this.processPurgedEntityEvent(cohortName,
+                                                      instanceEventOriginator.getMetadataCollectionId(),
+                                                      instanceEventOriginator.getServerName(),
+                                                      instanceEventOriginator.getServerType(),
+                                                      instanceEventOriginator.getOrganizationName(),
+                                                      instanceEvent.getTypeDefGUID(),
+                                                      instanceEvent.getTypeDefName(),
+                                                      instanceEvent.getInstanceGUID());
+                    }
+                    else
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntity(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName);
+                        this.processPurgedEntityEvent(cohortName,
+                                                      instanceEventOriginator.getMetadataCollectionId(),
+                                                      instanceEventOriginator.getServerName(),
+                                                      instanceEventOriginator.getServerType(),
+                                                      instanceEventOriginator.getOrganizationName(),
+                                                      instanceEvent.getEntity());
+                    }
                     break;
 
                 case DELETE_PURGED_ENTITY_EVENT:
@@ -461,19 +480,36 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case PURGED_RELATIONSHIP_EVENT:
-                    this.logIncomingEvent(instanceEventType,
-                                          instanceEvent.getInstanceGUID(),
-                                          instanceEventOriginator,
-                                          instanceEvent,
-                                          methodName);
-                    this.processPurgedRelationshipEvent(cohortName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getTypeDefGUID(),
-                                                        instanceEvent.getTypeDefName(),
-                                                        instanceEvent.getInstanceGUID());
+                    if (instanceEvent.getRelationship() == null)
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getInstanceGUID(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName);
+                        this.processPurgedRelationshipEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getTypeDefGUID(),
+                                                            instanceEvent.getTypeDefName(),
+                                                            instanceEvent.getInstanceGUID());
+                    }
+                    else
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getRelationship(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName);
+                        this.processPurgedRelationshipEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getRelationship());
+                    }
                     break;
 
                 case DELETE_PURGED_RELATIONSHIP_EVENT:
@@ -865,11 +901,56 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processDeletedEntityEvent";
 
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              originatorMetadataCollectionId,
-                              originatorServerName,
-                              entity);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.deleteEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
+    }
+
+
+    /**
+     * An entity has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the version of the entity that has been purged.
+     */
+    public  void processPurgedEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
+                                          EntityDetail entity)
+    {
+        final String methodName = "processPurgedEntityEvent";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
     }
 
 
@@ -910,7 +991,12 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                              typeDefGUID,
                                                              typeDefName,
                                                              originatorMetadataCollectionId);
-
+        }
+        catch (EntityNotKnownException  error)
+        {
+            /*
+             * Ignore - just means the repository did not have the instance.
+             */
         }
         catch (Throwable error)
         {
@@ -1251,11 +1337,56 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processDeletedRelationshipEvent";
 
-        updateReferenceRelationship(sourceName,
-                                    methodName,
-                                    originatorMetadataCollectionId,
-                                    originatorServerName,
-                                    relationship);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.deleteRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
+    }
+
+
+    /**
+     * A relationship has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param relationship  details of the  relationship that has been purged.
+     */
+    public void processPurgedRelationshipEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               Relationship relationship)
+    {
+        final String methodName = "processPurgedRelationshipEvent";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
     }
 
 
@@ -1297,6 +1428,12 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                    typeDefName,
                                                                    originatorMetadataCollectionId);
 
+        }
+        catch (RelationshipNotKnownException error)
+        {
+            /*
+             * Ignore as this just means that he reference copy was not stored for this instance.
+             */
         }
         catch (Throwable error)
         {
