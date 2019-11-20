@@ -123,7 +123,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Create LineageMapping relationship between two schema attribute types
+     * Create LineageMapping relationship between two schema attributes
      *
      * @param userId                             the name of the calling user
      * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute

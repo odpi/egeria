@@ -158,12 +158,11 @@ public class DataEngineEventProcessor {
 
     private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws
                                                                                                         DataEngineException {
-        // we need this extra validation because the FFDCResponseBase object captures the potential exceptions
+        // extra validation needed because the FFDCResponseBase object captures the potential exceptions
         // thrown during a parallel processing
         if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
             DataEngineErrorCode errorCode = DataEngineErrorCode.DATA_ENGINE_EXCEPTION;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(dataEngineEvent);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(dataEngineEvent);
             throw new DataEngineException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
                     errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
         }

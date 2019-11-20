@@ -136,7 +136,6 @@ public class PortHandler {
                 PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
     }
 
-
     /**
      * Create the port
      *

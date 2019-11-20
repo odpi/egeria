@@ -427,7 +427,7 @@ class PortHandlerTest {
                 portHandler.addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT,
                         DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-005 "));
+        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001 "));
     }
 
     @Test

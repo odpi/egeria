@@ -219,7 +219,6 @@ public class DataEngineRESTServices {
         return response;
     }
 
-
     /**
      * Create or update the Port Alias with a PortDelegation relationship
      *
@@ -262,8 +261,8 @@ public class DataEngineRESTServices {
     /**
      * Create or update the processes with ports, schema types and lineage mappings
      *
-     * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
+     * @param serverName           name of server instance to call
      * @param processesRequestBody properties of the processes
      *
      * @return a list unique identifiers (GUIDs) of the created/updated processes
@@ -293,6 +292,20 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Create or update a Port Alias with a PortDelegation relationship
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param portAlias          the port alias values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created port alias
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias,
                                                         String externalSourceName) throws InvalidParameterException,
                                                                                           PropertyServerException,
@@ -321,6 +334,20 @@ public class DataEngineRESTServices {
         return portAliasGUID;
     }
 
+    /**
+     * Create or update a Port Implementation with an associated SchemaType
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param portImplementation the port implementation values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created port alias
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public String createOrUpdatePortImplementationWithSchemaType(String userId, String serverName,
                                                                  PortImplementation portImplementation,
                                                                  String externalSourceName) throws
@@ -358,6 +385,19 @@ public class DataEngineRESTServices {
         return portImplementationGUID;
     }
 
+    /**
+     * Create the external data engine as software server capability entity
+     *
+     * @param userId                   the name of the calling user
+     * @param serverName               name of server instance to call
+     * @param softwareServerCapability the software server values
+     *
+     * @return he unique identifier (guid) of the created external data engine
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public String createExternalDataEngine(String userId, String serverName,
                                            SoftwareServerCapability softwareServerCapability) throws
                                                                                               InvalidParameterException,
@@ -377,6 +417,19 @@ public class DataEngineRESTServices {
         return handler.createExternalDataEngine(userId, softwareServerCapability);
     }
 
+    /**
+     * Create ProcessPort relationships for an existing Process
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processGUID        the process entity unique identifier(guid)
+     * @param portGUIDs          the list of unique identifiers of the port entitties
+     * @param externalSourceName the unique name of the external source
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public void addPortsToProcess(String userId, String serverName, String processGUID, List<String> portGUIDs,
                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                     UserNotAuthorizedException {
@@ -394,6 +447,20 @@ public class DataEngineRESTServices {
         }
     }
 
+    /**
+     * Create LineageMappings relationships between schema attributes
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param lineageMappings    the list of lineage mappings to be created
+     * @param response           the response object that will capture the exceptions that might occur during
+     *                           parallel processing
+     * @param externalSourceName the unique name of the external source
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public void addLineageMappings(String userId, String serverName, List<LineageMapping> lineageMappings,
                                    FFDCResponseBase response, String externalSourceName) throws
                                                                                          InvalidParameterException,
@@ -424,6 +491,14 @@ public class DataEngineRESTServices {
         });
     }
 
+    /**
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processes          list of processes to be created
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return a list unique identifiers (GUIDs) of the created/updated processes
+     */
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, List<Process> processes,
                                                        String externalSourceName) {
         Predicate<? super Process> hasPortImplementationsPredicate =
