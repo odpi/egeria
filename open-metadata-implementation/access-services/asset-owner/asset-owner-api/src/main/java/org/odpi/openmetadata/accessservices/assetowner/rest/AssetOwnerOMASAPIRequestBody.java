@@ -21,8 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
                       @JsonSubTypes.Type(value = NewFileAssetRequestBody.class, name = "NewFileAssetRequestBody"),
                       @JsonSubTypes.Type(value = NewFileSystemRequestBody.class, name = "NewFileSystemRequestBody"),
-                      @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody"),
-                      @JsonSubTypes.Type(value = ZoneRequestBody.class, name = "ZoneRequestBody")
+                      @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
 
               })
 public abstract class AssetOwnerOMASAPIRequestBody implements java.io.Serializable

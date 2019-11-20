@@ -3,7 +3,7 @@
 
 # Asset Consumer Open Metadata Access Service (OMAS)
 
-The Asset Consumer OMAS provides services to an individual that wants to work
+The Asset Consumer OMAS provides services to an individual who wants to work
 with [assets](../docs/concepts/assets) such as:
 
 * data stores, data sets and data feeds
@@ -14,17 +14,17 @@ with [assets](../docs/concepts/assets) such as:
 It supports:
 
 * the retrieval of [connection](../../frameworks/open-connector-framework/docs/concepts/connection.md)
-  objects from the open metadata repositories.
+  objects from the open metadata repositories.  A connection object is used to create a connector to an asset.
 * the creation of a [connector](../../frameworks/open-connector-framework/docs/concepts/connector.md)
 based on the properties in a connection object.
 * the retrieval of properties about an asset.  These properties are called the
   [connected asset properties](../../frameworks/open-connector-framework/docs/concepts/connected-asset-properties.md).
 * the adding of feedback (comments, ratings and likes) to an asset.
-* the attachment of informal tags to an asset.
+* the attachment of [informal tags](../docs/concepts/attachments/informal-tags.md) to an asset.
 * the adding of an audit log record for an asset.
-* the publishing of notifications about assets.
+* the publishing of notifications about assets on Asset Consumer OMAS's [out topic](../docs/concepts/client-server/out-topic.md).
 
-Adding feedback through the Asset Consumer OMAS results in Karma Points being awarded
+Adding feedback through the Asset Consumer OMAS results in [Karma Points](../community-profile/docs/concepts/karma-point.md) being awarded
 to the individual.  These are maintained in the individual's profile.
 A karma point is awarded for each contribution of feedback
 through the API. (The awarding of Karma points is managed by the

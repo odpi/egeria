@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.GlossaryTerm;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+
 
 /**
  * AssetConsumerGlossaryInterface supports the lookup of the meaning of a glossary term.
@@ -21,7 +22,7 @@ public interface AssetConsumerGlossaryInterface
      * @param userId userId of the user making the request.
      * @param guid unique identifier of the glossary term.
      *
-     * @return meaning response object
+     * @return glossary term
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -40,7 +41,7 @@ public interface AssetConsumerGlossaryInterface
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
-     * @return meaning list response or
+     * @return list of glossary terms
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -60,13 +61,34 @@ public interface AssetConsumerGlossaryInterface
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
-     * @return meaning list response or
+     * @return list of glossary terms
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<GlossaryTerm> findMeanings(String userId,
                                     String term,
+                                    int    startFrom,
+                                    int    pageSize) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException;
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
+     * fields in the schema.
+     *
+     * @param userId the name of the calling user.
+     * @param termGUID unique identifier of term.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<String> getAssetsByMeaning(String userId,
+                                    String termGUID,
                                     int    startFrom,
                                     int    pageSize) throws InvalidParameterException,
                                                             PropertyServerException,

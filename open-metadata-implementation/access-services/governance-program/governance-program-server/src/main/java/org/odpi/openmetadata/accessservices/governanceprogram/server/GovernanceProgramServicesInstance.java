@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.handlers.ExternalR
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.GovernanceOfficerHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -22,6 +23,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
+    private GovernanceZoneHandler     governanceZoneHandler;
     private GovernanceOfficerHandler  governanceOfficerHandler;
     private ExternalReferencesHandler externalReferencesHandler;
     private PersonalProfileHandler    personalProfileHandler;
@@ -52,6 +54,12 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
+            this.governanceZoneHandler = new GovernanceZoneHandler(serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper);
+
             this.externalReferencesHandler = new ExternalReferencesHandler(serviceName,
                                                                            serverName,
                                                                            invalidParameterHandler,
@@ -148,4 +156,16 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     {
         return personalProfileHandler;
     }
+
+
+    /**
+     * Return the handler for governance zone requests.
+     *
+     * @return handler object
+     */
+    GovernanceZoneHandler getGovernanceZoneHandler()
+    {
+        return governanceZoneHandler;
+    }
+
 }
