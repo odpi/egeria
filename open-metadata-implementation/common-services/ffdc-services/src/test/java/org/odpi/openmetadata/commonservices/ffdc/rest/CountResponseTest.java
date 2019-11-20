@@ -12,7 +12,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the VoidResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the CountResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
 public class CountResponseTest
 {

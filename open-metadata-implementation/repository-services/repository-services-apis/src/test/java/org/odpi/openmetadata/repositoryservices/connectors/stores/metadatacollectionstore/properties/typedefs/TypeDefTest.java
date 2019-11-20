@@ -14,6 +14,7 @@ public class TypeDefTest
     {
         TypeDefElementHeaderMock testObject = new TypeDefElementHeaderMock();
 
+
         new TypeDefElementHeaderMock(testObject);
     }
 }

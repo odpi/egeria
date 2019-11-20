@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -56,13 +57,21 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
     GlossaryTermResponse callGlossaryTermGetRESTCall(String    methodName,
                                                      String    urlTemplate,
-                                                     Object... params) throws PropertyServerException
+                                                     Object... params) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return this.callGetRESTCall(methodName, GlossaryTermResponse.class, urlTemplate, params);
+        GlossaryTermResponse restResult = this.callGetRESTCall(methodName, GlossaryTermResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -75,13 +84,21 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermListResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
      */
     GlossaryTermListResponse callGlossaryTermListPostRESTCall(String    methodName,
                                                               String    urlTemplate,
                                                               String    searchString,
-                                                              Object... params) throws PropertyServerException
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
-        return this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, searchString, params);
+        GlossaryTermListResponse restResult = this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, searchString, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 }

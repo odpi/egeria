@@ -3,14 +3,12 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.api.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.GlossaryTerm;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -151,10 +149,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                  userId,
                                                                  connectionName);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUID();
     }
 
@@ -207,10 +201,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         return retrieveAssets(userId, name, startFrom, pageSize, urlTemplate, methodName);
     }
-
-
-
-
 
     /**
      * Return a list of assets with the requested search string in their name, qualified name
@@ -272,10 +262,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                           userId,
                                                                           startFrom,
                                                                           pageSize);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUIDs();
     }
@@ -399,11 +385,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                              userId,
                                                                              name);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getConnection();
+         return restResult.getConnection();
     }
 
 
@@ -582,19 +564,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setReview(review);
         requestBody.setPublic(isPublic);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
-
-
 
 
     /**
@@ -620,18 +596,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
-
 
 
     /**
@@ -661,16 +632,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setPublic(isPublic);
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -697,16 +664,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -752,10 +715,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                   serverName,
                                                                   userId,
                                                                   assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUID();
     }
@@ -805,10 +764,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                   userId,
                                                                   commentGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUID();
     }
 
@@ -850,17 +805,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setCommentText(commentText);
         requestBody.setPublic(isPublic);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID,
-                                                                  commentGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        commentGUID);
     }
 
 
@@ -891,17 +842,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID,
-                                                                  commentGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        commentGUID);
     }
 
 
@@ -942,11 +889,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                                  userId,
                                                                                  guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGlossaryTerm();
+         return restResult.getGlossaryTerm();
     }
 
 
@@ -1041,11 +984,47 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                                           startFrom,
                                                                                           pageSize);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getMeanings();
+    }
+
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
+     * fields in the schema.
+     *
+     * @param userId the name of the calling user.
+     * @param termGUID unique identifier of term.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetsByMeaning(String userId,
+                                           String termGUID,
+                                           int    startFrom,
+                                           int    pageSize) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetsByMeaning";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-meaning/{2}?startFrom={3}&pageSize={4}";
+        final String   termGUIDParameterName = "termGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(termGUID, termGUIDParameterName, methodName);
+
+        GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         termGUID,
+                                                                         startFrom,
+                                                                         pageSize);
+
+        return restResult.getGUIDs();
     }
 
 
@@ -1096,16 +1075,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setContextId(contextId);
         requestBody.setMessage(message);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -1153,10 +1128,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                   tagRequestBody,
                                                                   serverName,
                                                                   userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUID();
     }
@@ -1243,16 +1214,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         TagRequestBody  tagRequestBody = new TagRequestBody();
         tagRequestBody.setTagDescription(tagDescription);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  tagRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  tagGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        tagRequestBody,
+                                        serverName,
+                                        userId,
+                                        tagGUID);
     }
 
 
@@ -1281,16 +1248,12 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  tagGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        tagGUID);
     }
 
 
@@ -1323,10 +1286,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                userId,
                                                                guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getTag();
     }
 
@@ -1356,6 +1315,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
+
 
     /**
      * Return the list of the calling user's private tags exactly matching the supplied name.
@@ -1475,10 +1435,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      startFrom,
                                                                      pageSize);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getTags();
     }
 
@@ -1514,17 +1470,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setPublic(isPublic);
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID,
-                                                                  tagGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        tagGUID);
     }
 
 
@@ -1555,18 +1507,52 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
 
-        NullRequestBody  requestBody = new NullRequestBody();
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        tagGUID);
+    }
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID,
-                                                                  tagGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
+     * of its schema elements.
+     *
+     * @param userId the name of the calling user.
+     * @param tagGUID unique identifier of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetsByTag(String userId,
+                                       String tagGUID,
+                                       int    startFrom,
+                                       int    pageSize) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetsByTag";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-tag/{2}?startFrom={3}&pageSize={4}";
+        final String   tagGUIDParameterName = "tagGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
+
+        GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         tagGUID,
+                                                                         startFrom,
+                                                                         pageSize);
+
+        return restResult.getGUIDs();
     }
 }

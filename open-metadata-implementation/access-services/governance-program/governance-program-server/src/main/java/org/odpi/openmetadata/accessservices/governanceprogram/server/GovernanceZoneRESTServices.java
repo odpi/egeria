@@ -1,0 +1,183 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.governanceprogram.server;
+
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.GovernanceZoneHandler;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.slf4j.LoggerFactory;
+
+/**
+ * GovernanceZoneRESTServices provides the server side logic for the Governance Zone Manager.
+ * It manages the definitions of governance zones and their linkage to the rest of the
+ * governance program.
+ */
+public class GovernanceZoneRESTServices
+{
+    private static GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GovernanceZoneRESTServices.class),
+                                                                      instanceHandler.getServiceName());
+
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
+    /**
+     * Default constructor
+     */
+    public GovernanceZoneRESTServices()
+    {
+    }
+
+    /**
+     * Create a definition of a governance zone.  The qualified name of these governance zones can be added
+     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
+     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * to indicate which zone(s) they belong to.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param requestBody other properties for a governance zone
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse createGovernanceZone(String          serverName,
+                                             String          userId,
+                                             ZoneRequestBody requestBody)
+    {
+        final String   methodName = "createGovernanceZone";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+                handler.createGovernanceZone(userId,
+                                             requestBody.getQualifiedName(),
+                                             requestBody.getDisplayName(),
+                                             requestBody.getDescription(),
+                                             requestBody.getCriteria(),
+                                             requestBody.getAdditionalProperties(),
+                                             requestBody.getExtendedProperties(),
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about all of the governance zones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public ZoneListResponse getGovernanceZones(String   serverName,
+                                               String   userId,
+                                               int      startingFrom,
+                                               int      maximumResults)
+    {
+        final String   methodName = "getGovernanceZones";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ZoneListResponse response = new ZoneListResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+            response.setGovernanceZone(handler.getGovernanceZones(userId,
+                                                                  startingFrom,
+                                                                  maximumResults,
+                                                                  methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about a specific governance zone.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param qualifiedName unique name for the zone
+     *
+     * @return properties of the governance zone or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public ZoneResponse getGovernanceZone(String   serverName,
+                                          String   userId,
+                                          String   qualifiedName)
+    {
+        final String   methodName = "getGovernanceZone";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ZoneResponse response = new ZoneResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+            response.setGovernanceZone(handler.getGovernanceZone(userId,
+                                                                 qualifiedName,
+                                                                 methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+}

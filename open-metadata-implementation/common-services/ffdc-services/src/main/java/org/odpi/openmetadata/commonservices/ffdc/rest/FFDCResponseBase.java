@@ -181,7 +181,7 @@ public class FFDCResponseBase implements java.io.Serializable
         }
         else
         {
-            return new HashMap(exceptionProperties);
+            return new HashMap<>(exceptionProperties);
         }
     }
 

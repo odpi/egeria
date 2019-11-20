@@ -22,7 +22,7 @@ public interface OMRSInstanceEventProcessorInterface
      * @param sourceName source of the event
      * @param instanceEvent  properties of the event to send
      * */
-    void sendInstanceEvent(String sourceName,
+    void sendInstanceEvent(String            sourceName,
                            OMRSInstanceEvent instanceEvent);
 
 
@@ -43,11 +43,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the new entity
      */
-    void processNewEntityEvent(String sourceName,
-                               String originatorMetadataCollectionId,
-                               String originatorServerName,
-                               String originatorServerType,
-                               String originatorOrganizationName,
+    void processNewEntityEvent(String       sourceName,
+                               String       originatorMetadataCollectionId,
+                               String       originatorServerName,
+                               String       originatorServerType,
+                               String       originatorOrganizationName,
                                EntityDetail entity);
 
 
@@ -64,11 +64,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param oldEntity  original entity before update.
      * @param newEntity  details of the new version of the entity.
      */
-    void processUpdatedEntityEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
+    void processUpdatedEntityEvent(String       sourceName,
+                                   String       originatorMetadataCollectionId,
+                                   String       originatorServerName,
+                                   String       originatorServerType,
+                                   String       originatorOrganizationName,
                                    EntityDetail oldEntity,
                                    EntityDetail newEntity);
 
@@ -85,11 +85,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
      */
-    void processUndoneEntityEvent(String sourceName,
-                                  String originatorMetadataCollectionId,
-                                  String originatorServerName,
-                                  String originatorServerType,
-                                  String originatorOrganizationName,
+    void processUndoneEntityEvent(String       sourceName,
+                                  String       originatorMetadataCollectionId,
+                                  String       originatorServerName,
+                                  String       originatorServerType,
+                                  String       originatorOrganizationName,
                                   EntityDetail entity);
 
 
@@ -105,11 +105,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the entity with the new classification added.
      */
-    void processClassifiedEntityEvent(String sourceName,
-                                      String originatorMetadataCollectionId,
-                                      String originatorServerName,
-                                      String originatorServerType,
-                                      String originatorOrganizationName,
+    void processClassifiedEntityEvent(String       sourceName,
+                                      String       originatorMetadataCollectionId,
+                                      String       originatorServerName,
+                                      String       originatorServerType,
+                                      String       originatorOrganizationName,
                                       EntityDetail entity);
 
 
@@ -125,11 +125,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the entity after the classification has been removed.
      */
-    void processDeclassifiedEntityEvent(String sourceName,
-                                        String originatorMetadataCollectionId,
-                                        String originatorServerName,
-                                        String originatorServerType,
-                                        String originatorOrganizationName,
+    void processDeclassifiedEntityEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
                                         EntityDetail entity);
 
 
@@ -145,11 +145,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the entity after the classification has been changed.
      */
-    void processReclassifiedEntityEvent(String sourceName,
-                                        String originatorMetadataCollectionId,
-                                        String originatorServerName,
-                                        String originatorServerType,
-                                        String originatorOrganizationName,
+    void processReclassifiedEntityEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
                                         EntityDetail entity);
 
 
@@ -172,11 +172,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
-    void processDeletedEntityEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
+    void processDeletedEntityEvent(String       sourceName,
+                                   String       originatorMetadataCollectionId,
+                                   String       originatorServerName,
+                                   String       originatorServerType,
+                                   String       originatorOrganizationName,
                                    EntityDetail entity);
 
 
@@ -192,12 +192,32 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
      */
-    void processRestoredEntityEvent(String sourceName,
-                                    String originatorMetadataCollectionId,
-                                    String originatorServerName,
-                                    String originatorServerType,
-                                    String originatorOrganizationName,
+    void processRestoredEntityEvent(String       sourceName,
+                                    String       originatorMetadataCollectionId,
+                                    String       originatorServerName,
+                                    String       originatorServerType,
+                                    String       originatorOrganizationName,
                                     EntityDetail entity);
+
+
+    /**
+     * An entity has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the version of the entity that has been purged.
+     */
+    void processPurgedEntityEvent(String       sourceName,
+                                  String       originatorMetadataCollectionId,
+                                  String       originatorServerName,
+                                  String       originatorServerType,
+                                  String       originatorOrganizationName,
+                                  EntityDetail entity);
 
 
     /**
@@ -243,11 +263,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
-    void processDeletePurgedEntityEvent(String sourceName,
-                                        String originatorMetadataCollectionId,
-                                        String originatorServerName,
-                                        String originatorServerType,
-                                        String originatorOrganizationName,
+    void processDeletePurgedEntityEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
                                         EntityDetail entity);
 
 
@@ -266,13 +286,13 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalTypeDef  description of this entity's original TypeDef.
      * @param entity  new values for this entity, including the new type information.
      */
-    void processReTypedEntityEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
+    void processReTypedEntityEvent(String         sourceName,
+                                   String         originatorMetadataCollectionId,
+                                   String         originatorServerName,
+                                   String         originatorServerType,
+                                   String         originatorOrganizationName,
                                    TypeDefSummary originalTypeDef,
-                                   EntityDetail entity);
+                                   EntityDetail   entity);
 
 
     /**
@@ -290,12 +310,12 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalHomeMetadataCollectionId  unique identifier for the original home metadata collection/repository.
      * @param entity  new values for this entity, including the new home information.
      */
-    void processReHomedEntityEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
-                                   String originalHomeMetadataCollectionId,
+    void processReHomedEntityEvent(String       sourceName,
+                                   String       originatorMetadataCollectionId,
+                                   String       originatorServerName,
+                                   String       originatorServerType,
+                                   String       originatorOrganizationName,
+                                   String       originalHomeMetadataCollectionId,
                                    EntityDetail entity);
 
     /**
@@ -313,12 +333,12 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalEntityGUID  the existing identifier for the entity.
      * @param entity  new values for this entity, including the new guid.
      */
-    void processReIdentifiedEntityEvent(String sourceName,
-                                        String originatorMetadataCollectionId,
-                                        String originatorServerName,
-                                        String originatorServerType,
-                                        String originatorOrganizationName,
-                                        String originalEntityGUID,
+    void processReIdentifiedEntityEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
+                                        String       originalEntityGUID,
                                         EntityDetail entity);
 
 
@@ -361,11 +381,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the requested entity
      */
-    void processRefreshEntityEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
+    void processRefreshEntityEvent(String       sourceName,
+                                   String       originatorMetadataCollectionId,
+                                   String       originatorServerName,
+                                   String       originatorServerType,
+                                   String       originatorOrganizationName,
                                    EntityDetail entity);
 
     /**
@@ -380,11 +400,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the new relationship
      */
-    void processNewRelationshipEvent(String sourceName,
-                                     String originatorMetadataCollectionId,
-                                     String originatorServerName,
-                                     String originatorServerType,
-                                     String originatorOrganizationName,
+    void processNewRelationshipEvent(String       sourceName,
+                                     String       originatorMetadataCollectionId,
+                                     String       originatorServerName,
+                                     String       originatorServerType,
+                                     String       originatorOrganizationName,
                                      Relationship relationship);
 
 
@@ -401,11 +421,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param oldRelationship  original details of the relationship.
      * @param newRelationship  details of the new version of the relationship.
      */
-    void processUpdatedRelationshipEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
+    void processUpdatedRelationshipEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
                                          Relationship oldRelationship,
                                          Relationship newRelationship);
 
@@ -422,11 +442,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship details of the version of the relationship that has been restored.
      */
-    void processUndoneRelationshipEvent(String sourceName,
-                                        String originatorMetadataCollectionId,
-                                        String originatorServerName,
-                                        String originatorServerType,
-                                        String originatorOrganizationName,
+    void processUndoneRelationshipEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
                                         Relationship relationship);
 
 
@@ -442,11 +462,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the version of the relationship that has been restored.
      */
-    void processRestoredRelationshipEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
+    void processRestoredRelationshipEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
                                           Relationship relationship);
 
 
@@ -466,12 +486,32 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
-    void processDeletedRelationshipEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
+    void processDeletedRelationshipEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
                                          Relationship relationship);
+
+
+    /**
+     * A relationship has been permanently removed from the repository.  This request can not be undone.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param relationship  details of the  relationship that has been purged.
+     */
+    void processPurgedRelationshipEvent(String       sourceName,
+                                        String       originatorMetadataCollectionId,
+                                        String       originatorServerName,
+                                        String       originatorServerType,
+                                        String       originatorOrganizationName,
+                                        Relationship relationship);
 
 
     /**
@@ -513,11 +553,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
-    void processDeletePurgedRelationshipEvent(String sourceName,
-                                              String originatorMetadataCollectionId,
-                                              String originatorServerName,
-                                              String originatorServerType,
-                                              String originatorOrganizationName,
+    void processDeletePurgedRelationshipEvent(String       sourceName,
+                                              String       originatorMetadataCollectionId,
+                                              String       originatorServerName,
+                                              String       originatorServerType,
+                                              String       originatorOrganizationName,
                                               Relationship relationship);
 
 
@@ -536,13 +576,13 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalTypeDef  description of this relationship's original TypeDef.
      * @param relationship  new values for this relationship, including the new type information.
      */
-    void processReTypedRelationshipEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
+    void processReTypedRelationshipEvent(String         sourceName,
+                                         String         originatorMetadataCollectionId,
+                                         String         originatorServerName,
+                                         String         originatorServerType,
+                                         String         originatorOrganizationName,
                                          TypeDefSummary originalTypeDef,
-                                         Relationship relationship);
+                                         Relationship   relationship);
 
 
     /**
@@ -560,12 +600,12 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalHomeMetadataCollectionId  unique identifier for the original home repository.
      * @param relationship  new values for this relationship, including the new home information.
      */
-    void processReHomedRelationshipEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
-                                         String originalHomeMetadataCollectionId,
+    void processReHomedRelationshipEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
+                                         String       originalHomeMetadataCollectionId,
                                          Relationship relationship);
 
 
@@ -584,12 +624,12 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originalRelationshipGUID  the existing identifier for the relationship.
      * @param relationship  new values for this relationship, including the new guid.
      */
-    void processReIdentifiedRelationshipEvent(String sourceName,
-                                              String originatorMetadataCollectionId,
-                                              String originatorServerName,
-                                              String originatorServerType,
-                                              String originatorOrganizationName,
-                                              String originalRelationshipGUID,
+    void processReIdentifiedRelationshipEvent(String       sourceName,
+                                              String       originatorMetadataCollectionId,
+                                              String       originatorServerName,
+                                              String       originatorServerType,
+                                              String       originatorOrganizationName,
+                                              String       originalRelationshipGUID,
                                               Relationship relationship);
 
 
@@ -634,11 +674,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param relationship relationship details
      */
-    void processRefreshRelationshipEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
+    void processRefreshRelationshipEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
                                          Relationship relationship);
 
 
@@ -655,11 +695,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param instances multiple entities and relationships for sharing.
      */
-    void processInstanceBatchEvent(String sourceName,
-                                   String originatorMetadataCollectionId,
-                                   String originatorServerName,
-                                   String originatorServerType,
-                                   String originatorOrganizationName,
+    void processInstanceBatchEvent(String        sourceName,
+                                   String        originatorMetadataCollectionId,
+                                   String        originatorServerName,
+                                   String        originatorServerType,
+                                   String        originatorOrganizationName,
                                    InstanceGraph instances);
 
 
@@ -685,19 +725,19 @@ public interface OMRSInstanceEventProcessorInterface
      * @param otherInstanceGUID unique identifier for the other (older) instance
      * @param errorMessage description of the error.
      */
-    void processConflictingInstancesEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
-                                          String targetMetadataCollectionId,
-                                          TypeDefSummary targetTypeDef,
-                                          String targetInstanceGUID,
-                                          String otherMetadataCollectionId,
+    void processConflictingInstancesEvent(String                 sourceName,
+                                          String                 originatorMetadataCollectionId,
+                                          String                 originatorServerName,
+                                          String                 originatorServerType,
+                                          String                 originatorOrganizationName,
+                                          String                 targetMetadataCollectionId,
+                                          TypeDefSummary         targetTypeDef,
+                                          String                 targetInstanceGUID,
+                                          String                 otherMetadataCollectionId,
                                           InstanceProvenanceType otherOrigin,
-                                          TypeDefSummary otherTypeDef,
-                                          String otherInstanceGUID,
-                                          String errorMessage);
+                                          TypeDefSummary         otherTypeDef,
+                                          String                 otherInstanceGUID,
+                                          String                 errorMessage);
 
 
     /**
@@ -716,15 +756,15 @@ public interface OMRSInstanceEventProcessorInterface
      * @param otherTypeDef details of the other (older) instance's TypeDef
      * @param errorMessage description of the error.
      */
-    void processConflictingTypeEvent(String sourceName,
-                                     String originatorMetadataCollectionId,
-                                     String originatorServerName,
-                                     String originatorServerType,
-                                     String originatorOrganizationName,
-                                     String targetMetadataCollectionId,
+    void processConflictingTypeEvent(String         sourceName,
+                                     String         originatorMetadataCollectionId,
+                                     String         originatorServerName,
+                                     String         originatorServerType,
+                                     String         originatorOrganizationName,
+                                     String         targetMetadataCollectionId,
                                      TypeDefSummary targetTypeDef,
-                                     String targetInstanceGUID,
+                                     String         targetInstanceGUID,
                                      TypeDefSummary otherTypeDef,
-                                     String errorMessage);
+                                     String         errorMessage);
 }
 

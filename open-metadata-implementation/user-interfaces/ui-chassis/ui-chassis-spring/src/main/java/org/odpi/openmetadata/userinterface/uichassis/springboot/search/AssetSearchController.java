@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.search;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

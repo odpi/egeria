@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
@@ -26,8 +25,8 @@ public class ConnectedAssetClientBase
     protected String                  serverPlatformRootURL;    /* Initialized in constructor */
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    protected RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    protected NullRequestBody         nullRequestBody         = new NullRequestBody();
+
+    protected static NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -81,10 +80,6 @@ public class ConnectedAssetClientBase
                                                                    serviceName,
                                                                    userId,
                                                                    guid);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAsset();
     }
@@ -271,11 +266,7 @@ public class ConnectedAssetClientBase
                                                                                userId,
                                                                                guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getConnection();
+         return restResult.getConnection();
     }
 
 
@@ -311,10 +302,6 @@ public class ConnectedAssetClientBase
                                                                              userId,
                                                                              assetGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getConnection();
     }
 
@@ -349,10 +336,6 @@ public class ConnectedAssetClientBase
                                                                  serviceName,
                                                                  userId,
                                                                  connectionGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUID();
     }
