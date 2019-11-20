@@ -145,6 +145,7 @@
         <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
+        <hsqldb-database.version>2.4.0</hsqldb-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
@@ -240,10 +241,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <scope>compile</scope>
-                <version>${h2-database.version}</version>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb-database.version}</version>
             </dependency>
 
             <dependency>
