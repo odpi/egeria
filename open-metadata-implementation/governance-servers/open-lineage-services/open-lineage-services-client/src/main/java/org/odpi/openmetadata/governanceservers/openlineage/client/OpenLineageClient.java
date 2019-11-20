@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
@@ -71,7 +70,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         openLineageExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
         openLineageExceptionHandler.detectAndThrowPropertyServerException(methodName, response);
-        openLineageExceptionHandler.detectAndThrowOpenLineagexception(methodName, response);
+        openLineageExceptionHandler.detectAndThrowOpenLineageException(methodName, response);
     }
 
 }

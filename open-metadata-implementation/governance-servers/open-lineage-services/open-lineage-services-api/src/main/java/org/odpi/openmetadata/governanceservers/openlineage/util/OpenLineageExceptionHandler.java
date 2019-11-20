@@ -18,14 +18,14 @@ public class OpenLineageExceptionHandler extends RESTExceptionHandler {
     }
 
     /**
-     * Throw an detectAndThrowOpenLineagexception if it is encoded in the REST response.
+     * Throw an detectAndThrowOpenLineageException if it is encoded in the REST response.
      *
      * @param methodName name of the method called
      * @param restResult response from the rest call.  This generated in the remote server.
      * @throws OpenLineageException encoded exception from the server
      */
-    public void detectAndThrowOpenLineagexception(String methodName,
-                                                  FFDCResponseBase restResult) throws OpenLineageException {
+    public void detectAndThrowOpenLineageException(String methodName,
+                                                   FFDCResponseBase restResult) throws OpenLineageException {
         final String exceptionClassName = OpenLineageException.class.getName();
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName()))) {
