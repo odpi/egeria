@@ -159,63 +159,77 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private LineageVertex abstractVertex(Vertex originalVertex) {
-        String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
-        String nodeType = originalVertex.label();
-        String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
-        String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-        LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType, displayName, guid);
-        Map<String, String> attributes = null;
+        try {
+            String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
+            String nodeType = originalVertex.label();
+            LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
 
-        switch (nodeType) {
-            case NODE_LABEL_COLUMN:
-                attributes = setColumnProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_TABLE:
-                attributes = setTableProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_PROCESS:
-                attributes = setProcessProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_SUB_PROCESS:
-                attributes = setSubProcessProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_GLOSSARYTERM:
-                attributes = setGlossaryTermProperties(originalVertex, lineageVertex);
-                break;
-            default:
+            if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
+                String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
+                lineageVertex.setDisplayName(displayName);
+            }
+            if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
+                String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+                lineageVertex.setGuid(guid);
+            }
+
+            Map<String, String> attributes = null;
+
+            switch (nodeType) {
+                case NODE_LABEL_COLUMN:
+                    attributes = setColumnProperties(originalVertex);
+                    break;
+                case NODE_LABEL_TABLE:
+                    attributes = setTableProperties(originalVertex);
+                    break;
+                case NODE_LABEL_PROCESS:
+                    attributes = setProcessProperties(originalVertex);
+                    break;
+                case NODE_LABEL_SUB_PROCESS:
+                    attributes = setSubProcessProperties(originalVertex);
+                    break;
+                case NODE_LABEL_GLOSSARYTERM:
+                    attributes = setGlossaryTermProperties(originalVertex);
+                    break;
+                default:
+            }
+            lineageVertex.setAttributes(attributes);
+            return lineageVertex;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        lineageVertex.setAttributes(attributes);
-        return lineageVertex;
+        return null;
     }
 
-    private Map< String, String> setSubProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setProcessProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setGlossaryTermProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setGlossaryTermProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setTableProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setTableProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
         String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
+        if (originalGlossaryTerm != null)
             attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
         return attributes;
     }
 
-    private Map< String, String> setColumnProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setColumnProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
-        attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
+            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
+            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        }
         return attributes;
     }
 
@@ -326,7 +340,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED, "Condensed", "");
+            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED);
             lineageVertices.add(condensedVertex);
 
             for (Vertex originalVertex : sourcesList) {
@@ -354,7 +368,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED, "Condensed", "");
+            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(
