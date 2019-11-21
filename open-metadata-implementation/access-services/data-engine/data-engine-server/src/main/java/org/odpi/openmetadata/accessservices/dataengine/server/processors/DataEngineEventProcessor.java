@@ -27,6 +27,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import java.io.Closeable;
+
+/**
+ * The Data Engine event processor is processing events from external data engines about
+ * metadata changes. It will handle different types of events defined in Data Engine OMAS API module.
+ */
+
 public class DataEngineEventProcessor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(DataEngineEventProcessor.class);
@@ -36,12 +43,26 @@ public class DataEngineEventProcessor {
 
     private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
 
+    /**
+     * The constructor is given the connection to the out topic for Data Engine OMAS
+     * along with classes for testing and manipulating instances.
+     *
+     * @param instance server instance
+     * @param auditLog audit log
+     *
+     * @throws NewInstanceException * @throws NewInstanceException a problem occurred during initialization
+     */
     public DataEngineEventProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) throws
                                                                                                 NewInstanceException {
         this.auditLog = auditLog;
         this.serverName = instance.getServerName();
     }
 
+    /**
+     * Process a {@link DataEngineRegistrationEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDataEngineRegistrationEvent(String dataEngineEvent) {
         final String methodName = "processDataEngineRegistrationEvent";
 
@@ -57,6 +78,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link PortAliasEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processPortAliasEvent(String dataEngineEvent) {
         final String methodName = "processPortAliasEvent";
 
@@ -72,6 +98,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link PortImplementationEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processPortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processPortImplementationEvent";
 
@@ -89,6 +120,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link ProcessToPortListEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processProcessToPortListEvent(String dataEngineEvent) {
         final String methodName = "processProcessToPortListEvent";
 
@@ -107,6 +143,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link LineageMappingsEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processLineageMappingsEvent(String dataEngineEvent) {
         final String methodName = "processLineageMappingsEvent";
 
@@ -131,6 +172,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link ProcessesEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processProcessesEvent(String dataEngineEvent) {
         final String methodName = "processProcessesEvent";
 
