@@ -218,7 +218,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
         if (result == null) {
             /*
-             * There are instances of this type reported by the repository.
+             * There are no instances of this type reported by the repository.
              * This is not an error or failure - it could be that the repository contains no instances.
              * Quietly give up the test for this type.
              */
@@ -264,17 +264,19 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                 for (EntityDetail entity : result) {
                     InstanceProperties entityProperties = entity.getProperties();
-                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attrName);
-                    if (ipValue != null) {
-                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                            Object primitiveValue = ipValue.valueAsObject();
-                            if (valueMap.get(primitiveValue) == null) {
-                                List<String> newList = new ArrayList<>();
-                                valueMap.put(primitiveValue, newList);
+                    if (entityProperties != null) {
+                        InstancePropertyValue ipValue = entityProperties.getPropertyValue(attrName);
+                        if (ipValue != null) {
+                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                Object primitiveValue = ipValue.valueAsObject();
+                                if (valueMap.get(primitiveValue) == null) {
+                                    List<String> newList = new ArrayList<>();
+                                    valueMap.put(primitiveValue, newList);
+                                }
+                                List<String> entityGUIDs = valueMap.get(primitiveValue);
+                                entityGUIDs.add(entity.getGUID());
                             }
-                            List<String> entityGUIDs = valueMap.get(primitiveValue);
-                            entityGUIDs.add(entity.getGUID());
                         }
                     }
                 }
@@ -448,16 +450,18 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                  * Check it is a valid result.
                                  */
                                 InstanceProperties entityProperties = entity.getProperties();
-                                InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
-                                if (ipValue != null) {
-                                    InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                if (entityProperties != null) {
+                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                                    if (ipValue != null) {
+                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
 
-                                        Object primitiveValue = ipValue.valueAsObject();
+                                            Object primitiveValue = ipValue.valueAsObject();
 
-                                        if (!primitiveValue.equals(value))
-                                            matchingResult = false;
+                                            if (!primitiveValue.equals(value))
+                                                matchingResult = false;
 
+                                        }
                                     }
                                 }
                             }
@@ -629,23 +633,29 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                                             boolean alphaMatch = false;
 
-                                            InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                            if (alphaIPValue != null) {
-                                                InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                    Object primitiveValue = alphaIPValue.valueAsObject();
-                                                    alphaMatch = primitiveValue.equals(alphaValue);
+                                            if (entityProperties != null) {
+
+                                                InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                                if (alphaIPValue != null) {
+                                                    InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                        Object primitiveValue = alphaIPValue.valueAsObject();
+                                                        alphaMatch = primitiveValue.equals(alphaValue);
+                                                    }
                                                 }
                                             }
 
                                             boolean betaMatch = false;
 
-                                            InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                            if (betaIPValue != null) {
-                                                InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                    Object primitiveValue = betaIPValue.valueAsObject();
-                                                    betaMatch = primitiveValue.equals(betaValue);
+                                            if (entityProperties != null) {
+
+                                                InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                                if (betaIPValue != null) {
+                                                    InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                        Object primitiveValue = betaIPValue.valueAsObject();
+                                                        betaMatch = primitiveValue.equals(betaValue);
+                                                    }
                                                 }
                                             }
 
@@ -767,23 +777,30 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                                                 boolean alphaMatch = false;
 
-                                                InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                                if (alphaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = alphaIPValue.valueAsObject();
-                                                        alphaMatch = primitiveValue.equals(alphaValue);
+                                                if (entityProperties != null) {
+
+                                                    InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                                    if (alphaIPValue != null) {
+                                                        InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                            Object primitiveValue = alphaIPValue.valueAsObject();
+                                                            alphaMatch = primitiveValue.equals(alphaValue);
+                                                        }
                                                     }
                                                 }
 
+
                                                 boolean betaMatch = false;
 
-                                                InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                                if (betaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = betaIPValue.valueAsObject();
-                                                        betaMatch = primitiveValue.equals(betaValue);
+                                                if (entityProperties != null) {
+
+                                                    InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                                    if (betaIPValue != null) {
+                                                        InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                            Object primitiveValue = betaIPValue.valueAsObject();
+                                                            betaMatch = primitiveValue.equals(betaValue);
+                                                        }
                                                     }
                                                 }
 
@@ -903,23 +920,29 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                                                 boolean alphaMatch = false;
 
-                                                InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                                if (alphaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = alphaIPValue.valueAsObject();
-                                                        alphaMatch = primitiveValue.equals(alphaValue);
+                                                if (entityProperties != null) {
+
+                                                    InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                                    if (alphaIPValue != null) {
+                                                        InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                            Object primitiveValue = alphaIPValue.valueAsObject();
+                                                            alphaMatch = primitiveValue.equals(alphaValue);
+                                                        }
                                                     }
                                                 }
 
                                                 boolean betaMatch = false;
 
-                                                InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                                if (betaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = betaIPValue.valueAsObject();
-                                                        betaMatch = primitiveValue.equals(betaValue);
+                                                if (entityProperties != null) {
+
+                                                    InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                                    if (betaIPValue != null) {
+                                                        InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                            Object primitiveValue = betaIPValue.valueAsObject();
+                                                            betaMatch = primitiveValue.equals(betaValue);
+                                                        }
                                                     }
                                                 }
 
