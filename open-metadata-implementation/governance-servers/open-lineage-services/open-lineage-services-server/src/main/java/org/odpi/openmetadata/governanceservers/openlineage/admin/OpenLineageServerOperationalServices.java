@@ -141,10 +141,10 @@ public class OpenLineageServerOperationalServices {
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 return (OpenLineageGraph) connectorBroker.getConnector(connection);
-            } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-                log.error("Unable to initialize graph connector.", e);
+            } catch (ConnectionCheckedException | ConnectorCheckedException error) {
+                log.error("Unable to initialize graph connector.", error);
                 logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_GRAPH_CONNECTOR, actionDescription);
-                throwError(OpenLineageServerErrorCode.GRAPH_INITIALIZATION_ERROR, methodName);
+                toOMAGConfigurationErrorException(error);
             }
         }
         return null;
@@ -173,7 +173,6 @@ public class OpenLineageServerOperationalServices {
      */
     private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
         final String actionDescription = "getGraphConnector";
-        final String methodName = "OpenLineageServerOperationalServices.getTopicConnector";
         try {
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
@@ -182,20 +181,18 @@ public class OpenLineageServerOperationalServices {
             return topicConnector;
         } catch (ConnectionCheckedException | ConnectorCheckedException error) {
             logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
-            throwError(OpenLineageServerErrorCode.SERVICE_INSTANCE_FAILURE, methodName);
+            toOMAGConfigurationErrorException(error);
             return null;
         }
     }
 
     private void startTopic(OpenMetadataTopicConnector topic) throws OMAGConfigurationErrorException {
         final String actionDescription = "Start OpenMetadataTopicConnector topic connection";
-        final String methodName = "OpenLineageServerOperationalServices.startTopic";
         try {
             topic.start();
-        } catch (ConnectorCheckedException e) {
-            OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            logAudit(auditCode, actionDescription);
-            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
+        } catch (ConnectorCheckedException error) {
+            logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION, actionDescription);
+            toOMAGConfigurationErrorException(error);
         }
     }
 
@@ -210,7 +207,7 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting Asset Lineage Out Topic Connector");
+            log.error("Error disconnecting Open lineages Services In Topic Connector");
             return false;
         }
 
