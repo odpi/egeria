@@ -67,9 +67,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         }
         return processResponse(response);
     }
@@ -86,9 +88,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         }
         return processResponse(response);
     }
@@ -105,9 +109,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         }
         return processResponse(response);
 
@@ -125,9 +131,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         }
         return processResponse(response);
     }
@@ -145,9 +153,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
+            throw new OpenLineageServiceException(e.getMessage(), e);
         }
         return processResponse(response);
     }
