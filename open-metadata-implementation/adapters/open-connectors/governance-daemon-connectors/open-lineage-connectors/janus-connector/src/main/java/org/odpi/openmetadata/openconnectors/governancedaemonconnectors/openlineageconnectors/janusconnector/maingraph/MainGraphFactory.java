@@ -26,7 +26,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class MainGraphFactory extends IndexingFactory {
 
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(MainGraphFactory.class);
 
 
     public JanusGraph openBufferGraph(ConnectionProperties connectionProperties){
@@ -34,16 +34,25 @@ public class MainGraphFactory extends IndexingFactory {
         final String methodName = "open";
         JanusGraph janusGraph;
 
-        String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
+        final String storagePath = "./egeria-lineage-repositories/main/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
-                set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
-                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
-                set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
-                set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
-                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
-                set("storage.transactions",false).
-                set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
+                set("storage.backend", "berkeleyje").
+                set("storage.directory", storagePath).
+                set("index.search.backend", "lucene").
+                set("index.search.directory", indexPath);
+
+        String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
+//
+//        JanusGraphFactory.Builder config = JanusGraphFactory.build().
+//                set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
+//                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
+//                set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
+//                set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
+//                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
+//                set("storage.transactions",false).
+//                set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
 
 
         try {

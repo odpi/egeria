@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addV;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory.openBufferGraph;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
@@ -106,67 +104,77 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     @Override
     public void schedulerTask(){
         GraphTraversalSource g = bufferGraph.traversal();
-        List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
+        try {
+            List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
 
-        List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+            List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
-        for (String guid : guidList) {
-//            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("vepropdisplayName","initial_load");
-//            if(!initial.hasNext()) {
-//            if(guid.equals("367b5acc-afae-4715-9543-1ffd364dd7cc")){
-//            if(guid.equals("306504bc-f184-46af-95d5-a03bbdb47dc7")){
-                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
-                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
-                        .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
-                        .toList();
-
-                Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-                for (Vertex vertex : inputPath) {
-                    String vertexGuid = vertex.value(PROPERTY_KEY_ENTITY_GUID);
-                    List<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").in("LineageMapping").toList();
-//
-
-
-//                    List<Vertex> glossaryMain =    g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).
-//                            fold().
-//                            coalesce(unfold(),
-//                                    __.out("SchemaAttributeType").in("LineageMapping")).toList();
-                    Vertex vertexToStart = null;
-
-                    if(r != null){
-                        for(Vertex v: r){
-                            List<Vertex> intialProcess = g.V(v.id()).bothE("SchemaAttributeType")
-                            .otherV().bothE("AttributeForSchema")
-                            .otherV().inE("PortSchema").otherV()
-                            .inE("PortDelegation").otherV().
-                    inE("ProcessPort").otherV().has("veguid",process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
-
-                            if(!intialProcess.isEmpty()){
-                                vertexToStart = v;
-                                break;
-                            }
-                        }
-                    }
-
-                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").next();
-//                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).next();
-                    Iterator<Vertex> columnOut = null;
-                    if(vertexToStart != null){
-                        columnOut  = findPathForOutputAsset(vertexToStart,g,startingVertex);
-
-                    }
-                    if (columnOut != null && columnOut.hasNext()) {
-                        String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-                        String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-                        if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                            MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
-                            mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
-                        }
-                    }
-                }
-//            }
+            guidList.stream().forEach(process -> findInputColumns(g,process));
+            g.tx().commit();
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            g.tx().rollback();
         }
-        g.tx().commit();
+
+    }
+
+    private void findInputColumns(GraphTraversalSource g,String guid){
+
+        //TODO change Tabular column and Relational column with the supertupe SchemaElement when AssetLineage is ready
+        List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
+                .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
+                .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
+                .toList();
+
+        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        inputPath.stream().forEach(columnIn -> findOutputColumn(g,columnIn,process));
+    }
+
+    private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
+        List<Vertex> schemaElementVertex = g.V()
+                .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .out("SchemaAttributeType")
+                .in("LineageMapping")
+                .toList();
+
+        Vertex vertexToStart = null;
+        if(schemaElementVertex != null){
+            for(Vertex v: schemaElementVertex){
+                List<Vertex> initialProcess = g.V(v.id())
+                        .bothE("SchemaAttributeType")
+                        .otherV().bothE("AttributeForSchema")
+                        .otherV().inE("PortSchema").otherV()
+                        .inE("PortDelegation").otherV().
+                                inE("ProcessPort").otherV().has("veguid",process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+
+                if(!initialProcess.isEmpty()){
+                    vertexToStart = v;
+                    break;
+                }
+
+
+                Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
+                Iterator<Vertex> columnOut = null;
+                if(vertexToStart != null){
+                    columnOut  = findPathForOutputAsset(vertexToStart,g,startingVertex);
+
+                }
+
+                moveColumnProcessColumn(columnIn,columnOut,process);
+            }
+        }
+
+    }
+
+    private void moveColumnProcessColumn(Vertex columnIn,Iterator<Vertex> columnOut,Vertex process){
+        if (columnOut != null && columnOut.hasNext()) {
+            String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+            String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+            if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
+                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
+                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
+            }
+        }
     }
 
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
