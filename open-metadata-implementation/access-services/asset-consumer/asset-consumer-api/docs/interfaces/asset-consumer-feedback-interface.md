@@ -21,12 +21,6 @@ These first three methods enable the caller to work with reviews.
   [Java](../../../asset-consumer-client/docs/user/java-client/add-review-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-review-to-asset-with-rest.md)
 
-* **updateReviewOnAsset** - Updates the rating and optional review text attached to the asset by this user.
-
-  Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/java-client/update-review-on-asset-with-java.md),
-  [REST](../../../asset-consumer-server/docs/user/update-review-on-asset-with-rest.md)
-
 * **removeReviewFromAsset** - Removes a review that was added to the asset by this user.
 
   Implementation: 

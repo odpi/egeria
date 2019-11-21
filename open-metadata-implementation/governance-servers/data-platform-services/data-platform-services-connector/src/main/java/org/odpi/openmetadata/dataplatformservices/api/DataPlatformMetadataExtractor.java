@@ -6,9 +6,6 @@ import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformDeployed
 import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformSoftwareServerCapability;
 import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularColumn;
 import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularSchema;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-
-import java.util.Date;
 
 /**
  * The interface of Data Platform Metadata Extractor.

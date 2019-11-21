@@ -7,11 +7,9 @@ import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -30,7 +28,8 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+
+    private static final  NullRequestBody nullRequestBody = new NullRequestBody();
 
 
     /**
@@ -144,10 +143,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                   serverName,
                                                                   userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUID();
     }
 
@@ -190,10 +185,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                           userId,
                                                                           anchorGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUIDs();
     }
 
@@ -233,10 +224,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                           serverName,
                                                                           userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUIDs();
     }
 
@@ -267,19 +254,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  fileSystemGUID,
-                                                                  folderGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        fileSystemGUID,
+                                        folderGUID);
     }
 
 
@@ -309,19 +290,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  fileSystemGUID,
-                                                                  folderGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        fileSystemGUID,
+                                        folderGUID);
     }
 
 
@@ -367,10 +342,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUIDs();
     }
@@ -421,10 +392,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                           serverName,
                                                                           userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUIDs();
     }
 
@@ -456,19 +423,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  folderGUID,
-                                                                  fileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        folderGUID,
+                                        fileGUID);
     }
 
 
@@ -500,19 +461,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  folderGUID,
-                                                                  fileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        folderGUID,
+                                        fileGUID);
     }
 
 
@@ -543,19 +498,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  folderGUID,
-                                                                  fileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        folderGUID,
+                                        fileGUID);
     }
 
 
@@ -586,19 +535,13 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         invalidParameterHandler.validateGUID(dataFolderGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  folderGUID,
-                                                                  dataFolderGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        folderGUID,
+                                        dataFolderGUID);
     }
 
 
@@ -631,10 +574,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                              serverName,
                                                                              userId,
                                                                              fileSystemGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getFileSystem();
     }
@@ -669,10 +608,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                              serverName,
                                                                              userId,
                                                                              uniqueName);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getFileSystem();
     }
@@ -709,10 +644,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                           Integer.toString(startingFrom),
                                                                           Integer.toString(maxPageSize));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUIDs();
     }
 
@@ -747,10 +678,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                      userId,
                                                                      folderGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getFolder();
     }
 
@@ -784,10 +711,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                      serverName,
                                                                      userId,
                                                                      pathName);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getFolder();
     }
@@ -829,10 +752,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                          Integer.toString(startingFrom),
                                                                          Integer.toString(maxPageSize));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getGUIDs();
     }
 
@@ -872,10 +791,6 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                          folderGUID,
                                                                          Integer.toString(startingFrom),
                                                                          Integer.toString(maxPageSize));
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUIDs();
     }

@@ -23,7 +23,11 @@ public enum UserInterfaceErrorCodes {
     USER_NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED, "USER-INTERFACE-401-004",
                                    "User is not authorized",
                                    "The system is unable to authorize the user.",
-                                   "Check your credentials.");
+                                   "Check your credentials."),
+    INVALID_REQUEST_FOR_OPEN_LINEAGE(HttpStatus.INTERNAL_SERVER_ERROR, "USER-INTERFACE-500-005",
+                                    "The request for open lineage is invalid",
+                                    "The system is unable to handle request.",
+                                    "Check that the configuration for Open Lineage is correct." );
 
     private HttpStatus httpErrorCode;
     private String errorMessageId;

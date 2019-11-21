@@ -61,4 +61,9 @@ public class ReferenceableMapper
     public static final String REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME          = "MediaReference";
     /* End1 = Referenceable; End 2 = RelatedMedia */
 
+    public static final String SECURITY_TAG_TYPE_GUID                            = "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
+    public static final String SECURITY_TAG_TYPE_NAME                            = "SecurityTags";
+    public static final String SECURITY_LABELS_PROPERTY_NAME                     = "securityLabels";
+    public static final String SECURITY_PROPERTIES_PROPERTY_NAME                 = "securityProperties";
+
 }

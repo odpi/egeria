@@ -17,6 +17,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
           
             --paper-input-container-focus-color: var(--egeria-primary-color);
             --lumo-primary-color: var(--egeria-primary-color);
+            --lumo-primary-text-color: var(--egeria-primary-color);
             
             --paper-spinner-color: var(--egeria-primary-color);
             --paper-spinner-stroke-width: 5px;

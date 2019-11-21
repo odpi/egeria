@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -26,6 +23,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private ContextHandler contextHandler;
     private CommonHandler commonHandler;
     private ProcessHandler processHandler;
+    private ClassificationHandler classificationHandler;
 
     /**
      * Set up the handlers for this server.
@@ -66,6 +64,12 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHandler);
 
             processHandler = new ProcessHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
+            classificationHandler = new ClassificationHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -123,6 +127,15 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     ProcessHandler getProcessHandler()
     {
         return processHandler;
+    }
+
+    /**
+     * Return the specialized classification handler for Asset Lineage OMAS.
+     *
+     * @return process handler
+     */
+    ClassificationHandler getClassificationHandler() {
+        return classificationHandler;
     }
 
 }

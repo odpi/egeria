@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommentRequestBody provides a structure for passing a comment as a request body over a REST API.
+ * ReferenceableRequestBody provides a structure for passing a referenceables' properties as a request body over a REST API.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AssetRequestBody.class, name = "AssetRequestBody")
+                @JsonSubTypes.Type(value = AssetRequestBody.class, name = "AssetRequestBody"),
+                @JsonSubTypes.Type(value = ValidValuesRequestBody.class, name = "ValidValuesRequestBody")
         })
 public class ReferenceableRequestBody extends OCFOMASAPIRequestBody
 {

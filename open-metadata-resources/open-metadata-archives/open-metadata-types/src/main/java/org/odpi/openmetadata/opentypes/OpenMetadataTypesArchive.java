@@ -18300,6 +18300,8 @@ public class OpenMetadataTypesArchive
      */
     private void add0505SchemaAttributes()
     {
+        this.archiveBuilder.addEnumDef(getDataItemSortOrderEnum());
+
         this.archiveBuilder.addEntityDef(getSchemaAttributeEntity());
         this.archiveBuilder.addEntityDef(getComplexSchemaTypeEntity());
         this.archiveBuilder.addEntityDef(getStructSchemaTypeEntity());
@@ -18309,6 +18311,56 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addRelationshipDef(getNestedSchemaAttributeRelationship());
 
         this.archiveBuilder.addClassificationDef(getTypeEmbeddedAttributeClassification());
+    }
+
+    private EnumDef getDataItemSortOrderEnum()
+    {
+        final String guid            = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
+        final String name            = "DataItemSortOrder";
+        final String description     = "Defines the suggested order that data values in this data item should be sorted by.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "Ascending";
+        final String element1Description     = "Sort the data values so that they increase in value.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "Descending";
+        final String element2Description     = "Sort the data values so that they decrease in value.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element8Ordinal         = 99;
+        final String element8Value           = "Ignore";
+        final String element8Description     = "No specific sort order.";
+        final String element8DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
+                                                     element8Value,
+                                                     element8Description,
+                                                     element8DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
     }
 
 
@@ -18334,7 +18386,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "position";
-        final String attribute1Description     = "Position in the schema, starting at zero.";
+        final String attribute1Description     = "Location of the attribute in the parent schema's list of attributes, starting at zero.";
         final String attribute1DescriptionGUID = null;
         final String attribute2Name            = "minCardinality";
         final String attribute2Description     = "Minimum number of occurrences of this attribute allowed (0 = optional, 1+ = mandatory).";
@@ -18357,6 +18409,12 @@ public class OpenMetadataTypesArchive
         final String attribute8Name            = "name";
         final String attribute8Description     = "Name of schema attribute (deprecated).";
         final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "aliases";
+        final String attribute9Description     = "List of aliases for attribute.";
+        final String attribute9DescriptionGUID = null;
+        final String attribute10Name            = "sortOrder";
+        final String attribute10Description     = "Suggested ordering of values in this attribute.";
+        final String attribute10DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -18389,6 +18447,15 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
                                                            attribute8Description,
                                                            attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute9Name,
+                                                                attribute9Description,
+                                                                attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("DataItemSortOrder",
+                                                         attribute10Name,
+                                                         attribute10Description,
+                                                         attribute10DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -20752,7 +20819,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getValidValueDefinitionEntity());
         this.archiveBuilder.addEntityDef(getValidValuesSetEntity());
 
-        this.archiveBuilder.addRelationshipDef(getValidValueAssignmentRelationship());
+        this.archiveBuilder.addRelationshipDef(getValidValuesAssignmentRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesMemberRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesImplementationRelationship());
     }
@@ -20858,10 +20925,10 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getValidValueAssignmentRelationship()
+    private RelationshipDef getValidValuesAssignmentRelationship()
     {
         final String guid            = "c5d48b73-eadd-47db-ab64-3be99b2fb32d";
-        final String name            = "ValidValueAssignment";
+        final String name            = "ValidValuesAssignment";
         final String description     = "Links a referenceable to its valid values.";
         final String descriptionGUID = null;
 
@@ -20908,6 +20975,23 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "strictRequirement";
+        final String attribute1Description     = "Only values from the ValidValues set/definition are allowed.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -23691,12 +23775,24 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "dataFieldType";
         final String attribute2Description     = "Type name for the data field.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "additionalProperties";
-        final String attribute3Description     = "Additional properties discovered during the analysis.";
+        final String attribute3Name            = "defaultValue";
+        final String attribute3Description     = "Default value that is added to the field if no value is specified.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "anchorGUID";
-        final String attribute4Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
+        final String attribute4Name            = "additionalProperties";
+        final String attribute4Description     = "Additional properties discovered during the analysis.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "anchorGUID";
+        final String attribute5Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "dataFieldDescription";
+        final String attribute6Description     = "Optional descriptive information about a data field.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "dataFieldAliases";
+        final String attribute7Description     = "Optional list of aliases for the data field.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "dataFieldSortOrder";
+        final String attribute8Description     = "Sort order for the values of the data field.";
+        final String attribute8DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -23706,15 +23802,31 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
         properties.add(property);
-
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute7Name,
+                                                                attribute7Description,
+                                                                attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("DataItemSortOrder",
+                                                         attribute8Name,
+                                                         attribute8Description,
+                                                         attribute8DescriptionGUID);
+        properties.add(property);
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
@@ -23836,7 +23948,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "dataFieldPosition";
-        final String attribute1Description     = "Positional order of the data field in the parent annotation.";
+        final String attribute1Description     = "Location of the data field in the parent annotation's list of data fields.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,

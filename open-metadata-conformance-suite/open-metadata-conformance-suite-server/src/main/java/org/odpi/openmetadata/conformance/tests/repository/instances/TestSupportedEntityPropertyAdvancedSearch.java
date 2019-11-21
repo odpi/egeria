@@ -278,31 +278,46 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
             this.instProps2 = populateInstanceProperties(attrList, "2");
         }
 
+
         /*
-         * Create two entities for each set.
+         * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
          */
 
-        this.entitySet_0 = new ArrayList<>();
+        try {
+
+            /*
+             * Create two entities for each set.
+             */
+
+            this.entitySet_0 = new ArrayList<>();
+
+            entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
+            entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
+
+            if (this.multiSetTest) {
+
+                this.entitySet_1 = new ArrayList<>();
+
+                entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
+                entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
+
+                this.entitySet_2 = new ArrayList<>();
+
+                entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+                entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+            }
 
 
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
-
-        if (this.multiSetTest) {
-
-            this.entitySet_1 = new ArrayList<>();
-
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
-
-            this.entitySet_2 = new ArrayList<>();
-
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+            repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(), this.entitySet_0, this.entitySet_1, this.entitySet_2);
         }
+        catch (FunctionNotSupportedException exception) {
 
-
-        repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(),this.entitySet_0,this.entitySet_1,this.entitySet_2);
+            /*
+             * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
+             * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
+             */
+            return;
+        }
 
 
     }
@@ -310,33 +325,23 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
     private void cleanInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
 
-        /*
-         * Clean up all entities created by this testcase
-         */
+        List<EntityDetail> workpad_set0 = repositoryConformanceWorkPad.getEntityInstanceSet(entityDef.getName(), 0);
 
-        repositoryConformanceWorkPad.removeEntityInstanceSets(entityDef.getName());
+        if (workpad_set0 != null) {
+
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Clean up all instance sets
+             */
 
 
-        for (EntityDetail entity : entitySet_0) {
+            /*
+             * Clean up all entities created by this testcase
+             */
 
-            try {
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            } catch (FunctionNotSupportedException exception) {
-                // NO OP - can proceed to purge
-            }
+            repositoryConformanceWorkPad.removeEntityInstanceSets(entityDef.getName());
 
-            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                    entity.getType().getTypeDefGUID(),
-                    entity.getType().getTypeDefName(),
-                    entity.getGUID());
-        }
 
-        if (this.multiSetTest) {
-
-            for (EntityDetail entity : entitySet_1) {
+            for (EntityDetail entity : entitySet_0) {
 
                 try {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
@@ -353,35 +358,63 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
                         entity.getGUID());
             }
 
-            for (EntityDetail entity : entitySet_2) {
+            if (this.multiSetTest) {
 
-                try {
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                for (EntityDetail entity : entitySet_1) {
+
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                entity.getType().getTypeDefGUID(),
+                                entity.getType().getTypeDefName(),
+                                entity.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+                        // NO OP - can proceed to purge
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
                             entity.getType().getTypeDefGUID(),
                             entity.getType().getTypeDefName(),
                             entity.getGUID());
-                } catch (FunctionNotSupportedException exception) {
-                    // NO OP - can proceed to purge
                 }
 
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
+                for (EntityDetail entity : entitySet_2) {
+
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                entity.getType().getTypeDefGUID(),
+                                entity.getType().getTypeDefName(),
+                                entity.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+                        // NO OP - can proceed to purge
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                            entity.getType().getTypeDefGUID(),
+                            entity.getType().getTypeDefName(),
+                            entity.getGUID());
+                }
             }
         }
-
     }
 
     private void performFinds(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        if (this.multiSetTest)
-            this.performFindsMultiSet(metadataCollection);
-        else {
+
+        List<EntityDetail> workpad_set0 = repositoryConformanceWorkPad.getEntityInstanceSet(entityDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
             /*
-             * If not multiSet t is because there are no string properties in the type - you cannot do a regex test in this case.
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Run the tests
              */
-            return;
+            if (this.multiSetTest)
+                this.performFindsMultiSet(metadataCollection);
+            else {
+                /*
+                 * If not multiSet t is because there are no string properties in the type - you cannot do a regex test in this case.
+                 */
+                return;
+            }
         }
     }
 
