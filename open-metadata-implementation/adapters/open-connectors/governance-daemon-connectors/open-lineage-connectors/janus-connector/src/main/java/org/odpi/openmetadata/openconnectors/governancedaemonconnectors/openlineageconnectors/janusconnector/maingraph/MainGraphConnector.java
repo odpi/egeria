@@ -160,7 +160,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
     private LineageVertex abstractVertex(Vertex originalVertex) {
         try {
-            String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
+            String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString(); //Todo should be nodeID instead of guid
             String nodeType = originalVertex.label();
             LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
 
