@@ -188,7 +188,7 @@ public class DataEngineSchemaTypeHandler {
         Set<String> oldSchemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
 
         for (String oldSchemaAttributeGUID : oldSchemaAttributeGUIDs) {
-            removeSchemaAttribute(userId, oldSchemaAttributeGUID);
+            removeTabularColumn(userId, oldSchemaAttributeGUID);
         }
 
         schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
@@ -261,28 +261,27 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Remove the schema attribute
+     * Remove the tabular column
      *
-     * @param userId              the name of the calling user
-     * @param schemaAttributeGUID the unique identifier of the schemaType to be removed
+     * @param userId            the name of the calling user
+     * @param tabularColumnGUID the unique identifier of the schemaType to be removed
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private void removeSchemaAttribute(String userId, String schemaAttributeGUID) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException {
-        final String methodName = "removeSchemaAttribute";
+    private void removeTabularColumn(String userId, String tabularColumnGUID) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException {
+        final String methodName = "removeTabularColumn";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaAttributeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME,
+        invalidParameterHandler.validateGUID(tabularColumnGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME,
                 methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME);
 
-        repositoryHandler.removeEntity(userId, schemaAttributeGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
+        repositoryHandler.removeEntity(userId, tabularColumnGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
                 null, null, methodName);
     }
 
