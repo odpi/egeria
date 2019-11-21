@@ -1789,6 +1789,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <scope>test</scope>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
@@ -1978,10 +1985,11 @@
 
     <!-- Most dependencies pushed down to keep components minimal -->
     <dependencies>
-        <!-- Use logback anywhere as logging implementation in TEST scope only -->
+        <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -2118,6 +2126,9 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
+                        <systemPropertyVariables>
+                            <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
+                        </systemPropertyVariables>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -2368,8 +2379,9 @@
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                <!-- Used with sl44j as default implementaion in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
+                                <!-- Used with slf4j as default implementation in test scope only -->
+                                <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*</ignoredUnusedDeclaredDependency>
+
                                 <!-- These exceptions should be removed once code is clean -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
