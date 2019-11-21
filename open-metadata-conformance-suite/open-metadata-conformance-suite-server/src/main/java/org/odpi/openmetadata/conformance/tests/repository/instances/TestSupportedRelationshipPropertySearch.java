@@ -358,17 +358,36 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
 
         /*
-         * Create two relationships for each set. Always create set 0
+         * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
          */
 
-        this.relationshipSet_0 = new ArrayList<>();
-        this.populateRelationshipSet(metadataCollection, this.relationshipSet_0, this.instProps0);
-        if (this.multiSetTest) {
-            this.relationshipSet_1 = new ArrayList<>();
-            this.populateRelationshipSet(metadataCollection, this.relationshipSet_1, this.instProps1);
-            this.relationshipSet_2 = new ArrayList<>();
-            this.populateRelationshipSet(metadataCollection, this.relationshipSet_2, this.instProps2);
+        try {
+
+            /*
+             * Create two relationships for each set. Always create set 0
+             */
+
+            this.relationshipSet_0 = new ArrayList<>();
+            this.populateRelationshipSet(metadataCollection, this.relationshipSet_0, this.instProps0);
+            if (this.multiSetTest) {
+                this.relationshipSet_1 = new ArrayList<>();
+                this.populateRelationshipSet(metadataCollection, this.relationshipSet_1, this.instProps1);
+                this.relationshipSet_2 = new ArrayList<>();
+                this.populateRelationshipSet(metadataCollection, this.relationshipSet_2, this.instProps2);
+            }
+
+            repositoryConformanceWorkPad.addRelationshipInstanceSets(relationshipDef.getName(), this.relationshipSet_0, this.relationshipSet_1, this.relationshipSet_2);
+
         }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
+             * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
+             */
+            return;
+        }
+
 
     }
 
@@ -407,14 +426,27 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
     private void cleanInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        /*
-         * Clean up all relationships (and their associated entities) created by this testcase
-         */
 
-        this.cleanRelationshipSet(metadataCollection, relationshipSet_0);
-        if (this.multiSetTest) {
-            this.cleanRelationshipSet(metadataCollection, relationshipSet_1);
-            this.cleanRelationshipSet(metadataCollection, relationshipSet_2);
+        List<Relationship> workpad_set0 = repositoryConformanceWorkPad.getRelationshipInstanceSet(relationshipDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Clean up all instance sets
+             */
+
+            /*
+             * Clean up all relationships (and their associated entities) created by this testcase
+             */
+
+            repositoryConformanceWorkPad.removeRelationshipInstanceSets(relationshipDef.getName());
+
+
+            this.cleanRelationshipSet(metadataCollection, relationshipSet_0);
+            if (this.multiSetTest) {
+                this.cleanRelationshipSet(metadataCollection, relationshipSet_1);
+                this.cleanRelationshipSet(metadataCollection, relationshipSet_2);
+            }
         }
 
     }
@@ -485,10 +517,20 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
     private void performFinds(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        if (this.multiSetTest)
-            this.performFindsMultiSet(metadataCollection);
-        else
-            this.performFindsSingleSet(metadataCollection);
+
+        List<Relationship> workpad_set0 = repositoryConformanceWorkPad.getRelationshipInstanceSet(relationshipDef.getName(), 0);
+
+        if (workpad_set0 != null) {
+
+            /*
+             * Instances were created for set0; so may also have been created for other sets (if multi-set). Run the tests
+             */
+
+            if (this.multiSetTest)
+                this.performFindsMultiSet(metadataCollection);
+            else
+                this.performFindsSingleSet(metadataCollection);
+        }
     }
 
 
