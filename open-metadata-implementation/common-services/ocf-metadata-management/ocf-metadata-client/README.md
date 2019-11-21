@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OCF Metadata Management - Server-side
+# OCF Metadata Management - Client-side
 
-OCF Metadata management server-side provides common handlers for storing and retrieving metadata
-about an asset and its related elements such as connections and schema
-in the open metadata repositories where the API is based on the
+OCF Metadata management client-side provides common client-side beans for managing the paging used when
+retrieving metadata about an asset and its related elements (such as connections and schema)
+from the open metadata repositories where the API is based on the
 [Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) beans.
 
 

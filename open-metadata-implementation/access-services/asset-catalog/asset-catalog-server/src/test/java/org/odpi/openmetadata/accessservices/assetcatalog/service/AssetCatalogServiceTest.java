@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -247,7 +247,7 @@ public class AssetCatalogServiceTest {
     public void testSearchByType()
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase {
         SearchParameters searchParameters = mockSearchParams();
-        List<Term> response = new ArrayList<>();
+        List<AssetElements> response = new ArrayList<>();
         response.add(mockTerm(FIRST_GUID));
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -269,7 +269,7 @@ public class AssetCatalogServiceTest {
 
     @Test
     public void testBuildContext() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Term response = mockTerm(FIRST_GUID);
+        AssetElements response = mockTerm(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
                 SERVER_NAME,
@@ -288,10 +288,10 @@ public class AssetCatalogServiceTest {
         assertEquals(response.getGuid(), assetResponse.getAssets().get(0).getGuid());
     }
 
-    private Term mockTerm(String guid) {
-        Term term = new Term();
-        term.setGuid(guid);
-        return term;
+    private AssetElements mockTerm(String guid) {
+        AssetElements assetElements = new AssetElements();
+        assetElements.setGuid(guid);
+        return assetElements;
     }
 
     private SearchParameters mockSearchParams() {

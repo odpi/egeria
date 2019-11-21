@@ -52,9 +52,7 @@ public abstract class EntityLookup<T extends Source> {
             return omEntityDao.getEntityByGuid(source.getGuid());
         }
         if(!StringUtils.isEmpty(source.getQualifiedName())){
-            // GDW - need to convert qualifiedName to an exactMatchRegex
-            String sourceQualifiedNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getQualifiedName());
-            return omEntityDao.getEntity(equivalentOMType, sourceQualifiedNameRegex, false);
+            return omEntityDao.getEntity(equivalentOMType, source.getQualifiedName(), false);
         }
         return null;
     }

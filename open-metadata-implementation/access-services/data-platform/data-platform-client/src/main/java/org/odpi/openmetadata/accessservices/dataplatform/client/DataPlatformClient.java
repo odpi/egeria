@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * DataPlatformClient provides the client implementation for the Data Platform OMAS.
@@ -65,11 +66,12 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * @param softwareServerCapability the software server capability bean
      * @return unique identifier of the server in the repository
      * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
     public GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
-            InvalidParameterException, PropertyServerException {
+            InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
             final String methodName = "createExternalDataPlatform";
 
@@ -88,11 +90,12 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * @param deployedDatabaseSchema the deployed database schema
      * @return the string
      * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    the property server exception
      */
     @Override
     public GUIDResponse createDeployedDatabaseSchema(String userId, DeployedDatabaseSchema deployedDatabaseSchema) throws
-            InvalidParameterException, PropertyServerException {
+            InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "createDeployedDatabaseSchema";
 

@@ -137,3 +137,6 @@ Gemfile
 Snap*.trc
 javacore*.txt
 jitdump*dmp
+
+# License files (generated)
+THIRD_PARTY*.txt

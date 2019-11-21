@@ -432,6 +432,24 @@ public abstract class OpenMetadataTestCase
     }
 
 
+    public void cleanTest() {
+        try {
+            this.cleanup();
+        }
+        catch (Throwable   exception) {
+            /* No action taken - the cleanup should be a belt and braces clearing of instances */
+        }
+    }
+
+    /**
+     * Default inplementation - over-ridden by some test cases.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    protected void cleanup() throws Exception {
+        return;
+    }
+
     /**
      * Method implemented by the actual test case.
      *

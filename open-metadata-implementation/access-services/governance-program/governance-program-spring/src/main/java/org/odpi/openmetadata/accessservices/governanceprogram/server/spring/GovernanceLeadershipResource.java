@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The GovernanceProgramOMASGovernanceLeadershipResource provides a Spring based server-side REST API
+ * The GovernanceLeadershipResource provides a Spring based server-side REST API
  * that supports the GovernanceLeadershipInterface.   It delegates each request to the
  * GovernanceProgramRESTServices.  This provides the server-side implementation of the Governance Program Open Metadata
  * Assess Service (OMAS) which is used to manage the full lifecycle of a governance program.
