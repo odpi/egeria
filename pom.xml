@@ -2528,7 +2528,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Optional PMD scan - static code analysis -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
@@ -2545,17 +2544,33 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>owasp</id>
+            <activation>
+                <property>
+                    <name>!skipCVE</name>
+                </property>
+            </activation>
+            <!-- Build reports - findBugs security checks -->
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
                         <configuration>
                             <skipSystemScope>true</skipSystemScope>
+                            <skipProvidedScope>true</skipProvidedScope>
+                            <skipTestScope>true</skipTestScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                             <enableExperimental>true</enableExperimental>
                             <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>
                             <cmakeAnalyzerEnabled>false</cmakeAnalyzerEnabled>
                             <autoconfAnalyzerEnabled>false</autoconfAnalyzerEnabled>
-                            <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
+                            <nodeAnalyzerEnabled>true</nodeAnalyzerEnabled>
                             <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
                             <bundleAuditAnalyzerEnabled>false</bundleAuditAnalyzerEnabled>
                             <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
@@ -2564,9 +2579,13 @@
                             <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
                         </configuration>
                         <executions>
+
                             <execution>
+                                <id>full-cve</id>
+                                <inherited>false</inherited>
+                                <phase>verify</phase>
                                 <goals>
-                                    <goal>check</goal>
+                                    <goal>aggregate</goal>
                                 </goals>
                             </execution>
                         </executions>
