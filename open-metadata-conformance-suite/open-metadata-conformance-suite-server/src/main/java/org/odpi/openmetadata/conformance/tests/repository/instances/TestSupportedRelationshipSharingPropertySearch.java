@@ -263,17 +263,19 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
                 for (Relationship relationship : result) {
                     InstanceProperties relationshipProperties = relationship.getProperties();
-                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attrName);
-                    if (ipValue != null) {
-                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                            Object primitiveValue = ipValue.valueAsObject();
-                            if (valueMap.get(primitiveValue) == null) {
-                                List<String> newList = new ArrayList<>();
-                                valueMap.put(primitiveValue, newList);
+                    if (relationshipProperties != null) {
+                        InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attrName);
+                        if (ipValue != null) {
+                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                Object primitiveValue = ipValue.valueAsObject();
+                                if (valueMap.get(primitiveValue) == null) {
+                                    List<String> newList = new ArrayList<>();
+                                    valueMap.put(primitiveValue, newList);
+                                }
+                                List<String> relationshipGUIDs = valueMap.get(primitiveValue);
+                                relationshipGUIDs.add(relationship.getGUID());
                             }
-                            List<String> relationshipGUIDs = valueMap.get(primitiveValue);
-                            relationshipGUIDs.add(relationship.getGUID());
                         }
                     }
                 }
