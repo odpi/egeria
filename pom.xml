@@ -2658,7 +2658,7 @@
             <id>thirdPartyLocalRepo</id>
             <activation>
                 <property>
-                    <name>!ThirdPartyLocalRepo</name>
+                    <name>!skipThirdPartyLocalRepo</name>
                 </property>
             </activation>
             <!-- The following steps obtain the required Gaian libraries by retrieving, unpacking the distribution and installing into the local maven repo -->
