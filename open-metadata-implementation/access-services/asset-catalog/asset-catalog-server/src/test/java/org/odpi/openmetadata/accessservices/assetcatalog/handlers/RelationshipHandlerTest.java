@@ -13,9 +13,11 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,11 +57,12 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities()
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         String methodName = "getRelationshipBetweenEntities";
 
         Relationship mock = mockRelationship();
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
+        mockMetadataCollection();
 
         when(repositoryHandler.getRelationshipBetweenEntities(USER,
                 FIRST_GUID,
@@ -85,9 +88,10 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities_throwsUserNotAuthorizedException()
-            throws PropertyServerException, UserNotAuthorizedException {
+            throws PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
+        mockMetadataCollection();
 
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
                 this.getClass().getName(), "", "", "", "", "");
@@ -127,8 +131,9 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities_throwsPropertyServerException()
-            throws UserNotAuthorizedException, PropertyServerException {
+            throws UserNotAuthorizedException, PropertyServerException, RepositoryErrorException {
         String methodName = "getRelationshipBetweenEntities";
+        mockMetadataCollection();
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
         PropertyServerException mockedException = new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
@@ -162,6 +167,16 @@ public class RelationshipHandlerTest {
         Relationship relationship = mock(Relationship.class);
         when(relationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         return relationship;
+    }
+
+    private OMRSMetadataCollection mockMetadataCollection() throws RepositoryErrorException {
+        OMRSMetadataCollection metadataCollection = mock(OMRSMetadataCollection.class);
+
+        when(repositoryHandler.getMetadataCollection()).thenReturn(metadataCollection);
+
+        when(metadataCollection.getMetadataCollectionId(USER)).thenReturn("metadataCollectionID");
+        when(repositoryHelper.getMetadataCollectionName("metadataCollectionID")).thenReturn("metadataCollectionName");
+        return metadataCollection;
     }
 
 }

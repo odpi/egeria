@@ -67,7 +67,7 @@ public class AssetCatalogHandler {
 
     private List<String> supportedZones;
     private List<String> defaultZones;
-    private OpenMetadataServerSecurityVerifier securityVerifier;
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
     /**
      * Construct the handler information needed to interact with the repository services

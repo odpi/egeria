@@ -6,10 +6,12 @@ import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +24,7 @@ public class RelationshipHandler {
 
     private List<String> supportedZones;
     private List<String> defaultZones;
-    private OpenMetadataServerSecurityVerifier securityVerifier;
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -59,7 +61,7 @@ public class RelationshipHandler {
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
                                                                                                                String entity1GUID,
                                                                                                                String entity2GUID,
-                                                                                                               String relationshipType) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
+                                                                                                               String relationshipType) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, RepositoryErrorException {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -79,7 +81,7 @@ public class RelationshipHandler {
         if (relationshipBetweenEntities != null) {
 
             securityVerifier.validateUserForRelationshipRead(userId,
-                    "metadataCollectionName",
+                    getOMRSMetadataCollectionName(userId),
                     relationshipBetweenEntities);
 
             AssetConverter converter = new AssetConverter(repositoryHelper);
@@ -89,12 +91,24 @@ public class RelationshipHandler {
     }
 
     private String getTypeDefGUID(String userId, String relationshipType) {
-        if (relationshipType != null) {
+        if (relationshipType == null) {
             return null;
         }
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, relationshipType);
         return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
+    }
 
+    private OMRSMetadataCollection getOMRSMetadataCollection() {
+        return repositoryHandler.getMetadataCollection();
+    }
+
+    private String getOMRSMetadataCollectionName(String userId) throws RepositoryErrorException {
+        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
+        String metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
+        if (metadataCollectionId == null) {
+            return null;
+        }
+        return repositoryHelper.getMetadataCollectionName(metadataCollectionId);
     }
 }

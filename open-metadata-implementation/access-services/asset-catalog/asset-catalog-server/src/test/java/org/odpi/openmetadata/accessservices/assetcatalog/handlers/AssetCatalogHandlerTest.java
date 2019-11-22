@@ -88,9 +88,10 @@ public class AssetCatalogHandlerTest {
 
     @Test
     public void getEntityDetails() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
-        String methodName = "getEntityDetails";
+        String methodName = "getEntity";
 
         mockEntityDetails(FIRST_GUID, methodName);
+        mockMetadataCollection();
 
         AssetDescription result = assetCatalogHandler.getEntityDetails(USER, FIRST_GUID, ASSET_TYPE);
 
@@ -101,7 +102,7 @@ public class AssetCatalogHandlerTest {
 
     @Test
     public void getEntityDetails_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
+        String methodName = "getEntity";
 
         mockEntityDetails(FIRST_GUID, methodName);
 
@@ -113,10 +114,11 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getEntityDetails_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
+    public void getEntityDetails_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+        String methodName = "getEntity";
 
         EntityDetail entityDetail = mock(EntityDetail.class);
+        mockMetadataCollection();
 
         when(entityDetail.getGUID()).thenReturn(FIRST_GUID);
         when(entityDetail.getType()).thenReturn(mockType(ASSET_TYPE, ASSET_TYPE_GUID));
@@ -131,7 +133,7 @@ public class AssetCatalogHandlerTest {
 
     @Test
     public void getEntityDetails_throwsUserNotAuthorizedException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
+        String methodName = "getEntity";
 
         mockEntityDetails(FIRST_GUID, methodName);
 
@@ -147,6 +149,7 @@ public class AssetCatalogHandlerTest {
         String methodName = "getRelationshipsByEntityGUID";
 
         List<Relationship> relationshipsByType = Collections.singletonList(mockRelationship());
+        mockMetadataCollection();
 
         when(repositoryHandler.getRelationshipsByType(USER,
                 FIRST_GUID,
@@ -225,6 +228,7 @@ public class AssetCatalogHandlerTest {
         String methodName = "getEntityClassificationByName";
 
         mockEntityDetails(FIRST_GUID, "getEntityClassifications");
+        mockMetadataCollection();
 
         List<Classification> result = assetCatalogHandler
                 .getEntityClassificationByName(USER, FIRST_GUID, ASSET_TYPE, CLASSIFICATION_NAME);
@@ -437,6 +441,7 @@ public class AssetCatalogHandlerTest {
         String methodName = "getRelationships";
 
         mockPagedRelationships(methodName);
+        mockMetadataCollection();
 
         List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> result =
                 assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE,
@@ -843,7 +848,7 @@ public class AssetCatalogHandlerTest {
     @Test
     public void buildContextByType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         String methodName = "buildContextByType";
-        mockEntityDetails(FIRST_GUID, "getEntityDetails");
+        mockEntityDetails(FIRST_GUID, "getEntity");
         mockMetadataCollection();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
@@ -855,7 +860,7 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void buildContextByType_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void buildContextByType_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         String methodName = "buildContextByType";
         mockEntityDetails(FIRST_GUID, "getEntityDetails");
         mockMetadataCollection();
@@ -870,28 +875,30 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void buildContextByType_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockEntityDetails(FIRST_GUID, "getEntityDetails");
+    public void buildContextByType_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+        String methodName = "getEntity";
+        mockEntityDetails(FIRST_GUID, methodName);
         mockMetadataCollection();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
         doThrow(new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
-                this.getClass().getName(), "", "", "", "")).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, "getEntityDetails");
+                this.getClass().getName(), "", "", "", "")).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName);
 
         assertThrows(PropertyServerException.class,
                 () -> assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE));
     }
 
     @Test
-    public void buildContextByType_throwsUserNotAuthorizedException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockEntityDetails(FIRST_GUID, "getEntityDetails");
+    public void buildContextByType_throwsUserNotAuthorizedException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+        String methodName = "getEntity";
+        mockEntityDetails(FIRST_GUID, methodName);
         mockMetadataCollection();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
                 this.getClass().getName(), "", "", "", "", "");
 
-        doThrow(mockedException).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, "getEntityDetails");
+        doThrow(mockedException).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName);
 
         assertThrows(UserNotAuthorizedException.class,
                 () -> assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE));
@@ -919,10 +926,13 @@ public class AssetCatalogHandlerTest {
                 methodName)).thenReturn(mockRelationships());
     }
 
-    private OMRSMetadataCollection mockMetadataCollection() {
+    private OMRSMetadataCollection mockMetadataCollection() throws RepositoryErrorException {
         OMRSMetadataCollection metadataCollection = mock(OMRSMetadataCollection.class);
 
         when(repositoryHandler.getMetadataCollection()).thenReturn(metadataCollection);
+
+        when(metadataCollection.getMetadataCollectionId(USER)).thenReturn("metadataCollectionID");
+        when(repositoryHelper.getMetadataCollectionName("metadataCollectionID")).thenReturn("metadataCollectionName");
         return metadataCollection;
     }
 

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -64,7 +65,8 @@ public class AssetCatalogRelationshipServiceTest {
 
 
     @Test
-    public void testGetRelationshipBetweenEntities() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetRelationshipBetweenEntities()
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         when(instanceHandler.getRelationshipHandler(USER,
                 SERVER_NAME,
                 "getRelationshipBetweenEntities"))
