@@ -5616,7 +5616,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Pass request to real repository
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.deleteEntityReferenceCopy(userId, entity);
     }
 
 
@@ -5664,7 +5664,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Pass request to real repository
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.purgeEntityReferenceCopy(userId, entity);
     }
 
 
@@ -5868,7 +5868,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Delete relationship
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.deleteRelationshipReferenceCopy(userId, relationship);
     }
 
 
@@ -5918,7 +5918,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Purge relationship
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.purgeRelationshipReferenceCopy(userId, relationship);
     }
 
 
