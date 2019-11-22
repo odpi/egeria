@@ -116,6 +116,7 @@ public class AssetCatalogHandler {
      * @throws InvalidParameterException  is thrown by the OMAS when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws RepositoryErrorException   checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public AssetDescription getEntityDetails(String userId, String assetGUID, String assetTypeName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
@@ -136,6 +137,7 @@ public class AssetCatalogHandler {
      * @throws UserNotAuthorizedException                                                     is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      * @throws PropertyServerException                                                        reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws RepositoryErrorException                                                       checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationshipsByEntityGUID(String userId,
                                                                                                                    String assetGUID,
@@ -188,6 +190,7 @@ public class AssetCatalogHandler {
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws RepositoryErrorException   checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Classification> getEntityClassificationByName(String userId,
                                                                                                                       String assetGUID,
@@ -223,6 +226,7 @@ public class AssetCatalogHandler {
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws RepositoryErrorException   checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets(
             String serverName, String userId, String startAssetGUID, String endAssetGUID)
@@ -276,6 +280,7 @@ public class AssetCatalogHandler {
      * @throws UserNotAuthorizedException                                                     is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      * @throws PropertyServerException                                                        reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws RepositoryErrorException                                                       checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId,
                                                                                                        String assetGUID,
@@ -316,6 +321,7 @@ public class AssetCatalogHandler {
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws RepositoryErrorException   checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<AssetDescription> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
@@ -368,6 +374,7 @@ public class AssetCatalogHandler {
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws RepositoryErrorException   checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
@@ -412,9 +419,10 @@ public class AssetCatalogHandler {
      *                                                                                            repository hosting a metadata collection is unable to perform a request
      * @throws PropertyErrorException                                                             - is thrown by an OMRS Connector when the properties defined for a specific entity
      *                                                                                            or relationship instance do not match the TypeDefs for the metadata collection.
-     * @throws TypeErrorException                                                                 -  is thrown by an OMRS Connector when the requested type for an instance is not represented by a known TypeDef.
-     * @throws PagingErrorException                                                               -  is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
+     * @throws TypeErrorException                                                                 - is thrown by an OMRS Connector when the requested type for an instance is not represented by a known TypeDef.
+     * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException     - is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws UserNotAuthorizedException                                                         is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
     public List<AssetElements> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
@@ -456,6 +464,7 @@ public class AssetCatalogHandler {
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException    - provides a checked exception for reporting errors when connecting to a
      *                                                                                     metadata repository to retrieve properties about the connection and/or connector.
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
+     * @throws RepositoryErrorException                                                    checked exception for reporting situations where the metadata repository hosting a metadata collection is unable to perform a request
      */
     public AssetElements buildContextByType(String userId,
                                             String entityGUID,

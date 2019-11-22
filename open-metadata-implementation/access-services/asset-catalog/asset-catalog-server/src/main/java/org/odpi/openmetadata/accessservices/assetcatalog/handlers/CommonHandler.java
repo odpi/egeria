@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -13,6 +15,11 @@ import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
+/**
+ * Common  Handler supports the lookup types and metadata collection.
+ * These methods are used in the multiple handlers.
+ * It runs on the server-side of the Asset Catalog OMAS, fetches the types, metadata collection using the RepositoryHandler.
+ */
 public class CommonHandler {
 
     private final RepositoryHandler repositoryHandler;
@@ -65,7 +72,6 @@ public class CommonHandler {
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name
      * @return the global identifier of the type
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException - is thrown by the OMAG Service when a parameter is null or an invalid value
      */
     public String getTypeDefGUID(String userId, String typeDefName) {
         if (typeDefName == null) {
