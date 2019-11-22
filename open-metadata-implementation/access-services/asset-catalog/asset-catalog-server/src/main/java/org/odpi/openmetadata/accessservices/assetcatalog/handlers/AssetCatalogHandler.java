@@ -28,7 +28,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -40,7 +39,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,6 +61,7 @@ public class AssetCatalogHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
+    private final CommonHandler commonHandler;
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
 
     private List<String> supportedZones;
@@ -90,6 +89,7 @@ public class AssetCatalogHandler {
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
         this.defaultZones = defaultZones;
+        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
     }
 
     /**
@@ -166,7 +166,7 @@ public class AssetCatalogHandler {
                                             List<Relationship> relationshipsByType) throws UserNotAuthorizedException, RepositoryErrorException {
         List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> relationships = new ArrayList<>();
         AssetConverter converter = new AssetConverter(repositoryHelper);
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         for (Relationship relationship : relationshipsByType) {
             securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
@@ -229,11 +229,9 @@ public class AssetCatalogHandler {
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startAssetGUID, "startAssetGUID", methodName);
-        invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
+        initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
 
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
+        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
         InstanceGraph linkingEntities = null;
         try {
             linkingEntities = metadataCollection.getLinkingEntities(userId,
@@ -271,7 +269,6 @@ public class AssetCatalogHandler {
      * @param userId               user identifier that issues the call
      * @param assetGUID            the asset identifier
      * @param assetTypeName        the asset type name
-     * @param relationshipTypeGUID the relationship type global identifier
      * @param relationshipTypeName the relationship type name
      * @param from                 offset
      * @param pageSize             limit the number of the assets returned
@@ -283,7 +280,6 @@ public class AssetCatalogHandler {
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId,
                                                                                                        String assetGUID,
                                                                                                        String assetTypeName,
-                                                                                                       String relationshipTypeGUID,
                                                                                                        String relationshipTypeName,
                                                                                                        Integer from, Integer pageSize)
             throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, RepositoryErrorException {
@@ -292,6 +288,8 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(from, pageSize, methodName);
+
+        String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipTypeName);
 
         List<Relationship> pagedRelationshipsByType = repositoryHandler.getPagedRelationshipsByType(userId,
                 assetGUID,
@@ -310,23 +308,6 @@ public class AssetCatalogHandler {
     }
 
     /**
-     * Returns the global identifier of the type using the type def name
-     *
-     * @param userId      user identifier that issues the call
-     * @param typeDefName the type definition name
-     * @return the global identifier of the type
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException - is thrown by the OMAG Service when a parameter is null or an invalid value
-     */
-    public String getTypeDefGUID(String userId, String typeDefName) throws
-            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        String methodName = "getTypeDefGUID";
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
-    }
-
-    /**
      * @param userId         user identifier that issues the call
      * @param startAssetGUID the  starting asset identifier
      * @param endAssetGUID   the ending  asset identifier
@@ -340,11 +321,9 @@ public class AssetCatalogHandler {
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
 
         String methodName = "getIntermediateAssets";
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startAssetGUID, "startAssetGUID", methodName);
-        invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
+        initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
 
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
+        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
         InstanceGraph linkingEntities = null;
         try {
@@ -377,21 +356,6 @@ public class AssetCatalogHandler {
         }
 
         return getAssetsDescriptionAfterSecurityValidation(userId, linkingEntities.getEntities());
-    }
-
-    private List<AssetDescription> getAssetsDescriptionAfterSecurityValidation(String userId,
-                                                                               List<EntityDetail> entityDetails)
-            throws RepositoryErrorException, UserNotAuthorizedException {
-
-        AssetConverter converter = new AssetConverter(repositoryHelper);
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
-
-        List<AssetDescription> result = new ArrayList<>();
-        for (EntityDetail entityDetail : entityDetails) {
-            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entityDetail);
-            result.add(converter.getAssetDescription(entityDetail));
-        }
-        return result;
     }
 
     /**
@@ -472,7 +436,7 @@ public class AssetCatalogHandler {
         }
 
         List<AssetElements> list = new ArrayList<>();
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         for (EntityDetail entityDetail : result) {
             securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entityDetail);
@@ -509,9 +473,9 @@ public class AssetCatalogHandler {
             return null;
         }
 
-        securityVerifier.validateUserForEntityRead(userId, getOMRSMetadataCollectionName(userId), entityDetail);
+        securityVerifier.validateUserForEntityRead(userId, commonHandler.getOMRSMetadataCollectionName(userId), entityDetail);
         String typeDefName = entityDetail.getType().getTypeDefName();
-        Set<String> superTypes = collectSuperTypes(userId, entityDetail.getType().getTypeDefName());
+        Set<String> superTypes = commonHandler.collectSuperTypes(userId, entityDetail.getType().getTypeDefName());
 
         AssetElement assetElement = new AssetElement();
 
@@ -547,9 +511,30 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
         EntityDetail entityByGUID = repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetTypeName, methodName);
-        securityVerifier.validateUserForEntityRead(userId, getOMRSMetadataCollectionName(userId), entityByGUID);
+        securityVerifier.validateUserForEntityRead(userId, commonHandler.getOMRSMetadataCollectionName(userId), entityByGUID);
 
         return entityByGUID;
+    }
+
+    private void initialValidationStartEndAssetGUID(String userId, String startAssetGUID, String endAssetGUID, String methodName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startAssetGUID, "startAssetGUID", methodName);
+        invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
+    }
+
+    private List<AssetDescription> getAssetsDescriptionAfterSecurityValidation(String userId,
+                                                                               List<EntityDetail> entityDetails)
+            throws RepositoryErrorException, UserNotAuthorizedException {
+
+        AssetConverter converter = new AssetConverter(repositoryHelper);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
+
+        List<AssetDescription> result = new ArrayList<>();
+        for (EntityDetail entityDetail : entityDetails) {
+            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entityDetail);
+            result.add(converter.getAssetDescription(entityDetail));
+        }
+        return result;
     }
 
     private List<EntityDetail> collectSearchedEntitiesByType(String userId,
@@ -560,7 +545,7 @@ public class AssetCatalogHandler {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         List<EntityDetail> result = new ArrayList<>();
 
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
+        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
         for (String type : types) {
             result.addAll(searchEntityByCriteria(userId, searchCriteria, type, searchParameters, metadataCollection));
         }
@@ -598,7 +583,7 @@ public class AssetCatalogHandler {
         }
 
         List<AssetElement> assets = new ArrayList<>(schemas.size());
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         for (EntityDetail schema : schemas) {
             securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schema);
@@ -635,7 +620,7 @@ public class AssetCatalogHandler {
             return;
         }
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
         for (EntityDetail endpoint : endpoints) {
             securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, endpoint);
 
@@ -685,7 +670,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (CollectionUtils.isNotEmpty(ports)) {
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
             for (EntityDetail port : ports) {
                 securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, port);
@@ -699,8 +684,7 @@ public class AssetCatalogHandler {
                             method);
 
                     if (schemaType != null) {
-                        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schemaType);
-                        addElement(assetElement, schemaType);
+                        addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, schemaType);
                         getContextForSchemaType(userId, assetElement, schemaType);
                     }
                 }
@@ -743,7 +727,7 @@ public class AssetCatalogHandler {
 
         if (dataSets != null && !dataSets.isEmpty()) {
 
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
             for (EntityDetail dataSet : dataSets) {
                 securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, dataSet);
@@ -771,10 +755,8 @@ public class AssetCatalogHandler {
             return;
         }
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
-        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schemaType);
-
-        addElement(assetElement, schemaType);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
+        addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, schemaType);
         if (isComplexSchemaType(schemaType.getType().getTypeDefName()).isPresent()) {
             getContextForSchemaType(userId, assetElement, schemaType);
         } else {
@@ -820,7 +802,7 @@ public class AssetCatalogHandler {
             return;
         }
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         EntityProxy parentFolderProxy = repositoryHandler.getOtherEnd(entityDetail.getGUID(), parentFolderRelationships.get(0));
         securityVerifier.validateUserForEntityProxyRead(userId, metadataCollectionName, parentFolderProxy);
@@ -840,11 +822,10 @@ public class AssetCatalogHandler {
                                                AssetElement assetElement,
                                                List<EntityDetail> parentFolders)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, RepositoryErrorException {
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         for (EntityDetail folder : parentFolders) {
-            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, folder);
-            addElement(assetElement, folder);
+            addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, folder);
             getContextForFileFolder(userId, folder, assetElement);
         }
     }
@@ -887,8 +868,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (host != null) {
-            securityVerifier.validateUserForEntityRead(userId, getOMRSMetadataCollectionName(userId), host);
-            addElement(assetElement, host);
+            addElementAfterSecurityValidation(userId, assetElement, commonHandler.getOMRSMetadataCollectionName(userId), host);
             getContextForHost(userId, host, assetElement);
         }
     }
@@ -909,14 +889,7 @@ public class AssetCatalogHandler {
                 0,
                 method);
 
-        if (CollectionUtils.isNotEmpty(networkGateways)) {
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
-
-            for (EntityDetail element : networkGateways) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, element);
-                addElement(assetElement, element);
-            }
-        }
+        addElementsAfterSecurityValidation(userId, assetElement, networkGateways);
 
         List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -929,15 +902,29 @@ public class AssetCatalogHandler {
                 method);
 
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         if (CollectionUtils.isNotEmpty(hosts)) {
             for (EntityDetail host : hosts) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, host);
-                addElement(assetElement, host);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, host);
                 getContextForHost(userId, host, assetElement);
             }
         }
+    }
+
+    private void addElementsAfterSecurityValidation(String userId, AssetElement assetElement, List<EntityDetail> networkGateways) throws RepositoryErrorException, UserNotAuthorizedException {
+        if (CollectionUtils.isNotEmpty(networkGateways)) {
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
+
+            for (EntityDetail element : networkGateways) {
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, element);
+            }
+        }
+    }
+
+    private void addElementAfterSecurityValidation(String userId, AssetElement assetElement, String metadataCollectionName, EntityDetail nestedLocation) throws UserNotAuthorizedException {
+        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, nestedLocation);
+        addElement(assetElement, nestedLocation);
     }
 
     private void getContextForHost(String userId,
@@ -968,13 +955,7 @@ public class AssetCatalogHandler {
                     method);
         }
 
-        if (CollectionUtils.isNotEmpty(hosts)) {
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
-            for (EntityDetail host : hosts) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, host);
-                addElement(assetElement, host);
-            }
-        }
+        addElementsAfterSecurityValidation(userId, assetElement, hosts);
 
         EntityDetail operatingPlatform = repositoryHandler.getEntityForRelationshipType(userId,
                 entityDetail.getGUID(),
@@ -983,9 +964,8 @@ public class AssetCatalogHandler {
                 HOST_OPERATING_PLATFORM,
                 method);
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
-        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, operatingPlatform);
-        addElement(assetElement, operatingPlatform);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
+        addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, operatingPlatform);
 
         List<EntityDetail> locations = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -998,8 +978,7 @@ public class AssetCatalogHandler {
                 method);
         if (CollectionUtils.isNotEmpty(locations)) {
             for (EntityDetail location : locations) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, location);
-                addElement(assetElement, location);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, location);
                 getContextForLocation(userId, assetElement, location);
             }
         }
@@ -1021,11 +1000,10 @@ public class AssetCatalogHandler {
                 0,
                 method);
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
         if (CollectionUtils.isNotEmpty(assetLocations)) {
             for (EntityDetail assetLocation : assetLocations) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, assetLocation);
-                addElement(assetElement, assetLocation);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, assetLocation);
                 getAsset(userId, assetElement, assetLocation);
             }
         }
@@ -1043,8 +1021,7 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(nestedLocations)) {
             for (EntityDetail nestedLocation : nestedLocations) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, nestedLocation);
-                addElement(assetElement, nestedLocation);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, nestedLocation);
                 getContextForLocation(userId, assetElement, nestedLocation);
             }
         }
@@ -1065,7 +1042,7 @@ public class AssetCatalogHandler {
                 SOFTWARE_SERVER_DEPLOYMENT,
                 method);
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         if (softwareServerPlatform != null) {
             securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, softwareServerPlatform);
@@ -1115,11 +1092,10 @@ public class AssetCatalogHandler {
             return;
         }
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
 
         for (EntityDetail connection : connections) {
-            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, connection);
-            addElement(assetElement, connection);
+            addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, connection);
 
             List<EntityDetail> elements = new ArrayList<>();
             EntityDetail connectorType = repositoryHandler.getEntityForRelationshipType(
@@ -1168,10 +1144,9 @@ public class AssetCatalogHandler {
                 continue;
             }
 
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
             for (EntityDetail schemaAttribute : schemaAttributes) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schemaAttribute);
-                addElement(assetElement, schemaAttribute);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, schemaAttribute);
 
                 Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(schemaAttribute.getType().getTypeDefName());
                 if (isComplexSchemaType.isPresent()) {
@@ -1190,8 +1165,7 @@ public class AssetCatalogHandler {
 
                     if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
                         for (EntityDetail schemaAttributeTypeEntity : schemaAttributeTypeEntities) {
-                            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schemaAttributeTypeEntity);
-                            addElement(assetElement, schemaAttributeTypeEntity);
+                            addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, schemaAttributeTypeEntity);
                         }
                         findAsset(userId, schemaAttributeTypeEntities, assetElement);
                     }
@@ -1223,10 +1197,9 @@ public class AssetCatalogHandler {
                 return;
             }
 
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
             for (EntityDetail attributeForSchema : attributeForSchemas) {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, attributeForSchema);
-                addElement(assetElement, attributeForSchema);
+                addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, attributeForSchema);
 
                 if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
                     setAssetDetails(userId, assetElement, attributeForSchema);
@@ -1243,8 +1216,7 @@ public class AssetCatalogHandler {
                             method);
 
                     for (EntityDetail schema : schemaAttributeTypeEntities) {
-                        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, schema);
-                        addElement(assetElement, schema);
+                        addElementAfterSecurityValidation(userId, assetElement, metadataCollectionName, schema);
                         getContextForSchemaType(userId, assetElement, schema);
                     }
                 }
@@ -1265,7 +1237,7 @@ public class AssetCatalogHandler {
                 ASSET_SCHEMA_TYPE,
                 method);
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
         securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, dataSet);
 
         if (assetElement.getContext() != null) {
@@ -1295,7 +1267,7 @@ public class AssetCatalogHandler {
             return;
         }
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
         for (Relationship assetToDataSetRelationship : assetToDataSetRelationships) {
             EntityProxy entityOneProxy = assetToDataSetRelationship.getEntityOneProxy();
             securityVerifier.validateUserForEntityProxyRead(userId, metadataCollectionName, entityOneProxy);
@@ -1367,7 +1339,7 @@ public class AssetCatalogHandler {
 
 
         if (CollectionUtils.isNotEmpty(connections)) {
-            String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+            String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
             List<Connection> connectionList = new ArrayList<>();
 
             for (EntityDetail entityDetail : connections) {
@@ -1379,6 +1351,7 @@ public class AssetCatalogHandler {
                                 QUALIFIED_NAME, entityDetail.getProperties(), method));
                 connectionList.add(connection);
             }
+            return connectionList;
         }
 
         return Collections.emptyList();
@@ -1436,7 +1409,7 @@ public class AssetCatalogHandler {
 
         EntityDetail entityDetails = repositoryHandler.getEntityByGUID(userId, assetId, ASSET_GUID_PARAMETER, assetTypeName, methodName);
 
-        String metadataCollectionName = getOMRSMetadataCollectionName(userId);
+        String metadataCollectionName = commonHandler.getOMRSMetadataCollectionName(userId);
         securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entityDetails);
 
         return entityDetails.getClassifications();
@@ -1461,7 +1434,6 @@ public class AssetCatalogHandler {
                 searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
                 searchParameters.getPageSize());
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
-            //TODO:
             return entitiesByPropertyValue;
         }
         return new ArrayList<>();
@@ -1473,7 +1445,7 @@ public class AssetCatalogHandler {
 
     private InstanceGraph getAssetNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
             throws AssetNotFoundException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
+        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
         InstanceGraph entityNeighborhood = null;
         String methodName = "getAssetNeighborhood";
@@ -1513,40 +1485,4 @@ public class AssetCatalogHandler {
 
         return entityNeighborhood;
     }
-
-    private Set<String> collectSuperTypes(String userId, String typeDefName) {
-        Set<String> superTypes = new HashSet<>();
-
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        if (typeDefByName != null) {
-            collectSuperTypes(userId, typeDefByName, superTypes);
-        }
-
-        return superTypes;
-    }
-
-    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) {
-        if (type.getName().equals(REFERENCEABLE)) {
-            return;
-        }
-        superTypes.add(type.getName());
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
-        if (typeDefByName != null) {
-            collectSuperTypes(userId, typeDefByName, superTypes);
-        }
-    }
-
-    private OMRSMetadataCollection getOMRSMetadataCollection() {
-        return repositoryHandler.getMetadataCollection();
-    }
-
-    private String getOMRSMetadataCollectionName(String userId) throws RepositoryErrorException {
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
-        String metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
-        if (metadataCollectionId == null) {
-            return null;
-        }
-        return repositoryHelper.getMetadataCollectionName(metadataCollectionId);
-    }
-
 }

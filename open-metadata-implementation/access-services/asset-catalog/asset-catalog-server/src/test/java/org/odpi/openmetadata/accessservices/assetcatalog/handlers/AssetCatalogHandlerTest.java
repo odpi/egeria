@@ -81,6 +81,9 @@ public class AssetCatalogHandlerTest {
     @InjectMocks
     private AssetCatalogHandler assetCatalogHandler;
 
+    @InjectMocks
+    private CommonHandler commonHandler;
+
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
@@ -442,10 +445,11 @@ public class AssetCatalogHandlerTest {
 
         mockPagedRelationships(methodName);
         mockMetadataCollection();
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
         List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> result =
                 assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE,
-                        RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, FROM, PAGE_SIZE);
+                        RELATIONSHIP_TYPE, FROM, PAGE_SIZE);
 
         assertEquals(RELATIONSHIP_GUID, result.get(0).getGuid());
         assertEquals(RELATIONSHIP_TYPE, result.get(0).getTypeDefName());
@@ -464,13 +468,14 @@ public class AssetCatalogHandlerTest {
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
         assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
-                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
+                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
 
     }
 
     @Test
     public void getRelationships_throwsPropertyServerException() throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationships";
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
         doThrow(new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
                 this.getClass().getName(), "", "", "", "")).when(repositoryHandler).getPagedRelationshipsByType(USER,
@@ -483,12 +488,13 @@ public class AssetCatalogHandlerTest {
                 methodName);
 
         assertThrows(PropertyServerException.class,
-                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
+                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
     }
 
     @Test
     public void getRelationships_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationships";
+        mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
         doThrow(new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
                 this.getClass().getName(), "", "", "", "", "")).when(repositoryHandler).getPagedRelationshipsByType(USER,
@@ -501,7 +507,7 @@ public class AssetCatalogHandlerTest {
                 methodName);
 
         assertThrows(UserNotAuthorizedException.class,
-                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
+                () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
     }
 
     @Test
@@ -618,14 +624,11 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getTypeDefGUID()
-            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        String methodName = "getTypeDefGUID";
+    public void getTypeDefGUID() {
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        String typeDefGUID = assetCatalogHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE);
+        String typeDefGUID = commonHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE);
         assertEquals(RELATIONSHIP_TYPE_GUID, typeDefGUID);
-        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
     }
 
     @Test
@@ -1000,7 +1003,6 @@ public class AssetCatalogHandlerTest {
         entityTypeDef.setTypeDefName(typeName);
         return entityTypeDef;
     }
-
 
     private void mockTypeDef(String typeName, String typeGUID) {
         TypeDef entityTypeDef = mock(TypeDef.class);

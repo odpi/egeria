@@ -170,12 +170,8 @@ public class AssetCatalogRESTService {
         RelationshipsResponse response = new RelationshipsResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            String relationshipTypeGUID = null;
-            if (relationshipTypeName != null) {
-                relationshipTypeGUID = assetCatalogHandler.getTypeDefGUID(userId, relationshipTypeName);
-            }
             response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID,
-                    assetTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
+                    assetTypeName, relationshipTypeName, startFrom, limit));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {

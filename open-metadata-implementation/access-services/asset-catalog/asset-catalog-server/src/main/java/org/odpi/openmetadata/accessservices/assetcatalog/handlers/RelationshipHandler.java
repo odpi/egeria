@@ -6,15 +6,11 @@ import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.List;
-import java.util.Optional;
 
 public class RelationshipHandler {
 
@@ -25,6 +21,7 @@ public class RelationshipHandler {
     private List<String> supportedZones;
     private List<String> defaultZones;
     private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
+    private CommonHandler commonHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -42,6 +39,7 @@ public class RelationshipHandler {
         this.repositoryHandler = repositoryHandler;
         this.defaultZones = defaultZones;
         this.supportedZones = supportedZones;
+        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
     }
 
     /**
@@ -68,7 +66,7 @@ public class RelationshipHandler {
         invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
         invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
 
-        String relationshipTypeGUID = getTypeDefGUID(userId, relationshipType);
+        String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,
@@ -81,34 +79,12 @@ public class RelationshipHandler {
         if (relationshipBetweenEntities != null) {
 
             securityVerifier.validateUserForRelationshipRead(userId,
-                    getOMRSMetadataCollectionName(userId),
+                    commonHandler.getOMRSMetadataCollectionName(userId),
                     relationshipBetweenEntities);
 
             AssetConverter converter = new AssetConverter(repositoryHelper);
             return converter.convertRelationship(relationshipBetweenEntities);
         }
         return null;
-    }
-
-    private String getTypeDefGUID(String userId, String relationshipType) {
-        if (relationshipType == null) {
-            return null;
-        }
-
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, relationshipType);
-        return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
-    }
-
-    private OMRSMetadataCollection getOMRSMetadataCollection() {
-        return repositoryHandler.getMetadataCollection();
-    }
-
-    private String getOMRSMetadataCollectionName(String userId) throws RepositoryErrorException {
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
-        String metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
-        if (metadataCollectionId == null) {
-            return null;
-        }
-        return repositoryHelper.getMetadataCollectionName(metadataCollectionId);
     }
 }

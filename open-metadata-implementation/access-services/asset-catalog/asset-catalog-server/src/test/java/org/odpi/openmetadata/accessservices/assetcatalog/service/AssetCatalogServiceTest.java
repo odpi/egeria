@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
+import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
@@ -59,6 +60,9 @@ public class AssetCatalogServiceTest {
 
     @Mock
     private AssetCatalogHandler assetCatalogHandler;
+
+    @Mock
+    private CommonHandler commonHandler;
 
     @Before
     public void before() {
@@ -131,12 +135,12 @@ public class AssetCatalogServiceTest {
                 SERVER_NAME,
                 "getAssetRelationships"))
                 .thenReturn(assetCatalogHandler);
-        when(assetCatalogHandler
+        when(commonHandler
                 .getTypeDefGUID(USER, RELATIONSHIP_TYPE))
                 .thenReturn(RELATIONSHIP_TYPE_GUID);
 
         when(assetCatalogHandler
-                .getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, 0, 10))
+                .getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, 0, 10))
                 .thenReturn(response);
 
         RelationshipsResponse assetRelationships = assetCatalogRESTService.getAssetRelationships(SERVER_NAME,
