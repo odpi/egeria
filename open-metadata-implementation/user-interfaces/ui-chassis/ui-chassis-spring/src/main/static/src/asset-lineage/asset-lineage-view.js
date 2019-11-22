@@ -29,7 +29,7 @@ class AssetLineageView extends PolymerElement {
     </style>
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(this.subview)]]" style="left: -20px; color: var(--egeria-primary-color);" >
+    <vaadin-tabs id ="useCases" selected="[[_getUseCase(usecase)]]" style="left: -20px; color: var(--egeria-primary-color);" >
       <vaadin-tab value="ultimateSource">Ultimate Source</vaadin-tab>
       <vaadin-tab value="endToEnd">End to End Lineage</vaadin-tab>
       <vaadin-tab value="ultimateDestination">Ultimate Destination</vaadin-tab>
@@ -195,7 +195,7 @@ class AssetLineageView extends PolymerElement {
 
 
     _guidChanged() {
-        this._reload(this.subview, this.$.viewsMenu.value);
+        this._reload(this.usecase, this.$.viewsMenu.value);
     }
 
     _useCaseChanged() {
@@ -207,7 +207,6 @@ class AssetLineageView extends PolymerElement {
              newLocation = newLocation + "/" + this.guid;
          }
          window.location.href = newLocation;
-         this.subview = this.usecase;
          window.dispatchEvent(new CustomEvent('location-changed'));
          this._reload(this.usecase, this.$.viewsMenu.value);
     }
