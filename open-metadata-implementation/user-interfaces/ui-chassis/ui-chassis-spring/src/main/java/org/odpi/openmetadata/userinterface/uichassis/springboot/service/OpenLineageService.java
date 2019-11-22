@@ -65,7 +65,7 @@ public class OpenLineageService {
     public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, GraphName.MAIN, Scope.ULTIMATE_SOURCE, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         } catch (InvalidParameterException e) {
             LOG.error(e.getMessage(), e);
             throw new OpenLineageServiceException(e.getMessage(), e);
