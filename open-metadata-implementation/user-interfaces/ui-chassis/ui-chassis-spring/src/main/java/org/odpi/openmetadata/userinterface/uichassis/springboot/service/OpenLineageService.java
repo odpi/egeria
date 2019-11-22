@@ -62,10 +62,10 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, Object> getUltimateSource(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
+            response = openLineageClient.lineage(userId, GraphName.MAIN, Scope.ULTIMATE_SOURCE, view, guid);
         } catch (InvalidParameterException e) {
             LOG.error(e.getMessage(), e);
             throw new OpenLineageServiceException(e.getMessage(), e);
@@ -83,7 +83,7 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, Object> getEndToEndLineage(String userId, View view, String guid)  {
+    public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
@@ -104,7 +104,7 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, Object> getUltimateDestination(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
@@ -126,7 +126,7 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, Object> getGlossaryLineage(String userId, View view, String guid)  {
+    public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
@@ -147,7 +147,7 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, Object> getSourceAndDestination(String userId, View view, String guid)  {
+    public Map<String, List> getSourceAndDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response =
                 null;
         try {
@@ -167,8 +167,8 @@ public class OpenLineageService {
      * @param response string returned from Open Lineage Services to be processed
      * @return map of nodes and edges describing the end to end flow
      */
-    private Map<String, Object> processResponse(LineageVerticesAndEdges response)  {
-        Map<String, Object> graphData = new HashMap<>();
+    private Map<String, List> processResponse(LineageVerticesAndEdges response)  {
+        Map<String, List> graphData = new HashMap<>();
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
 
@@ -187,10 +187,10 @@ public class OpenLineageService {
         listEdges = Optional.ofNullable(response.getLineageEdges())
                 .map(e -> e.stream())
                 .orElseGet(Stream::empty)
-                .map(e -> {Edge newEdge = new Edge(e.getSourceNodeID(),
-                        e.getDestinationNodeID());
-                    newEdge.setLabel(e.getEdgeType());
-                    return newEdge;})
+                .map(e -> {Edge newEdge = new Edge( e.getSourceNodeID(),
+                                                    e.getDestinationNodeID());
+                                                    newEdge.setLabel(e.getEdgeType());
+                                                    return newEdge;})
                 .collect(Collectors.toList());
 
         graphData.put(EDGES_LABEL, listEdges);
