@@ -196,7 +196,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     static get properties() {
         return {
-            language: { value: 'en' },
+            language: {value: 'en'},
             page: {
                 type: String,
                 reflectToAttribute: true,
@@ -229,8 +229,22 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 notify: true,
                 observer: '_feedbackChanged'
             },
-            crumbs:{
+            crumbs: {
                 type: Array
+            },
+            allCrumbs: {
+                type: Object,
+                value:{
+                    'home': {label: 'Home', href: this.rootPath + '#'},
+                    'asset-search': {label: 'Asset Search', href: "/asset-search"},
+                    'subject-area': {label: 'Subject Area', href: "/subject-area"},
+                    'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
+                    'ultimateSource': {label: 'Ultimate Source', href: "/ultimateSource"},
+                    'ultimateDestination': {label: 'Ultimate Destination', href: "/ultimateDestination"},
+                    'endToEnd': {label: 'End To End Lineage', href: "/endToEnd"},
+                    'sourceAndDestination': {label: 'Source and Destination', href: "/sourceAndDestination"},
+                    'glossaryLineage': {label: 'Glossary Lineage', href: "/glossaryLineage"}
+                     }
             }
         };
     }
@@ -267,17 +281,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     _updateBreadcrumb(page){
         var crumbs = [];
-        var allCrumbs = new Map();
-        allCrumbs.set('home', {label: 'Home', href: this.rootPath + '#'});
-        allCrumbs.set( 'asset-search', {label: 'Asset Search', href: "/asset-search"});
-        allCrumbs.set('subject-area', {label: 'Subject Area', href: "/subject-area"});
-        allCrumbs.set( 'asset-lineage', {label: 'Asset Lineage', href: "/asset-lineage"});
-        allCrumbs.set( 'type-explorer', {label: 'Type Explorer', href: "/type-explorer"});
+        var allCrumbs = new Map(Object.entries(this.allCrumbs));
 
         crumbs.push(allCrumbs.get('home'));
         crumbs.push(allCrumbs.get(page));
-        if(page == 'asset-lineage' && this.subview && this.subview.path ){
-            crumbs.push({label: this.subviewData.subview, href: "/" + this.subviewData.subview });
+        if(page == 'asset-lineage' && this.subview && this.subview.path && allCrumbs.get(this.subviewData.subview) ){
+           crumbs.push(allCrumbs.get(this.subviewData.subview));
         }
         // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
         //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });

@@ -66,9 +66,6 @@ class AssetLineageView extends PolymerElement {
                 type: String,
                 observer: '_guidChanged'
             },
-            usecaseIndex:{
-                type: String
-            },
             usecase: {
                 type: String,
                 observer: '_useCaseChanged'
