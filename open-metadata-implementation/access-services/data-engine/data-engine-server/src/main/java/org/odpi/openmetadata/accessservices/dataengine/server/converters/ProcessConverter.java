@@ -10,6 +10,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+/**
+ * ProcessConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a Process bean.
+ */
 public class ProcessConverter extends AssetConverter {
     public ProcessConverter(EntityDetail processEntity, Relationship connectionToAssetRelationship,
                             OMRSRepositoryHelper repositoryHelper, String methodName) {
