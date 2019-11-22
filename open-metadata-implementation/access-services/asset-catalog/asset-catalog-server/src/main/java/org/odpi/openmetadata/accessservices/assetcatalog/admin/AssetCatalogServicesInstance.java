@@ -24,22 +24,31 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
     private RelationshipHandler relationshipHandler;
 
     /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones      configurable list of zones that Asset Catalog is allowed to serve Assets from
+     * @param defaultZones        default list of zones that Asset Catalog is allowed to serve Assets from
+     * @param auditLog            logging destination
+     * @param localServerUserId   userId used for server initiated actions
      * @throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException a problem occurred during initialization
      */
     AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                 List<String> supportedZones, OMRSAuditLog auditLog,
+                                 List<String> supportedZones, List<String> defaultZones, OMRSAuditLog auditLog,
                                  String localServerUserId) throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException {
         super(description.getAccessServiceName(), repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
+        super.defaultZones = defaultZones;
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
-            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper);
+            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, errorHandler, defaultZones, supportedZones);
+            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, defaultZones, supportedZones);
 
+            if(securityVerifier != null){
+                assetCatalogHandler.setSecurityVerifier(securityVerifier);
+                relationshipHandler.setSecurityVerifier(securityVerifier);
+            }
         } else {
             final String methodName = "new ServiceInstance";
 

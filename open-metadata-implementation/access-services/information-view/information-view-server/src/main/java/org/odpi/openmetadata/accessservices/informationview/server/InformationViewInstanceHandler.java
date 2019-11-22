@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationView
 /**
  * InformationViewInstanceHandler retrieves information from the instance map for the
  * access service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the AssetCatalogAdmin class.
+ * and removed by the InformationViewAdmin class.
  */
 class InformationViewInstanceHandler
 {

@@ -60,6 +60,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -88,6 +90,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -114,6 +118,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -142,6 +148,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -174,6 +182,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -200,6 +210,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -228,6 +240,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
@@ -282,6 +296,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (RepositoryErrorException e) {
+            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         return response;
