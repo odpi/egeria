@@ -3,7 +3,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -186,26 +185,6 @@ public class MainGraphMapper {
         }
 
         //TODO copy glossaryterm
-
-//        if(glossaryTermBuffer.hasNext()) {
-//            Vertex glossaryTermBufferVertex = glossaryTermBuffer.next();
-//            Iterator<Vertex> glossaryTermMain = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,
-//                    glossaryTermBufferVertex.property(PROPERTY_KEY_ENTITY_GUID).value());
-//
-//            if(!glossaryTermMain.hasNext()){
-//                Vertex glossaryNew = mainG.addV(NODE_LABEL_GLOSSARYTERM).property(PROPERTY_KEY_ENTITY_NODE_ID,
-//                        glossaryTermBufferVertex.property(PROPERTY_KEY_ENTITY_GUID).value()).next();
-//                copyVertexProperties(glossaryTermBufferVertex,glossaryNew);
-//
-//                asset.addEdge(EDGE_LABEL_SEMANTIC,glossaryNew);
-//            }
-//            else{
-//                mainG.V(asset.id()).as("v").
-//                        V(glossaryTermMain.next().id()).
-//                        coalesce(__.inE(EDGE_LABEL_SEMANTIC).where(outV().as("v")),
-//                                addE(EDGE_LABEL_SEMANTIC).from("v"));
-//            }
-//        }
     }
 
     /**
@@ -223,12 +202,6 @@ public class MainGraphMapper {
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
         final String processName = process.value("vepropdisplayName");
 
-
-        //check gia null columni nand out
-//        if(mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, columnInVertex
-//                .property(PROPERTY_KEY_ENTITY_NODE_ID).value()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
-//            return;
-//        }
         if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
         }
