@@ -5664,7 +5664,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Pass request to real repository
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.purgeEntityReferenceCopy(userId, entity);
     }
 
 
@@ -5918,7 +5918,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Purge relationship
          */
-        reportUnsupportedOptionalFunction(methodName);
+        super.purgeRelationshipReferenceCopy(userId, relationship);
     }
 
 
