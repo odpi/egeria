@@ -2552,7 +2552,7 @@
             <id>owasp</id>
             <activation>
                 <property>
-                    <name>!skipCVE</name>
+                    <name>CVE</name>
                 </property>
             </activation>
             <!-- Build reports - findBugs security checks -->
@@ -2612,7 +2612,7 @@
             <id>license</id>
             <activation>
                 <property>
-                    <name>!skipLicense</name>
+                    <name>License</name>
                 </property>
             </activation>
             <build>
