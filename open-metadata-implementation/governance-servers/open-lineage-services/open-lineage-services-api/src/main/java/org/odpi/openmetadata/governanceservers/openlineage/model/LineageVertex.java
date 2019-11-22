@@ -27,10 +27,16 @@ public class LineageVertex {
 
     public LineageVertex(){}
 
-    public LineageVertex(String nodeID, String nodeType, String displayName, String guid) {
+    public LineageVertex(String nodeID, String nodeType) {
         this.nodeID = nodeID;
         this.nodeType = nodeType;
+    }
+
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setGuid(String guid) {
         this.guid = guid;
     }
 
