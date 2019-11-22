@@ -2380,9 +2380,9 @@
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation in test scope only -->
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*</ignoredUnusedDeclaredDependency>
+                                <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
                                 <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*</ignoredUnusedDeclaredDependency>
-
-                                <!-- These exceptions should be removed once code is clean -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
