@@ -161,8 +161,8 @@ public class CommonHandler {
 
         if (endEntity == null) return null;
 
-        LineageEntity startVertex = converter.createEntity(startEntity);
-        LineageEntity endVertex = converter.createEntity(endEntity);
+        LineageEntity startVertex = converter.createLineageEntity(startEntity);
+        LineageEntity endVertex = converter.createLineageEntity(endEntity);
 
         graph.addVertex(startVertex);
         graph.addVertex(endVertex);

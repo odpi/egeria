@@ -22,7 +22,7 @@ import java.util.*;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 /**
- * The Classification handler
+ * The classification handler maps classifications attached with an entity to an lineage entity.
  */
 public class ClassificationHandler {
 
@@ -113,42 +113,38 @@ public class ClassificationHandler {
         /**
          * Build graph edge by classification type list.
          *
-         * @param startEntity        the start entity
+         * @param classifiedEntity        the start entity
          * @param graph              the graph
          * @return the list
          */
-        private List<LineageEntity> buildGraphContextByClassificationType (EntityDetail startEntity,
+        private List<LineageEntity> buildGraphContextByClassificationType (EntityDetail classifiedEntity,
                                                                            AssetContext graph){
 
             List<LineageEntity> classificationEntities = new ArrayList<>();
 
-            if (startEntity.getStatus() == InstanceStatus.ACTIVE) {
-                for (Classification classification : startEntity.getClassifications()) {
+            if (classifiedEntity.getStatus() == InstanceStatus.ACTIVE) {
+                for (Classification classification : classifiedEntity.getClassifications()) {
                     if (qualifiedLineageClassifications.contains(classification.getName())) {
 
-                        LineageEntity lineageEntity = new LineageEntity();
+                        LineageEntity lineageClassificationEntity = new LineageEntity();
+                        lineageClassificationEntity.setGuid(classifiedEntity.getGUID());
 
-                        //TODO: Set the classification guid to random now
-                        lineageEntity.setGuid(UUID.randomUUID().toString());
-
-                        mapClassificationsToLineageEntity(classification, lineageEntity);
-                        classificationEntities.add(lineageEntity);
+                        mapClassificationsToLineageEntity(classification, lineageClassificationEntity);
+                        classificationEntities.add(lineageClassificationEntity);
                         log.debug("Adding Classification {} ", classification.toString());
                     }
                 }
 
                 Converter converter = new Converter();
-                LineageEntity startVertex = converter.createEntity(startEntity);
+                LineageEntity startVertex = converter.createLineageEntity(classifiedEntity);
 
                 for (LineageEntity endVertex : classificationEntities) {
 
                     graph.addVertex(startVertex);
                     graph.addVertex(endVertex);
 
-                    GraphContext edge = new GraphContext(endVertex.getTypeDefName(), CLASSIFIED_ENTITY_GUID, startVertex, endVertex);
-
-                    //TODO: set the edge GUID to random now
-                    edge.setRelationshipGuid(UUID.randomUUID().toString());
+                    /* Set the edge guid same as the classified entity guid */
+                    GraphContext edge = new GraphContext(endVertex.getTypeDefName(), startVertex.getGuid(), startVertex, endVertex);
                     graph.addEdge(edge);
 
                 }
