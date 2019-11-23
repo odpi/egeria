@@ -3,17 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetLineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -24,7 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -36,6 +33,10 @@ import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
+/**
+ * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
+ * is connected to.  It passes Lineage Entity events to the publisher.
+ */
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
@@ -118,7 +119,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
             if (instanceEventOriginator != null) {
                 switch (instanceEventType) {
-                    //TODO change Process to UPDATE event when Data engine changed is finished
                     case NEW_ENTITY_EVENT:
                         processNewEntityEvent(instanceEvent.getEntity(), serviceOperationName);
                         break;
@@ -131,7 +131,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case NEW_RELATIONSHIP_EVENT:
                         break;
 //                  case DELETE_PURGED_RELATIONSHIP_EVENT:
-//                        processDeletedPurgedRelationship(instanceEvent.getRelationship(), serviceOperationName);
+//                      processDeletedPurgedRelationship(instanceEvent.getRelationship(), serviceOperationName);
                     default:
                         break;
                 }
@@ -147,7 +147,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param entityDetail         event to validate
      * @param serviceOperationName name of the calling operation
      */
-    public void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
+    private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
         if (!isValidEntityEvent(typeDefName)) {
@@ -248,8 +248,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             PropertyServerException,
             UserNotAuthorizedException {
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>> processContext = processHandler.getProcessContext(serverUserName, entityDetail.getGUID());
+        ProcessContextHandler processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
+        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
 
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
@@ -262,12 +262,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
-        ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        AssetContext assetContext = newContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContextHandler newAssetContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
+        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext);
-//        getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
+        //getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
 
         LineageEvent event = new LineageEvent();
         if (context.size() != 0) {
@@ -308,77 +308,5 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         final List<String> types = Arrays.asList(PROCESS_PORT, PORT_DELEGATION, PORT_SCHEMA, SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA, LINEAGE_MAPPING);
 
         return types.contains(relationship.getType().getTypeDefName());
-    }
-
-
-    /**
-     * Takes the entities of the the relationship and builds the context for entityOneProxy
-     * and publishes an event.
-     *
-     * @param relationship - details of the new relationship
-     */
-    private void processSemanticAssignment(Relationship relationship,
-                                           String serviceOperationName) {
-
-    }
-
-    private void processDeletedPurgedRelationship(Relationship relationship, String serviceOperationName) {
-
-        if (!isValidRelationshipEvent(relationship))
-            log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
-        else {
-            log.info("Processing semantic assignment deletion relationship event");
-            processSemanticAssignmentDeletion(relationship, serviceOperationName);
-
-        }
-    }
-
-    /**
-     * Takes the entities of the the relationship, extracts the relevant types
-     * and publishes an event for deletion.
-     *
-     * @param relationship - details of the new relationship
-     * @return
-     */
-    private void processSemanticAssignmentDeletion(Relationship relationship, String serviceOperationName) {
-        DeletePurgedRelationshipEvent deletionEvent = new DeletePurgedRelationshipEvent();
-
-        GlossaryHandler glossaryHandler = null;
-        try {
-            glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            log.error("Retrieving glossaryHandler for the access setvice failed. Exception message is {}", e.getMessage());
-            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
-
-        }
-
-//        GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
-
-//        deletionEvent.setGlossaryTerm(glossaryTerm);
-        deletionEvent.setEntityGuid(relationship.getEntityOneProxy().getGUID());
-        deletionEvent.setEntityTypeDef(relationship.getEntityOneProxy().getType().getTypeDefName());
-//        deletionEvent.setOmrsInstanceEventType(OMRSInstanceEventType.DELETE_PURGED_RELATIONSHIP_EVENT);
-
-        publisher.publishRelationshipEvent(deletionEvent);
-    }
-
-    private AssetLineageEntityEvent proxyToNewEntity(EntityProxy proxy) {
-
-        final String methodName = "proxyToNewEntity";
-        AssetLineageEntityEvent assetLineageEntityEvent = new AssetLineageEntityEvent();
-        Map<String, Object> properties = new HashMap<>();
-
-        properties.put("qualifiedName", repositoryHelper.getStringProperty(ASSET_LINEAGE_OMAS, "qualifiedName",
-                proxy.getUniqueProperties(), methodName));
-
-        assetLineageEntityEvent.setProperties(properties);
-        assetLineageEntityEvent.setGUID(proxy.getGUID());
-        assetLineageEntityEvent.setTypeDefName(proxy.getType().getTypeDefName());
-        assetLineageEntityEvent.setCreateTime(proxy.getCreateTime());
-        assetLineageEntityEvent.setCreatedBy(proxy.getCreatedBy());
-
-        assetLineageEntityEvent.setVersion(proxy.getVersion());
-
-        return assetLineageEntityEvent;
     }
 }

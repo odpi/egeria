@@ -1,23 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 /**
- * The type Converter.
+ * The converter is used for creating and mapping required properties between different objects.
  */
 public class Converter {
 

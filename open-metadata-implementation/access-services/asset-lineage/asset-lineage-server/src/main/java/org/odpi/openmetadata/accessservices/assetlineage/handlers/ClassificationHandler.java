@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
@@ -26,7 +26,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
  */
 public class ClassificationHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetContextHandler.class);
 
     private String serviceName;
     private String serverName;
