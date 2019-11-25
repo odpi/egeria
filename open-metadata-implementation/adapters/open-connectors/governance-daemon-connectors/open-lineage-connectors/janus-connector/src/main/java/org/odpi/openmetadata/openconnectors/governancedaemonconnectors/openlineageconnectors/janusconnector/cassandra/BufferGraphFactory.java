@@ -6,7 +6,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
-import org.odpi.openmetadata.accessservices.assetlineage.Vertex;
+import org.odpi.openmetadata.accessservices.assetlineage.model.Vertex;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.IndexingFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;

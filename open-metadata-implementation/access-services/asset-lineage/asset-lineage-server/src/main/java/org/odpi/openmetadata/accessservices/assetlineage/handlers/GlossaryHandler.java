@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -21,6 +20,9 @@ import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
+/**
+ * The glossary handler provide methods to provide business glossary terms for lineage.
+ */
 public class GlossaryHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlossaryHandler.class);
@@ -61,9 +63,12 @@ public class GlossaryHandler {
     /**
      * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.
      *
-     * @param assetGuid guid of the asset that has been created
-     * @param userId    String - userId of user making request.
+     * @param assetGuid    guid of the asset that has been created
+     * @param userId       String - userId of user making request.
+     * @param entityDetail the entity detail
+     * @param assetContext the asset context
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
+     * @throws InvalidParameterException the invalid parameter exception
      */
     public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
                                                           String userId,
