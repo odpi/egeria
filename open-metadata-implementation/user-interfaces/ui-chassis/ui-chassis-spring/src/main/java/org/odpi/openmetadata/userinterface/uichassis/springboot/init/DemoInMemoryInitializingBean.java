@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.init;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.Item;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.Role;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.repository.ItemRepository;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.repository.UserRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,6 @@ public class DemoInMemoryInitializingBean implements InitializingBean {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ItemRepository itemRepository;
 
     @Override
     public void afterPropertiesSet() {
@@ -101,37 +96,5 @@ public class DemoInMemoryInitializingBean implements InitializingBean {
         user.setName(name);
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
-    }
-
-    private Item addItem(String name,
-                         String desc,
-                         String owner,
-                         Integer rating,
-                         String type,
-                         String glossaryTerm,
-                         String viewType,
-                         String classification,
-                         Item parent,
-                         String tags,
-                         String column
-    ){
-        Item item = new Item();
-        item.setName(name);
-        item.setDescription(desc);
-        item.setOwner(owner);
-        item.setRating(rating);
-        item.setType(type);
-        item.setGlossary_term(glossaryTerm);
-        item.setView_type(viewType);
-        item.setClassification(classification);
-//                item.setChildren(getChildren(item));
-        item.setParent(parent);
-        item.setTags(tags);
-
-        item.setTable(parent!=null ? parent.getName() : name);
-        item.setColumn(column);
-
-        return itemRepository.save(item);
-
     }
 }

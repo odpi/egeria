@@ -51,22 +51,6 @@ public class OMAGServerAdminForOpenLineage {
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-
-            openLineageServerConfig.setOpenLineageBufferGraphConnection(
-                    connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageServerConfig.getOpenLineageProviderBuffer(),
-                            serverConfig.getLocalServerURL(),
-                            openLineageServerConfig.getBufferGraphConfig())
-            );
-
-            openLineageServerConfig.setOpenLineageMainGraphConnection(
-                    connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageServerConfig.getOpenLineageProviderMain(),
-                            serverConfig.getLocalServerURL(),
-                            openLineageServerConfig.getMainGraphConfig())
-            );
-
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
             openLineageServerConfig.setInTopicConnection(
                     connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,

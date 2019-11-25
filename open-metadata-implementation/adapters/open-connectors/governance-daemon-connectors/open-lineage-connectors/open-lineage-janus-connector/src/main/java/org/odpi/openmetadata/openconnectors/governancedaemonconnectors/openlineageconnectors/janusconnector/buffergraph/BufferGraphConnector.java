@@ -7,9 +7,9 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
@@ -70,7 +70,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 BufferGraphFactory bufferGraphFactory = new BufferGraphFactory();
                 this.bufferGraph = bufferGraphFactory.openBufferGraph(connectionProperties);
                 break;
-
                 default:
                     break;
         }

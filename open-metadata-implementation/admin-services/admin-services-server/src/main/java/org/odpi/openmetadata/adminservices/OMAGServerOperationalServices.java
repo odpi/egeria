@@ -621,6 +621,7 @@ public class OMAGServerOperationalServices
         }
         catch (OMAGConfigurationErrorException  error)
         {
+            error.printStackTrace();
             exceptionHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGInvalidParameterException error)
