@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -25,7 +26,7 @@ public class OpenLineageHandler {
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
         return mainGraph.lineage(graphName, scope, view, guid);
     }
 
@@ -34,7 +35,7 @@ public class OpenLineageHandler {
      *
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(String graphName) throws OpenLineageException {
+    public void dumpGraph(GraphName graphName) throws OpenLineageException {
         mainGraph.dumpGraph(graphName);
     }
 
@@ -44,7 +45,7 @@ public class OpenLineageHandler {
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    public String exportGraph(String graphName) throws OpenLineageException {
+    public String exportGraph(GraphName graphName) throws OpenLineageException {
         return mainGraph.exportGraph(graphName);
     }
 

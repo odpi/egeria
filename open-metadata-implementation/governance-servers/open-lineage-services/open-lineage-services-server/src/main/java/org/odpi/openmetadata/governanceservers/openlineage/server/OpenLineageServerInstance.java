@@ -36,7 +36,7 @@ public class OpenLineageServerInstance extends OMAGServerServiceInstance {
      *
      * @return OpenLineageHandler.
      */
-    synchronized OpenLineageHandler getOpenLineageHandler() throws OpenLineageException {
+    OpenLineageHandler getOpenLineageHandler() throws OpenLineageException {
         final String  methodName        = "getOpenLineageHandler";
         if (this.openLineageHandler == null) {
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED;

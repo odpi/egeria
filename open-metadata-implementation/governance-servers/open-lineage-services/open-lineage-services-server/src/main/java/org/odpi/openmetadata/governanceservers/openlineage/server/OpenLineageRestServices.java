@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -22,7 +23,7 @@ public class OpenLineageRestServices {
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
-    public VoidResponse dumpGraph(String serverName, String userId, String graph) {
+    public VoidResponse dumpGraph(String serverName, String userId, GraphName graph) {
         VoidResponse response = new VoidResponse();
         final String methodName = "OpenLineageRestServices.dumpGraph";
         try {
@@ -42,7 +43,7 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public String exportGraph(String serverName, String userId, String graph) {
+    public String exportGraph(String serverName, String userId, GraphName graph) {
         String response;
         final String methodName = "OpenLineageRestServices.exportGraph";
         try {
@@ -56,7 +57,7 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public LineageResponse lineage(String serverName, String userId, String graph, Scope scope, View view, String guid) {
+    public LineageResponse lineage(String serverName, String userId, GraphName graph, Scope scope, View view, String guid) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         try {

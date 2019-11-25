@@ -79,7 +79,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
         Graph graph = getJanusGraph(graphName);
         GraphTraversalSource g = graph.traversal();
@@ -95,7 +95,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getUserAction());
         }
         String edgeLabel = getEdgeLabel(view);
-        try {
+        if (scope != null) {
             switch (scope) {
                 case SOURCE_AND_DESTINATION:
                     return sourceAndDestination(graph, edgeLabel, guid);
@@ -108,16 +108,14 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 case GLOSSARY:
                     return glossary(graph, guid);
             }
-        } catch (NullPointerException e) {
-            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
-            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
         }
-        return null;
+        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
+        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorCode.getFormattedErrorMessage(),
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
 
@@ -273,15 +271,15 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
-        if (vertexList.size() == 0) {
-            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.LINEAGE_CYCLE;
-            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
+        if (!vertexList.isEmpty())
+            return;
+        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.LINEAGE_CYCLE;
+        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorCode.getFormattedErrorMessage(),
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
 
@@ -384,13 +382,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             if (newEdge != null)
                 lineageEdges.add(newEdge);
         }
-    LineageEdge sourceEdge = new LineageEdge(
-            EDGE_LABEL_CONDENSED,
-            condensedVertex.getNodeID(),
-            queriedVertex.getNodeID()
-    );
-            lineageEdges.add(sourceEdge);
-}
+        LineageEdge sourceEdge = new LineageEdge(
+                EDGE_LABEL_CONDENSED,
+                condensedVertex.getNodeID(),
+                queriedVertex.getNodeID()
+        );
+        lineageEdges.add(sourceEdge);
+    }
 
     private void addDestinationCondensation
             (List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex
@@ -422,168 +420,164 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
 
-        /**
-         * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
-         * columns or tables connected to synonyms of the queried glossary term.
-         *
-         * @param graph MAIN, BUFFER, MOCK, HISTORY.
-         * @param guid  The guid of the glossary term of which the lineage is queried of.
-         * @return a subgraph in the GraphSON format.
-         */
-        private LineageResponse glossary (Graph graph, String guid){
-            GraphTraversalSource g = graph.traversal();
+    /**
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
+     * columns or tables connected to synonyms of the queried glossary term.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid  The guid of the glossary term of which the lineage is queried of.
+     * @return a subgraph in the GraphSON format.
+     */
+    private LineageResponse glossary(Graph graph, String guid) {
+        GraphTraversalSource g = graph.traversal();
 
-            Graph subGraph = (Graph)
-                    g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
-                            .emit().
-                            repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
-                            .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
-                            .cap("subGraph").next();
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
+                        .emit().
+                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
+                        .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
+                        .cap("subGraph").next();
 
-            LineageResponse lineageResponse = getLineageResponse(subGraph);
-            return lineageResponse;
-        }
+        LineageResponse lineageResponse = getLineageResponse(subGraph);
+        return lineageResponse;
+    }
 
-        private LineageResponse getLineageResponse (Graph subGraph){
-            Iterator<Vertex> originalVertices = subGraph.vertices();
-            Iterator<Edge> originalEdges = subGraph.edges();
+    private LineageResponse getLineageResponse(Graph subGraph) {
+        Iterator<Vertex> originalVertices = subGraph.vertices();
+        Iterator<Edge> originalEdges = subGraph.edges();
 
-            List<LineageVertex> lineageVertices = new ArrayList<>();
-            List<LineageEdge> lineageEdges = new ArrayList<>();
+        List<LineageVertex> lineageVertices = new ArrayList<>();
+        List<LineageEdge> lineageEdges = new ArrayList<>();
 
-            while (originalVertices.hasNext()) {
-                LineageVertex newVertex = abstractVertex(originalVertices.next());
-                if (newVertex != null) {
-                    lineageVertices.add(newVertex);
-                }
+        while (originalVertices.hasNext()) {
+            LineageVertex newVertex = abstractVertex(originalVertices.next());
+            if (newVertex != null) {
+                lineageVertices.add(newVertex);
             }
-            while (originalEdges.hasNext()) {
-                LineageEdge newLineageEdge = abstractEdge(originalEdges.next());
-                if (newLineageEdge != null) {
-                    lineageEdges.add(newLineageEdge);
-                }
-            }
-            LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-            LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-            return lineageResponse;
         }
+        while (originalEdges.hasNext()) {
+            LineageEdge newLineageEdge = abstractEdge(originalEdges.next());
+            if (newLineageEdge != null) {
+                lineageEdges.add(newLineageEdge);
+            }
+        }
+        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
+        return lineageResponse;
+    }
 
-        /**
-         * Retrieve the label of the edges that are to be traversed with the gremlin query.
-         *
-         * @param view The view queried by the user: table-view, column-view.
-         * @return The label of the edges that are to be traversed with the gremlin query.
-         */
-        private String getEdgeLabel (View view) throws OpenLineageException {
-            String methodName = "MainGraphConnector.getEdgeLabel";
-            String edgeLabel = "";
-            try {
-                switch (view) {
-                    case TABLE_VIEW:
-                        edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
-                        break;
-                    case COLUMN_VIEW:
-                        edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
-                        break;
-                }
-            } catch (NullPointerException e) {
-                OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_VIEW;
-                throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorCode.getFormattedErrorMessage(),
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-
+    /**
+     * Retrieve the label of the edges that are to be traversed with the gremlin query.
+     *
+     * @param view The view queried by the user: table-view, column-view.
+     * @return The label of the edges that are to be traversed with the gremlin query.
+     */
+    private String getEdgeLabel(View view) throws OpenLineageException {
+        String methodName = "MainGraphConnector.getEdgeLabel";
+        String edgeLabel = "";
+        if (view != null) {
+            switch (view) {
+                case TABLE_VIEW:
+                    edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
+                    break;
+                case COLUMN_VIEW:
+                    edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
+                    break;
             }
             return edgeLabel;
         }
+        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_VIEW;
+        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorCode.getFormattedErrorMessage(),
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
 
 
-        /**
-         * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
-         *
-         * @param graphName MAIN, BUFFER, MOCK, HISTORY.
-         */
-        public void dumpGraph (String graphName) throws OpenLineageException {
-            JanusGraph graph = getJanusGraph(graphName);
-            try {
-                graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
+    /**
+     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
+     *
+     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
+     */
+    public void dumpGraph(GraphName graphName) throws OpenLineageException {
+        JanusGraph graph = getJanusGraph(graphName);
+        try {
+            graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
+    }
 
-        /**
-         * Return an entire graph, in GraphSon format.
-         *
-         * @param graphName MAIN, BUFFER, MOCK, HISTORY.
-         * @return The queried graph, in graphSON format.
-         */
-        public String exportGraph (String graphName) throws OpenLineageException {
-            JanusGraph graph = getJanusGraph(graphName);
-            return janusGraphToGraphson(graph);
+    /**
+     * Return an entire graph, in GraphSon format.
+     *
+     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
+     * @return The queried graph, in graphSON format.
+     */
+    public String exportGraph(GraphName graphName) throws OpenLineageException {
+        JanusGraph graph = getJanusGraph(graphName);
+        return janusGraphToGraphson(graph);
+    }
+
+    /**
+     * Convert a Graph object which is originally created by a Janusgraph writer to a String in GraphSON format.
+     *
+     * @param graph The Graph object to be converted.
+     * @return The provided Graph as a String, in the GraphSON format.
+     */
+    private String janusGraphToGraphson(Graph graph) {
+        OutputStream out = new ByteArrayOutputStream();
+        GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
+        GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).wrapAdjacencyList(true).create();
+
+        try {
+            writer.writeGraph(out, graph);
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
+        return out.toString();
+    }
 
-        /**
-         * Convert a Graph object which is originally created by a Janusgraph writer to a String in GraphSON format.
-         *
-         * @param graph The Graph object to be converted.
-         * @return The provided Graph as a String, in the GraphSON format.
-         */
-        private String janusGraphToGraphson (Graph graph){
-            OutputStream out = new ByteArrayOutputStream();
-            GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
-            GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).wrapAdjacencyList(true).create();
-
-            try {
-                writer.writeGraph(out, graph);
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-            return out.toString();
-        }
-
-        /**
-         * Retrieve an Open Lineage Services graph.
-         *
-         * @param graphNameText The name of the queried graph.
-         * @return The Graph object.
-         */
-        private JanusGraph getJanusGraph (String graphNameText) throws OpenLineageException {
-            String methodName = "MainGraphConnector.getJanusGraph";
-            JanusGraph graph = null;
-            GraphName graphName = GraphName.fromString(graphNameText);
-            try {
-                switch (graphName) {
-                    case MAIN:
-                        graph = mainGraph;
-                        break;
-                    case BUFFER:
-                        graph = bufferGraph;
-                        break;
-                    case HISTORY:
-                        graph = historyGraph;
-                        break;
-                    case MOCK:
-                        graph = mockGraph;
-                        break;
-                }
-            } catch (NullPointerException e) {
-                OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
-                throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorCode.getFormattedErrorMessage(),
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+    /**
+     * Retrieve an Open Lineage Services graph.
+     *
+     * @param graphName The name of the queried graph.
+     * @return The Graph object.
+     */
+    private JanusGraph getJanusGraph(GraphName graphName) throws OpenLineageException {
+        String methodName = "MainGraphConnector.getJanusGraph";
+        JanusGraph graph = null;
+        if (graphName != null) {
+            switch (graphName) {
+                case MAIN:
+                    graph = mainGraph;
+                    break;
+                case BUFFER:
+                    graph = bufferGraph;
+                    break;
+                case HISTORY:
+                    graph = historyGraph;
+                    break;
+                case MOCK:
+                    graph = mockGraph;
+                    break;
             }
             return graph;
         }
-
-        public Object getMainGraph () {
-            return mainGraph;
-        }
-
-
+        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
+        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorCode.getFormattedErrorMessage(),
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
+
+    public Object getMainGraph() {
+        return mainGraph;
+    }
+
+
+}

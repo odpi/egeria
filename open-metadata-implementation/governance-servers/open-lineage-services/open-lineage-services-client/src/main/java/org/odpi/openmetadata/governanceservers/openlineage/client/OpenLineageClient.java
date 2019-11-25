@@ -59,7 +59,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                         LINEAGE_SCOPES +
                         LINEAGE_VIEWS +
                         LINEAGE_ENTITIES,
-                serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
+                serverName, userId, graphName.getValue(), scope.getValue(), view.getValue(), guid);
         detectExceptions(methodName, lineageResponse);
         LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
         return lineageVerticesAndEdges;

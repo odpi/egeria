@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -39,17 +40,17 @@ public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
     }
 
     @Override
-    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
         return null;
     }
 
     @Override
-    public void dumpGraph(String graphName) throws OpenLineageException {
+    public void dumpGraph(GraphName graphName) throws OpenLineageException {
 
     }
 
     @Override
-    public String exportGraph(String graphName) throws OpenLineageException {
+    public String exportGraph(GraphName graphName) throws OpenLineageException {
         return null;
     }
 
