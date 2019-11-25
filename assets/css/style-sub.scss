@@ -244,8 +244,26 @@ a {
   padding-bottom:2%;
 }
 
+.lfheader{
+  background-color:#777777;
+  width:100%;
+}
+
+.lfheader img{
+
+  width:20%;
+  padding-top:0.5%;
+  padding-left:2%;
+}
+
 @media only screen and (max-width: 900px) and (min-width: 800px){
 
+  .lfheader img{
+        width:55%;
+        padding-top:1.5%;
+        padding-left:2%;
+      }
+  
 .content {
   margin-left:25%;
 
@@ -255,7 +273,11 @@ a {
 
 @media only screen and (max-width: 800px) and (min-width: 500px){
 
-
+    .lfheader img{
+        width:55%;
+        padding-top:1.5%;
+        padding-left:2%;
+      }
     .links {
       display:none;
       text-align:center;
