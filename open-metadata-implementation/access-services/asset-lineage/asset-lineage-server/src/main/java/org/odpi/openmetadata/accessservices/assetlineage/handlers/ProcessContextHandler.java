@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -22,9 +22,12 @@ import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-public class ProcessHandler {
+/**
+ * The process context handler provides methods to build lineage context from processes.
+ */
+public class ProcessContextHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ProcessHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
     private String serviceName;
     private String serverName;
@@ -33,6 +36,7 @@ public class ProcessHandler {
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
     private AssetContext graph;
+
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -43,11 +47,11 @@ public class ProcessHandler {
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public ProcessHandler(String serviceName,
-                          String serverName,
-                          InvalidParameterHandler invalidParameterHandler,
-                          OMRSRepositoryHelper repositoryHelper,
-                          RepositoryHandler repositoryHandler) {
+    public ProcessContextHandler(String serviceName,
+                                 String serverName,
+                                 InvalidParameterHandler invalidParameterHandler,
+                                 OMRSRepositoryHelper repositoryHelper,
+                                 RepositoryHandler repositoryHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
