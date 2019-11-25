@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -25,9 +23,12 @@ import java.util.*;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-public class ContextHandler {
+/**
+ * The Asset Context handler provides methods to build graph context for assets that has been created.
+ */
+public class AssetContextHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetContextHandler.class);
 
 
     private String serviceName;
@@ -48,11 +49,11 @@ public class ContextHandler {
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public ContextHandler(String serviceName,
-                             String serverName,
-                             InvalidParameterHandler invalidParameterHandler,
-                             OMRSRepositoryHelper repositoryHelper,
-                             RepositoryHandler repositoryHandler) {
+    public AssetContextHandler(String serviceName,
+                               String serverName,
+                               InvalidParameterHandler invalidParameterHandler,
+                               OMRSRepositoryHelper repositoryHelper,
+                               RepositoryHandler repositoryHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -62,6 +63,15 @@ public class ContextHandler {
     }
 
 
+    /**
+     * Gets asset context.
+     *
+     * @param serverName the server name
+     * @param userId     the user id
+     * @param guid       the guid
+     * @param type       the type
+     * @return the asset context
+     */
     public AssetContext getAssetContext(String serverName, String userId, String guid, String type) {
 
         String methodName = "getAssetContext";
