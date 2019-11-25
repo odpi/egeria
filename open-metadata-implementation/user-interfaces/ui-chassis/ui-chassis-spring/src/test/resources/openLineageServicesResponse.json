@@ -1,0 +1,29 @@
+ {
+    "class": "LineageVerticesAndEdges",
+    "lineageVertices": [
+      {
+        "class": "LineageVertex",
+        "nodeID": "p2",
+        "nodeType": "subProcess",
+        "displayName": "p2",
+        "guid": "p2",
+        "attributes": {}
+      },
+      {
+        "class": "LineageVertex",
+        "nodeID": "p0",
+        "nodeType": "subProcess",
+        "displayName": "p0",
+        "guid": "p0",
+        "attributes": {}
+      },
+      {
+        "class": "LineageVertex",
+        "nodeID": "p30",
+        "nodeType": "subProcess",
+        "displayName": "p30",
+        "guid": "p30",
+        "attributes": {}
+      }
+    ]
+}
