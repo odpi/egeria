@@ -163,6 +163,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
                 lineageVertex.setDisplayName(displayName);
             }
+
+            //Displayname key is stored inconsistently in the graphDB.
+            else if (originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).isPresent()) {
+                String displayName = originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).value().toString();
+                lineageVertex.setDisplayName(displayName);
+            }
+
             if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
                 String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
                 lineageVertex.setGuid(guid);

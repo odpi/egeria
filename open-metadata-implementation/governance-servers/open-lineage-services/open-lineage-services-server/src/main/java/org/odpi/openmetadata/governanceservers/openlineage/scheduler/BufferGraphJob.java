@@ -30,7 +30,7 @@ public class BufferGraphJob implements Job {
         try {
             bufferGraph.schedulerTask();  //TODO  Throws NPE
         } catch (Exception e) {
-            log.error("Job Scheduler error");
+            log.error("Buffergraph job Scheduler error");
         }
     }
 }
