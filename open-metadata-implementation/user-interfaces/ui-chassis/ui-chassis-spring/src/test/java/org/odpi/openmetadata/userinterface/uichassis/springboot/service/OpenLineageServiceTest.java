@@ -40,8 +40,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.WARN)
+
 public class OpenLineageServiceTest {
 
     public static final String RESPONSE_JSON = "./src/test/resources/openLineageServicesResponse.json";
@@ -98,7 +97,7 @@ public class OpenLineageServiceTest {
     }
 
     @Test
-    @DisplayName("Ultimate Destination")
+    @DisplayName("Source and Destination")
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
         when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.SOURCE_AND_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
         Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, View.COLUMN_VIEW, guid);
