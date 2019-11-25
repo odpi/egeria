@@ -148,7 +148,29 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          *
          */
 
-        this.constructGraph();
+
+        try {
+
+            this.constructGraph();
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedExceotion and give up the test.
+             *
+             * In this case set discovered property to disabled and return....
+             */
+            super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
+                    "Disabled",
+                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+
+            return;
+        }
+
 
         /*
          * Perform graph queries.
@@ -963,25 +985,25 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private List<String> addFullEdgeToGraph(String relationshipTypeName) throws Exception
     {
 
-        RelationshipDef relationshipDef = relationshipDefs.get(relationshipTypeName);
+            RelationshipDef relationshipDef = relationshipDefs.get(relationshipTypeName);
 
-        EntityDef     end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
-        EntityDetail  end1     = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-        EntityDef     end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
-        EntityDetail  end2     = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+            EntityDef end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+            EntityDetail end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+            EntityDef end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+            EntityDetail end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
-        Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                relationshipDef.getGUID(),
-                super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
-                end1.getGUID(),
-                end2.getGUID(),
-                null);
+            Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                    end1.getGUID(),
+                    end2.getGUID(),
+                    null);
 
-        List<String> guids= new ArrayList<>();
-        guids.add(newRelationship.getGUID());
-        guids.add(end1.getGUID());
-        guids.add(end2.getGUID());
-        return guids;
+            List<String> guids = new ArrayList<>();
+            guids.add(newRelationship.getGUID());
+            guids.add(end1.getGUID());
+            guids.add(end2.getGUID());
+            return guids;
 
     }
 
