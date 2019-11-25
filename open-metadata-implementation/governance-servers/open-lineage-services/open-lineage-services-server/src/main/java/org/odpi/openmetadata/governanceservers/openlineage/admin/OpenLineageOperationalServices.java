@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
@@ -145,7 +145,7 @@ public class OpenLineageOperationalServices {
         } catch (ConnectorCheckedException e) {
             String action = "Unable to initialize the topic connection";
             OpenLineageAuditCode auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            logAudit(auditCode, action);
+            logAudit(auditCode,action);
 
             throw new OMAGConfigurationErrorException(400,
                     this.getClass().getSimpleName(),
@@ -179,12 +179,12 @@ public class OpenLineageOperationalServices {
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
 
         }
     }
@@ -212,33 +212,33 @@ public class OpenLineageOperationalServices {
         OpenLineageAuditCode auditCode;
 
         auditCode = OpenLineageAuditCode.SERVICE_SHUTDOWN;
-        logAudit(auditCode, actionDescription);
+        logAudit(auditCode,actionDescription);
 
         return true;
     }
 
     private void logAudit(OpenLineageAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                OMRSAuditLogRecordSeverity.INFO,
-                auditCode.getFormattedLogMessage("Openlineage"),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+                           auditCode.getLogMessageId(),
+                           OMRSAuditLogRecordSeverity.INFO,
+                           auditCode.getFormattedLogMessage("Openlineage"),
+                        null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
     private void getError(OMRSAuditLog auditLog, OpenLineageAuditCode code,
-                          String actionDescription, String methodName) throws OMAGConfigurationErrorException {
+                          String actionDescription, String methodName) throws OMAGConfigurationErrorException{
 
         OpenLineageAuditCode auditCode = code;
-        logAudit(auditCode, actionDescription);
+        logAudit(auditCode,actionDescription);
 
         throw new OMAGConfigurationErrorException(500,
-                this.getClass().getName(),
-                methodName,
-                auditCode.getFormattedLogMessage(localServerName),
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  auditCode.getFormattedLogMessage(localServerName),
+                                                  auditCode.getSystemAction(),
+                                                  auditCode.getUserAction());
     }
 }
 

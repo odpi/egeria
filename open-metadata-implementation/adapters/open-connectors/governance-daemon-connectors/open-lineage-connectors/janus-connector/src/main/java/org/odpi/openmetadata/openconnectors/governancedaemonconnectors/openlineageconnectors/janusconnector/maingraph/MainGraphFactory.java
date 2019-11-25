@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.IndexingFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.IndexingFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -20,10 +21,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FactoryForTesting extends IndexingFactory {
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
+
+public class MainGraphFactory extends IndexingFactory {
 
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(MainGraphFactory.class);
 
 
     public JanusGraph openBufferGraph(ConnectionProperties connectionProperties){
@@ -31,15 +34,25 @@ public class FactoryForTesting extends IndexingFactory {
         final String methodName = "open";
         JanusGraph janusGraph;
 
-        String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
+        final String storagePath = "./egeria-lineage-repositories/main/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
-                set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
-                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
-                set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
-                set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
-                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
-                set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
+                set("storage.backend", "berkeleyje").
+                set("storage.directory", storagePath).
+                set("index.search.backend", "lucene").
+                set("index.search.directory", indexPath);
+
+        String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
+//
+//        JanusGraphFactory.Builder config = JanusGraphFactory.build().
+//                set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
+//                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
+//                set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
+//                set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
+//                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
+//                set("storage.transactions",false).
+//                set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
 
 
         try {
@@ -96,13 +109,10 @@ public class FactoryForTesting extends IndexingFactory {
             Set<String> vertexLabels = new HashSet<>();
             Set<String> relationshipsLabels = new HashSet<>();
 
-            if (graphType.equals("bufferGraph")){
+            if(graphType.equals("mainGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
-            }
 
-            if(graphType.equals("mainGraph")){
-                //add schema for maingrapgh
             }
 
             management = checkAndAddLabelVertexOrEdge(vertexLabels, management);
@@ -110,9 +120,7 @@ public class FactoryForTesting extends IndexingFactory {
 
             management.commit();
 
-//            createIndexes(graph);
-
-
+            createIndexes(graph);
 
         } catch (Exception e) {
 
@@ -143,10 +151,8 @@ public class FactoryForTesting extends IndexingFactory {
 
     }
 
-//    private void createIndexes(JanusGraph graph){
-//
-//        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph, Vertex.class);
-//        createCompositeIndexForProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph,Vertex.class);
-//        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph, Edge.class);
-//    }
+    private void createIndexes(JanusGraph graph){
+
+        createCompositeIndexForProperty(PROPERTY_NAME_NODE_ID,PROPERTY_KEY_ENTITY_NODE_ID,true,graph, Vertex.class);
+    }
 }

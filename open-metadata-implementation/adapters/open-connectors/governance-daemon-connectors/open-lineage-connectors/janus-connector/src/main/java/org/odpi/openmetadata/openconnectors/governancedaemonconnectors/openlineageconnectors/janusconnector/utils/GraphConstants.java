@@ -12,18 +12,6 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "ed";
 
     public static final String PROPERTY_NAME_NODE_ID = "nodeID";
-    public static final String PROPERTY_NAME_GUID = "guid";
-    public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
-    public static final String PROPERTY_NAME_NAME = "name";
-    public static final String PROPERTY_NAME_VERSION = "version";
-    public static final String PROPERTY_NAME_CREATED_BY = "createdBy";
-    public static final String PROPERTY_NAME_CREATE_TIME = "createTime";
-    public static final String PROPERTY_NAME_UPDATED_BY = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATE_TIME = "updateTime";
-    public static final String PROPERTY_NAME_LABEL = "label";
-    public static final String PROPERTY_NAME_PROXY = "proxy";
-    public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
-    public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
     public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
@@ -34,6 +22,18 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PARENT_PROCESS_GUID = "parent.process.guid";
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
 
+    public static final String PROPERTY_NAME_GUID                             = "guid";
+    public static final String PROPERTY_NAME_QUALIFIED_NAME                   = "qualifiedName";
+    public static final String PROPERTY_NAME_NAME                             = "name";
+    public static final String PROPERTY_NAME_VERSION                          = "version";
+    public static final String PROPERTY_NAME_CREATED_BY                       = "createdBy";
+    public static final String PROPERTY_NAME_CREATE_TIME                      = "createTime";
+    public static final String PROPERTY_NAME_UPDATED_BY                       = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATE_TIME                      = "updateTime";
+    public static final String PROPERTY_NAME_LABEL                            = "label";
+    public static final String PROPERTY_NAME_PROXY                            = "proxy";
+    public static final String PROPERTY_NAME_GLOSSARY_TERM                    = "glossaryTerm";
+    public static final String PROPERTY_NAME_DISPLAY_NAME                     = "displayName";
 
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";

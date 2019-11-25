@@ -81,8 +81,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 }
                 break;
             case "cassandra":
-                FactoryForTesting factoryForTesting = new FactoryForTesting();
-                this.mainGraph = factoryForTesting.openBufferGraph(connectionProperties);
+                MainGraphFactory mainGraphFactory = new MainGraphFactory();
+                this.mainGraph = mainGraphFactory.openBufferGraph(connectionProperties);
                 break;
 
             default:
@@ -200,6 +200,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         }
         return null;
     }
+
 
     private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();

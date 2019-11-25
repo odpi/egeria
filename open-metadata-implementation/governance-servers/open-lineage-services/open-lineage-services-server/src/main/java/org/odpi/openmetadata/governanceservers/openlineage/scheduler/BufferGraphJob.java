@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobKey;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
+@DisallowConcurrentExecution
 public class BufferGraphJob implements Job {
 
     private static final Logger log = LoggerFactory.getLogger(BufferGraphJob.class);

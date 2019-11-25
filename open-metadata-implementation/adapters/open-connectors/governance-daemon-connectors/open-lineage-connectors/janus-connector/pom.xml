@@ -67,6 +67,19 @@
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
+
+        <!-- berkeley & lucene aren't compile dependencies, so need exception for maven dependency plugin -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-berkeleyje</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-lucene</artifactId>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -87,6 +100,8 @@
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>commons-codec:commons-codec:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
