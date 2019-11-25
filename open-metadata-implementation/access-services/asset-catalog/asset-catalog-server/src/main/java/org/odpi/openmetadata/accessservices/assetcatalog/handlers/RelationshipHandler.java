@@ -19,7 +19,6 @@ public class RelationshipHandler {
     private final InvalidParameterHandler invalidParameterHandler;
 
     private List<String> supportedZones;
-    private List<String> defaultZones;
     private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
     private CommonHandler commonHandler;
 
@@ -29,15 +28,13 @@ public class RelationshipHandler {
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
-     * @param defaultZones            default list of zones that Asset Catalog is allowed to serve Assets from
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      */
     public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                               OMRSRepositoryHelper repositoryHelper, List<String> defaultZones, List<String> supportedZones) {
+                               OMRSRepositoryHelper repositoryHelper, List<String> supportedZones) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-        this.defaultZones = defaultZones;
         this.supportedZones = supportedZones;
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
     }

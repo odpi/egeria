@@ -65,7 +65,6 @@ public class AssetCatalogHandler {
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
 
     private List<String> supportedZones;
-    private List<String> defaultZones;
     private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
     /**
@@ -76,19 +75,17 @@ public class AssetCatalogHandler {
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param errorHandler            provides common validation routines for the other handler classes
-     * @param defaultZones            default list of zones that Asset Catalog is allowed to serve Assets from
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      */
     public AssetCatalogHandler(String serverName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                               RepositoryErrorHandler errorHandler, List<String> defaultZones, List<String> supportedZones) {
+                               RepositoryErrorHandler errorHandler, List<String> supportedZones) {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        this.defaultZones = defaultZones;
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
     }
 
