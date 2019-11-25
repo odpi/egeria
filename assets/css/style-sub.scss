@@ -254,6 +254,7 @@ a {
   width:20%;
   padding-top:0.5%;
   padding-left:2%;
+  padding-bottom: 0.5%;
 }
 
 @media only screen and (max-width: 900px) and (min-width: 800px){
@@ -262,8 +263,9 @@ a {
         width:55%;
         padding-top:1.5%;
         padding-left:2%;
+        padding-bottom: 1.5%;
       }
-  
+
 .content {
   margin-left:25%;
 
@@ -277,6 +279,7 @@ a {
         width:55%;
         padding-top:1.5%;
         padding-left:2%;
+        padding-bottom: 1.5%;
       }
     .links {
       display:none;
