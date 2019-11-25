@@ -20,9 +20,9 @@ import java.util.List;
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
-    private ContextHandler contextHandler;
+    private AssetContextHandler assetContextHandler;
     private CommonHandler commonHandler;
-    private ProcessHandler processHandler;
+    private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
 
     /**
@@ -51,7 +51,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler);
 
-            contextHandler = new ContextHandler(serviceName,
+            assetContextHandler = new AssetContextHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -63,7 +63,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler);
 
-            processHandler = new ProcessHandler(serviceName,
+            processContextHandler = new ProcessContextHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -104,9 +104,9 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return context handler
      */
-    ContextHandler getContextHandler()
+    AssetContextHandler getAssetContextHandler()
     {
-        return contextHandler;
+        return assetContextHandler;
     }
 
     /**
@@ -124,9 +124,9 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return process handler
      */
-    ProcessHandler getProcessHandler()
+    ProcessContextHandler getProcessContextHandler()
     {
-        return processHandler;
+        return processContextHandler;
     }
 
     /**
