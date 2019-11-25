@@ -1,14 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.model.assetContext;
+package org.odpi.openmetadata.accessservices.assetlineage.event;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+
+import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * AssetLineageEventHeader provides a common base for all events from the Data Engine access service.
+ * It implements Serializable and a version Id.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent")
 })
-public abstract class AssetLineageEvent {
+public abstract class AssetLineageEventHeader implements Serializable {
 
     private long eventVersionId = 1L;
 
@@ -43,7 +47,7 @@ public abstract class AssetLineageEvent {
 
     @Override
     public String toString() {
-        return "AssetLineageEvent{" +
+        return "AssetLineageEventHeader{" +
                 "eventVersionId=" + eventVersionId +
                 '}';
     }

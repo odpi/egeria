@@ -41,7 +41,7 @@ public enum DataEngineAuditCode {
             "The local server has requested shut down of an Data Engine OMAS instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0005",
+    SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0004",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
                     "message is {0}",
@@ -49,7 +49,7 @@ public enum DataEngineAuditCode {
                     "Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server."),
-    ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-DATA-ENGINE-0006",
+    ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-DATA-ENGINE-0005",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
                     "message is {0}",

@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -17,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * AssetLineagePublisher is the connector responsible for publishing information about
+ * AssetLineagePublisher is the connector responsible for publishing lineage context information about
  * new and changed assets.
  */
 public class AssetLineagePublisher {
@@ -45,7 +44,7 @@ public class AssetLineagePublisher {
      *
      * @param event event to send
      */
-    public void publishRelationshipEvent(AssetLineageEvent event) {
+    public void publishRelationshipEvent(AssetLineageEventHeader event) {
         try {
             if (connector != null) {
                 ObjectMapper objectMapper = new ObjectMapper();

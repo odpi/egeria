@@ -29,8 +29,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private String inTopicName;
     private Connection inTopicConnection;
 
-    private String openLineageProviderBuffer;
-    private String openLineageProviderMain;
+
     private Map<String, Object> bufferGraphConfig;
     private Map<String, Object> mainGraphConfig;
     private Connection openLineageBufferGraphConnection;
@@ -59,8 +58,6 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             lineageServerURL = template.lineageServerURL;
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
-            openLineageProviderBuffer = template.openLineageProviderBuffer;
-            openLineageProviderMain = template.openLineageProviderMain;
             openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
             openLineageMainGraphConnection = template.openLineageMainGraphConnection;
             bufferGraphConfig = template.bufferGraphConfig;
@@ -180,41 +177,6 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
         this.inTopicConnection = inTopicConnection;
     }
 
-    /**
-     * Return the ConnectorProvider class name for Open Lineage
-     *
-     * @return String Class name
-     */
-    public String getOpenLineageProviderBuffer() {
-        return openLineageProviderBuffer;
-    }
-
-    /**
-     * Set up the Open Lineage Connector Provider class
-     *
-     * @param openLineageProviderBuffer String Connector Provider class name
-     */
-    public void setOpenLineageProviderBuffer(String openLineageProviderBuffer) {
-        this.openLineageProviderBuffer = openLineageProviderBuffer;
-    }
-
-    /**
-     * Return the ConnectorProvider class name for Open Lineage
-     *
-     * @return String Class name
-     */
-    public String getOpenLineageProviderMain() {
-        return openLineageProviderMain;
-    }
-
-    /**
-     * Set up the Open Lineage Connector Provider class
-     *
-     * @param openLineageProviderMain String Connector Provider class name
-     */
-    public void setOpenLineageProviderMain(String openLineageProviderMain) {
-        this.openLineageProviderMain = openLineageProviderMain;
-    }
 
     /**
      * Return the Connection for BufferGraph that will be used for Open Lineage
@@ -298,7 +260,6 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
-                ", openLineageProviderBuffer='" + openLineageProviderBuffer + '\'' +
                 ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
                 ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
                 ", bufferGraphConfig=" + bufferGraphConfig +
@@ -317,7 +278,6 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
                 Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
-                Objects.equals(openLineageProviderBuffer, that.openLineageProviderBuffer) &&
                 Objects.equals(openLineageBufferGraphConnection, that.openLineageBufferGraphConnection) &&
                 Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection) &&
                 Objects.equals(bufferGraphConfig, that.bufferGraphConfig) &&
@@ -328,8 +288,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName,
                 openLineageDescription, lineageServerURL,
-                inTopicName, inTopicConnection,
-                openLineageProviderBuffer, openLineageBufferGraphConnection,
+                inTopicName, inTopicConnection, openLineageBufferGraphConnection,
                 openLineageMainGraphConnection, bufferGraphConfig,
                 mainGraphConfig);
     }

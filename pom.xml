@@ -2418,6 +2418,7 @@
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
+                    <quiet>true</quiet>
                 </configuration>
                 <executions>
                     <execution>
@@ -2564,7 +2565,7 @@
             <id>owasp</id>
             <activation>
                 <property>
-                    <name>!skipCVE</name>
+                    <name>CVE</name>
                 </property>
             </activation>
             <!-- Build reports - findBugs security checks -->
@@ -2624,7 +2625,7 @@
             <id>license</id>
             <activation>
                 <property>
-                    <name>!skipLicense</name>
+                    <name>License</name>
                 </property>
             </activation>
             <build>
