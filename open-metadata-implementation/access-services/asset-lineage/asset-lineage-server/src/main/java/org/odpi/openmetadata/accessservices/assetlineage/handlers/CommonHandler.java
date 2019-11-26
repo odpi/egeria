@@ -196,4 +196,20 @@ public class CommonHandler {
 
         return endEntity;
     }
+
+    public void deduplicateGraphContex(Map<String, Set<GraphContext>> neighbors) {
+
+        List<String> deduplicateList = new ArrayList<>();
+
+        for (Map.Entry<String, Set<GraphContext>> pair : neighbors.entrySet()) {
+            for( GraphContext graphContext: pair.getValue()){
+                if(deduplicateList.contains(graphContext.getRelationshipGuid())){
+                    neighbors.remove(pair.getKey());
+                } else {
+                    deduplicateList.add(graphContext.getRelationshipGuid());
+                }
+            }
+        }
+    }
+
 }
