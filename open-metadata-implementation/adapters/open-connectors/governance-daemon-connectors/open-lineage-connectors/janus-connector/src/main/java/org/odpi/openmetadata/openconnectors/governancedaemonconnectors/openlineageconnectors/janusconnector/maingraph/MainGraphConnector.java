@@ -139,7 +139,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         String edgeLabel = getEdgeLabel(view);
 
         Graph endToEndGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
                         union(
                                 until(inE(edgeLabel).count().is(0)).
                                         repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV()),
@@ -152,8 +152,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private LineageEdge abstractEdge(Edge originalEdge) {
-        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         LineageEdge lineageEdge = new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
         return lineageEdge;
     }
@@ -247,12 +247,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV().simplePath()).
                 dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
         List<LineageVertex> lineageVertices = new ArrayList<>();
         List<LineageEdge> lineageEdges = new ArrayList<>();
@@ -279,12 +279,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private LineageResponse ultimateDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
                 dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
@@ -312,17 +312,17 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV().simplePath()).
                 dedup().toList();
 
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
                 dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         List<LineageVertex> lineageVertices = new ArrayList<>();
@@ -340,7 +340,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private void addSourceCondensation(List<Vertex> sourcesList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
             LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED);
             lineageVertices.add(condensedVertex);
 
@@ -368,7 +368,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private void addDestinationCondensation(List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
             LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
@@ -405,7 +405,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
                         .emit().
                         repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
