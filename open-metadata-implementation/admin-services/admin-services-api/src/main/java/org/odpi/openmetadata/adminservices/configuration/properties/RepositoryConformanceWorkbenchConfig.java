@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHeader
 {
     private String   tutRepositoryServerName = null;
-    private int      pageSizeForTests = 50;
+    private int      maxSearchResults = 50;
 
 
     /**
@@ -46,7 +46,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         if (template != null)
         {
             tutRepositoryServerName = template.getTutRepositoryServerName();
-            pageSizeForTests = template.getPageSizeForTests();
+            maxSearchResults = template.getMaxSearchResults();
         }
     }
 
@@ -74,24 +74,26 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
 
 
     /**
-     * Return the page size that should be used for testing the server under test.
+     * Return the maximum search results that should processed for testing the search operations of the server under
+     * test.
      *
      * @return page size
      */
-    public int getPageSizeForTests()
+    public int getMaxSearchResults()
     {
-        return pageSizeForTests;
+        return maxSearchResults;
     }
 
 
     /**
-     * Set up the page size to use for testing the server under test.
+     * Set up the maximum search results that should be processed for testing the search operations of the server under
+     * test.
      *
-     * @param pageSizeForTests page size
+     * @param maxSearchResults page size
      */
-    public void setPageSizeForTests(int pageSizeForTests)
+    public void setMaxSearchResults(int maxSearchResults)
     {
-        this.pageSizeForTests = pageSizeForTests;
+        this.maxSearchResults = maxSearchResults;
     }
 
 
@@ -105,7 +107,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     {
         return "ConformanceSuiteConfig{" +
                 "tutRepositoryServerName='" + tutRepositoryServerName + '\'' +
-                "pageSizeForTests='" + pageSizeForTests + '\'' +
+                "maxSearchResults='" + maxSearchResults + '\'' +
                 '}';
     }
 
@@ -129,7 +131,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         }
         RepositoryConformanceWorkbenchConfig that = (RepositoryConformanceWorkbenchConfig) objectToCompare;
         return Objects.equals(getTutRepositoryServerName(), that.getTutRepositoryServerName())
-                && Objects.equals(getPageSizeForTests(), that.getPageSizeForTests());
+                && Objects.equals(getMaxSearchResults(), that.getMaxSearchResults());
     }
 
 
@@ -141,6 +143,6 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTutRepositoryServerName(), getPageSizeForTests());
+        return Objects.hash(getTutRepositoryServerName(), getMaxSearchResults());
     }
 }
