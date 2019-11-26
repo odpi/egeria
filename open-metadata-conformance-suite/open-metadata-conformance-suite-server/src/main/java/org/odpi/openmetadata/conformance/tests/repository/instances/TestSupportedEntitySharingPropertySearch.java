@@ -191,7 +191,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
         InstanceProperties emptyMatchProperties    = new InstanceProperties();
         int                fromElement             = 0;
-        int                pageSize                = 50;
+        int                pageSize                = getPageSizeForTests();
         List<EntityDetail> result                  = null;
         int                instanceCount           = 0;
         boolean            pageLimited             = false;
