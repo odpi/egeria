@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
@@ -20,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,9 +88,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
     private static final String assertionMsg14  = " search contained expected number of results.";
     private static final String assertion15     = testCaseId + "-15";
     private static final String assertionMsg15  = " search contained expected results.";
-
-
-
 
 
     private static final String discoveredProperty_searchSupport       = " search support";
@@ -491,8 +486,13 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
         if (!definedAttributeNames.isEmpty()) {
 
-            for (String alphaAttributeName : definedAttributeNames) {
+            /*
+             * Use numeric index loops and be selective about overlaps between alpha and beta
+             * This allows us to avoid running N**2 tests
+             */
+            for (int alphaIndex = 0 ; alphaIndex<definedAttributeNames.size() ; alphaIndex++) {
 
+                String alphaAttributeName = definedAttributeNames.get(alphaIndex);
 
                 Set<Object> possibleAlphaValues = propertyValueMap.get(alphaAttributeName).keySet();
                 Iterator<Object> possibleAlphaValueIterator = possibleAlphaValues.iterator();
@@ -511,7 +511,9 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     }
 
 
-                    for (String betaAttributeName : definedAttributeNames) {
+                    for (int betaIndex = alphaIndex+1 ; betaIndex<definedAttributeNames.size() ; betaIndex++) {
+
+                        String betaAttributeName = definedAttributeNames.get(betaIndex);
 
                         if (!alphaAttributeName.equals(betaAttributeName)) {
 

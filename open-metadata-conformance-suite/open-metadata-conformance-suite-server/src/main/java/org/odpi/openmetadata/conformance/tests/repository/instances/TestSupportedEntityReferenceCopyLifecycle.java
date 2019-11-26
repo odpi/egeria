@@ -157,6 +157,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         OMRSMetadataCollection ctsMetadataCollection = repositoryConformanceWorkPad.getLocalRepositoryConnector().getMetadataCollection();
 
 
+
+
         /*
          * Generate property values for all the type's defined properties, including inherited properties
          * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -441,6 +443,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          */
 
         try {
+
             EntityDetail deletedEntity = ctsMetadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                                             newEntity.getType().getTypeDefGUID(),
                                                                             newEntity.getType().getTypeDefName(),
