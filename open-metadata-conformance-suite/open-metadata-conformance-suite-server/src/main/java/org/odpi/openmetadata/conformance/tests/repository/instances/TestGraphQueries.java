@@ -8,23 +8,14 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +32,9 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
     private static final String testCaseId = "repository-graph-queries";
     private static final String testCaseName = "Repository graph query test case";
+
+    private static final String assertion0 = testCaseId + "-00";
+    private static final String assertionMsg0 = " relationship type matches the known type.";
 
     private static final String assertion1 = testCaseId + "-01";
     private static final String assertionMsg1 = " graph query returned a result.";
@@ -75,18 +69,29 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private static final String assertion11 = testCaseId + "-11";
     private static final String assertionMsg11 = " graph query returned all the expected relationships.";
 
+    private static final String assertion12 = testCaseId + "-12";
+    private static final String assertionMsg12 = " relationship end types are supported by repository ";
 
-    private static final String discoveredProperty_grapQuerySupport = "Graph query support";
+    private static final String assertion13 = testCaseId + "-13";
+    private static final String assertionMsg13 = " repository supports the creation of instances ";
+
+    private static final String assertion14 = testCaseId + "-14";
+    private static final String assertionMsg14 = " repository supports getEntityNeighborhood ";
+
+    private static final String assertion15 = testCaseId + "-15";
+    private static final String assertionMsg15 = " repository supports getRelatedEntities ";
+
+    private static final String assertion16 = testCaseId + "-16";
+    private static final String assertionMsg16 = " repository supports getLinkingEntities ";
+
 
     private String                      testTypeName;
+    private RepositoryConformanceWorkPad workPad;
     private OMRSMetadataCollection      metadataCollection;
     private Map<String,EntityDef>       entityDefs       = null;
     private Map<String,RelationshipDef> relationshipDefs = null;
-    private Set<String>                 relationshipTypeNames = ((RepositoryConformanceWorkPad) workPad).getRelationshipTypeNames();
-    private Set<String>                 entityTypeNames = ((RepositoryConformanceWorkPad) workPad).getEntityTypeNames();
-
-    //private Map<String, Boolean> relationshipTypeUsed = new HashMap<>();
-    //private Map<String, Boolean> entityTypeUsed = new HashMap<>();
+    private Set<String>                 relationshipTypeNames = null;
+    private Set<String>                 entityTypeNames = null;
 
     private int edgeCount = 0;
     private int nodeCount = 0;
@@ -123,11 +128,15 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
                 RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
+        this.workPad = workPad;
         this.entityDefs       = entityDefs;
         this.relationshipDefs = new HashMap<>();
         for (RelationshipDef relDef : relationshipDefs) {
             this.relationshipDefs.put(relDef.getName(),relDef);
         }
+
+        this.entityTypeNames       = workPad.getEntityTypeNames();
+        this.relationshipTypeNames = workPad.getRelationshipTypeNames();
 
         this.testTypeName = this.updateTestIdByType(null, testCaseId, testCaseName);
 
@@ -160,10 +169,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
              * If running against a read-only repository/connector that cannot add
              * entities or relationships catch FunctionNotSupportedExceotion and give up the test.
              *
-             * In this case set discovered property to disabled and return....
+             * In this case indicate that instance creation is not supported....
              */
-            super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion13,
+                    assertionMsg13,
                     RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
                     RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
@@ -201,10 +210,12 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                             null,
                             level);
 
-                    super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                            "Enabled",
+                    assertCondition((true),
+                            assertion14,
+                            testTypeName + assertionMsg14,
                             RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
 
                     /*
                      * Formulate the expected result
@@ -214,13 +225,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                     /* Add the current entity and then navigate each of its edges recursively amalgamating what you discover down that edge */
                     List<String> expectedEntityGUIDs = new ArrayList<>();
                     List<String> expectedRelationshipGUIDs = new ArrayList<>();
-                    //if (level == 0)
-                    //    expectedEntityGUIDs.add(entityGUID);
-                    //if (level > 0) {
+
                     List<List<String>> subgraph = this.exploreFromEntity(entityGUID, null, level);
                     expectedEntityGUIDs.addAll(subgraph.get(0));
                     expectedRelationshipGUIDs.addAll(subgraph.get(1));
-                    //}
 
 
                     assertCondition((instGraph != null),
@@ -290,8 +298,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 } catch (FunctionNotSupportedException exception) {
 
-                    super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                            "Disabled",
+                    super.addNotSupportedAssertion(assertion14,
+                            assertionMsg14,
                             RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
@@ -327,10 +335,13 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                         0);
 
 
-                super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                        "Enabled",
+                assertCondition((true),
+                        assertion15,
+                        testTypeName + assertionMsg15,
                         RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+
 
                 /*
                  * Formulate the expected result
@@ -373,8 +384,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             } catch (FunctionNotSupportedException exception) {
 
-                super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                        "Disabled",
+                super.addNotSupportedAssertion(assertion15,
+                        assertionMsg15,
                         RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
 
@@ -492,8 +503,9 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                             null);
 
 
-                    super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                            "Enabled",
+                    assertCondition((true),
+                            assertion16,
+                            testTypeName + assertionMsg16,
                             RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
@@ -569,10 +581,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 } catch (FunctionNotSupportedException exception) {
 
-                    super.addDiscoveredProperty(discoveredProperty_grapQuerySupport,
-                            "Disabled",
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                    super.addNotSupportedAssertion(assertion16,
+                            assertionMsg16,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
 
                 }
 
@@ -985,25 +997,117 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private List<String> addFullEdgeToGraph(String relationshipTypeName) throws Exception
     {
 
-            RelationshipDef relationshipDef = relationshipDefs.get(relationshipTypeName);
 
-            EntityDef end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
-            EntityDetail end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-            EntityDef end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
-            EntityDetail end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+        /* Use the relationship type name to get the known relationship type from the repository helper.
+         * Then get the defined end types and work down the supertype hierarchy to collate the list of possible
+         * end types, and finally filter this list (for each end) by the types supported by the repostiory.
+         */
 
-            Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                    relationshipDef.getGUID(),
-                    super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
-                    end1.getGUID(),
-                    end2.getGUID(),
-                    null);
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
 
-            List<String> guids = new ArrayList<>();
-            guids.add(newRelationship.getGUID());
-            guids.add(end1.getGUID());
-            guids.add(end2.getGUID());
-            return guids;
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipTypeName);
+        RelationshipDef repositoryRelationshipDef = relationshipDefs.get(relationshipTypeName);
+        verifyCondition((repositoryRelationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+        RelationshipDef relationshipDef = knownRelationshipDef;
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                    assertion12,
+                    testTypeName + assertionMsg12,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+
+
+        /*
+         * The test does not iterate over all possible end types - but it must select an end type that is supported by the repository,
+         * so it uses the first type in the supported list for each end.
+         */
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+        EntityDef end1Type = entityDefs.get(end1TypeName);
+        EntityDetail end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+        EntityDef end2Type = entityDefs.get(end2TypeName);
+        EntityDetail end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+        Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                                                                          relationshipDef.getGUID(),
+                                                                          super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                                                                          end1.getGUID(),
+                                                                          end2.getGUID(),
+                                                                         null);
+
+        List<String> guids = new ArrayList<>();
+        guids.add(newRelationship.getGUID());
+        guids.add(end1.getGUID());
+        guids.add(end2.getGUID());
+        return guids;
 
     }
 
@@ -1014,14 +1118,103 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private List<String> addPartialEdgeToGraph(String relationshipTypeName, String existingEntityGUID, int existingEntityEnd) throws Exception
     {
 
-        RelationshipDef relationshipDef = relationshipDefs.get(relationshipTypeName);
+        /* Use the relationship type name to get the known relationship type from the repository helper.
+         * Then get the defined end types and work down the supertype hierarchy to collate the list of possible
+         * end types, and finally filter this list (for each end) by the types supported by the repostiory.
+         */
+
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipTypeName);
+        RelationshipDef repositoryRelationshipDef = relationshipDefs.get(relationshipTypeName);
+        verifyCondition((repositoryRelationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+        RelationshipDef relationshipDef = knownRelationshipDef;
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                    assertion12,
+                    testTypeName + assertionMsg12,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+        /*
+         * The test does not iterate over all possible end types - but it must select an end type that is supported by the repository,
+         * so it uses the first type in the supported list for each end.
+         */
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
 
         String end1GUID;
         String end2GUID;
 
         if (existingEntityEnd ==1) {
             /* Add an entity to end2 */
-            EntityDef     end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+            EntityDef     end2Type = entityDefs.get(end2TypeName);
             EntityDetail  end2     = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
             end1GUID = existingEntityGUID;
             end2GUID = end2.getGUID();
@@ -1029,7 +1222,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         else {
             /* existing entity is end 2 */
             /* Add an entity to end1 */
-            EntityDef     end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+            EntityDef     end1Type = entityDefs.get(end1TypeName);
             EntityDetail  end1     = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
             end1GUID = end1.getGUID();
             end2GUID = existingEntityGUID;

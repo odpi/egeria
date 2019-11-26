@@ -19,8 +19,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+
 
 
 /**
@@ -103,8 +102,11 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
     private static final String assertionMsg22  = " value search contained only valid results.";
 
 
+    private static final String assertion23     = testCaseId + "-23";
+    private static final String assertionMsg23  = " repository supports creation of instances.";
 
     private static final String discoveredProperty_searchSupport       = " advanced search support";
+
 
     private String            metadataCollectionId;
     private EntityDef         entityDef;
@@ -234,9 +236,6 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
          */
 
 
-
-
-
         switch (phase) {
 
             case CREATE:
@@ -254,8 +253,6 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
 
     private void createInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
-
-
 
 
         /*
@@ -309,6 +306,13 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
 
 
             repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(), this.entitySet_0, this.entitySet_1, this.entitySet_2);
+
+            assertCondition((true),
+                    assertion23,
+                    testTypeName + assertionMsg23,
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
         }
         catch (FunctionNotSupportedException exception) {
 
@@ -316,6 +320,20 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
              * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
              * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
              */
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion23,
+                    assertionMsg23,
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
+
             return;
         }
 
