@@ -418,8 +418,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((true),
                     assertion34,
                     testTypeName + assertionMsg34,
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -438,8 +438,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
             super.addNotSupportedAssertion(assertion34,
                     assertionMsg34,
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
             return;

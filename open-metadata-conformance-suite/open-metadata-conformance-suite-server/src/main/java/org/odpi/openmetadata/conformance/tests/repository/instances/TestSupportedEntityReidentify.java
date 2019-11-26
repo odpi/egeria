@@ -119,8 +119,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
             assertCondition((true),
                     assertion7,
                     testTypeName + assertionMsg7,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -133,8 +133,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
             super.addNotSupportedAssertion(assertion7,
                     assertionMsg7,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
@@ -142,8 +142,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         assertCondition((newEntity != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -158,8 +158,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
