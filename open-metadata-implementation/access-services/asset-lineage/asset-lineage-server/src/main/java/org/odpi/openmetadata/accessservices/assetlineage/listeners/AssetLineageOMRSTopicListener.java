@@ -12,8 +12,10 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandle
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,6 +25,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -49,6 +52,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private AssetLineagePublisher publisher;
     private String serverName;
     private String serverUserName;
+    private Converter converter = new Converter();
+    private Validator validator = new Validator();
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -121,13 +126,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (instanceEventOriginator != null) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        processNewEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + NEW_ENTITY_EVENT.getName());
+                        validateEvnetType(instanceEvent.getEntity(),serviceOperationName + NEW_ENTITY_EVENT.getName());
+
                         break;
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(),
                                 serviceOperationName + UPDATED_ENTITY_EVENT.getName());
-                        break;
                     case DELETED_ENTITY_EVENT:
                         processDeleteEntity(instanceEvent.getEntity(),
                                 serviceOperationName + DELETED_ENTITY_EVENT.getName());
@@ -162,11 +166,19 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
+    private void validateEvnetType(EntityDetail entityDetail, String serviceOperationName){
+
+        Set<String> superTypes = collectSuperTypes(ASSET_LINEAGE_OMAS, entityDetail.getType().getTypeDefName());
+
+        processNewEntityEvent(instanceEvent.getEntity(),
+                serviceOperationName + NEW_ENTITY_EVENT.getName());
+
+    }
+
     private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
 
         final String methodName = "processNewEntityEvent";
 
-        Validator validator = new Validator();
 
         log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
 
@@ -186,9 +198,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")) {
-            processNewEntity(entityDetail, serviceOperationName);
-
+            //ADD
         }
+
+        LineageEntity lineageEntity = converter.createLineageEntity(entityDetail);
+
+        LineageEvent lineageEvent = new LineageEvent();
+        lineageEvent.setLineageEntity(lineageEntity);
+        lineageEvent.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
+        publisher.publishRelationshipEvent(lineageEvent);
     }
 
     private void processNewEntity(EntityDetail entityDetail, String serviceOperationName) {
@@ -357,5 +375,27 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
+    }
+
+    private Set<String> collectSuperTypes(String userId, String typeDefName) {
+        Set<String> superTypes = new HashSet<>();
+
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+        if (typeDefByName != null) {
+            collectSuperTypes(userId, typeDefByName, superTypes);
+        }
+
+        return superTypes;
+    }
+
+    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) {
+        if (type.getName().equals(REFERENCEABLE)) {
+            return;
+        }
+        superTypes.add(type.getName());
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
+        if (typeDefByName != null) {
+            collectSuperTypes(userId, typeDefByName, superTypes);
+        }
     }
 }

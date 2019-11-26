@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -130,28 +131,18 @@ public class AssetContextHandler {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
-        Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(userId,typeDefName);
+        List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
 
-        //TODO check for Table entities
-        if (isComplexSchemaType.isPresent()) {
-        //setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
-        }
-
-        if(hasSchemaAttributeType(typeDefName)) {
-
-            /* Build the lineage graph of schema attributes as nodes with lineage mapping relationship as edge between them */
-            buildGraphByRelationshipType(userId, entityDetail, LINEAGE_MAPPING, typeDefName);
-
-        }
-
-        List<EntityDetail> schemaTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
-
-        for (EntityDetail schemaTypeEntity : schemaTypeEntities) {
-
+        for (EntityDetail schemaTypeEntity : tableTypeEntities) {
             if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName()).isPresent()) {
                 setAssetDetails(userId, schemaTypeEntity);
+                continue;
             } else {
-                buildAssetContext(userId, schemaTypeEntity);
+                List<EntityDetail> tableEntities = buildGraphByRelationshipType(userId, schemaTypeEntity, SCHEMA_ATTRIBUTE_TYPE, typeDefName);
+                if(!CollectionUtils.isEmpty(tableEntities))
+                    {
+                        buildAssetContext(userId, tableEntities.stream().findFirst().get());
+                    }
             }
         }
     }
