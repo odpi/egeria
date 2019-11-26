@@ -652,7 +652,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          */
 
         int fromElement = 0;
-        int pageSize = getPageSizeForTests(); // chunk size - loop below will repeatedly get chunks
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
         int resultSize = 0;
 
         do {
