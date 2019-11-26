@@ -126,7 +126,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (instanceEventOriginator != null) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        validateEvnetType(instanceEvent.getEntity(),serviceOperationName + NEW_ENTITY_EVENT.getName());
+                        validateEventType(instanceEvent.getEntity(),serviceOperationName + NEW_ENTITY_EVENT.getName());
 
                         break;
                     case UPDATED_ENTITY_EVENT:
@@ -166,29 +166,25 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
-    private void validateEvnetType(EntityDetail entityDetail, String serviceOperationName){
+    private void validateEventType(EntityDetail entityDetail, String serviceOperationName){
 
         Set<String> superTypes = collectSuperTypes(ASSET_LINEAGE_OMAS, entityDetail.getType().getTypeDefName());
 
-        processNewEntityEvent(entityDetail,
-                serviceOperationName + NEW_ENTITY_EVENT.getName());
+        if (superTypes.contains(SCHEMA_ELEMENT)) {
+            processNewEntity(entityDetail,
+                    serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
+        }
 
     }
 
-    private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
-
-        final String methodName = "processNewEntityEvent";
-
-
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
+    private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName,String superType) {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
-
-        if (!validator.isValidLineageEntityEvent(typeDefName)) {
-            log.info(("Event is ignored as the entity is not relevant type for the Asset Lineage OMAS."));
-        } else {
-            processNewEntity(entityDetail, serviceOperationName);
-        }
+//        if (!validator.isValidLineageEntityEvent(typeDefName)) {
+//            log.info(("Event is ignored as the entity is not relevant type for the Asset Lineage OMAS."));
+//        } else {
+            processNewEntity(entityDetail, serviceOperationName,superType);
+//        }
     }
 
     private void processUpdatedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
@@ -209,7 +205,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(lineageEvent);
     }
 
-    private void processNewEntity(EntityDetail entityDetail, String serviceOperationName) {
+    private void processNewEntity(EntityDetail entityDetail, String serviceOperationName,String supertype) {
 
         final String methodName = "processNewEntity";
 
@@ -219,7 +215,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
             } else {
-                getAssetContext(entityDetail, serviceOperationName);
+                getAssetContext(entityDetail, serviceOperationName,supertype);
             }
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
@@ -354,13 +350,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName,String superType) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContextHandler newAssetContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName(),superType);
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext);
