@@ -342,7 +342,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         ProcessContextHandler processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
-
+        instanceHandler.getCommonHandler(serverUserName, serverName, serviceOperationName).deduplicateGraphContex(processContext);
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
         event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
