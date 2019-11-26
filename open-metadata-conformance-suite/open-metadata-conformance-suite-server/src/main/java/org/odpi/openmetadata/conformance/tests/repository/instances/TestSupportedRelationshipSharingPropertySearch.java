@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -52,6 +53,13 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 {
     private static final String testCaseId = "repository-relationship-sharing-property-search";
     private static final String testCaseName = "Repository relationship sharing property search test case";
+
+
+    /* Type */
+
+    private static final String assertion0 = testCaseId + "-00";
+    private static final String assertionMsg0 = " relationship type definition matches known type  ";
+
 
     private static final String assertion1     = testCaseId + "-01";
     private static final String assertionMsg1  = " search returned results.";
@@ -91,11 +99,10 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
     private static final String assertionMsg15  = " search contained expected results.";
 
 
-
-
     private static final String discoveredProperty_searchSupport       = " search support";
 
 
+    private RepositoryConformanceWorkPad workPad;
     private String                 metadataCollectionId;
     private RelationshipDef        relationshipDef;
     private List<TypeDefAttribute> attrList;
@@ -119,6 +126,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
               RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
               RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
+        this.workPad = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.relationshipDef = relationshipDef;
 
@@ -148,6 +156,28 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+
+
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+
 
 
         /*
@@ -191,7 +221,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
         InstanceProperties emptyMatchProperties    = new InstanceProperties();
         int                fromElement             = 0;
-        int                pageSize                = 50;
+        int                pageSize                = getMaxSearchResults();
         List<Relationship> result                  = null;
         int                instanceCount           = 0;
         boolean            pageLimited             = false;
@@ -483,8 +513,13 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
         if (!definedAttributeNames.isEmpty()) {
 
-            for (String alphaAttributeName : definedAttributeNames) {
+            /*
+             * Use numeric index loops and be selective about overlaps between alpha and beta
+             * This allows us to avoid running N**2 tests
+             */
+            for (int alphaIndex = 0 ; alphaIndex<definedAttributeNames.size() ; alphaIndex++) {
 
+                String alphaAttributeName = definedAttributeNames.get(alphaIndex);
 
                 Set<Object> possibleAlphaValues = propertyValueMap.get(alphaAttributeName).keySet();
                 Iterator<Object> possibleAlphaValueIterator = possibleAlphaValues.iterator();
@@ -503,7 +538,9 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     }
 
 
-                    for (String betaAttributeName : definedAttributeNames) {
+                    for (int betaIndex = alphaIndex+1 ; betaIndex<definedAttributeNames.size() ; betaIndex++) {
+
+                        String betaAttributeName = definedAttributeNames.get(betaIndex);
 
                         if (!alphaAttributeName.equals(betaAttributeName)) {
 

@@ -12,15 +12,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.function.Function;
 
 
 /**
@@ -80,7 +77,12 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
     private static final String assertionMsg16  = " retyped entity has expected properties.";
 
 
-    private static final String discoveredProperty_retypeSupport = " retype support";
+    private static final String assertion17     = testCaseId + "-17";
+    private static final String assertionMsg17  = " repository supports creation of instances.";
+
+
+    private static final String discoveredProperty_retypeSupport    = " retype support";
+
 
 
 
@@ -120,23 +122,56 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-
-
         /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates an
-         * entity that is logically complete - versus an instance with just the locally-defined properties.
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
          */
 
-        InstanceProperties instanceProperties = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+        InstanceProperties instanceProperties;
+        EntityDetail newEntity;
 
-        EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
-                instanceProperties,
-                null,
-                null);
+        try {
 
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            instanceProperties = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+
+            newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                     entityDef.getGUID(),
+                                                     instanceProperties,
+                                                    null,
+                                                    null);
+
+            assertCondition((true),
+                    assertion17,
+                    testTypeName + assertionMsg17,
+                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion17,
+                    assertionMsg17,
+                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+            return;
+        }
 
         assertCondition((newEntity != null),
                 assertion1,
