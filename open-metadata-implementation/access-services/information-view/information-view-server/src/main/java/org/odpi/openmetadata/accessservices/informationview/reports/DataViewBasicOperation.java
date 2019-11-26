@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameU
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,26 +71,32 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      * @param registrationGuid - guid of software server capability
      * @param registrationQualifiedName  - qualified name of software server capability
      * @param parentGuid guid of the parent element
-     * @param DataViewModel current element
+     * @param dataViewModel current element
      */
     private void addDataViewModel(String userId, String qualifiedNameForParent, String registrationGuid,
-                                  String registrationQualifiedName, String parentGuid, DataViewModel DataViewModel) {
+                                  String registrationQualifiedName, String parentGuid, DataViewModel dataViewModel) {
 
-        String qualifiedNameForDataViewModel = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  DataViewModel.getId());
+        String qualifiedNameForDataViewModel = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  dataViewModel.getId());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewModel)
-                .withStringProperty(Constants.ATTRIBUTE_NAME, DataViewModel.getName())
-                .withStringProperty(Constants.ID, DataViewModel.getId())
-                .withStringProperty(Constants.COMMENT, DataViewModel.getComment())
-                .withStringProperty(Constants.NATIVE_CLASS, DataViewModel.getNativeClass())
-                .withStringProperty(Constants.DESCRIPTION, DataViewModel.getDescription())
+                .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewModel.getName())
+
+                .withStringProperty(Constants.NATIVE_CLASS, dataViewModel.getNativeClass())
+                .withStringProperty(Constants.DESCRIPTION, dataViewModel.getDescription())
                 .build();
-        EntityDetail DataViewModelEntity = createSchemaType(userId, Constants.SCHEMA_ATTRIBUTE, qualifiedNameForDataViewModel,
+        InstanceProperties additionalInstanceProperties = new EntityPropertiesBuilder()
+                                                        .withStringProperty(Constants.ID, dataViewModel.getId())
+                                                        .withStringProperty(Constants.COMMENT, dataViewModel.getComment())
+                                                        .build();
+        MapPropertyValue additionalProperties= new MapPropertyValue();
+        additionalProperties.setMapValues(additionalInstanceProperties);
+        sectionProperties.setProperty(Constants.ADDITIONAL_PROPERTIES, additionalProperties);
+        EntityDetail dataViewModelEntity = createSchemaType(userId, Constants.SCHEMA_ATTRIBUTE, qualifiedNameForDataViewModel,
                 registrationGuid, registrationQualifiedName, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        String qualifiedNameForDataViewModelType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  DataViewModel.getId() + Constants.TYPE_SUFFIX);
-        EntityDetail schemaTypeEntity = addSchemaType(userId, qualifiedNameForDataViewModelType, registrationGuid, registrationQualifiedName, DataViewModelEntity.getGUID(), Constants.COMPLEX_SCHEMA_TYPE, null);
-        addElements(userId, qualifiedNameForParent, schemaTypeEntity.getGUID(), registrationGuid, registrationQualifiedName, DataViewModel.getElements());
+        String qualifiedNameForDataViewModelType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  dataViewModel.getId() + Constants.TYPE_SUFFIX);
+        EntityDetail schemaTypeEntity = addSchemaType(userId, qualifiedNameForDataViewModelType, registrationGuid, registrationQualifiedName, dataViewModelEntity.getGUID(), Constants.COMPLEX_SCHEMA_TYPE, null);
+        addElements(userId, qualifiedNameForParent, schemaTypeEntity.getGUID(), registrationGuid, registrationQualifiedName, dataViewModel.getElements());
     }
 
 

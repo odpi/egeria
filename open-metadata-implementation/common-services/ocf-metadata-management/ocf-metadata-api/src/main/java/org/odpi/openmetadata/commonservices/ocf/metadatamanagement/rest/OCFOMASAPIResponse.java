@@ -27,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = NoteLogResponse.class, name = "NoteLogResponse"),
                 @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
                 @JsonSubTypes.Type(value = SchemaTypeResponse.class, name = "SchemaTypeResponse"),
-                @JsonSubTypes.Type(value = TagResponse.class, name = "TagResponse")
+                @JsonSubTypes.Type(value = TagResponse.class, name = "TagResponse"),
+                @JsonSubTypes.Type(value = ValidValueResponse.class, name = "ValidValueResponse"),
         })
 public abstract class OCFOMASAPIResponse extends FFDCResponseBase
 {

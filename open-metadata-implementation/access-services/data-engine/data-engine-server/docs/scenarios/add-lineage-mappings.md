@@ -18,10 +18,13 @@ POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-
              "sourceAttribute": "column1QualifiedName",
              "targetAttribute": "column3QualifiedName"
         }
-    ]
+    ],
+    "externalSourceName": "dataEngine"
 }
 ```
-
+`externalSourceName` - qualifiedName of the external data engine tool.
+ Note that you need to register the data engine tool with [register-data-engine-tool](register-data-engine-tool.md) 
+ before adding lineage mappings
 `VoidReponse` with status and error message if failing.
 
 

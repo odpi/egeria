@@ -18,11 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
     private PortAlias portAlias;
 
-    public PortAlias getPort() {
+    public PortAlias getPortAlias() {
         return portAlias;
     }
 
-    public void setPort(PortAlias portAlias) {
+    public void setPortAlias(PortAlias portAlias) {
         this.portAlias = portAlias;
     }
 

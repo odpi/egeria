@@ -3,7 +3,7 @@
 
 # Receiving Asset Consumer OMAS Events using Java
 
-
+The Asset Consumer OMAS does not have any event
 
 
 ----

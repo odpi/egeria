@@ -3,12 +3,12 @@
 
 # Submit a data view
 
-Create a data view as a view on top of other relational database sources.
+Create a data view as a view on top of other sources.
 
 ```
+
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/dataview
 ```
-
 ```json
 {
    "author": "owner-test",
@@ -35,7 +35,8 @@ POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/infor
                "name": "CountryCode",
                "nativeClass": "QueryItem",
                "regularAggregate": "none",
-               "usage": "identifier"
+               "usage": "identifier",
+               "businessTerms":[{"guid":"6662c0f2.e1b1ec6c.00263pgul.jam2g2s.qlr9u8.b9ei1dc60fgnhvs533pvs"}]
             },
             {
                "class": "DataViewColumn",
@@ -70,7 +71,9 @@ POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/infor
 }
 ```
 
-`GUIDResponse` restResult
+
+GuidResponse in case of success containing the guid of the view top level entity or error response in case of errors
+
 
 
 ----

@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-samples</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -27,43 +27,41 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>basic-file-connector</artifactId>
-            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>csv-file-connector</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>avro-file-connector</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-client</artifactId>
-            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-program-client</artifactId>
         </dependency>
 
         <dependency>

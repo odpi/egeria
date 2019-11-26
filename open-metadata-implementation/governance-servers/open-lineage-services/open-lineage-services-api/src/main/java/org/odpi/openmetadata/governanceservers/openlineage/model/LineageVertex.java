@@ -25,11 +25,18 @@ public class LineageVertex {
     private String guid;
     private Map<String, String> attributes;
 
+    public LineageVertex(){}
 
-    public LineageVertex(String nodeID, String nodeType, String displayName, String guid) {
+    public LineageVertex(String nodeID, String nodeType) {
         this.nodeID = nodeID;
         this.nodeType = nodeType;
+    }
+
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setGuid(String guid) {
         this.guid = guid;
     }
 
@@ -49,11 +56,11 @@ public class LineageVertex {
         return displayName;
     }
 
-    public Map getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map attributes) {
+    public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 }

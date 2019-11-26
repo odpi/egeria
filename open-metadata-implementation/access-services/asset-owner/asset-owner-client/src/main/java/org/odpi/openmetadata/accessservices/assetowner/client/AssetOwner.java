@@ -5,13 +5,8 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
@@ -37,7 +32,6 @@ import java.util.Map;
  */
 public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboardingInterface,
                                                                     AssetClassificationInterface,
-                                                                    AssetVisibilityInterface,
                                                                     AssetReviewInterface,
                                                                     AssetDecommissioningInterface
 
@@ -142,11 +136,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                   userId,
                                                                   typeName);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
+       return restResult.getGUID();
     }
 
 
@@ -195,11 +185,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                   userId,
                                                                   assetGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
+         return restResult.getGUID();
 
     }
 
@@ -230,18 +216,13 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  schemaAttributes,
-                                                                  serverName,
-                                                                  userId,
-                                                                  schemaTypeGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        schemaAttributes,
+                                        serverName,
+                                        userId,
+                                        schemaTypeGUID);
     }
-
 
 
     /**
@@ -276,16 +257,12 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         requestBody.setShortDescription(assetSummary);
         requestBody.setConnection(connection);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -304,6 +281,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
      * @param assetGUID unique identifier of asset
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     *                         If null then the assetGUID is used.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -319,26 +297,63 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         final String   methodName = "addSemanticAssignment";
         final String   assetGUIDParameter = "assetGUID";
         final String   glossaryTermParameter = "glossaryTermGUID";
-        final String   assetElementParameter = "assetElementGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/meanings/{3}/elements/{4}";
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/meanings";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/meanings{4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermParameter, methodName);
-        invalidParameterHandler.validateGUID(assetElementGUID, assetElementParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  nullRequestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID,
-                                                                  glossaryTermGUID,
-                                                                  assetElementGUID);
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID, glossaryTermGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID, glossaryTermGUID);
+        }
+    }
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+    /**
+     * Remove the relationship between a glossary term and an element in an Asset description (typically
+     * a field in the schema).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     *                         If null then the assetGUID is used.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSemanticAssignment(String    userId,
+                                          String    assetGUID,
+                                          String    glossaryTermGUID,
+                                          String    assetElementGUID) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String   methodName = "addSemanticAssignment";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   glossaryTermParameter = "glossaryTermGUID";
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/meanings/delete";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/meanings{4}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermParameter, methodName);
+
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID, glossaryTermGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID, glossaryTermGUID);
+        }
     }
 
 
@@ -373,154 +388,124 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         requestBody.setBusinessCapabilityGUID(businessCapabilityGUID);
         requestBody.setOrganizationGUID(organizationGUID);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
-    /*
-     * ==============================================
-     * AssetVisibilityInterface
-     * ==============================================
-     */
-
-
     /**
-     * Create a definition of a governance zone.  The qualified name of these governance zones can be added
-     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
-     * to indicate which zone(s) they belong to.
+     * Remove the asset origin classification to an asset.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
-     * @param criteria the criteria for inclusion in a governance zone
-     * @param additionalProperties additional properties for a governance zone
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
+     * @param assetGUID unique identifier of asset
+     * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  createGovernanceZone(String              userId,
-                                      String              qualifiedName,
-                                      String              displayName,
-                                      String              description,
-                                      String              criteria,
-                                      Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        final String   methodName = "createGovernanceZone";
-
-        final String   qualifiedNameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/governance-zones";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-
-        ZoneRequestBody requestBody = new ZoneRequestBody();
-
-        requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
-        requestBody.setDescription(description);
-        requestBody.setAdditionalProperties(additionalProperties);
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-    }
-
-
-
-    /**
-     * Return information about a specific governance zone.
-     *
-     * @param userId calling user
-     * @param qualifiedName unique name for the zone
-     *
-     * @return properties of the governance zone
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public GovernanceZone getGovernanceZone(String   userId,
-                                            String   qualifiedName) throws InvalidParameterException,
+    public void  removeAssetOrigin(String                userId,
+                                   String                assetGUID) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        final String   methodName = "getGovernanceZone";
-
-        final String   qualifiedNameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/governance-zones/name/{2}";
+        final String   methodName = "removeAssetOrigin";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/origin/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        ZoneResponse restResult = restClient.callZoneGetRESTCall(methodName,
-                                                                 serverPlatformRootURL + urlTemplate,
-                                                                 serverName,
-                                                                 userId,
-                                                                 qualifiedName);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGovernanceZone();
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
     /**
-     * Return information about the defined governance zones.
+     * Add or replace the security tags for an asset or one of its elements.
      *
      * @param userId calling user
-     * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
-     *
-     * @return properties of the governance zone
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     *                         If null then the assetGUID is used.
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<GovernanceZone>  getGovernanceZones(String   userId,
-                                                    int      startingFrom,
-                                                    int      maximumResults) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 String                assetElementGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        final String   methodName = "getGovernanceZones";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/governance-zones?startingFrom={4}&maximumResults={5}";
+        final String   methodName = "addSecurityTags";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        ZoneListResponse restResult = restClient.callZoneListGetRESTCall(methodName,
-                                                                         serverPlatformRootURL + urlTemplate,
-                                                                         serverName,
-                                                                         userId,
-                                                                         Integer.toString(startingFrom),
-                                                                         Integer.toString(maximumResults));
+        SecurityTagsRequestBody requestBody = new SecurityTagsRequestBody();
+        requestBody.setSecurityLabels(securityLabels);
+        requestBody.setSecurityProperties(securityProperties);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, requestBody, serverName, userId, assetGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, requestBody, serverName, userId, assetGUID, assetElementGUID);
+        }
+    }
 
-        return restResult.getGovernanceZones();
+
+    /**
+     * Remove the security tags classification to an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element where the security tags need to be removed.
+     *                         If null then the assetGUID is used.
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSecurityTags(String                userId,
+                                    String                assetGUID,
+                                    String                assetElementGUID) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String   methodName = "addSecurityTags";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/origin";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags/delete";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags/delete";
+
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID);
+        }
     }
 
 
@@ -549,18 +534,13 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  assetZones,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        assetZones,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
-
 
 
     /**
@@ -593,18 +573,13 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         requestBody.setOwnerId(ownerId);
         requestBody.setOwnerType(ownerType);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
-
 
 
     /*
@@ -641,6 +616,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameter, methodName);
+
         AssetsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
                                                                       serverPlatformRootURL + urlTemplate,
                                                                       name,
@@ -648,10 +624,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                       userId,
                                                                       startFrom,
                                                                       pageSize);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAssets();
     }
@@ -685,6 +657,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
+
         AssetsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
                                                                       serverPlatformRootURL + urlTemplate,
                                                                       searchString,
@@ -692,10 +665,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                       userId,
                                                                       startFrom,
                                                                       pageSize);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAssets();
     }
@@ -826,10 +795,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                                                                Integer.toString(startingFrom),
                                                                                                                Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
         return restResult.getDiscoveryAnalysisReports();
     }
 
@@ -879,10 +844,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                                       discoveryReportGUID,
                                                                                       Integer.toString(startingFrom),
                                                                                       Integer.toString(maximumResults));
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getAnnotations();
     }
@@ -934,11 +895,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
                                                                                       Integer.toString(startingFrom),
                                                                                       Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getAnnotations();
+         return restResult.getAnnotations();
     }
 
 
@@ -974,17 +931,11 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        NullRequestBody requestBody = new NullRequestBody();
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 }

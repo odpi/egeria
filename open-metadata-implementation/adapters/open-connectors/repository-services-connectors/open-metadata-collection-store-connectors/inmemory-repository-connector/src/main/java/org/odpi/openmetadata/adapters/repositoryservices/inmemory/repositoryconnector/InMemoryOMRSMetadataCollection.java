@@ -1322,6 +1322,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
@@ -1389,6 +1391,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
@@ -1451,6 +1455,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete - ok to restore entity
          */
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(entityGUID);
+        restoredEntity.setUpdatedBy(userId);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
@@ -1702,7 +1707,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail  entity  = repositoryStore.getEntity(deletedEntityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, entity, methodName);
-
         repositoryValidator.validateEntityIsDeleted(repositoryName, entity, methodName);
 
         /*
@@ -2251,6 +2255,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
 
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
         TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
@@ -2310,11 +2316,16 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Locate relationship
          */
+
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
 
-        repositoryValidator.validateInstanceType(repositoryName, relationship);
+        repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, relationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
-        String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
+
+        repositoryValidator.validateInstanceType(repositoryName, relationship);
 
         TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
 
@@ -2327,6 +2338,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+
         Relationship   updatedRelationship = new Relationship(relationship);
 
         updatedRelationship.setProperties(properties);
@@ -2368,6 +2380,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Restore previous version
          */
         Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(relationshipGUID);
+        restoredRelationship.setUpdatedBy(userId);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, restoredRelationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
@@ -2534,7 +2547,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation is complete.  It is ok to restore the relationship.
          */
 
-        Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(deletedRelationshipGUID);
+
+        Relationship restoredRelationship = new Relationship(relationship);
+
+        restoredRelationship.setStatus(relationship.getStatusOnDelete());
+        restoredRelationship.setStatusOnDelete(null);
+
+        restoredRelationship = repositoryHelper.incrementVersion(userId, relationship, restoredRelationship);
+
+        repositoryStore.updateRelationshipInStore(restoredRelationship);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
@@ -2596,6 +2617,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail  entity  = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
 
         /*
          * Validation complete - ok to make changes
@@ -2675,6 +2698,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
 
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName,
                                                  entity,
                                                  currentTypeDefParameterName,
@@ -2693,6 +2718,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                        entity.getClassifications(),
                                                        newTypeDefSummary.getName(),
                                                        methodName);
+
+
+
 
         /*
          * Validation complete - ok to make changes
@@ -2769,6 +2797,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
 
+        repositoryValidator.validateEntityCanBeRehomed(repositoryName, metadataCollectionId, entity, methodName);
+
 
         /*
          * Validation complete - ok to make changes
@@ -2842,6 +2872,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
+
         /*
          * Validation complete - ok to make changes
          */
@@ -2908,6 +2941,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
+        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
+
         repositoryValidator.validateInstanceType(repositoryName,
                                                  relationship,
                                                  currentTypeDefParameterName,
@@ -2921,6 +2956,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                       newTypeDefSummary,
                                                       relationship.getProperties(),
                                                       methodName);
+
 
         /*
          * Validation complete - ok to make changes
@@ -2997,6 +3033,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate relationship
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
+
+        repositoryValidator.validateRelationshipCanBeRehomed(repositoryName, metadataCollectionId, relationship, methodName);
 
         /*
          * Validation complete - ok to make changes
@@ -3120,7 +3158,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         if (entity != null)
         {
             repositoryStore.removeReferenceEntityFromStore(entityGUID);
-            repositoryStore.addEntityProxyToStore(repositoryHelper.getNewEntityProxy(repositoryName, entity));
         }
         else
         {
@@ -3167,7 +3204,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validate parameters
          */
-        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+        super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
 
         repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());

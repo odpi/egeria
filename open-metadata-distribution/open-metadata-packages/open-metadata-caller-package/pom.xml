@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Caller Package</name>
@@ -28,107 +28,86 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>digital-architecture-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>it-infrastructure-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-privacy-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>design-model-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-science-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>dev-ops-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-engine-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-program-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>project-management-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-officer-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>software-developer-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>stewardship-action-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
 

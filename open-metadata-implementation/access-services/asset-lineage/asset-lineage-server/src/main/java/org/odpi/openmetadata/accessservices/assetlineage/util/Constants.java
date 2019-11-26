@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -10,6 +13,7 @@ public final class Constants {
     }
 
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
+    public static final String GUID_PARAMETER = "guid";
 
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
     public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
@@ -65,10 +69,20 @@ public final class Constants {
     public static final String CONNECTOR_PROVIDER_CLASS_NAME = "connectorProviderClassName";
     public static final String SECURED_PROPERTIES = "securedProperties";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
-    public static final String TYPE = "dataType";
+    public static final String DATA_TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
 
+    //Classification Types
+    public static final String CLASSIFIED_ENTITY = "ClassifiedEntity";
+    public static final String CLASSIFIED_ENTITY_GUID = "b04047c5-50fc-4010-a07a-544bead159dc";
+    public static final String TYPE_EMBEDDED_ATTRIBUTE = "TypeEmbeddedAttribute";
+
+    public static final List<String> qualifiedLineageClassifications = new ArrayList<>();
+
+    static {
+        qualifiedLineageClassifications.add(TYPE_EMBEDDED_ATTRIBUTE);
+    }
 
     // Map of entities to relationship types
     public static final Map<String, String> processRelationshipsTypes = new HashMap<>();
@@ -77,7 +91,8 @@ public final class Constants {
         processRelationshipsTypes.put(PORT_ALIAS, PORT_DELEGATION);
         processRelationshipsTypes.put(PORT_IMPLEMENTATION, PORT_SCHEMA);
         processRelationshipsTypes.put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
-        processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
-        processRelationshipsTypes.put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
+        processRelationshipsTypes.put(SCHEMA_ATTRIBUTE, LINEAGE_MAPPING);
+     /*   processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
+        processRelationshipsTypes.put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);*/
     }
 }

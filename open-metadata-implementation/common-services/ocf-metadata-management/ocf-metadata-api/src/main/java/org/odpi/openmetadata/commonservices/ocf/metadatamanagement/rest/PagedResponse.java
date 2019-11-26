@@ -36,7 +36,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RelatedAssetsResponse.class, name = "RelatedAssetsResponse"),
                 @JsonSubTypes.Type(value = RelatedMediaReferencesResponse.class, name = "RelatedMediaReferencesResponse"),
                 @JsonSubTypes.Type(value = SchemaAttributesResponse.class, name = "SchemaAttributesResponse"),
-                @JsonSubTypes.Type(value = TagsResponse.class, name = "TagsResponse")
+                @JsonSubTypes.Type(value = TagsResponse.class, name = "TagsResponse"),
+                @JsonSubTypes.Type(value = ValidValuesResponse.class, name = "ValidValuesResponse"),
+                @JsonSubTypes.Type(value = ReferenceablesResponse.class, name = "ReferenceablesResponse")
         })
 public class PagedResponse extends OCFOMASAPIResponse
 {

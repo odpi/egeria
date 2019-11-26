@@ -12,11 +12,10 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.maingraphstore.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
@@ -34,7 +33,7 @@ import java.util.*;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class MainGraphConnector extends OpenLineageConnectorBase implements MainGraphStore {
+public class MainGraphConnector extends MainGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
     private JanusGraph bufferGraph;
@@ -140,7 +139,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         String edgeLabel = getEdgeLabel(view);
 
         Graph endToEndGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
                         union(
                                 until(inE(edgeLabel).count().is(0)).
                                         repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV()),
@@ -153,70 +152,84 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     }
 
     private LineageEdge abstractEdge(Edge originalEdge) {
-        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         LineageEdge lineageEdge = new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
         return lineageEdge;
     }
 
     private LineageVertex abstractVertex(Vertex originalVertex) {
-        String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
-        String nodeType = originalVertex.label();
-        String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
-        String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-        LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType, displayName, guid);
-        Map<String, String> attributes = null;
+        try {
+            String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+            String nodeType = originalVertex.label();
+            LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
 
-        switch (nodeType) {
-            case NODE_LABEL_COLUMN:
-                attributes = setColumnProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_TABLE:
-                attributes = setTableProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_PROCESS:
-                attributes = setProcessProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_SUB_PROCESS:
-                attributes = setSubProcessProperties(originalVertex, lineageVertex);
-                break;
-            case NODE_LABEL_GLOSSARYTERM:
-                attributes = setGlossaryTermProperties(originalVertex, lineageVertex);
-                break;
-            default:
+            if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
+                String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
+                lineageVertex.setDisplayName(displayName);
+            }
+            if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
+                String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+                lineageVertex.setGuid(guid);
+            }
+
+            Map<String, String> attributes = null;
+
+            switch (nodeType) {
+                case NODE_LABEL_COLUMN:
+                    attributes = setColumnProperties(originalVertex);
+                    break;
+                case NODE_LABEL_TABLE:
+                    attributes = setTableProperties(originalVertex);
+                    break;
+                case NODE_LABEL_PROCESS:
+                    attributes = setProcessProperties(originalVertex);
+                    break;
+                case NODE_LABEL_SUB_PROCESS:
+                    attributes = setSubProcessProperties(originalVertex);
+                    break;
+                case NODE_LABEL_GLOSSARYTERM:
+                    attributes = setGlossaryTermProperties(originalVertex);
+                    break;
+                default:
+            }
+            lineageVertex.setAttributes(attributes);
+            return lineageVertex;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        lineageVertex.setAttributes(attributes);
-        return lineageVertex;
+        return null;
     }
 
-    private Map< String, String> setSubProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setProcessProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setProcessProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setGlossaryTermProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setGlossaryTermProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return  attributes;
+        return attributes;
     }
 
-    private Map< String, String> setTableProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setTableProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
         String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
+        if (originalGlossaryTerm != null)
             attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
         return attributes;
     }
 
-    private Map< String, String> setColumnProperties(Vertex originalVertex, LineageVertex lineageVertex) {
+    private Map<String, String> setColumnProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-        if(originalGlossaryTerm != null)
-        attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
+            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
+            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        }
         return attributes;
     }
 
@@ -233,11 +246,12 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV()).dedup().toList();
+                repeat(inE(edgeLabel).outV().simplePath()).
+                dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
         List<LineageVertex> lineageVertices = new ArrayList<>();
         List<LineageEdge> lineageEdges = new ArrayList<>();
@@ -264,11 +278,12 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     private LineageResponse ultimateDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV()).dedup().toList();
+                repeat(outE(edgeLabel).inV().simplePath()).
+                dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
@@ -296,15 +311,17 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV()).dedup().toList();
+                repeat(inE(edgeLabel).outV().simplePath()).
+                dedup().toList();
 
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV()).dedup().toList();
+                repeat(outE(edgeLabel).inV().simplePath()).
+                dedup().toList();
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         List<LineageVertex> lineageVertices = new ArrayList<>();
@@ -322,8 +339,8 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     private void addSourceCondensation(List<Vertex> sourcesList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED, "Condensed", "");
+        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
+            LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED);
             lineageVertices.add(condensedVertex);
 
             for (Vertex originalVertex : sourcesList) {
@@ -350,8 +367,8 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     private void addDestinationCondensation(List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED, "Condensed", "");
+        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
+            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(
@@ -387,9 +404,9 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
                         .emit().
-                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().bothV())
+                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 
