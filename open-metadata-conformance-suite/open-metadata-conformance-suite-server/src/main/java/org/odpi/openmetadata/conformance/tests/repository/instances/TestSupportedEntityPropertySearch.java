@@ -25,7 +25,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 
@@ -133,6 +131,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
     private static final String assertion33     = testCaseId + "-33";
     private static final String assertionMsg33  = " search return only valid results.";
+
+
+    private static final String assertion34     = testCaseId + "-34";
+    private static final String assertionMsg34  = " repository supports creation of instances.";
 
 
 
@@ -372,13 +374,35 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             }
 
             repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(), this.entitySet_0, this.entitySet_1, this.entitySet_2);
+
+            assertCondition((true),
+                    assertion34,
+                    testTypeName + assertionMsg34,
+                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
         }
         catch (FunctionNotSupportedException exception) {
+
 
             /*
              * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
              * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
              */
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion34,
+                    assertionMsg34,
+                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
             return;
         }
 
