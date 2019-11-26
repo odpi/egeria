@@ -243,6 +243,8 @@ a {
 .lfheader {
   background-color: #777777;
   width: 100%;
+  top: 0;
+  position: sticky;
 }
 
 .lfheader img {
