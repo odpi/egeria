@@ -34,6 +34,10 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     private static final String assertion5    = testCaseId + "-05";
     private static final String assertionMsg5 = " classification removed from entity of type ";
 
+    private static final String assertion6    = testCaseId + "-6";
+    private static final String assertionMsg6 = " repository supports creation of instances ";
+
+
     private EntityDef         testEntityDef;
     private ClassificationDef classificationDef;
     private String            testTypeName;
@@ -72,11 +76,39 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
 
+        /*
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
+         */
 
+        EntityDetail testEntity;
 
-        EntityDetail testEntity = addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, testEntityDef);
+        try {
 
+            testEntity = addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, testEntityDef);
 
+            assertCondition((true),
+                    assertion6,
+                    testTypeName + assertionMsg6,
+                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+        }
+        catch (FunctionNotSupportedException exception) {
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion6,
+                    assertionMsg6,
+                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+
+            return;
+        }
 
 
         assertCondition((testEntity.getClassifications() == null),
