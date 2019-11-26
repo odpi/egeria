@@ -86,6 +86,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         if (workPad != null)
         {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            maxSearchResults = workPad.getMaxSearchResults();
         }
     }
 
