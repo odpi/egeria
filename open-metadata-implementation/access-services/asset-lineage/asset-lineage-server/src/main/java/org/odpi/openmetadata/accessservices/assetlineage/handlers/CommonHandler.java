@@ -6,11 +6,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -18,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 /**
  * The common handler provide common methods that is generic and reusable for other handlers.
@@ -176,7 +180,7 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     protected EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                                        Relationship relationship, AssetContext graph) throws InvalidParameterException,
+                                                        Relationship relationship, AssetContext graph,boolean changeDirection) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
 
@@ -185,8 +189,15 @@ public class CommonHandler {
 
         if (endEntity == null) return null;
 
-        LineageEntity startVertex = converter.createLineageEntity(startEntity);
-        LineageEntity endVertex = converter.createLineageEntity(endEntity);
+        LineageEntity startVertex;
+        LineageEntity endVertex;
+        if(changeDirection){
+            startVertex = converter.createLineageEntity(endEntity);
+            endVertex = converter.createLineageEntity(startEntity);
+        }else{
+             startVertex = converter.createLineageEntity(startEntity);
+             endVertex = converter.createLineageEntity(endEntity);
+        }
 
         graph.addVertex(startVertex);
         graph.addVertex(endVertex);

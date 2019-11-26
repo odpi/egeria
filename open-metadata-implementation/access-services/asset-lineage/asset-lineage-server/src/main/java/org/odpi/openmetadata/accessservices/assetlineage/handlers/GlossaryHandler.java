@@ -162,7 +162,7 @@ public class GlossaryHandler {
                                                                           GLOSSARY_TERM,
                                                                           methodName);
 
-            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph));
+            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph,false));
         }
 //        return entityDetails.isEmpty();
     }

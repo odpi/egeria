@@ -21,6 +21,7 @@ public final class Constants {
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
+    public static final String SCHEMA_TYPE = "SchemaType";
 
     //Area 5 Types
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
@@ -53,7 +54,6 @@ public final class Constants {
     public static final String PORT_DELEGATION = "PortDelegation";
     public static final String PROCESS_PORT = "ProcessPort";
     public static final String LINEAGE_MAPPING = "LineageMapping";
-    public static final String SCHEMA_TYPE = "SchemaType";
     public static final String PORT_SCHEMA = "PortSchema";
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";

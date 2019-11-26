@@ -164,7 +164,7 @@ public class ProcessContextHandler {
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
                 continue;
             }
-            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph);
+            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph,false);
             if(endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);
