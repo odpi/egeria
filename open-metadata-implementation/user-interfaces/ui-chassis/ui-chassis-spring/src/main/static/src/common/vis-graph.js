@@ -91,7 +91,7 @@ class VisGraph extends PolymerElement {
             smooth: {
               type: 'continuous'
             },
-            arrows:'from'
+            arrows:'to'
           },
           layout: {    improvedLayout: false  },
           interaction: {
