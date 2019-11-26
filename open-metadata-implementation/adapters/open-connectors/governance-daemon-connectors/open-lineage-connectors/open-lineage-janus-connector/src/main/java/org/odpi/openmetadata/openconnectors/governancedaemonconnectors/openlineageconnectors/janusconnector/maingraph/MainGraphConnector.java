@@ -84,7 +84,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Graph graph = getJanusGraph(graphName);
         GraphTraversalSource g = graph.traversal();
         try {
-            g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+            g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         } catch (NoSuchElementException e) {
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
             throw new OpenLineageException(errorCode.getHTTPErrorCode(),
