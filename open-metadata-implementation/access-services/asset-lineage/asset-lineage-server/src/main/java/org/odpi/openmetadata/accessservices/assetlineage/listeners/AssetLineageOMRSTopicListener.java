@@ -53,7 +53,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private String serverName;
     private String serverUserName;
     private Converter converter = new Converter();
-    private Validator validator = new Validator();
+    private Validator validator;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -84,6 +84,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.serverName = serverName;
         this.serverUserName = serverUserName;
         publisher = new AssetLineagePublisher(assetLineageOutTopic, auditLog);
+        validator = new Validator(repositoryHelper);
     }
 
     /**
@@ -168,8 +169,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private void validateEventType(EntityDetail entityDetail, String serviceOperationName){
 
-        Set<String> superTypes = collectSuperTypes(ASSET_LINEAGE_OMAS, entityDetail.getType().getTypeDefName());
-
+        Set<String> superTypes = validator.getSuperTypes(entityDetail.getType().getTypeDefName());
         if (superTypes.contains(SCHEMA_ELEMENT)) {
             processNewEntity(entityDetail,
                     serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
@@ -272,7 +272,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
         try {
-            Validator validator = new Validator();
 
             if (validator.isValidLineageEntityEvent(typeDefName)) {
                 getClassificationContext(entityDetail, serviceOperationName);
@@ -359,7 +358,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName(),superType);
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext);
+        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext,validator);
         //getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
 
         LineageEvent event = new LineageEvent();
@@ -371,27 +370,5 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
-    }
-
-    private Set<String> collectSuperTypes(String userId, String typeDefName) {
-        Set<String> superTypes = new HashSet<>();
-
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        if (typeDefByName != null) {
-            collectSuperTypes(userId, typeDefByName, superTypes);
-        }
-
-        return superTypes;
-    }
-
-    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) {
-        if (type.getName().equals(REFERENCEABLE)) {
-            return;
-        }
-        superTypes.add(type.getName());
-        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
-        if (typeDefByName != null) {
-            collectSuperTypes(userId, typeDefByName, superTypes);
-        }
     }
 }

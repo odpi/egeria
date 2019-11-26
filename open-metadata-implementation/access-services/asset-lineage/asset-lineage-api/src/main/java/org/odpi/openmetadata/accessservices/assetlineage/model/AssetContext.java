@@ -54,6 +54,10 @@ public class AssetContext {
         return true;
     }
 
+    public Set<LineageEntity> getVertices(){
+        return vertices;
+    }
+
 
     /**
      * Gets neighbors.
