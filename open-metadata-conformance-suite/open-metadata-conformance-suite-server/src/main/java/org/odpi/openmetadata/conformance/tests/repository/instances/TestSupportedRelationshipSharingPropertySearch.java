@@ -221,7 +221,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
         InstanceProperties emptyMatchProperties    = new InstanceProperties();
         int                fromElement             = 0;
-        int                pageSize                = 50;
+        int                pageSize                = getMaxSearchResults();
         List<Relationship> result                  = null;
         int                instanceCount           = 0;
         boolean            pageLimited             = false;
