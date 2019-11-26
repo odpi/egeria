@@ -210,7 +210,17 @@ a {
   box-shadow: 0px !important;
 }
 
+.lfheader{
+  background-color:#777777;
+  width:100%;
+}
 
+.lfheader img{
+
+  width:20%;
+  padding-top:0.5%;
+  padding-left:2%;
+}
 
 @media only screen and (max-width: 800px) and (min-width: 500px){
 
@@ -225,11 +235,21 @@ a {
 
     }
 
+    .lfheader img{
+        width:55%;
+        padding-top:1.5%;
+        padding-left:2%;
+      }
 
 }
 
 @media (max-width:800px) {
 
+  .lfheader img{
+    width:55%;
+    padding-top:1.5%;
+    padding-left:2%;
+  }
 
   .logo img {
     width:55% !important;
