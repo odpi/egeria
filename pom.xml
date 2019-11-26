@@ -2354,6 +2354,7 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <phase>process-test-resources</phase>
                     </execution>
                     <execution>
                         <id>report</id>
@@ -2443,7 +2444,7 @@
                 <executions>
                     <execution>
                         <id>createemptydocsource</id>
-                        <phase>process-resources</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
