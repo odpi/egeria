@@ -132,15 +132,10 @@ public class AssetContextHandler {
 
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
-        Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(userId,typeDefName);
 
-        if (isComplexSchemaType.isPresent()) {
-            setAssetDetails(userId, entityDetail);
+        if (typeDefName.equals(RELATIONAL_TABLE) || typeDefName.equals(DATA_FILE)) {
+            getSchemaAttributeType(userId,entityDetail,typeDefName);
         }
-
-//        if(hasSchemaAttributeType(typeDefName)) {
-//            buildGraphByRelationshipType(userId, entityDetail, SCHEMA_ATTRIBUTE_TYPE, typeDefName);
-//        }
 
         List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
 
@@ -248,6 +243,14 @@ public class AssetContextHandler {
 
         if(nestedFolder.isPresent()) {
             getFolderHierarchy(userId, nestedFolder.get());
+        }
+    }
+
+    private void getSchemaAttributeType(String userId,EntityDetail entityDetail,String typeDefName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, SCHEMA_ATTRIBUTE_TYPE, typeDefName);
+
+        for(EntityDetail schemaAttributeType: schemaAttributeTypes){
+            buildGraphByRelationshipType(userId, schemaAttributeType, ATTRIBUTE_FOR_SCHEMA, typeDefName);
         }
     }
 
