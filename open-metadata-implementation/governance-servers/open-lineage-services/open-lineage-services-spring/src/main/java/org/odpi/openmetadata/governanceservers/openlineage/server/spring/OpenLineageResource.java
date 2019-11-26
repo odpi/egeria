@@ -10,7 +10,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;

@@ -16,7 +16,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/open-lineage/users/{1}";
 
-    private static final String LINEAGE = "/lineage/";
+    private static final String LINEAGE = "/lineage";
     private static final String LINEAGE_SOURCES = "/sources/{2}";
     private static final String LINEAGE_SCOPES = "/scopes/{3}";
     private static final String LINEAGE_VIEWS = "/views/{4}";
