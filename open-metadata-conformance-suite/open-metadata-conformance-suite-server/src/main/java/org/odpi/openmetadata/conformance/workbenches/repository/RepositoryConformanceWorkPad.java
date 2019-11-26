@@ -35,6 +35,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  tutMetadataCollectionId     = null;
     private String                  tutServerType               = null;
     private String                  tutOrganization             = null;
+    private int                     pageSizeForTests            = 50;
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -85,6 +86,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         if (configuration != null)
         {
             this.tutServerName = configuration.getTutRepositoryServerName();
+            this.pageSizeForTests = configuration.getPageSizeForTests();
             super.tutName = this.tutServerName;
         }
     }
@@ -108,6 +110,17 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public String getTutServerName()
     {
         return tutServerName;
+    }
+
+
+    /**
+     * Return the page size that should be used for tests of the repository under test.
+     *
+     * @return page size
+     */
+    public int getPageSizeForTests()
+    {
+        return pageSizeForTests;
     }
 
 

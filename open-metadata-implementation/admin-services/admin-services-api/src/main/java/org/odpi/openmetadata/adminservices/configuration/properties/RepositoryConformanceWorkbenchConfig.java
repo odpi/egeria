@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHeader
 {
     private String   tutRepositoryServerName = null;
+    private int      pageSizeForTests = 50;
 
 
     /**
@@ -45,6 +46,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         if (template != null)
         {
             tutRepositoryServerName = template.getTutRepositoryServerName();
+            pageSizeForTests = template.getPageSizeForTests();
         }
     }
 
@@ -70,6 +72,29 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         this.tutRepositoryServerName = tutRepositoryServerName;
     }
 
+
+    /**
+     * Return the page size that should be used for testing the server under test.
+     *
+     * @return page size
+     */
+    public int getPageSizeForTests()
+    {
+        return pageSizeForTests;
+    }
+
+
+    /**
+     * Set up the page size to use for testing the server under test.
+     *
+     * @param pageSizeForTests page size
+     */
+    public void setPageSizeForTests(int pageSizeForTests)
+    {
+        this.pageSizeForTests = pageSizeForTests;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -80,6 +105,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     {
         return "ConformanceSuiteConfig{" +
                 "tutRepositoryServerName='" + tutRepositoryServerName + '\'' +
+                "pageSizeForTests='" + pageSizeForTests + '\'' +
                 '}';
     }
 
@@ -102,7 +128,8 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
             return false;
         }
         RepositoryConformanceWorkbenchConfig that = (RepositoryConformanceWorkbenchConfig) objectToCompare;
-        return Objects.equals(getTutRepositoryServerName(), that.getTutRepositoryServerName());
+        return Objects.equals(getTutRepositoryServerName(), that.getTutRepositoryServerName())
+                && Objects.equals(getPageSizeForTests(), that.getPageSizeForTests());
     }
 
 
@@ -114,6 +141,6 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTutRepositoryServerName());
+        return Objects.hash(getTutRepositoryServerName(), getPageSizeForTests());
     }
 }
