@@ -218,7 +218,7 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							"pm.test(\"IGC endpoint configured\", function () {",
+							"pm.test(\"CTS endpoint configured\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal(\"Local connection to In-memory repository@cts\");",
 							"});"
