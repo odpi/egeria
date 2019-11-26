@@ -32,12 +32,11 @@ import static org.mockito.Mockito.when;
 public class RelationshipHandlerTest {
 
     private static final String RELATIONSHIP_GUID = "212123-abc";
-    private final String USER = "test-user";
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
-    private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
-
+    private final String USER = "test-user";
+    private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -117,7 +116,7 @@ public class RelationshipHandlerTest {
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        InvalidParameterException mockedException =  new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", "", "");
+        InvalidParameterException mockedException = new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", "", "");
 
         doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 
@@ -126,7 +125,7 @@ public class RelationshipHandlerTest {
                         FIRST_GUID,
                         SECOND_GUID,
                         RELATIONSHIP_TYPE));
-        
+
     }
 
     @Test

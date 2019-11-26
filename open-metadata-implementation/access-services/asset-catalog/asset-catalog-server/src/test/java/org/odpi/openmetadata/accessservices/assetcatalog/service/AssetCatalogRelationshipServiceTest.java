@@ -26,16 +26,14 @@ import static org.mockito.Mockito.when;
 
 public class AssetCatalogRelationshipServiceTest {
 
-    private final String USER = "test-user";
-    private final String SERVER_NAME = "omas";
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
+    private final String USER = "test-user";
+    private final String SERVER_NAME = "omas";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
-    private Relationship response;
-
     @Mock
     RESTExceptionHandler restExceptionHandler;
-
+    private Relationship response;
     @Mock
     private AssetCatalogInstanceHandler instanceHandler;
 

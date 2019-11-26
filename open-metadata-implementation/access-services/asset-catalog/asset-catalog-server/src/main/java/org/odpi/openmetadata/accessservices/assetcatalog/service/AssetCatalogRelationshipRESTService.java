@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHa
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +42,6 @@ public class AssetCatalogRelationshipRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
-        } catch (RepositoryErrorException e) {
-            restExceptionHandler.captureRepositoryErrorException(response, e);
         }
 
         log.debug("Returning from method: {} with response: {}", methodName, response);

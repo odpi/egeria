@@ -42,11 +42,6 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper, errorHandler, supportedZones);
             relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler,
                     repositoryHelper, supportedZones);
-
-            if (securityVerifier != null) {
-                assetCatalogHandler.setSecurityVerifier(securityVerifier);
-                relationshipHandler.setSecurityVerifier(securityVerifier);
-            }
         } else {
             final String methodName = "new ServiceInstance";
 

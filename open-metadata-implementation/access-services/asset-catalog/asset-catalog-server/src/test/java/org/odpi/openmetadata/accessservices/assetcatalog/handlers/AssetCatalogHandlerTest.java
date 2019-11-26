@@ -30,7 +30,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
@@ -59,13 +58,12 @@ public class AssetCatalogHandlerTest {
     private static final Integer PAGE_SIZE = 10;
     private static final String ASSET_TYPE_GUID = "ababa-12232-abc";
     private static final String SEARCH_CRITERIA = "employee";
-    private final String USER = "test-user";
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
-    private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
     private static final String SEARCH_PARAMETER = "searchParameter";
-
+    private final String USER = "test-user";
+    private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -148,11 +146,10 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getRelationshipsByEntityGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+    public void getRelationshipsByEntityGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getRelationshipsByEntityGUID";
 
         List<Relationship> relationshipsByType = Collections.singletonList(mockRelationship());
-        mockMetadataCollection();
 
         when(repositoryHandler.getRelationshipsByType(USER,
                 FIRST_GUID,
@@ -258,7 +255,7 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getEntityClassificationByName_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
+    public void getEntityClassificationByName_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockEntityDetails(FIRST_GUID, "getEntityClassifications");
 
         String mokedMethodName = "getEntityClassifications";

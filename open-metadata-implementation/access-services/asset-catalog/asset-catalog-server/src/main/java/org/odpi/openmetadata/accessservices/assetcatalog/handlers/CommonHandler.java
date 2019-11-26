@@ -2,17 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
 /**
@@ -30,18 +34,8 @@ public class CommonHandler {
         this.repositoryHelper = repositoryHelper;
     }
 
-
     OMRSMetadataCollection getOMRSMetadataCollection() {
         return repositoryHandler.getMetadataCollection();
-    }
-
-    String getOMRSMetadataCollectionName(String userId) throws RepositoryErrorException {
-        OMRSMetadataCollection metadataCollection = getOMRSMetadataCollection();
-        String metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
-        if (metadataCollectionId == null) {
-            return null;
-        }
-        return repositoryHelper.getMetadataCollectionName(metadataCollectionId);
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {
@@ -80,5 +74,20 @@ public class CommonHandler {
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
         return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
+    }
+
+    /**
+     * Fetch the zone membership property
+     *
+     * @param properties asset properties
+     * @return the list that contains the zone membership
+     */
+    public List<String> getAssetZoneMembership(InstanceProperties properties) {
+        String methodName = "getAssetZoneMembership";
+        List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS, "zoneMembership", properties, methodName);
+        if (CollectionUtils.isNotEmpty(zoneMembership)) {
+            return zoneMembership;
+        }
+        return Collections.emptyList();
     }
 }
