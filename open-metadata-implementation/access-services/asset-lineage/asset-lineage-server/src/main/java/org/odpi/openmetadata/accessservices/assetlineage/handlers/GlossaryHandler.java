@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
@@ -73,7 +76,8 @@ public class GlossaryHandler {
     public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
                                                           String userId,
                                                           EntityDetail entityDetail,
-                                                          AssetContext assetContext) throws InvalidParameterException{
+                                                          AssetContext assetContext,
+                                                          Validator validator) throws InvalidParameterException{
 
         String methodName = "getGlossaryTerm";
 
@@ -82,12 +86,20 @@ public class GlossaryHandler {
                 
         try {
             graph = assetContext;
-            boolean glossary = getGlossary(userId, assetGuid, entityDetail.getType().getTypeDefName());
 
-            if (!glossary) {
-                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
-                return Collections.emptyMap();
+            Set<LineageEntity> vertices = assetContext.getVertices();
+            vertices = vertices.stream().filter(vertex -> validator.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
+                    !validator.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
+;
+            for(LineageEntity vertex: vertices){
+                getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
+
             }
+
+//            if (!glossary) {
+//                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
+//                return Collections.emptyMap();
+//            }
 
             return graph.getNeighbors();
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
@@ -100,7 +112,6 @@ public class GlossaryHandler {
         }
     }
 
-
     /**
      * Retrieves semantic assignments for an asset
      *
@@ -109,7 +120,7 @@ public class GlossaryHandler {
      * @param typeDefName the typeName of the asset.
      * @return Glossary Term retrieved from the property server
      */
-    private boolean getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
+    private void getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException {
         final String methodName = "getGlossary";
@@ -121,12 +132,12 @@ public class GlossaryHandler {
                                                                                           typeGuid,
                                                                                           SEMANTIC_ASSIGNMENT,
                                                                                           methodName);
-
+//
         if (semanticAssignments == null) {
-            return false;
+            return;
         }
-
-        return addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
+        addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
+//        return addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
@@ -136,7 +147,7 @@ public class GlossaryHandler {
      * @param semanticAssignments   array of the semantic assignments
      * @return true if semantic relationships exist, false otherwise
      */
-    private boolean addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
+    private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException {
         final String methodName = "addSemanticAssignmentToContext";
@@ -153,7 +164,7 @@ public class GlossaryHandler {
 
             entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph));
         }
-        return entityDetails.isEmpty();
+//        return entityDetails.isEmpty();
     }
 
 }
