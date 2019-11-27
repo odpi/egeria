@@ -6,6 +6,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -62,16 +63,16 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, Object> getUltimateSource(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -83,16 +84,16 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, Object> getEndToEndLineage(String userId, View view, String guid)  {
+    public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -104,16 +105,16 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, Object> getUltimateDestination(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
 
@@ -126,16 +127,16 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, Object> getGlossaryLineage(String userId, View view, String guid)  {
+    public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -147,17 +148,17 @@ public class OpenLineageService {
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, Object> getSourceAndDestination(String userId, View view, String guid)  {
+    public Map<String, List> getSourceAndDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response =
                 null;
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -167,8 +168,8 @@ public class OpenLineageService {
      * @param response string returned from Open Lineage Services to be processed
      * @return map of nodes and edges describing the end to end flow
      */
-    private Map<String, Object> processResponse(LineageVerticesAndEdges response)  {
-        Map<String, Object> graphData = new HashMap<>();
+    private Map<String, List> processResponse(LineageVerticesAndEdges response)  {
+        Map<String, List> graphData = new HashMap<>();
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
 
@@ -187,10 +188,10 @@ public class OpenLineageService {
         listEdges = Optional.ofNullable(response.getLineageEdges())
                 .map(e -> e.stream())
                 .orElseGet(Stream::empty)
-                .map(e -> {Edge newEdge = new Edge(e.getSourceNodeID(),
-                        e.getDestinationNodeID());
-                    newEdge.setLabel(e.getEdgeType());
-                    return newEdge;})
+                .map(e -> {Edge newEdge = new Edge( e.getSourceNodeID(),
+                                                    e.getDestinationNodeID());
+                                                    newEdge.setLabel(e.getEdgeType());
+                                                    return newEdge;})
                 .collect(Collectors.toList());
 
         graphData.put(EDGES_LABEL, listEdges);

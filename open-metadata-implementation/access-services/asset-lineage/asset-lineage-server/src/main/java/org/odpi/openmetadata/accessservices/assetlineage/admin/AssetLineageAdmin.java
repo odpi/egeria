@@ -16,6 +16,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 
+/**
+ * AssetLineageAdmin is the class that is called by the OMAG Server to initialize and terminate
+ * the Asset Lineage OMAS. The initialization call provides this OMAS with resources from the
+ * Open Metadata Repository Services.
+ */
 public class AssetLineageAdmin extends AccessServiceAdmin
 {
 

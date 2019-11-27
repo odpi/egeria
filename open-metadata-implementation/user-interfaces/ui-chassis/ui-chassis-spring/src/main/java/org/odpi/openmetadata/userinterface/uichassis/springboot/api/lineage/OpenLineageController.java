@@ -5,7 +5,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,8 +40,8 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate sources of the asset
      */
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
-    public Map<String, Object> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam View view){
-        Map<String, Object> exportedGraph;
+    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam View view){
+        Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
         return exportedGraph;
@@ -55,8 +55,8 @@ public class OpenLineageController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
     @ResponseBody
-    public Map<String, Object> endToEndLineage(@PathVariable("guid") String guid, @RequestParam View view){
-        Map<String, Object> exportedGraph;
+    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid, @RequestParam View view){
+        Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
         return exportedGraph;
@@ -69,8 +69,8 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate destination of the asset
      */
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
-    public Map<String, Object> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
-        Map<String, Object> exportedGraph;
+    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
+        Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
         return exportedGraph;
@@ -84,8 +84,8 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
-    public Map<String, Object> glossaryLineage(@PathVariable("guid") String guid, @RequestParam View view){
-        Map<String, Object> exportedGraph;
+    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid, @RequestParam View view){
+        Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
         return exportedGraph;
@@ -98,8 +98,8 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate source and destination of the asset
      */
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
-    public Map<String, Object> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam View view){
-        Map<String, Object> exportedGraph;
+    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam View view){
+        Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
         return exportedGraph;
