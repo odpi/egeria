@@ -22,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 
@@ -40,8 +40,13 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
  * Test that all defined relationships can be retrieved by property searches.
  */
 public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryConformanceTestCase {
+
     private static final String testCaseId = "repository-relationship-property-advanced-search";
     private static final String testCaseName = "Repository relationship property advanced search test case";
+
+    /* Type */
+    private static final String assertion0 = testCaseId + "-00";
+    private static final String assertionMsg0 = " relationship type definition matches known type  ";
 
 
     /* Test 1 */
@@ -104,8 +109,15 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
     private static final String assertion22 = testCaseId + "-22";
     private static final String assertionMsg22 = " value search contained no unexpected results.";
 
+    private static final String assertion23     = testCaseId + "-23";
+    private static final String assertionMsg23  = " repository supports creation of instances.";
+
+
+
     private static final String discoveredProperty_searchSupport = " advanced search support";
 
+
+    private RepositoryConformanceWorkPad workPad;
     private String metadataCollectionId;
     private Map<String, EntityDef> entityDefs;
     private RelationshipDef relationshipDef;
@@ -139,13 +151,14 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipPropertyAdvancedSearch(RepositoryConformanceWorkPad workPad,
-                                                           Map<String, EntityDef> entityDefs,
-                                                           RelationshipDef relationshipDef)
+                                                           Map<String, EntityDef>       entityDefs,
+                                                           RelationshipDef              relationshipDef)
     {
         super(workPad,
                 RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
+        this.workPad = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.entityDefs = entityDefs;
         this.relationshipDef = relationshipDef;
@@ -203,6 +216,26 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+
 
 
         this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
@@ -319,13 +352,32 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
             }
 
-        } catch (
-                FunctionNotSupportedException exception) {
+            assertCondition((true),
+                    assertion23,
+                    testTypeName + assertionMsg23,
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * If the repository does not support metadata maintenance, the workpad will not have recorded any instances.
              * The absence of instance is checked in the remaining phases (EXECUTE and CLEAN).
              */
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion23,
+                    assertionMsg23,
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
+
             return;
         }
 
@@ -337,6 +389,74 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
     {
 
         /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                    assertion12,
+                    testTypeName + assertionMsg12,
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+        }
+
+        /*
+         * The test does not iterate over all possible end types - but it must select an end type that is supported by the repository,
+         * so it uses the first type in the supported list for each end.
+         */
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+
+
+        /*
          * Local variables for entity creation - entities need to be cleaned up when relationships are deleted.
          */
         EntityDef     end1Type;
@@ -345,16 +465,16 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
         EntityDetail  end2;
 
 
-        end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        end1Type = entityDefs.get(end1TypeName);
         end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-        end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        end2Type = entityDefs.get(end2TypeName);
         end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
         relationshipSet.add(metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null));
 
-        end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        end1Type = entityDefs.get(end1TypeName);
         end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
-        end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        end2Type = entityDefs.get(end2TypeName);
         end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
         relationshipSet.add(metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null));

@@ -38,7 +38,7 @@ public class OMAGConformanceSuiteConfigServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param tutRepositoryServerName name of the server that the repository workbench should test.
+     * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
@@ -46,7 +46,7 @@ public class OMAGConformanceSuiteConfigServices
      */
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(String userId,
                                                                   String serverName,
-                                                                  String tutRepositoryServerName)
+                                                                  RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
         final String methodName = "enableRepositoryConformanceSuiteWorkbench";
 
@@ -54,7 +54,7 @@ public class OMAGConformanceSuiteConfigServices
 
         VoidResponse response = this.enableAllConformanceSuiteWorkbenches(userId,
                                                                           serverName,
-                                                                          tutRepositoryServerName,
+                                                                          repositoryConformanceWorkbenchConfig,
                                                                           null);
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -101,7 +101,7 @@ public class OMAGConformanceSuiteConfigServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param tutRepositoryServerName name of the server that the repository workbench should use.
+     * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @param tutPlatformRootURL url of the OMAG platform to test.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -110,7 +110,7 @@ public class OMAGConformanceSuiteConfigServices
      */
     private VoidResponse enableAllConformanceSuiteWorkbenches(String userId,
                                                               String serverName,
-                                                              String tutRepositoryServerName,
+                                                              RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig,
                                                               String tutPlatformRootURL)
     {
         final String methodName = "enableAllConformanceSuiteWorkbenches";
@@ -173,15 +173,10 @@ public class OMAGConformanceSuiteConfigServices
             serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             configAuditTrail = serverConfig.getAuditTrail();
 
-            if (tutRepositoryServerName != null)
+            if (repositoryConformanceWorkbenchConfig != null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " enable repository workbench to test " + tutRepositoryServerName + ".");
-
-                RepositoryConformanceWorkbenchConfig
-                        repositoryWorkbenchConfig = new RepositoryConformanceWorkbenchConfig();
-
-                repositoryWorkbenchConfig.setTutRepositoryServerName(tutRepositoryServerName);
-                conformanceSuiteConfig.setRepositoryWorkbenchConfig(repositoryWorkbenchConfig);
+                configAuditTrail.add(new Date().toString() + " " + userId + " enable repository workbench to test " + repositoryConformanceWorkbenchConfig.getTutRepositoryServerName() + ".");
+                conformanceSuiteConfig.setRepositoryWorkbenchConfig(repositoryConformanceWorkbenchConfig);
             }
 
             if (tutPlatformRootURL != null)
