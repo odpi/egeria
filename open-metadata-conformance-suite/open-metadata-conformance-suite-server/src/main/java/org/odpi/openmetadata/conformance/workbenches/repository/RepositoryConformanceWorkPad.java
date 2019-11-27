@@ -35,6 +35,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  tutMetadataCollectionId     = null;
     private String                  tutServerType               = null;
     private String                  tutOrganization             = null;
+    private int                     maxSearchResults            = 50;
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -85,6 +86,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         if (configuration != null)
         {
             this.tutServerName = configuration.getTutRepositoryServerName();
+            this.maxSearchResults = configuration.getMaxSearchResults();
             super.tutName = this.tutServerName;
         }
     }
@@ -108,6 +110,17 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public String getTutServerName()
     {
         return tutServerName;
+    }
+
+
+    /**
+     * Return the maximum number of search results that be processed for tests of the repository under test.
+     *
+     * @return maximum number of search results to process
+     */
+    public int getMaxSearchResults()
+    {
+        return maxSearchResults;
     }
 
 
@@ -725,6 +738,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 ", localServerUserId='" + localServerUserId + '\'' +
                 ", localServerPassword='" + localServerPassword + '\'' +
                 ", tutName='" + tutName + '\'' +
+                ", maxSearchResults=" + maxSearchResults +
                 ", tutType='" + tutType + '\'' +
                 ", maxPageSize=" + maxPageSize +
                 '}';

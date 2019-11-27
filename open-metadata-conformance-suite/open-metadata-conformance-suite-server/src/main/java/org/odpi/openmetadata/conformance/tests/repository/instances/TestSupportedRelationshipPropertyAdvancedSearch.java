@@ -233,7 +233,7 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
                 assertion0,
                 testTypeName + assertionMsg0,
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
 
@@ -355,8 +355,8 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
             assertCondition((true),
                     assertion23,
                     testTypeName + assertionMsg23,
-                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -374,8 +374,8 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
             super.addNotSupportedAssertion(assertion23,
                     assertionMsg23,
-                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
             return;

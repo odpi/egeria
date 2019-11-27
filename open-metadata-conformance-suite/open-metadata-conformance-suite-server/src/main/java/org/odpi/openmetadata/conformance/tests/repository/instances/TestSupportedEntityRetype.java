@@ -151,8 +151,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
             assertCondition((true),
                     assertion17,
                     testTypeName + assertionMsg17,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
         }
@@ -167,8 +167,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
             super.addNotSupportedAssertion(assertion17,
                     assertionMsg17,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
@@ -176,8 +176,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         assertCondition((newEntity != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -192,8 +192,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
