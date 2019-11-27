@@ -34,6 +34,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
     protected RepositoryConformanceWorkPad repositoryConformanceWorkPad;
     protected OMRSRepositoryConnector      cohortRepositoryConnector = null;
+    private   int                          maxSearchResults = 50;
 
     int       successfulExecutionCount = 0;
     int       unSuccessfulExecutionCount = 0;
@@ -63,6 +64,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         if (workPad != null)
         {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            maxSearchResults = workPad.getMaxSearchResults();
         }
     }
 
@@ -84,6 +86,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         if (workPad != null)
         {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            maxSearchResults = workPad.getMaxSearchResults();
         }
     }
 
@@ -211,6 +214,15 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         return testTypeName;
     }
 
+
+    /**
+     * Return the page size to use for testing the repository.
+     *
+     * @return page size
+     */
+    protected int getMaxSearchResults() {
+        return maxSearchResults;
+    }
 
     /**
      * Return the repository connector generated from the cohort registration event.

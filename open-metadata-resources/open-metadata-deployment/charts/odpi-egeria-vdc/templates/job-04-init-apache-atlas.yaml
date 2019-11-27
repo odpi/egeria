@@ -103,7 +103,9 @@ spec:
                 ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories/${ATLAS_SERVER}
+                --header "Content-Type: application/json"
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+                --data '{"class":"RepositoryConformanceWorkbenchConfig","tutRepositoryServerName":"'"${ATLAS_SERVER}"'","maxSearchResults":5}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
