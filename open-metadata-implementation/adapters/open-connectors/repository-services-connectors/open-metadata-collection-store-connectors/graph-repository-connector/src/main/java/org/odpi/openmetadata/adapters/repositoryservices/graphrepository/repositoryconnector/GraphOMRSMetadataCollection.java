@@ -642,6 +642,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
+        String entityTypeName = entity.getType().getTypeDefName();
 
         TypeDef typeDef;
         try {
@@ -650,7 +651,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         catch (TypeErrorException e) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTypeName,
+                    entityTypeGUID,
+                    "entityType",
+                    methodName,
                     this.getClass().getName(),
                     repositoryName);
 
@@ -735,6 +739,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
+        String entityTypeName = entity.getType().getTypeDefName();
 
         TypeDef typeDef;
         try {
@@ -743,8 +748,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         catch (TypeErrorException e) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTypeName,
+                    entityTypeGUID,
+                    "entityType",
+                    methodName,
                     repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -812,6 +819,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
         String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
+        String relationshipTypeName = relationship.getType().getTypeDefName();
 
         TypeDef typeDef;
         try {
@@ -820,8 +828,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         catch (TypeErrorException e) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipTypeName,
+                    relationshipTypeGUID,
+                    "relationshipType",
+                    methodName,
                     repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -897,6 +907,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
         String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
+        String relationshipTypeName = relationship.getType().getTypeDefName();
 
         TypeDef typeDef;
         try {
@@ -905,8 +916,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         catch (TypeErrorException e) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipTypeName,
+                    relationshipTypeGUID,
+                    "relationshipType",
+                    methodName,
                     repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),

@@ -80,9 +80,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
     private static final String assertion17     = testCaseId + "-17";
     private static final String assertionMsg17  = " repository supports creation of instances.";
 
-
-    private static final String discoveredProperty_retypeSupport    = " retype support";
-
+    private static final String assertion18     = testCaseId + "-18";
+    private static final String assertionMsg18  = " repository supports retype instances.";
 
 
 
@@ -151,8 +150,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
             assertCondition((true),
                     assertion17,
                     testTypeName + assertionMsg17,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
         }
@@ -167,8 +166,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
             super.addNotSupportedAssertion(assertion17,
                     assertionMsg17,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
@@ -176,8 +175,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         assertCondition((newEntity != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -192,8 +191,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
@@ -247,8 +246,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                             entityDef,
                             subTypeDef);
 
-                    super.addDiscoveredProperty(testTypeName + discoveredProperty_retypeSupport,
-                            "Enabled",
+                    assertCondition(true,
+                            assertion18,
+                            testTypeName + assertionMsg18,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
@@ -406,11 +406,10 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 } catch (FunctionNotSupportedException exception) {
 
-                    super.addDiscoveredProperty(testTypeName + discoveredProperty_retypeSupport,
-                            "Disabled",
+                    super.addNotSupportedAssertion(assertion18,
+                            assertionMsg18,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
                 }
 
 

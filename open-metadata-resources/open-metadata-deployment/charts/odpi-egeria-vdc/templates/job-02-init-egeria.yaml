@@ -86,7 +86,7 @@ spec:
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
-                --data '{"class":"RepositoryConformanceWorkbenchConfig","tutRepositoryServerName":"'"${EGERIA_SERVER}"'","pageSizeForTests":5}'
+                --data '{"class":"RepositoryConformanceWorkbenchConfig","tutRepositoryServerName":"'"${EGERIA_SERVER}"'","maxSearchResults":5}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance

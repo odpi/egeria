@@ -60,10 +60,12 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
     private static final String assertionMsg7  = " end types are supported by repository";
 
     private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " repository supports creatoin of instances";
+    private static final String assertionMsg8  = " repository supports creation of instances";
+
+    private static final String assertion9     = testCaseId + "-09";
+    private static final String assertionMsg9  = " repository supports reidentify of instances.";
 
 
-    private static final String discoveredProperty_reidentifySupport = " reidentify support";
 
     private RepositoryConformanceWorkPad workPad;
     private String            metadataCollectionId;
@@ -181,8 +183,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
             assertCondition((false),
                     assertion7,
                     testTypeName + assertionMsg7,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
         }
 
         /*
@@ -252,8 +254,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
             assertCondition((true),
                     assertion8,
                     testTypeName + assertionMsg8,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -267,8 +269,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
             super.addNotSupportedAssertion(assertion8,
                     assertionMsg8,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
             return;
         }
@@ -276,8 +278,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
         assertCondition((newRelationship != null),
                         assertion1,
                         testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
        /*
         * Other conditions - such as content of InstanceAuditHeader fields - are tested by Relationship Lifecycle tests; so not tested here.
@@ -292,8 +294,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
         verifyCondition((newRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID()))),
                         assertion2,
                         testTypeName + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
 
@@ -319,8 +321,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                     newRelationship.getGUID(),
                     newGUID);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion9,
+                    testTypeName + assertionMsg9,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
@@ -341,8 +344,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
         catch (FunctionNotSupportedException exception)
         {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion9,
+                    assertionMsg9,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }
