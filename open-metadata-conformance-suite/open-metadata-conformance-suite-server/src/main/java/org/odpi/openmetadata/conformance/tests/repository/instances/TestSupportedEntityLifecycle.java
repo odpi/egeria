@@ -83,9 +83,13 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertion27    = testCaseId + "-27";
     private static final String assertionMsg27 = " historical retrieval returned correct version of entity ";
 
+    private static final String assertion28    = testCaseId + "-28";
+    private static final String assertionMsg28 = " repository supports creation of instances ";
 
-    private static final String discoveredProperty_undoSupport       = " undo support";
-    private static final String discoveredProperty_softDeleteSupport = " soft delete support";
+
+    private static final String discoveredProperty_undoSupport                = " undo support";
+    private static final String discoveredProperty_softDeleteSupport          = " soft delete support";
+    private static final String discoveredProperty_historicRetrievalSupport   = " historic retrieval support";
 
 
     private String            metadataCollectionId;
@@ -100,7 +104,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
      * @param entityDef type of valid entities
      */
     public TestSupportedEntityLifecycle(RepositoryConformanceWorkPad workPad,
-                                        EntityDef               entityDef)
+                                        EntityDef                    entityDef)
     {
         super(workPad,
               RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
@@ -125,19 +129,52 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates an
-         * entity that is logically complete - versus an instance with just the locally-defined properties.
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
          */
 
-        EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              entityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                             null,
-                                                             null);
+        EntityDetail newEntity;
+
+        try {
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                     entityDef.getGUID(),
+                                                     super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                    null,
+                                                    null);
+
+            assertCondition((true),
+                    assertion28,
+                    testTypeName + assertionMsg28,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
+        }
+        catch (FunctionNotSupportedException exception) {
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion28,
+                    assertionMsg28,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return;
+
+        }
 
         assertCondition((newEntity != null),
                         assertion1,
@@ -362,6 +399,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
 
                 nextVersion = undoneEntity.getVersion() + 1;
+
             }
             catch (FunctionNotSupportedException exception)
             {
@@ -425,9 +463,6 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
-
-
-
 
 
 
@@ -508,7 +543,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         {
             EntityDetail earlierEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID(), preDeleteDate);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
                     "Enabled",
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
@@ -538,7 +573,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
         catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
+            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
                     "Disabled",
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
