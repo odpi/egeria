@@ -128,7 +128,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
                         validateEventType(instanceEvent.getEntity(),serviceOperationName + NEW_ENTITY_EVENT.getName());
-
                         break;
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(),
@@ -194,15 +193,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")) {
-            //ADD
+            processNewEntity(entityDetail, serviceOperationName + NEW_ENTITY_EVENT.getName(),PROCESS);
         }
 
-        LineageEntity lineageEntity = converter.createLineageEntity(entityDetail);
-
-        LineageEvent lineageEvent = new LineageEvent();
-        lineageEvent.setLineageEntity(lineageEntity);
-        lineageEvent.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
-        publisher.publishRelationshipEvent(lineageEvent);
+//        LineageEntity lineageEntity = converter.createLineageEntity(entityDetail);
+//
+//        LineageEvent lineageEvent = new LineageEvent();
+//        lineageEvent.setLineageEntity(lineageEntity);
+//        lineageEvent.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
+//        publisher.publishRelationshipEvent(lineageEvent);
     }
 
     private void processNewEntity(EntityDetail entityDetail, String serviceOperationName,String supertype) {
@@ -342,7 +341,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         ProcessContextHandler processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
-        instanceHandler.getCommonHandler(serverUserName, serverName, serviceOperationName).deduplicateGraphContex(processContext);
+//        instanceHandler.getCommonHandler(serverUserName, serverName, serviceOperationName).deduplicateGraphContex(processContext);
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
         event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
@@ -359,7 +358,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext,validator);
-        //getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
 
         LineageEvent event = new LineageEvent();
         if (context.size() != 0) {

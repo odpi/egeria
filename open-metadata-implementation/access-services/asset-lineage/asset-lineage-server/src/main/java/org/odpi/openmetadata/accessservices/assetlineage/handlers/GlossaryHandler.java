@@ -95,12 +95,6 @@ public class GlossaryHandler {
                 getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 
             }
-
-//            if (!glossary) {
-//                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
-//                return Collections.emptyMap();
-//            }
-
             return graph.getNeighbors();
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
@@ -132,12 +126,11 @@ public class GlossaryHandler {
                                                                                           typeGuid,
                                                                                           SEMANTIC_ASSIGNMENT,
                                                                                           methodName);
-//
+
         if (semanticAssignments == null) {
             return;
         }
         addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
-//        return addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
@@ -164,7 +157,6 @@ public class GlossaryHandler {
 
             entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph,false));
         }
-//        return entityDetails.isEmpty();
     }
 
 }
