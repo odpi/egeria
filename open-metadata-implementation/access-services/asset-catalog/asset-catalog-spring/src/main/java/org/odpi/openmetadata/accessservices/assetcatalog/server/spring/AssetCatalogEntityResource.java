@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -203,4 +205,22 @@ public class AssetCatalogEntityResource {
                                          @RequestParam(name = "assetType") @NotNull String assetType) {
         return assetService.buildContext(serverName, userId, assetGUID, assetType);
     }
+
+    /**
+     * Returns the list with supported types for search, including the sub-types supported
+     *
+     * @param serverName unique identifier for requested server
+     * @param userId     the unique identifier for the user
+     * @param type       the type
+     * @return list of types and sub-types supported for search
+     */
+    @GetMapping(path = "/supportedTypes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetCatalogSupportedTypes getSupportedTypes(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
+                                                        @RequestParam(name = "type", required = false) @Nullable String type) {
+        return assetService.getSupportedTypes(serverName, userId, type);
+    }
+
+
 }

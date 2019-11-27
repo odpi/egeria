@@ -1,0 +1,18 @@
+package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses;
+
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+
+import java.util.List;
+
+public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
+
+    private List<Type> types;
+
+    public List<Type> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Type> types) {
+        this.types = types;
+    }
+}

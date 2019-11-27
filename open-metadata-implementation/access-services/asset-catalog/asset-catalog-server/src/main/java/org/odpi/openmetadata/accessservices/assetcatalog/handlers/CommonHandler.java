@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +38,80 @@ public class CommonHandler {
 
     OMRSMetadataCollection getOMRSMetadataCollection() {
         return repositoryHandler.getMetadataCollection();
+    }
+
+    Type getTypeContext(String userId, String typeDefName) {
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+
+        if (typeDefByName != null) {
+            Type type = convertType(typeDefByName);
+            List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
+
+            getSubTypes(activeTypeDefs, type);
+
+            collectSubTypes(type, activeTypeDefs);
+            collectSuperTypes2(userId, typeDefByName, type);
+
+            return type;
+        }
+
+        return new Type();
+    }
+
+    private void collectSubTypes(Type type, List<TypeDef> activeTypeDefs) {
+        if (type.getSubTypes().isEmpty()) {
+            return;
+        }
+
+        for (Type currentSubType : type.getSubTypes()) {
+            getSubTypes(activeTypeDefs, currentSubType);
+            collectSubTypes(currentSubType, activeTypeDefs);
+        }
+    }
+
+    private void getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
+        String typeName = type.getName();
+
+        List<Type> subTypes;
+        if (type.getSubTypes() == null) {
+            type.setSubTypes(new ArrayList<>());
+        }
+        subTypes = type.getSubTypes();
+
+        for (TypeDef typeDef : activeTypeDefs) {
+            if (typeDef.getSuperType() != null && typeDef.getSuperType().getName().equals(typeName)) {
+
+                subTypes.add(convertType(typeDef));
+            }
+        }
+
+        type.setSubTypes(subTypes);
+    }
+
+    private void collectSuperTypes2(String userId, TypeDef openType, Type type) {
+        if (openType.getName().equals(REFERENCEABLE) || openType.getSuperType() == null) {
+            return;
+        }
+
+        buildType(openType, type);
+
+        TypeDef superType = repositoryHelper.getTypeDefByName(userId, openType.getSuperType().getName());
+        if (superType != null) {
+            type.setSuperType(convertType(superType));
+            collectSuperTypes2(userId, superType, type.getSuperType());
+        }
+    }
+
+    private Type convertType(TypeDef openType) {
+        Type type = new Type();
+        buildType(openType, type);
+        return type;
+    }
+
+    private void buildType(TypeDef openType, Type type) {
+        type.setName(openType.getName());
+        type.setDescription(openType.getDescription());
+        type.setVersion(openType.getVersion());
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {

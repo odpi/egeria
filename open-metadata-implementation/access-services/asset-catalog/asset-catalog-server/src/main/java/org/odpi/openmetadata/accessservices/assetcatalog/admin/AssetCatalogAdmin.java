@@ -58,7 +58,10 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
-            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName);
+            List<String> supportedTypesForSearch = (List<String>) accessServiceConfigurationProperties
+                    .getAccessServiceOptions().get("SupportedTypesForSearch");
+
+            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName, supportedTypesForSearch);
             this.serverName = instance.getServerName();
 
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;

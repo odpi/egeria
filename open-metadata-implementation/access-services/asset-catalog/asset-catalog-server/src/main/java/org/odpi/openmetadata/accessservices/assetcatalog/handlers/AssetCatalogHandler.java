@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Connection;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -62,6 +63,8 @@ public class AssetCatalogHandler {
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private List<String> defaultTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
+    private List<String> supportedTypesForSearch;
 
     private List<String> supportedZones;
 
@@ -74,10 +77,11 @@ public class AssetCatalogHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param errorHandler            provides common validation routines for the other handler classes
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
+     * @param supportedTypesForSearch configurable list of supported types used for search
      */
     public AssetCatalogHandler(String serverName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                               RepositoryErrorHandler errorHandler, List<String> supportedZones) {
+                               RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
@@ -85,6 +89,7 @@ public class AssetCatalogHandler {
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
+        this.supportedTypesForSearch = supportedTypesForSearch;
     }
 
     /**
@@ -1444,5 +1449,21 @@ public class AssetCatalogHandler {
         }
 
         return entityNeighborhood;
+    }
+
+    public List<Type> getSupportedTypes(String userId, String typeName) {
+        if (typeName != null) {
+            return getSupportedTypesCollector(userId, Arrays.asList(typeName));
+        }
+
+        if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
+            return getSupportedTypesCollector(userId, supportedTypesForSearch);
+        } else {
+            return getSupportedTypesCollector(userId, defaultTypesForSearch);
+        }
+    }
+
+    private List<Type> getSupportedTypesCollector(String userId, List<String> supportedTypesForSearch) {
+        return supportedTypesForSearch.stream().map(supportedTypes -> commonHandler.getTypeContext(userId, supportedTypes)).collect(Collectors.toList());
     }
 }
