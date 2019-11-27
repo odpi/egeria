@@ -152,53 +152,48 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private LineageVertex abstractVertex(Vertex originalVertex) {
-        try {
-            String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
-            String nodeType = originalVertex.label();
-            LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
+        String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        String nodeType = originalVertex.label();
+        LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
 
-            if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
-                String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
-                lineageVertex.setDisplayName(displayName);
-            }
-
-            //Displayname key is stored inconsistently in the graphDB.
-            else if (originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).isPresent()) {
-                String displayName = originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).value().toString();
-                lineageVertex.setDisplayName(displayName);
-            }
-
-            if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
-                String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-                lineageVertex.setGuid(guid);
-            }
-
-            Map<String, String> attributes = null;
-
-            switch (nodeType) {
-                case NODE_LABEL_COLUMN:
-                    attributes = setColumnProperties(originalVertex);
-                    break;
-                case NODE_LABEL_TABLE:
-                    attributes = setTableProperties(originalVertex);
-                    break;
-                case NODE_LABEL_PROCESS:
-                    attributes = setProcessProperties(originalVertex);
-                    break;
-                case NODE_LABEL_SUB_PROCESS:
-                    attributes = setSubProcessProperties(originalVertex);
-                    break;
-                case NODE_LABEL_GLOSSARYTERM:
-                    attributes = setGlossaryTermProperties(originalVertex);
-                    break;
-                default:
-            }
-            lineageVertex.setAttributes(attributes);
-            return lineageVertex;
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
+            String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
+            lineageVertex.setDisplayName(displayName);
         }
-        return null;
+
+        //Displayname key is stored inconsistently in the graphDB.
+        else if (originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).isPresent()) {
+            String displayName = originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).value().toString();
+            lineageVertex.setDisplayName(displayName);
+        }
+
+        if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
+            String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+            lineageVertex.setGuid(guid);
+        }
+
+        Map<String, String> attributes = null;
+
+        switch (nodeType) {
+            case NODE_LABEL_COLUMN:
+                attributes = setColumnProperties(originalVertex);
+                break;
+            case NODE_LABEL_TABLE:
+                attributes = setTableProperties(originalVertex);
+                break;
+            case NODE_LABEL_PROCESS:
+                attributes = setProcessProperties(originalVertex);
+                break;
+            case NODE_LABEL_SUB_PROCESS:
+                attributes = setSubProcessProperties(originalVertex);
+                break;
+            case NODE_LABEL_GLOSSARYTERM:
+                attributes = setGlossaryTermProperties(originalVertex);
+                break;
+            default:
+        }
+        lineageVertex.setAttributes(attributes);
+        return lineageVertex;
     }
 
     private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
