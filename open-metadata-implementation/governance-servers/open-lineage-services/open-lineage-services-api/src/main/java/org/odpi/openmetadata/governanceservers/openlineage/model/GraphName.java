@@ -8,19 +8,19 @@ public enum GraphName {
     HISTORY("history"),
     MOCK("mock");
 
-    private final String text;
+    private final String value;
 
     GraphName(String s) {
-        this.text = s;
+        this.value = s;
     }
 
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 
     public static GraphName fromString(String text) {
         for (GraphName value : GraphName.values()) {
-            if (value.text.equals(text)) {
+            if (value.value.equals(text)) {
                 return value;
             }
         }

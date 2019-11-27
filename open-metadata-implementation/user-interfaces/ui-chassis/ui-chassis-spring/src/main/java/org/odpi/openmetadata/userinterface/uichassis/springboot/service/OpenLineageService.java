@@ -6,6 +6,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -67,11 +68,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -88,11 +89,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -109,11 +110,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
 
@@ -131,11 +132,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }
@@ -153,11 +154,11 @@ public class OpenLineageService {
         try {
             response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
         } catch (PropertyServerException e) {
-            LOG.error(e.getMessage(), e);
-            throw new OpenLineageServiceException(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
         }
         return processResponse(response);
     }

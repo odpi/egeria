@@ -32,6 +32,34 @@ This defines which workbenches to run and how to connect to the technology to te
 This configuration defines an OMAG Server that will run the requested conformance suite tests.
 The requested workbenches will begin to execute their tests as soon as the OMAG server is started.
 
+For example, to run a metadata repository through the Repository Workbench, first configure a CTS
+server in the OMAG Server Platform by [configuring its general properties like server type, event bus, cohort,
+etc](../../open-metadata-implementation/admin-services/docs/user/README.md).  Before starting the CTS server instance,
+configure the repository workbench within it by POSTing to:
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+```
+
+with a repository workbench configuration like the following:
+
+```json
+{
+	"class": "RepositoryConformanceWorkbenchConfig",
+	"tutRepositoryServerName": "myserver",
+	"maxSearchResults": 5
+}
+```
+
+where the `tutRepositoryServerName` defines the name of the repository server you wish to test.  This repository server
+to test (`myserver` in the example above) should be configured and started _after_ starting the CTS repository
+workbench instance.  Once the CTS server instance is started it will wait for the technology under test
+(the server named by the `tutRepositoryServerName` parameter) to be up and running before then starting its suite of
+tests.
+
+An example collection of configuration calls for Postman can be found in
+[Egeria-CTS-RepositoryWorkbench](../../open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-CTS-RepositoryWorkbench.postman_collection.json).
+
 The OMAG Server also supports a REST API for querying the results of running
 the conformance suite tests.  These commands include:
 
