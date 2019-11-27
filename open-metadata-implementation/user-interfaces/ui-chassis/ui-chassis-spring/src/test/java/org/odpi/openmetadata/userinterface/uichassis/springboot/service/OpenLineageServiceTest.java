@@ -19,6 +19,7 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -74,7 +75,11 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
-        when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_SOURCE), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        try {
+            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_SOURCE), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
         Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(ultimateSource);
     }
@@ -82,7 +87,11 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
-        when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.END_TO_END), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        try {
+            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.END_TO_END), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
         Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
@@ -91,7 +100,11 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
-        when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        try {
+            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
         Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
@@ -99,7 +112,11 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Source and Destination")
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
-        when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.SOURCE_AND_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        try {
+            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.SOURCE_AND_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
         Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
@@ -107,7 +124,11 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
-        when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.GLOSSARY), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        try {
+            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.GLOSSARY), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
         Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
