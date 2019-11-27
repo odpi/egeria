@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -19,18 +19,18 @@ public class BufferGraphJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         LocalDateTime localTime = LocalDateTime.now();
-        System.out.println("Run QuartzJob at " + localTime);
-
+        log.info("Run QuartzJob at " + localTime);
         JobKey key = context.getJobDetail().getKey();
-
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-
         BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
-
         performTask(bufferGraph);
     }
 
-    private void performTask(BufferGraph bufferGraph){
-        bufferGraph.schedulerTask();
+    private void performTask(BufferGraph bufferGraph) {
+        try {
+            bufferGraph.schedulerTask();  //TODO  Throws NPE
+        } catch (Exception e) {
+            log.error("Buffergraph job Scheduler error");
+        }
     }
 }
