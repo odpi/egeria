@@ -46,7 +46,10 @@ public class RelationshipHandler {
         invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
         invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
 
-        String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
+        String relationshipTypeGUID = null;
+        if (relationshipType != null) {
+            relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
+        }
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,

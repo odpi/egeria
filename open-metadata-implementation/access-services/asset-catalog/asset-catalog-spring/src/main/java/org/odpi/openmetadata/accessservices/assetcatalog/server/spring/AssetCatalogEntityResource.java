@@ -48,7 +48,7 @@ public class AssetCatalogEntityResource {
     public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
                                                    @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                   @RequestParam(name = "assetType") @NotNull String assetType) {
+                                                   @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetDetailsByGUID(serverName, userId, assetGUID, assetType);
     }
 
