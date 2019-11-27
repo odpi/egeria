@@ -196,28 +196,17 @@ public class CommonHandler {
              endVertex = converter.createLineageEntity(endEntity);
         }
 
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
+
 
         GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
-        graph.addEdge(edge);
+
+        if(graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))){
+            graph.addVertex(startVertex);
+            graph.addVertex(endVertex);
+            graph.addEdge(edge);
+        }
 
         return endEntity;
-    }
-
-    public void deduplicateGraphContex(Map<String, Set<GraphContext>> neighbors) {
-
-        List<String> deduplicateList = new ArrayList<>();
-
-        for (Map.Entry<String, Set<GraphContext>> pair : neighbors.entrySet()) {
-            for( GraphContext graphContext: pair.getValue()){
-                if(deduplicateList.contains(graphContext.getRelationshipGuid())){
-                    neighbors.remove(pair.getKey());
-                } else {
-                    deduplicateList.add(graphContext.getRelationshipGuid());
-                }
-            }
-        }
     }
 
 }
