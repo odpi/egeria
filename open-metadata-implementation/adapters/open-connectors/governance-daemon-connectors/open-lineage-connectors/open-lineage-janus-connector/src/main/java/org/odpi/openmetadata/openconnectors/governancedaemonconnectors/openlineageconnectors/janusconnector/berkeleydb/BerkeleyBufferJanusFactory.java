@@ -25,13 +25,13 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
     private static final Logger log = LoggerFactory.getLogger(BerkeleyBufferJanusFactory.class);
 
 
-    public static JanusGraph openBufferGraph() throws OpenLineageException {
+    public static JanusGraph openBufferGraph(String berkeleyPath) throws OpenLineageException {
 
         final String methodName = "openBufferGraph";
         JanusGraph janusGraph;
 
-        final String storagePath = "./egeria-lineage-repositories/buffer/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/buffer/searchindex";
+        final String storagePath = berkeleyPath + "buffer/berkeley";
+        final String indexPath = berkeleyPath + "buffer/searchindex";
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend", "berkeleyje").

@@ -37,7 +37,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
     private JanusGraph bufferGraph;
     private JanusGraph mainGraph;
-    private JanusGraph historyGraph;
     private JanusGraph mockGraph;
 
     /**
@@ -55,10 +54,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB) {
             case "berkeleydb":
-                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
-                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
+                String berkeleyPath = connectionProperties.getConfigurationProperties().get("berkeleyPath").toString();
+                this.mainGraph = BerkeleyJanusFactory.openMainGraph(berkeleyPath);
+                this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph(berkeleyPath);
+                this.mockGraph = BerkeleyJanusFactory.openMockGraph(berkeleyPath);
                 break;
             case "cassandra":
                 FactoryForTesting factoryForTesting = new FactoryForTesting();
@@ -556,9 +555,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     break;
                 case BUFFER:
                     graph = bufferGraph;
-                    break;
-                case HISTORY:
-                    graph = historyGraph;
                     break;
                 case MOCK:
                     graph = mockGraph;

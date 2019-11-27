@@ -23,30 +23,23 @@ public class BerkeleyJanusFactory {
     private static final Logger log = LoggerFactory.getLogger(BerkeleyJanusFactory.class);
 
 
-    public static JanusGraph openMainGraph() throws OpenLineageException {
-        final String storagePath = "./egeria-lineage-repositories/main/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
+    public static JanusGraph openMainGraph(String berkeleyPath) throws OpenLineageException {
+        final String storagePath = berkeleyPath + "main/berkeley";
+        final String indexPath = berkeleyPath + "main/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
 
-    public static JanusGraph openHistoryGraph() throws OpenLineageException {
-        final String storagePath = "./egeria-lineage-repositories/history/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/history/searchindex";
-
-        return getJanusGraph(storagePath, indexPath);
-    }
-
-    public static JanusGraph openMockGraph() throws OpenLineageException {
-        final String storagePath = "./egeria-lineage-repositories/mock/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/mock/searchindex";
+    public static JanusGraph openMockGraph(String berkeleyPath) throws OpenLineageException {
+        final String storagePath = berkeleyPath + "mock/berkeley";
+        final String indexPath = berkeleyPath + "mock/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
 
     private static JanusGraph getJanusGraph(String storagePath, String indexPath) throws OpenLineageException {
         JanusGraph janusGraph;
-        final String methodName = "openBufferGraph";
+        final String methodName = "BerkeleyJanusFactory.getJanusGraph";
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend", "berkeleyje").
                 set("storage.directory", storagePath).

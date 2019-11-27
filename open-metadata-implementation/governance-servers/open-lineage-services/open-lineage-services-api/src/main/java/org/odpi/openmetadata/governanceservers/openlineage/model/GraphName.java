@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.model;
 public enum GraphName {
     MAIN("main"),
     BUFFER("buffer"),
-    HISTORY("history"),
     MOCK("mock");
 
     private final String value;
