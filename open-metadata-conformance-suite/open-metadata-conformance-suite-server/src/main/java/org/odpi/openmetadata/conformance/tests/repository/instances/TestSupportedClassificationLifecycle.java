@@ -91,8 +91,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
             assertCondition((true),
                     assertion6,
                     testTypeName + assertionMsg6,
-                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
         }
         catch (FunctionNotSupportedException exception) {
             /*
@@ -104,8 +104,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
             super.addNotSupportedAssertion(assertion6,
                     assertionMsg6,
-                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
