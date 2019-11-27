@@ -14,9 +14,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,14 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
     private static final String testCaseId = "repository-relationship-reidentify";
     private static final String testCaseName = "Repository relationship reidentify test case";
+
+
+    /* Type */
+
+    private static final String assertion0 = testCaseId + "-00";
+    private static final String assertionMsg0 = " relationship type definition matches known type  ";
+
+
     private static final String assertion1     = testCaseId + "-01";
     private static final String assertionMsg1  = " new relationship created.";
     private static final String assertion2     = testCaseId + "-02";
@@ -45,13 +56,19 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
     private static final String assertion6     = testCaseId + "-06";
     private static final String assertionMsg6  = " relationship retrievable by new GUID.";
 
+    private static final String assertion7     = testCaseId + "-07";
+    private static final String assertionMsg7  = " end types are supported by repository";
+
+    private static final String assertion8     = testCaseId + "-08";
+    private static final String assertionMsg8  = " repository supports creatoin of instances";
+
 
     private static final String discoveredProperty_reidentifySupport = " reidentify support";
 
-
-
+    private RepositoryConformanceWorkPad workPad;
     private String            metadataCollectionId;
     private RelationshipDef   relationshipDef;
+    private Map<String, EntityDef>        entityDefs;
     private String            testTypeName;
 
 
@@ -62,14 +79,17 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
      * @param relationshipDef type of valid entities
      */
     public TestSupportedRelationshipReidentify(RepositoryConformanceWorkPad workPad,
+                                               Map<String, EntityDef>       entityDefs,
                                                RelationshipDef              relationshipDef)
     {
         super(workPad,
               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
+        this.workPad = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.relationshipDef = relationshipDef;
+        this.entityDefs = entityDefs;
 
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
                                                     testCaseId,
@@ -86,44 +106,178 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        /*
-         * Create the local entities.
-         */
-        String     endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-        String     endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-        EntityDef  endOneEntityDef = (EntityDef)metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(),endOneEntityDefGUID);
-        EntityDef  endTwoEntityDef = (EntityDef)metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(),endTwoEntityDefGUID);
-
-        EntityDetail entityOne = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              endOneEntityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endOneEntityDef),
-                                                              null,
-                                                              null);
-
-        EntityDetail entityTwo = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              endTwoEntityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endTwoEntityDef),
-                                                             null,
-                                                             null);
 
         /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates a
-         * relationship that is logically complete - versus an instance with just the locally-defined properties.
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
          */
 
-        Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                                                              relationshipDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef),
-                                                              entityOne.getGUID(),
-                                                              entityTwo.getGUID(),null);
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                    assertion7,
+                    testTypeName + assertionMsg7,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+        /*
+         * The test does not iterate over all possible end types - but it must select an end type that is supported by the repository,
+         * so it uses the first type in the supported list for each end.
+         */
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+
+        /*
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
+         */
+
+
+        EntityDetail entityOne;
+        EntityDetail entityTwo;
+        Relationship newRelationship;
+
+        try {
+
+            /*
+             * Create the local entities.
+             */
+            EntityDef end1Type = entityDefs.get(end1TypeName);
+            entityOne = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+            EntityDef end2Type = entityDefs.get(end2TypeName);
+            entityTwo = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+
+            // TODO - clean up
+
+            //String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
+            //String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
+            //EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
+            //EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
+
+            //entityOne = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+            //        endOneEntityDef.getGUID(),
+            //        super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endOneEntityDef),
+            //        null,
+            //        null);
+
+            //entityTwo = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+            //        endTwoEntityDef.getGUID(),
+            //        super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endTwoEntityDef),
+            //        null,
+            //        null);
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates a
+             * relationship that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                                                                 relationshipDef.getGUID(),
+                                                                 super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef),
+                                                                 entityOne.getGUID(),
+                                                                 entityTwo.getGUID(),
+                                                                null);
+
+
+            assertCondition((true),
+                    assertion8,
+                    testTypeName + assertionMsg8,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion8,
+                    assertionMsg8,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+            return;
+        }
 
         assertCondition((newRelationship != null),
                         assertion1,
                         testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
        /*
         * Other conditions - such as content of InstanceAuditHeader fields - are tested by Relationship Lifecycle tests; so not tested here.
@@ -138,8 +292,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
         verifyCondition((newRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID()))),
                         assertion2,
                         testTypeName + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
 
