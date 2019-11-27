@@ -40,66 +40,42 @@ public class CommonHandler {
         return repositoryHandler.getMetadataCollection();
     }
 
-    Type getTypeContext(String userId, String typeDefName) {
+    List<Type> getTypeContext(String userId, String typeDefName) {
+        List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {
-            Type type = convertType(typeDefByName);
             List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
 
-            getSubTypes(activeTypeDefs, type);
+            Type type = convertType(typeDefByName);
+            List<Type> subTypes = getSubTypes(activeTypeDefs, type);
+            response.add(type);
+            response.addAll(subTypes);
 
-            collectSubTypes(type, activeTypeDefs);
-            collectSuperTypes2(userId, typeDefByName, type);
-
-            return type;
+            collectSubTypes(subTypes, activeTypeDefs, response);
         }
 
-        return new Type();
+        return response;
     }
 
-    private void collectSubTypes(Type type, List<TypeDef> activeTypeDefs) {
-        if (type.getSubTypes().isEmpty()) {
-            return;
-        }
-
-        for (Type currentSubType : type.getSubTypes()) {
-            getSubTypes(activeTypeDefs, currentSubType);
-            collectSubTypes(currentSubType, activeTypeDefs);
+    private void collectSubTypes(List<Type> types, List<TypeDef> activeTypeDefs, List<Type> collector) {
+        for (Type currentSubType : types) {
+            List<Type> subTypes = getSubTypes(activeTypeDefs, currentSubType);
+            collector.addAll(subTypes);
+            collectSubTypes(subTypes, activeTypeDefs, collector);
         }
     }
 
-    private void getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
+    private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
 
-        List<Type> subTypes;
-        if (type.getSubTypes() == null) {
-            type.setSubTypes(new ArrayList<>());
-        }
-        subTypes = type.getSubTypes();
-
+        List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {
             if (typeDef.getSuperType() != null && typeDef.getSuperType().getName().equals(typeName)) {
-
                 subTypes.add(convertType(typeDef));
             }
         }
-
-        type.setSubTypes(subTypes);
-    }
-
-    private void collectSuperTypes2(String userId, TypeDef openType, Type type) {
-        if (openType.getName().equals(REFERENCEABLE) || openType.getSuperType() == null) {
-            return;
-        }
-
-        buildType(openType, type);
-
-        TypeDef superType = repositoryHelper.getTypeDefByName(userId, openType.getSuperType().getName());
-        if (superType != null) {
-            type.setSuperType(convertType(superType));
-            collectSuperTypes2(userId, superType, type.getSuperType());
-        }
+        return subTypes;
     }
 
     private Type convertType(TypeDef openType) {
@@ -112,6 +88,7 @@ public class CommonHandler {
         type.setName(openType.getName());
         type.setDescription(openType.getDescription());
         type.setVersion(openType.getVersion());
+        type.setSuperType(openType.getSuperType().getName());
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {

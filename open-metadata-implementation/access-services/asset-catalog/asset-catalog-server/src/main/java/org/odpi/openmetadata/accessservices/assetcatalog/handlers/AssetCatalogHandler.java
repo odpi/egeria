@@ -1464,6 +1464,11 @@ public class AssetCatalogHandler {
     }
 
     private List<Type> getSupportedTypesCollector(String userId, List<String> supportedTypesForSearch) {
-        return supportedTypesForSearch.stream().map(supportedTypes -> commonHandler.getTypeContext(userId, supportedTypes)).collect(Collectors.toList());
+        List<Type> response = new ArrayList<>();
+        for (String type : supportedTypesForSearch) {
+            List<Type> typeContext = commonHandler.getTypeContext(userId, type);
+            response.addAll(typeContext);
+        }
+        return response;
     }
 }

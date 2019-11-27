@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,8 +17,7 @@ public class Type {
     private String name;
     private String description;
     private Long version;
-    private Type superType;
-    private List<Type> subTypes;
+    private String superType;
 
     public String getName() {
         return name;
@@ -46,20 +43,12 @@ public class Type {
         this.version = version;
     }
 
-    public Type getSuperType() {
+    public String getSuperType() {
         return superType;
     }
 
-    public void setSuperType(Type superType) {
+    public void setSuperType(String superType) {
         this.superType = superType;
-    }
-
-    public List<Type> getSubTypes() {
-        return subTypes;
-    }
-
-    public void setSubTypes(List<Type> subTypes) {
-        this.subTypes = subTypes;
     }
 
     @Override
@@ -68,8 +57,7 @@ public class Type {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", version=" + version +
-                ", superType=" + superType +
-                ", subTypes=" + subTypes +
+                ", superType='" + superType + '\'' +
                 '}';
     }
 }
