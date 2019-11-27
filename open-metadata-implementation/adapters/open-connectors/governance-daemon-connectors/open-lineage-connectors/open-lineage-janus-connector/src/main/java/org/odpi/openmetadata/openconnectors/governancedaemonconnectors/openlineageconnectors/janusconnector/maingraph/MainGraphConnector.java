@@ -239,7 +239,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    protected LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
 
