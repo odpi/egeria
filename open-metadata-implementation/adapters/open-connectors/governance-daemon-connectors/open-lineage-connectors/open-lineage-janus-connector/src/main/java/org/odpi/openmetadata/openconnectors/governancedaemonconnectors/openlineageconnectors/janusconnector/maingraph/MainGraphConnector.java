@@ -118,7 +118,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 errorCode.getUserAction());
     }
 
-
     /**
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
