@@ -204,7 +204,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
         /* ------------------------------------------------------------------------------------- */
 
         /*
-         *  Use emptyMatchProperties and matchCriteria ALL   - this should return all entities of the current type
+         *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
          */
 
 
@@ -323,9 +323,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     }
 
 
-
                     matchProperties.setProperty(attributeName,ppv);
-
 
 
                     /*
@@ -472,6 +470,11 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                                             Object primitiveValue = ipValue.valueAsObject();
 
+                                            /*
+                                             * Check for inequality and fail the match if unequal.
+                                             * This is because, even for strings, we used an exact match literalised property value
+                                             * and match criteria was ALL - so an entity with an unequal property is not a valid result.
+                                             */
                                             if (!primitiveValue.equals(value))
                                                 matchingResult = false;
 
@@ -635,7 +638,12 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                                             Object primitiveValue = ipValue.valueAsObject();
 
-                                            if (!primitiveValue.equals(value))
+                                            /*
+                                             * Check for equality and fail the match if equal.
+                                             * This is because, even for strings, we used an exact match literalised property value
+                                             * and match criteria was NONE - so an entity with an equal property is not a valid result.
+                                             */
+                                            if (primitiveValue.equals(value))
                                                 matchingResult = false;
 
                                         }
@@ -712,13 +720,22 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                 }
                 if (alphaAttributeName != null && betaAttributeName != null) {
 
+                    PrimitivePropertyValue alphaPpv = null;
+                    PrimitivePropertyValue betaPpv = null;
+                    Object alphaValue = null;
+                    Object betaValue = null;
+
+                    /*
+                     * Select first available value for alphaAttribute
+                     */
                     Set<Object> possibleAlphaValues = propertyValueMap.get(alphaAttributeName).keySet();
                     Iterator<Object> possibleAlphaValueIterator = possibleAlphaValues.iterator();
-                    while (possibleAlphaValueIterator.hasNext()) {
 
-                        Object alphaValue = possibleAlphaValueIterator.next();
+                    if (possibleAlphaValueIterator.hasNext()) {
 
-                        PrimitivePropertyValue alphaPpv = new PrimitivePropertyValue();
+                        alphaValue = possibleAlphaValueIterator.next();
+
+                        alphaPpv = new PrimitivePropertyValue();
                         alphaPpv.setPrimitiveDefCategory(propertyCatMap.get(alphaAttributeName));
                         if (propertyCatMap.get(alphaAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
                             String literalisedValue = literaliseStringProperty((String) alphaValue);
@@ -726,461 +743,453 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         } else {
                             alphaPpv.setPrimitiveValue(alphaValue);
                         }
+                    }
+                    /*
+                     * Select first available value for betaAttribute
+                     */
+                    Set<Object> possibleBetaValues = propertyValueMap.get(betaAttributeName).keySet();
+                    Iterator<Object> possibleBetaValueIterator = possibleBetaValues.iterator();
+
+                    if (possibleBetaValueIterator.hasNext()) {
+
+                        betaValue = possibleBetaValueIterator.next();
 
 
-                        if (!alphaAttributeName.equals(betaAttributeName)) {
+                        betaPpv = new PrimitivePropertyValue();
+                        betaPpv.setPrimitiveDefCategory(propertyCatMap.get(betaAttributeName));
+                        if (propertyCatMap.get(betaAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+                            String literalisedValue = literaliseStringProperty((String) betaValue);
+                            betaPpv.setPrimitiveValue(literalisedValue);
+                        } else {
+                            betaPpv.setPrimitiveValue(betaValue);
+                        }
 
-                            Set<Object> possibleBetaValues = propertyValueMap.get(betaAttributeName).keySet();
-                            Iterator<Object> possibleBetaValueIterator = possibleBetaValues.iterator();
-                            while (possibleBetaValueIterator.hasNext()) {
+                    }
 
-                                Object betaValue = possibleBetaValueIterator.next();
+                    if (alphaPpv != null && alphaValue != null && betaPpv != null && betaValue != null) {
 
-                                PrimitivePropertyValue betaPpv = new PrimitivePropertyValue();
-                                betaPpv.setPrimitiveDefCategory(propertyCatMap.get(betaAttributeName));
-                                if (propertyCatMap.get(betaAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
-                                    String literalisedValue = literaliseStringProperty((String)betaValue);
-                                    betaPpv.setPrimitiveValue(literalisedValue);
-                                }
-                                else {
-                                    betaPpv.setPrimitiveValue(betaValue);
-                                }
-
-
-                                InstanceProperties matchProperties = new InstanceProperties();
-                                matchProperties.setProperty(alphaAttributeName, alphaPpv);
-                                matchProperties.setProperty(betaAttributeName, betaPpv);
-
-
-
-                                /*
-                                 * Compute expected result
-                                 */
-                                List<String> alphaGUIDs = propertyValueMap.get(alphaAttributeName).get(alphaValue);
-                                List<String> betaGUIDs = propertyValueMap.get(betaAttributeName).get(betaValue);
-
-
-                                // ----------------------------------------------------------------
-                                // MATCH_CRITERIA ANY
-
-                                MatchCriteria matchCriteria = MatchCriteria.ANY;
-                                List<String> expectedGUIDs = union(alphaGUIDs, betaGUIDs);     /* MatchCriteria.ANY ==> UNION */
-                                int expectedEntityCount = expectedGUIDs.size();
-
-                                /*
-                                 * Search....
-                                 */
-
-                                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                        entityDef.getGUID(),
-                                        matchProperties,
-                                        matchCriteria,
-                                        fromElement,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        pageSize);
+                        InstanceProperties matchProperties = new InstanceProperties();
+                        matchProperties.setProperty(alphaAttributeName, alphaPpv);
+                        matchProperties.setProperty(betaAttributeName, betaPpv);
 
 
 
-                                /*
-                                 * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                                 */
-                                assertCondition((result != null),
-                                        assertion4,
-                                        testTypeName + assertionMsg4,
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-                                /*
-                                 * Check that the expected number of entities was returned. This has to consider the effect of the original
-                                 * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                                 * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                                 * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                                 * so the expectation may be a subset of the actual.
-                                 * The actual instances returned
-                                 * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                                 * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                                 * entities that were not discovered previously.
-                                 * This next assertion is just about the size of the result set.
-                                 */
-                                assertCondition(  (  (!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount ) ),
-                                        assertion5,
-                                        testTypeName + assertionMsg5,
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                        /*
+                         * Compute expected result
+                         */
+                        List<String> alphaGUIDs = propertyValueMap.get(alphaAttributeName).get(alphaValue);
+                        List<String> betaGUIDs = propertyValueMap.get(betaAttributeName).get(betaValue);
 
 
-                                /*
-                                 * Check that the expected entities were all returned
-                                 */
-                                List<String> resultGUIDs = new ArrayList<>();
-                                for (EntityDetail entity : result) {
-                                    resultGUIDs.add(entity.getGUID());
-                                }
+                        // ----------------------------------------------------------------
+                        // MATCH_CRITERIA ANY
 
-                                /*
-                                 * Here again, we need to be sensitive to whether the original search hit the page limit.
-                                 * If the original search hit the limit then we may legitimately receive additional instances in the results
-                                 * of a narrower search. But not if the original result set was under the page limit.
-                                 */
+                        MatchCriteria matchCriteria = MatchCriteria.ANY;
+                        List<String> expectedGUIDs = union(alphaGUIDs, betaGUIDs);     /* MatchCriteria.ANY ==> UNION */
+                        int expectedEntityCount = expectedGUIDs.size();
 
-                                boolean matchingResult = true;
+                        /*
+                         * Search....
+                         */
 
-                                if (!pageLimited) {
-                                    if (!resultGUIDs.containsAll(expectedGUIDs))
+                        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                matchProperties,
+                                matchCriteria,
+                                fromElement,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                pageSize);
+
+
+
+                        /*
+                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
+                         */
+                        assertCondition((result != null),
+                                assertion4,
+                                testTypeName + assertionMsg4,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+                        /*
+                         * Check that the expected number of entities was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                assertion5,
+                                testTypeName + assertionMsg5,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected entities were all returned
+                         */
+                        List<String> resultGUIDs = new ArrayList<>();
+                        for (EntityDetail entity : result) {
+                            resultGUIDs.add(entity.getGUID());
+                        }
+
+                        /*
+                         * Here again, we need to be sensitive to whether the original search hit the page limit.
+                         * If the original search hit the limit then we may legitimately receive additional instances in the results
+                         * of a narrower search. But not if the original result set was under the page limit.
+                         */
+
+                        boolean matchingResult = true;
+
+                        if (!pageLimited) {
+                            if (!resultGUIDs.containsAll(expectedGUIDs))
+                                matchingResult = false;
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                            for (EntityDetail entity : result) {
+
+                                if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                    /*
+                                     * This was an extra entity that we either did not expect or that we have not seen previously.
+                                     * Check it is a valid result.
+                                     */
+
+                                    InstanceProperties entityProperties = entity.getProperties();
+
+                                    boolean alphaMatch = false;
+
+                                    if (entityProperties != null) {
+
+                                        InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                        if (alphaIPValue != null) {
+                                            InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                Object primitiveValue = alphaIPValue.valueAsObject();
+                                                alphaMatch = primitiveValue.equals(alphaValue);
+                                            }
+                                        }
+                                    }
+
+                                    boolean betaMatch = false;
+
+                                    if (entityProperties != null) {
+
+                                        InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                        if (betaIPValue != null) {
+                                            InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                Object primitiveValue = betaIPValue.valueAsObject();
+                                                betaMatch = primitiveValue.equals(betaValue);
+                                            }
+                                        }
+                                    }
+
+
+                                    if (!(alphaMatch || betaMatch))
                                         matchingResult = false;
-                                }
-
-                                else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                                    for (EntityDetail entity : result) {
-
-                                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
-                                            /*
-                                             * This was an extra entity that we either did not expect or that we have not seen previously.
-                                             * Check it is a valid result.
-                                             */
-
-                                            InstanceProperties entityProperties = entity.getProperties();
-
-                                            boolean alphaMatch = false;
-
-                                            if (entityProperties != null) {
-
-                                                InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                                if (alphaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = alphaIPValue.valueAsObject();
-                                                        alphaMatch = primitiveValue.equals(alphaValue);
-                                                    }
-                                                }
-                                            }
-
-                                            boolean betaMatch = false;
-
-                                            if (entityProperties != null) {
-
-                                                InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                                if (betaIPValue != null) {
-                                                    InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                        Object primitiveValue = betaIPValue.valueAsObject();
-                                                        betaMatch = primitiveValue.equals(betaValue);
-                                                    }
-                                                }
-                                            }
-
-
-                                            if (! (alphaMatch || betaMatch) )
-                                                matchingResult = false;
-
-
-                                        }
-                                    }
-                                }
-
-
-                                assertCondition(matchingResult,
-                                        assertion6,
-                                        testTypeName + assertionMsg6,
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-
-
-
-
-
-
-                                // ----------------------------------------------------------------
-                                // REPEAT FOR MATCH_CRITERIA ALL
-
-
-                                matchCriteria = MatchCriteria.ALL;
-                                expectedGUIDs = intersection(alphaGUIDs, betaGUIDs);     /* MatchCriteria.ALL ==> INTERSECTION */
-                                expectedEntityCount = expectedGUIDs.size();
-
-                                /*
-                                 * Search....
-                                 */
-
-                                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                        entityDef.getGUID(),
-                                        matchProperties,
-                                        matchCriteria,
-                                        fromElement,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        pageSize);
-
-
-
-                                /*
-                                 * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
-                                 */
-                                assertCondition((expectedEntityCount == 0 || result != null),
-                                        assertion7,
-                                        testTypeName + assertionMsg7,
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-
-                                /*
-                                 * Since no result is legitimate in this test, only proceed with further checks where relevant
-                                 */
-                                if (result != null) {
-
-
-                                    /*
-                                     * Check that the expected number of entities was returned. This has to consider the effect of the original
-                                     * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                                     * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                                     * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                                     * so the expectation may be a subset of the actual.
-                                     * The actual instances returned
-                                     * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                                     * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                                     * entities that were not discovered previously.
-                                     * This next assertion is just about the size of the result set.
-                                     */
-                                    assertCondition(  (  (!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount ) ),
-                                            assertion8,
-                                            testTypeName + assertionMsg8,
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-
-                                    /*
-                                     * Check that the expected entities were all returned
-                                     */
-                                    resultGUIDs = new ArrayList<>();
-                                    for (EntityDetail entity : result) {
-                                        resultGUIDs.add(entity.getGUID());
-                                    }
-
-                                    /*
-                                     * Here again, we need to be sensitive to whether the original search hit the page limit.
-                                     * If the original search hit the limit then we may legitimately receive additional instances in the results
-                                     * of a narrower search. But not if the original result set was under the page limit.
-                                     */
-
-                                    matchingResult = true;
-
-                                    if (!pageLimited) {
-                                        if (!resultGUIDs.containsAll(expectedGUIDs))
-                                            matchingResult = false;
-                                    }
-
-                                    else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                                        for (EntityDetail entity : result) {
-
-                                            if (!(expectedGUIDs.contains(entity.getGUID()))) {
-                                                /*
-                                                 * This was an extra entity that we either did not expect or that we have not seen previously.
-                                                 * Check it is a valid result.
-                                                 */
-
-                                                InstanceProperties entityProperties = entity.getProperties();
-
-                                                boolean alphaMatch = false;
-
-                                                if (entityProperties != null) {
-
-                                                    InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                                    if (alphaIPValue != null) {
-                                                        InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                            Object primitiveValue = alphaIPValue.valueAsObject();
-                                                            alphaMatch = primitiveValue.equals(alphaValue);
-                                                        }
-                                                    }
-                                                }
-
-
-                                                boolean betaMatch = false;
-
-                                                if (entityProperties != null) {
-
-                                                    InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                                    if (betaIPValue != null) {
-                                                        InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                            Object primitiveValue = betaIPValue.valueAsObject();
-                                                            betaMatch = primitiveValue.equals(betaValue);
-                                                        }
-                                                    }
-                                                }
-
-
-                                                if (! (alphaMatch && betaMatch) )
-                                                    matchingResult = false;
-
-
-                                            }
-                                        }
-                                    }
-
-
-                                    assertCondition(matchingResult,
-                                            assertion9,
-                                            testTypeName + assertionMsg9,
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-
-                                }
-
-
-                                // ----------------------------------------------------------------
-                                // REPEAT FOR MATCH_CRITERIA NONE
-
-
-                                matchCriteria = MatchCriteria.NONE;
-                                /* MatchCriteria.NONE ==> UNION COMPLEMENT */
-                                expectedGUIDs = diff(allKnownEntityGUIDs, alphaGUIDs);
-                                expectedGUIDs = diff(expectedGUIDs, betaGUIDs);
-                                expectedEntityCount = expectedGUIDs.size();
-
-                                /*
-                                 * Search....
-                                 */
-
-                                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                        entityDef.getGUID(),
-                                        matchProperties,
-                                        matchCriteria,
-                                        fromElement,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        pageSize);
-
-
-
-                                /*
-                                 * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
-                                 */
-                                assertCondition((expectedEntityCount == 0 || result != null),
-                                        assertion10,
-                                        testTypeName + assertionMsg10,
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-                                /*
-                                 * Since no result is legitimate in this test, only proceed with further checks where relevant
-                                 */
-                                if (result != null) {
-
-                                    /*
-                                     * Check that the expected number of entities was returned. This has to consider the effect of the original
-                                     * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                                     * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                                     * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                                     * so the expectation may be a subset of the actual.
-                                     * The actual instances returned
-                                     * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                                     * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                                     * entities that were not discovered previously.
-                                     * This next assertion is just about the size of the result set.
-                                     */
-                                    assertCondition(  (  (!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount ) ),
-                                            assertion11,
-                                            testTypeName + assertionMsg11,
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
-
-                                    /*
-                                     * Check that the expected entities were all returned
-                                     */
-                                    resultGUIDs = new ArrayList<>();
-                                    for (EntityDetail entity : result) {
-                                        resultGUIDs.add(entity.getGUID());
-                                    }
-
-                                    /*
-                                     * Here again, we need to be sensitive to whether the original search hit the page limit.
-                                     * If the original search hit the limit then we may legitmately receive additional instances in the results
-                                     * of a narrower search. But not if the original result set was under the page limit.
-                                     */
-
-                                    matchingResult = true;
-
-                                    if (!pageLimited) {
-                                        if (!resultGUIDs.containsAll(expectedGUIDs))
-                                            matchingResult = false;
-                                    }
-
-                                    else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                                        for (EntityDetail entity : result) {
-
-                                            if (!(expectedGUIDs.contains(entity.getGUID()))) {
-                                                /*
-                                                 * This was an extra entity that we either did not expect or that we have not seen previously.
-                                                 * Check it is a valid result.
-                                                 */
-
-                                                InstanceProperties entityProperties = entity.getProperties();
-
-                                                boolean alphaMatch = false;
-
-                                                if (entityProperties != null) {
-
-                                                    InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
-                                                    if (alphaIPValue != null) {
-                                                        InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                            Object primitiveValue = alphaIPValue.valueAsObject();
-                                                            alphaMatch = primitiveValue.equals(alphaValue);
-                                                        }
-                                                    }
-                                                }
-
-                                                boolean betaMatch = false;
-
-                                                if (entityProperties != null) {
-
-                                                    InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
-                                                    if (betaIPValue != null) {
-                                                        InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                            Object primitiveValue = betaIPValue.valueAsObject();
-                                                            betaMatch = primitiveValue.equals(betaValue);
-                                                        }
-                                                    }
-                                                }
-
-
-                                                if (! (!alphaMatch && !betaMatch) )
-                                                    matchingResult = false;
-
-
-                                            }
-                                        }
-                                    }
-
-
-                                    assertCondition(matchingResult,
-                                            assertion12,
-                                            testTypeName + assertionMsg12,
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
 
                                 }
                             }
                         }
+
+
+                        assertCondition(matchingResult,
+                                assertion6,
+                                testTypeName + assertionMsg6,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        // ----------------------------------------------------------------
+                        // REPEAT FOR MATCH_CRITERIA ALL
+
+
+                        matchCriteria = MatchCriteria.ALL;
+                        expectedGUIDs = intersection(alphaGUIDs, betaGUIDs);     /* MatchCriteria.ALL ==> INTERSECTION */
+                        expectedEntityCount = expectedGUIDs.size();
+
+                        /*
+                         * Search....
+                         */
+
+                        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                matchProperties,
+                                matchCriteria,
+                                fromElement,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                pageSize);
+
+
+
+                        /*
+                         * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
+                         */
+                        assertCondition((expectedEntityCount == 0 || result != null),
+                                assertion7,
+                                testTypeName + assertionMsg7,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Since no result is legitimate in this test, only proceed with further checks where relevant
+                         */
+                        if (result != null) {
+
+
+                            /*
+                             * Check that the expected number of entities was returned. This has to consider the effect of the original
+                             * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                             * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                             * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                             * so the expectation may be a subset of the actual.
+                             * The actual instances returned
+                             * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                             * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                             * entities that were not discovered previously.
+                             * This next assertion is just about the size of the result set.
+                             */
+                            assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                    assertion8,
+                                    testTypeName + assertionMsg8,
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                            /*
+                             * Check that the expected entities were all returned
+                             */
+                            resultGUIDs = new ArrayList<>();
+                            for (EntityDetail entity : result) {
+                                resultGUIDs.add(entity.getGUID());
+                            }
+
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitimately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
+
+                            matchingResult = true;
+
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                                for (EntityDetail entity : result) {
+
+                                    if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                        /*
+                                         * This was an extra entity that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result.
+                                         */
+
+                                        InstanceProperties entityProperties = entity.getProperties();
+
+                                        boolean alphaMatch = false;
+
+                                        if (entityProperties != null) {
+
+                                            InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                            if (alphaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = alphaIPValue.valueAsObject();
+                                                    alphaMatch = primitiveValue.equals(alphaValue);
+                                                }
+                                            }
+                                        }
+
+
+                                        boolean betaMatch = false;
+
+                                        if (entityProperties != null) {
+
+                                            InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                            if (betaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = betaIPValue.valueAsObject();
+                                                    betaMatch = primitiveValue.equals(betaValue);
+                                                }
+                                            }
+                                        }
+
+
+                                        if (!(alphaMatch && betaMatch))
+                                            matchingResult = false;
+
+
+                                    }
+                                }
+                            }
+
+
+                            assertCondition(matchingResult,
+                                    assertion9,
+                                    testTypeName + assertionMsg9,
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        }
+
+
+                        // ----------------------------------------------------------------
+                        // REPEAT FOR MATCH_CRITERIA NONE
+
+
+                        matchCriteria = MatchCriteria.NONE;
+                        /* MatchCriteria.NONE ==> UNION COMPLEMENT */
+                        expectedGUIDs = diff(allKnownEntityGUIDs, alphaGUIDs);
+                        expectedGUIDs = diff(expectedGUIDs, betaGUIDs);
+                        expectedEntityCount = expectedGUIDs.size();
+
+                        /*
+                         * Search....
+                         */
+
+                        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                matchProperties,
+                                matchCriteria,
+                                fromElement,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                pageSize);
+
+
+
+                        /*
+                         * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
+                         */
+                        assertCondition((expectedEntityCount == 0 || result != null),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+                        /*
+                         * Since no result is legitimate in this test, only proceed with further checks where relevant
+                         */
+                        if (result != null) {
+
+                            /*
+                             * Check that the expected number of entities was returned. This has to consider the effect of the original
+                             * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                             * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                             * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                             * so the expectation may be a subset of the actual.
+                             * The actual instances returned
+                             * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                             * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                             * entities that were not discovered previously.
+                             * This next assertion is just about the size of the result set.
+                             */
+                            assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                    assertion11,
+                                    testTypeName + assertionMsg11,
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                            /*
+                             * Check that the expected entities were all returned
+                             */
+                            resultGUIDs = new ArrayList<>();
+                            for (EntityDetail entity : result) {
+                                resultGUIDs.add(entity.getGUID());
+                            }
+
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitmately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
+
+                            matchingResult = true;
+
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                                for (EntityDetail entity : result) {
+
+                                    if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                        /*
+                                         * This was an extra entity that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result.
+                                         */
+
+                                        InstanceProperties entityProperties = entity.getProperties();
+
+                                        boolean alphaMatch = false;
+
+                                        if (entityProperties != null) {
+
+                                            InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                            if (alphaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = alphaIPValue.valueAsObject();
+                                                    alphaMatch = primitiveValue.equals(alphaValue);
+                                                }
+                                            }
+                                        }
+
+                                        boolean betaMatch = false;
+
+                                        if (entityProperties != null) {
+
+                                            InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                            if (betaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = betaIPValue.valueAsObject();
+                                                    betaMatch = primitiveValue.equals(betaValue);
+                                                }
+                                            }
+                                        }
+
+
+                                        if (!(!alphaMatch && !betaMatch))
+                                            matchingResult = false;
+
+
+                                    }
+                                }
+                            }
+
+
+                            assertCondition(matchingResult,
+                                    assertion12,
+                                    testTypeName + assertionMsg12,
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        }
+
                     }
                 }
             }
