@@ -588,18 +588,22 @@ public class AssetCatalogHandler {
         List<AssetElement> assets = new ArrayList<>(schemas.size());
 
         for (EntityDetail schema : schemas) {
-            AssetElement assetElement = new AssetElement();
-            List<Element> elements = new ArrayList<>();
-            elements.add(buildAssetElements(schema));
-            assetElement.setContext(elements);
-
-            findAsset(userId, Collections.singletonList(schema), assetElement);
+            AssetElement assetElement = addSchemaForGlossaryTerm(userId, schema);
             assets.add(assetElement);
         }
-
         assetElements.setElements(assets);
-
         return assetElements;
+    }
+
+    private AssetElement addSchemaForGlossaryTerm(String userId, EntityDetail schema) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        AssetElement assetElement = new AssetElement();
+        List<Element> elements = new ArrayList<>();
+        elements.add(buildAssetElements(schema));
+        assetElement.setContext(elements);
+
+        findAsset(userId, Collections.singletonList(schema), assetElement);
+
+        return assetElement;
     }
 
     private void getContextForDeployedAPI(String userId,
@@ -1100,14 +1104,29 @@ public class AssetCatalogHandler {
                     0,
                     0,
                     method);
+
             if (CollectionUtils.isEmpty(schemaAttributes)) {
-                continue;
+                //search for NestedSchemaAttribute that goes directly to the table
+                schemaAttributes = repositoryHandler.getEntitiesForRelationshipType(
+                        userId,
+                        entityDetail.getGUID(),
+                        SCHEMA_ATTRIBUTE,
+                        NESTED_SCHEMA_ATTRIBUTE_GUID,
+                        NESTED_SCHEMA_ATTRIBUTE,
+                        0,
+                        0,
+                        method);
+                if (CollectionUtils.isEmpty(schemaAttributes)) {
+                    continue;
+                }
             }
 
             Element lastNode = getLastNode(assetElement);
             for (EntityDetail schemaAttribute : schemaAttributes) {
-                if(lastNode == null) {
+                if (lastNode == null) {
                     addContextElement(assetElement, schemaAttribute);
+                } else {
+                    addElement(assetElement, schemaAttribute);
                 }
             }
 
@@ -1132,6 +1151,8 @@ public class AssetCatalogHandler {
                             addElement(assetElement, schemaAttributeTypeEntity);
                         }
                         findAsset(userId, schemaAttributeTypeEntities, assetElement);
+                    } else {
+                        findAsset(userId, Arrays.asList(schemaAttribute), assetElement);
                     }
                 }
             }
