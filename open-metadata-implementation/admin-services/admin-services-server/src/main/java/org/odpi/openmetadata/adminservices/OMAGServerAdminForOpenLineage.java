@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
@@ -28,8 +28,8 @@ public class OMAGServerAdminForOpenLineage {
 
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            OpenLineageConfig openLineageConfig = serverConfig.getOpenLineageConfig();
-            this.setOpenLineageConfig(userId, serverName, openLineageConfig);
+            OpenLineageServerConfig openLineageServerConfig = serverConfig.getOpenLineageServerConfig();
+            this.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
         } catch (OMAGInvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (Throwable error) {
@@ -40,7 +40,7 @@ public class OMAGServerAdminForOpenLineage {
     }
 
 
-    public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageConfig openLineageConfig) {
+    public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageServerConfig openLineageServerConfig) {
         String methodName = "setOpenLineageConfig";
         VoidResponse response = new VoidResponse();
 
@@ -51,33 +51,17 @@ public class OMAGServerAdminForOpenLineage {
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-
-            openLineageConfig.setOpenLineageBufferGraphConnection(
-                    connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageConfig.getOpenLineageProviderBuffer(),
-                            serverConfig.getLocalServerURL(),
-                            openLineageConfig.getBufferGraphConfig())
-            );
-
-            openLineageConfig.setOpenLineageMainGraphConnection(
-                    connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageConfig.getOpenLineageProviderMain(),
-                            serverConfig.getLocalServerURL(),
-                            openLineageConfig.getMainGraphConfig())
-            );
-
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            openLineageConfig.setInTopicConnection(
+            openLineageServerConfig.setInTopicConnection(
                     connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server",
-                            openLineageConfig.getInTopicName(),
+                            openLineageServerConfig.getInTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getConfigurationProperties())
             );
 
-            serverConfig.setOpenLineageConfig(openLineageConfig);
+            serverConfig.setOpenLineageServerConfig(openLineageServerConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
 
@@ -87,7 +71,7 @@ public class OMAGServerAdminForOpenLineage {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (openLineageConfig == null) {
+            if (openLineageServerConfig == null) {
                 configAuditTrail.add(
                         new Date().toString() + " " + userId + " removed configuration for open lineage services.");
             } else {

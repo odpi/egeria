@@ -37,7 +37,12 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
     private static final String assertion5    = testCaseId + "-05";
     private static final String assertionMsg5 = " classification removed from entity reference copy of type ";
 
-    private static final String discoveredProperty_referenceCopySupport = " reference copy support";
+
+    private static final String assertion6    = testCaseId + "-06";
+    private static final String assertionMsg6 = " repository supports creation of instances.";
+
+    private static final String assertion7    = testCaseId + "-07";
+    private static final String assertionMsg7 = " repository supports storage of reference copies.";
 
 
     private EntityDef         testEntityDef;
@@ -78,24 +83,58 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Create an entity reference copy of the entity type.
-         * To do this, a local entity is created, copied and deleted/purged. The copy is modified (to look remote)
-         * and is saved as a reference copy
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
          */
 
+        EntityDetail newEntity;
 
-        /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates an
-         * entity that is logically complete - versus an instance with just the locally-defined properties.
-         */
+        try {
+            /*
+             * Create an entity reference copy of the entity type.
+             * To do this, a local entity is created, copied and deleted/purged. The copy is modified (to look remote)
+             * and is saved as a reference copy
+             */
 
-        EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                testEntityDef.getGUID(),
-                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef),
-                null,
-                null);
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                    testEntityDef.getGUID(),
+                    super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef),
+                    null,
+                    null);
+
+            assertCondition((true),
+                    assertion6,
+                    testTypeName + assertionMsg6,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion6,
+                    assertionMsg6,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return;
+        }
 
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
@@ -165,8 +204,10 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntity);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Enabled",
+
+            assertCondition((true),
+                    assertion7,
+                    testTypeName + assertionMsg7,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
@@ -257,11 +298,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
         }
         catch (FunctionNotSupportedException e) {
 
-            /*
-             * Disable the discovered property, with evidence that reference copy storage requirement is not supported.
-             */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion7,
+                    assertionMsg7,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 

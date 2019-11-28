@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGConformanceSuiteConfigServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +24,19 @@ public class ConfigConformanceSuiteServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param tutRepositoryServerName name of the server that the repository workbench should test.
+     * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/repository-workbench/repositories/{tutRepositoryServerName}")
+    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/repository-workbench/repositories")
 
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String userId,
                                                                   @PathVariable String serverName,
-                                                                  @PathVariable String tutRepositoryServerName)
+                                                                  @RequestBody RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
-        return adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, tutRepositoryServerName);
+        return adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, repositoryConformanceWorkbenchConfig);
     }
 
 

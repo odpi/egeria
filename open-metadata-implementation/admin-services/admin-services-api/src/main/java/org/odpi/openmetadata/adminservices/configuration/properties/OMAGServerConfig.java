@@ -102,7 +102,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
     private ConformanceSuiteConfig    conformanceSuiteConfig    = null;
     private DiscoveryServerConfig     discoveryServerConfig     = null;
-    private OpenLineageConfig         openLineageConfig         = null;
+    private OpenLineageServerConfig openLineageServerConfig = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
     private SecurityOfficerConfig     securityOfficerConfig     = null;
@@ -147,7 +147,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             repositoryServicesConfig = template.getRepositoryServicesConfig();
             conformanceSuiteConfig = template.getConformanceSuiteConfig();
             discoveryServerConfig = template.getDiscoveryServerConfig();
-            openLineageConfig = template.getOpenLineageConfig();
+            openLineageServerConfig = template.getOpenLineageServerConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
             securityOfficerConfig = template.getSecurityOfficerConfig();
@@ -500,20 +500,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return OpenLineageConfig properties
      */
-    public OpenLineageConfig getOpenLineageConfig()
+    public OpenLineageServerConfig getOpenLineageServerConfig()
     {
-        return openLineageConfig;
+        return openLineageServerConfig;
     }
 
 
     /**
      * Set up the configuration for open lineage services.
      *
-     * @param openLineageConfig OpenLineageConfig properties
+     * @param openLineageServerConfig OpenLineageConfig properties
      */
-    public void setOpenLineageConfig(OpenLineageConfig openLineageConfig)
+    public void setOpenLineageServerConfig(OpenLineageServerConfig openLineageServerConfig)
     {
-        this.openLineageConfig = openLineageConfig;
+        this.openLineageServerConfig = openLineageServerConfig;
     }
 
 
@@ -683,7 +683,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
                 ", discoveryServerConfig=" + discoveryServerConfig +
-                ", openLineageConfig=" + openLineageConfig +
+                ", openLineageConfig=" + openLineageServerConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", securityOfficerConfig=" + securityOfficerConfig +
@@ -723,7 +723,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                 Objects.equals(getDiscoveryServerConfig(), that.getDiscoveryServerConfig()) &&
-                Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
+                Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
                 Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&

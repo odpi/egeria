@@ -31,16 +31,20 @@ public enum DataEngineErrorCode {
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-005 ",
+    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-001 ",
             "The port type passed for the {0} is invalid, or different from {1}",
             "The system is unable to create a new PortDelegation relation the request without equal types between the ports.",
             "Correct the code in the caller to provide the correct port type."),
-    PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
+    PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-002",
             "The data engine event {0} could not be processed. Error: {1}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
-    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
+    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
             "The data engine event {0} could not be parsed. Error: {1}",
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema."),
+    DATA_ENGINE_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
+            "Exception while processing the data engine event {0}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema.");
 
