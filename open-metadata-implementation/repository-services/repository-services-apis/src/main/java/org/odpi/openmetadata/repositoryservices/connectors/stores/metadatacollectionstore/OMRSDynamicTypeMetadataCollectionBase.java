@@ -260,13 +260,11 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
         /*
          * Validate parameters
          */
-        super.updateTypeDefParameterValidation(userId, typeDefPatch, methodName);
+        TypeDef  existingTypeDef = super.updateTypeDefParameterValidation(userId, typeDefPatch, methodName);
 
         /*
          * Perform operation
          */
-        TypeDef  existingTypeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefPatch.getTypeName());
-
         if (existingTypeDef == null)
         {
             super.reportUnknownTypeGUID(typeDefPatch.getTypeDefGUID(),

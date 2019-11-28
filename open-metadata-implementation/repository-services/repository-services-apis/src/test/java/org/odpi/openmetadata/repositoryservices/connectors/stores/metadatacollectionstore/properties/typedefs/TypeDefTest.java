@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertTrue;
+
 /**
  * TypeDefTest provides test of TypeDef
  */
@@ -12,9 +14,20 @@ public class TypeDefTest
 {
     @Test public void testConstructors()
     {
-        TypeDefElementHeaderMock testObject = new TypeDefElementHeaderMock();
+        TypeDefMock testObject = new TypeDefMock();
 
 
-        new TypeDefElementHeaderMock(testObject);
+        new TypeDefMock(testObject);
+
+        assertTrue(testObject.getCategory().equals(TypeDefCategory.UNKNOWN_DEF));
+    }
+
+    /**
+     * Test that toString is overridden.
+     */
+    @Test public void testToString()
+    {
+        TypeDef typeDef = new TypeDefMock();
+        assertTrue(typeDef.toString().contains("TypeDef"));
     }
 }

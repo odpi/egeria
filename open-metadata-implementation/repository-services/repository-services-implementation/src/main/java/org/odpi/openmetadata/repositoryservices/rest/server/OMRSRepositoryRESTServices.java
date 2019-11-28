@@ -1345,7 +1345,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDef(metadataCollection.updateTypeDef(userId, typeDefPatch));
 
-            this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeName(), typeDefPatch.getTypeDefGUID());
+            this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeDefName(), typeDefPatch.getTypeDefGUID());
         }
         catch (FunctionNotSupportedException error)
         {

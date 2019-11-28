@@ -347,12 +347,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             // TODO PatchError
         }
 
-        TypeDefPatchAction patchAction = typeDefPatch.getAction();
-        if (patchAction == null)
-        {
-            // TODO patch error
-        }
-
 
         /*
          * Is the version compatible?
@@ -392,56 +386,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         catch (ClassCastException castError)
         {
             // TODO Throw PatchError as base type is messed up
-        }
-
-        /*
-         * Now we have a new TypeDef, just need to make the changes.  The Action
-         */
-        if (clonedTypeDef != null)
-        {
-            switch (patchAction)
-            {
-                case ADD_ATTRIBUTES:
-                    updatedTypeDef = this.patchTypeDefAttributes(clonedTypeDef, typeDefPatch.getTypeDefAttributes());
-                    break;
-
-                case ADD_OPTIONS:
-                    updatedTypeDef = this.patchTypeDefNewOptions(clonedTypeDef, typeDefPatch.getTypeDefOptions());
-                    break;
-
-                case UPDATE_OPTIONS:
-                    updatedTypeDef = this.patchTypeDefUpdateOptions(clonedTypeDef, typeDefPatch.getTypeDefOptions());
-                    break;
-
-                case DELETE_OPTIONS:
-                    updatedTypeDef = this.patchTypeDefDeleteOptions(clonedTypeDef, typeDefPatch.getTypeDefOptions());
-                    break;
-
-                case ADD_EXTERNAL_STANDARDS:
-                    updatedTypeDef = this.patchTypeDefAddExternalStandards(clonedTypeDef,
-                                                                           typeDefPatch.getExternalStandardMappings(),
-                                                                           typeDefPatch.getTypeDefAttributes());
-                    break;
-
-                case UPDATE_EXTERNAL_STANDARDS:
-                    updatedTypeDef = this.patchTypeDefUpdateExternalStandards(clonedTypeDef,
-                                                                              typeDefPatch.getExternalStandardMappings(),
-                                                                              typeDefPatch.getTypeDefAttributes());
-                    break;
-
-                case DELETE_EXTERNAL_STANDARDS:
-                    updatedTypeDef = this.patchTypeDefDeleteExternalStandards(clonedTypeDef,
-                                                                              typeDefPatch.getExternalStandardMappings(),
-                                                                              typeDefPatch.getTypeDefAttributes());
-                    break;
-
-                case UPDATE_DESCRIPTIONS:
-                    updatedTypeDef = this.patchTypeDefNewDescriptions(clonedTypeDef,
-                                                                      typeDefPatch.getDescription(),
-                                                                      typeDefPatch.getDescriptionGUID(),
-                                                                      typeDefPatch.getTypeDefAttributes());
-                    break;
-            }
         }
 
 

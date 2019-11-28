@@ -398,6 +398,12 @@ public enum OMRSErrorCode
                               "Other services may fail if they were dependent on this event notification.",
              "Correct the configuration for the repository event mapper connection in the server configuration. " +
                                "Retry the request when the repository event mapper configuration is correct."),
+    NOT_FOR_LOCAL_COLLECTION(400, "OMRS-LOCAL-REPOSITORY-400-002 ",
+                      "The local repository is not able to re-home the instance {0} of type {1} ({2}) because it is not managing the repository " +
+                              "with the requested home metadata collection of {3}.  This local repository is managing the {4} metadata collection",
+                      "The system is unable to process the request.",
+                      "Retry the request on the repository with the requested metadata collection identifier or retry the request on this " +
+                                     "repository with the local metadata collection identifier."),
     DUPLICATE_COHORT_NAME(400, "OMRS-METADATA-HIGHWAY-404-001 ",
             "There are more than one cohort configurations with the same name of {0}.",
             "The system is unable to connect to more than one cohort with the same name.",
@@ -744,6 +750,24 @@ public enum OMRSErrorCode
              "An OMRS repository connector or access server {0} has passed a null classification to the repository helper {1} operation as part of the {2} request",
              "The repository connector has called the repository helper operations in the wrong order or has a similar logic error.",
              "Raise a Github issue to get this fixed."),
+    ENTITY_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-009 ",
+             "The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner." +
+                                 "It is not able to complete the {2} request",
+             "There is a logic error either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
+                                 "routed to the wrong repository, or there is an error in the local repository.",
+             "Raise a Github issue to get this fixed."),
+    RELATIONSHIP_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-010 ",
+                              "The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner." +
+                                      "It is not able to complete the {2} request",
+             "There is a logic error either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
+                                      "routed to the wrong repository, or there is an error in the local repository.",
+             "Raise a Github issue to get this fixed."),
+    NULL_INSTANCE(503, "OMRS-LOCAL-REPOSITORY-503-011 ",
+             "The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned." +
+                                            "It is not able to complete the {2} request",
+             "There is probably a logic error in the repository connector for the real repository because it should have thrown an exception rather" +
+                          " than return null.",
+             "Raise an issue with the supplier of the real repository connector to get this fixed."),
     NO_LOCAL_REPOSITORY(503, "OMRS-REST-API-503-001 ",
             "There is no local repository to support REST API call {0}",
             "The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.",

@@ -50,6 +50,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
             attributeName = template.getAttributeName();
             attributeCardinality = template.getAttributeCardinality();
             attributeDescription = template.getAttributeDescription();
+            attributeDescriptionGUID = template.getAttributeDescriptionGUID();
         }
     }
 

@@ -47,7 +47,11 @@ public class EnumDef extends AttributeTypeDef
 
         if (template != null)
         {
-            elementDefs = new ArrayList<>(template.getElementDefs());
+            if (template.getElementDefs() != null)
+            {
+                elementDefs = new ArrayList<>(template.getElementDefs());
+            }
+
             defaultValue = template.getDefaultValue();
         }
     }
@@ -72,6 +76,10 @@ public class EnumDef extends AttributeTypeDef
     public List<EnumElementDef> getElementDefs()
     {
         if (elementDefs == null)
+        {
+            return null;
+        }
+        else if (elementDefs.isEmpty())
         {
             return null;
         }

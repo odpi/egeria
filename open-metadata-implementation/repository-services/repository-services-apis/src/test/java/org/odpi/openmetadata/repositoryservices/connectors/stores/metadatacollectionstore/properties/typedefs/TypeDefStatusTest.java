@@ -12,10 +12,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the TypeDefPatchAction enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the TypeDefStatus enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TypeDefPatchActionTest
+public class TypeDefStatusTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -48,44 +48,19 @@ public class TypeDefPatchActionTest
     {
         existingOrdinals = new ArrayList<>();
 
-        TypeDefPatchAction  testValue;
+        TypeDefStatus  testValue;
 
-        testValue = TypeDefPatchAction.ADD_ATTRIBUTES;
+        testValue = TypeDefStatus.ACTIVE_TYPEDEF;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = TypeDefPatchAction.ADD_OPTIONS;
+        testValue = TypeDefStatus.RENAMED_TYPEDEF;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = TypeDefPatchAction.UPDATE_OPTIONS;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = TypeDefPatchAction.DELETE_OPTIONS;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = TypeDefPatchAction.ADD_EXTERNAL_STANDARDS;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = TypeDefPatchAction.UPDATE_EXTERNAL_STANDARDS;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = TypeDefPatchAction.DELETE_EXTERNAL_STANDARDS;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = TypeDefPatchAction.UPDATE_DESCRIPTIONS;
+        testValue = TypeDefStatus.DEPRECATED_TYPEDEF;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -104,7 +79,7 @@ public class TypeDefPatchActionTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(TypeDefPatchAction.DELETE_OPTIONS);
+            jsonString = objectMapper.writeValueAsString(TypeDefStatus.RENAMED_TYPEDEF);
         }
         catch (Throwable  exc)
         {
@@ -113,7 +88,7 @@ public class TypeDefPatchActionTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, TypeDefPatchAction.class) == TypeDefPatchAction.DELETE_OPTIONS);
+            assertTrue(objectMapper.readValue(jsonString, TypeDefStatus.class) == TypeDefStatus.RENAMED_TYPEDEF);
         }
         catch (Throwable  exc)
         {
@@ -127,6 +102,6 @@ public class TypeDefPatchActionTest
      */
     @Test public void testToString()
     {
-        assertTrue(TypeDefPatchAction.DELETE_EXTERNAL_STANDARDS.toString().contains("TypeDefPatchAction"));
+        assertTrue(TypeDefStatus.DEPRECATED_TYPEDEF.toString().contains("TypeDefStatus"));
     }
 }

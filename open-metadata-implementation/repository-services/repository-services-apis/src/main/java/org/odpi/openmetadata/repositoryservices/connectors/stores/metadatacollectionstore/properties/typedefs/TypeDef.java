@@ -68,6 +68,7 @@ public abstract class TypeDef extends TypeDefSummary
 
     /**
      * Typical constructor is passed the properties of the typedef's super class being constructed.
+     * This should only be used for new TypeDefs.
      *
      * @param category    category of this TypeDef
      * @param guid        unique id for the TypeDef
@@ -75,11 +76,11 @@ public abstract class TypeDef extends TypeDefSummary
      * @param version     active version number for the TypeDef
      * @param versionName name for the active version of the TypeDef
      */
-    protected TypeDef(TypeDefCategory category,
-                      String          guid,
-                      String          name,
-                      long            version,
-                      String          versionName)
+    TypeDef(TypeDefCategory category,
+            String          guid,
+            String          name,
+            long            version,
+            String          versionName)
     {
         super(category, guid, name, version, versionName);
     }

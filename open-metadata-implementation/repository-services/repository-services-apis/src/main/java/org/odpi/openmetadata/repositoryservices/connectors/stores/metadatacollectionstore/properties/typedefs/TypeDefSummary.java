@@ -45,11 +45,11 @@ public class TypeDefSummary extends TypeDefLink
      * @param version     active version number for the TypeDef
      * @param versionName active version name for the TypeDef
      */
-    public TypeDefSummary(TypeDefCategory category,
-                          String          guid,
-                          String          name,
-                          long            version,
-                          String          versionName)
+    TypeDefSummary(TypeDefCategory category,
+                   String          guid,
+                   String          name,
+                   long            version,
+                   String          versionName)
     {
         super(guid, name);
 
