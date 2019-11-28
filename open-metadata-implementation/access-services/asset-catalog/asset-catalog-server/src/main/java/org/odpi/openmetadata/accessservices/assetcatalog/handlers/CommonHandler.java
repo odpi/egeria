@@ -191,6 +191,6 @@ public class CommonHandler {
     }
 
     public List<String> getTypesGUID(String userId, List<String> types) {
-        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getName()).collect(Collectors.toList());
+        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
     }
 }

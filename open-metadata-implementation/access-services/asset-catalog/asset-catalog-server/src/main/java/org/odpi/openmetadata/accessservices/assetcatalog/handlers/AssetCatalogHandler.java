@@ -1104,9 +1104,14 @@ public class AssetCatalogHandler {
                 continue;
             }
 
+            Element lastNode = getLastNode(assetElement);
             for (EntityDetail schemaAttribute : schemaAttributes) {
-                addElement(assetElement, schemaAttribute);
+                if(lastNode == null) {
+                    addContextElement(assetElement, schemaAttribute);
+                }
+            }
 
+            for (EntityDetail schemaAttribute : schemaAttributes) {
                 Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(schemaAttribute.getType().getTypeDefName());
                 if (isComplexSchemaType.isPresent()) {
                     setAssetDetails(userId, assetElement, schemaAttribute);
@@ -1194,6 +1199,10 @@ public class AssetCatalogHandler {
                 ASSET_SCHEMA_TYPE_GUID,
                 ASSET_SCHEMA_TYPE,
                 methodName);
+
+        if (dataSet == null) {
+            return;
+        }
 
         invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
                 GUID_PARAMETER,
