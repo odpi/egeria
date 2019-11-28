@@ -127,16 +127,16 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
+     LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
                         union(
                                 until(inE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV()),
+                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()),
                                 until(outE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV())
+                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
         LineageResponse lineageResponse = getLineageResponse(endToEndGraph);
@@ -239,7 +239,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    protected LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+     LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
 
@@ -286,7 +286,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+     LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -319,7 +319,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+     LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -361,7 +361,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         //when there isn't any.
         if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID)))
             return;
-        LineageVertex condensedVertex = new LineageVertex("condensedSource", NODE_LABEL_CONDENSED);
+        LineageVertex condensedVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE, NODE_LABEL_CONDENSED);
         lineageVertices.add(condensedVertex);
 
         for (Vertex originalVertex : sourcesList) {
@@ -390,7 +390,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
-            LineageVertex condensedDestinationVertex = new LineageVertex("condensedDestination", NODE_LABEL_CONDENSED);
+            LineageVertex condensedDestinationVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION, NODE_LABEL_CONDENSED);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(
@@ -422,7 +422,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-    private LineageResponse glossary(Graph graph, String guid) {
+     LineageResponse glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
