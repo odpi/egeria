@@ -524,6 +524,13 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 testCase.executeTest();
             }
 
+
+            //-- TODO remove me-------
+            for (TestSupportedRelationshipPropertySearch testCase : relationshipPropertySearchTestCases) {
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+            }
+            // ------------------------
+
             for (TestSupportedRelationshipSharingPropertySearch testCase : relationshipSharingPropertySearchTestCases) {
                 testCase.executeTest();
             }
