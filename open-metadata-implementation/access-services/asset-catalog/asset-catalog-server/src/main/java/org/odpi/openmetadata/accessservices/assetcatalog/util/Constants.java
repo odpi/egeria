@@ -87,6 +87,9 @@ public final class Constants {
 
     public static final String THE_NORMAL_OPERATION_OF_THE_SERVICE = "No action is required.  This is part of the normal operation of the service.";
 
+    public static final String GUID_PARAMETER = "GUID";
+    public static final String SEARCH_PARAMETER = "searchParameter";
+
     private Constants() {
     }
 }

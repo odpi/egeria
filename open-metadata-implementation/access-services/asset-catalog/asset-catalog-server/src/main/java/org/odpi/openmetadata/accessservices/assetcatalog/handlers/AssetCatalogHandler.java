@@ -53,9 +53,6 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
 
 public class AssetCatalogHandler {
 
-    private static final String ASSET_GUID_PARAMETER = "assetGUID";
-    private static final String SEARCH_PARAMETER = "searchParameter";
-
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -88,7 +85,7 @@ public class AssetCatalogHandler {
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
+        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, errorHandler);
         this.supportedTypesForSearch = supportedTypesForSearch;
     }
 
@@ -105,8 +102,14 @@ public class AssetCatalogHandler {
      */
     public AssetDescription getEntityDetails(String userId, String assetGUID, String assetTypeName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        EntityDetail entityByGUID = getEntity(userId, assetGUID, assetTypeName);
+
+        String methodName = "getEntityDetails";
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
+
+        EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
         AssetConverter converter = new AssetConverter(repositoryHelper);
+
         return converter.getAssetDescription(entityByGUID);
     }
 
@@ -131,7 +134,7 @@ public class AssetCatalogHandler {
         String methodName = "getRelationshipsByEntityGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
                 assetGUID,
@@ -169,7 +172,7 @@ public class AssetCatalogHandler {
         String methodName = "getEntityClassificationByName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         List<Classification> entityClassifications = getEntityClassifications(userId, assetGUID, assetTypeName);
         AssetConverter converter = new AssetConverter(repositoryHelper);
@@ -216,7 +219,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, ASSET_GUID_PARAMETER);
+            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -259,7 +262,7 @@ public class AssetCatalogHandler {
 
         String methodName = "getRelationships";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(from, pageSize, methodName);
 
         String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipTypeName);
@@ -311,7 +314,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, ASSET_GUID_PARAMETER);
+            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -349,7 +352,7 @@ public class AssetCatalogHandler {
         String methodName = "getEntitiesFromNeighborhood";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
@@ -381,7 +384,7 @@ public class AssetCatalogHandler {
         for (EntityDetail asset : entities) {
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
-                    ASSET_GUID_PARAMETER,
+                    GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getProperties()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
@@ -422,8 +425,9 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
         List<EntityDetail> result;
-        if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypeGUIDs())) {
-            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, searchParameters.getEntityTypeGUIDs());
+        if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
+            List<String> typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
+            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
         } else {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
         }
@@ -433,7 +437,7 @@ public class AssetCatalogHandler {
 
         for (EntityDetail entityDetail : result) {
             invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                    ASSET_GUID_PARAMETER,
+                    GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
@@ -467,7 +471,7 @@ public class AssetCatalogHandler {
 
         EntityDetail entityDetail = getEntity(userId, entityGUID, entityTypeDefName);
 
-        if (entityDetail.getType() == null) {
+        if (entityDetail != null && entityDetail.getType() == null) {
             return null;
         }
 
@@ -480,7 +484,7 @@ public class AssetCatalogHandler {
             return getContextForGlossaryTerm(userId, entityDetail);
         } else {
             invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                    ASSET_GUID_PARAMETER,
+                    GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
@@ -512,11 +516,14 @@ public class AssetCatalogHandler {
         String methodName = "getEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
-        EntityDetail entityByGUID = repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetTypeName, methodName);
+        EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
+        if (entityByGUID == null) {
+            return entityByGUID;
+        }
         invalidParameterHandler.validateAssetInSupportedZone(entityByGUID.getGUID(),
-                ASSET_GUID_PARAMETER,
+                GUID_PARAMETER,
                 commonHandler.getAssetZoneMembership(entityByGUID.getProperties()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
@@ -787,11 +794,9 @@ public class AssetCatalogHandler {
 
         EntityProxy parentFolderProxy = repositoryHandler.getOtherEnd(entityDetail.getGUID(), parentFolderRelationships.get(0));
 
-        EntityDetail parentFolder = repositoryHandler.getEntityByGUID(userId,
+        EntityDetail parentFolder = commonHandler.getEntityByGUID(userId,
                 parentFolderProxy.getGUID(),
-                ASSET_GUID_PARAMETER,
-                parentFolderProxy.getType().getTypeDefName(),
-                method);
+                parentFolderProxy.getType().getTypeDefName());
 
         addElement(assetElement, parentFolder);
         getContextForFileFolder(userId, parentFolder, assetElement);
@@ -1069,7 +1074,7 @@ public class AssetCatalogHandler {
                     methodName);
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
-                    ASSET_GUID_PARAMETER,
+                    GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getProperties()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
@@ -1191,7 +1196,7 @@ public class AssetCatalogHandler {
                 methodName);
 
         invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
-                ASSET_GUID_PARAMETER,
+                GUID_PARAMETER,
                 commonHandler.getAssetZoneMembership(dataSet.getProperties()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
@@ -1232,15 +1237,13 @@ public class AssetCatalogHandler {
             if (entityOneProxy.getGUID().equals(dataSet.getGUID())) {
                 setConnections(userId, assetElement, dataSet);
             } else {
-                EntityDetail asset = repositoryHandler.getEntityByGUID(userId,
+                EntityDetail asset = commonHandler.getEntityByGUID(userId,
                         entityOneProxy.getGUID(),
-                        ASSET_GUID_PARAMETER,
-                        entityOneProxy.getType().getTypeDefName(),
-                        methodName);
+                        entityOneProxy.getType().getTypeDefName());
 
                 if (asset != null) {
                     invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
-                            ASSET_GUID_PARAMETER,
+                            GUID_PARAMETER,
                             commonHandler.getAssetZoneMembership(asset.getProperties()),
                             supportedZones,
                             ASSET_CATALOG_OMAS,
@@ -1368,10 +1371,10 @@ public class AssetCatalogHandler {
             InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityClassifications";
 
-        EntityDetail entityDetails = repositoryHandler.getEntityByGUID(userId, assetId, ASSET_GUID_PARAMETER, assetTypeName, methodName);
+        EntityDetail entityDetails = commonHandler.getEntityByGUID(userId, assetId, assetTypeName);
 
         invalidParameterHandler.validateAssetInSupportedZone(entityDetails.getGUID(),
-                ASSET_GUID_PARAMETER,
+                GUID_PARAMETER,
                 commonHandler.getAssetZoneMembership(entityDetails.getProperties()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
@@ -1418,7 +1421,7 @@ public class AssetCatalogHandler {
             entityNeighborhood = metadataCollection.getEntityNeighborhood(
                     userId,
                     entityGUID,
-                    searchParameters.getEntityTypeGUIDs(),
+                    searchParameters.getEntityTypes(),
                     searchParameters.getRelationshipTypeGUIDs(),
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     searchParameters.getLimitResultsByClassification(),
@@ -1430,7 +1433,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, entityGUID, searchParameters.getEntityTypeGUIDs().get(0), methodName, ASSET_GUID_PARAMETER);
+            errorHandler.handleUnknownEntity(e, entityGUID, searchParameters.getEntityTypes().get(0), methodName, GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }

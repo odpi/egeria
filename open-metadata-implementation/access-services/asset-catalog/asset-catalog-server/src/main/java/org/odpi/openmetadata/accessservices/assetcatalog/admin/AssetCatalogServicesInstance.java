@@ -24,10 +24,10 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
     private RelationshipHandler relationshipHandler;
 
     /**
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones      configurable list of zones that Asset Catalog is allowed to serve Assets from
-     * @param auditLog            logging destination
-     * @param localServerUserId   userId used for server initiated actions
+     * @param repositoryConnector     link to the repository responsible for servicing the REST calls.
+     * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
+     * @param auditLog                logging destination
+     * @param localServerUserId       userId used for server initiated actions
      * @param supportedTypesForSearch
      * @throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException a problem occurred during initialization
      */
@@ -39,10 +39,9 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, errorHandler, supportedZones, supportedTypesForSearch);
-            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, supportedZones);
+            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    errorHandler, supportedZones, supportedTypesForSearch);
+            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
         } else {
             final String methodName = "new ServiceInstance";
 

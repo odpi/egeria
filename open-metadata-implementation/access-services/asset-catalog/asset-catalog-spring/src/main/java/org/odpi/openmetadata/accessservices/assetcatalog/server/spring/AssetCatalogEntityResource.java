@@ -66,7 +66,7 @@ public class AssetCatalogEntityResource {
     public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
                                                      @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                     @RequestParam(name = "assetType") @NotNull String assetType) {
+                                                     @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetUniverseByGUID(serverName, userId, assetGUID, assetType);
     }
 
@@ -87,10 +87,10 @@ public class AssetCatalogEntityResource {
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                       @RequestParam(name = "assetType") @NotNull String assetType,
-                                                       @RequestParam(name = "relationshipType") String relationshipType,
-                                                       @RequestParam(name = "from") @PositiveOrZero Integer from,
-                                                       @RequestParam(name = "pageSize") @PositiveOrZero Integer pageSize) {
+                                                       @RequestParam(name = "assetType", required = false) String assetType,
+                                                       @RequestParam(name = "relationshipType", required = false) String relationshipType,
+                                                       @RequestParam(name = "from", required = false) @PositiveOrZero Integer from,
+                                                       @RequestParam(name = "pageSize", required = false) @PositiveOrZero Integer pageSize) {
         return assetService.getAssetRelationships(serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
     }
 
@@ -109,8 +109,8 @@ public class AssetCatalogEntityResource {
     public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                              @RequestParam(name = "assetType") @NotNull String assetType,
-                                                              @RequestParam(name = "classificationName") String classificationName) {
+                                                              @RequestParam(name = "assetType", required = false) String assetType,
+                                                              @RequestParam(name = "classificationName", required = false) String classificationName) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetGUID, assetType, classificationName);
     }
 
@@ -202,7 +202,7 @@ public class AssetCatalogEntityResource {
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                          @PathVariable("userId") String userId,
                                          @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                         @RequestParam(name = "assetType") @NotNull String assetType) {
+                                         @RequestParam(name = "assetType", required = false) String assetType) {
         return assetService.buildContext(serverName, userId, assetGUID, assetType);
     }
 
