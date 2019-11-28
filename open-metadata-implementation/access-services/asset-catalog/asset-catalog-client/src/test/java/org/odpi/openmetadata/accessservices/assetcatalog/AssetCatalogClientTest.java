@@ -29,8 +29,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class
-AssetCatalogClientTest {
+public class AssetCatalogClientTest {
 
     private static final String SERVER_URL = "http://localhost:8081";
     private static final String SERVER_NAME = "TestServer";
