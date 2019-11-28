@@ -93,14 +93,33 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
     private static final String assertionMsg12  = " search contained expected results.";
 
     private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " search returned results.";
+    private static final String assertionMsg13  = " exact search returned results.";
     private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = " search contained expected number of results.";
+    private static final String assertionMsg14  = " exact search contained expected number of results.";
     private static final String assertion15     = testCaseId + "-15";
-    private static final String assertionMsg15  = " search contained expected results.";
+    private static final String assertionMsg15  = " exact search contained expected results.";
 
+    private static final String assertion16     = testCaseId + "-16";
+    private static final String assertionMsg16  = " prefix search returned results.";
+    private static final String assertion17     = testCaseId + "-17";
+    private static final String assertionMsg17  = " prefix search contained expected number of results.";
+    private static final String assertion18     = testCaseId + "-18";
+    private static final String assertionMsg18  = " prefix search contained expected results.";
 
-    private static final String discoveredProperty_searchSupport       = " search support";
+    private static final String assertion19     = testCaseId + "-19";
+    private static final String assertionMsg19  = " suffix search returned results.";
+    private static final String assertion20     = testCaseId + "-20";
+    private static final String assertionMsg20  = " suffix search contained expected number of results.";
+    private static final String assertion21     = testCaseId + "-21";
+    private static final String assertionMsg21  = " suffix search contained expected results.";
+
+    private static final String assertion22     = testCaseId + "-22";
+    private static final String assertionMsg22  = " contains search returned results.";
+    private static final String assertion23     = testCaseId + "-23";
+    private static final String assertionMsg23  = " contains search contained expected number of results.";
+    private static final String assertion24     = testCaseId + "-24";
+    private static final String assertionMsg24  = " contains search contained expected results.";
+
 
 
     private String                 metadataCollectionId;
@@ -1223,20 +1242,157 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
             if (attributeName != null) {
 
-                    Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
-                    Iterator<Object> possibleValueIterator = possibleValues.iterator();
-                    while (possibleValueIterator.hasNext()) {
+                /*
+                 * The given attribute (only) is tested for excat, prefix, suffix and contains matches for each of the values already seen.
+                 * All these searches should return at least some instances in the result
+                 */
 
-                        String stringValue = (String) (possibleValueIterator.next());
+                Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
+                Iterator<Object> possibleValueIterator = possibleValues.iterator();
+                while (possibleValueIterator.hasNext()) {
+
+                    String stringValue = (String) (possibleValueIterator.next());
+
+                    /*
+                     * EXACT MATCH
+                     */
+
+                    String literalisedValue = literaliseStringPropertyExact(stringValue);
 
 
-                        String literalisedValue = literaliseStringProperty(stringValue);
+                    /*
+                     * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                     */
+                    int expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+
+                    /*
+                     * Search....
+                     */
+
+                    result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                            entityDef.getGUID(),
+                            literalisedValue,
+                            fromElement,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            pageSize);
+
+
+                    /*
+                     * It is reasonable to expect a non-null result - based on the way the search properties were constructed
+                     */
+                    assertCondition((result != null),
+                            assertion13,
+                            testTypeName + assertionMsg13,
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+                    /*
+                     * Check that the expected number of entities was returned. This has to consider the effect of the original
+                     * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                     * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                     * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                     * so the expectation may be a subset of the actual.
+                     * The actual instances returned
+                     * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                     * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                     * entities that were not discovered previously.
+                     * This next assertion is just about the size of the result set.
+                     */
+                    assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                            assertion14,
+                            testTypeName + assertionMsg14,
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                    /*
+                     * Check that the expected entities were all returned
+                     */
+                    List<String> resultGUIDs = new ArrayList<>();
+                    for (EntityDetail entity : result) {
+                        resultGUIDs.add(entity.getGUID());
+                    }
+                    List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
+
+
+                    /*
+                     * Here again, we need to be sensitive to whether the original search hit the page limit.
+                     * If the original search hit the limit then we may legitimately receive additional instances in the results
+                     * of a narrower search. But not if the original result set was under the page limit.
+                     */
+
+                    boolean matchingResult = true;
+
+                    if (!pageLimited) {
+                        if (!resultGUIDs.containsAll(expectedGUIDs))
+                            matchingResult = false;
+                    } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                        for (EntityDetail entity : result) {
+
+                            if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                /*
+                                 * This was an extra entity that we either did not expect or that we have not seen previously.
+                                 * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                 */
+                                boolean validEntity = false;
+                                InstanceProperties entityProperties = entity.getProperties();
+                                if (entityProperties != null) {
+                                    Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
+                                    Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
+                                    while (entityPropertyNameIterator.hasNext()) {
+                                        String propertyName = entityPropertyNameIterator.next();
+                                        InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                                        if (ipValue != null) {
+                                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                    String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                    if (propertyValueAsString.equals(stringValue)) {
+                                                        validEntity = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!validEntity)
+                                    matchingResult = false;
+                            }
+                        }
+                    }
+
+
+                    assertCondition(matchingResult,
+                            assertion15,
+                            testTypeName + assertionMsg15,
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                    /*
+                     * PREFIX MATCH - only feasible if string value has at least 2 chars.
+                     */
+
+
+                    int stringValueLength = stringValue.length();
+                    if (stringValueLength >= 2) {
+                        int truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
+                        String truncatedStringValue = stringValue.substring(0, truncatedLength);
+
+                        literalisedValue = literaliseStringPropertyStartsWith(truncatedStringValue);
 
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
                          */
-                        int expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
 
                         /*
                          * Search....
@@ -1251,15 +1407,15 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                 null,
                                 null,
                                 null,
-                                 pageSize);
+                                pageSize);
 
 
                         /*
                          * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                          */
                         assertCondition((result != null),
-                                assertion13,
-                                testTypeName + assertionMsg13,
+                                assertion16,
+                                testTypeName + assertionMsg16,
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1275,9 +1431,9 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                          * entities that were not discovered previously.
                          * This next assertion is just about the size of the result set.
                          */
-                        assertCondition(  (  (!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount ) ),
-                                assertion14,
-                                testTypeName + assertionMsg14,
+                        assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                assertion17,
+                                testTypeName + assertionMsg17,
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1285,11 +1441,11 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         /*
                          * Check that the expected entities were all returned
                          */
-                        List<String> resultGUIDs = new ArrayList<>();
+                        resultGUIDs = new ArrayList<>();
                         for (EntityDetail entity : result) {
                             resultGUIDs.add(entity.getGUID());
                         }
-                        List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
+                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
@@ -1298,14 +1454,12 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                          * of a narrower search. But not if the original result set was under the page limit.
                          */
 
-                        boolean matchingResult = true;
+                        matchingResult = true;
 
                         if (!pageLimited) {
                             if (!resultGUIDs.containsAll(expectedGUIDs))
                                 matchingResult = false;
-                        }
-
-                        else { // pageLimited, so need to allow for and verify hitherto unseen instances
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                             for (EntityDetail entity : result) {
 
@@ -1329,7 +1483,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                     PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
                                                     if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
                                                         String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-                                                        if (propertyValueAsString.equals(stringValue)) {
+                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
                                                             validEntity = true;
                                                         }
                                                     }
@@ -1345,10 +1499,270 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
 
                         assertCondition(matchingResult,
-                                assertion15,
-                                testTypeName + assertionMsg15,
+                                assertion18,
+                                testTypeName + assertionMsg18,
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    }
+
+                    /*
+                     * SUFFIX MATCH - only feasible if string value has at least 2 chars.
+                     */
+
+
+                    if (stringValueLength >= 2) {
+                        int truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
+                        String truncatedStringValue = stringValue.substring(stringValueLength-truncatedLength, stringValueLength);
+
+                        literalisedValue = literaliseStringPropertyEndsWith(truncatedStringValue);
+
+
+                        /*
+                         * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         */
+                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+
+                        /*
+                         * Search....
+                         */
+
+                        result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                literalisedValue,
+                                fromElement,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                pageSize);
+
+
+                        /*
+                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
+                         */
+                        assertCondition((result != null),
+                                assertion19,
+                                testTypeName + assertionMsg19,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+                        /*
+                         * Check that the expected number of entities was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                assertion20,
+                                testTypeName + assertionMsg20,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected entities were all returned
+                         */
+                        resultGUIDs = new ArrayList<>();
+                        for (EntityDetail entity : result) {
+                            resultGUIDs.add(entity.getGUID());
+                        }
+                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
+
+
+                        /*
+                         * Here again, we need to be sensitive to whether the original search hit the page limit.
+                         * If the original search hit the limit then we may legitimately receive additional instances in the results
+                         * of a narrower search. But not if the original result set was under the page limit.
+                         */
+
+                        matchingResult = true;
+
+                        if (!pageLimited) {
+                            if (!resultGUIDs.containsAll(expectedGUIDs))
+                                matchingResult = false;
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                            for (EntityDetail entity : result) {
+
+                                if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                    /*
+                                     * This was an extra entity that we either did not expect or that we have not seen previously.
+                                     * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                     */
+                                    boolean validEntity = false;
+                                    InstanceProperties entityProperties = entity.getProperties();
+                                    if (entityProperties != null) {
+                                        Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
+                                        Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
+                                        while (entityPropertyNameIterator.hasNext()) {
+                                            String propertyName = entityPropertyNameIterator.next();
+                                            InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                                            if (ipValue != null) {
+                                                InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                    PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                    if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                        String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                            validEntity = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (!validEntity)
+                                        matchingResult = false;
+                                }
+                            }
+                        }
+
+
+                        assertCondition(matchingResult,
+                                assertion21,
+                                testTypeName + assertionMsg21,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    }
+
+
+                    /*
+                     * CONTAINS MATCH - only feasible if string value has at least 3 chars.
+                     */
+
+
+                    if (stringValueLength >= 3) {
+                        int truncatedLength = (int) (Math.floor(stringValueLength / 2.0));
+                        int diff = stringValueLength - truncatedLength;
+                        int halfDiff = diff/2;
+                        String truncatedStringValue = stringValue.substring(halfDiff, stringValueLength-halfDiff);
+
+                        literalisedValue = literaliseStringPropertyEndsWith(truncatedStringValue);
+
+
+                        /*
+                         * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         */
+                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+
+                        /*
+                         * Search....
+                         */
+
+                        result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                literalisedValue,
+                                fromElement,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                pageSize);
+
+
+                        /*
+                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
+                         */
+                        assertCondition((result != null),
+                                assertion22,
+                                testTypeName + assertionMsg22,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+                        /*
+                         * Check that the expected number of entities was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
+                                assertion23,
+                                testTypeName + assertionMsg23,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected entities were all returned
+                         */
+                        resultGUIDs = new ArrayList<>();
+                        for (EntityDetail entity : result) {
+                            resultGUIDs.add(entity.getGUID());
+                        }
+                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
+
+
+                        /*
+                         * Here again, we need to be sensitive to whether the original search hit the page limit.
+                         * If the original search hit the limit then we may legitimately receive additional instances in the results
+                         * of a narrower search. But not if the original result set was under the page limit.
+                         */
+
+                        matchingResult = true;
+
+                        if (!pageLimited) {
+                            if (!resultGUIDs.containsAll(expectedGUIDs))
+                                matchingResult = false;
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                            for (EntityDetail entity : result) {
+
+                                if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                                    /*
+                                     * This was an extra entity that we either did not expect or that we have not seen previously.
+                                     * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                     */
+                                    boolean validEntity = false;
+                                    InstanceProperties entityProperties = entity.getProperties();
+                                    if (entityProperties != null) {
+                                        Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
+                                        Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
+                                        while (entityPropertyNameIterator.hasNext()) {
+                                            String propertyName = entityPropertyNameIterator.next();
+                                            InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                                            if (ipValue != null) {
+                                                InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                    PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                    if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                        String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                            validEntity = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (!validEntity)
+                                        matchingResult = false;
+                                }
+                            }
+                        }
+
+
+                        assertCondition(matchingResult,
+                                assertion24,
+                                testTypeName + assertionMsg24,
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    }
 
 
                 }
@@ -1445,7 +1859,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
 
 
-    /*
+     /*
      *  Method to literalise a string value for exact match.
      *
      */
@@ -1456,6 +1870,49 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
         return litValue;
     }
 
+    /*
+     *  Method to literalise a string value for exact match.
+     *
+     */
+    public String literaliseStringPropertyExact(String value)
+    {
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        String litValue = repositoryHelper.getExactMatchRegex(value);
+        return litValue;
+    }
+
+    /*
+     *  Method to literalise a string value for prefix match.
+     *
+     */
+    public String literaliseStringPropertyStartsWith(String value)
+    {
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        String litValue = repositoryHelper.getStartsWithRegex(value);
+        return litValue;
+    }
+
+    /*
+     *  Method to literalise a string value for suffix match.
+     *
+     */
+    public String literaliseStringPropertyEndsWith(String value)
+    {
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        String litValue = repositoryHelper.getEndsWithRegex(value);
+        return litValue;
+    }
+
+    /*
+     *  Method to literalise a string value for suffix match.
+     *
+     */
+    public String literaliseStringPropertyContains(String value)
+    {
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        String litValue = repositoryHelper.getContainsRegex(value);
+        return litValue;
+    }
 
 
     /*
