@@ -51,7 +51,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <iron-icon icon="search"></iron-icon>
                 </vaadin-button>
              
-                <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+                <multiselect-combo-box id="combo" items="[[items]]" item-label-path="name" ordered="false">
                 </multiselect-combo-box>
            </div>
         </form>
