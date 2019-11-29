@@ -86,10 +86,15 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertion28    = testCaseId + "-28";
     private static final String assertionMsg28 = " repository supports creation of instances ";
 
+    private static final String assertion29    = testCaseId + "-29";
+    private static final String assertionMsg29 = " repository supports undo of operations ";
 
-    private static final String discoveredProperty_undoSupport                = " undo support";
-    private static final String discoveredProperty_softDeleteSupport          = " soft delete support";
-    private static final String discoveredProperty_historicRetrievalSupport   = " historic retrieval support";
+    private static final String assertion30    = testCaseId + "-30";
+    private static final String assertionMsg30 = " repository supports soft delete ";
+
+    private static final String assertion31    = testCaseId + "-31";
+    private static final String assertionMsg31 = " repository supports historic retrieval ";
+
 
 
     private String            metadataCollectionId;
@@ -381,10 +386,12 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             {
                 EntityDetail undoneEntity = metadataCollection.undoEntityUpdate(workPad.getLocalServerUserId(), newEntity.getGUID());
 
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                                            "Enabled",
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+                assertCondition(true,
+                        assertion29,
+                        testTypeName + assertionMsg29,
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
 
                 assertCondition(((undoneEntity != null) && (undoneEntity.getProperties() != null)),
                                 assertion19,
@@ -403,10 +410,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             }
             catch (FunctionNotSupportedException exception)
             {
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                                            "Disabled",
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+                super.addNotSupportedAssertion(assertion29,
+                        assertionMsg29,
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
 
             }
         }
@@ -432,10 +439,11 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                                                          newEntity.getType().getTypeDefName(),
                                                                          newEntity.getGUID());
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                                        "Enabled",
-                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+            assertCondition(true,
+                    assertion30,
+                    testTypeName + assertionMsg30,
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
             assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
                             assertion21,
@@ -504,10 +512,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
         catch (FunctionNotSupportedException exception)
         {
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                                        "Disabled",
-                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+            super.addNotSupportedAssertion(assertion30,
+                    assertionMsg30,
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
@@ -543,8 +551,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         {
             EntityDetail earlierEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID(), preDeleteDate);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion31,
+                    testTypeName + assertionMsg31,
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 
@@ -573,8 +582,8 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
         catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion31,
+                    assertionMsg31,
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 

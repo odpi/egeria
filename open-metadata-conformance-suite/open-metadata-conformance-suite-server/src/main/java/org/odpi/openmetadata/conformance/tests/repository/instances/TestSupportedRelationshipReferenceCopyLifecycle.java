@@ -58,7 +58,10 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
     private static final String assertion9     = testCaseId + "-09";
     private static final String assertionMsg9  = " reference relationship re-homed.";
 
-    private static final String discoveredProperty_referenceCopySupport = " reference copy support";
+    private static final String assertion10    = testCaseId + "-10";
+    private static final String assertionMsg10 = " reference supports storage of reference copies.";
+
+    //
 
 
     private RepositoryConformanceWorkPad workPad;
@@ -288,8 +291,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             /*
              * If we retrieved the reference copy of the relationship - we can assert that the TUT supports reference copies.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Enabled",
+            assertCondition((true),
+                    assertion10,
+                    testTypeName + assertionMsg10,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
@@ -302,12 +306,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         } else {
 
             /*
-             * Disable the discovered property, with evidence that reference storage requirement is not supported.
+             * Report that reference storage requirement is not supported.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion10,
+                    assertionMsg10,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
 
             /*
              * Terminate the test

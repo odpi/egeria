@@ -53,7 +53,9 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private static final String assertion12    = testCaseId + "-12";
     private static final String assertionMsg12 = " reference entity re-homed.";
 
-    private static final String discoveredProperty_referenceCopySupport = " reference copy support";
+    private static final String assertion13    = testCaseId + "-13";
+    private static final String assertionMsg13 = " reference supports storage of reference copies.";
+
 
 
     private String            metadataCollectionId;
@@ -212,10 +214,13 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             /*
              * If we retrieved the reference copy of the entity - we can assert that the TUT supports reference copies.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Enabled",
+
+            assertCondition((true),
+                    assertion13,
+                    testTypeName + assertionMsg13,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
 
             verifyCondition((true),
                     assertion1,
@@ -226,10 +231,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         } else {
 
             /*
-             * Disable the discovered property, with evidence that reference storage requirement is not supported.
+             * Report that reference storage requirement is not supported.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion13,
+                    assertionMsg13,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
@@ -310,7 +315,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            } catch (InvalidParameterException e) {
+            }
+            catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
@@ -345,7 +351,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            } catch (InvalidParameterException e) {
+            }
+            catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
