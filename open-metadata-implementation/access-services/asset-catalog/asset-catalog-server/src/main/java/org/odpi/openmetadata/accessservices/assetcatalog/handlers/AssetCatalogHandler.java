@@ -1485,7 +1485,7 @@ public class AssetCatalogHandler {
     }
 
     public List<Type> getSupportedTypes(String userId, String typeName) {
-        if (typeName != null) {
+        if (typeName != null && !typeName.isEmpty()) {
             return getSupportedTypesCollector(userId, Arrays.asList(typeName));
         }
 
