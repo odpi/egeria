@@ -59,8 +59,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
-            List<String> supportedTypesForSearch = (List<String>) accessServiceConfigurationProperties
-                    .getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
+            List<String> supportedTypesForSearch = getSupportedTypesForSearchOption(accessServiceConfigurationProperties);
 
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName, supportedTypesForSearch);
             this.serverName = instance.getServerName();
@@ -108,5 +107,16 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
+    }
+
+    private List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfigurationProperties) {
+        List<String> supportedTypesForSearch = null;
+        if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
+            Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
+            if (supportedTypesProperty != null) {
+                supportedTypesForSearch = (List<String>) supportedTypesProperty;
+            }
+        }
+        return supportedTypesForSearch;
     }
 }
