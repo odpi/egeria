@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -36,7 +37,7 @@ public class ProcessContextHandler {
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
     private AssetContext graph;
-
+    private Validator validator;
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -58,6 +59,7 @@ public class ProcessContextHandler {
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.validator = new Validator(repositoryHelper);
     }
 
     /**
@@ -161,7 +163,8 @@ public class ProcessContextHandler {
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
-            if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
+            if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) &&
+                    validator.getSuperTypes(startEntityType).contains(SCHEMA_ELEMENT)){
                 continue;
             }
             EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph,false);

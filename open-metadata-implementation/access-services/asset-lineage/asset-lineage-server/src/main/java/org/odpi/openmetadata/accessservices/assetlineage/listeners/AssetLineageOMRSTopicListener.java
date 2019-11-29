@@ -131,34 +131,34 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(),
                                 serviceOperationName + UPDATED_ENTITY_EVENT.getName());
-                    case DELETED_ENTITY_EVENT:
-                        processDeleteEntity(instanceEvent.getEntity(),
-                                serviceOperationName + DELETED_ENTITY_EVENT.getName());
-                        break;
-                    case NEW_RELATIONSHIP_EVENT:
-                        processNewRelationship(instanceEvent.getEntity(),
-                                serviceOperationName + NEW_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case UPDATED_RELATIONSHIP_EVENT:
-                        processUpdatedRelationshipEvent(instanceEvent.getEntity(),
-                                serviceOperationName + UPDATED_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case DELETED_RELATIONSHIP_EVENT:
-                        processDeletedRelationshipEvent(instanceEvent.getEntity(),
-                                serviceOperationName + DELETED_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case CLASSIFIED_ENTITY_EVENT:
-                        processClassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + CLASSIFIED_ENTITY_EVENT.getName());
-                        break;
-                    case RECLASSIFIED_ENTITY_EVENT:
-                        processReclassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + RECLASSIFIED_ENTITY_EVENT.getName());
-                        break;
-                    case DECLASSIFIED_ENTITY_EVENT:
-                        processDeclassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + DECLASSIFIED_ENTITY_EVENT.getName());
-                        break;
+//                    case DELETED_ENTITY_EVENT:
+////                        processDeleteEntity(instanceEvent.getEntity(),
+////                                serviceOperationName + DELETED_ENTITY_EVENT.getName());
+////                        break;
+////                    case NEW_RELATIONSHIP_EVENT:
+////                        processNewRelationship(instanceEvent.getEntity(),
+////                                serviceOperationName + NEW_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case UPDATED_RELATIONSHIP_EVENT:
+////                        processUpdatedRelationshipEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + UPDATED_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case DELETED_RELATIONSHIP_EVENT:
+////                        processDeletedRelationshipEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + DELETED_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case CLASSIFIED_ENTITY_EVENT:
+////                        processClassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + CLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
+////                    case RECLASSIFIED_ENTITY_EVENT:
+////                        processReclassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + RECLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
+////                    case DECLASSIFIED_ENTITY_EVENT:
+////                        processDeclassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + DECLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
                 }
             }
 
