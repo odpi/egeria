@@ -1451,7 +1451,7 @@ public class AssetCatalogHandler {
             entityNeighborhood = metadataCollection.getEntityNeighborhood(
                     userId,
                     entityGUID,
-                    searchParameters.getEntityTypes(),
+                    commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes()),
                     searchParameters.getRelationshipTypeGUIDs(),
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     searchParameters.getLimitResultsByClassification(),

@@ -27,12 +27,6 @@ public class AssetConverter {
         this.repositoryHelper = repositoryHelper;
     }
 
-    public List<AssetDescription> getAssetsDetails(List<EntityDetail> entityDetails) {
-        return entityDetails.stream()
-                .map(this::getAssetDescription)
-                .collect(Collectors.toCollection(() -> new ArrayList<>(entityDetails.size())));
-    }
-
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());

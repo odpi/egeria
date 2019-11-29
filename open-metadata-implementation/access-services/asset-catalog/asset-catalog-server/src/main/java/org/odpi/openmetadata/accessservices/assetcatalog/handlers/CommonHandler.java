@@ -135,6 +135,10 @@ public class CommonHandler {
         return null;
     }
 
+    public List<String> getTypesGUID(String userId, List<String> types) {
+        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
+    }
+
     private void collectSubTypes(List<Type> types, List<TypeDef> activeTypeDefs, List<Type> collector) {
         for (Type currentSubType : types) {
             List<Type> subTypes = getSubTypes(activeTypeDefs, currentSubType);
@@ -188,9 +192,5 @@ public class CommonHandler {
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);
         }
-    }
-
-    public List<String> getTypesGUID(String userId, List<String> types) {
-        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
     }
 }
