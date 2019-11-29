@@ -13,6 +13,8 @@ public final class Constants {
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
+    public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
+    public static final String NESTED_SCHEMA_ATTRIBUTE_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
     public static final String DEPLOYED_API = "DeployedAPI";
     public static final String IT_INFRASTRUCTURE = "ITInfrastructure";
     public static final String PROCESS = "Process";
