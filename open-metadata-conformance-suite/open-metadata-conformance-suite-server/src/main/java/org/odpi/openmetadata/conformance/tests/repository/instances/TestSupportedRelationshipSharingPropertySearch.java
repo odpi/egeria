@@ -528,10 +528,12 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     /*
                      * Second search with MatchCriteria.NONE
                      */
+
                     /*
                      * Expected result size
                      */
-                    expectedRelationshipCount = propertyValueMap.get(attributeName).get(value).size();
+                    int numRelationshipsWithValue = propertyValueMap.get(attributeName).get(value).size();
+                    expectedRelationshipCount = instanceCount - numRelationshipsWithValue;
 
                     /*
                      * Search....
@@ -1260,8 +1262,28 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
                     /*
                      * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                     * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
                      */
-                    int expectedRelationshipCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                    int expectedRelationshipCount = 0;
+                    List<String> expectedGUIDs = new ArrayList<>();
+                    Set<String> propertyNamesSet = propertyValueMap.keySet();
+                    Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
+                    while (propertyNamesSetIterator.hasNext()) {
+                        String propName = propertyNamesSetIterator.next();
+                        if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                            Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                            Set<Object> propertyValuesSet = propValues.keySet();
+                            Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                            while (propertyValuesSetIterator.hasNext()) {
+                                String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                /* EXACT MATCH */
+                                if (stringValue.equals(knownStringValue)) {
+                                    expectedRelationshipCount = expectedRelationshipCount + propValues.get(knownStringValue).size();
+                                    expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                }
+                            }
+                        }
+                    }
 
                     /*
                      * Search....
@@ -1313,7 +1335,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     for (Relationship relationship : result) {
                         resultGUIDs.add(relationship.getGUID());
                     }
-                    List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                     /*
@@ -1367,8 +1388,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
                     assertCondition(matchingResult,
-                            assertion15,
-                            testTypeName + assertionMsg15,
+                            assertion18,
+                            testTypeName + assertionMsg18,
                             RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
@@ -1387,8 +1408,28 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
                          */
-                        expectedRelationshipCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedRelationshipCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* PREFIX MATCH */
+                                    if (knownStringValue.startsWith(truncatedStringValue)) {
+                                        expectedRelationshipCount = expectedRelationshipCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
 
                         /*
                          * Search....
@@ -1440,7 +1481,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         for (Relationship relationship : result) {
                             resultGUIDs.add(relationship.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
@@ -1515,8 +1555,28 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
                          */
-                        expectedRelationshipCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedRelationshipCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* SUFFIX MATCH */
+                                    if (knownStringValue.endsWith(truncatedStringValue)) {
+                                        expectedRelationshipCount = expectedRelationshipCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
 
                         /*
                          * Search....
@@ -1568,7 +1628,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         for (Relationship relationship : result) {
                             resultGUIDs.add(relationship.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
@@ -1646,8 +1705,28 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
                          */
-                        expectedRelationshipCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedRelationshipCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* CONTAINS MATCH */
+                                    if (knownStringValue.contains(truncatedStringValue)) {
+                                        expectedRelationshipCount = expectedRelationshipCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
 
                         /*
                          * Search....
@@ -1699,7 +1778,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         for (Relationship relationship : result) {
                             resultGUIDs.add(relationship.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*

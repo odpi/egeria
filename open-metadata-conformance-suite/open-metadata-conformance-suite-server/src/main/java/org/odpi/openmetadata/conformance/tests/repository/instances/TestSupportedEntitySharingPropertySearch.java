@@ -1278,8 +1278,29 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                     /*
                      * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                     * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
                      */
-                    int expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                    int expectedEntityCount = 0;
+                    List<String> expectedGUIDs = new ArrayList<>();
+                    Set<String> propertyNamesSet = propertyValueMap.keySet();
+                    Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
+                    while (propertyNamesSetIterator.hasNext()) {
+                        String propName = propertyNamesSetIterator.next();
+                        if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                            Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                            Set<Object> propertyValuesSet = propValues.keySet();
+                            Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                            while (propertyValuesSetIterator.hasNext()) {
+                                String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                /* EXACT MATCH */
+                                if (stringValue.equals(knownStringValue)) {
+                                    expectedEntityCount = expectedEntityCount + propValues.get(knownStringValue).size();
+                                    expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                }
+                            }
+                        }
+                    }
+
 
                     /*
                      * Search....
@@ -1332,7 +1353,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     for (EntityDetail entity : result) {
                         resultGUIDs.add(entity.getGUID());
                     }
-                    List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                     /*
@@ -1407,8 +1427,28 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are a prefix match to the search value
                          */
-                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedEntityCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* PREFIX MATCH */
+                                    if (knownStringValue.startsWith(truncatedStringValue)) {
+                                        expectedEntityCount = expectedEntityCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
 
                         /*
                          * Search....
@@ -1461,7 +1501,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         for (EntityDetail entity : result) {
                             resultGUIDs.add(entity.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
@@ -1535,8 +1574,28 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are a suffix match to the search value
                          */
-                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedEntityCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* SUFFIX MATCH */
+                                    if (knownStringValue.endsWith(truncatedStringValue)) {
+                                        expectedEntityCount = expectedEntityCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
 
                         /*
                          * Search....
@@ -1589,7 +1648,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         for (EntityDetail entity : result) {
                             resultGUIDs.add(entity.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
@@ -1666,8 +1724,30 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
                         /*
                          * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are a contains match to the search value
                          */
-                        expectedEntityCount = propertyValueMap.get(attributeName).get(stringValue).size();
+                        expectedEntityCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
+                                    /* CONTAINS MATCH */
+                                    if (knownStringValue.contains(truncatedStringValue)) {
+                                        expectedEntityCount = expectedEntityCount + propValues.get(knownStringValue).size();
+                                        expectedGUIDs.addAll(propValues.get(knownStringValue));
+                                    }
+                                }
+                            }
+                        }
+
+
 
                         /*
                          * Search....
@@ -1720,7 +1800,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         for (EntityDetail entity : result) {
                             resultGUIDs.add(entity.getGUID());
                         }
-                        expectedGUIDs = propertyValueMap.get(attributeName).get(stringValue);
 
 
                         /*
