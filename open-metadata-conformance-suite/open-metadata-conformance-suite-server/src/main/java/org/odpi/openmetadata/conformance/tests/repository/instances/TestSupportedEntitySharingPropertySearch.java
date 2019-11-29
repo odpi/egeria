@@ -1748,7 +1748,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         }
 
 
-
                         /*
                          * Search....
                          */

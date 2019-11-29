@@ -1215,7 +1215,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
         }
 
 
-
         /* ------------------------------------------------------------------------------------- */
 
         /*
