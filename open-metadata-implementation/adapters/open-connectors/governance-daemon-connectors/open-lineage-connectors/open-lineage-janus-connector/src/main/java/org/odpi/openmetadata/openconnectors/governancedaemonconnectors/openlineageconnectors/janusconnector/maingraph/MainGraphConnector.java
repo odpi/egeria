@@ -190,7 +190,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             if(returnedPropertiesWhiteList.contains(originalProperty.key()))
                 attributes.put(originalProperty.key(), originalProperty.value().toString());
         }
-
         return attributes;
     }
 
@@ -335,9 +334,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     newVertex.getNodeID(),
                     condensedVertex.getNodeID()
             );
-            if (newVertex != null)
                 lineageVertices.add(newVertex);
-            if (newEdge != null)
                 lineageEdges.add(newEdge);
         }
         LineageEdge sourceEdge = new LineageEdge(

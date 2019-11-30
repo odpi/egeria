@@ -79,11 +79,11 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_LABEL = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_LABEL;
 
     public static final HashSet<String> returnedPropertiesWhiteList = new HashSet<String>(){{
-        add(PROPERTY_KEY_ENTITY_NODE_ID);
         add(PROPERTY_KEY_ENTITY_GUID);
+        add(PROPERTY_KEY_DISPLAY_NAME);
+        add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
         add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
         add(PROPERTY_KEY_GLOSSARY_TERM);
-        add(PROPERTY_KEY_ENTITY_NODE_ID);
         add(PROPERTY_KEY_DISPLAY_NAME);
         add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
         add(PROPERTY_KEY_ENTITY_CREATED_BY);
