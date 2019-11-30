@@ -13,6 +13,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "ed";
 
     public static final String PROPERTY_NAME_NODE_ID = "nodeID";
+    public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE = "condensedSource";
+    public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION = "condensedDestination";
     public static final String PROPERTY_NAME_GUID = "guid";
     public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
     public static final String PROPERTY_NAME_NAME = "name";
