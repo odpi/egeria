@@ -119,7 +119,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the properties of a requests that accesses types by guid.
+     * Validate the properties of a request that accesses types by guid.
      *
      * @param userId calling user
      * @param guid guid of type
@@ -141,7 +141,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the properties of a requests that accesses types by name.
+     * Validate the properties of a request that accesses types by name.
      *
      * @param userId calling user
      * @param name name of type
@@ -163,7 +163,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the properties of a requests that accesses types by category.
+     * Validate the properties of a request that accesses types by category.
      *
      * @param userId calling user
      * @param category category of type
@@ -185,7 +185,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the properties of a requests that accesses types by category.
+     * Validate the properties of a request that accesses types by category.
      *
      * @param userId calling user
      * @param category category of type

@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
+
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +17,10 @@ public class InTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(InTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private GraphStoringServices graphStoringServices;
+    private StoringServices storingServices;
 
-    public InTopicListener(GraphStoringServices graphStoringServices, OMRSAuditLog auditLog) {
-        this.graphStoringServices = graphStoringServices;
+    public InTopicListener(StoringServices storingServices, OMRSAuditLog auditLog) {
+        this.storingServices = storingServices;
         this.auditLog = auditLog;
     }
 
@@ -31,19 +31,19 @@ public class InTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-        LineageEvent event = null;
+        LineageEvent event;
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, LineageEvent.class);
             log.info("Started processing OpenLineageEvent");
             processEventBasedOnType(event);
         } catch (Exception e) {
             log.error("Exception processing event from in topic", e);
-            OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;
+            OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.PROCESS_EVENT_EXCEPTION;
 
             auditLog.logException("processEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(eventAsString, e.getMessage()),
                     e.getMessage(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
@@ -56,7 +56,7 @@ public class InTopicListener implements OpenMetadataTopicListener {
         switch (event.getAssetLineageEventType()) {
             case PROCESS_CONTEXT_EVENT:
             case TECHNICAL_ELEMENT_CONTEXT_EVENT:
-                graphStoringServices.addEntity(event);
+                storingServices.addEntity(event);
                 break;
             default:
                 break;

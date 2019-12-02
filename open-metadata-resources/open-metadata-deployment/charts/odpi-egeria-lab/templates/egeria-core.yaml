@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: core
-  name: {{ include "myapp.fullname" . }}-core
+  name: {{ .Release.Name }}-core
 
 spec:
   type: {{ .Values.service.type }}

@@ -48,7 +48,12 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     private static final String assertionMsg6  = " entity retrievable by new GUID.";
 
 
-    private static final String discoveredProperty_reidentifySupport = " reidentify support";
+    private static final String assertion7     = testCaseId + "-07";
+    private static final String assertionMsg7  = " repository supports creation of instances.";
+
+    private static final String assertion8     = testCaseId + "-08";
+    private static final String assertionMsg8  = " repository supports reidentify of instances.";
+
 
 
 
@@ -88,27 +93,58 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-
-
         /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates an
-         * entity that is logically complete - versus an instance with just the locally-defined properties.
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
          */
 
-        EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
-                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                null,
-                null);
+        EntityDetail newEntity;
 
+        try {
+
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                     entityDef.getGUID(),
+                                                     super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                    null,
+                                                    null);
+
+            assertCondition((true),
+                    assertion7,
+                    testTypeName + assertionMsg7,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion7,
+                    assertionMsg7,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return;
+        }
 
         assertCondition((newEntity != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -123,8 +159,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
@@ -150,8 +186,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     newEntity.getGUID(),
                     newGUID);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion8,
+                    testTypeName + assertionMsg8,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
@@ -167,10 +204,11 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg4 + nextVersion,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion8,
+                    assertionMsg8,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }
@@ -208,7 +246,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        } catch (EntityNotKnownException exception) {
+        }
+        catch (EntityNotKnownException exception) {
+
             assertCondition((false),
                     assertion6,
                     testTypeName + assertionMsg6,
@@ -229,11 +269,13 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         try {
+
             EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                     newEntity.getType().getTypeDefGUID(),
                     newEntity.getType().getTypeDefName(),
                     newGUID);
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception) {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity

@@ -26,7 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
-import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
+import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -153,7 +153,7 @@ public class OMAGServerOperationalServices
             List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
             ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
             DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
-            OpenLineageConfig         openLineageConfig           = configuration.getOpenLineageConfig();
+            OpenLineageServerConfig openLineageServerConfig = configuration.getOpenLineageServerConfig();
             SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
             SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();
@@ -165,7 +165,7 @@ public class OMAGServerOperationalServices
                     (accessServiceConfigList == null) &&
                     (conformanceSuiteConfig == null) &&
                     (discoveryServerConfig == null) &&
-                    (openLineageConfig == null) &&
+                    (openLineageServerConfig == null) &&
                     (securitySyncConfig == null) &&
                     (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
@@ -460,18 +460,19 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Initialize the Open Lineage Services.  This is a governance server for the storage and querying of asset lineage.
+             * Initialize the Open Lineage Services.  This is a governance server for the storing and querying of asset lineage.
              */
-            if (openLineageConfig != null)
+            if (openLineageServerConfig != null)
             {
-                OpenLineageOperationalServices openLineageOperationalServices = new OpenLineageOperationalServices(configuration.getLocalServerName(),
-                        configuration.getLocalServerType(),
-                        configuration.getOrganizationName(),
+                OpenLineageServerOperationalServices
+                        operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerName(),
                         configuration.getLocalServerUserId(),
-                        configuration.getLocalServerURL());
-                instance.setOpenLineageOperationalServices(openLineageOperationalServices);
-                openLineageOperationalServices.initialize(openLineageConfig,
-                        operationalRepositoryServices.getAuditLog(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
+                        configuration.getLocalServerPassword(),
+                        configuration.getMaxPageSize());
+                instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
+                operationalOpenLineageServer.initialize(openLineageServerConfig,
+                        operationalRepositoryServices.getAuditLog(
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
