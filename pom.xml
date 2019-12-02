@@ -433,14 +433,12 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-core</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cql</artifactId>
-                <scope>runtime</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -471,14 +469,12 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
