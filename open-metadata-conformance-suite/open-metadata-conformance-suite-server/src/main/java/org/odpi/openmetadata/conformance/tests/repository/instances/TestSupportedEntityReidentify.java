@@ -51,8 +51,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     private static final String assertion7     = testCaseId + "-07";
     private static final String assertionMsg7  = " repository supports creation of instances.";
 
+    private static final String assertion8     = testCaseId + "-08";
+    private static final String assertionMsg8  = " repository supports reidentify of instances.";
 
-    private static final String discoveredProperty_reidentifySupport = " reidentify support";
 
 
 
@@ -185,8 +186,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     newEntity.getGUID(),
                     newGUID);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion8,
+                    testTypeName + assertionMsg8,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
@@ -205,8 +207,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         }
         catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_reidentifySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion8,
+                    assertionMsg8,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }

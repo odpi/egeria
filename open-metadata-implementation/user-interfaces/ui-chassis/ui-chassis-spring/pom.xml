@@ -397,7 +397,7 @@
                         <executions>
                             <execution>
                                 <id>Polymer build</id>
-                                <phase>generate-resources</phase>
+                                <phase>compile</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -418,7 +418,7 @@
                         <executions>
                             <execution>
                                 <id>copy-resources</id>
-                                <phase>generate-resources</phase>
+                                <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
