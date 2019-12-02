@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -513,6 +515,25 @@ public class RESTExceptionHandler
 
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(UserNotAuthorizedException.class.getName());
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+    }
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response REST Response
+     * @param error    returned response.
+     */
+    public void captureRepositoryErrorException(FFDCResponseBase response,
+                                                RepositoryErrorException error) {
+        setExceptionInformationInResponse(response, error);
+    }
+
+    private void setExceptionInformationInResponse(FFDCResponseBase response, OMRSCheckedExceptionBase error) {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(error.getClass().getName());
         response.setExceptionErrorMessage(error.getErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
