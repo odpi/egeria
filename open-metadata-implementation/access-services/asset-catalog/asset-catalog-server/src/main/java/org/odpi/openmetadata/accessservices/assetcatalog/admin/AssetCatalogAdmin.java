@@ -54,8 +54,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
 
             this.auditLog = auditLog;
 
-            List<String> supportedZones = this.extractSupportedZones(
-                    accessServiceConfigurationProperties.getAccessServiceOptions(),
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
