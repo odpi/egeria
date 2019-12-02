@@ -236,7 +236,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                                         {
                                             String conceptTermId = super.addTerm(glossaryId,
                                                                                  categoryList,
-                                                                                 concept.getId(),
+                                                                                 subjectArea.getTechnicalName() + "::" + concept.getId(),
                                                                                  concept.getDisplayName(),
                                                                                  concept.getDescription());
                                         }
