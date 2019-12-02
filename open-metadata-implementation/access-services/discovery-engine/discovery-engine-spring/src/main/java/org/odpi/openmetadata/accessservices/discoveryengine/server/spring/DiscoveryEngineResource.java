@@ -100,7 +100,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-search-string")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
 
     public GUIDListResponse  getAssetsByName(@PathVariable String          serverName,
                                              @PathVariable String          userId,
