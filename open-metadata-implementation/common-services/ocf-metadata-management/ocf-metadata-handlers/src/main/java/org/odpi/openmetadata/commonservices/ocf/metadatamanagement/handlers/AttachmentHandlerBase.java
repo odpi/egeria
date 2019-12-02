@@ -141,7 +141,7 @@ public abstract class AttachmentHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
                                                                                           anchorGUID,
@@ -149,7 +149,7 @@ public abstract class AttachmentHandlerBase
                                                                                           attachmentTypeGUID,
                                                                                           attachmentTypeName,
                                                                                           startingFrom,
-                                                                                          pageSize,
+                                                                                          queryPageSize,
                                                                                           methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -198,7 +198,7 @@ public abstract class AttachmentHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<EntityDetail>  entities = repositoryHandler.getEntitiesForRelationshipEnd(userId,
                                                                                        anchorGUID,
@@ -207,7 +207,7 @@ public abstract class AttachmentHandlerBase
                                                                                        attachmentTypeGUID,
                                                                                        attachmentTypeName,
                                                                                        startingFrom,
-                                                                                       pageSize,
+                                                                                       queryPageSize,
                                                                                        methodName);
 
         if ((entities == null) || (entities.isEmpty()))

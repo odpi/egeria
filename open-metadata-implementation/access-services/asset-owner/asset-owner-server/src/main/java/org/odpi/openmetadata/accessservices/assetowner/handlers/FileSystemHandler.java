@@ -1592,13 +1592,13 @@ public class FileSystemHandler
                                                                   PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validatePaging(startingFrom,maxPageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maxPageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForType(userId,
                                                                            FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_GUID,
                                                                            FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
                                                                            startingFrom,
-                                                                           maxPageSize,
+                                                                           queryPageSize,
                                                                            methodName);
 
         if (entities != null)
@@ -1746,7 +1746,7 @@ public class FileSystemHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom,maxPageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maxPageSize, methodName);
 
         List<RelatedAsset> relatedAssets;
 
@@ -1762,7 +1762,7 @@ public class FileSystemHandler
                                                           AssetMapper.FOLDER_HIERARCHY_TYPE_GUID,
                                                           AssetMapper.FOLDER_HIERARCHY_TYPE_NAME,
                                                           startingFrom,
-                                                          maxPageSize,
+                                                          queryPageSize,
                                                           serviceName,
                                                           methodName);
         }
@@ -1774,7 +1774,7 @@ public class FileSystemHandler
                                                           AssetMapper.FOLDER_HIERARCHY_TYPE_GUID,
                                                           AssetMapper.FOLDER_HIERARCHY_TYPE_NAME,
                                                           startingFrom,
-                                                          maxPageSize,
+                                                          queryPageSize,
                                                           serviceName,
                                                           methodName);
         }
@@ -1847,19 +1847,19 @@ public class FileSystemHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom,maxPageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maxPageSize, methodName);
 
         List<RelatedAsset> files = new ArrayList<>();
         boolean            moreFilesToCome = true;
         int                requestPointer = startingFrom;
 
-        while ((files.size() < maxPageSize) && (moreFilesToCome))
+        while ((files.size() < queryPageSize) && (moreFilesToCome))
         {
             List<RelatedAsset> relatedAssets = assetHandler.getRelatedAssets(userId,
                                                                              supportedZones,
                                                                              folderGUID,
                                                                              requestPointer,
-                                                                             maxPageSize,
+                                                                             queryPageSize,
                                                                              serviceName,
                                                                              methodName);
 

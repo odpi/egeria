@@ -12,7 +12,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.Date;
 
-
+/**
+ * DiscoveryServiceHandler provides the thread to run a discovery service.
+ */
 public class DiscoveryServiceHandler implements Runnable
 {
     private DiscoveryEngineProperties discoveryEngineProperties;

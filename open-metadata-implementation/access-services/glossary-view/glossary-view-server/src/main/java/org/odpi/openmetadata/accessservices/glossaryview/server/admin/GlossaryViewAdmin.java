@@ -42,7 +42,7 @@ public class GlossaryViewAdmin extends AccessServiceAdmin
                     auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog);
+            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
             serverName = instance.getServerName();
 
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZED;

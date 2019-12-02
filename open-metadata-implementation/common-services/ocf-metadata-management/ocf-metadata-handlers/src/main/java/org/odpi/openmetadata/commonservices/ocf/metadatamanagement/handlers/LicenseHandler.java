@@ -97,7 +97,7 @@ public class LicenseHandler extends AttachmentHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
                                                                                           anchorGUID,
@@ -105,7 +105,7 @@ public class LicenseHandler extends AttachmentHandlerBase
                                                                                           LicenseMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
                                                                                           LicenseMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
                                                                                           startingFrom,
-                                                                                          pageSize,
+                                                                                          queryPageSize,
                                                                                           methodName);
         if (relationships != null)
         {

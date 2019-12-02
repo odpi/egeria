@@ -2,18 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.discoveryserver.handlers;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAnnotationStoreClient;
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAssetStoreClient;
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
+import org.odpi.openmetadata.frameworks.discovery.*;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -34,6 +28,7 @@ public class DiscoveryEngineHandler
     private String                       serverUserId;             /* Initialized in constructor */
     private OMRSAuditLog                 auditLog;                 /* Initialized in constructor */
     private DiscoveryEngineClient        discoveryEngineClient;    /* Initialized in constructor */
+    private int                          maxPageSize;             /* Initialized in constructor */
 
     private String                    discoveryEngineGUID;
     private DiscoveryEngineProperties discoveryEngineProperties;
@@ -121,6 +116,7 @@ public class DiscoveryEngineHandler
         this.serverName = serverName;
         this.serverUserId = serverUserId;
         this.auditLog = auditLog;
+        this.maxPageSize = maxPageSize;
         this.discoveryEngineClient = new DiscoveryEngineClient(serverName, serverPlatformRootURL, restClient);
 
     }
@@ -173,13 +169,18 @@ public class DiscoveryEngineHandler
             DiscoveryAssetStore assetStore = new DiscoveryAssetStoreClient(assetGUID,
                                                                            serverUserId,
                                                                            discoveryEngineClient);
+
+            DiscoveryAssetCatalogStore assetCatalogStore = new DiscoveryAssetCatalogStoreClient(serverUserId,
+                                                                                                discoveryEngineClient,
+                                                                                                maxPageSize);
             DiscoveryContext discoveryContext = new DiscoveryContext(serverUserId,
                                                                      assetGUID,
                                                                      discoveryReport.getGUID(),
                                                                      analysisParameters,
                                                                      annotationTypes,
                                                                      assetStore,
-                                                                     annotationStore);
+                                                                     annotationStore,
+                                                                     assetCatalogStore);
 
             DiscoveryServiceHandler discoveryServiceHandler = new DiscoveryServiceHandler(discoveryEngineProperties,
                                                                                           assetType,

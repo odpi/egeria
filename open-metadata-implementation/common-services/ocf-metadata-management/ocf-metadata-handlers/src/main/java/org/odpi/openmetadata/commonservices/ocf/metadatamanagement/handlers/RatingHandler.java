@@ -104,7 +104,7 @@ public class RatingHandler extends FeedbackHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<Relationship>  relationships = this.getAttachmentLinks(userId,
                                                                     anchorGUID,
@@ -112,7 +112,7 @@ public class RatingHandler extends FeedbackHandlerBase
                                                                     RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                                                     RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                                                     startingFrom,
-                                                                    pageSize,
+                                                                    queryPageSize,
                                                                     methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))

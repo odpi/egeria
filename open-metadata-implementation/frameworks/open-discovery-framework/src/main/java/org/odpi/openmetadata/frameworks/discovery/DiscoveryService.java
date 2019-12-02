@@ -2,10 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,6 +60,58 @@ public abstract class DiscoveryService extends ConnectorBase
     public synchronized DiscoveryContext getDiscoveryContext()
     {
         return discoveryContext;
+    }
+
+
+    /**
+     * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
+     * This is used by DiscoveryPipelines and DiscoveryScanningServices.
+     *
+     * @param embeddedConnectors list of supplied connector instances supplied by the Connector Broker.
+     *
+     * @return list of discovery service connectors
+     *
+     * @throws DiscoveryServiceException one of the embedded connectors is not a discovery service
+     */
+    protected List<DiscoveryService> getEmbeddedDiscoveryServices(List<Connector>  embeddedConnectors) throws DiscoveryServiceException
+    {
+        final String           methodName        = "getEmbeddedDiscoveryServices";
+        List<DiscoveryService> discoveryServices = null;
+
+        if (embeddedConnectors != null)
+        {
+            discoveryServices = new ArrayList<>();
+
+            for (Connector embeddedConnector : embeddedConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    if (embeddedConnector instanceof DiscoveryService)
+                    {
+                        discoveryServices.add((DiscoveryService)embeddedConnector);
+                    }
+                    else
+                    {
+                        ODFErrorCode errorCode    = ODFErrorCode.INVALID_EMBEDDED_DISCOVERY_SERVICE;
+                        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
+
+                        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+                                                            this.getClass().getName(),
+                                                            methodName,
+                                                            errorMessage,
+                                                            errorCode.getSystemAction(),
+                                                            errorCode.getUserAction());
+                    }
+                }
+            }
+
+            if (discoveryServices.isEmpty())
+            {
+                discoveryServices = null;
+            }
+        }
+
+        return discoveryServices;
     }
 
 

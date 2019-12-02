@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.frameworks.discovery;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -11,13 +12,13 @@ import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
 import java.util.List;
 
 /**
- * DiscoveryPipeline is a discovery service that is responsible for choreographing the discovery services
- * passed on initializeEmbeddedConnectors.
+ * DiscoveryScanningService defines a discovery service that scans the catalog for assets
+ * to look for specific issues or characteristics.
  */
-public class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
+public class DiscoveryScanningService extends DiscoveryService implements VirtualConnectorExtension
 {
-    protected List<Connector>        embeddedConnectors = null;
-    protected List<DiscoveryService> embeddedDiscoveryServices = null;
+    protected List<Connector>            embeddedConnectors        = null;
+    protected List<DiscoveryService>     embeddedDiscoveryServices = null;
 
 
     /**
@@ -35,6 +36,8 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
     }
 
 
+
+
     /**
      * This implementation provides an inline sequential invocation of the supplied discovery services.
      *
@@ -44,6 +47,9 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
     {
         final String methodName   = "start";
 
+        /*
+         * Check that the discovery context is not null and anything else is
+         */
         super.start();
 
         embeddedDiscoveryServices = getEmbeddedDiscoveryServices(embeddedConnectors);
@@ -60,6 +66,7 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction());
         }
+
 
         for (DiscoveryService discoveryService : embeddedDiscoveryServices)
         {

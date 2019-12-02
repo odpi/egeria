@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
@@ -30,11 +32,10 @@ import java.util.List;
 public class AssetConsumerRESTServices
 {
     private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
+    private        RESTExceptionHandler           restExceptionHandler = new RESTExceptionHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
-
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-
+    private static RESTCallLogger                  restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
+                                                                                             instanceHandler.getServiceName());
     /**
      * Default constructor
      */
@@ -69,7 +70,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "getAssetForConnectionName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         OMRSAuditLog  auditLog = null;
@@ -87,45 +88,8 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * Return a list of GUIDs based on a list of Assets.
-     *
-     * @param assets list of assets
-     * @return list of GUIDs
-     */
-    private List<String> getGUIDs(List<Asset>  assets)
-    {
-        if ((assets != null) && (! assets.isEmpty()))
-        {
-            List<String>  results = new ArrayList<>();
-
-            for (Asset asset : assets)
-            {
-                if (asset != null)
-                {
-                    String guid = asset.getGUID();
-
-                    if (guid != null)
-                    {
-                        results.add(guid);
-                    }
-                }
-            }
-
-            if (! results.isEmpty())
-            {
-                return  results;
-            }
-
-        }
-
-        return null;
     }
 
 
@@ -152,7 +116,7 @@ public class AssetConsumerRESTServices
     {
         final String methodName    = "findAssets";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
         OMRSAuditLog     auditLog = null;
@@ -163,15 +127,14 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(this.getGUIDs(handler.findAssets(userId, searchString, startFrom, pageSize, methodName)));
+            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, startFrom, pageSize, methodName));
         }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -198,7 +161,7 @@ public class AssetConsumerRESTServices
     {
         final String methodName = "getAssetsByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
         OMRSAuditLog     auditLog = null;
@@ -208,15 +171,14 @@ public class AssetConsumerRESTServices
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(this.getGUIDs(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName)));
+            response.setGUIDs(handler.getAssetGUIDsByName(userId, name, startFrom, pageSize, methodName));
         }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -248,7 +210,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "getConnectionByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
         OMRSAuditLog        auditLog = null;
@@ -265,8 +227,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -299,7 +260,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "addRatingToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -329,8 +290,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -356,7 +316,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "removeRatingFromAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -373,8 +333,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -400,7 +359,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "addLikeToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -424,8 +383,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -451,7 +409,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "removeLikeFromAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -468,8 +426,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -495,7 +452,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "addCommentToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         OMRSAuditLog  auditLog = null;
@@ -524,8 +481,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -553,7 +509,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "addCommentReply";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         OMRSAuditLog  auditLog = null;
@@ -583,8 +539,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -611,7 +566,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "updateComment";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -641,8 +596,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -670,7 +624,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "removeAssetComment";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -687,8 +641,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -719,7 +672,7 @@ public class AssetConsumerRESTServices
     {
         final String        methodName = "getMeaning";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermResponse response = new GlossaryTermResponse();
         OMRSAuditLog         auditLog = null;
@@ -736,8 +689,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -764,7 +716,7 @@ public class AssetConsumerRESTServices
     {
         final String  methodName = "getMeaningByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermListResponse response = new GlossaryTermListResponse();
         OMRSAuditLog             auditLog = null;
@@ -782,8 +734,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -810,7 +761,7 @@ public class AssetConsumerRESTServices
     {
         final String methodName = "findMeanings";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermListResponse response = new GlossaryTermListResponse();
         OMRSAuditLog             auditLog = null;
@@ -828,8 +779,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -856,7 +806,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName  = "getAssetsByMeaning";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse  response = new GUIDListResponse();
         OMRSAuditLog      auditLog = null;
@@ -873,8 +823,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -904,14 +853,14 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem adding the log message to the audit log for this asset or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addLogMessageToAsset(String                serverName,
-                                             String                userId,
-                                             String                guid,
+    public VoidResponse addLogMessageToAsset(String               serverName,
+                                             String               userId,
+                                             String               guid,
                                              LogRecordRequestBody requestBody)
     {
         final String        methodName = "addLogMessageToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -942,8 +891,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -973,7 +921,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "createTag";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         OMRSAuditLog  auditLog = null;
@@ -1001,8 +949,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1027,7 +974,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "updateTagDescription";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -1051,8 +998,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1077,7 +1023,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "deleteTag";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -1094,8 +1040,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1118,7 +1063,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "getTag";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagResponse  response = new TagResponse();
         OMRSAuditLog auditLog = null;
@@ -1135,8 +1080,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1163,7 +1107,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "getTagsByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
         OMRSAuditLog auditLog = null;
@@ -1181,8 +1125,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1209,7 +1152,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "getMyTagsByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
         OMRSAuditLog auditLog = null;
@@ -1227,8 +1170,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1255,7 +1197,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "findTags";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
         OMRSAuditLog auditLog = null;
@@ -1273,8 +1215,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1301,7 +1242,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName = "findMyTags";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
         OMRSAuditLog auditLog = null;
@@ -1319,8 +1260,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1347,7 +1287,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName  = "addTagToAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         boolean  isPublic = false;
 
@@ -1371,8 +1311,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1399,7 +1338,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName  = "removeTagFromAsset";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
@@ -1416,8 +1355,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -1445,7 +1383,7 @@ public class AssetConsumerRESTServices
     {
         final String   methodName  = "getAssetsByTag";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse  response = new GUIDListResponse();
         OMRSAuditLog      auditLog = null;
@@ -1462,8 +1400,7 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

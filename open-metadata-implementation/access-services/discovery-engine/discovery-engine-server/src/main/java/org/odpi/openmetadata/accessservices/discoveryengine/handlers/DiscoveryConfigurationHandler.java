@@ -281,12 +281,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getAllDiscoveryEngines";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
                                                                                    DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                                                                    startingFrom,
-                                                                                   maximumResults,
+                                                                                   queryPageSize,
                                                                                    methodName);
 
         /*
@@ -661,12 +661,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getAllDiscoveryServices";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
                                                                                    DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                                                    startingFrom,
-                                                                                   maximumResults,
+                                                                                   queryPageSize,
                                                                                    methodName);
 
         /*
@@ -1042,7 +1042,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<Relationship> relationships = repositoryHandler.getPagedRelationshipsByType(userId,
                                                                                          discoveryEngineGUID,
@@ -1050,7 +1050,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                          DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
                                                                                          DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
                                                                                          startingFrom,
-                                                                                         maximumResults,
+                                                                                         queryPageSize,
                                                                                          methodName);
 
         List<String> results = new ArrayList<>();

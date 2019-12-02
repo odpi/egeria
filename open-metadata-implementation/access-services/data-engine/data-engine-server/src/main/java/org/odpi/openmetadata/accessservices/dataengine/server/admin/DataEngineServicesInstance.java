@@ -43,7 +43,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
                                List<String> defaultZones, OMRSAuditLog auditLog, String localServerUserId,
                                int maxPageSize) throws NewInstanceException {
 
-        super(description.getAccessServiceName(), repositoryConnector, supportedZones, defaultZones, auditLog,
+        super(description.getAccessServiceName() + " OMAS", repositoryConnector, supportedZones, defaultZones, auditLog,
                 localServerUserId, maxPageSize);
 
         if (repositoryHandler != null) {

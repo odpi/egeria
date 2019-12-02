@@ -16,20 +16,22 @@ import java.util.Objects;
  */
 public class DiscoveryContext extends PropertyBase
 {
-    protected String                   userId;
-    protected String                   assetGUID;
-    protected String                   discoveryReportGUID;
-    protected Map<String, String>      analysisParameters;
-    protected List<String>             requestedAnnotationTypes;
+    protected String                     userId;
+    protected String                     assetGUID;
+    protected String                     discoveryReportGUID;
 
-    protected DiscoveryAssetStore      assetStore;
-    protected DiscoveryAnnotationStore annotationStore;
+    protected Map<String, String>        analysisParameters;
+    protected List<String>               requestedAnnotationTypes;
 
-    protected Date                     creationDate        = new Date();
+    protected DiscoveryAssetStore        assetStore;
+    protected DiscoveryAnnotationStore   annotationStore;
+    protected DiscoveryAssetCatalogStore assetCatalogStore;
 
-    protected String                   reportQualifiedName = null;
-    protected String                   reportDisplayName   = null;
-    protected String                   reportDescription   = null;
+    protected Date                       creationDate        = new Date();
+
+    protected String                     reportQualifiedName = null;
+    protected String                     reportDisplayName   = null;
+    protected String                     reportDescription   = null;
 
 
     /**
@@ -43,14 +45,16 @@ public class DiscoveryContext extends PropertyBase
      * @param requestedAnnotationTypes annotation types to create
      * @param assetStore discovery asset store for the discovery service
      * @param annotationStore annotation store for the discovery service
+     * @param assetCatalogStore the asset catalog store that provides the ability to query assets.
      */
-    public    DiscoveryContext(String                    userId,
-                               String                    assetGUID,
-                               String                    discoveryReportGUID,
-                               Map<String, String>       analysisParameters,
-                               List<String>              requestedAnnotationTypes,
-                               DiscoveryAssetStore       assetStore,
-                               DiscoveryAnnotationStore  annotationStore)
+    public    DiscoveryContext(String                     userId,
+                               String                     assetGUID,
+                               String                     discoveryReportGUID,
+                               Map<String, String>        analysisParameters,
+                               List<String>               requestedAnnotationTypes,
+                               DiscoveryAssetStore        assetStore,
+                               DiscoveryAnnotationStore   annotationStore,
+                               DiscoveryAssetCatalogStore assetCatalogStore)
     {
         super();
 
@@ -61,6 +65,7 @@ public class DiscoveryContext extends PropertyBase
         this.requestedAnnotationTypes = requestedAnnotationTypes;
         this.assetStore = assetStore;
         this.annotationStore = annotationStore;
+        this.assetCatalogStore = assetCatalogStore;
     }
 
 
@@ -82,6 +87,7 @@ public class DiscoveryContext extends PropertyBase
             requestedAnnotationTypes = template.getRequestedAnnotationTypes();
             assetStore = template.getAssetStore();
             annotationStore = template.getAnnotationStore();
+            assetCatalogStore = template.getAssetCatalogStore();
 
             creationDate = template.getCreationDate();
 
@@ -134,6 +140,17 @@ public class DiscoveryContext extends PropertyBase
     public List<String> getRequestedAnnotationTypes()
     {
         return requestedAnnotationTypes;
+    }
+
+
+    /**
+     * Return the asset catalog store that provides the ability to query assets.
+     *
+     * @return assetCatalogStore object
+     */
+    public DiscoveryAssetCatalogStore getAssetCatalogStore()
+    {
+        return assetCatalogStore;
     }
 
 

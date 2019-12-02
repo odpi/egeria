@@ -2,10 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
@@ -16,29 +21,394 @@ import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
- * The DiscoveryEngineServices provides the server-side implementation of the services used by the discovery
+ * The DiscoveryEngineRESTServices provides the server-side implementation of the services used by the discovery
  * engine as it is managing requests to execute open discovery services in the discovery server.
  * These services align with the interface definitions from the Open Discovery Framework (ODF).
  */
-public class DiscoveryEngineServices
+public class DiscoveryEngineRESTServices
 {
     private static DiscoveryEngineServiceInstanceHandler instanceHandler = new DiscoveryEngineServiceInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryEngineServices.class);
-
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-
+    private        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DiscoveryEngineRESTServices.class),
+                                                                                  instanceHandler.getServiceName());
 
     /**
      * Default constructor
      */
-    public DiscoveryEngineServices()
+    public DiscoveryEngineRESTServices()
     {
+    }
+
+
+    /**
+     * Return the next set of assets to process.
+     *
+     * @param serverName name of server instance to route request to
+     * @param startFrom starting point of the query
+     * @param pageSize maximum number of results to return
+     * @return list of unique identifiers for located assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public GUIDListResponse getAssets(String          serverName,
+                                      String          userId,
+                                      int             startFrom,
+                                      int             pageSize,
+                                      NullRequestBody requestBody)
+    {
+        final String   methodName = "getAssets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog     auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(handler.assetGUIDsScan(userId, null, null, startFrom, pageSize, methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the assets with the same qualified name.  If all is well there should be only one
+     * returned.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param name the qualified name to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public GUIDListResponse  getAssetsByQualifiedName(String   serverName,
+                                                      String   userId,
+                                                      String   name,
+                                                      int      startFrom,
+                                                      int      pageSize)
+    {
+        final String   methodName = "getAssetsByQualifiedName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog     auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(handler.getAssetGUIDsByQualifiedName(userId,
+                                                                   name,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the list of matching assets that have the supplied name as either the
+     * qualified name or display name.  This is an exact match retrieval.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param name name to query for
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public GUIDListResponse  getAssetsByName(String   serverName,
+                                             String   userId,
+                                             String   name,
+                                             int      startFrom,
+                                             int      pageSize)
+    {
+        final String   methodName = "getAssetsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog     auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(handler.getAssetGUIDsByName(userId,
+                                                          name,
+                                                          startFrom,
+                                                          pageSize,
+                                                          methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public GUIDListResponse  findAssets(String   serverName,
+                                        String   userId,
+                                        String   searchString,
+                                        int      startFrom,
+                                        int      pageSize)
+    {
+        final String   methodName = "findAssets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog     auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(handler.findAssetGUIDs(userId,
+                                                     searchString,
+                                                     startFrom,
+                                                     pageSize,
+                                                     methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the list of assets that have the same endpoint address.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public  GUIDListResponse getAssetsByEndpoint(String   serverName,
+                                                 String   userId,
+                                                 String   networkAddress,
+                                                 int      startFrom,
+                                                 int      pageSize)
+    {
+        final String   methodName = "findAssetsByEndpoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog     auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(handler.getAssetGUIDsByEndpoint(userId,
+                                                              networkAddress,
+                                                              startFrom,
+                                                              pageSize,
+                                                              methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     * @param discoveryService name of discovery service
+     * @param message        message to log
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public VoidResponse logAssetAuditMessage(String    serverName,
+                                             String    userId,
+                                             String    assetGUID,
+                                             String    discoveryService,
+                                             String    message)
+    {
+        final String   methodName = "logAssetAuditMessage";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMRSAuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.ASSET_AUDIT_LOG;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(assetGUID, discoveryService, message),
+                               serverName,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -63,7 +433,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "createDiscoveryAnalysisReport";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog                    auditLog = null;
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
@@ -114,8 +484,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -141,7 +510,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "updateDiscoveryAnalysisReport";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog                    auditLog = null;
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
@@ -180,8 +549,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -205,7 +573,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "getDiscoveryAnalysisReport";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog                    auditLog = null;
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
@@ -239,8 +607,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -272,7 +639,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "getAnnotationsForAssetByStatus";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog           auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
@@ -315,8 +682,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -344,7 +710,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "getDiscoveryReportAnnotations";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog           auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
@@ -381,8 +747,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -410,7 +775,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "getExtendedAnnotations";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog           auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
@@ -447,8 +812,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -473,7 +837,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "getAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog       auditLog = null;
         AnnotationResponse response = new AnnotationResponse();
@@ -507,8 +871,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -534,7 +897,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "addAnnotationToDiscoveryReport";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
@@ -574,8 +937,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -601,7 +963,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "addAnnotationToAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog       auditLog = null;
         AnnotationResponse response = new AnnotationResponse();
@@ -636,8 +998,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -665,7 +1026,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "linkAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
@@ -697,8 +1058,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -726,7 +1086,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "unlinkAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
@@ -758,8 +1118,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -785,7 +1144,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "updateAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog       auditLog = null;
         AnnotationResponse response = new AnnotationResponse();
@@ -817,8 +1176,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -844,7 +1202,7 @@ public class DiscoveryEngineServices
     {
         final String   methodName = "deleteAnnotation";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMRSAuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
@@ -876,8 +1234,7 @@ public class DiscoveryEngineServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

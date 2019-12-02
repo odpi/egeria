@@ -14,6 +14,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * EndpointHandler manages the Endpoint entity found within a connection object.  The Endpoint entity
@@ -279,5 +282,78 @@ public class EndpointHandler
                                                             serviceName);
 
         return converter.getBean();
+    }
+
+
+    /**
+     * Retrieve the list of endpoint objects that have the supplied network address.
+     *
+     * @param userId       calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @param methodName calling method
+     * @return list of matching Endpoint beans
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<Endpoint> getEndpointsByNetworkAddress(String userId,
+                                                       String networkAddress,
+                                                       int    startFrom,
+                                                       int    pageSize,
+                                                       String methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String addressParameterName = "networkAddress";
+
+        invalidParameterHandler.validateName(networkAddress, addressParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        EndpointBuilder builder = new EndpointBuilder(null,
+                                                      null,
+                                                      null,
+                                                      networkAddress,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      repositoryHelper,
+                                                      serviceName,
+                                                      serverName);
+
+        List<Endpoint>  results = new ArrayList<>();
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   builder.getNetworkAddressInstanceProperties(methodName),
+                                                                                   EndpointMapper.ENDPOINT_TYPE_GUID,
+                                                                                   startFrom,
+                                                                                   queryPageSize,
+                                                                                   methodName);
+
+        if (retrievedEntities != null)
+        {
+            for (EntityDetail entity : retrievedEntities)
+            {
+                if (entity != null)
+                {
+                    EndpointConverter converter = new EndpointConverter(entity, repositoryHelper, serviceName);
+
+                    results.add(converter.getBean());
+                }
+            }
+
+        }
+
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 }
