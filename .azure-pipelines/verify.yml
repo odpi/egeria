@@ -25,6 +25,7 @@ stages:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
+              mavenOptions: '-XX:TieredStopAtLevel=1'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JAVA_VERSION)
               jdkArchitectureOption: 'x64'
