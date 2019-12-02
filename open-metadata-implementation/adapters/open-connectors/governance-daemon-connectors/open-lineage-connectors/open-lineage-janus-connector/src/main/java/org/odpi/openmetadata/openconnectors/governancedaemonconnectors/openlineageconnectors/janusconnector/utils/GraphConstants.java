@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class GraphConstants {
@@ -69,7 +70,6 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_ENTITY_UPDATED_BY = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_UPDATED_BY;
     public static final String PROPERTY_KEY_ENTITY_UPDATE_TIME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_UPDATE_TIME;
 
-
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;
     public static final String PROPERTY_KEY_RELATIONSHIP_CREATED_BY = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_CREATED_BY;
@@ -77,6 +77,21 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATED_BY = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATED_BY;
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_RELATIONSHIP_LABEL = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_LABEL;
+
+    public static final HashSet<String> returnedPropertiesWhiteList = new HashSet<String>(){{
+        add(PROPERTY_KEY_ENTITY_GUID);
+        add(PROPERTY_KEY_DISPLAY_NAME);
+        add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
+        add(PROPERTY_KEY_GLOSSARY_TERM);
+        add(PROPERTY_KEY_DISPLAY_NAME);
+        add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        add(PROPERTY_KEY_ENTITY_CREATED_BY);
+        add(PROPERTY_NAME_SCHEMA_DISPLAY_NAME);
+        add(PROPERTY_KEY_ENTITY_CREATE_TIME);
+        add(PROPERTY_KEY_ENTITY_UPDATED_BY);
+        add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
+    }};
 
     // Map of names to property key names
     public static final Map<String, String> corePropertiesRelationship = new HashMap<String, String>() {{
@@ -100,6 +115,7 @@ public class GraphConstants {
         put(PROPERTY_NAME_UPDATE_TIME, "java.lang.Date");
         put(PROPERTY_NAME_LABEL, "java.lang.String");
         put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
-
     }};
+
+
 }
