@@ -6,6 +6,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
@@ -157,63 +158,24 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
         }
-
-        Map<String, String> attributes = null;
-
-        switch (nodeType) {
-            case NODE_LABEL_COLUMN:
-                attributes = setColumnProperties(originalVertex);
-                break;
-            case NODE_LABEL_TABLE:
-                attributes = setTableProperties(originalVertex);
-                break;
-            case NODE_LABEL_PROCESS:
-                attributes = setProcessProperties(originalVertex);
-                break;
-            case NODE_LABEL_SUB_PROCESS:
-                attributes = setSubProcessProperties(originalVertex);
-                break;
-            case NODE_LABEL_GLOSSARYTERM:
-                attributes = setGlossaryTermProperties(originalVertex);
-                break;
-            default:
-        }
+        Map<String, String> attributes = retrieveProperties(originalVertex);
         lineageVertex.setAttributes(attributes);
         return lineageVertex;
     }
 
-
-    private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
+    /**
+     *  Retrieve all properties from the db and return the ones that match the whitelist. This will filter out irrelevant
+     *  properties that should not be returned to a UI.
+     * @param originalVertex
+     * @return
+     */
+    private Map<String, String> retrieveProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-    private Map<String, String> setProcessProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-
-    private Map<String, String> setGlossaryTermProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-
-    private Map<String, String> setTableProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
-            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
-        }
-        return attributes;
-    }
-
-    private Map<String, String> setColumnProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
-            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        Iterator originalProperties = originalVertex.properties();
+        while(originalProperties.hasNext()){
+            Property originalProperty = (Property) originalProperties.next();
+            if(returnedPropertiesWhiteList.contains(originalProperty.key()))
+                attributes.put(originalProperty.key(), originalProperty.value().toString());
         }
         return attributes;
     }
@@ -359,9 +321,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     newVertex.getNodeID(),
                     condensedVertex.getNodeID()
             );
-            if (newVertex != null)
                 lineageVertices.add(newVertex);
-            if (newEdge != null)
                 lineageEdges.add(newEdge);
         }
         LineageEdge sourceEdge = new LineageEdge(
