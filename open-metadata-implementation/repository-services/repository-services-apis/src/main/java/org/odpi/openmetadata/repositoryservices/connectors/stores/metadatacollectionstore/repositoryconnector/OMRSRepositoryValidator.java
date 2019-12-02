@@ -1080,6 +1080,39 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Verify that an entity instance can be updated by the metadataCollection. This method is used
+     * when the metadataCollection is called to update the status properties or classification of an
+     * entity instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    void validateEntityCanBeUpdated(String         sourceName,
+                                    String         metadataCollectionId,
+                                    InstanceHeader instance,
+                                    String         methodName) throws InvalidParameterException;
+
+
+    /**
+     * Verify that an entity instance can be rehomed by the metadataCollection. This method is used
+     * when the metadataCollection is called to rehome an entity instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    void validateEntityCanBeRehomed(String         sourceName,
+                                    String         metadataCollectionId,
+                                    InstanceHeader instance,
+                                    String         methodName) throws InvalidParameterException;
+
+
+    /**
      * Verify the status of a relationship to check it has not been deleted.  This method is used
      * when retrieving metadata instances from a store that supports soft delete.
      *
@@ -1104,6 +1137,39 @@ public interface OMRSRepositoryValidator
     void validateRelationshipIsDeleted(String         sourceName,
                                        InstanceHeader instance,
                                        String         methodName) throws RelationshipNotDeletedException;
+
+
+    /**
+     * Verify that a relationship instance can be updated by the metadataCollection. This method is used
+     * when the metadataCollection is called to update the status or properties of a relationship instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    void validateRelationshipCanBeUpdated(String         sourceName,
+                                          String         metadataCollectionId,
+                                          InstanceHeader instance,
+                                          String         methodName) throws InvalidParameterException;
+
+
+    /**
+     * Verify that a relationship instance can be rehomed by the metadataCollection. This method is used
+     * when the metadataCollection is called to rehome a relationship instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    void validateRelationshipCanBeRehomed(String         sourceName,
+                                          String         metadataCollectionId,
+                                          InstanceHeader instance,
+                                          String         methodName) throws InvalidParameterException;
+
 
 
     /**

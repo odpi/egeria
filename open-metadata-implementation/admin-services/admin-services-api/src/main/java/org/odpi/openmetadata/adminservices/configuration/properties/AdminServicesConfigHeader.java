@@ -31,13 +31,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = EventBusConfig.class, name = "EventBusConfig"),
         @JsonSubTypes.Type(value = LocalRepositoryConfig.class, name = "LocalRepositoryConfig"),
         @JsonSubTypes.Type(value = OMAGServerConfig.class, name = "OMAGServerConfig"),
-        @JsonSubTypes.Type(value = OpenLineageConfig.class, name = "OpenLineageConfig"),
+        @JsonSubTypes.Type(value = OpenLineageServerConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = RepositoryServicesConfig.class, name = "RepositoryServicesConfig"),
         @JsonSubTypes.Type(value = SecuritySyncConfig.class, name = "SecuritySyncConfig"),
         @JsonSubTypes.Type(value = StewardshipServicesConfig.class, name = "StewardshipServicesConfig"),
         @JsonSubTypes.Type(value = VirtualizationConfig.class, name = "VirtualizationConfig"),
         @JsonSubTypes.Type(value = DataEngineProxyConfig.class, name = "DataEngineProxyConfig"),
-        @JsonSubTypes.Type(value = DataPlatformConfig.class, name = "DataPlatformConfig")
+        @JsonSubTypes.Type(value = DataPlatformServicesConfig.class, name = "DataPlatformServicesConfig")
 })
 public class AdminServicesConfigHeader implements Serializable
 {

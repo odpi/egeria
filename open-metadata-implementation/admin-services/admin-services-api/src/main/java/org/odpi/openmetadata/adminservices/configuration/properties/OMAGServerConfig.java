@@ -102,14 +102,14 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
     private ConformanceSuiteConfig    conformanceSuiteConfig    = null;
     private DiscoveryServerConfig     discoveryServerConfig     = null;
-    private OpenLineageConfig         openLineageConfig         = null;
+    private OpenLineageServerConfig openLineageServerConfig = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
     private SecurityOfficerConfig     securityOfficerConfig     = null;
     private List<String>              auditTrail                = null;
     private VirtualizationConfig      virtualizationConfig      = null;
     private DataEngineProxyConfig     dataEngineProxyConfig     = null;
-    private DataPlatformConfig        dataPlatformConfig        = null;
+    private DataPlatformServicesConfig dataPlatformServicesConfig = null;
 
 
     /**
@@ -147,14 +147,14 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             repositoryServicesConfig = template.getRepositoryServicesConfig();
             conformanceSuiteConfig = template.getConformanceSuiteConfig();
             discoveryServerConfig = template.getDiscoveryServerConfig();
-            openLineageConfig = template.getOpenLineageConfig();
+            openLineageServerConfig = template.getOpenLineageServerConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
             securityOfficerConfig = template.getSecurityOfficerConfig();
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
             dataEngineProxyConfig = template.getDataEngineProxyConfig();
-            dataPlatformConfig = template.getDataPlatformConfig();
+            dataPlatformServicesConfig = template.getDataPlatformServicesConfig();
         }
     }
 
@@ -500,20 +500,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return OpenLineageConfig properties
      */
-    public OpenLineageConfig getOpenLineageConfig()
+    public OpenLineageServerConfig getOpenLineageServerConfig()
     {
-        return openLineageConfig;
+        return openLineageServerConfig;
     }
 
 
     /**
      * Set up the configuration for open lineage services.
      *
-     * @param openLineageConfig OpenLineageConfig properties
+     * @param openLineageServerConfig OpenLineageConfig properties
      */
-    public void setOpenLineageConfig(OpenLineageConfig openLineageConfig)
+    public void setOpenLineageServerConfig(OpenLineageServerConfig openLineageServerConfig)
     {
-        this.openLineageConfig = openLineageConfig;
+        this.openLineageServerConfig = openLineageServerConfig;
     }
 
 
@@ -627,17 +627,17 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return DataEngineProxyConfig properties
      */
-    public DataPlatformConfig getDataPlatformConfig() {
-        return dataPlatformConfig;
+    public DataPlatformServicesConfig getDataPlatformServicesConfig() {
+        return dataPlatformServicesConfig;
     }
 
     /**
      * Set up the configuration for the data platform services.
      *
-     * @param dataPlatformConfig properties
+     * @param dataPlatformServicesConfig properties
      */
-    public void setDataPlatformConfig(DataPlatformConfig dataPlatformConfig) {
-        this.dataPlatformConfig = dataPlatformConfig;
+    public void setDataPlatformServicesConfig(DataPlatformServicesConfig dataPlatformServicesConfig) {
+        this.dataPlatformServicesConfig = dataPlatformServicesConfig;
     }
 
     /**
@@ -683,12 +683,12 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
                 ", discoveryServerConfig=" + discoveryServerConfig +
-                ", openLineageConfig=" + openLineageConfig +
+                ", openLineageConfig=" + openLineageServerConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", securityOfficerConfig=" + securityOfficerConfig +
                 ", dataEngineProxyConfig=" + dataEngineProxyConfig +
-                ", dataPlatformConfig=" + dataPlatformConfig +
+                ", dataPlatformServicesConfig=" + dataPlatformServicesConfig +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -723,13 +723,13 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                 Objects.equals(getDiscoveryServerConfig(), that.getDiscoveryServerConfig()) &&
-                Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
+                Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
                 Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                 Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
-                Objects.equals(getDataPlatformConfig(), that.getDataPlatformConfig()) &&
+                Objects.equals(getDataPlatformServicesConfig(), that.getDataPlatformServicesConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -746,6 +746,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
                             getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
-                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig(),getDataPlatformConfig());
+                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig(), getDataPlatformServicesConfig());
     }
 }

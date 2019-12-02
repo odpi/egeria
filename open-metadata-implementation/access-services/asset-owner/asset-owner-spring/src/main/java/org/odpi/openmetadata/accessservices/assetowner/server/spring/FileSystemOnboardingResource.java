@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.FileSystemRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -14,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * AssetOnboardingResource supports the server-side capture of REST calls to add new asset definitions.
+ * FileSystemOnboardingResource supports the server-side capture of REST calls to add new file-based asset definitions.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
@@ -278,6 +276,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID new parent folder
      * @param fileGUID unique identifier of the file to move
+     * @param requestBody null request body to satisfy REST protocol
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -304,6 +303,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID new parent folder
      * @param dataFolderGUID unique identifier of the data folder to move
+     * @param requestBody null request body to satisfy REST protocol
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -513,6 +513,7 @@ public class FileSystemOnboardingResource
     {
         return restAPI.addAvroFileToCatalog(serverName, userId, requestBody);
     }
+
 
     /*
      * ==============================================

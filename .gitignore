@@ -102,10 +102,10 @@ open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceutical
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/metadata/ibm-igc/generated_*
 
 # Ignore UI downloaded components
-open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/resources/public/**
-open-metadata-implementation/user-interfaces/access-services-user-interface/tools/**
-open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static/node_modules/**
-open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static/package-lock.json
+open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/public/**
+open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/tools/**
+open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static/node_modules/**
+open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static/package-lock.json
 
 # Ignore private maven repo (jenkins)
 .repository
@@ -121,10 +121,10 @@ open-metadata-implementation/user-interfaces/access-services-user-interface/src/
 log
 # m2 repo used by linux foundation build
 **/m2repo*/**
-# ignore github pages file and site.
-_site/**
-_layouts/**
+
+# ignore github pages build file and site.
 Gemfile
+
 # vscode editor
 **/.vscode*/**
 **/.factorypath
@@ -132,3 +132,11 @@ Gemfile
 
 # Jupyter notebook temp/update files
 **/.ipynb_checkpoints
+
+# Java core files
+Snap*.trc
+javacore*.txt
+jitdump*dmp
+
+# License files (generated)
+THIRD_PARTY*.txt

@@ -23,7 +23,7 @@ public interface GovernanceOrganizationInterface
                                                                         InvalidParameterException,
                                                                         PropertyServerException;
 
-    void   linkGovernanceResponsiblityToPolicy(String              responsibilityGUID,
+    void   linkGovernanceResponsibilityToPolicy(String              responsibilityGUID,
                                                String              policyGUID);
 
     void   updateGovernanceResponsibility(String              responsibilityGUID);

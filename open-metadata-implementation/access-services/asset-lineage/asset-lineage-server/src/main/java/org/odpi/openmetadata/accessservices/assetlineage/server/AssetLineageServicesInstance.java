@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -23,9 +20,10 @@ import java.util.List;
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
-    private ContextHandler contextHandler;
+    private AssetContextHandler assetContextHandler;
     private CommonHandler commonHandler;
-    private ProcessHandler processHandler;
+    private ProcessContextHandler processContextHandler;
+    private ClassificationHandler classificationHandler;
 
     /**
      * Set up the handlers for this server.
@@ -53,7 +51,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler);
 
-            contextHandler = new ContextHandler(serviceName,
+            assetContextHandler = new AssetContextHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -65,7 +63,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler);
 
-            processHandler = new ProcessHandler(serviceName,
+            processContextHandler = new ProcessContextHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
+            classificationHandler = new ClassificationHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -100,9 +104,9 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return context handler
      */
-    ContextHandler getContextHandler()
+    AssetContextHandler getAssetContextHandler()
     {
-        return contextHandler;
+        return assetContextHandler;
     }
 
     /**
@@ -120,9 +124,18 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return process handler
      */
-    ProcessHandler getProcessHandler()
+    ProcessContextHandler getProcessContextHandler()
     {
-        return processHandler;
+        return processContextHandler;
+    }
+
+    /**
+     * Return the specialized classification handler for Asset Lineage OMAS.
+     *
+     * @return process handler
+     */
+    ClassificationHandler getClassificationHandler() {
+        return classificationHandler;
     }
 
 }

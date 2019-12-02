@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * SchemaTypeHandler manages SchemaType objects.  It runs server-side in
- * OMAS and retrieves SchemaType entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves SchemaType entities through the OMRSRepositoryConnector.
  */
 public class SchemaTypeHandler
 {
@@ -30,6 +30,7 @@ public class SchemaTypeHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private LastAttachmentHandler   lastAttachmentHandler;
 
 
     /**
@@ -40,18 +41,21 @@ public class SchemaTypeHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public SchemaTypeHandler(String                  serviceName,
                              String                  serverName,
                              InvalidParameterHandler invalidParameterHandler,
                              RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper)
+                             OMRSRepositoryHelper    repositoryHelper,
+                             LastAttachmentHandler   lastAttachmentHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.lastAttachmentHandler = lastAttachmentHandler;
     }
 
 
@@ -122,6 +126,21 @@ public class SchemaTypeHandler
         return schemaAttribute;
     }
 
+    /**
+     * Return a schema attribute object with the type set up.
+     *
+     * @return new object
+     */
+    public SchemaAttribute  getEmptyTabularColumn()
+    {
+        SchemaAttribute   schemaAttribute = new SchemaAttribute();
+
+        setElementType(SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID,
+                       SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
+                       schemaAttribute);
+
+        return schemaAttribute;
+    }
 
     /**
      * Is there an attached schema for the Asset?
@@ -391,7 +410,7 @@ public class SchemaTypeHandler
                                                                                         methodName);
 
         List<SchemaAttribute>  results = new ArrayList<>();
-        
+
         if (entities != null)
         {
             for (EntityDetail schemaAttributeEntity : entities)
@@ -409,7 +428,7 @@ public class SchemaTypeHandler
                     {
                         attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity.getGUID(), methodName);
                     }
-                    
+
                     SchemaAttributeConverter converter = new SchemaAttributeConverter(schemaAttributeEntity,
                                                                                       attributeType,
                                                                                       null,  // TODO
@@ -464,17 +483,16 @@ public class SchemaTypeHandler
                         schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
 
                         repositoryHandler.createRelationship(userId,
-                                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                schemaTypeGUID,
-                                schemaAttributeGUID,
-                                null,
-                                methodName);
+                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                             schemaTypeGUID,
+                                                             schemaAttributeGUID,
+                                                             null,
+                                                             methodName);
                     }
                     else
                     {
                         updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
                     }
-
                 }
             }
         }
@@ -486,6 +504,8 @@ public class SchemaTypeHandler
      * @param userId calling userId
      * @param schemaTypeGUID anchor object
      * @param schemaAttributes list of nested schema attribute objects or null
+     * @param externalSourceGUID unique identifier of the external source
+     * @param externalSourceName unique name of the external source
      * @param methodName calling method
      *
      * @throws InvalidParameterException the bean properties are invalid
@@ -886,7 +906,7 @@ public class SchemaTypeHandler
 
         return null;
     }
-    
+
 
     /**
      * Determine if the SchemaType object is stored in the repository and create it if it is not.
@@ -1232,9 +1252,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaType(String userId, 
-                                 String schemaTypeGUID) throws InvalidParameterException, 
-                                                               PropertyServerException, 
+    public void removeSchemaType(String userId,
+                                 String schemaTypeGUID) throws InvalidParameterException,
+                                                               PropertyServerException,
                                                                UserNotAuthorizedException
     {
         final String methodName        = "removeSchemaType";
@@ -1259,9 +1279,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaAttribute(String userId, 
-                                      String schemaAttributeGUID) throws InvalidParameterException, 
-                                                                         PropertyServerException, 
+    public void removeSchemaAttribute(String userId,
+                                      String schemaAttributeGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         final String methodName        = "removeSchemaAttribute";

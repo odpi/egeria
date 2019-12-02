@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
@@ -17,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -26,16 +26,14 @@ import static org.mockito.Mockito.when;
 
 public class AssetCatalogRelationshipServiceTest {
 
-    private final String USER = "test-user";
-    private final String SERVER_NAME = "omas";
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
+    private final String USER = "test-user";
+    private final String SERVER_NAME = "omas";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
-    private Relationship response;
-
     @Mock
     RESTExceptionHandler restExceptionHandler;
-
+    private Relationship response;
     @Mock
     private AssetCatalogInstanceHandler instanceHandler;
 
@@ -65,7 +63,8 @@ public class AssetCatalogRelationshipServiceTest {
 
 
     @Test
-    public void testGetRelationshipBetweenEntities() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetRelationshipBetweenEntities()
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         when(instanceHandler.getRelationshipHandler(USER,
                 SERVER_NAME,
                 "getRelationshipBetweenEntities"))

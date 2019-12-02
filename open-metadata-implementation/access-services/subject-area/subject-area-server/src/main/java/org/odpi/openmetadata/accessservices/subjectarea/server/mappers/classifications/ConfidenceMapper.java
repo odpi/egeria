@@ -58,7 +58,7 @@ public class ConfidenceMapper extends ClassificationMapper{
             GovernanceClassificationStatus status = GovernanceClassificationStatus.valueOf(enumPropertyValue.getSymbolicName());
             confidence.setStatus(status);
         }
-        return Confidence.PROPERTY_NAMES_SET;
+        return Confidence.getPropertyNames();
     }
 
     @Override

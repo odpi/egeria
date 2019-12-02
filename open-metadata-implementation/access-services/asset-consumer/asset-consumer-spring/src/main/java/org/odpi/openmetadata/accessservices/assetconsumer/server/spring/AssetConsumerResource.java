@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -285,6 +285,34 @@ public class AssetConsumerResource
         return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
     }
 
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
+     * fields in the schema.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param termGUID unique identifier of term.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-meaning/{termGUID}")
+
+    public GUIDListResponse getAssetsByMeaning(@PathVariable String serverName,
+                                               @PathVariable String userId,
+                                               @PathVariable String termGUID,
+                                               @RequestParam int    startFrom,
+                                               @RequestParam int    pageSize)
+    {
+        return restAPI.getAssetsByMeaning(serverName, userId, termGUID, startFrom, pageSize);
+    }
+
+
     /**
      * Return a list of assets with the requested name.
      *
@@ -308,6 +336,32 @@ public class AssetConsumerResource
                                             @RequestBody  String   name)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
+     * of its schema elements.
+     *
+     * @param userId the name of the calling user.
+     * @param tagGUID unique identifier of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-tag/{tagGUID}")
+
+    GUIDListResponse getAssetsByTag(@PathVariable String serverName,
+                                    @PathVariable String userId,
+                                    @PathVariable String tagGUID,
+                                    @RequestParam int    startFrom,
+                                    @RequestParam int    pageSize)
+    {
+        return restAPI.getAssetsByTag(serverName, userId, tagGUID, startFrom, pageSize);
     }
 
 
@@ -341,7 +395,7 @@ public class AssetConsumerResource
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
      * @param name name of term.
-     * @param startFrom  index of the list ot start from (0 for start).
+     * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of meaning objects or
      * InvalidParameterException - one of the parameters is invalid or
@@ -366,7 +420,7 @@ public class AssetConsumerResource
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
      * @param name name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start).
+     * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of meaning objects or
      * InvalidParameterException - one of the parameters is invalid or
@@ -435,7 +489,7 @@ public class AssetConsumerResource
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
      * @param tagName name of tag.
-     * @param startFrom  index of the list ot start from (0 for start).
+     * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
@@ -455,12 +509,37 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the tags matching the supplied name.
+     * Return the list of the calling user's private tags exactly matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/tags/private/by-name")
+
+    public TagsResponse getMyTagsByName(@PathVariable String  serverName,
+                                        @PathVariable String  userId,
+                                        @RequestParam int     startFrom,
+                                        @RequestParam int     pageSize,
+                                        @RequestBody  String  tagName)
+    {
+        return restAPI.getMyTagsByName(serverName, userId, tagName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
      * @param tagName name of tag.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start).
+     * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
@@ -476,6 +555,31 @@ public class AssetConsumerResource
                                  @RequestBody  String  tagName)
     {
         return restAPI.findTags(serverName, userId, tagName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/tags/private/by-search-string")
+
+    public TagsResponse findMyTags(@PathVariable String  serverName,
+                                   @PathVariable String  userId,
+                                   @RequestParam int     startFrom,
+                                   @RequestParam int     pageSize,
+                                   @RequestBody  String  tagName)
+    {
+        return restAPI.findMyTags(serverName, userId, tagName, startFrom, pageSize);
     }
 
 

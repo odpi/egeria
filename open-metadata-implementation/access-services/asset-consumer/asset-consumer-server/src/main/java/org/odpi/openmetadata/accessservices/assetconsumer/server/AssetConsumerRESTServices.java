@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -13,15 +13,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,25 +74,13 @@ public class AssetConsumerRESTServices
         GUIDResponse  response = new GUIDResponse();
         OMRSAuditLog  auditLog = null;
 
-
         try
         {
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             response.setGUID(handler.getAssetForConnectionName(userId, connectionName, methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
         catch (Throwable error)
         {
@@ -182,18 +165,6 @@ public class AssetConsumerRESTServices
 
             response.setGUIDs(this.getGUIDs(handler.findAssets(userId, searchString, startFrom, pageSize, methodName)));
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -238,18 +209,6 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(this.getGUIDs(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName)));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
         catch (Throwable error)
         {
@@ -301,18 +260,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(connectionHandler.getConnectionByName(userId, name, methodName));
         }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -322,7 +269,6 @@ public class AssetConsumerRESTServices
 
         return response;
     }
-
 
 
     /*
@@ -360,33 +306,23 @@ public class AssetConsumerRESTServices
 
         try
         {
-            StarRating starRating = null;
-            String     review = null;
-            boolean    isPublic = false;
-
             if (requestBody != null)
             {
-                starRating = requestBody.getStarRating();
-                review = requestBody.getReview();
-                isPublic = requestBody.isPublic();
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.addRatingToAsset(userId,
+                                         guid,
+                                         requestBody.getStarRating(),
+                                         requestBody.getReview(),
+                                         requestBody.isPublic(),
+                                         methodName);
+
             }
-
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addRatingToAsset(userId, guid, starRating, review, isPublic, methodName);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -432,18 +368,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeRatingFromAsset(userId, guid, methodName);
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -478,34 +402,22 @@ public class AssetConsumerRESTServices
 
         log.debug("Calling method: " + methodName);
 
-        boolean isPublic = false;
-
-        if (requestBody != null)
-        {
-            isPublic = requestBody.isPublic();
-        }
-
         VoidResponse  response = new VoidResponse();
         OMRSAuditLog  auditLog = null;
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addLikeToAsset(userId, guid, isPublic, methodName);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.addLikeToAsset(userId, guid, requestBody.isPublic(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -551,18 +463,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLikeFromAsset(userId, guid, methodName);
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -602,33 +502,22 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentType commentType = null;
-            String      commentText = null;
-            boolean     isPublic    = false;
-
             if (requestBody != null)
             {
-                commentType = requestBody.getCommentType();
-                commentText = requestBody.getCommentText();
-                isPublic    = requestBody.isPublic();
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.addCommentToAsset(userId,
+                                                           guid,
+                                                           requestBody.getCommentType(),
+                                                           requestBody.getCommentText(),
+                                                           requestBody.isPublic(),
+                                                           methodName));
             }
-
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.addCommentToAsset(userId, guid, commentType, commentText, isPublic, methodName));
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -671,33 +560,23 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentType commentType = null;
-            String      commentText = null;
-            boolean     isPublic    = false;
-
             if (requestBody != null)
             {
-                commentType = requestBody.getCommentType();
-                commentText = requestBody.getCommentText();
-                isPublic    = requestBody.isPublic();
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.addCommentReply(userId,
+                                                         assetGUID,
+                                                         commentGUID,
+                                                         requestBody.getCommentType(),
+                                                         requestBody.getCommentText(),
+                                                         requestBody.isPublic(),
+                                                         methodName));
             }
-
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.addCommentReply(userId, assetGUID, commentGUID, commentType, commentText, isPublic, methodName));
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -739,33 +618,23 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentType commentType = null;
-            String      commentText = null;
-            boolean     isPublic    = false;
-
             if (requestBody != null)
             {
-                commentType = requestBody.getCommentType();
-                commentText = requestBody.getCommentText();
-                isPublic    = requestBody.isPublic();
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.updateAssetComment(userId,
+                                           assetGUID,
+                                           commentGUID,
+                                           requestBody.getCommentType(),
+                                           requestBody.getCommentText(),
+                                           requestBody.isPublic(),
+                                           methodName);
             }
-
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.updateAssetComment(userId, assetGUID, commentGUID, commentType, commentText, isPublic, methodName);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -813,18 +682,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeAssetComment(userId, assetGUID, commentGUID, methodName);
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -869,22 +726,10 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGlossaryTerm(glossaryHandler.getMeaning(userId, guid));
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            response.setGlossaryTerm(glossaryTermHandler.getMeaning(userId, guid, methodName));
         }
         catch (Throwable error)
         {
@@ -903,7 +748,7 @@ public class AssetConsumerRESTServices
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param term name of term.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of glossary terms or
@@ -926,23 +771,11 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryHandler.getMeaningByName(userId, term, startFrom, pageSize));
+            response.setMeanings(glossaryTermHandler.getMeaningByName(userId, term, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
         catch (Throwable error)
         {
@@ -961,7 +794,7 @@ public class AssetConsumerRESTServices
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of glossary terms or
@@ -984,23 +817,56 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryHandler.findMeanings(userId, term, startFrom, pageSize));
+            response.setMeanings(glossaryTermHandler.findMeanings(userId, term, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (InvalidParameterException  error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException  error)
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
+     * fields in the schema.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param termGUID unique identifier of term.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDListResponse getAssetsByMeaning(String serverName,
+                                               String userId,
+                                               String termGUID,
+                                               int    startFrom,
+                                               int    pageSize)
+    {
+        final String   methodName  = "getAssetsByMeaning";
+
+        log.debug("Calling method: " + methodName);
+
+        GUIDListResponse  response = new GUIDListResponse();
+        OMRSAuditLog      auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setGUIDs(handler.getAssetsByMeaning(userId, termGUID, startFrom, pageSize, methodName));
         }
         catch (Throwable error)
         {
@@ -1053,43 +919,23 @@ public class AssetConsumerRESTServices
 
         try
         {
-            String      connectorInstanceId = null;
-            String      connectionName = null;
-            String      connectorType = null;
-            String      contextId = null;
-            String      message = null;
-
             if (requestBody != null)
             {
-                connectorInstanceId = requestBody.getConnectorInstanceId();
-                connectionName = requestBody.getConnectionName();
-                connectorType = requestBody.getConnectorType();
-                contextId = requestBody.getContextId();
-                message = requestBody.getMessage();
+                LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                loggingHandler.addLogMessageToAsset(userId,
+                                                    guid,
+                                                    requestBody.getConnectorInstanceId(),
+                                                    requestBody.getConnectionName(),
+                                                    requestBody.getConnectorType(),
+                                                    requestBody.getContextId(),
+                                                    requestBody.getMessage());
             }
-
-            LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            loggingHandler.addLogMessageToAsset(userId,
-                    guid,
-                    connectorInstanceId,
-                    connectionName,
-                    connectorType,
-                    contextId,
-                    message);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -1150,18 +996,6 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -1212,18 +1046,6 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -1267,18 +1089,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteTag(userId, tagGUID, methodName);
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -1320,18 +1130,6 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setTag(handler.getTag(userId, guid, methodName));
         }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
         catch (Throwable error)
         {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
@@ -1349,7 +1147,7 @@ public class AssetConsumerRESTServices
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tagName name of tag.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list or
@@ -1378,17 +1176,51 @@ public class AssetConsumerRESTServices
             response.setTags(handler.getTagsByName(userId, tagName, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (InvalidParameterException  error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException  error)
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of the calling user's private tags exactly matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public TagsResponse getMyTagsByName(String serverName,
+                                        String userId,
+                                        String tagName,
+                                        int    startFrom,
+                                        int    pageSize)
+    {
+        final String   methodName = "getMyTagsByName";
+
+        log.debug("Calling method: " + methodName);
+
+        TagsResponse response = new TagsResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setTags(handler.getMyTagsByName(userId, tagName, startFrom, pageSize, methodName));
+            response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
         {
@@ -1402,12 +1234,12 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tagName name of tag.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list or
@@ -1436,17 +1268,51 @@ public class AssetConsumerRESTServices
             response.setTags(handler.findTags(userId, tagName, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (InvalidParameterException  error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException  error)
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public TagsResponse findMyTags(String serverName,
+                                 String userId,
+                                 String tagName,
+                                 int    startFrom,
+                                 int    pageSize)
+    {
+        final String   methodName = "findMyTags";
+
+        log.debug("Calling method: " + methodName);
+
+        TagsResponse response = new TagsResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setTags(handler.findMyTags(userId, tagName, startFrom, pageSize, methodName));
+            response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
         {
@@ -1495,22 +1361,10 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addTagToAsset(userId, assetGUID, tagGUID, isPublic, methodName);
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
         catch (Throwable error)
         {
@@ -1552,22 +1406,56 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeTagFromAsset(userId, assetGUID, tagGUID, methodName);
         }
-        catch (InvalidParameterException  error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
-        catch (PropertyServerException  error)
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
+     * of its schema elements.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tagGUID unique identifier of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return asset guid list or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDListResponse getAssetsByTag(String serverName,
+                                           String userId,
+                                           String tagGUID,
+                                           int    startFrom,
+                                           int    pageSize)
+    {
+        final String   methodName  = "getAssetsByTag";
+
+        log.debug("Calling method: " + methodName);
+
+        GUIDListResponse  response = new GUIDListResponse();
+        OMRSAuditLog      auditLog = null;
+
+        try
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setGUIDs(handler.getAssetsByTag(userId, tagGUID, startFrom, pageSize, methodName));
         }
         catch (Throwable error)
         {

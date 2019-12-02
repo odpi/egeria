@@ -17,16 +17,10 @@ import java.util.List;
 
 /**
  * ExternalIdentifierHandler manages ExternalIdentifier objects.  It runs server-side in
- * OMAS and retrieves ExternalIdentifier entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves ExternalIdentifier entities through the OMRSRepositoryConnector.
  */
-public class ExternalIdentifierHandler
+public class ExternalIdentifierHandler extends AttachmentHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -36,18 +30,16 @@ public class ExternalIdentifierHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public ExternalIdentifierHandler(String                  serviceName,
                                      String                  serverName,
                                      InvalidParameterHandler invalidParameterHandler,
                                      RepositoryHandler       repositoryHandler,
-                                     OMRSRepositoryHelper    repositoryHelper)
+                                     OMRSRepositoryHelper    repositoryHelper,
+                                     LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -68,17 +60,12 @@ public class ExternalIdentifierHandler
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  anchorGUID,
-                                                                  ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                  ExternalIdentifierMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                                                  ExternalIdentifierMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
-                                                                  methodName);
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      ExternalIdentifierMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                      ExternalIdentifierMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                      methodName);
     }
 
 

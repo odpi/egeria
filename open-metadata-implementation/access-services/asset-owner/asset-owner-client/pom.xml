@@ -10,7 +10,7 @@
     <parent>
         <artifactId>asset-owner</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -62,6 +62,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
         </dependency>
 
     </dependencies>

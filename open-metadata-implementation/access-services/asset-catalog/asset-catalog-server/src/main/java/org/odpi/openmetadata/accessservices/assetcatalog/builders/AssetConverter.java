@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
+ */
 public class AssetConverter {
 
     private OMRSRepositoryHelper repositoryHelper;
@@ -41,12 +44,12 @@ public class AssetConverter {
         assetDescription.setUpdateTime(entityDetail.getUpdateTime());
         assetDescription.setVersion(entityDetail.getVersion());
 
-        if (entityDetail.getType() != null) {
+        if (entityDetail.getType() != null && entityDetail.getType().getTypeDefName() != null) {
             assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
         }
 
         assetDescription.setUrl(entityDetail.getInstanceURL());
-        if (entityDetail.getStatus() != null) {
+        if (entityDetail.getStatus() != null && entityDetail.getStatus().getName() != null) {
             assetDescription.setStatus(entityDetail.getStatus().getName());
         }
 
@@ -79,11 +82,11 @@ public class AssetConverter {
         relationship.setUpdateTime(rel.getUpdateTime());
 
         relationship.setVersion(rel.getVersion());
-        if (rel.getStatus() != null) {
+        if (rel.getStatus() != null && rel.getStatus().getName() != null) {
             relationship.setStatus(rel.getStatus().getName());
         }
 
-        if (rel.getType() != null) {
+        if (rel.getType() != null && rel.getType().getTypeDefName() != null) {
             relationship.setTypeDefName(rel.getType().getTypeDefName());
         }
 

@@ -49,6 +49,7 @@ public class InstanceAuditHeaderTest
     {
         InstanceAuditHeader testObject = new InstanceAuditHeaderMock();
 
+        testObject.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         testObject.setType(type);
         testObject.setInstanceProvenanceType(instanceProvenanceType);
         testObject.setMetadataCollectionId(metadataCollectionId);
@@ -76,6 +77,7 @@ public class InstanceAuditHeaderTest
      */
     private void validateObject(InstanceAuditHeader   testObject)
     {
+        assertTrue(testObject.getHeaderVersion() == InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         assertTrue(testObject.getType().equals(type));
         assertTrue(testObject.getInstanceProvenanceType().equals(instanceProvenanceType));
         assertTrue(testObject.getMetadataCollectionId().equals(metadataCollectionId));

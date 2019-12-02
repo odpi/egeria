@@ -921,6 +921,24 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getUserAction());
         }
 
+        if (typeDef.getHeaderVersion() > TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.UNSUPPORTED_TYPE_HEADER_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(methodName,
+                                                                            sourceName,
+                                                                            typeDef.getName(),
+                                                                            Long.toString(typeDef.getHeaderVersion()),
+                                                                            Long.toString(typeDef.getHeaderVersion()));
+
+            throw new InvalidTypeDefException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
         validateTypeDefIds(sourceName,
                            parameterName + ".getGUID",
                            parameterName + ".getName",
@@ -1202,6 +1220,25 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction());
         }
+
+        if (attributeTypeDef.getHeaderVersion() > TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.UNSUPPORTED_TYPE_HEADER_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(methodName,
+                                                                            sourceName,
+                                                                            attributeTypeDef.getName(),
+                                                                            Long.toString(attributeTypeDef.getHeaderVersion()),
+                                                                            Long.toString(attributeTypeDef.getHeaderVersion()));
+
+            throw new InvalidTypeDefException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
 
         validateAttributeTypeDefIds(sourceName,
                                     parameterName + ".getGUID",
@@ -2753,6 +2790,158 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Verify that an entity instance can be updated by the metadataCollection. This method is used
+     * when the metadataCollection is called to update the status properties or classification of an
+     * entity instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    public void validateEntityCanBeUpdated(String         sourceName,
+                                           String         metadataCollectionId,
+                                           InstanceHeader instance,
+                                           String         methodName) throws InvalidParameterException
+
+    {
+        /*
+         * Check that it is legal to update the entity.
+         * The caller can update the entity provided:
+         * The entity is locally mastered
+         * OR
+         * The entity has instanceProvenanceType set to external and replicatedBy is set to the local metadataColelctionId.
+         * Any other combination suggest that this is either a reference copy of an instance from the local cohort or a reference
+         * copy of an external entity (and something else is responsible for replication).
+         *
+         * If not throw an InvalidParameterException.
+         */
+
+        /*
+         * Assume it is OK to update the entity, then inspect the conditions below
+         */
+        boolean updateAllowed = true;
+
+        InstanceProvenanceType instanceProvenance = instance.getInstanceProvenanceType();
+        switch (instanceProvenance) {
+            case LOCAL_COHORT:
+                String entityHome = instance.getMetadataCollectionId();
+                if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+                    updateAllowed = false;
+                }
+                break;
+            case EXTERNAL_SOURCE:
+                String replicatedBy = instance.getReplicatedBy();
+                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    updateAllowed = false;
+                }
+                break;
+            default:
+                /*
+                 * For any other instance provenance value do not allow update
+                 */
+                updateAllowed = false;
+                break;
+        }
+
+        if (!updateAllowed) {
+
+            /*
+             * The instance should not be updated - throw InvalidParameterException
+             */
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    instance.getMetadataCollectionId(), methodName, instance.getGUID(), metadataCollectionId, sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Verify that an entity instance can be rehomed by the metadataCollection. This method is used
+     * when the metadataCollection is called to rehome an entity instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    public void validateEntityCanBeRehomed(String         sourceName,
+                                           String         metadataCollectionId,
+                                           InstanceHeader instance,
+                                           String         methodName) throws InvalidParameterException
+    {
+        /*
+         * Check that it is legal to rehome the entity.
+         * The caller can rehome the entity provided:
+         * The entity originates from the local cohort and is NOT locally mastered
+         * OR
+         * The entity has instanceProvenanceType set to external and replicatedBy is NOT the local metadataColelctionId.
+         * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
+         * an external entity) and consequently cannot be rehomed.
+         *
+         * If not rehomable throw an InvalidParameterException.
+         */
+
+        /*
+         * Assume it is NOT OK to rehome the entity, then inspect the conditions below
+         */
+        boolean updateAllowed = false;
+
+        InstanceProvenanceType instanceProvenance = instance.getInstanceProvenanceType();
+        switch (instanceProvenance) {
+            case LOCAL_COHORT:
+                String entityHome = instance.getMetadataCollectionId();
+                if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+                    updateAllowed = true;
+                }
+                break;
+            case EXTERNAL_SOURCE:
+                String replicatedBy = instance.getReplicatedBy();
+                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    updateAllowed = true;
+                }
+                break;
+            default:
+                /*
+                 * For any other instance provenance value do not allow update
+                 */
+                updateAllowed = false;
+                break;
+        }
+
+        if (!updateAllowed) {
+
+            /*
+             * The instance should not be updated - throw InvalidParameterException
+             */
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    instance.getMetadataCollectionId(), methodName, instance.getGUID(), metadataCollectionId, sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Verify the status of a relationship to check it has been deleted.
      *
      * @param sourceName source of the request (used for logging)
@@ -2835,6 +3024,157 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         }
     }
 
+
+    /**
+     * Verify that a relationship instance can be updated by the metadataCollection. This method is used
+     * when the metadataCollection is called to update the status or properties of a relationship instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    public void validateRelationshipCanBeUpdated(String         sourceName,
+                                                 String         metadataCollectionId,
+                                                 InstanceHeader instance,
+                                                 String         methodName) throws InvalidParameterException
+    {
+
+        /*
+         * Check that it is legal to update the relationship.
+         * The caller can update the relationship provided:
+         * The relationship is locally mastered
+         * OR
+         * The relationship has instanceProvenanceType set to external and replicatedBy is set to the local metadataColelctionId.
+         * Any other combination suggest that this is either a reference copy of an instance from the local cohort or a reference
+         * copy of an external relationship (and something else is responsible for replication).
+         *
+         * If not throw an InvalidParameterException.
+         */
+
+        /*
+         * Assume it is OK to update the relationship, then inspect the conditions below
+         */
+        boolean updateAllowed = true;
+
+        InstanceProvenanceType instanceProvenance = instance.getInstanceProvenanceType();
+        switch (instanceProvenance) {
+            case LOCAL_COHORT:
+                String relationshipHome = instance.getMetadataCollectionId();
+                if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+                    updateAllowed = false;
+                }
+                break;
+            case EXTERNAL_SOURCE:
+                String replicatedBy = instance.getReplicatedBy();
+                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    updateAllowed = false;
+                }
+                break;
+            default:
+                /*
+                 * For any other instance provenance value do not allow update
+                 */
+                updateAllowed = false;
+                break;
+        }
+
+        if (!updateAllowed) {
+
+            /*
+             * The instance should not be updated - throw InvalidParameterException
+             */
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    instance.getMetadataCollectionId(), methodName, instance.getGUID(), metadataCollectionId, sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+    }
+
+    /**
+     * Verify that a relationship instance can be rehomed by the metadataCollection. This method is used
+     * when the metadataCollection is called to rehome a relationship instance.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException  the entity is in deleted status
+     */
+    public void validateRelationshipCanBeRehomed(String         sourceName,
+                                                 String         metadataCollectionId,
+                                                 InstanceHeader instance,
+                                                 String         methodName) throws InvalidParameterException
+    {
+
+        /*
+         * Check that it is legal to rehome the relationship.
+         * The caller can rehome the relationship provided:
+         * The relationship originates from the local cohort and is NOT locally mastered
+         * OR
+         * The relationship has instanceProvenanceType set to external and replicatedBy is NOT the local metadataColelctionId.
+         * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
+         * an external relationship) and consequently cannot be rehomed.
+         *
+         * If not rehomable throw an InvalidParameterException.
+         */
+
+        /*
+         * Assume it is NOT OK to rehome the entity, then inspect the conditions below
+         */
+        boolean updateAllowed = false;
+
+        InstanceProvenanceType instanceProvenance = instance.getInstanceProvenanceType();
+        switch (instanceProvenance) {
+            case LOCAL_COHORT:
+                String relationshipHome = instance.getMetadataCollectionId();
+                if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+                    updateAllowed = true;
+                }
+                break;
+            case EXTERNAL_SOURCE:
+                String replicatedBy = instance.getReplicatedBy();
+                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    updateAllowed = true;
+                }
+                break;
+            default:
+                /*
+                 * For any other instance provenance value do not allow update
+                 */
+                updateAllowed = false;
+                break;
+        }
+
+        if (!updateAllowed) {
+
+            /*
+             * The instance should not be updated - throw InvalidParameterException
+             */
+
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    instance.getMetadataCollectionId(), methodName, instance.getGUID(), metadataCollectionId, sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
 
     /**
      * Validate that the types of the two ends of a relationship match the relationship's TypeDef.
@@ -3487,13 +3827,15 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     matchingProperties ++;
                 }
-                if (this.checkDatePropertyValue(propertyMap, effectiveFromPropertyName, instanceProperties.getEffectiveFromTime()))
-                {
-                    matchingProperties ++;
-                }
-                if (this.checkDatePropertyValue(propertyMap, effectiveToPropertyName, instanceProperties.getEffectiveToTime()))
-                {
-                    matchingProperties ++;
+                if (instanceProperties != null) {
+
+                    if (this.checkDatePropertyValue(propertyMap, effectiveFromPropertyName, instanceProperties.getEffectiveFromTime())) {
+                        matchingProperties++;
+                    }
+                    if (this.checkDatePropertyValue(propertyMap, effectiveToPropertyName, instanceProperties.getEffectiveToTime())) {
+                        matchingProperties++;
+                    }
+
                 }
             }
         }
@@ -3517,7 +3859,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                         InstanceProperties   instanceProperties,
                                                         MatchCriteria        matchCriteria) throws InvalidParameterException
     {
-        if (matchProperties != null)
+        if (matchProperties != null && matchProperties.getInstanceProperties() != null)
         {
             int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
                                      this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader, instanceProperties);
@@ -3644,6 +3986,26 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             OMRSErrorCode errorCode = OMRSErrorCode.LOCAL_ENTITY_PROXY;
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(sourceName, proxyParameterName, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+
+        if (entityProxy.getHeaderVersion() > InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.UNSUPPORTED_INSTANCE_HEADER_VERSION;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName,
+                                                         "EntityProxy",
+                                                         sourceName,
+                                                         entityProxy.getGUID(),
+                                                         entityProxy.getType().getTypeDefName(),
+                                                         Long.toString(entityProxy.getHeaderVersion()),
+                                                         Long.toString(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION));
 
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                                 this.getClass().getName(),

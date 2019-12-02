@@ -10,7 +10,7 @@
     <parent>
         <artifactId>governance-program</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -32,6 +32,21 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-client</artifactId>
         </dependency>
 
         <dependency>

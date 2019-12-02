@@ -10,7 +10,7 @@
     <parent>
         <artifactId>ui-admin-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -22,7 +22,6 @@
         Provides the definitions that make up the APIs used by external components when communicating
         with the user interface open metadata administration services.
     </description>
-
 
     <dependencies>
 
@@ -40,15 +39,19 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
-        <dependency>
-             <groupId>org.odpi.egeria</groupId>
-             <artifactId>admin-services-api</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

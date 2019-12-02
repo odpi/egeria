@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -15,9 +15,9 @@ public class JobConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JobConfiguration.class);
 
     private static Scheduler scheduler;
-    private static BufferGraphStore bufferGraphStore;
-    public JobConfiguration(BufferGraphStore bufferGraphStore){
-        this.bufferGraphStore = bufferGraphStore;
+    private static BufferGraph bufferGraph;
+    public JobConfiguration(BufferGraph bufferGraph){
+        this.bufferGraph = bufferGraph;
         schedule();
     }
 
@@ -48,7 +48,7 @@ public class JobConfiguration {
                                   newJob(BufferGraphJob.class).
                                   withIdentity("BufferGraphJob", GROUP).
                                   build();
-        jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraphStore);
+        jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
 
         scheduler.scheduleJob(jobDetail, trigger);
 

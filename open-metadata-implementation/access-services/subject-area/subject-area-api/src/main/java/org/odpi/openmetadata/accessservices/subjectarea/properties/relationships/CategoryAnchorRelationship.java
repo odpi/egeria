@@ -36,33 +36,32 @@ public class CategoryAnchorRelationship extends Line {
     private static final Logger log = LoggerFactory.getLogger(CategoryAnchorRelationship.class);
     private static final String className = CategoryAnchorRelationship.class.getName();
 
-   //public java.util.Set<String> propertyNames = new HashSet<>();
-      public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+      private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
 
       // Terminate the list
           null
       };
-      public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+      private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
 
        // Terminate the list
           null
       };
-      public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
+      private static final String[] ENUM_NAMES_SET_VALUES = new String[] {
 
            // Terminate the list
             null
       };
-      public static final String[] MAP_NAMES_SET_VALUES = new String[] {
+      private static final String[] MAP_NAMES_SET_VALUES = new String[] {
 
            // Terminate the list
            null
       };
-      public static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-      public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-      public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-      public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-      protected String categoryGuid;
-      protected String glossaryGuid;
+      private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
+      private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
+      private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
+      private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      private String categoryGuid;
+      private String glossaryGuid;
 
 
     public CategoryAnchorRelationship() {

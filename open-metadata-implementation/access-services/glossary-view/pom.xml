@@ -10,7 +10,7 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -22,19 +22,12 @@
 
     <artifactId>glossary-view</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>glossary-view-api</module>
         <module>glossary-view-client</module>
         <module>glossary-view-server</module>
         <module>glossary-view-spring</module>
     </modules>
-
-    <properties>
-
-    </properties>
-
-    <dependencies>
-
-    </dependencies>
 
 </project>

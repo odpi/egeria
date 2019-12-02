@@ -29,9 +29,9 @@ import java.util.Map;
  */
 public class GovernanceProgramLeadership  implements GovernanceLeadershipInterface
 {
-    private String                  serverName;       /* Initialized in constructor */
-    private String                  omasServerURL;    /* Initialized in constructor */
-    private RESTClient              restClient;       /* Initialized in constructor */
+    private String                      serverName;       /* Initialized in constructor */
+    private String                      omasServerURL;    /* Initialized in constructor */
+    private GovernanceProgramRESTClient restClient;       /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -54,7 +54,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
 
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL);
+        this.restClient = new GovernanceProgramRESTClient(serverName, omasServerURL);
     }
 
 
@@ -80,7 +80,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
 
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
+        this.restClient = new GovernanceProgramRESTClient(serverName, omasServerURL, userId, password);
     }
 
 

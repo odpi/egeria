@@ -90,6 +90,11 @@ public class GraphOMRSRelationshipMapper {
     // Inbound methods - i.e. writing to store
 
 
+    /*
+     * This method is used to store a local relationship instance or to save a reference copy of a remote relationship instance.
+     * The guid and type information must be preserved.
+     * If the metadataCollectionId is null then
+     */
     public void mapRelationshipToEdge(Relationship relationship, Edge edge)
             throws RepositoryErrorException
     {
@@ -114,8 +119,9 @@ public class GraphOMRSRelationshipMapper {
             missingAttributeName = "type or typeName";
         }
 
-        if (this.metadataCollectionId != null)
-            edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID, this.metadataCollectionId);
+        String relationshipMetadataCollectionId = relationship.getMetadataCollectionId();
+        if (relationshipMetadataCollectionId != null)
+            edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID, relationshipMetadataCollectionId);
         else {
             missingAttribute = true;
             missingAttributeName = "metadataCollectionId";
@@ -284,6 +290,7 @@ public class GraphOMRSRelationshipMapper {
             // First approach is to write properties as json - useful for handling collections and possibly for full text/string matching???
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
+
             try {
                 jsonString = objectMapper.writeValueAsString(instanceProperties);
                 edge.property("relationshipProperties", jsonString);

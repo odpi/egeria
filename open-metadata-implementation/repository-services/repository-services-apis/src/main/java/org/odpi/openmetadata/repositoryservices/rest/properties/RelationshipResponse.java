@@ -56,7 +56,13 @@ public class RelationshipResponse extends OMRSAPIResponse
      */
     public Relationship getRelationship()
     {
-        return new Relationship(relationship);
+        if (relationship == null)
+        {
+            return null;
+        }
+        else {
+            return new Relationship(relationship);
+        }
     }
 
 

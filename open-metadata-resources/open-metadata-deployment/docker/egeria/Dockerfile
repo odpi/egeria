@@ -6,7 +6,7 @@ ARG version
 ARG repo
 
 # Default to latest snapshot from official odpi repository
-ENV version ${version:-"1.2-SNAPSHOT"}
+ENV version ${version:-"1.3-SNAPSHOT"}
 ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
 
 LABEL org.label-schema.schema-version = "1.0"
@@ -29,9 +29,9 @@ RUN apk --no-cache add bash shadow && \
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/maven-metadata.xml /opt/egeria/server-chassis.xml
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/access-services-user-interface/${version}/maven-metadata.xml /opt/egeria/user-interface.xml
+ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/maven-metadata.xml /opt/egeria/user-chassis-spring.xml
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/server-chassis-spring-${version}.jar /opt/egeria/server-chassis-spring.jar
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/access-services-user-interface/${version}/access-services-user-interface-${version}.jar /opt/egeria/access-services-user-interface.jar
+ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/ui-chassis-spring-${version}.jar /opt/egeria/ui-chassis-spring.jar
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 8080 5005

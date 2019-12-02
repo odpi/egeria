@@ -5,3 +5,5 @@
 
 The OCF metadata management spring module uses spring to create the server-side support for the REST services
 needed to support the retrieval of metadata about an [asset](../../../access-services/docs/concepts/assets).
+The interface is to support the ConnectedAssetProperties object defined in the
+[Open Connector Framework (OCF)](../../../frameworks/open-connector-framework).

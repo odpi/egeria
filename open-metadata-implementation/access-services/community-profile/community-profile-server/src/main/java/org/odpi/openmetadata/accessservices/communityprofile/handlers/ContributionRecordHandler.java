@@ -216,6 +216,7 @@ public class ContributionRecordHandler
      * @param contributionRecord contribution record with updated properties.
      * @param methodName calling method
      *
+     * @throws InvalidParameterException bad property
      * @throws PropertyServerException the metadata repository is not available
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      */
@@ -320,6 +321,7 @@ public class ContributionRecordHandler
      * Delete the contribution record for a person.
      *
      * @param userId calling user
+     * @param personalProfileGUID unique identifier of personal profile
      * @param qualifiedName qualified name of their personal profile.
      * @param methodName calling method
      *

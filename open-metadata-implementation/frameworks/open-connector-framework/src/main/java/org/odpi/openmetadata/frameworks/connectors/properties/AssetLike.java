@@ -90,6 +90,17 @@ public class AssetLike extends AssetElementHeader
 
 
     /**
+     * Return if this like is private to the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return likeBean.isPublic();
+    }
+
+
+    /**
      * Return the user id of the person who created the like.  Null means the user id is not known.
      *
      * @return String   liking user

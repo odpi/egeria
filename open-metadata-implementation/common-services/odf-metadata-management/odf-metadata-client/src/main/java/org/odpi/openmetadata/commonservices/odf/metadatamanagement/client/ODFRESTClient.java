@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRES
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -55,13 +56,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryEnginePropertiesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryEnginePropertiesResponse callDiscoveryEnginePropertiesGetRESTCall(String    methodName,
                                                                                       String    urlTemplate,
-                                                                                      Object... params) throws PropertyServerException
+                                                                                      Object... params) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryEnginePropertiesResponse.class, urlTemplate, params);
+        DiscoveryEnginePropertiesResponse restResult = this.callGetRESTCall(methodName,
+                                                                            DiscoveryEnginePropertiesResponse.class,
+                                                                            urlTemplate,
+                                                                            params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -73,13 +85,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryEngineListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryEngineListResponse callDiscoveryEngineListGetRESTCall(String    methodName,
                                                                           String    urlTemplate,
-                                                                          Object... params) throws PropertyServerException
+                                                                          Object... params) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryEngineListResponse.class, urlTemplate, params);
+        DiscoveryEngineListResponse restResult = this.callGetRESTCall(methodName,
+                                                                      DiscoveryEngineListResponse.class,
+                                                                      urlTemplate,
+                                                                      params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -91,13 +114,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryServicePropertiesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryServicePropertiesResponse callDiscoveryServicePropertiesGetRESTCall(String    methodName,
                                                                                         String    urlTemplate,
-                                                                                        Object... params) throws PropertyServerException
+                                                                                        Object... params) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryServicePropertiesResponse.class, urlTemplate, params);
+        DiscoveryServicePropertiesResponse restResult = this.callGetRESTCall(methodName,
+                                                                             DiscoveryServicePropertiesResponse.class,
+                                                                             urlTemplate,
+                                                                             params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -109,13 +143,21 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryEngineListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryServiceListResponse callDiscoveryServiceListGetRESTCall(String    methodName,
                                                                             String    urlTemplate,
-                                                                            Object... params) throws PropertyServerException
+                                                                            Object... params) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryServiceListResponse.class, urlTemplate, params);
+        DiscoveryServiceListResponse restResult = this.callGetRESTCall(methodName, DiscoveryServiceListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -127,13 +169,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return RegisteredDiscoveryServiceResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public RegisteredDiscoveryServiceResponse callRegisteredDiscoveryServiceGetRESTCall(String    methodName,
                                                                                         String    urlTemplate,
-                                                                                        Object... params) throws PropertyServerException
+                                                                                        Object... params) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
-        return this.callGetRESTCall(methodName, RegisteredDiscoveryServiceResponse.class, urlTemplate, params);
+        RegisteredDiscoveryServiceResponse restResult = this.callGetRESTCall(methodName,
+                                                                             RegisteredDiscoveryServiceResponse.class,
+                                                                             urlTemplate,
+                                                                             params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -145,13 +198,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryAnalysisReportResponse callDiscoveryAnalysisReportGetRESTCall(String    methodName,
                                                                                   String    urlTemplate,
-                                                                                  Object... params) throws PropertyServerException
+                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryAnalysisReportResponse.class, urlTemplate, params);
+        DiscoveryAnalysisReportResponse restResult = this.callGetRESTCall(methodName,
+                                                                          DiscoveryAnalysisReportResponse.class,
+                                                                          urlTemplate,
+                                                                          params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -164,14 +228,26 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryAnalysisReportResponse callDiscoveryAnalysisReportPostRESTCall(String    methodName,
                                                                                    String    urlTemplate,
                                                                                    Object    requestBody,
-                                                                                   Object... params) throws PropertyServerException
+                                                                                   Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
-        return this.callPostRESTCall(methodName, DiscoveryAnalysisReportResponse.class, urlTemplate, requestBody, params);
+        DiscoveryAnalysisReportResponse restResult = this.callPostRESTCall(methodName,
+                                                                           DiscoveryAnalysisReportResponse.class,
+                                                                           urlTemplate,
+                                                                           requestBody,
+                                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -183,13 +259,24 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListGetRESTCall(String    methodName,
                                                                                           String    urlTemplate,
-                                                                                          Object... params) throws PropertyServerException
+                                                                                          Object... params) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
-        return this.callGetRESTCall(methodName, DiscoveryAnalysisReportListResponse.class, urlTemplate, params);
+        DiscoveryAnalysisReportListResponse restResult = this.callGetRESTCall(methodName,
+                                                                              DiscoveryAnalysisReportListResponse.class,
+                                                                              urlTemplate,
+                                                                              params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -202,14 +289,26 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListPostRESTCall(String    methodName,
-                                                                                   String    urlTemplate,
-                                                                                   Object    requestBody,
-                                                                                   Object... params) throws PropertyServerException
+                                                                                           String    urlTemplate,
+                                                                                           Object    requestBody,
+                                                                                           Object... params) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
-        return this.callPostRESTCall(methodName, DiscoveryAnalysisReportListResponse.class, urlTemplate, requestBody, params);
+        DiscoveryAnalysisReportListResponse restResult = this.callPostRESTCall(methodName,
+                                                                               DiscoveryAnalysisReportListResponse.class,
+                                                                               urlTemplate,
+                                                                               requestBody,
+                                                                               params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -221,13 +320,21 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AnnotationListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public AnnotationListResponse callAnnotationListGetRESTCall(String    methodName,
                                                                 String    urlTemplate,
-                                                                Object... params) throws PropertyServerException
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        return this.callGetRESTCall(methodName, AnnotationListResponse.class, urlTemplate, params);
+        AnnotationListResponse restResult = this.callGetRESTCall(methodName, AnnotationListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -240,14 +347,22 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public AnnotationListResponse callAnnotationListPostRESTCall(String    methodName,
                                                                  String    urlTemplate,
                                                                  Object    requestBody,
-                                                                 Object... params) throws PropertyServerException
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return this.callPostRESTCall(methodName, AnnotationListResponse.class, urlTemplate, requestBody, params);
+        AnnotationListResponse restResult = this.callPostRESTCall(methodName, AnnotationListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -259,13 +374,21 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public AnnotationResponse callAnnotationGetRESTCall(String    methodName,
                                                         String    urlTemplate,
-                                                        Object... params) throws PropertyServerException
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        return this.callGetRESTCall(methodName, AnnotationResponse.class, urlTemplate, params);
+        AnnotationResponse restResult = this.callGetRESTCall(methodName, AnnotationResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -278,13 +401,21 @@ public class ODFRESTClient extends OCFRESTClient
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public AnnotationResponse callAnnotationPostRESTCall(String    methodName,
                                                          String    urlTemplate,
                                                          Object    requestBody,
-                                                         Object... params) throws PropertyServerException
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return this.callPostRESTCall(methodName, AnnotationResponse.class, urlTemplate, requestBody, params);
+        AnnotationResponse restResult = this.callPostRESTCall(methodName, AnnotationResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
     }
 }
