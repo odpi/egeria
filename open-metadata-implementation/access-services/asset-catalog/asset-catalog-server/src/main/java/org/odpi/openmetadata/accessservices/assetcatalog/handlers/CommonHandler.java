@@ -135,7 +135,10 @@ public class CommonHandler {
         return null;
     }
 
-    public List<String> getTypesGUID(String userId, List<String> types) {
+    List<String> getTypesGUID(String userId, List<String> types) {
+        if (CollectionUtils.isEmpty(types)) {
+            return Collections.emptyList();
+        }
         return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
     }
 
