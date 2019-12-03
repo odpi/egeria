@@ -463,6 +463,7 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
+                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
