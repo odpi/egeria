@@ -378,6 +378,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param typeDefPatch update to the type definition
      * @param methodName calling method
+     * @return type definition
      * @throws InvalidParameterException a property is null or invalid
      * @throws PatchErrorException the type update is invalid
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
