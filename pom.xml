@@ -127,7 +127,7 @@
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
-        <mockito.version>3.1.0</mockito.version>
+        <mockito.version>3.2.0</mockito.version>
         <testng.version>7.0.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.29</slf4j.version>
