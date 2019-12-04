@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel;
 
+import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 
 import java.io.IOException;
 
 
 /**
- * OpenMetadataTypesArchiveWriter creates a physical open metadata archive file for the supplied open metadata archives
- * encoded using Open Metadata Repository Services (OMRS) formats.
+ * CloudInformationModelArchiveWriter creates a physical open metadata archive file for the data model and glossary
+ * content found in the Cloud Information Model (CIM).
  */
 public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 {
@@ -34,23 +35,31 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
      */
     void writeOpenMetadataArchive() throws IOException
     {
-        CloudInformationModelParser         cloudInformationModelParser         = new CloudInformationModelParser(cimModelLocation);
-        CloudInformationModelArchiveBuilder
-                                            cloudInformationModelArchiveBuilder = new CloudInformationModelArchiveBuilder(cloudInformationModelParser);
+        try
+        {
+            CloudInformationModelParser         cloudInformationModelParser         = new CloudInformationModelParser(cimModelLocation);
+            CloudInformationModelArchiveBuilder cloudInformationModelArchiveBuilder = new CloudInformationModelArchiveBuilder(cloudInformationModelParser);
 
-        super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
-                                       cloudInformationModelArchiveBuilder.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
+                                           cloudInformationModelArchiveBuilder.getOpenMetadataArchive());
+        }
+        catch (Throwable  error)
+        {
+            System.out.println("error is " + error.toString());
+        }
     }
 
 
     /**
-     * Main program to initiate the archive writer.
+     * Main program to initiate the archive writer for the Cloud Information Model (CIM).
      *
      * @param args list of arguments - first one should be the directory where the model
      *             content is located.  Any other arguments passed are ignored.
      */
     public static void main(String[] args)
     {
+        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
+
         if (args.length == 0)
         {
             System.err.println("USAGE: filename");
