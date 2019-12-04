@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
@@ -134,17 +135,18 @@ public class AssetContextHandler {
             getSchemaAttributeType(userId,entityDetail,typeDefName);
         }
 
-        List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName,false);
+        if(!isComplexSchemaType(userId,typeDefName).isPresent()) {
+            List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName, false);
 
-        for (EntityDetail schemaTypeEntity : tableTypeEntities) {
-            if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName()).isPresent()) {
-                setAssetDetails(userId, schemaTypeEntity);
-            } else {
-                List<EntityDetail> tableEntities = buildGraphByRelationshipType(userId, schemaTypeEntity, SCHEMA_ATTRIBUTE_TYPE, typeDefName,false);
-                if(!CollectionUtils.isEmpty(tableEntities))
-                    {
-                        buildAssetContext(userId, tableEntities.stream().findFirst().get(),superType);
+            for (EntityDetail schemaTypeEntity : tableTypeEntities) {
+                if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName()).isPresent()) {
+                    setAssetDetails(userId, schemaTypeEntity);
+                } else {
+                    List<EntityDetail> tableEntities = buildGraphByRelationshipType(userId, schemaTypeEntity, SCHEMA_ATTRIBUTE_TYPE, typeDefName, false);
+                    if (!CollectionUtils.isEmpty(tableEntities)) {
+                        buildAssetContext(userId, tableEntities.stream().findFirst().get(), superType);
                     }
+                }
             }
         }
     }
@@ -154,6 +156,11 @@ public class AssetContextHandler {
                                                                                                                    PropertyServerException,
                                                                                                                    InvalidParameterException {
         List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
+
+        if(startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
+        }
 
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
@@ -225,6 +232,7 @@ public class AssetContextHandler {
     private void getFolderHierarchy(String userId,EntityDetail entityDetail) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
+
         List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail,
                 CONNECTION_TO_ASSET, entityDetail.getType().getTypeDefName(),false);
 
@@ -232,6 +240,18 @@ public class AssetContextHandler {
         if (connection.isPresent()) {
             buildGraphByRelationshipType(userId, entityDetail, CONNECTION_ENDPOINT, CONNECTION,false);
         }
+
+//        List<EntityDetail> nestedFolders = buildGraphByRelationshipType(userId, entityDetail, FOLDER_HIERARCHY, FILE_FOLDER,false);
+//        if (CollectionUtils.isEmpty(nestedFolders)) {
+//            return;
+//        }
+//
+//        nestedFolders = nestedFolders.stream()
+//                .filter(s -> s.getEntityTwoProxy().getGUID().equals(entityDetail.getGUID()))
+//                .collect(Collectors.toList());
+//        if (nestedFolders.size() != 1) {
+//            return;
+//        }
 
         Optional<EntityDetail> nestedFolder =   buildGraphByRelationshipType(userId, entityDetail, FOLDER_HIERARCHY, FILE_FOLDER,false)
                 .stream()
