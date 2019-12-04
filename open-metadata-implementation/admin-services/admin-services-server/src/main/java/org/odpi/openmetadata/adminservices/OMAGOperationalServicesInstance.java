@@ -10,7 +10,7 @@ import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServi
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
-import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
+import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
@@ -32,7 +32,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private List<AccessServiceAdmin>            operationalAccessServiceAdminList   = new ArrayList<>();
     private ConformanceSuiteOperationalServices operationalConformanceSuiteServices = null;
     private DiscoveryServerOperationalServices  operationalDiscoveryServer          = null;
-    private OpenLineageOperationalServices      openLineageOperationalServices      = null;
+    private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
     private StewardshipOperationalServices      operationalStewardshipServices      = null;
     private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
     private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
@@ -74,7 +74,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return OMAGServerConfig object
      */
-     OMAGServerConfig getOperationalConfiguration() {
+    OMAGServerConfig getOperationalConfiguration() {
         return operationalConfiguration;
     }
 
@@ -188,22 +188,22 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
-     * Set up the running instance of the discovery engine.
+     * Set up the running instance of the Open Lineage Services server.
      *
      * @param openLineageOperationalServices OpenLineageOperationalServices object
      */
-    void setOpenLineageOperationalServices(OpenLineageOperationalServices openLineageOperationalServices)
+    void setOpenLineageOperationalServices(OpenLineageServerOperationalServices openLineageOperationalServices)
     {
         this.openLineageOperationalServices = openLineageOperationalServices;
     }
 
 
     /**
-     * Return the running instance of the discovery engine.
+     * Return the running instance of the Open Lineage Services server.
      *
      * @return DiscoveryServerOperationalServices object
      */
-    OpenLineageOperationalServices getOpenLineageOperationalServices() {
+    OpenLineageServerOperationalServices getOpenLineageOperationalServices() {
         return openLineageOperationalServices;
     }
 

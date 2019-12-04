@@ -66,13 +66,14 @@ class ProcessHandlerTest {
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
 
     @Captor
-    ArgumentCaptor<Asset> originalProcessCaptor;
+    private ArgumentCaptor<Asset> originalProcessCaptor;
 
     @Captor
-    ArgumentCaptor<Asset> updatedProcessCaptor;
+    private ArgumentCaptor<Asset> updatedProcessCaptor;
 
     @Captor
-    ArgumentCaptor<AssetAuditHeader> assetHeaderCaptor;
+    private ArgumentCaptor<AssetAuditHeader> assetHeaderCaptor;
+
     @Mock
     private RepositoryHandler repositoryHandler;
 

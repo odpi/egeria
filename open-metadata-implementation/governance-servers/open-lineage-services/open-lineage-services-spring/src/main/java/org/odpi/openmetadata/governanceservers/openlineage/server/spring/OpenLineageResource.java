@@ -3,14 +3,15 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.GraphNameEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class OpenLineageResource {
     public LineageResponse lineage(
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
-            @PathVariable("graph") String graph,
+            @PathVariable("graph") GraphName graph,
             @PathVariable("scope") Scope scope,
             @PathVariable("view") View view,
             @PathVariable("guid") String guid) {
@@ -61,7 +62,7 @@ public class OpenLineageResource {
     @GetMapping(path = "/dump/sources/{graph}")
     public VoidResponse dumpGraph(@PathVariable("userId") String userId,
                                   @PathVariable("serverName") String serverName,
-                                  @PathVariable("graph") String graph) {
+                                  @PathVariable("graph") GraphName graph) {
         return restAPI.dumpGraph(serverName, userId, graph);
     }
 
@@ -76,13 +77,14 @@ public class OpenLineageResource {
     @GetMapping(path = "/export/sources/{graph}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String exportGraph(@PathVariable("userId") String userId,
                               @PathVariable("serverName") String serverName,
-                              @PathVariable("graph") String graph) {
+                              @PathVariable("graph") GraphName graph) {
         return restAPI.exportGraph(serverName, userId, graph);
     }
 
     @InitBinder
     public void initBinder(final WebDataBinder webdataBinder) {
         webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
+        webdataBinder.registerCustomEditor(GraphName.class, new GraphNameEnumConverter());
         webdataBinder.registerCustomEditor(Scope.class, new ScopeEnumConverter());
     }
 
