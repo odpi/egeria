@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+
 /**
  * The common handler provide common methods that is generic and reusable for other handlers.
  */
@@ -176,7 +177,7 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     protected EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                                        Relationship relationship, AssetContext graph) throws InvalidParameterException,
+                                                        Relationship relationship, AssetContext graph,boolean changeDirection) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
 
@@ -185,15 +186,27 @@ public class CommonHandler {
 
         if (endEntity == null) return null;
 
-        LineageEntity startVertex = converter.createLineageEntity(startEntity);
-        LineageEntity endVertex = converter.createLineageEntity(endEntity);
+        LineageEntity startVertex;
+        LineageEntity endVertex;
+        if(changeDirection){
+            startVertex = converter.createLineageEntity(endEntity);
+            endVertex = converter.createLineageEntity(startEntity);
+        }else{
+             startVertex = converter.createLineageEntity(startEntity);
+             endVertex = converter.createLineageEntity(endEntity);
+        }
 
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
+
 
         GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
-        graph.addEdge(edge);
+
+        if(graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))){
+            graph.addVertex(startVertex);
+            graph.addVertex(endVertex);
+            graph.addEdge(edge);
+        }
 
         return endEntity;
     }
+
 }
