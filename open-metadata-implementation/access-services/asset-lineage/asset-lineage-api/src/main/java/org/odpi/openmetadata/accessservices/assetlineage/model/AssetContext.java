@@ -54,6 +54,32 @@ public class AssetContext {
         return true;
     }
 
+    /**
+     * Get vertices set.
+     *
+     * @return the set
+     */
+    public Set<LineageEntity> getVertices(){
+        return vertices;
+    }
+
+    /**
+     * Gets edges.
+     *
+     * @return the edges
+     */
+    public Set<GraphContext> getEdges() {
+        return edges;
+    }
+
+    /**
+     * Sets edges.
+     *
+     * @param edges the edges
+     */
+    public void setEdges(Set<GraphContext> edges) {
+        this.edges = edges;
+    }
 
     /**
      * Gets neighbors.
