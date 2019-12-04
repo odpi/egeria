@@ -292,11 +292,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>janus-connector</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>

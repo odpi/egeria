@@ -79,7 +79,6 @@ public class MainGraphMapper {
         System.out.println("Column out " + columnOutVertex.property("vepropdisplayName").value());
         System.out.println("PRocess out " + process.property("vepropdisplayName").value());
 
-//        if(columnOutVertex.property("vepropdisplayName").value().equals("LOCATION")) {
             if (!columnIn.hasNext()) {
                 newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
             }
@@ -99,7 +98,6 @@ public class MainGraphMapper {
             }
             addProcess(newColumnIn, newColumnOut, process);
         }
-//    }
 
     private Vertex checkAssetVertex(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex){
         Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN)
@@ -123,7 +121,6 @@ public class MainGraphMapper {
         final Iterator<VertexProperty<Object>> iterator = originalVertex.properties();
         while (iterator.hasNext()) {
             VertexProperty oldVertexProperty = iterator.next();
-//            if (oldVertexProperty.element().toString().equals("veguid")){continue;}
             newVertex.property(oldVertexProperty.key(), oldVertexProperty.value());
         }
     }
@@ -200,7 +197,7 @@ public class MainGraphMapper {
         GraphTraversalSource mainG = mainGraph.traversal();
 
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
-        final String processName = process.value("vepropdisplayName");
+        final String processName = process.value(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
 
         if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
