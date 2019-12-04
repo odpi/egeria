@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandle
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
@@ -175,16 +174,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     }
 
-    private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName,String superType) {
-
-        final String typeDefName = entityDetail.getType().getTypeDefName();
-//        if (!validator.isValidLineageEntityEvent(typeDefName)) {
-//            log.info(("Event is ignored as the entity is not relevant type for the Asset Lineage OMAS."));
-//        } else {
-            processNewEntity(entityDetail, serviceOperationName,superType);
-//        }
-    }
-
     private void processUpdatedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
 
         final String methodName = "processUpdatedEntityEvent";
@@ -195,12 +184,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             processNewEntity(entityDetail, serviceOperationName + NEW_ENTITY_EVENT.getName(),PROCESS);
         }
 
-//        LineageEntity lineageEntity = converter.createLineageEntity(entityDetail);
-//
-//        LineageEvent lineageEvent = new LineageEvent();
-//        lineageEvent.setLineageEntity(lineageEntity);
-//        lineageEvent.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
-//        publisher.publishRelationshipEvent(lineageEvent);
     }
 
     private void processNewEntity(EntityDetail entityDetail, String serviceOperationName,String supertype) {

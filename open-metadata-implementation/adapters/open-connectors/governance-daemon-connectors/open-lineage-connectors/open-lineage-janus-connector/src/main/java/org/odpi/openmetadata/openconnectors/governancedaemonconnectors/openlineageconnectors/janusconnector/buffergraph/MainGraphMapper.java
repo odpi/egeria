@@ -75,10 +75,6 @@ public class MainGraphMapper {
         Vertex newColumnIn = null;
         Vertex newColumnOut = null;
 
-        System.out.println("Column in " + columnInVertex.property("vepropdisplayName").value());
-        System.out.println("Column out " + columnOutVertex.property("vepropdisplayName").value());
-        System.out.println("PRocess out " + process.property("vepropdisplayName").value());
-
             if (!columnIn.hasNext()) {
                 newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
             }
