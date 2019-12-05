@@ -1277,7 +1277,7 @@ public class AssetCatalogHandler {
                             supportedZones,
                             ASSET_CATALOG_OMAS,
                             methodName);
-                    setAssetElementAttributes(assetElement, asset);
+                    addElement(assetElement, asset);
                     setConnections(userId, assetElement, asset);
                 }
             }
@@ -1290,10 +1290,6 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException {
         List<Connection> connections = getConnections(userId, asset.getGUID());
         assetElement.setConnections(connections);
-    }
-
-    private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
-        setElement(assetElement, asset);
     }
 
     private AssetElements buildAssetElements(EntityDetail entity) {
@@ -1419,6 +1415,8 @@ public class AssetCatalogHandler {
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException {
+
+        searchCriteria = repositoryHelper.getContainsRegex(searchCriteria);
 
         List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
                 entityTypeGUID,
