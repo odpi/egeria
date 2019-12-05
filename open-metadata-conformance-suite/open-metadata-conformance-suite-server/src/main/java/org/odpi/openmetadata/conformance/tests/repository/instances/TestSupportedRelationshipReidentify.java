@@ -216,26 +216,6 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
             EntityDef end2Type = entityDefs.get(end2TypeName);
             entityTwo = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
 
-
-            // TODO - clean up
-
-            //String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-            //String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-            //EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
-            //EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
-
-            //entityOne = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-            //        endOneEntityDef.getGUID(),
-            //        super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endOneEntityDef),
-            //        null,
-            //        null);
-
-            //entityTwo = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-            //        endTwoEntityDef.getGUID(),
-            //        super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endTwoEntityDef),
-            //        null,
-            //        null);
-
             /*
              * Generate property values for all the type's defined properties, including inherited properties
              * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
