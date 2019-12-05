@@ -1232,8 +1232,6 @@ public class AssetCatalogHandler {
                 ASSET_CATALOG_OMAS,
                 methodName);
 
-        addElement(assetElement, dataSet);
-
         if (assetElement.getContext() != null) {
             addElement(assetElement, dataSet);
         } else {
