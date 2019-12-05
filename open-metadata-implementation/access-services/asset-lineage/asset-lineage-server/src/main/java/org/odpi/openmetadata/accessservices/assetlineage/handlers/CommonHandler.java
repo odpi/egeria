@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -19,6 +19,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+
+/**
+ * The common handler provide common methods that is generic and reusable for other handlers.
+ */
 public class CommonHandler {
 
     private static final Logger log = LoggerFactory.getLogger(CommonHandler.class);
@@ -56,10 +60,13 @@ public class CommonHandler {
     /**
      * Query about the entity in the repositories based on the Guid
      *
-     * @param userId    String - userId of user making request.
-     * @param guid      guid of the asset we need to retrieve from a repository
-     * @param typeName  the name of the Open Metadata type for getting details
+     * @param userId   String - userId of user making request.
+     * @param guid     guid of the asset we need to retrieve from a repository
+     * @param typeName the name of the Open Metadata type for getting details
      * @return optional with entity details if found, empty optional if not found
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
      */
     public Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws InvalidParameterException,
             PropertyServerException,
@@ -76,11 +83,14 @@ public class CommonHandler {
     /**
      * Query about the relationships of an entity based on the type of the relationship
      *
-     * @param userId                String - userId of user making request.
-     * @param assetGuid             guid of the asset we need to retrieve the relationships
-     * @param relationshipTypeName  the type of the relationship
-     * @param entityTypeName        the type of the entity
+     * @param userId               String - userId of user making request.
+     * @param assetGuid            guid of the asset we need to retrieve the relationships
+     * @param relationshipTypeName the type of the relationship
+     * @param entityTypeName       the type of the entity
      * @return List of the relationships if found, empty list if not found
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     * @throws InvalidParameterException  the invalid parameter exception
      */
     public List<Relationship> getRelationshipsByType(String userId, String assetGuid,
                                                      String relationshipTypeName, String entityTypeName) throws
@@ -124,6 +134,17 @@ public class CommonHandler {
     }
 
 
+    /**
+     * Gets entity at the end.
+     *
+     * @param userId           the user id
+     * @param entityDetailGUID the entity detail guid
+     * @param relationship     the relationship
+     * @return the entity at the end
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     */
     public EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
@@ -149,10 +170,14 @@ public class CommonHandler {
      * @param userId       String - userId of user making request.
      * @param startEntity  parent entity of the relationship
      * @param relationship the relationship of the parent node
+     * @param graph        the graph
      * @return Entity which is the child of the relationship, null if there is no Entity
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
      */
     protected EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                                        Relationship relationship, AssetContext graph) throws InvalidParameterException,
+                                                        Relationship relationship, AssetContext graph,boolean changeDirection) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
 
@@ -161,15 +186,27 @@ public class CommonHandler {
 
         if (endEntity == null) return null;
 
-        LineageEntity startVertex = converter.createEntity(startEntity);
-        LineageEntity endVertex = converter.createEntity(endEntity);
+        LineageEntity startVertex;
+        LineageEntity endVertex;
+        if(changeDirection){
+            startVertex = converter.createLineageEntity(endEntity);
+            endVertex = converter.createLineageEntity(startEntity);
+        }else{
+             startVertex = converter.createLineageEntity(startEntity);
+             endVertex = converter.createLineageEntity(endEntity);
+        }
 
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
+
 
         GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
-        graph.addEdge(edge);
+
+        if(graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))){
+            graph.addVertex(startVertex);
+            graph.addVertex(endVertex);
+            graph.addEdge(edge);
+        }
 
         return endEntity;
     }
+
 }

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraphstore.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -44,13 +44,15 @@ public class JobConfiguration {
 
     private static void scheduleJob(Trigger trigger) throws Exception {
 
-        JobDetail jobDetail = JobBuilder.
-                                  newJob(BufferGraphJob.class).
-                                  withIdentity("BufferGraphJob", GROUP).
-                                  build();
-        jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
+        if(bufferGraph != null) {
+            JobDetail jobDetail = JobBuilder.
+                    newJob(BufferGraphJob.class).
+                    withIdentity("BufferGraphJob", GROUP).
+                    build();
+            jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
 
-        scheduler.scheduleJob(jobDetail, trigger);
+            scheduler.scheduleJob(jobDetail, trigger);
+        }
 
     }
 

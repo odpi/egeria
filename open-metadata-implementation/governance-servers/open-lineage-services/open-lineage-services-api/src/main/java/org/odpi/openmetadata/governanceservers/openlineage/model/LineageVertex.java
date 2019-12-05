@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Map;
 
@@ -27,10 +30,16 @@ public class LineageVertex {
 
     public LineageVertex(){}
 
-    public LineageVertex(String nodeID, String nodeType, String displayName, String guid) {
+    public LineageVertex(String nodeID, String nodeType) {
         this.nodeID = nodeID;
         this.nodeType = nodeType;
+    }
+
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setGuid(String guid) {
         this.guid = guid;
     }
 

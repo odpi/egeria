@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.DataEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -58,7 +59,7 @@ class DataEngineRegistrationHandlerTest {
     private DataEngineRegistrationHandler registrationHandler;
 
     @BeforeEach
-    void before()  {
+    void before() {
         when(repositoryHelper.getExactMatchRegex(QUALIFIED_NAME)).thenReturn(QUALIFIED_NAME);
 
         mockEntityTypeDef();
@@ -66,15 +67,15 @@ class DataEngineRegistrationHandlerTest {
 
     @Test
     void createExternalDataEngine() throws InvalidParameterException, PropertyServerException,
-                                                 UserNotAuthorizedException {
+                                           UserNotAuthorizedException {
         String methodName = "createExternalDataEngine";
 
         when(repositoryHandler.createEntity(USER, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                 DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
                 methodName)).thenReturn(GUID);
 
-        String response = registrationHandler.createExternalDataEngine(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
-                TYPE, VERSION, PATCH_LEVEL, SOURCE);
+        String response = registrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
+                QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE));
 
         assertEquals(GUID, response);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -84,11 +85,11 @@ class DataEngineRegistrationHandlerTest {
 
     @Test
     void createExternalDataEngine_throwsUserNotAuthorizedException() throws PropertyServerException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  InvocationTargetException,
-                                                                                  NoSuchMethodException,
-                                                                                  InstantiationException,
-                                                                                  IllegalAccessException {
+                                                                            UserNotAuthorizedException,
+                                                                            InvocationTargetException,
+                                                                            NoSuchMethodException,
+                                                                            InstantiationException,
+                                                                            IllegalAccessException {
         String methodName = "createExternalDataEngine";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
@@ -97,15 +98,15 @@ class DataEngineRegistrationHandlerTest {
                 DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                registrationHandler.createExternalDataEngine(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
-                        TYPE, VERSION, PATCH_LEVEL, SOURCE));
+                registrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
+                        QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE)));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
 
     @Test
     void getExternalDataEngineByQualifiedName() throws UserNotAuthorizedException, PropertyServerException,
-                                                             InvalidParameterException {
+                                                       InvalidParameterException {
         String methodName = "getExternalDataEngineByQualifiedName";
 
         EntityDetail entityDetail = Mockito.mock(EntityDetail.class);
@@ -126,12 +127,12 @@ class DataEngineRegistrationHandlerTest {
 
     @Test
     void getExternalDataEngineByQualifiedName_throwsUserNotAuthorizedException() throws
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException,
-                                                                                       InvocationTargetException,
-                                                                                       NoSuchMethodException,
-                                                                                       InstantiationException,
-                                                                                       IllegalAccessException {
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException,
+                                                                                 InvocationTargetException,
+                                                                                 NoSuchMethodException,
+                                                                                 InstantiationException,
+                                                                                 IllegalAccessException {
         String methodName = "getExternalDataEngineByQualifiedName";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);

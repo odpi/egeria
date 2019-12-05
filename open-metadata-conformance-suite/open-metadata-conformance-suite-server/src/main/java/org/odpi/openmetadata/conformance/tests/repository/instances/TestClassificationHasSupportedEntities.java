@@ -25,9 +25,10 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
     private static final String assertion1    = testCaseId + "-01";
     private static final String assertionMsg1 = " classification can attach to at least one supported entity.";
 
-    private static final String successMessage = " has at least one supported entity";
+    private static final String assertion2    = testCaseId + "-02";
+    private static final String assertionMsg2 = " supported for classification.";
 
-    private static final String discoveredProperty_entityClassificationSupport = " supported for classification ";
+    private static final String successMessage = " has at least one supported entity";
 
     private Map<String, EntityDef> entityDefs;
     private ClassificationDef      classificationDef;
@@ -87,17 +88,22 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
                 if (testEntityDef != null)
                 {
                     supportedEntityDefsForClassification.add(testEntityDef);
-                    super.addDiscoveredProperty(typeDefLink.getName() + discoveredProperty_entityClassificationSupport + classificationDef.getName(),
-                                                "Enabled",
-                                                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                                                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+                    assertCondition((true),
+                            assertion2,
+                            testTypeName + assertionMsg2 + classificationDef.getName(),
+                            RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
                 }
                 else
                 {
-                    super.addDiscoveredProperty(typeDefLink.getName() + discoveredProperty_entityClassificationSupport + classificationDef.getName(),
-                                                "Disabled",
-                                                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                                                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+                    super.addNotSupportedAssertion(assertion2,
+                            testTypeName + assertionMsg2 + classificationDef.getName(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
                 }
             }
         }

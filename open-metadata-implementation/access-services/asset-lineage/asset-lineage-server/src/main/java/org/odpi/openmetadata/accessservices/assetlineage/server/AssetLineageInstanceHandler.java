@@ -8,7 +8,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHa
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 
 /**
  * AssetLineageInstanceHandler retrieves information from the instance map for the
@@ -40,11 +39,9 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    public GlossaryHandler getGlossaryHandler(String userId,
-                                              String serverName,
-                                              String serviceOperationName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public GlossaryHandler getGlossaryHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
@@ -65,15 +62,13 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    public ContextHandler getContextHandler(String userId,
-                                            String serverName,
-                                            String serviceOperationName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public AssetContextHandler getContextHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
-            return instance.getContextHandler();
+            return instance.getAssetContextHandler();
         }
 
         return null;
@@ -90,11 +85,9 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    public CommonHandler getCommonHandler(String userId,
-                                           String serverName,
-                                           String serviceOperationName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public CommonHandler getCommonHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
@@ -104,15 +97,13 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
         return null;
     }
 
-    public ProcessHandler getProcessHandler(String userId,
-                                            String serverName,
-                                            String serviceOperationName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public ProcessContextHandler getProcessHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
-            return instance.getProcessHandler();
+            return instance.getProcessContextHandler();
         }
 
         return null;
@@ -129,8 +120,8 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
-    public ClassificationHandler getClassificationHandler(String userId, String serverName, String serviceOperationName) throws
-            InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public ClassificationHandler getClassificationHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 

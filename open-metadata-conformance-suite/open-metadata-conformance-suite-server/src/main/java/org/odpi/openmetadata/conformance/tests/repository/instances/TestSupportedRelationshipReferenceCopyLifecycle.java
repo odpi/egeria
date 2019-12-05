@@ -14,6 +14,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
@@ -30,32 +32,44 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
     private static final String testCaseId = "repository-relationship-reference-copy-lifecycle";
     private static final String testCaseName = "Repository relationship reference copy lifecycle test case";
 
+    /* Type */
+    private static final String assertion0      = testCaseId + "-00";
+    private static final String assertionMsg0   = " relationship type definition matches known type  ";
 
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " reference relationship is known.";
-    private static final String assertion2     = testCaseId + "-02";
-    private static final String assertionMsg2  = " reference relationship can be retrieved as Relationship.";
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = " reference relationship matches the relationship that was saved.";
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " reference relationship status cannot be updated.";
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " reference relationship properties cannot be updated.";
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " reference relationship type cannot be changed.";
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " reference relationship identity cannot be changed.";
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " reference relationship purged.";
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " reference relationship re-homed.";
+    private static final String assertion1      = testCaseId + "-01";
+    private static final String assertionMsg1   = " reference relationship created; repository supports storage of reference copies.";
+    private static final String assertion2      = testCaseId + "-02";
+    private static final String assertionMsg2   = " reference relationship can be retrieved as Relationship.";
+    private static final String assertion3      = testCaseId + "-03";
+    private static final String assertionMsg3   = " reference relationship matches the relationship that was saved.";
+    private static final String assertion4      = testCaseId + "-04";
+    private static final String assertionMsg4   = " reference relationship status cannot be updated.";
+    private static final String assertion5      = testCaseId + "-05";
+    private static final String assertionMsg5   = " reference relationship properties cannot be updated.";
+    private static final String assertion6      = testCaseId + "-06";
+    private static final String assertionMsg6   = " reference relationship type cannot be changed.";
+    private static final String assertion7      = testCaseId + "-07";
+    private static final String assertionMsg7   = " reference relationship identity cannot be changed.";
+    private static final String assertion8      = testCaseId + "-08";
+    private static final String assertionMsg8   = " reference relationship copy purged at TUT.";
+    private static final String assertion9      = testCaseId + "-09";
+    private static final String assertionMsg9   = " reference relationship refresh requested by TUT.";
+    private static final String assertion10     = testCaseId + "-10";
+    private static final String assertionMsg10  = " reference relationship refreshed.";
+    private static final String assertion11     = testCaseId + "-11";
+    private static final String assertionMsg11  = " refreshed reference relationship matches original.";
+    private static final String assertion12     = testCaseId + "-12";
+    private static final String assertionMsg12  = " reference relationship purged.";
+    private static final String assertion13     = testCaseId + "-13";
+    private static final String assertionMsg13  = " reference relationship re-homed.";
 
-    private static final String discoveredProperty_referenceCopySupport = " reference copy support";
 
 
-    private String            metadataCollectionId;
-    private RelationshipDef   relationshipDef;
-    private String            testTypeName;
+
+    private RepositoryConformanceWorkPad  workPad;
+    private String                        metadataCollectionId;
+    private RelationshipDef               relationshipDef;
+    private String                        testTypeName;
 
     /*
      * A propagation timeout is used to limit how long the testcase will wait for
@@ -83,8 +97,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
               RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
               RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
+        this.workPad              = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
-        this.relationshipDef = relationshipDef;
+        this.relationshipDef      = relationshipDef;
 
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
                                                     testCaseId,
@@ -108,6 +123,25 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
 
 
         /*
@@ -135,6 +169,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Verify that it is not possible to re-type the reference copy.
          * Verify that it is not possible to re-identify the reference copy.
          *
+         * Purge the reference copy (only) and then request a refresh and ensure that a new ref copy is created.
+         *
          * Delete and purge the original local relationship, at the CTS.
          * Because the CTS server is using local in-memory repository a soft delete must precede the purge.
          * This should flow an instance event to the TUT causing the ref copy to be purged.
@@ -157,25 +193,30 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         OMRSMetadataCollection ctsMetadataCollection = repositoryConformanceWorkPad.getLocalRepositoryConnector().getMetadataCollection();
 
 
+        EntityDetail entityOne;
+        EntityDetail entityTwo;
+        Relationship newRelationship;
+
+
         /*
          * Create the local entities.
          */
-        String     endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-        String     endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-        EntityDef  endOneEntityDef = (EntityDef)metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(),endOneEntityDefGUID);
-        EntityDef  endTwoEntityDef = (EntityDef)metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(),endTwoEntityDefGUID);
+        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
+        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
+        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
+        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
 
-        EntityDetail entityOne = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                                 endOneEntityDef.getGUID(),
-                                                                 super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endOneEntityDef),
-                                                                 null,
-                                                                 null);
+        entityOne = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
+                endOneEntityDef.getGUID(),
+                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endOneEntityDef),
+                null,
+                null);
 
-        EntityDetail entityTwo = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                                 endTwoEntityDef.getGUID(),
-                                                                 super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endTwoEntityDef),
-                                                                 null,
-                                                                 null);
+        entityTwo = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
+                endTwoEntityDef.getGUID(),
+                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), endTwoEntityDef),
+                null,
+                null);
 
 
 
@@ -189,12 +230,16 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * relationship that is logically complete - versus an instance with just the locally-defined properties.
          */
 
-        Relationship newRelationship = ctsMetadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                                                                             relationshipDef.getGUID(),
-                                                                             super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef),
-                                                                             entityOne.getGUID(),
-                                                                             entityTwo.getGUID(),
-                                                                            null);
+        newRelationship = ctsMetadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
+                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef),
+                entityOne.getGUID(),
+                entityTwo.getGUID(),
+                null);
+
+
+
+
 
         /*
          * This test does not verify the content of the relationship - that is tested in the relationship-lifecycle tests
@@ -209,14 +254,14 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         EntityDetail refCopyEntityTwo = null;
 
         Integer remainingCount = this.pollCount;
-        while (refCopyEntityOne == null && remainingCount>0 ) {
+        while (refCopyEntityOne == null && remainingCount > 0) {
             refCopyEntityOne = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entityOne.getGUID());
             Thread.sleep(this.pollPeriod);
             remainingCount--;
         }
 
         remainingCount = this.pollCount;
-        while (refCopyEntityTwo == null && remainingCount>0) {
+        while (refCopyEntityTwo == null && remainingCount > 0) {
 
             refCopyEntityTwo = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entityTwo.getGUID());
             Thread.sleep(this.pollPeriod);
@@ -232,7 +277,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         Relationship refRelationship = null;
 
         remainingCount = this.pollCount;
-        while (refRelationship == null && remainingCount>0 ) {
+        while (refRelationship == null && remainingCount > 0) {
             refRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
             Thread.sleep(this.pollPeriod);
             remainingCount--;
@@ -241,35 +286,31 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
         /*
-         * If this does not work there may be a timing issue - i.e. the ref copy may not have been created if the OMRS event has not
-         * propagated in time. If this happens refactor the testcase to create all local instances and batch GUIDs. Then on completion
-         * of the batch, look for the reference copies.
-         *
+         * If this proves to be a performance problem it might be preferable to refactor the testcase to create all local
+         * instances and batch the GUIDs. On completion of the batch, look for the reference copies.
          */
+
         if (refRelationship != null) {
             /*
              * If we retrieved the reference copy of the relationship - we can assert that the TUT supports reference copies.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Enabled",
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-            verifyCondition((true),
+            assertCondition((true),
                     assertion1,
                     testTypeName + assertionMsg1,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
-        } else {
+        }
+        else {
 
             /*
-             * Disable the discovered property, with evidence that reference storage requirement is not supported.
+             * Report that reference storage requirement is not supported.
              */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion1,
+                    assertionMsg1,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
 
             /*
              * Terminate the test
@@ -323,7 +364,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            } catch (InvalidParameterException e) {
+            }
+            catch (InvalidParameterException e) {
 
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
@@ -345,10 +387,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          */
 
 
-        if ( ( retrievedReferenceCopy.getProperties() != null) &&
-                ( retrievedReferenceCopy.getProperties().getInstanceProperties() != null) &&
-                (!retrievedReferenceCopy.getProperties().getInstanceProperties().isEmpty()))
-        {
+        if ((retrievedReferenceCopy.getProperties() != null) &&
+                (retrievedReferenceCopy.getProperties().getInstanceProperties() != null) &&
+                (!retrievedReferenceCopy.getProperties().getInstanceProperties().isEmpty())) {
             InstanceProperties minRelationshipProps = super.getMinPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef);
 
             try {
@@ -361,7 +402,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            } catch (InvalidParameterException e) {
+            }
+            catch (InvalidParameterException e) {
 
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
@@ -398,9 +440,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
@@ -437,9 +477,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
@@ -451,6 +489,115 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
         }
+
+
+        /*
+         * Purge the reference copy and verify that by requesting a refresh, a new ref copy is created.
+         * This test is performed against the TUT.
+         */
+
+        try {
+
+            metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(), refRelationship);
+
+            /*
+             * Note that the ref copy could be purged
+             */
+            assertCondition((true),
+                    assertion8,
+                    testTypeName + assertionMsg8,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+
+        }
+        catch (Exception e)
+        {
+
+            /*
+             * If for any reason the ref copy could not be purged, fail the test
+             */
+
+            assertCondition((false),
+                    assertion8,
+                    testTypeName + assertionMsg8,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+        }
+
+        try {
+            metadataCollection.refreshEntityReferenceCopy(workPad.getLocalServerUserId(),
+                    refRelationship.getGUID(),
+                    relationshipDef.getGUID(),
+                    relationshipDef.getName(),
+                    ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+
+            /*
+             * Note that the refresh request failed, fail the test
+             */
+            assertCondition((true),
+                    assertion9,
+                    testTypeName + assertionMsg9,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        }
+        catch (Exception e)
+        {
+
+            /*
+             * If for any reason the refresh request failed, fail the test
+             */
+
+            assertCondition((false),
+                    assertion9,
+                    testTypeName + assertionMsg9,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        }
+
+        /*
+         * Wait and verify that a new ref copy is created....
+         */
+        /*
+         * There should be a reference copy of the relationship stored in the TUT
+         */
+
+        Relationship refreshedRelationshipRefCopy = null;
+
+
+        /*
+         * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
+         * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the relationship.
+         */
+        remainingCount = this.pollCount;
+        while (refreshedRelationshipRefCopy == null && remainingCount>0 ) {
+
+            refreshedRelationshipRefCopy = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            Thread.sleep(this.pollPeriod);
+            remainingCount--;
+        }
+
+
+        /*
+         * Verify that the reference copy can be retrieved form the TUT and matches the original...
+         */
+        refreshedRelationshipRefCopy = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+
+        assertCondition((refreshedRelationshipRefCopy != null),
+                assertion10,
+                testTypeName + assertionMsg10,
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+        /*
+         * Verify that the retrieved reference copy matches the original relationship
+         */
+
+        verifyCondition((newRelationship.equals(refreshedRelationshipRefCopy)),
+                assertion11,
+                testTypeName + assertionMsg11,
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
 
 
@@ -492,23 +639,23 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             survivingRelRefCopy = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
             Thread.sleep(this.pollPeriod);
             remainingCount--;
-        } while (survivingRelRefCopy != null && remainingCount>0 );
+        } while (survivingRelRefCopy != null && remainingCount > 0);
 
 
         try {
             metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
 
             assertCondition((false),
-                    assertion8,
-                    testTypeName + assertionMsg8,
+                    assertion12,
+                    testTypeName + assertionMsg12,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
 
         } catch (RelationshipNotKnownException exception) {
 
             assertCondition((true),
-                    assertion8,
-                    testTypeName + assertionMsg8,
+                    assertion12,
+                    testTypeName + assertionMsg12,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
         }
@@ -542,7 +689,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         Relationship refCopyRelationship = null;
 
         remainingCount = this.pollCount;
-        while (refCopyRelationship == null  && remainingCount>0 ) {
+        while (refCopyRelationship == null && remainingCount > 0) {
             refCopyRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), masterRelationship.getGUID());
             Thread.sleep(this.pollPeriod);
             remainingCount--;
@@ -567,8 +714,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
             assertCondition((true),
-                    assertion9,
-                    testTypeName + assertionMsg9,
+                    assertion13,
+                    testTypeName + assertionMsg13,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
 
@@ -586,8 +733,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         masterRelationship.getType().getTypeDefGUID(),
                         masterRelationship.getType().getTypeDefName(),
                         masterRelationship.getGUID());
-            }
-            catch (FunctionNotSupportedException exception) {
+            } catch (FunctionNotSupportedException exception) {
 
                 /*
                  * This is OK - we can NO OP and just proceed to purgeEntity
@@ -600,17 +746,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     masterRelationship.getGUID());
 
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are expecting the rehome to work.
              */
 
             assertCondition((false),
-                    assertion9,
-                    testTypeName + assertionMsg9,
+                    assertion13,
+                    testTypeName + assertionMsg13,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
         }
@@ -634,8 +778,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     masterRelationship.getType().getTypeDefGUID(),
                     masterRelationship.getType().getTypeDefName(),
                     masterRelationship.getGUID());
-        }
-        catch (FunctionNotSupportedException exception) {
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -666,8 +809,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                     entityTwo.getType().getTypeDefGUID(),
                     entityTwo.getType().getTypeDefName(),
                     entityTwo.getGUID());
-        }
-        catch (FunctionNotSupportedException exception) {
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity

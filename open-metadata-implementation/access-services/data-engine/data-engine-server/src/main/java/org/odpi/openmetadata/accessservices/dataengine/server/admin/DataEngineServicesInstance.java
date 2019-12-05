@@ -77,7 +77,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @return handler object
      */
-    public ProcessHandler getProcessHandler() {
+    ProcessHandler getProcessHandler() {
         return processHandler;
     }
 
@@ -86,7 +86,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @return handler object
      */
-    public DataEngineRegistrationHandler getDataEngineRegistrationHandler() {
+    DataEngineRegistrationHandler getDataEngineRegistrationHandler() {
         return dataEngineRegistrationHandler;
     }
 
@@ -95,7 +95,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @return handler object
      */
-    public DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler() {
+    DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler() {
         return dataEngineSchemaTypeHandler;
     }
 
@@ -104,7 +104,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @return handler object
      */
-    public PortHandler getPortHandler() {
+    PortHandler getPortHandler() {
         return portHandler;
     }
 }

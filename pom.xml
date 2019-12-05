@@ -17,7 +17,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria</url>
 
@@ -166,6 +166,7 @@
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.3.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
+        <sleepycat.version>18.3.12</sleepycat.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -182,7 +183,7 @@
         <maven-download.version>1.4.2</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.2.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.8.0</frontend.plugin.version>
@@ -432,14 +433,12 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-core</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cql</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -464,20 +463,19 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
+                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -1789,6 +1787,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <scope>test</scope>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
@@ -1901,6 +1906,11 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.testng</groupId>
@@ -1933,7 +1943,7 @@
             <dependency>
               <groupId>com.sleepycat</groupId>
               <artifactId>je</artifactId>
-              <version>18.3.12</version>
+              <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>
@@ -1978,10 +1988,11 @@
 
     <!-- Most dependencies pushed down to keep components minimal -->
     <dependencies>
-        <!-- Use logback anywhere as logging implementation in TEST scope only -->
+        <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -2118,6 +2129,9 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
+                        <systemPropertyVariables>
+                            <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
+                        </systemPropertyVariables>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -2338,6 +2352,7 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <phase>process-test-resources</phase>
                     </execution>
                     <execution>
                         <id>report</id>
@@ -2368,9 +2383,10 @@
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                <!-- Used with sl44j as default implementaion in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
-                                <!-- These exceptions should be removed once code is clean -->
+                                <!-- Used with slf4j as default implementation in test scope only -->
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*</ignoredUnusedDeclaredDependency>
+                                <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
+                                <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -2406,6 +2422,7 @@
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
+                    <quiet>true</quiet>
                 </configuration>
                 <executions>
                     <execution>
@@ -2425,7 +2442,7 @@
                 <executions>
                     <execution>
                         <id>createemptydocsource</id>
-                        <phase>process-resources</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
@@ -2528,7 +2545,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Optional PMD scan - static code analysis -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
@@ -2545,17 +2561,33 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>owasp</id>
+            <activation>
+                <property>
+                    <name>CVE</name>
+                </property>
+            </activation>
+            <!-- Build reports - findBugs security checks -->
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
                         <configuration>
                             <skipSystemScope>true</skipSystemScope>
+                            <skipProvidedScope>true</skipProvidedScope>
+                            <skipTestScope>true</skipTestScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                             <enableExperimental>true</enableExperimental>
                             <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>
                             <cmakeAnalyzerEnabled>false</cmakeAnalyzerEnabled>
                             <autoconfAnalyzerEnabled>false</autoconfAnalyzerEnabled>
-                            <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
+                            <nodeAnalyzerEnabled>true</nodeAnalyzerEnabled>
                             <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
                             <bundleAuditAnalyzerEnabled>false</bundleAuditAnalyzerEnabled>
                             <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
@@ -2564,9 +2596,13 @@
                             <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
                         </configuration>
                         <executions>
+
                             <execution>
+                                <id>full-cve</id>
+                                <inherited>false</inherited>
+                                <phase>verify</phase>
                                 <goals>
-                                    <goal>check</goal>
+                                    <goal>aggregate</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -2593,7 +2629,7 @@
             <id>license</id>
             <activation>
                 <property>
-                    <name>!skipLicense</name>
+                    <name>License</name>
                 </property>
             </activation>
             <build>
