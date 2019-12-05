@@ -166,6 +166,7 @@
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.3.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
+        <sleepycat.version>18.3.12</sleepycat.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -432,14 +433,12 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-core</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cql</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -464,20 +463,19 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
+                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -1945,7 +1943,7 @@
             <dependency>
               <groupId>com.sleepycat</groupId>
               <artifactId>je</artifactId>
-              <version>18.3.12</version>
+              <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>

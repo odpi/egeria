@@ -14,13 +14,13 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,23 +52,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         super.initialize(connectorInstanceId, connectionProperties);
     }
 
-    public void initializeGraphDB() throws OpenLineageException {
+    public void initializeGraphDB(){
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
-        switch (graphDB) {
-            case "berkeleydb":
-                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
-                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
-                break;
-            case "cassandra":
-                FactoryForTesting factoryForTesting = new FactoryForTesting();
-                this.mainGraph = factoryForTesting.openBufferGraph(connectionProperties);
-                break;
-
-            default:
-                break;
-        }
+        GraphFactory graphFactory = new GraphFactory();
+        this.mainGraph = graphFactory.openGraph(graphDB,connectionProperties);
     }
 
     /**
