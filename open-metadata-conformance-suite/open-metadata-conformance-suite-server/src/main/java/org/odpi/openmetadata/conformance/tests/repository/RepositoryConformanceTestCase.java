@@ -488,21 +488,22 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception
     {
 
-        //OMRSMetadataCollection metadataCollection = this.getMetadataCollection();  TODO DELETE
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
 
 
         List<TypeDefAttribute> propDefs = new ArrayList<>();
 
-        // Look at the supertype (if any) first and then get any properties for the current type def
+        /*
+         * Look at the supertype (if any) first and then get any properties for the current type def
+         */
 
-        // Move up the supertype hierarchy until you hit the top
+        /*
+         * Move up the supertype hierarchy until you hit the top
+         */
         if (typeDef.getSuperType() != null)
         {
-            // Get the supertype's type def
             TypeDefLink superTypeDefLink = typeDef.getSuperType();
             String superTypeName = superTypeDefLink.getName();
-            //TypeDef superTypeDef = metadataCollection.getTypeDefByName(userId, superTypeName); TODO DELETE
             TypeDef superTypeDef = repositoryHelper.getTypeDefByName(userId, superTypeName);
             List<TypeDefAttribute> inheritedProps = getPropertiesForTypeDef(userId, superTypeDef);
 
@@ -513,7 +514,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
         }
 
-        // Add any properties defined for the current type, again using the known type from the repository helper
+        /*
+         * Add any properties defined for the current type, again using the known type from the repository helper
+         */
         TypeDef knownTypeDef = repositoryHelper.getTypeDefByName(userId, typeDef.getName());
         List<TypeDefAttribute> currentTypePropDefs = knownTypeDef.getPropertiesDefinition();
 
