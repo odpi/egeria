@@ -141,6 +141,30 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
+        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
+        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
+        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
+        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
+
+        // TODO - cleanup
+        //String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
+        //EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
+        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endOneEntityDef.getName());
+        verifyCondition((endOneEntityDef.equals(knownEnd1EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+        // TODO - cleanup
+        //String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
+        //EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
+        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endTwoEntityDef.getName());
+        verifyCondition((endTwoEntityDef.equals(knownEnd2EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
 
@@ -201,10 +225,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         /*
          * Create the local entities.
          */
-        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
-        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
+
 
         entityOne = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
                 endOneEntityDef.getGUID(),
