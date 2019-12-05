@@ -25,6 +25,7 @@ public enum AssetLineageEventType implements Serializable {
     PROCESS_CONTEXT_EVENT                   (0, "ProcessContextEvent", "Has the full context for a Process"),
     TECHNICAL_ELEMENT_CONTEXT_EVENT         (1, "ProcessContextEvent", "Has the full context for a technical element"),
     CLASSIFICATION_CONTEXT_EVENT            (2, "ProcessContextEvent", "Has the full context for a classified element"),
+    UPDATE_ENTITY_EVENT                     (3, "UpdateEvent", "Has the entity that is being updated"),
     UNKNOWN_ASSET_LINEAGE_EVENT             (100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
