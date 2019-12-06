@@ -40,6 +40,8 @@ stages:
                   --quiet
                   -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -DfindBugs
+              mavenOptions: '-Xmx5500m'
           - task: Maven@3
             displayName: 'Perform SonarScan'
             inputs:
@@ -62,5 +64,6 @@ stages:
                   -Dsonar.login="$(apiKey)"
                   -Dsonar.java.spotbugs.reportPaths="target/spotbugsXml.xml"
                   -Dsonar.java.pmd.reportPaths="target/pmd.xml"
+              mavenOptions: '-Xmx5500m'
           - task: SonarCloudPublish@1
             displayName: 'Publish SonarCloud quality gate results'
