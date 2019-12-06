@@ -19,7 +19,7 @@ import java.util.List;
  * DataEngineServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-class DataEngineServicesInstance extends OCFOMASServiceInstance {
+public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private static final AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
 
     private ProcessHandler processHandler;

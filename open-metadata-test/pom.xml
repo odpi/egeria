@@ -9,7 +9,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,9 @@
             <id>egeria-fvt</id>
             <activation>
                 <property>
-                    <name>!skipFVT</name>
+                    <!-- temp fix. See issue #2136 -->
+                    <!--name>!skipFVT</name-->
+                    <name>FVT</name>
                 </property>
 	    </activation>
             <modules>

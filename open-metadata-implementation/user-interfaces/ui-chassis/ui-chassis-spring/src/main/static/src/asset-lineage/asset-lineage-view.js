@@ -18,7 +18,7 @@ class AssetLineageView extends PolymerElement {
     <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px;
+          padding: 2px 20px;
         }
         
         .container {
@@ -29,15 +29,13 @@ class AssetLineageView extends PolymerElement {
     </style>
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(this.subview)]]"  >
+    <vaadin-tabs id ="useCases" selected="[[_getUseCase(usecase)]]" style="left: -20px; color: var(--egeria-primary-color);" >
       <vaadin-tab value="ultimateSource">Ultimate Source</vaadin-tab>
       <vaadin-tab value="endToEnd">End to End Lineage</vaadin-tab>
       <vaadin-tab value="ultimateDestination">Ultimate Destination</vaadin-tab>
       <vaadin-tab value="glossaryLineage">Glossary Lineage</vaadin-tab>
       <vaadin-tab value="sourceAndDestination">Source and Destination</vaadin-tab>
     </vaadin-tabs>
-    
-    <!--protected _selectedChanged(selected): void-->
     
     <div>
         <vaadin-select id="viewsMenu" value="column-view" >
@@ -68,16 +66,13 @@ class AssetLineageView extends PolymerElement {
                 type: String,
                 observer: '_guidChanged'
             },
-            usecaseIndex:{
-                type: String
-            },
             usecase: {
                 type: String,
                 observer: '_useCaseChanged'
             },
             usecases:{
                 type: Array,
-                value:['ultimateSource','endToEnd', 'ultimateDestination','glossaryLineage','sourceAndDestination' ]
+                value:['ultimateSource','endToEnd','ultimateDestination','glossaryLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -197,12 +192,18 @@ class AssetLineageView extends PolymerElement {
 
 
     _guidChanged() {
-        this._reload(this.subview, this.$.viewsMenu.value);
+        this._reload(this.usecase, this.$.viewsMenu.value);
     }
 
     _useCaseChanged() {
-         window.location.href=window.location.href.replace(this.subview, this.usecase);
-         this.subview  =  this.usecase;
+         var view = this.getAttribute("name");
+         var index =  window.location.href.lastIndexOf(view);
+         var rootPath = window.location.href.substring(0, view.length + index);
+         var newLocation = rootPath + "/" + this.usecase ;
+         if( this.guid ){
+             newLocation = newLocation + "/" + this.guid;
+         }
+         window.location.href = newLocation;
          window.dispatchEvent(new CustomEvent('location-changed'));
          this._reload(this.usecase, this.$.viewsMenu.value);
     }

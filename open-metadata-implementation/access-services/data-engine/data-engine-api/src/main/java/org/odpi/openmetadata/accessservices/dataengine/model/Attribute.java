@@ -19,8 +19,11 @@ public class Attribute implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
     private String displayName;
-    private String cardinality;
-    private int elementPosition;
+    private String minCardinality;
+    private String maxCardinality;
+    private String allowsDuplicateValues;
+    private String orderedValues;
+    private int position;
     private String defaultValueOverride;
     private String dataType;
     private String defaultValue;
@@ -28,12 +31,16 @@ public class Attribute implements Serializable {
     public Attribute() {
     }
 
-    public Attribute(String qualifiedName, String displayName, String cardinality, int elementPosition,
-                     String defaultValueOverride, String dataType, String defaultValue) {
+    public Attribute(String qualifiedName, String displayName, String minCardinality, String maxCardinality,
+                     String allowsDuplicateValues, String orderedValues, int position, String defaultValueOverride,
+                     String dataType, String defaultValue) {
         this.qualifiedName = qualifiedName;
         this.displayName = displayName;
-        this.cardinality = cardinality;
-        this.elementPosition = elementPosition;
+        this.minCardinality = minCardinality;
+        this.maxCardinality = maxCardinality;
+        this.allowsDuplicateValues = allowsDuplicateValues;
+        this.orderedValues = orderedValues;
+        this.position = position;
         this.defaultValueOverride = defaultValueOverride;
         this.dataType = dataType;
         this.defaultValue = defaultValue;
@@ -55,28 +62,44 @@ public class Attribute implements Serializable {
         this.displayName = displayName;
     }
 
-    public String getCardinality() {
-        return cardinality;
+    public String getMinCardinality() {
+        return minCardinality;
     }
 
-    public void setCardinality(String cardinality) {
-        this.cardinality = cardinality;
+    public void setMinCardinality(String minCardinality) {
+        this.minCardinality = minCardinality;
     }
 
-    public int getElementPosition() {
-        return elementPosition;
+    public String getMaxCardinality() {
+        return maxCardinality;
     }
 
-    public void setElementPosition(int elementPosition) {
-        this.elementPosition = elementPosition;
+    public void setMaxCardinality(String maxCardinality) {
+        this.maxCardinality = maxCardinality;
     }
 
-    public String getDataType() {
-        return dataType;
+    public String getAllowsDuplicateValues() {
+        return allowsDuplicateValues;
     }
 
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
+    public void setAllowsDuplicateValues(String allowsDuplicateValues) {
+        this.allowsDuplicateValues = allowsDuplicateValues;
+    }
+
+    public String getOrderedValues() {
+        return orderedValues;
+    }
+
+    public void setOrderedValues(String orderedValues) {
+        this.orderedValues = orderedValues;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public String getDefaultValueOverride() {
@@ -85,6 +108,14 @@ public class Attribute implements Serializable {
 
     public void setDefaultValueOverride(String defaultValueOverride) {
         this.defaultValueOverride = defaultValueOverride;
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     public String getDefaultValue() {
@@ -100,10 +131,13 @@ public class Attribute implements Serializable {
         return "Attribute{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", cardinality='" + cardinality + '\'' +
-                ", elementPosition=" + elementPosition +
+                ", minCardinality='" + minCardinality + '\'' +
+                ", maxCardinality='" + maxCardinality + '\'' +
+                ", allowsDuplicateValues='" + allowsDuplicateValues + '\'' +
+                ", orderedValues='" + orderedValues + '\'' +
+                ", position='" + position + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
-                ", dataType=" + dataType +
+                ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
                 '}';
     }
@@ -113,10 +147,13 @@ public class Attribute implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attribute attribute = (Attribute) o;
-        return elementPosition == attribute.elementPosition &&
-                Objects.equals(qualifiedName, attribute.qualifiedName) &&
+        return Objects.equals(qualifiedName, attribute.qualifiedName) &&
                 Objects.equals(displayName, attribute.displayName) &&
-                Objects.equals(cardinality, attribute.cardinality) &&
+                Objects.equals(minCardinality, attribute.minCardinality) &&
+                Objects.equals(maxCardinality, attribute.maxCardinality) &&
+                Objects.equals(allowsDuplicateValues, attribute.allowsDuplicateValues) &&
+                Objects.equals(orderedValues, attribute.orderedValues) &&
+                Objects.equals(position, attribute.position) &&
                 Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
                 Objects.equals(dataType, attribute.dataType) &&
                 Objects.equals(defaultValue, attribute.defaultValue);
@@ -124,7 +161,7 @@ public class Attribute implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, cardinality, elementPosition, defaultValueOverride,
-                dataType, defaultValue);
+        return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues,
+                orderedValues, position, defaultValueOverride, dataType, defaultValue);
     }
 }

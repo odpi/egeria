@@ -6,13 +6,16 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -70,12 +73,28 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertion22    = testCaseId + "-22";
     private static final String assertionMsg22 = " entity no longer retrievable after delete.";
     private static final String assertion23    = testCaseId + "-23";
-    private static final String assertionMsg23 = " entity restored version number is ";
+    private static final String assertionMsg23 = " entity restored ";
     private static final String assertion24    = testCaseId + "-24";
-    private static final String assertionMsg24 = " entity purged.";
+    private static final String assertionMsg24 = " entity restored version number is ";
+    private static final String assertion25    = testCaseId + "-25";
+    private static final String assertionMsg25 = " entity retrieved following restore ";
+    private static final String assertion26    = testCaseId + "-26";
+    private static final String assertionMsg26 = " entity purged.";
+    private static final String assertion27    = testCaseId + "-27";
+    private static final String assertionMsg27 = " historical retrieval returned correct version of entity ";
 
-    private static final String discoveredProperty_undoSupport = " undo support";
-    private static final String discoveredProperty_softDeleteSupport = " soft delete support";
+    private static final String assertion28    = testCaseId + "-28";
+    private static final String assertionMsg28 = " repository supports creation of instances ";
+
+    private static final String assertion29    = testCaseId + "-29";
+    private static final String assertionMsg29 = " repository supports undo of operations ";
+
+    private static final String assertion30    = testCaseId + "-30";
+    private static final String assertionMsg30 = " repository supports soft delete ";
+
+    private static final String assertion31    = testCaseId + "-31";
+    private static final String assertionMsg31 = " repository supports historic retrieval ";
+
 
 
     private String            metadataCollectionId;
@@ -90,7 +109,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
      * @param entityDef type of valid entities
      */
     public TestSupportedEntityLifecycle(RepositoryConformanceWorkPad workPad,
-                                        EntityDef               entityDef)
+                                        EntityDef                    entityDef)
     {
         super(workPad,
               RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
@@ -115,38 +134,77 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Generate property values for all the type's defined properties, including inherited properties
-         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
-         * thereby getting into the connector-logic beyond the property validation. It also creates an
-         * entity that is logically complete - versus an instance with just the locally-defined properties.
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
          */
 
-        EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                              entityDef.getGUID(),
-                                                              super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                              null,
-                                                              null);
+        EntityDetail newEntity;
+
+        try {
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                     entityDef.getGUID(),
+                                                     super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                    null,
+                                                    null);
+
+            assertCondition((true),
+                    assertion28,
+                    testTypeName + assertionMsg28,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+
+        }
+        catch (FunctionNotSupportedException exception) {
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion28,
+                    assertionMsg28,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return;
+
+        }
 
         assertCondition((newEntity != null),
                         assertion1,
                         testTypeName + assertionMsg1,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition(workPad.getLocalServerUserId().equals(newEntity.getCreatedBy()),
                         assertion2,
                         testTypeName + assertionMsg2,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getCreateTime() != null),
                         assertion3,
                         testTypeName + assertionMsg3,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT),
                         assertion4,
                         testTypeName + assertionMsg4,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getStatus() == entityDef.getInitialStatus()),
                         assertion5,
                         testTypeName + assertionMsg5,
@@ -195,18 +253,20 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                         assertion9,
                         testTypeName + assertionMsg9,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+
         verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
                         assertion10,
                         testTypeName + assertionMsg10,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                         assertion11,
                         testTypeName + assertionMsg11,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
         /*
          * No relationships have been created so none should be returned.
@@ -230,6 +290,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
          * Update entity status
          */
         long  nextVersion = newEntity.getVersion() + 1;
+
         for (InstanceStatus validInstanceStatus : entityDef.getValidInstanceStatusList())
         {
             if (validInstanceStatus != InstanceStatus.DELETED)
@@ -241,16 +302,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 testTypeName + assertionMsg13,
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
                 assertCondition((updatedEntity.getStatus() == validInstanceStatus),
                                 assertion14,
                                 testTypeName + assertionMsg14 + validInstanceStatus.getName(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
                 assertCondition((updatedEntity.getVersion() >= nextVersion),
                                 assertion15,
                                 testTypeName + assertionMsg15 + nextVersion,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
+
                 nextVersion = updatedEntity.getVersion() + 1;
             }
         }
@@ -322,16 +386,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             {
                 EntityDetail undoneEntity = metadataCollection.undoEntityUpdate(workPad.getLocalServerUserId(), newEntity.getGUID());
 
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                                            "Enabled",
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+                assertCondition(true,
+                        assertion29,
+                        testTypeName + assertionMsg29,
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
 
                 assertCondition(((undoneEntity != null) && (undoneEntity.getProperties() != null)),
                                 assertion19,
                                 testTypeName + assertionMsg19,
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
                 assertCondition(((undoneEntity != null) && (undoneEntity.getVersion() >= nextVersion)),
                                 assertion20,
                                 testTypeName + assertionMsg20 + nextVersion,
@@ -339,16 +406,31 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
 
                 nextVersion = undoneEntity.getVersion() + 1;
+
             }
             catch (FunctionNotSupportedException exception)
             {
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                                            "Disabled",
-                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                super.addNotSupportedAssertion(assertion29,
+                        assertionMsg29,
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                        RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
 
             }
         }
+
+        /*
+         * Catch the current time for a later historic query test, then sleep for a second so we are sure that time has moved on
+         */
+        Date preDeleteDate = new Date();
+        EntityDetail preDeleteEntity= metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+
+        /*
+         * Test that the entity can be soft deleted, that the soft deleted entity has a higher version.
+         * Verify that the soft deleted entity cannot be retrieved, but can be restored and thatthe restored entity has
+         * a valid version (higher than when it was deleted).
+         * Check that the restored entity can be retrieved.
+         */
 
         try
         {
@@ -356,18 +438,20 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                                                          newEntity.getType().getTypeDefGUID(),
                                                                          newEntity.getType().getTypeDefName(),
                                                                          newEntity.getGUID());
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                                        "Enabled",
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            assertCondition(true,
+                    assertion30,
+                    testTypeName + assertionMsg30,
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
             assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
                             assertion21,
                             testTypeName + assertionMsg21 + nextVersion,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
 
-            nextVersion = deletedEntity.getVersion() + 1;
+
 
             try
             {
@@ -376,26 +460,50 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                 assertCondition((false),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
             catch (EntityNotKnownException exception)
             {
                 assertCondition((true),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
+
+
+
+
+            /*
+             * Performing the restore should advance the version number again
+             */
+            nextVersion = deletedEntity.getVersion() + 1;
+
 
             EntityDetail restoredEntity = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
                                                                            newEntity.getGUID());
 
-            assertCondition(((restoredEntity != null) && (restoredEntity.getVersion() >= nextVersion)),
+            assertCondition((restoredEntity != null),
                             assertion23,
-                            testTypeName + assertionMsg23 + nextVersion,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            testTypeName + assertionMsg23,
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+
+            assertCondition((restoredEntity.getVersion() >= nextVersion),
+                    assertion24,
+                    testTypeName + assertionMsg24 + nextVersion,
+                    RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
+
+            /*
+             * Verify that entity can be retrieved following restore
+             */
+            verifyCondition((restoredEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), restoredEntity.getGUID()))),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                             newEntity.getType().getTypeDefGUID(),
@@ -404,10 +512,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
         catch (FunctionNotSupportedException exception)
         {
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                                        "Disabled",
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+            super.addNotSupportedAssertion(assertion30,
+                    assertionMsg30,
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
@@ -420,26 +528,151 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
-                            assertion24,
-                            testTypeName + assertionMsg24,
+                            assertion26,
+                            testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
         }
         catch (EntityNotKnownException exception)
         {
             assertCondition((true),
-                            assertion24,
-                            testTypeName + assertionMsg24,
+                            assertion26,
+                            testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+        }
+
+
+        /*
+         * Perform a historic get of the entity - this should return the entity even though it has now been [deleted and] purged
+         * The time for the query is the time set just before the delete operation above.
+         */
+        try
+        {
+            EntityDetail earlierEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID(), preDeleteDate);
+
+            assertCondition(true,
+                    assertion31,
+                    testTypeName + assertionMsg31,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+            /*
+             * Check that the earlierEntity is not null and that the entity matches the copy saved at preDeleteDate.
+             */
+            assertCondition( ( (earlierEntity != null)  && earlierEntity.equals(preDeleteEntity)),
+                    assertion27,
+                    testTypeName + assertionMsg27,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+
+        }
+        catch (EntityNotKnownException exception)
+        {
+            /*
+             * If it supports historical retrieval, the repository should have returned the entity, hence fail the test
+             */
+            assertCondition((false),
+                    assertion27,
+                    testTypeName + assertionMsg27,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            super.addNotSupportedAssertion(assertion31,
+                    assertionMsg31,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
         }
 
         super.setSuccessMessage("Entities can be managed through their lifecycle");
     }
 
-
     /**
-     * Determine if properties are as expected.
+     * Method to clean any instance created by the test case.
+     *
+     * @throws Exception something went wrong with the test.
+     */
+    public void cleanup() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * Find any entities of the given type def and delete them....
+         */
+
+        int fromElement = 0;
+        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
+        int resultSize = 0;
+
+        do {
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
+
+
+            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                    entityDef.getGUID(),
+                    emptyMatchProperties,
+                    MatchCriteria.ANY,
+                    fromElement,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
+
+
+            if (entities == null) {
+                /*
+                 * There are no instances of this type reported by the repository.
+                 */
+                return;
+
+            }
+
+            /*
+             * Report how many entities were left behind at the end of the test run
+             */
+
+            resultSize = entities.size();
+
+            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
+
+            for (EntityDetail entity : entities) {
+
+                /*
+                 * Try soft delete (ok if it fails) and purge.
+                 */
+
+                try {
+                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            entity.getType().getTypeDefGUID(),
+                            entity.getType().getTypeDefName(),
+                            entity.getGUID());
+
+                } catch (FunctionNotSupportedException exception) {
+                    /* OK - had to try soft; continue to purge */
+                }
+
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                        entity.getType().getTypeDefGUID(),
+                        entity.getType().getTypeDefName(),
+                        entity.getGUID());
+
+                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
+
+            }
+        } while (resultSize >= pageSize);
+
+    }
+
+
+    /*** Determine if properties are as expected.
      *
      * @param firstInstanceProps is the target which must always be a non-null InstanceProperties
      * @param secondInstanceProps is the actual to be compared against first param - can be null, or empty....

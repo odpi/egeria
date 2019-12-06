@@ -14,13 +14,7 @@ POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/infor
    "class": "RegistrationRequestBody",
    "softwareServerCapability": {
              "class": "SoftwareServerCapabilitySource",
-             "author": "owner-test",
-             "userId": "cognosToolId",
-             "lastModifiedTime": 1547838663347,
-             "lastModifier": "owner",
-             "name": "cognos reporting tool",
-             "version": "1",
-             "type": "reporting"
+             "qualifiedName":"internal id"
    }
  }
 ```

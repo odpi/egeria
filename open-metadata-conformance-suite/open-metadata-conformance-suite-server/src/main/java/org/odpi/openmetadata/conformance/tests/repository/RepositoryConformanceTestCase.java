@@ -8,13 +8,16 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.*;
 
@@ -31,9 +34,12 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
     protected RepositoryConformanceWorkPad repositoryConformanceWorkPad;
     protected OMRSRepositoryConnector      cohortRepositoryConnector = null;
+    private   int                          maxSearchResults = 50;
 
     int       successfulExecutionCount = 0;
     int       unSuccessfulExecutionCount = 0;
+
+
 
 
     /**
@@ -58,9 +64,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         if (workPad != null)
         {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            maxSearchResults = workPad.getMaxSearchResults();
         }
     }
-
 
     /**
      * Typical constructor used when the test case id needs to be constructed by th test case code.
@@ -80,6 +86,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         if (workPad != null)
         {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            maxSearchResults = workPad.getMaxSearchResults();
         }
     }
 
@@ -207,6 +214,15 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         return testTypeName;
     }
 
+
+    /**
+     * Return the page size to use for testing the repository.
+     *
+     * @return page size
+     */
+    protected int getMaxSearchResults() {
+        return maxSearchResults;
+    }
 
     /**
      * Return the repository connector generated from the cohort registration event.
@@ -361,7 +377,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
 
     /**
-     * Return instance properties for the properties defined in the TypeDef and all of its supertypes
+     * Return instance properties for the properties defined in the TypeDef and all of its supertypes.
      *
      * @param userId calling user
      * @param typeDef  the definition of the type
@@ -407,7 +423,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     }
 
     /**
-     * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes
+     * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes.
      *
      * @param userId calling user
      * @param typeDef  the definition of the type
@@ -456,7 +472,13 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     }
 
     /**
-     * Recursively walk the supertype hierarchy starting at the given typeDef, and collect all the TypeDefAttributes
+     * Recursively walk the supertype hierarchy starting at the given typeDef, and collect all the TypeDefAttributes.
+     *
+     * This method does not use the properties defined in the TypeDef provided since that TypeDef is
+     * from the gallery returned by the repository connector. Instead it uses the name of the TypeDef
+     * to look up the TypeDef in the RepositoryHelper - using the Known types rather than the Active types.
+     * This is to ensure consistency with the open metadata type definition.
+     *
      *
      * @param userId   the userId of the caller, needed for retrieving type definitions
      * @param typeDef  the definition of the type
@@ -466,19 +488,23 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception
     {
 
-        OMRSMetadataCollection metadataCollection = this.getMetadataCollection();
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+
 
         List<TypeDefAttribute> propDefs = new ArrayList<>();
 
-        // Look at the supertype (if any) first and then get any properties for the current type def
+        /*
+         * Look at the supertype (if any) first and then get any properties for the current type def
+         */
 
-        // Move up the supertype hierarchy until you hit the top
+        /*
+         * Move up the supertype hierarchy until you hit the top
+         */
         if (typeDef.getSuperType() != null)
         {
-            // Get the supertype's type def
             TypeDefLink superTypeDefLink = typeDef.getSuperType();
             String superTypeName = superTypeDefLink.getName();
-            TypeDef superTypeDef = metadataCollection.getTypeDefByName(userId, superTypeName);
+            TypeDef superTypeDef = repositoryHelper.getTypeDefByName(userId, superTypeName);
             List<TypeDefAttribute> inheritedProps = getPropertiesForTypeDef(userId, superTypeDef);
 
             if (inheritedProps != null && !inheritedProps.isEmpty())
@@ -488,8 +514,11 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
         }
 
-        // Add any properties defined for the current type
-        List<TypeDefAttribute> currentTypePropDefs = typeDef.getPropertiesDefinition();
+        /*
+         * Add any properties defined for the current type, again using the known type from the repository helper
+         */
+        TypeDef knownTypeDef = repositoryHelper.getTypeDefByName(userId, typeDef.getName());
+        List<TypeDefAttribute> currentTypePropDefs = knownTypeDef.getPropertiesDefinition();
 
         if (currentTypePropDefs != null && !currentTypePropDefs.isEmpty())
         {
@@ -552,6 +581,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
         return metadataCollection.addEntity(userId, entityDef.getGUID(), properties, null, null );
     }
+
+
 
 
 

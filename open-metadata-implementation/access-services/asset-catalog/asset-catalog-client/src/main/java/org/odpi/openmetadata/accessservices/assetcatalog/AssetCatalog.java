@@ -175,8 +175,8 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      */
     @Override
     public RelationshipsResponse getLinkingRelationships(String userId,
-                                                            String startAssetGUID,
-                                                            String endAssetGUID)
+                                                         String startAssetGUID,
+                                                         String endAssetGUID)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getLinkingRelationships";
 
@@ -225,7 +225,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
 
         AssetResponse assetResponse = callPostRESTCall(methodName, AssetResponse.class,
-                serverPlatformURLRoot + BASE_PATH + SEARCH, serverName, userId, searchCriteria, searchParameters);
+                serverPlatformURLRoot + BASE_PATH + SEARCH, searchParameters, serverName, userId, searchCriteria);
 
         detectExceptions(methodName, assetResponse);
 

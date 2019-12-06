@@ -10,11 +10,12 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
+import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -24,6 +25,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -59,6 +61,9 @@ public class AssetCatalogServiceTest {
     @Mock
     private AssetCatalogHandler assetCatalogHandler;
 
+    @Mock
+    private CommonHandler commonHandler;
+
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
@@ -75,7 +80,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetAssetDetailsByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetAssetDetailsByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
 
         AssetDescription response = mockAssetDescription(FIRST_GUID);
 
@@ -98,7 +103,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetAssetUniverseByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetAssetUniverseByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         AssetDescription response = mockAssetDescription(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -122,7 +127,7 @@ public class AssetCatalogServiceTest {
 
 
     @Test
-    public void testGetAssetRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetAssetRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         List<Relationship> response = new ArrayList<>();
         response.add(mockRelationshipResponse());
 
@@ -130,12 +135,12 @@ public class AssetCatalogServiceTest {
                 SERVER_NAME,
                 "getAssetRelationships"))
                 .thenReturn(assetCatalogHandler);
-        when(assetCatalogHandler
+        when(commonHandler
                 .getTypeDefGUID(USER, RELATIONSHIP_TYPE))
                 .thenReturn(RELATIONSHIP_TYPE_GUID);
 
         when(assetCatalogHandler
-                .getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, 0, 10))
+                .getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, 0, 10))
                 .thenReturn(response);
 
         RelationshipsResponse assetRelationships = assetCatalogRESTService.getAssetRelationships(SERVER_NAME,
@@ -152,7 +157,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetClassificationByAssetGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void testGetClassificationByAssetGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
         List<Classification> response = new ArrayList<>();
         response.add(mockClassification(CLASSIFICATION_NAME));
 
@@ -176,7 +181,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException {
+    public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
         List<AssetDescription> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));
 
@@ -198,7 +203,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetLinkingRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException {
+    public void testGetLinkingRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
         List<Relationship> response = new ArrayList<>();
         response.add(mockRelationshipResponse());
 
@@ -221,7 +226,7 @@ public class AssetCatalogServiceTest {
 
     @Test
     public void testGetAssetsFromNeighborhood()
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
         SearchParameters searchParameters = mockSearchParams();
         List<AssetDescription> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));
@@ -247,7 +252,7 @@ public class AssetCatalogServiceTest {
     public void testSearchByType()
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase {
         SearchParameters searchParameters = mockSearchParams();
-        List<Term> response = new ArrayList<>();
+        List<AssetElements> response = new ArrayList<>();
         response.add(mockTerm(FIRST_GUID));
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -268,8 +273,8 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testBuildContext() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Term response = mockTerm(FIRST_GUID);
+    public void testBuildContext() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+        AssetElements response = mockTerm(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
                 SERVER_NAME,
@@ -288,10 +293,10 @@ public class AssetCatalogServiceTest {
         assertEquals(response.getGuid(), assetResponse.getAssets().get(0).getGuid());
     }
 
-    private Term mockTerm(String guid) {
-        Term term = new Term();
-        term.setGuid(guid);
-        return term;
+    private AssetElements mockTerm(String guid) {
+        AssetElements assetElements = new AssetElements();
+        assetElements.setGuid(guid);
+        return assetElements;
     }
 
     private SearchParameters mockSearchParams() {

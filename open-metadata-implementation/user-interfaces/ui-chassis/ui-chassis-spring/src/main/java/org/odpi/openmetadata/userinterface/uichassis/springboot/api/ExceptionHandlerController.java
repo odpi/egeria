@@ -5,6 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,19 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG);
         return handleExceptionInternal(ex, errorAttributes,
                 new HttpHeaders(), UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG.getHttpErrorCode(), request);
+    }
+    /**
+     *
+     * @param ex - raised exception to be handled
+     * @param request - the initial web request
+     * @return the entity containing the response exception
+     */
+    @ExceptionHandler(value = {OpenLineageServiceException.class})
+    protected ResponseEntity<Object> handleOpenLineageClientException(OpenLineageServiceException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_OPEN_LINEAGE);
+        return handleExceptionInternal(ex, errorAttributes,
+                new HttpHeaders(), UserInterfaceErrorCodes.INVALID_REQUEST_FOR_OPEN_LINEAGE.getHttpErrorCode(), request);
     }
 
     /**

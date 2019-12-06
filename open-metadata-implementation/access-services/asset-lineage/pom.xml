@@ -10,15 +10,15 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <name>Asset Lineage OMAS</name>
     <description>
-        The Asset Lineage (OMAS) provides
-        Support for storing and querying horizontal, vertical and operational lineage.
+        The Asset Lineage (OMAS) builds graph context from OMRS instance events for storing and querying
+        horizontal, vertical and operational lineage.
     </description>
 
     <artifactId>asset-lineage</artifactId>

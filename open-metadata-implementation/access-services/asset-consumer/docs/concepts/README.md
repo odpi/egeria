@@ -6,8 +6,9 @@
 * [Assets](../../../docs/concepts/assets)
 * [Asset Log Messages](asset-log-message.md)
 * [Connected Asset Properties](../../../../frameworks/open-connector-framework/docs/concepts/connected-asset-properties.md)
-* [Connectors](../../../../frameworks/open-connector-framework/docs/concepts/connector.md)
+* [Connectors](../scenarios/working-with-connectors.md)
 * [Connections](../../../../frameworks/open-connector-framework/docs/concepts/connection.md)
+* [Glossary Terms](../scenarios/looking-up-meanings-of-terms.md)
 * [Feedback on Assets](../../../docs/concepts/feedback)
 * [Tagging Assets](../../../docs/concepts/attachments/tagging.md)
 

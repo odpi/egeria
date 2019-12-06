@@ -17,7 +17,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria</url>
 
@@ -127,12 +127,12 @@
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
-        <mockito.version>3.1.0</mockito.version>
+        <mockito.version>3.2.0</mockito.version>
         <testng.version>7.0.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.29</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.10.0</jackson.version>
+        <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.3.1</kafka.version>
         <janus.version>0.4.0</janus.version>
@@ -164,8 +164,9 @@
         <commons-codec.version>1.13</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.2.0</oss.version>
+        <oss.version>4.3.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
+        <sleepycat.version>18.3.12</sleepycat.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -176,13 +177,13 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
-        <owasp.version>5.2.2</owasp.version>
+        <owasp.version>5.2.4</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.2</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.2.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.8.0</frontend.plugin.version>
@@ -194,6 +195,7 @@
         <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
+        <license-plugin.version>2.0.0</license-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -205,6 +207,8 @@
         <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
         <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
+
+        <gaiandb.url>https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true</gaiandb.url>
 
     </properties>
 
@@ -429,14 +433,12 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-core</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cql</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -461,20 +463,19 @@
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
+                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
@@ -1038,6 +1039,27 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-handlers</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>glossary-view-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1054,6 +1076,13 @@
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>glossary-view-spring</artifactId>
                 <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-action-framework</artifactId>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
@@ -1758,6 +1787,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <scope>test</scope>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
@@ -1870,6 +1906,11 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.testng</groupId>
@@ -1902,7 +1943,7 @@
             <dependency>
               <groupId>com.sleepycat</groupId>
               <artifactId>je</artifactId>
-              <version>18.3.12</version>
+              <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>
@@ -1947,10 +1988,11 @@
 
     <!-- Most dependencies pushed down to keep components minimal -->
     <dependencies>
-        <!-- Use logback anywhere as logging implementation in TEST scope only -->
+        <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -2057,6 +2099,12 @@
                 </plugin>
 
                 <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-plugin.version}</version>
+                </plugin>
+
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${maven-clean-plugin.version}</version>
@@ -2081,6 +2129,9 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
+                        <systemPropertyVariables>
+                            <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
+                        </systemPropertyVariables>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -2156,12 +2207,12 @@
             </testResource>
         </testResources>
 
-        <!-- Default compiler options - enable deprecation information -->
+        <!-- Default compiler options - enable additional lint checks -->
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <compilerArgument>-Xlint:deprecation</compilerArgument>
+                    <compilerArgument>-Xlint:all</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
             </plugin>
@@ -2247,6 +2298,7 @@
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
+                        <exclude>**/LICENSE*.txt</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2300,6 +2352,7 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <phase>process-test-resources</phase>
                     </execution>
                     <execution>
                         <id>report</id>
@@ -2330,9 +2383,10 @@
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                <!-- Used with sl44j as default implementaion in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
-                                <!-- These exceptions should be removed once code is clean -->
+                                <!-- Used with slf4j as default implementation in test scope only -->
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*</ignoredUnusedDeclaredDependency>
+                                <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
+                                <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -2368,6 +2422,7 @@
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
+                    <quiet>true</quiet>
                 </configuration>
                 <executions>
                     <execution>
@@ -2387,7 +2442,7 @@
                 <executions>
                     <execution>
                         <id>createemptydocsource</id>
-                        <phase>process-resources</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
@@ -2490,7 +2545,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Optional PMD scan - static code analysis -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
@@ -2507,17 +2561,33 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>owasp</id>
+            <activation>
+                <property>
+                    <name>CVE</name>
+                </property>
+            </activation>
+            <!-- Build reports - findBugs security checks -->
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
                         <configuration>
                             <skipSystemScope>true</skipSystemScope>
+                            <skipProvidedScope>true</skipProvidedScope>
+                            <skipTestScope>true</skipTestScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                             <enableExperimental>true</enableExperimental>
                             <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>
                             <cmakeAnalyzerEnabled>false</cmakeAnalyzerEnabled>
                             <autoconfAnalyzerEnabled>false</autoconfAnalyzerEnabled>
-                            <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
+                            <nodeAnalyzerEnabled>true</nodeAnalyzerEnabled>
                             <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
                             <bundleAuditAnalyzerEnabled>false</bundleAuditAnalyzerEnabled>
                             <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
@@ -2526,9 +2596,13 @@
                             <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
                         </configuration>
                         <executions>
+
                             <execution>
+                                <id>full-cve</id>
+                                <inherited>false</inherited>
+                                <phase>verify</phase>
                                 <goals>
-                                    <goal>check</goal>
+                                    <goal>aggregate</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -2551,8 +2625,146 @@
                 </snapshotRepository>
             </distributionManagement>
         </profile>
+        <profile>
+            <id>license</id>
+            <activation>
+                <property>
+                    <name>License</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>third-party-parent</id>
+                                <inherited>false</inherited>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <acceptPomPackaging>true</acceptPomPackaging>
+                                    <includedScopes>compile,runtime</includedScopes>
+                                    <outputDirectory>${project.basedir}/licenses</outputDirectory>
+                                    <thirdPartyFilename>THIRD_PARTY-full.txt</thirdPartyFilename>
+                                </configuration>
+                                <goals>
+                                    <goal>aggregate-add-third-party</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>third-party-module</id>
+                                <inherited>true</inherited>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <acceptPomPackaging>false</acceptPomPackaging>
+                                    <includedScopes>compile,runtime</includedScopes>
+                                    <outputDirectory>${project.build.directory}/generated-sources/license</outputDirectory>
+                                    <thirdPartyFilename>THIRD_PARTY.txt</thirdPartyFilename>
+                                </configuration>
+                                <goals>
+                                    <goal>add-third-party</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>thirdPartyLocalRepo</id>
+            <activation>
+                <property>
+                    <name>!skipThirdPartyLocalRepo</name>
+                </property>
+            </activation>
+            <!-- The following steps obtain the required Gaian libraries by retrieving, unpacking the distribution and installing into the local maven repo -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <url>
+                                        ${gaiandb.url}
+                                    </url>
+                                    <outputFileName>GAIANDB_V2.1.8_20160523.zip</outputFileName>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <target>
+                                        <unzip src="${project.build.directory}/GAIANDB_V2.1.8_20160523.zip"
+                                               dest="${project.build.directory}">
+                                            <patternset>
+                                                <include name="**/GAIANDB.jar"/>
+                                                <include name="**/derby.jar"/>
+                                            </patternset>
+                                        </unzip>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>install-derby</id>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <groupId>org.apache.derby</groupId>
+                                    <artifactId>derby</artifactId>
+                                    <version>${derby.version}</version>
+                                    <packaging>jar</packaging>
+                                    <file>${project.build.directory}/lib/derby.jar</file>
+                                    <generatePom>true</generatePom>
+                                </configuration>
+                                <goals>
+                                    <goal>install-file</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>install-gaian</id>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <groupId>com.ibm.gaiandb</groupId>
+                                    <artifactId>gaian</artifactId>
+                                    <version>${gaian.version}</version>
+                                    <packaging>jar</packaging>
+                                    <file>${project.build.directory}/lib/GAIANDB.jar</file>
+                                    <generatePom>true</generatePom>
+                                </configuration>
+                                <goals>
+                                    <goal>install-file</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-
-
-
 </project>

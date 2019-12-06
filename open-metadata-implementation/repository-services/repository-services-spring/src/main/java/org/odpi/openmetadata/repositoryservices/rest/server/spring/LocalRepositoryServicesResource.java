@@ -1028,7 +1028,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}/history")
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationship/{guid}/history")
 
     public  RelationshipResponse getRelationship(@PathVariable String         serverName,
                                                  @PathVariable String         userId,
@@ -2141,12 +2141,12 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationship/{relationshipGUID}/home")
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationship/{relationshipGUID}/home/{homeMetadataCollectionId}")
 
     public RelationshipResponse reHomeRelationship(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
                                                    @PathVariable String                        relationshipGUID,
-                                                   @RequestParam String                        homeMetadataCollectionId,
+                                                   @PathVariable String                        homeMetadataCollectionId,
                                                    @RequestParam String                        newHomeMetadataCollectionId,
                                                    @RequestParam(required=false) String        newHomeMetadataCollectionName,
                                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -2197,6 +2197,45 @@ public class LocalRepositoryServicesResource
                                                 @RequestBody  EntityDetail entity)
     {
         return restAPI.saveEntityReferenceCopy(serverName, userId, entity);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param entity the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/entities/reference-copy/delete")
+
+    public VoidResponse deleteEntityReferenceCopy(@PathVariable String                        serverName,
+                                                  @PathVariable String                        userId,
+                                                  @RequestBody  EntityDetail                  entity)
+    {
+        return restAPI.deleteEntityReferenceCopy(serverName, userId, entity);
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/entities/reference-copy/purge")
+
+    public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
+                                                 @PathVariable String                        userId,
+                                                 @RequestBody  EntityDetail                  entity)
+    {
+        return restAPI.purgeEntityReferenceCopy(serverName, userId, entity);
     }
 
 
@@ -2300,6 +2339,79 @@ public class LocalRepositoryServicesResource
                                                       @RequestBody  Relationship   relationship)
     {
         return restAPI.saveRelationshipReferenceCopy(serverName, userId, relationship);
+    }
+
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param relationship the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationships/reference-copy/delete")
+
+    public VoidResponse deleteRelationshipReferenceCopy(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @RequestBody  Relationship                  relationship)
+    {
+        return restAPI.deleteRelationshipReferenceCopy(serverName, userId, relationship);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param relationship the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/relationships/reference-copy/purge")
+
+    public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @RequestBody  Relationship                  relationship)
+    {
+        return restAPI.purgeRelationshipReferenceCopy(serverName, userId, relationship);
     }
 
 

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.conformance.workbenches.repository;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -32,6 +35,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  tutMetadataCollectionId     = null;
     private String                  tutServerType               = null;
     private String                  tutOrganization             = null;
+    private int                     maxSearchResults            = 50;
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -47,6 +51,11 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
 
 
+    private Map<String, List<String>>              entitySubTypes          = new HashMap<>();
+    private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
+    private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
+    private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
+    private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
     /**
      * Constructor receives key information from the configuration services.
@@ -77,6 +86,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         if (configuration != null)
         {
             this.tutServerName = configuration.getTutRepositoryServerName();
+            this.maxSearchResults = configuration.getMaxSearchResults();
             super.tutName = this.tutServerName;
         }
     }
@@ -100,6 +110,17 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public String getTutServerName()
     {
         return tutServerName;
+    }
+
+
+    /**
+     * Return the maximum number of search results that be processed for tests of the repository under test.
+     *
+     * @return maximum number of search results to process
+     */
+    public int getMaxSearchResults()
+    {
+        return maxSearchResults;
     }
 
 
@@ -442,46 +463,47 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 List<OpenMetadataConformanceRequirementResults> requirementResultsList = new ArrayList<>();
                 OpenMetadataConformanceRequirementResults       requirementResults;
 
-                for (RepositoryConformanceProfileRequirement requirement : requirements)
-                {
-                    requirementResults = new OpenMetadataConformanceRequirementResults();
+                for (RepositoryConformanceProfileRequirement requirement : requirements) {
 
-                    requirementResults.setId(requirement.getRequirementId());
-                    requirementResults.setName(requirement.getName());
-                    requirementResults.setDescription(requirement.getDescription());
-                    requirementResults.setDocumentationURL(requirement.getDocumentationURL());
+                    /*
+                     * If (and only if) this requirement is relevant to the current profile, process it...
+                     */
+                    if (requirement.getProfileId().equals(profile.getProfileId())) {
 
-                    List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+                        requirementResults = new OpenMetadataConformanceRequirementResults();
 
-                    for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence)
-                    {
-                        if (testEvidenceItem != null)
-                        {
-                            if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue())
-                            {
-                                requirementTestEvidence.add(testEvidenceItem);
+                        requirementResults.setId(requirement.getRequirementId());
+                        requirementResults.setName(requirement.getName());
+                        requirementResults.setDescription(requirement.getDescription());
+                        requirementResults.setDocumentationURL(requirement.getDocumentationURL());
+
+                        List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+
+                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence) {
+                            if (testEvidenceItem != null) {
+                                if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue()) {
+                                    requirementTestEvidence.add(testEvidenceItem);
+                                }
                             }
                         }
+
+                        positiveTestEvidence = new ArrayList<>();
+                        negativeTestEvidence = new ArrayList<>();
+
+                        requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
+                                positiveTestEvidence,
+                                negativeTestEvidence));
+
+                        if (!positiveTestEvidence.isEmpty()) {
+                            requirementResults.setPositiveTestEvidence(positiveTestEvidence);
+                        }
+
+                        if (!negativeTestEvidence.isEmpty()) {
+                            requirementResults.setNegativeTestEvidence(negativeTestEvidence);
+                        }
+
+                        requirementResultsList.add(requirementResults);
                     }
-
-                    positiveTestEvidence = new ArrayList<>();
-                    negativeTestEvidence = new ArrayList<>();
-
-                    requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                                                                                  positiveTestEvidence,
-                                                                                  negativeTestEvidence));
-
-                    if (! positiveTestEvidence.isEmpty())
-                    {
-                        requirementResults.setPositiveTestEvidence(positiveTestEvidence);
-                    }
-
-                    if (! negativeTestEvidence.isEmpty())
-                    {
-                        requirementResults.setNegativeTestEvidence(negativeTestEvidence);
-                    }
-
-                    requirementResultsList.add(requirementResults);
                 }
 
                 profileResults.setRequirementResults(requirementResultsList);
@@ -503,6 +525,204 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
+     * Add the specified subtype to the list for the named entity type
+     * @param entityTypeName
+     * @param subTypeName
+     */
+    public void addEntitySubType(String entityTypeName, String subTypeName) {
+
+        List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
+        if (subTypeList == null) {
+            List<String> newList = new ArrayList<>();
+            newList.add(subTypeName);
+            this.entitySubTypes.put(entityTypeName,newList);
+        }
+        else {
+            subTypeList.add(subTypeName);
+        }
+    }
+
+    /**
+     * Return the list of subtypes of the named entity type
+     * @param entityTypeName
+     * @return
+     */
+    public List<String> getEntitySubTypes(String entityTypeName) {
+
+        List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
+        return subTypeList;
+    }
+
+    /**
+     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified
+     * @param entityTypeName
+     * @param relationshipTypeName
+     */
+    public void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end) {
+
+        List<List<String>> bothEndLists = this.entityRelationshipTypes.get(entityTypeName);
+        if (bothEndLists == null) {
+            List<String> end1List = new ArrayList<>();
+            List<String> end2List = new ArrayList<>();
+            bothEndLists = new ArrayList<>();
+            bothEndLists.add(end1List);
+            bothEndLists.add(end2List);
+            this.entityRelationshipTypes.put(entityTypeName,bothEndLists);
+        }
+        if (end == 1) {
+            List<String> end1List = bothEndLists.get(0);
+            end1List.add(relationshipTypeName);
+        }
+        else if (end == 2) {
+            List<String> end1List = bothEndLists.get(1);
+            end1List.add(relationshipTypeName);
+        }
+    }
+
+    /**
+     * Return the list of endtypes for the named relationship type
+     * @param entityTypeName
+     * @return
+     */
+    public List<List<String>> getEntityRelationshipTypes(String entityTypeName) {
+
+        List<List<String>> relTypeLists = this.entityRelationshipTypes.get(entityTypeName);
+        return relTypeLists;
+    }
+
+    /**
+     * Return the set of supported entity type names
+     * @return
+     */
+    public Set<String> getEntityTypeNames() {
+
+        Set<String> keySet = this.entityRelationshipTypes.keySet();
+        return keySet;
+    }
+
+
+
+    /**
+     * Set the pair of end types as the list for the named relationship type
+     * @param relationshipTypeName
+     * @param end1TypeName
+     * @param end2TypeName
+     */
+    public void addRelationshipEndTypes(String relationshipTypeName, String end1TypeName, String end2TypeName) {
+
+        List<String> endTypeList= new ArrayList<>();
+        endTypeList.add(end1TypeName);
+        endTypeList.add(end2TypeName);
+        this.relationshipEndTypes.put(relationshipTypeName, endTypeList);
+
+    }
+
+    /**
+     * Return the list of endtypes for the named relationship type
+     * @param relationshipTypeName
+     * @return
+     */
+    public List<String> getRelationshipEndTypes(String relationshipTypeName) {
+
+        List<String> endTypeList = this.relationshipEndTypes.get(relationshipTypeName);
+        return endTypeList;
+    }
+
+    /**
+     * Return the set of supported relationship type names
+     * @return
+     */
+    public Set<String> getRelationshipTypeNames() {
+
+        Set<String> keySet = this.relationshipEndTypes.keySet();
+        return keySet;
+    }
+
+
+
+
+    /**
+     * Remember the sets of instances for a given entity type. This is to support
+     * @param entityTypeName
+     * @param set_0
+     * @param set_1
+     * @param set_2
+     */
+    public void addEntityInstanceSets(String entityTypeName, List<EntityDetail> set_0, List<EntityDetail> set_1, List<EntityDetail> set_2) {
+
+        List<List<EntityDetail>> setsList = new ArrayList<>();
+        setsList.add(set_0);
+        setsList.add(set_1);
+        setsList.add(set_2);
+        this.entityInstances.put(entityTypeName,setsList);
+    }
+
+    /**
+     * Retrieve entity instances for the given type for the given instance set
+     * @param entityTypeName
+     */
+    public List<EntityDetail> getEntityInstanceSet(String entityTypeName, int setId) {
+
+        if (this.entityInstances.get(entityTypeName) != null) {
+            return this.entityInstances.get(entityTypeName).get(setId);
+        }
+        else
+            return null;
+    }
+
+    /**
+     * Clean up entity instances for the given type.
+     * @param entityTypeName
+     */
+    public void removeEntityInstanceSets(String entityTypeName) {
+
+        this.entityInstances.remove(entityTypeName);
+
+    }
+
+
+
+    /**
+     * Remember the sets of instances for a given relationship type. This is to support
+     * @param relationshipTypeName
+     * @param set_0
+     * @param set_1
+     * @param set_2
+     */
+    public void addRelationshipInstanceSets(String relationshipTypeName, List<Relationship> set_0, List<Relationship> set_1, List<Relationship> set_2) {
+
+        List<List<Relationship>> setsList = new ArrayList<>();
+        setsList.add(set_0);
+        setsList.add(set_1);
+        setsList.add(set_2);
+        this.relationshipInstances.put(relationshipTypeName,setsList);
+    }
+
+    /**
+     * Retrieve relationship instances for the given type for the given instance set
+     * @param relationshipTypeName
+     */
+    public List<Relationship> getRelationshipInstanceSet(String relationshipTypeName, int setId) {
+
+        if (this.relationshipInstances.get(relationshipTypeName) != null) {
+            return this.relationshipInstances.get(relationshipTypeName).get(setId);
+        }
+        else
+            return null;
+    }
+
+    /**
+     * Clean up relationship instances for the given type.
+     * @param relationshipTypeName
+     */
+    public void removeRelationshipInstanceSets(String relationshipTypeName) {
+
+        this.relationshipInstances.remove(relationshipTypeName);
+
+    }
+
+
+    /**
      * toString() JSON-style
      *
      * @return string description
@@ -518,6 +738,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 ", localServerUserId='" + localServerUserId + '\'' +
                 ", localServerPassword='" + localServerPassword + '\'' +
                 ", tutName='" + tutName + '\'' +
+                ", maxSearchResults=" + maxSearchResults +
                 ", tutType='" + tutType + '\'' +
                 ", maxPageSize=" + maxPageSize +
                 '}';

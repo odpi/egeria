@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -205,10 +205,10 @@ AssetCatalogClientTest {
         when(connector.callPostRESTCall(eq("searchByType"),
                 eq(AssetResponse.class),
                 anyString(),
+                eq(searchParameters),
                 eq(SERVER_NAME),
                 eq(USER_ID),
-                eq(SEARCH_CRITERIA),
-                eq(searchParameters))).thenReturn(response);
+                eq(SEARCH_CRITERIA))).thenReturn(response);
 
         AssetResponse assetResponse = assetCatalog.searchByType(USER_ID, SEARCH_CRITERIA, searchParameters);
 
@@ -265,11 +265,11 @@ AssetCatalogClientTest {
         return assetResponse;
     }
 
-    private Term mockTerm() {
-        Term term = new Term();
-        term.setGuid(ASSET_ID);
-        term.setTypeDefName(ASSET_TYPE);
-        return term;
+    private AssetElements mockTerm() {
+        AssetElements assetElements = new AssetElements();
+        assetElements.setGuid(ASSET_ID);
+        assetElements.setTypeDefName(ASSET_TYPE);
+        return assetElements;
     }
 
     private RelationshipResponse mockRelationshipResponse() {

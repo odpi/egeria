@@ -35,7 +35,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = Note.class, name = "Note"),
                 @JsonSubTypes.Type(value = NoteLog.class, name = "NoteLog"),
                 @JsonSubTypes.Type(value = RelatedMediaReference.class, name = "RelatedMediaReference"),
-                @JsonSubTypes.Type(value = SchemaElement.class, name = "SchemaElement")
+                @JsonSubTypes.Type(value = SchemaElement.class, name = "SchemaElement"),
+                @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue")
         })
 public class Referenceable extends ElementHeader
 {

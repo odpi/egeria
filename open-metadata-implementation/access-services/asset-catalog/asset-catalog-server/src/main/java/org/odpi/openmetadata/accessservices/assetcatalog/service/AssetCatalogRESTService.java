@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInsta
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -162,12 +162,8 @@ public class AssetCatalogRESTService {
         RelationshipsResponse response = new RelationshipsResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            String relationshipTypeGUID = null;
-            if (relationshipTypeName != null) {
-                relationshipTypeGUID = assetCatalogHandler.getTypeDefGUID(userId, relationshipTypeName);
-            }
             response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID,
-                    assetTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
+                    assetTypeName, relationshipTypeName, startFrom, limit));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
@@ -271,9 +267,9 @@ public class AssetCatalogRESTService {
         try {
 
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            Term term = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
-            if (term != null) {
-                response.setAssets(Collections.singletonList(term));
+            AssetElements assetElements = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
+            if (assetElements != null) {
+                response.setAssets(Collections.singletonList(assetElements));
             }
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {

@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -18,10 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
+/**
+ * The glossary handler provide methods to provide business glossary terms for lineage.
+ */
 public class GlossaryHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlossaryHandler.class);
@@ -62,21 +66,35 @@ public class GlossaryHandler {
     /**
      * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.
      *
-     * @param assetGuid guid of the asset that has been created
-     * @param userID    String - userId of user making request.
+     * @param assetGuid    guid of the asset that has been created
+     * @param userId       String - userId of user making request.
+     * @param entityDetail the entity detail
+     * @param assetContext the asset context
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
+     * @throws InvalidParameterException the invalid parameter exception
      */
-    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
+    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
+                                                          String userId,
+                                                          EntityDetail entityDetail,
+                                                          AssetContext assetContext,
+                                                          Validator validator) throws InvalidParameterException{
 
+        String methodName = "getGlossaryTerm";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
+                
         try {
             graph = assetContext;
-            boolean glossary = getGlossary(userID, assetGuid, entityDetail.getType().getTypeDefName());
 
-            if (!glossary) {
-                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
-                return Collections.emptyMap();
+            Set<LineageEntity> vertices = assetContext.getVertices();
+            vertices = vertices.stream().filter(vertex -> validator.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
+                    !validator.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
+;
+            for(LineageEntity vertex: vertices){
+                getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
+
             }
-
             return graph.getNeighbors();
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
@@ -88,7 +106,6 @@ public class GlossaryHandler {
         }
     }
 
-
     /**
      * Retrieves semantic assignments for an asset
      *
@@ -97,7 +114,7 @@ public class GlossaryHandler {
      * @param typeDefName the typeName of the asset.
      * @return Glossary Term retrieved from the property server
      */
-    private boolean getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
+    private void getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException {
         final String methodName = "getGlossary";
@@ -111,10 +128,9 @@ public class GlossaryHandler {
                                                                                           methodName);
 
         if (semanticAssignments == null) {
-            return false;
+            return;
         }
-
-        return addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
+        addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
@@ -124,7 +140,7 @@ public class GlossaryHandler {
      * @param semanticAssignments   array of the semantic assignments
      * @return true if semantic relationships exist, false otherwise
      */
-    private boolean addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
+    private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException {
         final String methodName = "addSemanticAssignmentToContext";
@@ -139,9 +155,8 @@ public class GlossaryHandler {
                                                                           GLOSSARY_TERM,
                                                                           methodName);
 
-            entityDetails.add(commonHandler.writeEntitiesAndRelationships(userId, glossaryTerm, relationship, graph));
+            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph,false));
         }
-        return entityDetails.isEmpty();
     }
 
 }

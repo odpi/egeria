@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
+import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
@@ -20,10 +20,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @Configuration
+@EnableSwagger2
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
@@ -60,9 +66,9 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public OpenLineage getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
-                                      @Value("${open.lineage.server.name}") String serverName)  {
-        return new OpenLineage(serverName, serverUrl);
+    public OpenLineageClient getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
+                                            @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        return new OpenLineageClient(serverName, serverUrl);
     }
 
     @Bean
@@ -71,6 +77,20 @@ public class EgeriaUIPlatform {
             return new TokenAuthService();
         }
         return new SessionAuthService();
+    }
+
+
+    /**
+     *
+     * @return Swagger documentation bean used to show API documentation
+     */
+    @Bean
+    public Docket swaggerDocumentationAPI() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
     }
 
 }

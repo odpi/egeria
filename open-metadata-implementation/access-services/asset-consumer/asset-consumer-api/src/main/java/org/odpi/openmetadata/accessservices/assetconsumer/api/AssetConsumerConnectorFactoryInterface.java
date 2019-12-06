@@ -99,7 +99,7 @@ public interface AssetConsumerConnectorFactoryInterface
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      */
-    Connector  getConnectorByConnection(String userId,
+    Connector  getConnectorByConnection(String     userId,
                                         Connection connection) throws InvalidParameterException,
                                                                       ConnectionCheckedException,
                                                                       ConnectorCheckedException,

@@ -53,9 +53,9 @@ public class TagsResponse extends PagedResponse
 
 
     /**
-     * Return the list of glossary terms in the response.
+     * Return the list of informal tags in the response.
      *
-     * @return list of glossary terms
+     * @return list of informal tags
      */
     public List<InformalTag> getTags()
     {
@@ -82,7 +82,7 @@ public class TagsResponse extends PagedResponse
 
 
     /**
-     * Set up the list of glossary terms for the response.
+     * Set up the list of informal tags for the response.
      *
      * @param tags list
      */

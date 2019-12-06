@@ -654,6 +654,12 @@ public enum OMRSAuditCode
                                      "First check the caller to ensure it is operating properly.  " +
                                      "Then investigate the source of the type and any other errors."),
 
+    AD_HOC_TYPE_DEFINITION("OMRS-AUDIT-0306",
+                     OMRSAuditLogRecordSeverity.ACTION,
+                     "A new type called {0} (guid {1}) is being maintained through the API of server {2}.  The method called by user {3} was {4}",
+                     "The local server will support this type until the next restart of the server.  After that the instances of this type stored in the local repository will not be retrievable.",
+                     "Using the API in this way is sufficient for development where the repository does not contain valuable metadata.  For production, all types should be defined and maintained through open metadata archives."),
+
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                       OMRSAuditLogRecordSeverity.ERROR,
                       "Received unknown event: {0}",

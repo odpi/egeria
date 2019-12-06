@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: ui
-  name: {{ include "myapp.fullname" . }}-ui
+  name: {{ .Release.Name }}-ui
 
 spec:
   type: {{ .Values.service.type }}

@@ -6,11 +6,9 @@ import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Optional;
+import java.util.List;
 
 public class RelationshipHandler {
 
@@ -18,17 +16,24 @@ public class RelationshipHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
 
+    private List<String> supportedZones;
+    private CommonHandler commonHandler;
+
     /**
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      */
-    public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+    public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
+                               OMRSRepositoryHelper repositoryHelper, List<String> supportedZones) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.supportedZones = supportedZones;
+        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper);
     }
 
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
@@ -41,11 +46,7 @@ public class RelationshipHandler {
         invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
         invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
 
-        String relationshipTypeGUID = null;
-        if (relationshipType != null) {
-            TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, relationshipType);
-            relationshipTypeGUID = Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
-        }
+        String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,
@@ -59,6 +60,7 @@ public class RelationshipHandler {
             AssetConverter converter = new AssetConverter(repositoryHelper);
             return converter.convertRelationship(relationshipBetweenEntities);
         }
+
         return null;
     }
 }
