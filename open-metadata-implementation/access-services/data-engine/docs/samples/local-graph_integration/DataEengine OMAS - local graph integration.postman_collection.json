@@ -340,53 +340,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "1.INSTANCE",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id-omas}}/instance",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user-id}}",
-								"servers",
-								"{{server-id-omas}}",
-								"instance"
-							]
-						}
-					},
-					"status": "Method Not Allowed",
-					"code": 405,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Allow",
-							"value": "POST, DELETE"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json;charset=UTF-8"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 15 Jan 2019 10:35:07 GMT"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"timestamp\": \"2019-01-15T10:35:07.661+0000\",\n    \"status\": 405,\n    \"error\": \"Method Not Allowed\",\n    \"message\": \"Request method 'GET' not supported\",\n    \"path\": \"/open-metadata/admin-services/users/demo/servers/omas/instance\"\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "1.1. Create Software Server Capability",
@@ -443,62 +397,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "Create Software Server Capability",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"class\": \"RegistrationRequestBody\",\n   \"softwareServerCapability\":{\n   \t\"class\": \"SoftwareServerCapabilitySource\",\n   \"author\": \"owner-test5\",\n   \"userId\": \"cognosToolId\",\n   \"lastModifiedTime\": 1547838663347,\n   \"lastModifier\": \"owner\",\n   \"name\": \"cognos reporting tool\",\n\t\"version\": \"1\",\n\t\"type\":\"reporting\"\n   }\n}"
-						},
-						"url": {
-							"raw": "{{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}//software-server-capability",
-							"host": [
-								"{{omas-url}}"
-							],
-							"path": [
-								"servers",
-								"{{server-id-omas}}",
-								"open-metadata",
-								"access-services",
-								"data-engine",
-								"users",
-								"{{user-id}}",
-								"",
-								"software-server-capability"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json;charset=UTF-8"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 28 May 2019 12:41:11 GMT"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"relatedHTTPCode\": 400,\n    \"exceptionClassName\": \"org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException\",\n    \"exceptionErrorMessage\": \"REPOSITORY-HANDLER-400-003 An unexpected error was returned by the property server during createSoftwareServerCapability request for open metadata access service Data Engine on server omas; message was OMRS-REST-API-503-004 A client-side exception was received from API call addEntity to repository REST-connected Repository http://localhost:21000/egeria/servers/atlas.  The error message was CLIENT-SIDE-REST-API-CONNECTOR-503-002 A client-side exception org.springframework.web.client.HttpClientErrorException$Unauthorized was received by method addEntity from API call http://localhost:21000/egeria/servers/atlas/open-metadata/repository-services/users/{0}/instances/entity to server Repository Proxy@atlas on platform http://localhost:21000/egeria/servers/atlas/open-metadata/repository-services/.  The error message was 401 Full authentication is required to access this resource\",\n    \"exceptionSystemAction\": \"The system is unable to process the request.\",\n    \"exceptionUserAction\": \"Verify the access rights of the user.\"\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "1.2.Get Software Server Capability by qualifiedName",
