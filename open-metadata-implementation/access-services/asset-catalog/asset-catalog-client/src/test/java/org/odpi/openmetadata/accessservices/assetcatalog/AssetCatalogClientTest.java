@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -112,7 +113,7 @@ public class AssetCatalogClientTest {
                 FROM,
                 PAGE_SIZE);
 
-        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipsResponse.getRelationships().get(0).getTypeDefName());
+        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipsResponse.getRelationships().get(0).getType().getName());
     }
 
     @Test
@@ -252,7 +253,7 @@ public class AssetCatalogClientTest {
                 SECOND_ASSET_ID,
                 RELATIONSHIP_TYPE);
 
-        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipBetweenEntities.getRelationship().getTypeDefName());
+        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipBetweenEntities.getRelationship().getType().getName());
         Assert.assertEquals(ASSET_ID, relationshipBetweenEntities.getRelationship().getFromEntity().getGuid());
         Assert.assertEquals(SECOND_ASSET_ID, relationshipBetweenEntities.getRelationship().getToEntity().getGuid());
     }
@@ -267,7 +268,9 @@ public class AssetCatalogClientTest {
     private AssetElements mockTerm() {
         AssetElements assetElements = new AssetElements();
         assetElements.setGuid(ASSET_ID);
-        assetElements.setTypeDefName(ASSET_TYPE);
+        Type type = new Type();
+        type.setName(ASSET_TYPE);
+        assetElements.setType(type);
         return assetElements;
     }
 
@@ -315,7 +318,9 @@ public class AssetCatalogClientTest {
         AssetDescription assetDescription = new AssetDescription();
 
         assetDescription.setGuid(ASSET_ID);
-        assetDescription.setTypeDefName(ASSET_TYPE);
+        Type type = new Type();
+        type.setName(ASSET_TYPE);
+        assetDescription.setType(type);
 
         assetDescription.setClassifications(mockClassifications());
         assetDescription.setRelationships(mockRelationships());
@@ -332,7 +337,10 @@ public class AssetCatalogClientTest {
 
         relationship.setFromEntity(mockAsset(ASSET_ID, ASSET_TYPE));
         relationship.setToEntity(mockAsset(SECOND_ASSET_ID, SECOND_ASSET_TYPE));
-        relationship.setTypeDefName(RELATIONSHIP_TYPE);
+
+        Type type = new Type();
+        type.setName(RELATIONSHIP_TYPE);
+        relationship.setType(type);
 
         return relationship;
     }
@@ -342,7 +350,10 @@ public class AssetCatalogClientTest {
 
         asset.setGuid(defaultAssetId);
         asset.setCreatedBy("admin");
-        asset.setTypeDefName(typeName);
+
+        Type type = new Type();
+        type.setName(typeName);
+        asset.setType(type);
 
         return asset;
     }

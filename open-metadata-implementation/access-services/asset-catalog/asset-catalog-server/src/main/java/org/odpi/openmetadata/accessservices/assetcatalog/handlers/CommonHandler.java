@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -55,11 +56,12 @@ public class CommonHandler {
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+        AssetConverter converter = new AssetConverter(repositoryHelper);
 
         if (typeDefByName != null) {
             List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
 
-            Type type = convertType(typeDefByName);
+            Type type = converter.convertType(typeDefByName);
             List<Type> subTypes = getSubTypes(activeTypeDefs, type);
             response.add(type);
             response.addAll(subTypes);
@@ -152,27 +154,16 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
+        AssetConverter converter = new AssetConverter(repositoryHelper);
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {
             if (typeDef.getSuperType() != null && typeDef.getSuperType().getName().equals(typeName)) {
-                subTypes.add(convertType(typeDef));
+
+                subTypes.add(converter.convertType(typeDef));
             }
         }
         return subTypes;
-    }
-
-    private Type convertType(TypeDef openType) {
-        Type type = new Type();
-        buildType(openType, type);
-        return type;
-    }
-
-    private void buildType(TypeDef openType, Type type) {
-        type.setName(openType.getName());
-        type.setDescription(openType.getDescription());
-        type.setVersion(openType.getVersion());
-        type.setSuperType(openType.getSuperType().getName());
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {

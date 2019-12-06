@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -59,5 +61,21 @@ public class Type {
                 ", version=" + version +
                 ", superType='" + superType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Type type = (Type) o;
+        return Objects.equals(name, type.name) &&
+                Objects.equals(description, type.description) &&
+                Objects.equals(version, type.version) &&
+                Objects.equals(superType, type.superType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, version, superType);
     }
 }
