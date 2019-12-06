@@ -164,7 +164,7 @@ public class ProcessContextHandler {
         for (Relationship relationship : relationships) {
 
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) &&
-                    validator.getSuperTypes(startEntityType).contains(SCHEMA_ELEMENT)){
+                    startEntityType.equals(TABULAR_COLUMN)){
                 continue;
             }
             EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph,false);

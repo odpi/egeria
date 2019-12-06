@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class BufferGraphConnector extends BufferGraphConnectorBase {
@@ -110,49 +109,53 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private void findInputColumns(GraphTraversalSource g,String guid){
 
         //TODO change Tabular column and Relational column with the supertupe SchemaElement when AssetLineage is ready
-        List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
-                .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
-                .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
-                .toList();
+        List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation")
+                .has("PortImplementation", "vepropportType", "INPUT_PORT")
+                .out("PortSchema").in("AttributeForSchema").out("LineageMapping").toList();
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        inputPath.stream().forEach(columnIn -> findOutputColumn(g,columnIn,process));
+        inputPath.stream().forEach(columnIn ->
+                    findOutputColumn(g, columnIn, process));
+//        inputPath.parallelStream().forEach(columnIn -> findOutputColumn(g,columnIn,process));
+
     }
 
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
-        List<Vertex> schemaElementVertex = g.V()
-                .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
-                .out("SchemaAttributeType")
-                .in("LineageMapping")
-                .toList();
+//        if(process.property("veguid").value().equals("08f2d481-79d2-48e3-ae02-6366cf8deede")) {
+            List<Vertex> schemaElementVertex = g.V()
+                    .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                    .in("LineageMapping")
+                    .toList();
 
-        Vertex vertexToStart = null;
-        if(schemaElementVertex != null){
-            for(Vertex v: schemaElementVertex){
-                List<Vertex> initialProcess = g.V(v.id())
-                        .bothE("SchemaAttributeType")
-                        .otherV().bothE("AttributeForSchema")
-                        .otherV().inE("PortSchema").otherV()
-                        .inE("PortDelegation").otherV().
-                                inE("ProcessPort").otherV().has("veguid",process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+            Vertex vertexToStart = null;
+            if (schemaElementVertex != null) {
+                for (Vertex v : schemaElementVertex) {
+                    List<Vertex> initialProcess = g.V(v.id())
+                            .bothE("AttributeForSchema")
+                            .otherV().inE("PortSchema").otherV()
+                            .inE("PortDelegation").otherV().
+                                    inE("ProcessPort").otherV().has("veguid", process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
 
-                if(!initialProcess.isEmpty()){
-                    vertexToStart = v;
-                    break;
-                }
-
-
-                Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
-                Iterator<Vertex> columnOut = null;
-                if(vertexToStart != null){
-                    columnOut  = findPathForOutputAsset(vertexToStart,g,startingVertex);
+                    if (!initialProcess.isEmpty()) {
+                        vertexToStart = v;
+                        break;
+                    }
 
                 }
 
-                moveColumnProcessColumn(columnIn,columnOut,process);
-            }
-        }
 
+//                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
+                    Iterator<Vertex> columnOut = null;
+                    if (vertexToStart != null) {
+                        columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
+
+                    }
+
+                    moveColumnProcessColumn(columnIn, columnOut, process);
+                }
+
+
+//        }
     }
 
     private void moveColumnProcessColumn(Vertex columnIn,Iterator<Vertex> columnOut,Vertex process){
@@ -239,11 +242,13 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 
         try{
-            Iterator<Vertex> end = g.V(v.id()).both("SchemaAttributeType").or(__.has(PROPERTY_KEY_ENTITY_NAME, RELATIONAL_COLUMN),
-                    __.has(PROPERTY_KEY_ENTITY_NAME, TABULAR_COLUMN));
+            Iterator<Vertex> end =  g.V(v.id())
+                    .or(__.out("AttributeForSchema").out("AssetSchemaType")
+                            .has("vename","DataFile").store("vertex"),
+                            __.out("AttributeForSchema").out("SchemaAttributeType").has("vename","RelationalTable")
+                                    .store("vertex")).select("vertex").unfold();
 
             if (!end.hasNext()) {
-
                 List<Vertex> next = g.V(v.id()).both("LineageMapping").toList();
                 Vertex nextVertex = null;
                 for(Vertex vert: next){
