@@ -62,9 +62,9 @@ open-metadata-resources/open-metadata-labs/ @mandy-chessell @planetf1
 # Test
 
 open-metadata-test/ @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt/ @davidradl
-open-metadata-test/open-metadata-fvt/open-types-fvt/ @davidradl
 open-metadata-test/open-metadata-fvt/ @planetf1 @mandy-chessell
+open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @davidradl
+open-metadata-test/open-metadata-fvt/open-types-fvt/ @planetf1 @davidradl
 
 # release notes
 release-notes/ @mandy-chessell @planetf1
