@@ -56,7 +56,7 @@ public class AssetConverter {
         if (entityDetail.getProperties() != null) {
             assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
         }
-        if (entityDetail.getClassifications() != null) {
+        if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
 
@@ -157,6 +157,9 @@ public class AssetConverter {
         element.setGuid(entityDetail.getGUID());
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
+        if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
+            element.setClassifications(convertClassifications(entityDetail.getClassifications()));
+        }
 
         return element;
     }
@@ -185,6 +188,9 @@ public class AssetConverter {
         asset.setStatus(entityProxy.getStatus().getName());
         asset.setVersion(entityProxy.getVersion());
         asset.setType(convertInstanceType(entityProxy.getType()));
+        if (CollectionUtils.isNotEmpty(entityProxy.getClassifications())) {
+            asset.setClassifications(convertClassifications(entityProxy.getClassifications()));
+        }
 
         return asset;
     }
