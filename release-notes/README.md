@@ -21,11 +21,21 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
+* [Release 1.2 (November 2019)](release-notes-1-2.md) - Planned November 2019
+    * Conformance test suite
+    * Asset cataloging and consumption
+    * Governance zones and metadata security
+    * Open metadata archives
+
 * [Release 1.1 (October 2019)](release-notes-1-1.md)
     * Multi-tenant OMAG Server Platform
     * JanusGraph based metadata repository
 
 ## Older Releases
+
+* [Release 1.1 (October 2019)](release-notes-1-1.md)
+    * Multi-tenant OMAG Server Platform
+    * JanusGraph based metadata repository
 
 * [Release 1.0 (February 2019)](release-notes-1-0.md)
     * Peer-to-peer metadata exchange
