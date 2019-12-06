@@ -69,151 +69,151 @@ public class MainGraphConnectorTest {
         g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p4).to(c42).next();
     }
 
-    @Test
-    public void ultimateSource() throws Exception {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "c32";
-        expectedNodeIDs.add("c11");
-        expectedNodeIDs.add("c12");
-        expectedNodeIDs.add(queriedNodeID);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
-
-        LineageResponse lineageResponse = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
-    }
-
-    @Test
-    public void ultimateDestination() throws Exception {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "c11";
-        expectedNodeIDs.add("c41");
-        expectedNodeIDs.add("c42");
-        expectedNodeIDs.add(queriedNodeID);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
-
-        LineageResponse lineageResponse = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
-    }
-
-    @Test
-    public void sourceAndDestination() throws Exception {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "c21";
-        expectedNodeIDs.add("c11");
-        expectedNodeIDs.add("c12");
-        expectedNodeIDs.add("c41");
-        expectedNodeIDs.add("c42");
-        expectedNodeIDs.add(queriedNodeID);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
-
-        LineageResponse lineageResponse = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
-    }
-
-        @Test
-        public void endToEnd () throws Exception {
-            HashSet<String> expectedNodeIDs = new HashSet<>();
-            final String queriedNodeID = "c22";
-            expectedNodeIDs.add("c11");
-            expectedNodeIDs.add("c12");
-            expectedNodeIDs.add("c21");
-            expectedNodeIDs.add("c22");
-            expectedNodeIDs.add("c31");
-            expectedNodeIDs.add("c32");
-            expectedNodeIDs.add("c41");
-            expectedNodeIDs.add("c42");
-            expectedNodeIDs.add("p1");
-            expectedNodeIDs.add("p2");
-            expectedNodeIDs.add("p3");
-            expectedNodeIDs.add("p4");
-
-            LineageResponse lineageResponse = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-            assert lineageVertices.size() == expectedNodeIDs.size();
-            for (LineageVertex returnedVertex : lineageVertices) {
-                if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                    throw new Exception();
-            }
-        }
-
-    @Test
-    public void glossary() throws Exception {
-        JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = cyclicGlossaryGraph.traversal();
-        Vertex g1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g1").next();
-        Vertex g2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g2").next();
-        Vertex g3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g3").next();
-
-        Vertex c1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c1").next();
-        Vertex c2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
-        Vertex c3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
-
-        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g1).to(g2).next();
-        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g2).to(g3).next();
-        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g3).to(g1).next();
-
-        g.addE(EDGE_LABEL_SEMANTIC).from(c1).to(g1).next();
-        g.addE(EDGE_LABEL_SEMANTIC).from(c2).to(g2).next();
-        g.addE(EDGE_LABEL_SEMANTIC).from(c3).to(g3).next();
-
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "g2";
-        expectedNodeIDs.add("g1");
-        expectedNodeIDs.add("g2");
-        expectedNodeIDs.add("g3");
-        expectedNodeIDs.add("c1");
-        expectedNodeIDs.add("c2");
-        expectedNodeIDs.add("c3");
-
-        LineageResponse lineageResponse = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
-    }
-    @Test
-    public void problematicCyclicGraphSourceDestination() throws Exception {
-        //A triangle of three nodes
-        JanusGraph problematicCyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = problematicCyclicGraph.traversal();
-        Vertex c1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c1").next();
-        Vertex c2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
-        Vertex c3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c1).to(c2).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c2).to(c3).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c3).to(c1).next();
-        final String queriedNodeID = "c32";
-        try{
-            mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
-            mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
-            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
-        } catch (OpenLineageException e) {
-            return;
-        }
-        throw new Exception();
-    }
+//    @Test
+//    public void ultimateSource() throws Exception {
+//        HashSet<String> expectedNodeIDs = new HashSet<>();
+//        final String queriedNodeID = "c32";
+//        expectedNodeIDs.add("c11");
+//        expectedNodeIDs.add("c12");
+//        expectedNodeIDs.add(queriedNodeID);
+//        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
+//
+//        LineageResponse lineageResponse = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+//        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+//
+//        assert lineageVertices.size() == expectedNodeIDs.size();
+//        for (LineageVertex returnedVertex : lineageVertices) {
+//            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
+//                throw new Exception();
+//        }
+//    }
+//
+//    @Test
+//    public void ultimateDestination() throws Exception {
+//        HashSet<String> expectedNodeIDs = new HashSet<>();
+//        final String queriedNodeID = "c11";
+//        expectedNodeIDs.add("c41");
+//        expectedNodeIDs.add("c42");
+//        expectedNodeIDs.add(queriedNodeID);
+//        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
+//
+//        LineageResponse lineageResponse = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+//        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+//
+//        assert lineageVertices.size() == expectedNodeIDs.size();
+//        for (LineageVertex returnedVertex : lineageVertices) {
+//            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
+//                throw new Exception();
+//        }
+//    }
+//
+//    @Test
+//    public void sourceAndDestination() throws Exception {
+//        HashSet<String> expectedNodeIDs = new HashSet<>();
+//        final String queriedNodeID = "c21";
+//        expectedNodeIDs.add("c11");
+//        expectedNodeIDs.add("c12");
+//        expectedNodeIDs.add("c41");
+//        expectedNodeIDs.add("c42");
+//        expectedNodeIDs.add(queriedNodeID);
+//        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
+//        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
+//
+//        LineageResponse lineageResponse = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+//        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+//
+//        assert lineageVertices.size() == expectedNodeIDs.size();
+//        for (LineageVertex returnedVertex : lineageVertices) {
+//            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
+//                throw new Exception();
+//        }
+//    }
+//
+//        @Test
+//        public void endToEnd () throws Exception {
+//            HashSet<String> expectedNodeIDs = new HashSet<>();
+//            final String queriedNodeID = "c22";
+//            expectedNodeIDs.add("c11");
+//            expectedNodeIDs.add("c12");
+//            expectedNodeIDs.add("c21");
+//            expectedNodeIDs.add("c22");
+//            expectedNodeIDs.add("c31");
+//            expectedNodeIDs.add("c32");
+//            expectedNodeIDs.add("c41");
+//            expectedNodeIDs.add("c42");
+//            expectedNodeIDs.add("p1");
+//            expectedNodeIDs.add("p2");
+//            expectedNodeIDs.add("p3");
+//            expectedNodeIDs.add("p4");
+//
+//            LineageResponse lineageResponse = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+//            Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+//
+//            assert lineageVertices.size() == expectedNodeIDs.size();
+//            for (LineageVertex returnedVertex : lineageVertices) {
+//                if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
+//                    throw new Exception();
+//            }
+//        }
+//
+//    @Test
+//    public void glossary() throws Exception {
+//        JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
+//        GraphTraversalSource g = cyclicGlossaryGraph.traversal();
+//        Vertex g1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g1").next();
+//        Vertex g2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g2").next();
+//        Vertex g3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g3").next();
+//
+//        Vertex c1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c1").next();
+//        Vertex c2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
+//        Vertex c3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
+//
+//        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g1).to(g2).next();
+//        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g2).to(g3).next();
+//        g.addE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).from(g3).to(g1).next();
+//
+//        g.addE(EDGE_LABEL_SEMANTIC).from(c1).to(g1).next();
+//        g.addE(EDGE_LABEL_SEMANTIC).from(c2).to(g2).next();
+//        g.addE(EDGE_LABEL_SEMANTIC).from(c3).to(g3).next();
+//
+//        HashSet<String> expectedNodeIDs = new HashSet<>();
+//        final String queriedNodeID = "g2";
+//        expectedNodeIDs.add("g1");
+//        expectedNodeIDs.add("g2");
+//        expectedNodeIDs.add("g3");
+//        expectedNodeIDs.add("c1");
+//        expectedNodeIDs.add("c2");
+//        expectedNodeIDs.add("c3");
+//
+//        LineageResponse lineageResponse = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
+//        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+//
+//        assert lineageVertices.size() == expectedNodeIDs.size();
+//        for (LineageVertex returnedVertex : lineageVertices) {
+//            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
+//                throw new Exception();
+//        }
+//    }
+//    @Test
+//    public void problematicCyclicGraphSourceDestination() throws Exception {
+//        //A triangle of three nodes
+//        JanusGraph problematicCyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
+//        GraphTraversalSource g = problematicCyclicGraph.traversal();
+//        Vertex c1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c1").next();
+//        Vertex c2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
+//        Vertex c3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c1).to(c2).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c2).to(c3).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c3).to(c1).next();
+//        final String queriedNodeID = "c32";
+//        try{
+//            mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
+//            mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
+//            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
+//        } catch (OpenLineageException e) {
+//            return;
+//        }
+//        throw new Exception();
+//    }
 }

@@ -14,7 +14,6 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
@@ -29,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
@@ -52,22 +52,24 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         super.initialize(connectorInstanceId, connectionProperties);
     }
 
-    public void initializeGraphDB(){
+    public void initializeGraphDB() {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
-        this.mainGraph = graphFactory.openGraph(graphDB,connectionProperties);
+        this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
     }
 
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName main, buffer, mock, history.
-     * @param scope     source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view      The view queried by the user: hostview, tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried from.
+     * @param graphName        main, buffer, mock, history.
+     * @param scope            source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view             The view queried by the user: hostview, tableview, columnview.
+     * @param guid             The guid of the node of which the lineage is queried from.
+     * @param subStringFilter
+     * @param includeProcesses
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String subStringFilter, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
         Graph graph = getJanusGraph(graphName);
         GraphTraversalSource g = graph.traversal();
@@ -83,27 +85,98 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getUserAction());
         }
         String edgeLabel = getEdgeLabel(view);
-        if (scope != null) {
-            switch (scope) {
-                case SOURCE_AND_DESTINATION:
-                    return sourceAndDestination(graph, edgeLabel, guid);
-                case END_TO_END:
-                    return endToEnd(graph, edgeLabel, guid);
-                case ULTIMATE_SOURCE:
-                    return ultimateSource(graph, edgeLabel, guid);
-                case ULTIMATE_DESTINATION:
-                    return ultimateDestination(graph, edgeLabel, guid);
-                case GLOSSARY:
-                    return glossary(graph, guid);
+        LineageVerticesAndEdges lineageVerticesAndEdges = null;
+        if (scope == null) {
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                lineageVerticesAndEdges = sourceAndDestination(graph, edgeLabel, guid);
+                break;
+            case END_TO_END:
+                lineageVerticesAndEdges = endToEnd(graph, edgeLabel, guid);
+                break;
+            case ULTIMATE_SOURCE:
+                lineageVerticesAndEdges = ultimateSource(graph, edgeLabel, guid);
+                break;
+            case ULTIMATE_DESTINATION:
+                lineageVerticesAndEdges = ultimateDestination(graph, edgeLabel, guid);
+                break;
+            case GLOSSARY:
+                lineageVerticesAndEdges = glossary(graph, guid);
+                break;
+        }
+        //   if (!includeProcesses) {
+        if (true) {
+            lineageVerticesAndEdges = filterOutProcesses(lineageVerticesAndEdges);
+        }
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
+        return lineageResponse;
+    }
+
+    private LineageVerticesAndEdges filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+
+//        Iterator lineageVerticesIterator = lineageVertices.iterator();
+//        while (lineageVerticesIterator.hasNext()) {
+//            LineageVertex vertex = (LineageVertex) lineageVerticesIterator.next();
+//            String nodeID = vertex.getNodeID();
+//            if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
+//                lineageVerticesIterator.remove();
+//                replaceProcessEdges(lineageEdges, nodeID);
+//            }
+//        }
+
+        Set<LineageVertex> processVertices = lineageVertices
+                .stream()
+                .filter(vertex -> (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)))
+//                .map(vertex -> replaceProcessEdges(lineageEdges, vertex.getNodeID()))
+                .collect(Collectors.toSet());
+
+//        for(LineageVertex lineageVertex : processVertices)
+//            replaceProcessEdges(lineageEdges, lineageVertex.getNodeID());
+
+        lineageVertices.forEach(vertex -> replaceProcessEdges(lineageEdges, vertex.getNodeID()));
+
+        lineageVertices.removeAll(processVertices);
+
+        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
+        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
+        return lineageVerticesAndEdges;
+    }
+
+    private void replaceProcessEdges(Set<LineageEdge> lineageEdges, String nodeID) {
+        Iterator lineageEdgesIterator = lineageEdges.iterator();
+
+        while (lineageEdgesIterator.hasNext()) {
+            LineageEdge edge = (LineageEdge) lineageEdgesIterator.next();
+            String destinationNodeID = edge.getDestinationNodeID();
+
+            if (nodeID.equals(destinationNodeID)) {
+
+                lineageEdgesIterator.remove();
+                Iterator lineageEdgesIterator2 = lineageEdges.iterator();
+                while (lineageEdgesIterator2.hasNext()) {
+
+                    String originalDestinationNodeID = edge.getDestinationNodeID();
+                    if (originalDestinationNodeID.equals(sourceNodeID2)) {
+                        lineageEdgesIterator2.remove();
+                    }
+                    String newDestinationNodeID = destinationNodeID2;
+                    LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, sourceNodeID, newDestinationNodeID);
+                    lineageEdges.add(newEdge);
+                }
+
             }
         }
-        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
-        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorCode.getFormattedErrorMessage(),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -115,7 +188,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
+    LineageVerticesAndEdges endToEnd(Graph graph, String edgeLabel, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph endToEndGraph = (Graph)
@@ -127,8 +200,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                                         repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
-        LineageResponse lineageResponse = getLineageResponse(endToEndGraph);
-        return lineageResponse;
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(endToEndGraph);
+        return lineageVerticesAndEdges;
     }
 
     private LineageEdge abstractEdge(Edge originalEdge) {
@@ -197,7 +270,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
 
@@ -219,8 +292,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
@@ -245,7 +317,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -265,8 +337,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     /**
@@ -278,7 +349,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -307,8 +378,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+
+        return lineageVerticesAndEdges;
     }
 
     private void addSourceCondensation(List<Vertex> sourcesList,
@@ -379,7 +450,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-    LineageResponse glossary(Graph graph, String guid) {
+    LineageVerticesAndEdges glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
@@ -389,11 +460,11 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 
-        LineageResponse lineageResponse = getLineageResponse(subGraph);
-        return lineageResponse;
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(subGraph);
+        return lineageVerticesAndEdges;
     }
 
-    private LineageResponse getLineageResponse(Graph subGraph) {
+    private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
 
@@ -413,8 +484,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             }
         }
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     /**
