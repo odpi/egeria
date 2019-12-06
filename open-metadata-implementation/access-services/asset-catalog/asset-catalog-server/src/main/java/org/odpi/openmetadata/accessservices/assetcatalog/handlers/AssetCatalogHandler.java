@@ -35,6 +35,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorExcept
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +54,8 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
  */
 
 public class AssetCatalogHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
 
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -380,7 +384,7 @@ public class AssetCatalogHandler {
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(asset.getProperties()),
+                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
@@ -431,14 +435,18 @@ public class AssetCatalogHandler {
 
 
         for (EntityDetail entityDetail : result) {
-            invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                    GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
-                    supportedZones,
-                    ASSET_CATALOG_OMAS,
-                    methodName);
-            AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
-            list.add(assetElements);
+            try {
+                invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
+                        GUID_PARAMETER,
+                        commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
+                        supportedZones,
+                        ASSET_CATALOG_OMAS,
+                        methodName);
+                AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
+                list.add(assetElements);
+            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+                log.debug("This asset if a different zone: {}", entityDetail.getGUID());
+            }
         }
         return list;
     }
@@ -480,7 +488,7 @@ public class AssetCatalogHandler {
         } else {
             invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
+                    commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
@@ -519,7 +527,7 @@ public class AssetCatalogHandler {
         }
         invalidParameterHandler.validateAssetInSupportedZone(entityByGUID.getGUID(),
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityByGUID.getProperties()),
+                commonHandler.getAssetZoneMembership(entityByGUID.getClassifications()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
                 methodName);
@@ -1075,7 +1083,7 @@ public class AssetCatalogHandler {
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(asset.getProperties()),
+                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
@@ -1223,7 +1231,7 @@ public class AssetCatalogHandler {
 
         invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(dataSet.getProperties()),
+                commonHandler.getAssetZoneMembership(dataSet.getClassifications()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
                 methodName);
@@ -1269,7 +1277,7 @@ public class AssetCatalogHandler {
                 if (asset != null) {
                     invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                             GUID_PARAMETER,
-                            commonHandler.getAssetZoneMembership(asset.getProperties()),
+                            commonHandler.getAssetZoneMembership(asset.getClassifications()),
                             supportedZones,
                             ASSET_CATALOG_OMAS,
                             methodName);
@@ -1332,7 +1340,7 @@ public class AssetCatalogHandler {
 
         invalidParameterHandler.validateAssetInSupportedZone(entityDetails.getGUID(),
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityDetails.getProperties()),
+                commonHandler.getAssetZoneMembership(entityDetails.getClassifications()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
                 methodName);

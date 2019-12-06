@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -39,6 +39,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.R
  */
 public class CommonHandler {
 
+    public static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final RepositoryErrorHandler errorHandler;
@@ -91,15 +92,24 @@ public class CommonHandler {
     /**
      * Fetch the zone membership property
      *
-     * @param properties asset properties
+     * @param classifications asset properties
      * @return the list that contains the zone membership
      */
-    public List<String> getAssetZoneMembership(InstanceProperties properties) {
+    public List<String> getAssetZoneMembership(List<Classification> classifications) {
         String methodName = "getAssetZoneMembership";
-        List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS, "zoneMembership", properties, methodName);
-        if (CollectionUtils.isNotEmpty(zoneMembership)) {
-            return zoneMembership;
+        Optional<Classification> assetZoneMembership = classifications.stream()
+                .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP))
+                .findFirst();
+
+        if (assetZoneMembership.isPresent()) {
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS,
+                    "zoneMembership", assetZoneMembership.get().getProperties(), methodName);
+
+            if (CollectionUtils.isNotEmpty(zoneMembership)) {
+                return zoneMembership;
+            }
         }
+
         return Collections.emptyList();
     }
 
