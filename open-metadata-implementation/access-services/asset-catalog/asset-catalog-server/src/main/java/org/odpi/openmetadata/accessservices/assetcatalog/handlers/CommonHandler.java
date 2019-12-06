@@ -97,6 +97,10 @@ public class CommonHandler {
      */
     public List<String> getAssetZoneMembership(List<Classification> classifications) {
         String methodName = "getAssetZoneMembership";
+        if (CollectionUtils.isEmpty(classifications)) {
+            return Collections.emptyList();
+        }
+
         Optional<Classification> assetZoneMembership = classifications.stream()
                 .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP))
                 .findFirst();

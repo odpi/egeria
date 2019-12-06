@@ -1229,20 +1229,27 @@ public class AssetCatalogHandler {
             return;
         }
 
-        invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
-                GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(dataSet.getClassifications()),
-                supportedZones,
-                ASSET_CATALOG_OMAS,
-                methodName);
+        try {
+            invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
+                    GUID_PARAMETER,
+                    commonHandler.getAssetZoneMembership(dataSet.getClassifications()),
+                    supportedZones,
+                    ASSET_CATALOG_OMAS,
+                    methodName);
 
-        if (assetElement.getContext() != null) {
-            assetConverter.addElement(assetElement, dataSet);
-        } else {
-            assetElement.setContext(Collections.singletonList(assetConverter.buildAssetElements(dataSet)));
+            if (assetElement.getContext() != null) {
+                assetConverter.addElement(assetElement, dataSet);
+            } else {
+                assetElement.setContext(Collections.singletonList(assetConverter.buildAssetElements(dataSet)));
+            }
+
+            getAsset(userId, assetElement, dataSet);
+        } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+            if (CollectionUtils.isNotEmpty(assetElement.getContext())) {
+                assetElement.getContext().remove(assetElement.getContext().size() - 1);
+            }
+            log.debug("Asset is not in the supported zones {}", dataSet.getGUID());
         }
-
-        getAsset(userId, assetElement, dataSet);
     }
 
     private void getAsset(String userId,
