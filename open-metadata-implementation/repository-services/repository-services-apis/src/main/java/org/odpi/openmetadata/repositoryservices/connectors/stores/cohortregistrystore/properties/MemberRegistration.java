@@ -87,7 +87,7 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Return the metadata collection name.  The server name is returned if the metadata collection name has not beed explicitly provided.
+     * Return the metadata collection name.  The server name is returned if the metadata collection name has not been explicitly provided.
      *
      * @return string name
      */
