@@ -243,8 +243,9 @@ public class ProcessHandler {
      * @param externalSourceName the unique name of the external source
      */
     public void addProcessPortRelationship(String userId, String processGUID, String portGUID,
-                                           String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+                                           String externalSourceName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
 
         final String methodName = "addProcessPortRelationship";
 
