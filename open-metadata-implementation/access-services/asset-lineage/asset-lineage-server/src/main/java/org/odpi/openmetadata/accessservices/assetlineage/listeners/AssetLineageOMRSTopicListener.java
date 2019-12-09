@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -49,6 +50,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private AssetLineagePublisher publisher;
     private String serverName;
     private String serverUserName;
+    private Converter converter = new Converter();
+    private Validator validator;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -79,6 +82,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.serverName = serverName;
         this.serverUserName = serverUserName;
         publisher = new AssetLineagePublisher(assetLineageOutTopic, auditLog);
+        validator = new Validator(repositoryHelper);
     }
 
     /**
@@ -121,62 +125,53 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (instanceEventOriginator != null) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        processNewEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + NEW_ENTITY_EVENT.getName());
+                        validateEventType(instanceEvent.getEntity(),serviceOperationName + NEW_ENTITY_EVENT.getName());
                         break;
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(),
                                 serviceOperationName + UPDATED_ENTITY_EVENT.getName());
-                        break;
-                    case DELETED_ENTITY_EVENT:
-                        processDeleteEntity(instanceEvent.getEntity(),
-                                serviceOperationName + DELETED_ENTITY_EVENT.getName());
-                        break;
-                    case NEW_RELATIONSHIP_EVENT:
-                        processNewRelationship(instanceEvent.getEntity(),
-                                serviceOperationName + NEW_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case UPDATED_RELATIONSHIP_EVENT:
-                        processUpdatedRelationshipEvent(instanceEvent.getEntity(),
-                                serviceOperationName + UPDATED_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case DELETED_RELATIONSHIP_EVENT:
-                        processDeletedRelationshipEvent(instanceEvent.getEntity(),
-                                serviceOperationName + DELETED_RELATIONSHIP_EVENT.getName());
-                        break;
-                    case CLASSIFIED_ENTITY_EVENT:
-                        processClassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + CLASSIFIED_ENTITY_EVENT.getName());
-                        break;
-                    case RECLASSIFIED_ENTITY_EVENT:
-                        processReclassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + RECLASSIFIED_ENTITY_EVENT.getName());
-                        break;
-                    case DECLASSIFIED_ENTITY_EVENT:
-                        processDeclassifiedEntityEvent(instanceEvent.getEntity(),
-                                serviceOperationName + DECLASSIFIED_ENTITY_EVENT.getName());
-                        break;
+//                    case DELETED_ENTITY_EVENT:
+////                        processDeleteEntity(instanceEvent.getEntity(),
+////                                serviceOperationName + DELETED_ENTITY_EVENT.getName());
+////                        break;
+////                    case NEW_RELATIONSHIP_EVENT:
+////                        processNewRelationship(instanceEvent.getEntity(),
+////                                serviceOperationName + NEW_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case UPDATED_RELATIONSHIP_EVENT:
+////                        processUpdatedRelationshipEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + UPDATED_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case DELETED_RELATIONSHIP_EVENT:
+////                        processDeletedRelationshipEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + DELETED_RELATIONSHIP_EVENT.getName());
+////                        break;
+////                    case CLASSIFIED_ENTITY_EVENT:
+////                        processClassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + CLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
+////                    case RECLASSIFIED_ENTITY_EVENT:
+////                        processReclassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + RECLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
+////                    case DECLASSIFIED_ENTITY_EVENT:
+////                        processDeclassifiedEntityEvent(instanceEvent.getEntity(),
+////                                serviceOperationName + DECLASSIFIED_ENTITY_EVENT.getName());
+////                        break;
                 }
             }
 
         }
     }
 
-    private void processNewEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
+    private void validateEventType(EntityDetail entityDetail, String serviceOperationName){
 
-        final String methodName = "processNewEntityEvent";
-
-        Validator validator = new Validator();
-
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
-
-        final String typeDefName = entityDetail.getType().getTypeDefName();
-
-        if (!validator.isValidLineageEntityEvent(typeDefName)) {
-            log.info(("Event is ignored as the entity is not relevant type for the Asset Lineage OMAS."));
-        } else {
-            processNewEntity(entityDetail, serviceOperationName);
+        Set<String> superTypes = validator.getSuperTypes(entityDetail.getType().getTypeDefName());
+        if (superTypes.contains(SCHEMA_ELEMENT)) {
+            processNewEntity(entityDetail,
+                    serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
         }
+
     }
 
     private void processUpdatedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
@@ -186,12 +181,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")) {
-            processNewEntity(entityDetail, serviceOperationName);
-
+            processNewEntity(entityDetail, serviceOperationName + NEW_ENTITY_EVENT.getName(),PROCESS);
         }
+
     }
 
-    private void processNewEntity(EntityDetail entityDetail, String serviceOperationName) {
+    private void processNewEntity(EntityDetail entityDetail, String serviceOperationName,String supertype) {
 
         final String methodName = "processNewEntity";
 
@@ -201,7 +196,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
             } else {
-                getAssetContext(entityDetail, serviceOperationName);
+                getAssetContext(entityDetail, serviceOperationName,supertype);
             }
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
@@ -258,7 +253,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
         try {
-            Validator validator = new Validator();
 
             if (validator.isValidLineageEntityEvent(typeDefName)) {
                 getClassificationContext(entityDetail, serviceOperationName);
@@ -329,24 +323,22 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         ProcessContextHandler processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
-
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
         event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
     }
 
-    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName,String superType) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContextHandler newAssetContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName(),superType);
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext);
-        //getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
+        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext,validator);
 
         LineageEvent event = new LineageEvent();
         if (context.size() != 0) {
