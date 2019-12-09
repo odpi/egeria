@@ -28,8 +28,7 @@
             <activation>
                 <property>
                     <!-- temp fix. See issue #2136 -->
-                    <!--name>!skipFVT</name-->
-                    <name>FVT</name>
+                    <name>!skipFVT</name>
                 </property>
 	    </activation>
             <modules>

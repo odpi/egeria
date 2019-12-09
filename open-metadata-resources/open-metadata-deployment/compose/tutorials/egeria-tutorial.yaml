@@ -49,6 +49,7 @@ services:
             - corePlatformURL=http://core:8080
             - dataLakePlatformURL=http://datalake:8080
             - devPlatformURL=http://dev:8080
+            - factoryPlatformURL=http://factory:8080
             - eventBusURLroot=kafka:9092
         command: start.sh jupyter lab --LabApp.token=''
         ports:
@@ -63,6 +64,7 @@ services:
             - core
             - dev
             - datalake
+            - factory
         networks:
             - cocopharma
         volumes:
@@ -104,6 +106,18 @@ services:
         networks:
             - cocopharma
 
+    factory:
+        depends_on:
+            - kafka
+        image: 'odpi/egeria:latest'
+        ports:
+            - '18083:8080'
+        links:
+            - zookeeper
+            - kafka
+        networks:
+            - cocopharma
+
     ui:
         depends_on:
             - datalake
@@ -116,6 +130,9 @@ services:
             - '18443:8443'
         links:
             - core
+            - dev
+            - datalake
+            - factory
         networks:
             cocopharma:
 networks:
