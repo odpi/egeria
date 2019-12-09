@@ -28,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
@@ -113,70 +112,63 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 lineageVerticesAndEdges = glossary(graph, guid);
                 break;
         }
-        //   if (!includeProcesses) {
-        if (true) {
+           if (!includeProcesses) {
             lineageVerticesAndEdges = filterOutProcesses(lineageVerticesAndEdges);
         }
         LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
 
+    /**
+     * Removes all nodes of types sub process or process and creates new edges so that the graph will not become disjointed.
+     * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
+     * @return The original lineageVerticesAndEdges without processes or subprocesses.
+     */
     private LineageVerticesAndEdges filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
 
-//        Iterator lineageVerticesIterator = lineageVertices.iterator();
-//        while (lineageVerticesIterator.hasNext()) {
-//            LineageVertex vertex = (LineageVertex) lineageVerticesIterator.next();
-//            String nodeID = vertex.getNodeID();
-//            if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
-//                lineageVerticesIterator.remove();
-//                replaceProcessEdges(lineageEdges, nodeID);
-//            }
-//        }
-
-        Set<LineageVertex> processVertices = lineageVertices
-                .stream()
-                .filter(vertex -> (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)))
-//                .map(vertex -> replaceProcessEdges(lineageEdges, vertex.getNodeID()))
-                .collect(Collectors.toSet());
-
-//        for(LineageVertex lineageVertex : processVertices)
-//            replaceProcessEdges(lineageEdges, lineageVertex.getNodeID());
-
-        lineageVertices.forEach(vertex -> replaceProcessEdges(lineageEdges, vertex.getNodeID()));
-
-        lineageVertices.removeAll(processVertices);
+        for(LineageVertex vertex : lineageVertices){
+            String nodeID = vertex.getNodeID();
+            if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
+                verticesToBeRemoved.add(vertex);
+                fuseEdges(nodeID, lineageEdges);
+            }
+        }
+        lineageVertices.removeAll(verticesToBeRemoved);
 
         lineageVerticesAndEdges.setLineageVertices(lineageVertices);
         lineageVerticesAndEdges.setLineageEdges(lineageEdges);
         return lineageVerticesAndEdges;
     }
 
-    private void replaceProcessEdges(Set<LineageEdge> lineageEdges, String nodeID) {
-        Iterator lineageEdgesIterator = lineageEdges.iterator();
+    /**
+     * Prevents the disjointing of a graph when nodes are deleted. The incoming and outcoming edges of the provided node
+     * are replaced with new ones.
+     * @param nodeID The node of which the incoming and outcoming edges should be repaired.
+     * @param lineageEdges The set of all lineage edges.
+     */
+    private void fuseEdges(String nodeID, Set<LineageEdge> lineageEdges) {
+        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
+        Set<LineageEdge> edgesToBeAdded = new HashSet<>();
 
-        while (lineageEdgesIterator.hasNext()) {
-            LineageEdge edge = (LineageEdge) lineageEdgesIterator.next();
-            String destinationNodeID = edge.getDestinationNodeID();
+        for (LineageEdge edge1 : lineageEdges) {
+            if (nodeID.equals(edge1.getDestinationNodeID())) {
+                edgesToBeRemoved.add(edge1);
 
-            if (nodeID.equals(destinationNodeID)) {
-
-                lineageEdgesIterator.remove();
-                Iterator lineageEdgesIterator2 = lineageEdges.iterator();
-                while (lineageEdgesIterator2.hasNext()) {
-
-                    String originalDestinationNodeID = edge.getDestinationNodeID();
-                    if (originalDestinationNodeID.equals(sourceNodeID2)) {
-                        lineageEdgesIterator2.remove();
+                for (LineageEdge edge2 : lineageEdges) {
+                    if (nodeID.equals(edge2.getSourceNodeID())) {
+                        edgesToBeRemoved.add(edge2);
+                        String newDestinationNodeID = edge2.getDestinationNodeID();
+                        LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, edge1.getSourceNodeID(), newDestinationNodeID);
+                        edgesToBeAdded.add(newEdge);
                     }
-                    String newDestinationNodeID = destinationNodeID2;
-                    LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, sourceNodeID, newDestinationNodeID);
-                    lineageEdges.add(newEdge);
                 }
-
             }
         }
+        lineageEdges.removeAll(edgesToBeRemoved);
+        lineageEdges.addAll(edgesToBeAdded);
     }
 
     /**
