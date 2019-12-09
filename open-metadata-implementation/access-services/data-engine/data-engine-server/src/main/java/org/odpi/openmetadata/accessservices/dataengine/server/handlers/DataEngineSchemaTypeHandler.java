@@ -191,7 +191,7 @@ public class DataEngineSchemaTypeHandler {
             removeTabularColumn(userId, oldSchemaAttributeGUID);
         }
 
-        schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
+        removeTabularSchemaType(userId, schemaTypeGUID);
     }
 
     private void addTypeEmbeddedAttributeClassification(String userId, List<Attribute> newAttributes) throws
@@ -349,5 +349,31 @@ public class DataEngineSchemaTypeHandler {
         schemaType.setVersionNumber(versionNumber);
 
         return schemaType;
+    }
+
+    /**
+     * Remove the tabular schema type
+     *
+     * @param userId         the name of the calling user
+     * @param schemaTypeGUID the unique identifier of the schemaType to be removed
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private void removeTabularSchemaType(String userId, String schemaTypeGUID) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException {
+        final String methodName = "removeTabularSchemaType";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME,
+                methodName);
+
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
+
+        repositoryHandler.removeEntity(userId, schemaTypeGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                null, null, methodName);
     }
 }
