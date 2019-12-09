@@ -40,7 +40,7 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
     }
 
     @Override
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String subStringFilter, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         return null;
     }
 

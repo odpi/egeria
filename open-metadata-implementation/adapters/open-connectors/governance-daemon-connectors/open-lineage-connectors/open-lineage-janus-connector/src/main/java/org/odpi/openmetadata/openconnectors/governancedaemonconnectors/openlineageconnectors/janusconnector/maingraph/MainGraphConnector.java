@@ -64,11 +64,11 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param scope            source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param view             The view queried by the user: hostview, tableview, columnview.
      * @param guid             The guid of the node of which the lineage is queried from.
-     * @param subStringFilter
+     * @param displayNameMustContain
      * @param includeProcesses
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String subStringFilter, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
         Graph graph = getJanusGraph(graphName);
         GraphTraversalSource g = graph.traversal();
@@ -112,11 +112,40 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 lineageVerticesAndEdges = glossary(graph, guid);
                 break;
         }
-           if (!includeProcesses) {
-            lineageVerticesAndEdges = filterOutProcesses(lineageVerticesAndEdges);
-        }
+           if (!includeProcesses)
+               filterOutProcesses(lineageVerticesAndEdges);
+           if(!displayNameMustContain.isEmpty())
+               filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
         LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
+    }
+
+    /**
+     * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
+     * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
+     * @param displayNameMustContain The substring that must be part of a node's displayname in order for that node to
+     *                               be returned.
+     */
+    private void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
+        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
+
+        for(LineageVertex vertex : lineageVertices){
+            String nodeID = vertex.getNodeID();
+            if (!vertex.getDisplayName().contains(displayNameMustContain)){
+                verticesToBeRemoved.add(vertex);
+                for(LineageEdge edge : lineageEdges){
+                    if(edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
+                        edgesToBeRemoved.add(edge);
+                }
+            }
+        }
+        lineageVertices.removeAll(verticesToBeRemoved);
+        lineageEdges.removeAll(edgesToBeRemoved);
+        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
+        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
     }
 
     /**
@@ -124,7 +153,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
      * @return The original lineageVerticesAndEdges without processes or subprocesses.
      */
-    private LineageVerticesAndEdges filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
+    private void filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
         Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
@@ -140,7 +169,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         lineageVerticesAndEdges.setLineageVertices(lineageVertices);
         lineageVerticesAndEdges.setLineageEdges(lineageEdges);
-        return lineageVerticesAndEdges;
     }
 
     /**
