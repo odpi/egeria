@@ -71,17 +71,17 @@ public enum RepositoryConformanceProfile implements Serializable
                                         "The technology under test supports the command to update the metadata collection id for a metadata instance.",
                                         "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/rehome-instance",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
-    RELATIONSHIP_SEARCH            (12, "Advanced search",
+    RELATIONSHIP_SEARCH            (12, "Relationship search",
                                         "The technology under test supports the ability to search for relationnship instances.",
                                         "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/relationship-search",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
-    ENTITY_ADVANCED_SEARCH         (13, "Advanced search",
+    ENTITY_ADVANCED_SEARCH         (13, "Entity advanced search",
                                         "The technology under test supports the use of regular expressions to search for metadata instances.",
-                                        "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/advanced-search",
+                                        "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/entity-advanced-search",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
-    RELATIONSHIP_ADVANCED_SEARCH   (14, "Advanced search",
-                                         "The technology under test supports the use of regular expressions to search for metadata instances.",
-                                         "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/advanced-search",
+    RELATIONSHIP_ADVANCED_SEARCH   (14, "Relationship advanced search",
+                                         "The technology under test supports the use of regular expressions to search for relationship instances.",
+                                         "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/relationship-advanced-search",
                                          OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
 

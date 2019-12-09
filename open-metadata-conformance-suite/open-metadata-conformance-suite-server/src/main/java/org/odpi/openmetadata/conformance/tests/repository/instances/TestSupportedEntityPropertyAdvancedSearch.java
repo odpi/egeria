@@ -1062,8 +1062,8 @@ public class TestSupportedEntityPropertyAdvancedSearch extends RepositoryConform
         assertCondition((result != null),
                 assertion17,
                 testTypeName + assertionMsg17,
-                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes

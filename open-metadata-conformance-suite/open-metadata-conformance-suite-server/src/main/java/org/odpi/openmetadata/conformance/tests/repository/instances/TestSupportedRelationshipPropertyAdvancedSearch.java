@@ -352,6 +352,8 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
             }
 
+            repositoryConformanceWorkPad.addRelationshipInstanceSets(relationshipDef.getName(), this.relationshipSet_0, this.relationshipSet_1, this.relationshipSet_2);
+
             assertCondition((true),
                     assertion23,
                     testTypeName + assertionMsg23,
