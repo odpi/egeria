@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,29 +23,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 public class LineageVerticesAndEdges  {
 
-    private List<LineageVertex> lineageVertices;
-    private List<LineageEdge> lineageEdges;
+    private Set<LineageVertex> lineageVertices;
+    private Set<LineageEdge> lineageEdges;
 
     public LineageVerticesAndEdges(){}
 
-    public LineageVerticesAndEdges(List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges) {
+    public LineageVerticesAndEdges(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
         this.lineageVertices = lineageVertices;
         this.lineageEdges = lineageEdges;
     }
 
-    public void setLineageVertices(List<LineageVertex> lineageVertices) {
+    public void setLineageVertices(Set<LineageVertex> lineageVertices) {
         this.lineageVertices = lineageVertices;
     }
 
-    public void setLineageEdges(List<LineageEdge> lineageEdges) {
+    public void setLineageEdges(Set<LineageEdge> lineageEdges) {
         this.lineageEdges = lineageEdges;
     }
 
-    public List<LineageVertex> getLineageVertices() {
+    public Set<LineageVertex> getLineageVertices() {
         return lineageVertices;
     }
 
-    public List<LineageEdge> getLineageEdges() {
+    public Set<LineageEdge> getLineageEdges() {
         return lineageEdges;
     }
 }

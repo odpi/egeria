@@ -44,15 +44,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
         </dependency>
@@ -116,8 +107,6 @@
                                 <!-- Runtime dependencies for janusgraph-->
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-codec:commons-codec:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
