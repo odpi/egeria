@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngi
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -43,7 +44,8 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfig, OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverUserName) {
+                           OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverUserName) throws
+                                                                                                                      OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
         DataEngineAuditCode auditCode;
@@ -79,8 +81,9 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
-
-        } catch (Exception error) {
+        } catch (OMAGConfigurationErrorException e) {
+            throw e;
+        } catch (Throwable error) {
             auditCode = DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()), null,
