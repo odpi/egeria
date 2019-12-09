@@ -44,13 +44,15 @@ public class JobConfiguration {
 
     private static void scheduleJob(Trigger trigger) throws Exception {
 
-        JobDetail jobDetail = JobBuilder.
-                                  newJob(BufferGraphJob.class).
-                                  withIdentity("BufferGraphJob", GROUP).
-                                  build();
-        jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
+        if(bufferGraph != null) {
+            JobDetail jobDetail = JobBuilder.
+                    newJob(BufferGraphJob.class).
+                    withIdentity("BufferGraphJob", GROUP).
+                    build();
+            jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
 
-        scheduler.scheduleJob(jobDetail, trigger);
+            scheduler.scheduleJob(jobDetail, trigger);
+        }
 
     }
 

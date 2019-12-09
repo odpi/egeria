@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
@@ -61,18 +61,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     private void initializeGraphDB(){
-
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
-        switch (graphDB){
-            case "berkeleydb":
-                break;
-            case "cassandra":
-                BufferGraphFactory bufferGraphFactory = new BufferGraphFactory();
-                this.bufferGraph = bufferGraphFactory.openBufferGraph(connectionProperties);
-                break;
-                default:
-                    break;
-        }
+        GraphFactory graphFactory = new GraphFactory();
+        this.bufferGraph = graphFactory.openGraph(graphDB,connectionProperties);
     }
 
     @Override
@@ -94,7 +85,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                         verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
                     }
                 }
-            );
+        );
 
         verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
     }
@@ -102,39 +93,77 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     @Override
     public void schedulerTask(){
         GraphTraversalSource g = bufferGraph.traversal();
-        List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
+        try {
+            List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
 
-        List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+            List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
-        for (String guid : guidList) {
-            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("displayName","initial_load");
-            if(!initial.hasNext()) {
+            guidList.stream().forEach(process -> findInputColumns(g,process));
+            g.tx().commit();
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            g.tx().rollback();
+        }
 
+    }
 
-                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "portType", "INPUT_PORT")
-                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").in("LineageMapping").in("SchemaAttributeType")
-                        .toList();
+    private void findInputColumns(GraphTraversalSource g,String guid){
 
-                Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-                for (Vertex vertex : inputPath) {
-                    String vertexGuid = vertex.value(PROPERTY_KEY_ENTITY_GUID);
-                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").out("LineageMapping");
+        //TODO change Tabular column and Relational column with the supertupe SchemaElement when AssetLineage is ready
+        List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
+                .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
+                .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
+                .toList();
 
-                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(), g);
-                    if (columnOut != null && columnOut.hasNext()) {
-                        String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-                        String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        inputPath.stream().forEach(columnIn -> findOutputColumn(g,columnIn,process));
+    }
 
+    private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
+        List<Vertex> schemaElementVertex = g.V()
+                .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .out("SchemaAttributeType")
+                .in("LineageMapping")
+                .toList();
 
-                        if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                            MainGraphMapper mainGraphMapper = new MainGraphMapper();
-                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid,mainGraph);
-                        }
-                    }
+        Vertex vertexToStart = null;
+        if(schemaElementVertex != null){
+            for(Vertex v: schemaElementVertex){
+                List<Vertex> initialProcess = g.V(v.id())
+                        .bothE("SchemaAttributeType")
+                        .otherV().bothE("AttributeForSchema")
+                        .otherV().inE("PortSchema").otherV()
+                        .inE("PortDelegation").otherV().
+                                inE("ProcessPort").otherV().has("veguid",process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+
+                if(!initialProcess.isEmpty()){
+                    vertexToStart = v;
+                    break;
                 }
+
+
+                Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
+                Iterator<Vertex> columnOut = null;
+                if(vertexToStart != null){
+                    columnOut  = findPathForOutputAsset(vertexToStart,g,startingVertex);
+
+                }
+
+                moveColumnProcessColumn(columnIn,columnOut,process);
             }
         }
-        g.tx().commit();
+
+    }
+
+    private void moveColumnProcessColumn(Vertex columnIn,Iterator<Vertex> columnOut,Vertex process){
+        if (columnOut != null && columnOut.hasNext()) {
+            String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+            String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+            if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
+                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
+                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
+            }
+        }
     }
 
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
@@ -185,11 +214,13 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
         if (edgeIt.hasNext()) {
             g.tx().rollback();
-            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+//            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+            log.debug("{} found existing edge {}", methodName, edgeIt);
+
             return;
         }
         //TODO add try catch
-        fromVertex.addEdge(relationshipType, toVertex);
+        fromVertex.addEdge(relationshipType, toVertex).property("edguid",relationshipGuid);
         g.tx().commit();
     }
     private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity){
@@ -205,7 +236,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
-    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g)  {
+    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 
         try{
             Iterator<Vertex> end = g.V(v.id()).both("SchemaAttributeType").or(__.has(PROPERTY_KEY_ENTITY_NAME, RELATIONAL_COLUMN),
@@ -213,12 +244,21 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
             if (!end.hasNext()) {
 
-                Iterator<Vertex> next = g.V(v.id()).out("LineageMapping");
-                return findPathForOutputAsset(next.next(), g);
+                List<Vertex> next = g.V(v.id()).both("LineageMapping").toList();
+                Vertex nextVertex = null;
+                for(Vertex vert: next){
+                    if(vert.equals(startingVertex)){
+                        continue;
+                    }
+                    nextVertex = vert;
+                }
+
+
+                return findPathForOutputAsset(nextVertex, g,v);
             }
             return end;}
         catch (Exception e){
-            log.debug("Vertex does not exitst");
+            log.debug("Vertex does not exitst + {}",startingVertex.id());
             return null;
         }
     }
@@ -234,6 +274,4 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
     }
-
-
 }
