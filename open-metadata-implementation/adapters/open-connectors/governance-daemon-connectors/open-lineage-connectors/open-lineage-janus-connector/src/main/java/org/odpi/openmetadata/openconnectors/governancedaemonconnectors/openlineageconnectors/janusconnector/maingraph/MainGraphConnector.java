@@ -162,7 +162,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             String nodeID = vertex.getNodeID();
             if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
                 verticesToBeRemoved.add(vertex);
-                fuseEdges(nodeID, lineageEdges);
+                mergeEdges(nodeID, lineageEdges);
             }
         }
         lineageVertices.removeAll(verticesToBeRemoved);
@@ -172,12 +172,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     /**
-     * Prevents the disjointing of a graph when nodes are deleted. The incoming and outcoming edges of the provided node
+     * Prevents the disjointing of a graph when nodes are deleted. The incoming and outgoing edges of the provided node
      * are replaced with new ones.
      * @param nodeID The node of which the incoming and outcoming edges should be repaired.
      * @param lineageEdges The set of all lineage edges.
      */
-    private void fuseEdges(String nodeID, Set<LineageEdge> lineageEdges) {
+    private void mergeEdges(String nodeID, Set<LineageEdge> lineageEdges) {
         Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
         Set<LineageEdge> edgesToBeAdded = new HashSet<>();
 
