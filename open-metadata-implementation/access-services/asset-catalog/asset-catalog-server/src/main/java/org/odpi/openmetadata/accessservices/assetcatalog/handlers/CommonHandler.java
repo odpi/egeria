@@ -137,7 +137,7 @@ public class CommonHandler {
         try {
             return repositoryHandler.getMetadataCollection().getEntityDetail(userId, guid);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-            e.printStackTrace();
+            errorHandler.handleRepositoryError(e, methodName);
         } catch (RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
