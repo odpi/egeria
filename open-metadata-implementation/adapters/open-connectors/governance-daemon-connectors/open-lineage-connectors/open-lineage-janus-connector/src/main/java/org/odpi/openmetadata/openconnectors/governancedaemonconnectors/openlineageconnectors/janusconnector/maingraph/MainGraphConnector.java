@@ -6,6 +6,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
@@ -13,13 +14,13 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,23 +52,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         super.initialize(connectorInstanceId, connectionProperties);
     }
 
-    public void initializeGraphDB() throws OpenLineageException {
+    public void initializeGraphDB(){
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
-        switch (graphDB) {
-            case "berkeleydb":
-                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
-                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
-                break;
-            case "cassandra":
-                FactoryForTesting factoryForTesting = new FactoryForTesting();
-                this.mainGraph = factoryForTesting.openBufferGraph(connectionProperties);
-                break;
-
-            default:
-                break;
-        }
+        GraphFactory graphFactory = new GraphFactory();
+        this.mainGraph = graphFactory.openGraph(graphDB,connectionProperties);
     }
 
     /**
@@ -127,7 +115,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
+    LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph endToEndGraph = (Graph)
@@ -170,62 +158,32 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
         }
-
-        Map<String, String> attributes = null;
-
-        switch (nodeType) {
-            case NODE_LABEL_COLUMN:
-                attributes = setColumnProperties(originalVertex);
-                break;
-            case NODE_LABEL_TABLE:
-                attributes = setTableProperties(originalVertex);
-                break;
-            case NODE_LABEL_PROCESS:
-                attributes = setProcessProperties(originalVertex);
-                break;
-            case NODE_LABEL_SUB_PROCESS:
-                attributes = setSubProcessProperties(originalVertex);
-                break;
-            case NODE_LABEL_GLOSSARYTERM:
-                attributes = setGlossaryTermProperties(originalVertex);
-                break;
-            default:
-        }
+        Map<String, String> attributes = retrieveProperties(originalVertex);
         lineageVertex.setAttributes(attributes);
         return lineageVertex;
     }
 
-    private Map<String, String> setSubProcessProperties(Vertex originalVertex) {
+    /**
+     * Retrieve all properties from the db and return the ones that match the whitelist. This will filter out irrelevant
+     * properties that should not be returned to a UI.
+     *
+     * @param originalVertex
+     * @return
+     */
+    private Map<String, String> retrieveProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-    private Map<String, String> setProcessProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-
-    private Map<String, String> setGlossaryTermProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        return attributes;
-    }
-
-
-    private Map<String, String> setTableProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
-            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
-        }
-        return attributes;
-    }
-
-    private Map<String, String> setColumnProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
-        if (originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).isPresent()) {
-            String originalGlossaryTerm = originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString();
-            attributes.put(PROPERTY_NAME_GLOSSARY_TERM, originalGlossaryTerm);
+        Iterator originalProperties = originalVertex.properties();
+        while (originalProperties.hasNext()) {
+            Property originalProperty = (Property) originalProperties.next();
+            if (returnedPropertiesWhiteList.contains(originalProperty.key())) {
+                //If this property key is present in filterPrefixMap, remove the "ve" prefix. If it is not in this map,
+                //use the original value. This discrepancy between the whitelist and the filtermap can happen because
+                //at the moment the "ve" prefix is used inconsistently for the main graph properties.
+                if (filterPrefixMap.containsKey(originalProperty.key()))
+                    attributes.put(filterPrefixMap.get(originalProperty.key()), originalProperty.value().toString());
+                else
+                    attributes.put(originalProperty.key(), originalProperty.value().toString());
+            }
         }
         return attributes;
     }
@@ -239,7 +197,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
 
@@ -252,8 +210,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
         lineageVertices.add(queriedVertex);
@@ -286,7 +245,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -299,8 +258,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         lineageVertices.add(queriedVertex);
 
@@ -319,7 +278,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -340,8 +299,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
         lineageVertices.add(queriedVertex);
         addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
@@ -353,8 +312,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private void addSourceCondensation(List<Vertex> sourcesList,
-                                       List<LineageVertex> lineageVertices,
-                                       List<LineageEdge> lineageEdges,
+                                       Set<LineageVertex> lineageVertices,
+                                       Set<LineageEdge> lineageEdges,
                                        Vertex originalQueriedVertex,
                                        LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
@@ -371,10 +330,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     newVertex.getNodeID(),
                     condensedVertex.getNodeID()
             );
-            if (newVertex != null)
-                lineageVertices.add(newVertex);
-            if (newEdge != null)
-                lineageEdges.add(newEdge);
+            lineageVertices.add(newVertex);
+            lineageEdges.add(newEdge);
         }
         LineageEdge sourceEdge = new LineageEdge(
                 EDGE_LABEL_CONDENSED,
@@ -385,7 +342,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private void addDestinationCondensation
-            (List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex
+            (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
                     originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
@@ -422,7 +379,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse glossary(Graph graph, String guid) {
+    LineageResponse glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
@@ -440,8 +397,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         while (originalVertices.hasNext()) {
             LineageVertex newVertex = abstractVertex(originalVertices.next());

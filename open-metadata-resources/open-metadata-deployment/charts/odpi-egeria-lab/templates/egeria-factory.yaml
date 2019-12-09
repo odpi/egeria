@@ -9,32 +9,32 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui
-  name: {{ .Release.Name }}-ui
+    app.kubernetes.io/component: factory
+  name: {{ include "myapp.fullname" . }}-factory
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 8443
-      targetPort: 8443
-      nodePort: {{ .Values.service.nodeport.ui }}
+    - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.factory }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: ui
+    app.kubernetes.io/component: factory
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-ui
+  name: {{ include "myapp.fullname" . }}-factory
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui
+    app.kubernetes.io/component: factory
 
 spec:
   replicas: 1
@@ -42,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: ui
+      app.kubernetes.io/component: factory
   strategy: {}
   template:
     metadata:
@@ -50,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: ui
+        app.kubernetes.io/component: factory
     spec:
       containers:
         - name: egeria
@@ -59,24 +59,15 @@ spec:
                   {{ .Values.image.egeria.name }}\
                   :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /opt/egeria/ui-chassis-spring.jar"
           ports:
-            - containerPort: 8443
+            - containerPort: 8080
           readinessProbe:
             tcpSocket:
-              port: 8443
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          env:
-            - name: "OMAS_SERVER_NAME"
-              value: "cocoMDS4"
-            - name: "OMAS_SERVER_URL"
-              value: "http://{{ .Release.Name }}-datalake:8080"
       restartPolicy: Always
 
 status: {}

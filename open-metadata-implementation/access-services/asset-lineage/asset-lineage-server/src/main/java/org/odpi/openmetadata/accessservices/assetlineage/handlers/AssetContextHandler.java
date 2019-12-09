@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -19,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
@@ -72,7 +73,7 @@ public class AssetContextHandler {
      * @param type       the type
      * @return the asset context
      */
-    public AssetContext getAssetContext(String serverName, String userId, String guid, String type) {
+    public AssetContext getAssetContext(String serverName, String userId, String guid, String type,String superType) {
 
         String methodName = "getAssetContext";
 
@@ -80,7 +81,6 @@ public class AssetContextHandler {
 
         try {
 
-            invalidParameterHandler.validateUserId(userId, methodName);
             invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
 
             Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid, type);
@@ -95,7 +95,7 @@ public class AssetContextHandler {
                                                 ENTITY_NOT_FOUND.getSystemAction(),
                                                 ENTITY_NOT_FOUND.getUserAction());
             }
-            buildAssetContext(userId, entityDetail.get());
+            buildAssetContext(userId, entityDetail.get(),superType);
             return graph;
 
         }
@@ -112,60 +112,59 @@ public class AssetContextHandler {
         }
     }
 
-
     private Optional<EntityDetail> getEntityDetails(String userId, String guid,String type) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
+        final String methodName = "getEntityDetails";
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER,type, methodName));
     }
 
 
-    private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+    private void buildAssetContext(String userId, EntityDetail entityDetail,String superType) throws UserNotAuthorizedException,
                                                                                     PropertyServerException,
                                                                                     InvalidParameterException,
                                                                                     RepositoryErrorException,
                                                                                     org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
                                                                                     org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
 
+
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
-        Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(userId,typeDefName);
-
-        //TODO check for Table entities
-        if (isComplexSchemaType.isPresent()) {
-        //setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
+        if (typeDefName.equals(RELATIONAL_TABLE) || typeDefName.equals(DATA_FILE)) {
+            addContextForSchemaAttributeType(userId,entityDetail,typeDefName);
         }
 
-        if(hasSchemaAttributeType(typeDefName)) {
+        if(!isComplexSchemaType(userId,typeDefName)) {
+            List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName, false);
 
-            /* Build the lineage graph of schema attributes as nodes with lineage mapping relationship as edge between them */
-            buildGraphByRelationshipType(userId, entityDetail, LINEAGE_MAPPING, typeDefName);
-
-        }
-
-        List<EntityDetail> schemaTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
-
-        for (EntityDetail schemaTypeEntity : schemaTypeEntities) {
-
-            if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName()).isPresent()) {
-                setAssetDetails(userId, schemaTypeEntity);
-            } else {
-                buildAssetContext(userId, schemaTypeEntity);
+            for (EntityDetail schemaTypeEntity : tableTypeEntities) {
+                if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
+                    setAssetDetails(userId, schemaTypeEntity);
+                } else {
+                    List<EntityDetail> tableEntities = buildGraphByRelationshipType(userId, schemaTypeEntity, SCHEMA_ATTRIBUTE_TYPE, typeDefName, false);
+                    if (!CollectionUtils.isEmpty(tableEntities)) {
+                        buildAssetContext(userId, tableEntities.stream().findFirst().get(), superType);
+                    }
+                }
             }
         }
     }
 
     private List<EntityDetail> buildGraphByRelationshipType(String userId, EntityDetail startEntity,
-                                                            String relationshipType, String typeDefName) throws UserNotAuthorizedException,
+                                                            String relationshipType, String typeDefName,boolean changeDirection) throws UserNotAuthorizedException,
                                                                                                                    PropertyServerException,
                                                                                                                    InvalidParameterException {
         List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
 
+        if(startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
+        }
+
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
-            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
+            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph,changeDirection);
             if(endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);
@@ -176,35 +175,92 @@ public class AssetContextHandler {
     private void setAssetDetails(String userId, EntityDetail startEntity) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException {
-        List<EntityDetail> assetEntity = buildGraphByRelationshipType(userId,startEntity, ASSET_SCHEMA_TYPE,startEntity.getType().getTypeDefName());
+        List<EntityDetail> assetEntity = buildGraphByRelationshipType(userId,startEntity, ASSET_SCHEMA_TYPE,startEntity.getType().getTypeDefName(),false);
         Optional<EntityDetail> first = assetEntity.stream().findFirst();
         if(first.isPresent()){
-            getAsset(userId, first.get());
+            buildAsset(userId, first.get());
 
         }
     }
 
-    private void getAsset(String userId, EntityDetail dataSet) throws InvalidParameterException,
+    private void buildAsset(String userId, EntityDetail dataSet) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException {
         final String typeDefName = dataSet.getType().getTypeDefName();
+        List<EntityDetail> entityDetails;
         if (typeDefName.equals(DATA_FILE)) {
-            buildGraphByRelationshipType(userId, dataSet, NESTED_FILE,typeDefName);
+            entityDetails = buildGraphByRelationshipType(userId, dataSet, NESTED_FILE,typeDefName,false);
         } else {
-            buildGraphByRelationshipType(userId, dataSet, DATA_CONTENT_FOR_DATA_SET,typeDefName);
+            entityDetails = buildGraphByRelationshipType(userId, dataSet, DATA_CONTENT_FOR_DATA_SET,typeDefName,false);
+        }
 
+        if (CollectionUtils.isEmpty(entityDetails)) {
+            return;
+        }
+        addContextForEndpoints(userId,entityDetails.toArray(new EntityDetail[0]));
+    }
+
+
+    private void addContextForEndpoints(String userId,EntityDetail... entityDetails) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        for(EntityDetail entityDetail: entityDetails) {
+            if (entityDetail != null) {
+                if (entityDetail.getType().getTypeDefName().equals(DATABASE)) {
+                    addContextForConnections(userId, entityDetail);
+                } else {
+                    addContextFolderHierarchy(userId, entityDetail);
+                }
+            }
         }
     }
 
-    private Optional<TypeDef> isComplexSchemaType(String userId,String typeDefName) throws RepositoryErrorException,
+    private void addContextForConnections(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+            PropertyServerException,
+            InvalidParameterException {
+
+        List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail, CONNECTION_TO_ASSET, DATABASE,false);
+
+        if (!connections.isEmpty()) {
+            for (EntityDetail entity : connections) {
+                buildGraphByRelationshipType(userId, entity, CONNECTION_ENDPOINT, CONNECTION,false);
+            }
+        }
+    }
+
+    private void addContextFolderHierarchy(String userId,EntityDetail entityDetail) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+
+        List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail,
+                CONNECTION_TO_ASSET, entityDetail.getType().getTypeDefName(),false);
+
+        Optional<EntityDetail> connection = connections.stream().findFirst();
+        if (connection.isPresent()) {
+            buildGraphByRelationshipType(userId, entityDetail, CONNECTION_ENDPOINT, CONNECTION,false);
+        }
+
+        Optional<EntityDetail> nestedFolder =   buildGraphByRelationshipType(userId, entityDetail, FOLDER_HIERARCHY, FILE_FOLDER,false)
+                .stream()
+                .findFirst();
+
+        if(nestedFolder.isPresent()) {
+            addContextFolderHierarchy(userId, nestedFolder.get());
+        }
+    }
+
+    private void addContextForSchemaAttributeType(String userId,EntityDetail entityDetail,String typeDefName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, SCHEMA_ATTRIBUTE_TYPE, typeDefName,true);
+
+        for(EntityDetail schemaAttributeType: schemaAttributeTypes){
+            buildGraphByRelationshipType(userId, schemaAttributeType, ATTRIBUTE_FOR_SCHEMA, typeDefName,true);
+        }
+    }
+
+    private boolean isComplexSchemaType(String userId, String typeDefName) throws RepositoryErrorException,
                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
         TypeDefGallery allTypes =  repositoryHandler.getMetadataCollection().getAllTypes(userId);
-        return allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE)).findAny();
-    }
-
-    private boolean hasSchemaAttributeType(String typeDefName){
-        List<String> entitiesWithSchemaTypes = new ArrayList<>(Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN));
-        return entitiesWithSchemaTypes.contains(typeDefName);
+        return allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE)).findAny().isPresent();
     }
 }

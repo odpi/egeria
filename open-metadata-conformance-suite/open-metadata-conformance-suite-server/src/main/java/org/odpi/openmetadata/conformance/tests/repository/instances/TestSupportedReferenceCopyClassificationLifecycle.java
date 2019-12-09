@@ -41,8 +41,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
     private static final String assertion6    = testCaseId + "-06";
     private static final String assertionMsg6 = " repository supports creation of instances.";
 
-
-    private static final String discoveredProperty_referenceCopySupport = " reference copy support";
+    private static final String assertion7    = testCaseId + "-07";
+    private static final String assertionMsg7 = " repository supports storage of reference copies.";
 
 
     private EntityDef         testEntityDef;
@@ -204,8 +204,10 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntity);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Enabled",
+
+            assertCondition((true),
+                    assertion7,
+                    testTypeName + assertionMsg7,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
@@ -296,11 +298,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
         }
         catch (FunctionNotSupportedException e) {
 
-            /*
-             * Disable the discovered property, with evidence that reference copy storage requirement is not supported.
-             */
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_referenceCopySupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion7,
+                    assertionMsg7,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 

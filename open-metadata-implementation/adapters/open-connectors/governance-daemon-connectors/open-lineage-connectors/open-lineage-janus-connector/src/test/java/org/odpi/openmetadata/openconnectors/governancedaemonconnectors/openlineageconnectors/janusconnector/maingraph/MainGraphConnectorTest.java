@@ -14,7 +14,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -81,7 +81,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
         LineageResponse lineageResponse = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -96,7 +96,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
         LineageResponse lineageResponse = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -114,7 +114,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
         LineageResponse lineageResponse = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -137,7 +137,7 @@ public class MainGraphConnectorTest {
             expectedNodeIDs.add("p4");
 
             LineageResponse lineageResponse = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+            Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
 
             validateResponse(expectedNodeIDs, lineageVertices);
         }
@@ -172,7 +172,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add("c3");
 
         LineageResponse lineageResponse = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }

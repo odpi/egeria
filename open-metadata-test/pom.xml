@@ -27,6 +27,7 @@
             <id>egeria-fvt</id>
             <activation>
                 <property>
+                    <!-- temp fix. See issue #2136 -->
                     <name>!skipFVT</name>
                 </property>
 	    </activation>
