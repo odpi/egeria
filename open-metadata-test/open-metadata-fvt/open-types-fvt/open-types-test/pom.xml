@@ -31,10 +31,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>compile</scope>
-        </dependency>
+        </dependency-->
 
         <!--dependency>
               <groupId>org.odpi.egeria</groupId>
@@ -103,6 +109,7 @@
                                                 <path refid="maven.compile.classpath"/>
                                                 <path refid="maven.plugin.classpath"/>
                                             </classpath>
+                                            <sysproperty key="org.slf4j.simpleLogger.defaultLogLevel" value="INFO"/>
                                         </java>
                                     </target>
                                 </configuration>
