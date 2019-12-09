@@ -177,7 +177,7 @@ public class MainGraphConnectorTest {
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
-    private void validateResponse(HashSet<String> expectedNodeIDs, List<LineageVertex> lineageVertices) {
+    private void validateResponse(HashSet<String> expectedNodeIDs, Set<LineageVertex> lineageVertices) {
         assertEquals(expectedNodeIDs.size(), lineageVertices.size());
         for (LineageVertex returnedVertex : lineageVertices) {
             assertTrue(expectedNodeIDs.contains(returnedVertex.getNodeID()));
@@ -200,7 +200,7 @@ public class MainGraphConnectorTest {
         try{
             mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
             mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID)y;
+            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         } catch (OpenLineageException e) {
             return;
         }
