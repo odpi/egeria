@@ -11,6 +11,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
@@ -28,8 +30,12 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private static final String testCaseId = "repository-entity-reference-copy-lifecycle";
     private static final String testCaseName = "Repository entity reference copy lifecycle test case";
 
+    /* Type */
+    private static final String assertion0     = testCaseId + "-00";
+    private static final String assertionMsg0  = " entity type definition matches known type  ";
+
     private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " reference entity is known.";
+    private static final String assertionMsg1  = " reference entity created; repository supports storage of reference copies.";
     private static final String assertion2     = testCaseId + "-02";
     private static final String assertionMsg2  = " reference entity can be retrieved as EntitySummary.";
     private static final String assertion3     = testCaseId + "-03";
@@ -46,22 +52,29 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private static final String assertionMsg8  = " reference entity type cannot be changed.";
     private static final String assertion9     = testCaseId + "-09";
     private static final String assertionMsg9  = " reference entity identity cannot be changed.";
-    private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10 = " reference entity purged.";
+    private static final String assertion10    = testCaseId + "-10";
+    private static final String assertionMsg10 = " reference entity copy purged at TUT.";
     private static final String assertion11    = testCaseId + "-11";
-    private static final String assertionMsg11 = " reference entity saved.";
+    private static final String assertionMsg11 = " reference entity refresh requested by TUT.";
     private static final String assertion12    = testCaseId + "-12";
-    private static final String assertionMsg12 = " reference entity re-homed.";
-
+    private static final String assertionMsg12 = " reference entity refreshed.";
     private static final String assertion13    = testCaseId + "-13";
-    private static final String assertionMsg13 = " reference supports storage of reference copies.";
+    private static final String assertionMsg13 = " refreshed reference entity matches original.";
+    private static final String assertion14     = testCaseId + "-14";
+    private static final String assertionMsg14 = " reference entity purged following delete at CTS.";
+    private static final String assertion15    = testCaseId + "-15";
+    private static final String assertionMsg15 = " reference entity created.";
+    private static final String assertion16    = testCaseId + "-16";
+    private static final String assertionMsg16 = " reference entity re-homed.";
 
 
 
-    private String            metadataCollectionId;
-    private EntityDef         entityDef;
-    private String            testTypeName;
-    private OMRSMetadataCollection localMetadataCollection;
+
+    private RepositoryConformanceWorkPad   workPad;
+    private String                         metadataCollectionId;
+    private EntityDef                      entityDef;
+    private String                         testTypeName;
+    private OMRSMetadataCollection         localMetadataCollection;
 
 
     /*
@@ -90,8 +103,9 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
               RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
               RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
+        this.workPad              = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
-        this.entityDef = entityDef;
+        this.entityDef            = entityDef;
 
         this.testTypeName = this.updateTestIdByType(entityDef.getName(),
                                                     testCaseId,
@@ -116,6 +130,24 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
+         * Check that the entity type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
+        verifyCondition((entityDef.equals(knownEntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+        /*
          * This test will:
          *
          * Create an entity of the defined type in the local (CTS) repository.
@@ -138,6 +170,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          * Verify that it is not possible to update the properties of the reference copy.
          * Verify that it is not possible to re-type the reference copy.
          * Verify that it is not possible to re-identify the reference copy.
+         *
+         * Purge the reference copy (only) and then request a refresh and ensure that a new ref copy is created.
          *
          * Delete and purge the original local entity.
          * Because the CTS server is using local in-memory repository a soft delete must precede the purge.
@@ -169,10 +203,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          */
 
         EntityDetail newEntity = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
-                super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                null,
-                null);
+                                                                 entityDef.getGUID(),
+                                                                 super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                                null,
+                                                                null);
 
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
@@ -204,10 +238,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
         /*
-         * If this does not work there may be a timing issue - i.e. the ref copy may not have been created if the OMRS event has not
-         * propagated in time. If this happens refactor the testcase to create all local instances and batch GUIDs. Then on completion
-         * of the batch, look for the reference copies.
-         *
+         * If this proves to be a performance problem it might be preferable to refactor the testcase to create all local
+         * instances and batch the GUIDs. On completion of the batch, look for the reference copies.
          */
 
         if (refEntity != null) {
@@ -216,25 +248,19 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              */
 
             assertCondition((true),
-                    assertion13,
-                    testTypeName + assertionMsg13,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-            verifyCondition((true),
                     assertion1,
                     testTypeName + assertionMsg1,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
 
         } else {
 
             /*
              * Report that reference storage requirement is not supported.
              */
-            super.addNotSupportedAssertion(assertion13,
-                    assertionMsg13,
+            super.addNotSupportedAssertion(assertion1,
+                    assertionMsg1,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
@@ -443,6 +469,115 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         }
 
 
+        /*
+         * Purge the reference copy and verify that by requesting a refresh, a new ref copy is created.
+         * This test is performed against the TUT.
+         */
+
+        try {
+
+            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), refEntity);
+
+            /*
+             * Note that the ref copy could be purged
+             */
+            assertCondition((true),
+                    assertion10,
+                    testTypeName + assertionMsg10,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+
+        }
+        catch (Exception e)
+        {
+
+            /*
+             * If for any reason the ref copy could not be purged, fail the test
+             */
+
+            assertCondition((false),
+                    assertion10,
+                    testTypeName + assertionMsg10,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+        }
+
+        try {
+        metadataCollection.refreshEntityReferenceCopy(workPad.getLocalServerUserId(),
+                refEntity.getGUID(),
+                entityDef.getGUID(),
+                entityDef.getName(),
+                ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+
+            /*
+             * Note that the refresh request could be sent
+             */
+            assertCondition((true),
+                    assertion11,
+                    testTypeName + assertionMsg11,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        }
+        catch (Exception e)
+        {
+
+            /*
+             * If for any reason the refresh request failed, fail the test
+             */
+
+            assertCondition((false),
+                    assertion11,
+                    testTypeName + assertionMsg11,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        }
+
+        /*
+         * Wait and verify that a new ref copy is created....
+         */
+        /*
+         * There should be a reference copy of the entity stored in the TUT
+         */
+
+        EntityDetail refreshedEntityRefCopy = null;
+
+
+        /*
+         * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
+         * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
+         */
+        remainingCount = this.pollCount;
+        while (refreshedEntityRefCopy == null && remainingCount>0 ) {
+
+            refreshedEntityRefCopy = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
+            Thread.sleep(this.pollPeriod);
+            remainingCount--;
+        }
+
+
+        /*
+         * Verify that the reference copy can be retrieved form the TUT and matches the original...
+         */
+        refreshedEntityRefCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+        assertCondition((refreshedEntityRefCopy != null),
+                assertion12,
+                testTypeName + assertionMsg12,
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+        /*
+         * Verify that the retrieved reference copy matches the original entity
+         */
+
+        verifyCondition((newEntity.equals(refreshedEntityRefCopy)),
+                assertion13,
+                testTypeName + assertionMsg13,
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
 
         /*
          * Delete (soft then hard) the CTS local entity - these operations are performed on the local (CTS) repo.
@@ -490,16 +625,17 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
-                    assertion10,
-                    testTypeName + assertionMsg10,
+                    assertion14,
+                    testTypeName + assertionMsg14,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
 
-        } catch (EntityNotKnownException exception) {
+        }
+        catch (EntityNotKnownException exception) {
 
             assertCondition((true),
-                    assertion10,
-                    testTypeName + assertionMsg10,
+                    assertion14,
+                    testTypeName + assertionMsg14,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
         }
@@ -541,8 +677,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         }
 
         verifyCondition((refCopyEntity != null),
-                assertion11,
-                testTypeName + assertionMsg11,
+                assertion15,
+                testTypeName + assertionMsg15,
                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
         /*
@@ -560,8 +696,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
             assertCondition((true),
-                    assertion12,
-                    testTypeName + assertionMsg12,
+                    assertion16,
+                    testTypeName + assertionMsg16,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
 
@@ -602,8 +738,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              */
 
             assertCondition((false),
-                    assertion11,
-                    testTypeName + assertionMsg11,
+                    assertion16,
+                    testTypeName + assertionMsg16,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
         }
