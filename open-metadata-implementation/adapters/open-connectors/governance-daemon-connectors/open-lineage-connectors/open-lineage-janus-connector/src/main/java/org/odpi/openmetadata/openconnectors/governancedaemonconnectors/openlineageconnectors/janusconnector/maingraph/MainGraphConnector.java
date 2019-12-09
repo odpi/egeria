@@ -60,12 +60,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName        main, buffer, mock, history.
-     * @param scope            source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view             The view queried by the user: hostview, tableview, columnview.
-     * @param guid             The guid of the node of which the lineage is queried from.
-     * @param displayNameMustContain
-     * @param includeProcesses
+     * @param graphName              main, buffer, mock, history.
+     * @param scope                  source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view                   The view queried by the user: hostview, tableview, columnview.
+     * @param guid                   The guid of the node of which the lineage is queried from.
+     * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
+     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
@@ -93,8 +93,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getFormattedErrorMessage(),
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-
         }
+
         switch (scope) {
             case SOURCE_AND_DESTINATION:
                 lineageVerticesAndEdges = sourceAndDestination(graph, edgeLabel, guid);
@@ -112,19 +112,20 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 lineageVerticesAndEdges = glossary(graph, guid);
                 break;
         }
-           if (!includeProcesses)
-               filterOutProcesses(lineageVerticesAndEdges);
-           if(!displayNameMustContain.isEmpty())
-               filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
+        if (!includeProcesses)
+            filterOutProcesses(lineageVerticesAndEdges);
+        if (!displayNameMustContain.isEmpty())
+            filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
         LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
 
     /**
      * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
+     *
      * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
-     * @param displayNameMustContain The substring that must be part of a node's displayname in order for that node to
-     *                               be returned.
+     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to
+     *                                be returned.
      */
     private void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
@@ -132,12 +133,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
         Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
 
-        for(LineageVertex vertex : lineageVertices){
+        for (LineageVertex vertex : lineageVertices) {
             String nodeID = vertex.getNodeID();
-            if (!vertex.getDisplayName().contains(displayNameMustContain)){
+            if (!vertex.getDisplayName().contains(displayNameMustContain)) {
                 verticesToBeRemoved.add(vertex);
-                for(LineageEdge edge : lineageEdges){
-                    if(edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
+                for (LineageEdge edge : lineageEdges) {
+                    if (edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
                         edgesToBeRemoved.add(edge);
                 }
             }
@@ -150,6 +151,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
     /**
      * Removes all nodes of types sub process or process and creates new edges so that the graph will not become disjointed.
+     *
      * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
      * @return The original lineageVerticesAndEdges without processes or subprocesses.
      */
@@ -158,7 +160,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
         Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
 
-        for(LineageVertex vertex : lineageVertices){
+        for (LineageVertex vertex : lineageVertices) {
             String nodeID = vertex.getNodeID();
             if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
                 verticesToBeRemoved.add(vertex);
@@ -174,7 +176,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * Prevents the disjointing of a graph when nodes are deleted. The incoming and outgoing edges of the provided node
      * are replaced with new ones.
-     * @param nodeID The node of which the incoming and outcoming edges should be repaired.
+     *
+     * @param nodeID       The node of which the incoming and outcoming edges should be repaired.
      * @param lineageEdges The set of all lineage edges.
      */
     private void mergeEdges(String nodeID, Set<LineageEdge> lineageEdges) {
