@@ -86,4 +86,5 @@ public class StoringServices {
 
     public void updateEntity(LineageEvent lineageEvent){}
 
+    public void deleteEntity(LineageEvent lineageEvent){}
 }
