@@ -137,6 +137,10 @@ public class AssetContextHandler {
         if(!isComplexSchemaType(userId,typeDefName)) {
             List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName, false);
 
+//            if(tableTypeEntities.isEmpty()){
+//              tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, typeDefName, false);
+//
+//            }
             for (EntityDetail schemaTypeEntity : tableTypeEntities) {
                 if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
                     setAssetDetails(userId, schemaTypeEntity);
@@ -255,7 +259,22 @@ public class AssetContextHandler {
         for(EntityDetail schemaAttributeType: schemaAttributeTypes){
             buildGraphByRelationshipType(userId, schemaAttributeType, ATTRIBUTE_FOR_SCHEMA, typeDefName,true);
         }
+//        if (schemaAttributeTypes.isEmpty()){
+//            addColumns(userId,NESTED_SCHEMA_ATTRIBUTE,typeDefName,entityDetail);
+//        }
+
+//        addColumns(userId,ATTRIBUTE_FOR_SCHEMA,typeDefName,schemaAttributeTypes.toArray(new EntityDetail[0]));
+
+//        for(EntityDetail schemaAttributeType: schemaAttributeTypes){
+//            buildGraphByRelationshipType(userId, schemaAttributeType, ATTRIBUTE_FOR_SCHEMA, typeDefName,true);
+//        }
     }
+
+//    private void addColumns(String userId,String relationshipType,String typeDefName,EntityDetail... entities) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+//        for(EntityDetail entityDetail: entities){
+//            buildGraphByRelationshipType(userId, entityDetail, relationshipType, typeDefName,true);
+//        }
+//    }
 
     private boolean isComplexSchemaType(String userId, String typeDefName) throws RepositoryErrorException,
                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,

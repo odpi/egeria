@@ -54,8 +54,8 @@ public class GraphVertexMapper {
         }
 
         String instanceType = lineageEntity.getTypeDefName();
-        if (instanceType != null)                               // ** name mapping
-            vertex.property(PROPERTY_KEY_ENTITY_NAME, instanceType);
+        if (instanceType != null)
+            vertex.property(PROPERTY_KEY_LABEL, instanceType);
         else {
             log.debug("{} missing attribute: type name", methodName);
             missingAttribute = true;

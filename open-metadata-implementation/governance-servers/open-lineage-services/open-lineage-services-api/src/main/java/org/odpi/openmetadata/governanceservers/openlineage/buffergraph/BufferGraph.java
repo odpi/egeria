@@ -8,11 +8,18 @@ import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
 public interface BufferGraph extends OpenLineageGraph {
 
     /**
-     * Process the serialized  information view event
+     * Stores
      *
      * @param lineageEvent event
      */
     void addEntity(LineageEvent lineageEvent);
+
+    /**
+     * Process the serialized  information view event
+     *
+     * @param lineageEvent event
+     */
+    void updateEntity(LineageEvent lineageEvent);
 
     /**
      * Task that the scheduler performs based on the interval

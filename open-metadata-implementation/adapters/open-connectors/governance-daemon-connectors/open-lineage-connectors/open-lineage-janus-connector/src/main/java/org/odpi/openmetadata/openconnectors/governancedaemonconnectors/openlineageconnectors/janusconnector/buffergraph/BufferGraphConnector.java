@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class BufferGraphConnector extends BufferGraphConnectorBase {
@@ -93,7 +92,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     public void schedulerTask(){
         GraphTraversalSource g = bufferGraph.traversal();
         try {
-            List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
+            List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, "Process").toList();
 
             List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
@@ -238,6 +237,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
         }
     }
+
+//    @Override
+////    private void updateVertex(LineageEntity lineageEntity){
+////
+////    }
 
     private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 

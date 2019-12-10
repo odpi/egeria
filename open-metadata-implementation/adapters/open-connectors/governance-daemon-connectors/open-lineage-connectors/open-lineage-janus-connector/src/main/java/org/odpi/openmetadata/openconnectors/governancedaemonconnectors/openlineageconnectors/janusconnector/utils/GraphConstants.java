@@ -17,7 +17,6 @@ public class GraphConstants {
     public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION = "condensedDestination";
     public static final String PROPERTY_NAME_GUID = "guid";
     public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
-    public static final String PROPERTY_NAME_NAME = "name";
     public static final String PROPERTY_NAME_VERSION = "version";
     public static final String PROPERTY_NAME_CREATED_BY = "createdBy";
     public static final String PROPERTY_NAME_CREATE_TIME = "createTime";
@@ -27,7 +26,6 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PROXY = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
     public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
-    public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
     public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayname";
@@ -56,7 +54,6 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_QUALIFIED_NAME;
-    public static final String PROPERTY_KEY_ENTITY_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NAME;
     public static final String PROPERTY_KEY_LABEL = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_LABEL;
     public static final String PROPERTY_KEY_PROXY = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_PROXY;
     public static final String PROPERTY_KEY_GLOSSARY_TERM = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GLOSSARY_TERM;
@@ -106,7 +103,6 @@ public class GraphConstants {
 
     public static final Map<String, String> corePropertyTypes = new HashMap<String, String>() {{
         put(PROPERTY_NAME_GUID, "java.lang.String");
-        put(PROPERTY_NAME_NAME, "java.lang.String");
         put(PROPERTY_NAME_VERSION, "java.lang.Long");
         put(PROPERTY_NAME_CREATED_BY, "java.lang.String");
         put(PROPERTY_NAME_CREATE_TIME, "java.lang.Date");

@@ -25,4 +25,6 @@ public class StoringServices {
         bufferGraph.addEntity(lineageEvent);
     }
 
+    public void updateEntity(LineageEvent lineageEvent){}
+
 }
