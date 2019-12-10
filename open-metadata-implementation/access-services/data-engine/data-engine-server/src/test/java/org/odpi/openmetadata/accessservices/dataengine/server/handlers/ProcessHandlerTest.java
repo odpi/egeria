@@ -342,7 +342,8 @@ class ProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, 0, 0, methodName)).thenReturn(portEntityGUIDs);
 
 
-        Set<String> resultGUIDs = processHandler.getPortsForProcess(USER, PROCESS_GUID);
+        Set<String> resultGUIDs = processHandler.getPortsForProcess(USER, PROCESS_GUID,
+                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, resultGUIDs.size());
         assertTrue(resultGUIDs.contains(PORT_IMPL_GUID));
         assertTrue(resultGUIDs.contains(PORT_ALIAS_GUID));

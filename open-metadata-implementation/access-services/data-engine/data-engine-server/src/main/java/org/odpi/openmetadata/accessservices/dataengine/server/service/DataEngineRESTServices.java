@@ -814,7 +814,7 @@ public class DataEngineRESTServices {
         ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID);
+        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
 
         // delete ports that are not in the process payload anymore
         List<String> obsoletePorts =

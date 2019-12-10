@@ -26,6 +26,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -612,7 +613,7 @@ class DataEngineRESTServicesTest {
 
         when(processHandler.findProcess(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
-        when(processHandler.getPortsForProcess(USER, GUID)).thenReturn(new HashSet<>(Collections.singletonList(PORT_GUID)));
+        when(processHandler.getPortsForProcess(USER, GUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenReturn(new HashSet<>(Collections.singletonList(PORT_GUID)));
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
         ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
