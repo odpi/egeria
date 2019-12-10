@@ -608,6 +608,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 runTests();
             }
 
+            workPad.setWorkbenchComplete();
+
             auditCode = ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED;
             auditLog.logRecord(methodName,
                                auditCode.getLogMessageId(),
