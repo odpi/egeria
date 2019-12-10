@@ -31,27 +31,10 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
             <scope>compile</scope>
         </dependency>
-
-        <!--dependency>
-              <groupId>org.odpi.egeria</groupId>
-              <artifactId>repository-services-apis</artifactId>
-        </dependency>
-        <dependency>
-               <groupId>org.odpi.egeria</groupId>
-               <artifactId>open-metadata-types</artifactId>
-        </dependency>
-        <dependency>
-               <groupId>com.fasterxml.jackson.core</groupId>
-               <artifactId>jackson-annotations</artifactId>
-         </dependency>
-         <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-        </dependency-->
 
         <dependency>
             <groupId>org.testng</groupId>
@@ -103,6 +86,7 @@
                                                 <path refid="maven.compile.classpath"/>
                                                 <path refid="maven.plugin.classpath"/>
                                             </classpath>
+                                            <sysproperty key="org.slf4j.simpleLogger.defaultLogLevel" value="INFO"/>
                                         </java>
                                     </target>
                                 </configuration>
