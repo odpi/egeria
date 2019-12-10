@@ -7,6 +7,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -159,23 +161,25 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     /**
      * Creates a new vertex if it does not exist
-     * @param lineageEntity - LineageEntity object to be created
+     * @param lineageEvent - LineageEntity object to be created
      */
     @Override
-    public void addEntity( LineageEntity lineageEntity){
+    public void addEntity(LineageEvent lineageEvent){
 
         GraphTraversalSource g =  bufferGraph.traversal();
-        Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
 
-        if(!vertexIt.hasNext()){
-            Vertex vertex = g.addV(lineageEntity.getTypeDefName()).next();
-            addPropertiesToVertex(g,vertex,lineageEntity);
-            g.tx().commit();
-        }
-        else {
-            log.debug("found existing vertex for entity with guid {}",lineageEntity.getGuid());
-            g.tx().rollback();
-        }
+        Set<GraphContext> verticesToBeAdded = new HashSet<>();
+        lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
+                {
+                    if(entry.getValue().size()>1){
+                        verticesToBeAdded.addAll(entry.getValue());
+                    }else {
+                        verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
+                    }
+                }
+        );
+
+        verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
     }
 
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
@@ -255,10 +259,25 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
-//    @Override
-////    private void updateVertex(LineageEntity lineageEntity){
-////
-////    }
+    @Override
+    public void updateEntity(LineageEvent lineageEvent){
+
+    }
+
+    @Override
+    public void deleteEntity(String guid){
+        GraphTraversalSource g = bufferGraph.traversal();
+
+        //TODO add check when we will have classifications to delete classifications first
+        if(checkIfVertexExist(g,guid)){
+            g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).drop();
+            g.tx().commit();
+            log.debug("Vertex with guid {} deleted",guid);
+        }
+        g.tx().rollback();
+        log.debug("Vertex with guid did not delete {}",guid);
+
+    }
 
     private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 
@@ -287,6 +306,10 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             log.debug("Vertex does not exitst + {}",startingVertex.id());
             return null;
         }
+    }
+
+    private boolean checkIfVertexExist(GraphTraversalSource g,String guid){
+        return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).hasNext();
     }
 
     private void throwException(JanusConnectorErrorCode errorCode,String guid,String methodName){

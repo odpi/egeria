@@ -14,16 +14,23 @@ public interface BufferGraph extends OpenLineageGraph {
     /**
      * Stores
      *
-     * @param lineageEntity event
+     * @param lineageEvent event
      */
-    void addEntity(LineageEntity lineageEntity);
+    void addEntity(LineageEvent lineageEvent);
 
     /**
-     * Process the serialized  information view event
+     * Updates a vertex in the Graph
      *
      * @param lineageEvent event
      */
     void updateEntity(LineageEvent lineageEvent);
+
+    /**
+     * Deletes a vertex in the graph
+     *
+     * @param guid unique identifier of the entity to be deleted
+     */
+    void deleteEntity(String guid);
 
     /**
      * Task that the scheduler performs based on the interval
