@@ -9,7 +9,6 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
@@ -19,7 +18,6 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -58,35 +56,25 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         super.start();
     }
 
+    /**
+     * Initializes bufferGraph based on the configurations is being passed from the POST call.
+     *
+     */
     private void initializeGraphDB(){
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
         this.bufferGraph = graphFactory.openGraph(graphDB,connectionProperties);
     }
 
+    /**
+     * Retrieves the mainGraph instance.
+     *
+     */
     @Override
     public void setMainGraph(Object mainGraph) {
         this.mainGraph = (JanusGraph) mainGraph;
     }
 
-    @Override
-    public void addEntity(LineageEvent lineageEvent){
-
-        GraphTraversalSource g =  bufferGraph.traversal();
-
-        Set<GraphContext> verticesToBeAdded = new HashSet<>();
-        lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
-                {
-                    if(entry.getValue().size()>1){
-                        verticesToBeAdded.addAll(entry.getValue());
-                    }else {
-                        verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
-                    }
-                }
-        );
-
-        verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
-    }
 
     @Override
     public void schedulerTask(){
@@ -168,6 +156,28 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
+
+    /**
+     * Creates a new vertex if it does not exist
+     * @param lineageEntity - LineageEntity object to be created
+     */
+    @Override
+    public void addEntity( LineageEntity lineageEntity){
+
+        GraphTraversalSource g =  bufferGraph.traversal();
+        Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
+
+        if(!vertexIt.hasNext()){
+            Vertex vertex = g.addV(lineageEntity.getTypeDefName()).next();
+            addPropertiesToVertex(g,vertex,lineageEntity);
+            g.tx().commit();
+        }
+        else {
+            log.debug("found existing vertex for entity with guid {}",lineageEntity.getGuid());
+            g.tx().rollback();
+        }
+    }
+
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
         LineageEntity fromEntity = nodeToNode.getFromVertex();
         LineageEntity toEntity = nodeToNode.getToVertex();
@@ -182,6 +192,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity){
         final String methodName = "addVertex";
+
+
 
         Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
@@ -225,6 +237,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         fromVertex.addEdge(relationshipType, toVertex).property("edguid",relationshipGuid);
         g.tx().commit();
     }
+
+    /**
+     * Creates a new vertex if it does not exist
+     * @param lineageEntity - LineageEntity object to be created
+     */
     private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity){
         final String methodName = "addPropertiesToVertex";
 

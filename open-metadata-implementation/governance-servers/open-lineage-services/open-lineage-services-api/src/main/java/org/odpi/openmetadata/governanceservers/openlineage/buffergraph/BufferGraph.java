@@ -3,16 +3,20 @@
 package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+
+import java.util.Set;
 
 public interface BufferGraph extends OpenLineageGraph {
 
     /**
      * Stores
      *
-     * @param lineageEvent event
+     * @param lineageEntity event
      */
-    void addEntity(LineageEvent lineageEvent);
+    void addEntity(LineageEntity lineageEntity);
 
     /**
      * Process the serialized  information view event
