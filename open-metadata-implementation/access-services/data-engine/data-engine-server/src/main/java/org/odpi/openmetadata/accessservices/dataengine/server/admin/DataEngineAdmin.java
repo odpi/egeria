@@ -17,6 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -32,6 +34,8 @@ public class DataEngineAdmin extends AccessServiceAdmin {
     private String serverName;
     private OpenMetadataTopicConnector dataEngineInTopicConnector;
     private DataEngineInTopicListener dataEngineInTopicListener;
+
+    private static final Logger log = LoggerFactory.getLogger(DataEngineAdmin.class);
 
     /**
      * Initialize the access service.
@@ -133,17 +137,15 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             String methodName = "getTopicConnector";
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+            OMRSConfigErrorException e = new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(), methodName, errorMessage, errorCode.getSystemAction(),
+                    errorCode.getUserAction(), error);
 
+            log.debug("Exception in returning the topic connector for Data Engine: {}", e);
+
+            throw e;
         }
     }
 
