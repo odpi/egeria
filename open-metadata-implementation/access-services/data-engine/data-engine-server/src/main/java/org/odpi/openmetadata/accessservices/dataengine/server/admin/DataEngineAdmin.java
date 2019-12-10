@@ -123,7 +123,8 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      *
      * @return the connector created based on the topic connection properties
      */
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
+    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) throws
+                                                                                     OMAGConfigurationErrorException {
         try {
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
@@ -139,7 +140,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            OMRSConfigErrorException e = new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(), methodName, errorMessage, errorCode.getSystemAction(),
                     errorCode.getUserAction(), error);
 
@@ -156,7 +157,8 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      *
      * @return the topic created based on the connection properties
      */
-    private OpenMetadataTopicConnector initializeDataEngineTopicConnector(Connection topicConnection) {
+    private OpenMetadataTopicConnector initializeDataEngineTopicConnector(Connection topicConnection) throws
+                                                                                                      OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         if (topicConnection != null) {
             try {
