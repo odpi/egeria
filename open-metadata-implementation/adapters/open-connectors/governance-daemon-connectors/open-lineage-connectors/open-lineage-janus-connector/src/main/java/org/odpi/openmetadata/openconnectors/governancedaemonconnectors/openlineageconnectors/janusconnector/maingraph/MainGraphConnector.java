@@ -65,7 +65,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param view                   The view queried by the user: hostview, tableview, columnview.
      * @param guid                   The guid of the node of which the lineage is queried from.
      * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
-     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false
+     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
