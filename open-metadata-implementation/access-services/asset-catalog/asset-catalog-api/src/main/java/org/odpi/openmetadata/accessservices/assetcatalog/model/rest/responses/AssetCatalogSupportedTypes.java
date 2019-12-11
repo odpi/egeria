@@ -8,6 +8,8 @@ import java.util.List;
 
 public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
     private List<Type> types;
 
     public List<Type> getTypes() {

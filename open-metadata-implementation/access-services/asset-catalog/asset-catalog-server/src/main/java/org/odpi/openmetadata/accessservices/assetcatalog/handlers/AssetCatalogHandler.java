@@ -35,6 +35,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorExcept
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,12 +55,15 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
 
 public class AssetCatalogHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
+
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
+    private AssetConverter assetConverter;
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
     private List<String> defaultTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
     private List<String> supportedTypesForSearch;
@@ -87,6 +92,7 @@ public class AssetCatalogHandler {
         this.supportedZones = supportedZones;
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, errorHandler);
         this.supportedTypesForSearch = supportedTypesForSearch;
+        this.assetConverter = new AssetConverter(repositoryHelper);
     }
 
     /**
@@ -108,9 +114,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
-        AssetConverter converter = new AssetConverter(repositoryHelper);
-
-        return converter.getAssetDescription(entityByGUID);
+        return assetConverter.getAssetDescription(entityByGUID);
     }
 
     /**
@@ -144,8 +148,7 @@ public class AssetCatalogHandler {
                 methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
-            AssetConverter converter = new AssetConverter(repositoryHelper);
-            return converter.convertRelationships(relationshipsByType);
+            return assetConverter.convertRelationships(relationshipsByType);
         }
 
         return Collections.emptyList();
@@ -175,7 +178,6 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         List<Classification> entityClassifications = getEntityClassifications(userId, assetGUID, assetTypeName);
-        AssetConverter converter = new AssetConverter(repositoryHelper);
 
         if (CollectionUtils.isEmpty(entityClassifications)) {
             return Collections.emptyList();
@@ -185,7 +187,7 @@ public class AssetCatalogHandler {
             entityClassifications = filterClassificationByName(entityClassifications, classificationName);
         }
 
-        return converter.convertClassifications(entityClassifications);
+        return assetConverter.convertClassifications(entityClassifications);
     }
 
     /**
@@ -237,8 +239,7 @@ public class AssetCatalogHandler {
                     errorCode.getUserAction());
         }
 
-        AssetConverter converter = new AssetConverter(repositoryHelper);
-        return converter.convertRelationships(linkingEntities.getRelationships());
+        return assetConverter.convertRelationships(linkingEntities.getRelationships());
     }
 
     /**
@@ -277,8 +278,7 @@ public class AssetCatalogHandler {
                 methodName);
 
         if (CollectionUtils.isNotEmpty(pagedRelationshipsByType)) {
-            AssetConverter converter = new AssetConverter(repositoryHelper);
-            return converter.convertRelationships(pagedRelationshipsByType);
+            return assetConverter.convertRelationships(pagedRelationshipsByType);
         }
 
         return Collections.emptyList();
@@ -378,19 +378,18 @@ public class AssetCatalogHandler {
     private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
                                                                        List<EntityDetail> entities)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        AssetConverter converter = new AssetConverter(repositoryHelper);
         List<AssetDescription> result = new ArrayList<>();
 
         for (EntityDetail asset : entities) {
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(asset.getProperties()),
+                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
 
-            result.add(converter.getAssetDescription(asset));
+            result.add(assetConverter.getAssetDescription(asset));
         }
         return result;
     }
@@ -436,14 +435,18 @@ public class AssetCatalogHandler {
 
 
         for (EntityDetail entityDetail : result) {
-            invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                    GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
-                    supportedZones,
-                    ASSET_CATALOG_OMAS,
-                    methodName);
-            AssetElements assetElements = buildAssetElements(entityDetail);
-            list.add(assetElements);
+            try {
+                invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
+                        GUID_PARAMETER,
+                        commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
+                        supportedZones,
+                        ASSET_CATALOG_OMAS,
+                        methodName);
+                AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
+                list.add(assetElements);
+            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+                log.debug("This asset if a different zone: {}", entityDetail.getGUID());
+            }
         }
         return list;
     }
@@ -471,7 +474,7 @@ public class AssetCatalogHandler {
 
         EntityDetail entityDetail = getEntity(userId, entityGUID, entityTypeDefName);
 
-        if (entityDetail != null && entityDetail.getType() == null) {
+        if (entityDetail == null || entityDetail.getType() == null || entityDetail.getType().getTypeDefName() == null) {
             return null;
         }
 
@@ -485,12 +488,12 @@ public class AssetCatalogHandler {
         } else {
             invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(entityDetail.getProperties()),
+                    commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
 
-            AssetElements assetElements = buildAssetElements(entityDetail);
+            AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
             if (superTypes.contains(SCHEMA_ELEMENT)) {
                 getContextForSchemaElement(userId, entityDetail, assetElement);
             } else if (superTypes.contains(DEPLOYED_API)) {
@@ -524,7 +527,7 @@ public class AssetCatalogHandler {
         }
         invalidParameterHandler.validateAssetInSupportedZone(entityByGUID.getGUID(),
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityByGUID.getProperties()),
+                commonHandler.getAssetZoneMembership(entityByGUID.getClassifications()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
                 methodName);
@@ -548,6 +551,7 @@ public class AssetCatalogHandler {
         List<EntityDetail> result = new ArrayList<>();
 
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
+        searchCriteria = repositoryHelper.getContainsRegex(searchCriteria);
 
         for (String type : types) {
             result.addAll(searchEntityByCriteria(userId, searchCriteria, type, searchParameters, metadataCollection));
@@ -570,7 +574,7 @@ public class AssetCatalogHandler {
         if (glossaryTerm == null) {
             return null;
         }
-        AssetElements assetElements = buildAssetElements(glossaryTerm);
+        AssetElements assetElements = assetConverter.buildAssetElements(glossaryTerm);
 
         List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId,
                 glossaryTerm.getGUID(),
@@ -598,7 +602,7 @@ public class AssetCatalogHandler {
     private AssetElement addSchemaForGlossaryTerm(String userId, EntityDetail schema) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         AssetElement assetElement = new AssetElement();
         List<Element> elements = new ArrayList<>();
-        elements.add(buildAssetElements(schema));
+        elements.add(assetConverter.buildAssetElements(schema));
         assetElement.setContext(elements);
 
         findAsset(userId, Collections.singletonList(schema), assetElement);
@@ -626,7 +630,7 @@ public class AssetCatalogHandler {
         }
 
         for (EntityDetail endpoint : endpoints) {
-            addContextElement(assetElement, endpoint);
+            assetConverter.addContextElement(assetElement, endpoint);
             getConnectionContext(userId, endpoint, assetElement);
         }
 
@@ -673,7 +677,7 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(ports)) {
             for (EntityDetail port : ports) {
-                addContextElement(assetElement, port);
+                assetConverter.addContextElement(assetElement, port);
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
                     EntityDetail schemaType = repositoryHandler.getEntityForRelationshipType(userId,
                             port.getGUID(),
@@ -683,7 +687,7 @@ public class AssetCatalogHandler {
                             method);
 
                     if (schemaType != null) {
-                        addElement(assetElement, schemaType);
+                        assetConverter.addElement(assetElement, schemaType);
                         getContextForSchemaType(userId, assetElement, schemaType);
                     }
                 }
@@ -749,7 +753,7 @@ public class AssetCatalogHandler {
         if (schemaType == null) {
             return;
         }
-        addElement(assetElement, schemaType);
+        assetConverter.addElement(assetElement, schemaType);
 
         if (isComplexSchemaType(schemaType.getType().getTypeDefName()).isPresent()) {
             getContextForSchemaType(userId, assetElement, schemaType);
@@ -802,7 +806,7 @@ public class AssetCatalogHandler {
                 parentFolderProxy.getGUID(),
                 parentFolderProxy.getType().getTypeDefName());
 
-        addElement(assetElement, parentFolder);
+        assetConverter.addElement(assetElement, parentFolder);
         getContextForFileFolder(userId, parentFolder, assetElement);
     }
 
@@ -811,7 +815,7 @@ public class AssetCatalogHandler {
                                                List<EntityDetail> parentFolders)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         for (EntityDetail folder : parentFolders) {
-            addElement(assetElement, folder);
+            assetConverter.addElement(assetElement, folder);
             getContextForFileFolder(userId, folder, assetElement);
         }
     }
@@ -854,7 +858,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (host != null) {
-            addElement(assetElement, host);
+            assetConverter.addElement(assetElement, host);
             getContextForHost(userId, host, assetElement);
         }
     }
@@ -874,7 +878,7 @@ public class AssetCatalogHandler {
                 0,
                 0,
                 method);
-        networkGateways.forEach(networkGateway -> addElement(assetElement, networkGateway));
+        networkGateways.forEach(networkGateway -> assetConverter.addElement(assetElement, networkGateway));
 
         List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -888,7 +892,7 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(hosts)) {
             for (EntityDetail host : hosts) {
-                addElement(assetElement, host);
+                assetConverter.addElement(assetElement, host);
                 getContextForHost(userId, host, assetElement);
             }
         }
@@ -922,7 +926,7 @@ public class AssetCatalogHandler {
                     method);
         }
         if (hosts != null) {
-            hosts.forEach(host -> addElement(assetElement, host));
+            hosts.forEach(host -> assetConverter.addElement(assetElement, host));
         }
 
         EntityDetail operatingPlatform = repositoryHandler.getEntityForRelationshipType(userId,
@@ -932,7 +936,7 @@ public class AssetCatalogHandler {
                 HOST_OPERATING_PLATFORM,
                 method);
 
-        addElement(assetElement, operatingPlatform);
+        assetConverter.addElement(assetElement, operatingPlatform);
 
         List<EntityDetail> locations = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -945,7 +949,7 @@ public class AssetCatalogHandler {
                 method);
         if (CollectionUtils.isNotEmpty(locations)) {
             for (EntityDetail location : locations) {
-                addElement(assetElement, location);
+                assetConverter.addElement(assetElement, location);
                 getContextForLocation(userId, assetElement, location);
             }
         }
@@ -969,7 +973,7 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(assetLocations)) {
             for (EntityDetail assetLocation : assetLocations) {
-                addElement(assetElement, assetLocation);
+                assetConverter.addElement(assetElement, assetLocation);
                 getAsset(userId, assetElement, assetLocation);
             }
         }
@@ -987,7 +991,7 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(nestedLocations)) {
             for (EntityDetail nestedLocation : nestedLocations) {
-                addElement(assetElement, nestedLocation);
+                assetConverter.addElement(assetElement, nestedLocation);
                 getContextForLocation(userId, assetElement, nestedLocation);
             }
         }
@@ -1009,8 +1013,8 @@ public class AssetCatalogHandler {
                 method);
 
         if (softwareServerPlatform != null) {
-            parentElement = getLastNode(assetElement);
-            addElement(assetElement, softwareServerPlatform);
+            parentElement = assetConverter.getLastNode(assetElement);
+            assetConverter.addElement(assetElement, softwareServerPlatform);
             getContextForSoftwareServerPlatform(userId, softwareServerPlatform, assetElement);
         }
 
@@ -1024,9 +1028,9 @@ public class AssetCatalogHandler {
 
         if (endpoint != null) {
             if (parentElement != null) {
-                addChildElement(parentElement, Collections.singletonList(buildAssetElements(endpoint)));
+                assetConverter.addChildElement(parentElement, Collections.singletonList(assetConverter.buildAssetElements(endpoint)));
             } else {
-                addContextElement(assetElement, endpoint);
+                assetConverter.addContextElement(assetElement, endpoint);
             }
             getConnectionContext(userId, endpoint, assetElement);
         }
@@ -1054,7 +1058,7 @@ public class AssetCatalogHandler {
         }
 
         for (EntityDetail connection : connections) {
-            addElement(assetElement, connection);
+            assetConverter.addElement(assetElement, connection);
 
             List<EntityDetail> elements = new ArrayList<>();
             EntityDetail connectorType = repositoryHandler.getEntityForRelationshipType(
@@ -1079,12 +1083,12 @@ public class AssetCatalogHandler {
 
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(asset.getProperties()),
+                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
                     ASSET_CATALOG_OMAS,
                     methodName);
             elements.add(asset);
-            elements.forEach(element -> addElement(assetElement, element));
+            elements.forEach(element -> assetConverter.addElement(assetElement, element));
         }
     }
 
@@ -1121,12 +1125,12 @@ public class AssetCatalogHandler {
                 }
             }
 
-            Element lastNode = getLastNode(assetElement);
+            Element lastNode = assetConverter.getLastNode(assetElement);
             for (EntityDetail schemaAttribute : schemaAttributes) {
                 if (lastNode == null) {
-                    addContextElement(assetElement, schemaAttribute);
+                    assetConverter.addContextElement(assetElement, schemaAttribute);
                 } else {
-                    addElement(assetElement, schemaAttribute);
+                    assetConverter.addElement(assetElement, schemaAttribute);
                 }
             }
 
@@ -1148,7 +1152,7 @@ public class AssetCatalogHandler {
 
                     if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
                         for (EntityDetail schemaAttributeTypeEntity : schemaAttributeTypeEntities) {
-                            addElement(assetElement, schemaAttributeTypeEntity);
+                            assetConverter.addElement(assetElement, schemaAttributeTypeEntity);
                         }
                         findAsset(userId, schemaAttributeTypeEntities, assetElement);
                     } else {
@@ -1183,7 +1187,7 @@ public class AssetCatalogHandler {
             }
 
             for (EntityDetail attributeForSchema : attributeForSchemas) {
-                addElement(assetElement, attributeForSchema);
+                assetConverter.addElement(assetElement, attributeForSchema);
 
                 if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
                     setAssetDetails(userId, assetElement, attributeForSchema);
@@ -1200,7 +1204,7 @@ public class AssetCatalogHandler {
                             method);
 
                     for (EntityDetail schema : schemaAttributeTypeEntities) {
-                        addElement(assetElement, schema);
+                        assetConverter.addElement(assetElement, schema);
                         getContextForSchemaType(userId, assetElement, schema);
                     }
                 }
@@ -1225,22 +1229,27 @@ public class AssetCatalogHandler {
             return;
         }
 
-        invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
-                GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(dataSet.getProperties()),
-                supportedZones,
-                ASSET_CATALOG_OMAS,
-                methodName);
+        try {
+            invalidParameterHandler.validateAssetInSupportedZone(dataSet.getGUID(),
+                    GUID_PARAMETER,
+                    commonHandler.getAssetZoneMembership(dataSet.getClassifications()),
+                    supportedZones,
+                    ASSET_CATALOG_OMAS,
+                    methodName);
 
-        addElement(assetElement, dataSet);
+            if (assetElement.getContext() != null) {
+                assetConverter.addElement(assetElement, dataSet);
+            } else {
+                assetElement.setContext(Collections.singletonList(assetConverter.buildAssetElements(dataSet)));
+            }
 
-        if (assetElement.getContext() != null) {
-            addElement(assetElement, dataSet);
-        } else {
-            assetElement.setContext(Collections.singletonList(buildAssetElements(dataSet)));
+            getAsset(userId, assetElement, dataSet);
+        } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+            if (CollectionUtils.isNotEmpty(assetElement.getContext())) {
+                assetElement.getContext().remove(assetElement.getContext().size() - 1);
+            }
+            log.debug("Asset is not in the supported zones {}", dataSet.getGUID());
         }
-
-        getAsset(userId, assetElement, dataSet);
     }
 
     private void getAsset(String userId,
@@ -1275,11 +1284,11 @@ public class AssetCatalogHandler {
                 if (asset != null) {
                     invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                             GUID_PARAMETER,
-                            commonHandler.getAssetZoneMembership(asset.getProperties()),
+                            commonHandler.getAssetZoneMembership(asset.getClassifications()),
                             supportedZones,
                             ASSET_CATALOG_OMAS,
                             methodName);
-                    setAssetElementAttributes(assetElement, asset);
+                    assetConverter.addElement(assetElement, asset);
                     setConnections(userId, assetElement, asset);
                 }
             }
@@ -1292,28 +1301,6 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException {
         List<Connection> connections = getConnections(userId, asset.getGUID());
         assetElement.setConnections(connections);
-    }
-
-    private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
-        setElement(assetElement, asset);
-    }
-
-    private AssetElements buildAssetElements(EntityDetail entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        AssetElements assetElements = new AssetElements();
-        setElement(assetElements, entity);
-
-        return assetElements;
-    }
-
-    private void setElement(Element element, EntityDetail entityDetail) {
-        element.setGuid(entityDetail.getGUID());
-        element.setTypeDefGUID(entityDetail.getType().getTypeDefGUID());
-        element.setTypeDefName(entityDetail.getType().getTypeDefName());
-        element.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
     }
 
     private Optional<TypeDef> isComplexSchemaType(String typeDefName) {
@@ -1352,52 +1339,6 @@ public class AssetCatalogHandler {
         return Collections.emptyList();
     }
 
-    private Element lastElementAdded(Element tree) {
-        List<Element> innerElement = tree.getParentElement();
-        if (innerElement == null) {
-            return tree;
-        }
-        return lastElementAdded(innerElement.get(innerElement.size() - 1));
-    }
-
-    private void addElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
-        List<Element> elements = new ArrayList<>();
-        elements.add(buildAssetElements(entityDetail));
-
-        if (context != null) {
-            Element leaf = lastElementAdded(context.get(context.size() - 1));
-            leaf.setParentElement(elements);
-        } else {
-            assetElement.setContext(elements);
-        }
-    }
-
-    private Element getLastNode(AssetElement assetElement) {
-        List<Element> context = assetElement.getContext();
-
-        return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
-    }
-
-    private void addChildElement(Element parentElement, List<Element> elements) {
-        if (parentElement != null) {
-            if (parentElement.getParentElement() != null) {
-                parentElement.getParentElement().addAll(elements);
-            } else {
-                parentElement.setParentElement(elements);
-            }
-        }
-    }
-
-    private void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
-        if (context == null) {
-            context = new ArrayList<>();
-        }
-        context.add(buildAssetElements(entityDetail));
-        assetElement.setContext(context);
-    }
-
     private List<Classification> getEntityClassifications(String userId, String assetId, String assetTypeName) throws
             InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityClassifications";
@@ -1406,7 +1347,7 @@ public class AssetCatalogHandler {
 
         invalidParameterHandler.validateAssetInSupportedZone(entityDetails.getGUID(),
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityDetails.getProperties()),
+                commonHandler.getAssetZoneMembership(entityDetails.getClassifications()),
                 supportedZones,
                 ASSET_CATALOG_OMAS,
                 methodName);
@@ -1452,7 +1393,7 @@ public class AssetCatalogHandler {
             entityNeighborhood = metadataCollection.getEntityNeighborhood(
                     userId,
                     entityGUID,
-                    searchParameters.getEntityTypes(),
+                    commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes()),
                     searchParameters.getRelationshipTypeGUIDs(),
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     searchParameters.getLimitResultsByClassification(),

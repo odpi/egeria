@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -10,8 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
@@ -55,11 +57,12 @@ public class CommonHandler {
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+        AssetConverter converter = new AssetConverter(repositoryHelper);
 
         if (typeDefByName != null) {
             List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
 
-            Type type = convertType(typeDefByName);
+            Type type = converter.convertType(typeDefByName);
             List<Type> subTypes = getSubTypes(activeTypeDefs, type);
             response.add(type);
             response.addAll(subTypes);
@@ -89,15 +92,28 @@ public class CommonHandler {
     /**
      * Fetch the zone membership property
      *
-     * @param properties asset properties
+     * @param classifications asset properties
      * @return the list that contains the zone membership
      */
-    public List<String> getAssetZoneMembership(InstanceProperties properties) {
+    public List<String> getAssetZoneMembership(List<Classification> classifications) {
         String methodName = "getAssetZoneMembership";
-        List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS, "zoneMembership", properties, methodName);
-        if (CollectionUtils.isNotEmpty(zoneMembership)) {
-            return zoneMembership;
+        if (CollectionUtils.isEmpty(classifications)) {
+            return Collections.emptyList();
         }
+
+        Optional<Classification> assetZoneMembership = classifications.stream()
+                .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP))
+                .findFirst();
+
+        if (assetZoneMembership.isPresent()) {
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS,
+                    "zoneMembership", assetZoneMembership.get().getProperties(), methodName);
+
+            if (CollectionUtils.isNotEmpty(zoneMembership)) {
+                return zoneMembership;
+            }
+        }
+
         return Collections.emptyList();
     }
 
@@ -121,7 +137,7 @@ public class CommonHandler {
         try {
             return repositoryHandler.getMetadataCollection().getEntityDetail(userId, guid);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-            e.printStackTrace();
+            errorHandler.handleRepositoryError(e, methodName);
         } catch (RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
@@ -135,6 +151,13 @@ public class CommonHandler {
         return null;
     }
 
+    List<String> getTypesGUID(String userId, List<String> types) {
+        if (CollectionUtils.isEmpty(types)) {
+            return Collections.emptyList();
+        }
+        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
+    }
+
     private void collectSubTypes(List<Type> types, List<TypeDef> activeTypeDefs, List<Type> collector) {
         for (Type currentSubType : types) {
             List<Type> subTypes = getSubTypes(activeTypeDefs, currentSubType);
@@ -145,27 +168,16 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
+        AssetConverter converter = new AssetConverter(repositoryHelper);
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {
             if (typeDef.getSuperType() != null && typeDef.getSuperType().getName().equals(typeName)) {
-                subTypes.add(convertType(typeDef));
+
+                subTypes.add(converter.convertType(typeDef));
             }
         }
         return subTypes;
-    }
-
-    private Type convertType(TypeDef openType) {
-        Type type = new Type();
-        buildType(openType, type);
-        return type;
-    }
-
-    private void buildType(TypeDef openType, Type type) {
-        type.setName(openType.getName());
-        type.setDescription(openType.getDescription());
-        type.setVersion(openType.getVersion());
-        type.setSuperType(openType.getSuperType().getName());
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {
@@ -188,9 +200,5 @@ public class CommonHandler {
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);
         }
-    }
-
-    public List<String> getTypesGUID(String userId, List<String> types) {
-        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
     }
 }

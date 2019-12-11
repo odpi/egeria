@@ -5,6 +5,7 @@ public final class Constants {
 
     public static final String ASSET_CATALOG_OMAS = "Asset Catalog OMAS";
     public static final String REFERENCEABLE = "Referenceable";
+    public static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String ASSET_GUID = "896d14c2-7522-4f6c-8519-757711943fe6";
     public static final String SCHEMA_ELEMENT_GUID = "718d4244-8559-49ed-ad5a-10e5c305a656";
     public static final String SCHEMA_ELEMENT = "SchemaElement";

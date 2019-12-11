@@ -8,9 +8,6 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHan
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-
-import java.util.List;
 
 public class RelationshipHandler {
 

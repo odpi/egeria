@@ -89,8 +89,8 @@ public class AssetCatalogEntityResource {
                                                        @PathVariable("assetGUID") @NotBlank String assetGUID,
                                                        @RequestParam(name = "assetType", required = false) String assetType,
                                                        @RequestParam(name = "relationshipType", required = false) String relationshipType,
-                                                       @RequestParam(name = "from", required = false) @PositiveOrZero Integer from,
-                                                       @RequestParam(name = "pageSize", required = false) @PositiveOrZero Integer pageSize) {
+                                                       @RequestParam(name = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
+                                                       @RequestParam(name = "pageSize", required = false, defaultValue = "100") @PositiveOrZero Integer pageSize) {
         return assetService.getAssetRelationships(serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
     }
 
