@@ -66,7 +66,7 @@ public class OpenLineageService {
     public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -87,7 +87,7 @@ public class OpenLineageService {
     public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -108,7 +108,7 @@ public class OpenLineageService {
     public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -130,7 +130,7 @@ public class OpenLineageService {
     public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -152,7 +152,7 @@ public class OpenLineageService {
         LineageVerticesAndEdges response =
                 null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
