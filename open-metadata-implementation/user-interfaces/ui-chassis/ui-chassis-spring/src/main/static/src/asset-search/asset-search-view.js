@@ -51,7 +51,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <iron-icon icon="search"></iron-icon>
                 </vaadin-button>
              
-                <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+                <multiselect-combo-box id="combo" items="[[items]]" item-label-path="name" ordered="false">
                 </multiselect-combo-box>
            </div>
         </form>
@@ -134,14 +134,13 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     _search() {
         this.$.searchForm.validate();
         console.log('searching: '+ this.q);
-        var guids = [];
-        var itemsMap = new Map(Object.entries(this.items))
+        var types = [];
 
         this.$.combo.selectedItems.forEach(function(item){
-            guids.push( itemsMap.get(item));
+            types.push( item.name);
         });
 
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + guids;
+        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
         this.$.tokenAjax._go();
     }
 
@@ -158,10 +157,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             detail: {page: "asset-lineage",
                      subview: "ultimateSource"
             }}));
-    }
-
-    _getTypesNames(allTypes){
-        return Object.keys(allTypes);
     }
 
     attached() {
