@@ -146,8 +146,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                           RelationshipDef                    relationshipDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+              RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+              RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         this.workPad               = workPad;
         this.metadataCollectionId  = workPad.getTutMetadataCollectionId();
@@ -457,8 +457,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition((result != null),
                             assertion1,
                             testTypeName + assertionMsg1,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -476,8 +476,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(  (  (!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount ) ),
                             assertion2,
                             testTypeName + assertionMsg2,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -540,8 +540,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(matchingResult,
                             assertion3,
                             testTypeName + assertionMsg3,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                     // ----------------------------------------------------
                     // REPEAT SEARCH WITH MATCHCRITERIA NONE
@@ -621,8 +621,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition((result != null),
                             assertion4,
                             testTypeName + assertionMsg4,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -640,8 +640,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(  (  (!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount ) ),
                             assertion5,
                             testTypeName + assertionMsg5,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -704,8 +704,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(matchingResult,
                             assertion6,
                             testTypeName + assertionMsg6,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                 }
             }
@@ -856,8 +856,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((result != null),
                                 assertion7,
                                 testTypeName + assertionMsg7,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -874,8 +874,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                 assertion8,
                                 testTypeName + assertionMsg8,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
@@ -953,8 +953,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(matchingResult,
                                 assertion9,
                                 testTypeName + assertionMsg9,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                         // ----------------------------------------------------------------
@@ -988,8 +988,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((expectedRelationshipCount == 0 || result != null),
                                 assertion10,
                                 testTypeName + assertionMsg10,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
@@ -1013,8 +1013,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                             assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                     assertion11,
                                     testTypeName + assertionMsg11,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                             /*
@@ -1090,8 +1090,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                             assertCondition(matchingResult,
                                     assertion12,
                                     testTypeName + assertionMsg12,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                         }
 
 
@@ -1128,8 +1128,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((expectedRelationshipCount == 0 || result != null),
                                 assertion13,
                                 testTypeName + assertionMsg13,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Since no result is legitimate in this test, only proceed with further checks where relevant
@@ -1150,8 +1150,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                             assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                     assertion14,
                                     testTypeName + assertionMsg14,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                             /*
@@ -1226,8 +1226,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                             assertCondition(matchingResult,
                                     assertion15,
                                     testTypeName + assertionMsg15,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                         }
 
                     }
@@ -1331,8 +1331,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition((result != null),
                             assertion16,
                             testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                     /*
                      * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1349,8 +1349,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                             assertion17,
                             testTypeName + assertionMsg17,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                     /*
@@ -1415,8 +1415,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     assertCondition(matchingResult,
                             assertion18,
                             testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                     /*
@@ -1481,8 +1481,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((result != null),
                                 assertion19,
                                 testTypeName + assertionMsg19,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1499,8 +1499,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                 assertion20,
                                 testTypeName + assertionMsg20,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1565,8 +1565,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(matchingResult,
                                 assertion21,
                                 testTypeName + assertionMsg21,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                     }
 
@@ -1632,8 +1632,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((result != null),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1650,8 +1650,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                 assertion23,
                                 testTypeName + assertionMsg23,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1716,8 +1716,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(matchingResult,
                                 assertion24,
                                 testTypeName + assertionMsg24,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                     }
@@ -1786,8 +1786,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition((result != null),
                                 assertion25,
                                 testTypeName + assertionMsg25,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1804,8 +1804,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
                                 assertion26,
                                 testTypeName + assertionMsg26,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1870,8 +1870,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         assertCondition(matchingResult,
                                 assertion27,
                                 testTypeName + assertionMsg27,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
                     }

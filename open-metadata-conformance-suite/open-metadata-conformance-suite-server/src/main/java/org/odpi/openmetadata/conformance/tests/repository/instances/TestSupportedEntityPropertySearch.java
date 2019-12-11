@@ -173,8 +173,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                                              EntityDef                    entityDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.entityDef = entityDef;
@@ -554,8 +554,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -575,8 +575,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -605,8 +605,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion3,
                 testTypeName + assertionMsg3,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -648,8 +648,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion4,
                 testTypeName + assertionMsg4,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -669,8 +669,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion5,
                 testTypeName + assertionMsg5,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
         /*
          * Verify that any extra instances in the result are valid
          */
@@ -697,8 +697,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion6,
                 testTypeName + assertionMsg6,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -735,8 +735,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion7,
                 testTypeName + assertionMsg7,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
@@ -761,8 +761,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion8,
                 testTypeName + assertionMsg8,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -790,8 +790,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion9,
                 testTypeName + assertionMsg9,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -827,8 +827,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion10,
                 testTypeName + assertionMsg10,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /*
@@ -863,8 +863,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion11,
                 testTypeName + assertionMsg11,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -894,8 +894,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion12,
                 testTypeName + assertionMsg12,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -931,8 +931,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion13,
                 testTypeName + assertionMsg13,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
@@ -962,8 +962,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion14,
                 testTypeName + assertionMsg14,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -991,8 +991,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion15,
                 testTypeName + assertionMsg15,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -1028,8 +1028,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion16,
                 testTypeName + assertionMsg16,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -1055,8 +1055,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion17,
                 testTypeName + assertionMsg17,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1085,8 +1085,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion18,
                 testTypeName + assertionMsg18,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1165,14 +1165,14 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion19,
                 testTypeName + assertionMsg19,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         assertCondition((result.size() == entityCount),
                 assertion20,
                 testTypeName + assertionMsg20,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -1224,8 +1224,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((result != null),
                     assertion21,
                     testTypeName + assertionMsg21,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -1245,8 +1245,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((result.containsAll(expectedResult)),
                     assertion22,
                     testTypeName + assertionMsg22,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that any extra instances in the result are valid
@@ -1277,8 +1277,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((contamination == false),
                     assertion23,
                     testTypeName + assertionMsg23,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
         }
 
 
@@ -1331,8 +1331,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((result != null),
                     assertion24,
                     testTypeName + assertionMsg24,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
@@ -1357,8 +1357,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((result.containsAll(expectedResult)),
                     assertion25,
                     testTypeName + assertionMsg25,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that any extra instances in the result are valid
@@ -1389,8 +1389,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             assertCondition((contamination == false),
                     assertion26,
                     testTypeName + assertionMsg26,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
         }
 
 
@@ -1456,8 +1456,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion27,
                 testTypeName + assertionMsg27,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -1483,8 +1483,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion28,
                 testTypeName + assertionMsg28,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1512,8 +1512,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion29,
                 testTypeName + assertionMsg29,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1555,8 +1555,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result != null),
                 assertion30,
                 testTypeName + assertionMsg30,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
@@ -1582,8 +1582,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((result.containsAll(expectedResult)),
                 assertion31,
                 testTypeName + assertionMsg31,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /*
@@ -1612,8 +1612,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion32,
                 testTypeName + assertionMsg32,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1679,8 +1679,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         assertCondition((contamination == false),
                 assertion33,
                 testTypeName + assertionMsg33,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
         /*

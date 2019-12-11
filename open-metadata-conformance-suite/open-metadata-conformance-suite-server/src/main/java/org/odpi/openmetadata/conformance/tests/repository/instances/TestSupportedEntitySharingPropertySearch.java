@@ -142,8 +142,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                     EntityDef                    entityDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         this.workPad              = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
@@ -440,8 +440,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition((result != null),
                             assertion1,
                             testTypeName + assertionMsg1,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -459,8 +459,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(  (  (!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount ) ),
                             assertion2,
                             testTypeName + assertionMsg2,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -524,8 +524,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(matchingResult,
                             assertion3,
                             testTypeName + assertionMsg3,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     // ----------------------------------------------------
@@ -611,8 +611,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition((result != null),
                             assertion4,
                             testTypeName + assertionMsg4,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -630,8 +630,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                             assertion5,
                             testTypeName + assertionMsg5,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -692,8 +692,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(matchingResult,
                             assertion6,
                             testTypeName + assertionMsg6,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                 }
@@ -847,8 +847,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((result != null),
                                 assertion7,
                                 testTypeName + assertionMsg7,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -865,8 +865,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                 assertion8,
                                 testTypeName + assertionMsg8,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
@@ -941,8 +941,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(matchingResult,
                                 assertion9,
                                 testTypeName + assertionMsg9,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                         // ----------------------------------------------------------------
@@ -977,8 +977,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((expectedEntityCount == 0 || result != null),
                                 assertion10,
                                 testTypeName + assertionMsg10,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
@@ -1002,8 +1002,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                             assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                     assertion11,
                                     testTypeName + assertionMsg11,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                             /*
@@ -1079,8 +1079,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                             assertCondition(matchingResult,
                                     assertion12,
                                     testTypeName + assertionMsg12,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                         }
@@ -1120,8 +1120,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((expectedEntityCount == 0 || result != null),
                                 assertion13,
                                 testTypeName + assertionMsg13,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Since no result is legitimate in this test, only proceed with further checks where relevant
@@ -1143,8 +1143,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                             assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                     assertion14,
                                     testTypeName + assertionMsg14,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                             /*
@@ -1219,8 +1219,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                             assertCondition(matchingResult,
                                     assertion15,
                                     testTypeName + assertionMsg15,
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                         }
@@ -1330,8 +1330,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition((result != null),
                             assertion16,
                             testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
                     /*
                      * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1348,8 +1348,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                             assertion17,
                             testTypeName + assertionMsg17,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
                     /*
@@ -1414,8 +1414,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                     assertCondition(matchingResult,
                             assertion18,
                             testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
                     /*
@@ -1482,8 +1482,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((result != null),
                                 assertion19,
                                 testTypeName + assertionMsg19,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1500,8 +1500,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                 assertion20,
                                 testTypeName + assertionMsg20,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1566,8 +1566,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(matchingResult,
                                 assertion21,
                                 testTypeName + assertionMsg21,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
                     }
 
                     /*
@@ -1633,8 +1633,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((result != null),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1651,8 +1651,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                 assertion23,
                                 testTypeName + assertionMsg23,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1717,8 +1717,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(matchingResult,
                                 assertion24,
                                 testTypeName + assertionMsg24,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
                     }
 
 
@@ -1788,8 +1788,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition((result != null),
                                 assertion25,
                                 testTypeName + assertionMsg25,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1806,8 +1806,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(((!pageLimited && result.size() == expectedEntityCount) || (pageLimited && result.size() >= expectedEntityCount)),
                                 assertion26,
                                 testTypeName + assertionMsg26,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
                         /*
@@ -1872,8 +1872,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                         assertCondition(matchingResult,
                                 assertion27,
                                 testTypeName + assertionMsg27,
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
                     }
 
                 }
