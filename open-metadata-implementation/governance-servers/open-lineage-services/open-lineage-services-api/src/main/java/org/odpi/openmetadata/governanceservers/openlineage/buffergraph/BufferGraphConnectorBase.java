@@ -36,6 +36,16 @@ public class BufferGraphConnectorBase extends ConnectorBase implements BufferGra
     }
 
     @Override
+    public void updateEntity(LineageEvent lineageEvent) {
+
+    }
+
+    @Override
+    public void deleteEntity(String guid) {
+
+    }
+
+    @Override
     public void schedulerTask() {
 
     }
