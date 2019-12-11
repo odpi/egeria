@@ -26,6 +26,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -612,7 +613,7 @@ class DataEngineRESTServicesTest {
 
         when(processHandler.findProcess(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
-        when(processHandler.getPortsForProcess(USER, GUID)).thenReturn(new HashSet<>(Collections.singletonList(PORT_GUID)));
+        when(processHandler.getPortsForProcess(USER, GUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenReturn(new HashSet<>(Collections.singletonList(PORT_GUID)));
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
         ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
@@ -632,13 +633,15 @@ class DataEngineRESTServicesTest {
     @Test
     void addPortsToProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockProcessHandler("addPortsToProcess");
+        mockPortHandler("addPortsToProcess");
 
         PortListRequestBody requestBody = mockPortListRequestBody();
+        when(portHandler.findPortAlias(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
         GUIDResponse response = dataEngineRESTServices.addPortsToProcess(USER, SERVER_NAME, PROCESS_GUID, requestBody);
 
-        verify(processHandler, times(1)).addProcessPortRelationship(USER, PROCESS_GUID, GUID
-                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(processHandler, times(1)).addProcessPortRelationship(USER, PROCESS_GUID, GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PROCESS_GUID, response.getGUID());
     }
 
@@ -654,8 +657,11 @@ class DataEngineRESTServicesTest {
 
         String methodName = "addPortsToProcess";
         mockProcessHandler(methodName);
+        mockPortHandler(methodName);
+
 
         PortListRequestBody requestBody = mockPortListRequestBody();
+        when(portHandler.findPortAlias(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
         org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException mockedException =
                 mockException(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
@@ -678,8 +684,11 @@ class DataEngineRESTServicesTest {
 
         String methodName = "addPortsToProcess";
         mockProcessHandler(methodName);
+        mockPortHandler(methodName);
+
 
         PortListRequestBody requestBody = mockPortListRequestBody();
+        when(portHandler.findPortAlias(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException mockedException =
                 mockException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException.class,
@@ -829,7 +838,7 @@ class DataEngineRESTServicesTest {
 
     private PortListRequestBody mockPortListRequestBody() {
         PortListRequestBody requestBody = new PortListRequestBody();
-        requestBody.setPorts(Collections.singletonList(GUID));
+        requestBody.setPorts(Collections.singletonList(QUALIFIED_NAME));
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
