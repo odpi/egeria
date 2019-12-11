@@ -23,6 +23,8 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
     protected String              tutType;
     protected int                 maxPageSize;
 
+    protected Boolean             workbenchComplete;
+
     protected List<OpenMetadataConformanceTestEvidence>  testEvidenceList = new ArrayList<>();
 
     protected Map<String, OpenMetadataTestCase>    testCaseMap = new HashMap<>();
@@ -57,6 +59,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         this.localServerPassword = localServerPassword;
         this.tutType = tutType;
         this.maxPageSize = maxPageSize;
+        this.workbenchComplete = false;
     }
 
 
@@ -114,6 +117,29 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         return localServerUserId;
     }
 
+    /**
+     * Return the completion state of the workbench.
+     *
+     * @return boolean - whether workbench is complete
+     */
+    public OpenMetadataConformanceWorkbenchStatus getWorkbenchStatus()
+    {
+        OpenMetadataConformanceWorkbenchStatus status = new OpenMetadataConformanceWorkbenchStatus();
+        status.setWorkbenchId(workbenchId);
+        if (workbenchComplete) {
+            status.setWorkbenchComplete();
+        }
+        return status;
+    }
+
+    /**
+     * Set the completion state of the workbench to true.
+     *
+     */
+    public void setWorkbenchComplete()
+    {
+        this.workbenchComplete = true;
+    }
 
 
     /**
