@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetDescriptionResponse extends AssetCatalogOMASAPIResponse implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<AssetDescription> assetDescriptionList;
 
     public List<AssetDescription> getAssetDescriptionList() {
