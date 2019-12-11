@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class GraphConstants {
@@ -12,6 +13,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "ed";
 
     public static final String PROPERTY_NAME_NODE_ID = "nodeID";
+    public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE = "condensedSource";
+    public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION = "condensedDestination";
     public static final String PROPERTY_NAME_GUID = "guid";
     public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
     public static final String PROPERTY_NAME_NAME = "name";
@@ -24,6 +27,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PROXY = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
     public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
+    public static final String PROPERTY_NAME_ALTERNATIVE_DISPLAY_NAME = "propdisplayName";
     public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
@@ -44,6 +48,7 @@ public class GraphConstants {
 
     public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
+    public static final String EDGE_LABEL_DATAFLOW = "dataFlow";
     public static final String EDGE_LABEL_SEMANTIC = "semanticAssignment";
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
     public static final String EDGE_LABEL_SUBPROCESS_TO_PROCESS = "subProcess";
@@ -59,14 +64,13 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PROXY = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_PROXY;
     public static final String PROPERTY_KEY_GLOSSARY_TERM = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GLOSSARY_TERM;
     public static final String PROPERTY_KEY_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_DISPLAY_NAME;
-    public static final String PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME = "vepropdisplayName";
+    public static final String PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_ALTERNATIVE_DISPLAY_NAME;
 
     public static final String PROPERTY_KEY_ENTITY_VERSION = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_VERSION;
     public static final String PROPERTY_KEY_ENTITY_CREATED_BY = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_CREATED_BY;
     public static final String PROPERTY_KEY_ENTITY_CREATE_TIME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_CREATE_TIME;
     public static final String PROPERTY_KEY_ENTITY_UPDATED_BY = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_UPDATED_BY;
     public static final String PROPERTY_KEY_ENTITY_UPDATE_TIME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_UPDATE_TIME;
-
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;
@@ -75,6 +79,49 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATED_BY = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATED_BY;
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_RELATIONSHIP_LABEL = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_LABEL;
+
+
+    public static final HashSet<String> returnedPropertiesWhiteList = new HashSet<String>(){{
+        add(PROPERTY_KEY_ENTITY_GUID);
+        add(PROPERTY_KEY_DISPLAY_NAME);
+        add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
+        add(PROPERTY_KEY_GLOSSARY_TERM);
+        add(PROPERTY_KEY_ENTITY_CREATED_BY);
+        add(PROPERTY_NAME_SCHEMA_DISPLAY_NAME);
+        add(PROPERTY_NAME_TABLE_DISPLAY_NAME);
+        add(PROPERTY_KEY_ENTITY_CREATE_TIME);
+        add(PROPERTY_KEY_ENTITY_UPDATED_BY);
+        add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
+
+    }};
+
+    public static final Map<String, String> filterPrefixMap = new HashMap<String, String>() {
+        {
+            put(PROPERTY_KEY_ENTITY_NODE_ID, PROPERTY_NAME_NODE_ID);
+            put(PROPERTY_KEY_ENTITY_GUID, PROPERTY_NAME_GUID);
+            put(PROPERTY_KEY_NAME_QUALIFIED_NAME, PROPERTY_NAME_QUALIFIED_NAME);
+            put(PROPERTY_KEY_ENTITY_NAME, PROPERTY_NAME_NAME);
+            put(PROPERTY_KEY_LABEL, PROPERTY_NAME_LABEL);
+            put(PROPERTY_KEY_PROXY, PROPERTY_NAME_PROXY);
+            put(PROPERTY_KEY_GLOSSARY_TERM, PROPERTY_NAME_GLOSSARY_TERM);
+            put(PROPERTY_KEY_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
+            put(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
+
+            put(PROPERTY_KEY_ENTITY_VERSION, PROPERTY_NAME_VERSION);
+            put(PROPERTY_KEY_ENTITY_CREATED_BY, PROPERTY_NAME_CREATED_BY);
+            put(PROPERTY_KEY_ENTITY_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
+            put(PROPERTY_KEY_ENTITY_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
+            put(PROPERTY_KEY_ENTITY_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
+
+            put(PROPERTY_KEY_RELATIONSHIP_GUID, PROPERTY_NAME_GUID);
+            put(PROPERTY_KEY_RELATIONSHIP_VERSION, PROPERTY_NAME_VERSION);
+            put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY, PROPERTY_NAME_CREATED_BY);
+            put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
+            put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
+            put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
+            put(PROPERTY_KEY_RELATIONSHIP_LABEL, PROPERTY_NAME_LABEL);
+        }};
 
     // Map of names to property key names
     public static final Map<String, String> corePropertiesRelationship = new HashMap<String, String>() {{
@@ -98,6 +145,7 @@ public class GraphConstants {
         put(PROPERTY_NAME_UPDATE_TIME, "java.lang.Date");
         put(PROPERTY_NAME_LABEL, "java.lang.String");
         put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
-
     }};
+
+
 }

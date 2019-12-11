@@ -94,18 +94,21 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     private static final String assertion25    = testCaseId + "-25";
     private static final String assertionMsg25 = " historical retrieval returned correct version relationship ";
 
-
     private static final String assertion27    = testCaseId + "-27";
     private static final String assertionMsg27 = " relationship end types are supported by repository  ";
-
 
     private static final String assertion28    = testCaseId + "-28";
     private static final String assertionMsg28 = " repository supports creation of instances ";
 
+    private static final String assertion29    = testCaseId + "-29";
+    private static final String assertionMsg29 = " repository supports undo of operations ";
 
-    private static final String discoveredProperty_undoSupport                = " undo support";
-    private static final String discoveredProperty_softDeleteSupport          = " soft delete support";
-    private static final String discoveredProperty_historicRetrievalSupport   = " historic retrieval support";
+    private static final String assertion30    = testCaseId + "-30";
+    private static final String assertionMsg30 = " repository supports soft delete ";
+
+    private static final String assertion31    = testCaseId + "-31";
+    private static final String assertionMsg31 = " repository supports historic retrieval ";
+
 
 
     private RepositoryConformanceWorkPad  workPad;
@@ -155,7 +158,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type and end entity types match the known types from the repository helper
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -171,8 +174,23 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
+        String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
+        EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
+        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end1EntityDef.getName());
+        verifyCondition((end1EntityDef.equals(knownEnd1EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
-
+        String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
+        EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
+        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end2EntityDef.getName());
+        verifyCondition((end2EntityDef.equals(knownEnd2EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
         /*
@@ -488,10 +506,12 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             try {
                 Relationship undoneRelationship = metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
 
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                        "Enabled",
+                assertCondition(true,
+                        assertion29,
+                        testTypeName + assertionMsg29,
                         RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
                         RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
 
                 assertCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
                         assertion17,
@@ -511,8 +531,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             }
             catch (FunctionNotSupportedException exception) {
 
-                super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
-                        "Disabled",
+                super.addNotSupportedAssertion(assertion29,
+                        assertionMsg29,
                         RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
                         RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
 
@@ -543,8 +563,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     newRelationship.getType().getTypeDefName(),
                     newRelationship.getGUID());
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion30,
+                    testTypeName + assertionMsg30,
                     RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                     RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
@@ -566,7 +587,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                         RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                         RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
-            } catch (RelationshipNotKnownException exception) {
+            }
+            catch (RelationshipNotKnownException exception) {
                 verifyCondition((true),
                         assertion20,
                         testTypeName + assertionMsg20,
@@ -607,8 +629,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         }
         catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion30,
+                    assertionMsg30,
                     RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                     RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
         }
@@ -646,8 +668,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         try {
             Relationship earlierRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID(), preDeleteDate);
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
-                    "Enabled",
+            assertCondition(true,
+                    assertion31,
+                    testTypeName + assertionMsg31,
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 
@@ -676,8 +699,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         }
         catch (FunctionNotSupportedException exception) {
 
-            super.addDiscoveredProperty(testTypeName + discoveredProperty_historicRetrievalSupport,
-                    "Disabled",
+            super.addNotSupportedAssertion(assertion31,
+                    assertionMsg31,
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
                     RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 

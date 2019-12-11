@@ -27,7 +27,9 @@ public class GraphVertexMapper {
         if (instanceProperties != null) {
 
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = "ve"+entry.getKey();
+                String key = "veprop"+entry.getKey();
+                //check if a properrty already exist foe example create time is already there and then it is failing
+//                if (entry.getValue().equals("createTime")){ continue;}
                 vertex.property(key,entry.getValue());
             }
         }

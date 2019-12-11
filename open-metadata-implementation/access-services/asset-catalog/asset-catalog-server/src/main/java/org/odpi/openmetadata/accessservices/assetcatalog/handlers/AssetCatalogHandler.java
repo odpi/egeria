@@ -1264,6 +1264,7 @@ public class AssetCatalogHandler {
         for (Relationship assetToDataSetRelationship : assetToDataSetRelationships) {
             EntityProxy entityOneProxy = assetToDataSetRelationship.getEntityOneProxy();
 
+
             if (entityOneProxy.getGUID().equals(dataSet.getGUID())) {
                 setConnections(userId, assetElement, dataSet);
             } else {
