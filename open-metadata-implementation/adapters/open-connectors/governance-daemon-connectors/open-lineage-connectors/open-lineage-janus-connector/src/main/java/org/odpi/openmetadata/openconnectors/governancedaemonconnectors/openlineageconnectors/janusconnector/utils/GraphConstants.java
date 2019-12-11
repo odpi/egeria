@@ -38,6 +38,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PARENT_PROCESS_GUID = "parent.process.guid";
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
 
+    public static final String DISPLAY_NAME_OF_CONDENSED = "...";
 
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
