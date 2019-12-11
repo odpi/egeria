@@ -1028,7 +1028,7 @@ public class AssetCatalogHandler {
 
         if (endpoint != null) {
             if (parentElement != null) {
-                assetConverter.addChildElement(parentElement, Collections.singletonList(assetConverter.buildAssetElements(endpoint)));
+                assetConverter.addChildElement(parentElement, assetConverter.buildAssetElements(endpoint));
             } else {
                 assetConverter.addContextElement(assetElement, endpoint);
             }

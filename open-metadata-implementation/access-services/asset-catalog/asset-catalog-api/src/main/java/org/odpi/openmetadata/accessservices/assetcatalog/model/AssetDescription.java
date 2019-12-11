@@ -27,18 +27,38 @@ public class AssetDescription extends Element implements Serializable {
     private List<Classification> classifications;
     private List<Relationship> relationships;
 
+    /**
+     * Returns the list of classifications
+     *
+     * @return the list of available classification
+     */
     public List<Classification> getClassifications() {
         return classifications;
     }
 
+    /**
+     * Set up the classification
+     *
+     * @param classifications available for the asset
+     */
     public void setClassifications(List<Classification> classifications) {
         this.classifications = classifications;
     }
 
+    /**
+     * Returns the list of available relationships
+     *
+     * @return the list of relationships
+     */
     public List<Relationship> getRelationships() {
         return relationships;
     }
 
+    /**
+     * Set up the list of relationships
+     *
+     * @param relationships of the element
+     */
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
     }
