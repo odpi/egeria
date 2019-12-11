@@ -27,6 +27,7 @@ import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -333,16 +334,25 @@ class ProcessHandlerTest {
         mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
 
         EntityDetail portImplementation = mock(EntityDetail.class);
+        InstanceType mockedTypeImpl = mock(InstanceType.class);
+        when(mockedTypeImpl.getTypeDefName()).thenReturn(PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+        when(portImplementation.getType()).thenReturn(mockedTypeImpl);
         when(portImplementation.getGUID()).thenReturn(PORT_IMPL_GUID);
+
         EntityDetail portAlias = mock(EntityDetail.class);
+        InstanceType mockedTypeAlias = mock(InstanceType.class);
+        when(mockedTypeAlias.getTypeDefName()).thenReturn(PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+        when(portAlias.getType()).thenReturn(mockedTypeImpl);
         when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
+
         List<EntityDetail> portEntityGUIDs = Arrays.asList(portAlias, portImplementation);
         when(repositoryHandler.getEntitiesForRelationshipType(USER, PROCESS_GUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, 0, 0, methodName)).thenReturn(portEntityGUIDs);
 
 
-        Set<String> resultGUIDs = processHandler.getPortsForProcess(USER, PROCESS_GUID);
+        Set<String> resultGUIDs = processHandler.getPortsForProcess(USER, PROCESS_GUID,
+                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, resultGUIDs.size());
         assertTrue(resultGUIDs.contains(PORT_IMPL_GUID));
         assertTrue(resultGUIDs.contains(PORT_ALIAS_GUID));

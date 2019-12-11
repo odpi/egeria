@@ -2,13 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -27,12 +33,6 @@ public class AssetConverter {
         this.repositoryHelper = repositoryHelper;
     }
 
-    public List<AssetDescription> getAssetsDetails(List<EntityDetail> entityDetails) {
-        return entityDetails.stream()
-                .map(this::getAssetDescription)
-                .collect(Collectors.toCollection(() -> new ArrayList<>(entityDetails.size())));
-    }
-
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
@@ -45,7 +45,7 @@ public class AssetConverter {
         assetDescription.setVersion(entityDetail.getVersion());
 
         if (entityDetail.getType() != null && entityDetail.getType().getTypeDefName() != null) {
-            assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
+            assetDescription.setType(convertInstanceType(entityDetail.getType()));
         }
 
         assetDescription.setUrl(entityDetail.getInstanceURL());
@@ -56,7 +56,7 @@ public class AssetConverter {
         if (entityDetail.getProperties() != null) {
             assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
         }
-        if (entityDetail.getClassifications() != null) {
+        if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
 
@@ -87,7 +87,7 @@ public class AssetConverter {
         }
 
         if (rel.getType() != null && rel.getType().getTypeDefName() != null) {
-            relationship.setTypeDefName(rel.getType().getTypeDefName());
+            relationship.setType(convertInstanceType(rel.getType()));
         }
 
         if (rel.getEntityOneProxy() != null) {
@@ -127,8 +127,7 @@ public class AssetConverter {
                 classification.setStatus(classificationEntity.getStatus().getName());
             }
             if (classificationEntity.getType() != null) {
-                classification.setTypeDefName(classificationEntity.getType().getTypeDefName());
-                classification.setTypeDefDescription(classificationEntity.getType().getTypeDefDescription());
+                classification.setType(convertInstanceType(classificationEntity.getType()));
             }
             if (classificationEntity.getProperties() != null) {
                 classification.setProperties(repositoryHelper.getInstancePropertiesAsMap(classificationEntity.getProperties()));
@@ -138,6 +137,39 @@ public class AssetConverter {
         }
 
         return classifications;
+    }
+
+    public Type convertType(TypeDef openType) {
+        Type type = new Type();
+        type.setName(openType.getName());
+        type.setDescription(openType.getDescription());
+        type.setVersion(openType.getVersion());
+        type.setSuperType(openType.getSuperType().getName());
+        return type;
+    }
+
+    public AssetElements buildAssetElements(EntityDetail entityDetail) {
+        if (entityDetail == null) {
+            return null;
+        }
+
+        AssetElements element = new AssetElements();
+        element.setGuid(entityDetail.getGUID());
+        element.setType(convertInstanceType(entityDetail.getType()));
+        element.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
+        if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
+            element.setClassifications(convertClassifications(entityDetail.getClassifications()));
+        }
+
+        return element;
+    }
+
+    Type convertInstanceType(InstanceType instanceType) {
+        Type type = new Type();
+        type.setName(instanceType.getTypeDefName());
+        type.setDescription(instanceType.getTypeDefDescription());
+        type.setVersion(instanceType.getTypeDefVersion());
+        return type;
     }
 
     private Element getElement(EntityProxy entityProxy) {
@@ -155,8 +187,58 @@ public class AssetConverter {
         asset.setUpdateTime(entityProxy.getUpdateTime());
         asset.setStatus(entityProxy.getStatus().getName());
         asset.setVersion(entityProxy.getVersion());
-        asset.setTypeDefName(entityProxy.getType().getTypeDefName());
+        asset.setType(convertInstanceType(entityProxy.getType()));
+        if (CollectionUtils.isNotEmpty(entityProxy.getClassifications())) {
+            asset.setClassifications(convertClassifications(entityProxy.getClassifications()));
+        }
 
         return asset;
     }
+
+    private Element lastElementAdded(Element tree) {
+        List<Element> innerElement = tree.getParentElement();
+        if (innerElement == null) {
+            return tree;
+        }
+        return lastElementAdded(innerElement.get(innerElement.size() - 1));
+    }
+
+    public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        List<Element> elements = new ArrayList<>();
+        elements.add(buildAssetElements(entityDetail));
+
+        if (context != null) {
+            Element leaf = lastElementAdded(context.get(context.size() - 1));
+            leaf.setParentElement(elements);
+        } else {
+            assetElement.setContext(elements);
+        }
+    }
+
+    public Element getLastNode(AssetElement assetElement) {
+        List<Element> context = assetElement.getContext();
+
+        return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
+    }
+
+    public void addChildElement(Element parentElement, List<Element> elements) {
+        if (parentElement != null) {
+            if (parentElement.getParentElement() != null) {
+                parentElement.getParentElement().addAll(elements);
+            } else {
+                parentElement.setParentElement(elements);
+            }
+        }
+    }
+
+    public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        if (context == null) {
+            context = new ArrayList<>();
+        }
+        context.add(buildAssetElements(entityDetail));
+        assetElement.setContext(context);
+    }
+
 }

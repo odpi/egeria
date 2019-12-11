@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -31,7 +32,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -423,26 +423,33 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param processGUID        the process entity unique identifier(guid)
-     * @param portGUIDs          the list of unique identifiers of the port entitties
+     * @param portQualifiedNames the list of qualified names for the port entities
      * @param externalSourceName the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addPortsToProcess(String userId, String serverName, String processGUID, List<String> portGUIDs,
+    public void addPortsToProcess(String userId, String serverName, String processGUID, List<String> portQualifiedNames,
                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                     UserNotAuthorizedException {
         final String methodName = "addPortsToProcess";
 
         log.debug("Calling method: {}", methodName);
 
-        if (CollectionUtils.isEmpty(portGUIDs)) {
+        if (CollectionUtils.isEmpty(portQualifiedNames)) {
             return;
         }
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-        for (String portGUID : portGUIDs) {
+        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+
+        for (String portQualifiedName : portQualifiedNames) {
+            String portGUID = portHandler.findPortAlias(userId, portQualifiedName);
+            if (StringUtils.isEmpty(portGUID)) {
+                portGUID = portHandler.findPortImplementation(userId, portQualifiedName);
+            }
+
             processHandler.addProcessPortRelationship(userId, processGUID, portGUID, externalSourceName);
         }
     }
@@ -536,7 +543,7 @@ public class DataEngineRESTServices {
      *
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
-     * @param portListRequestBody guids of ports
+     * @param portListRequestBody list of port qualified names
      *
      * @return the unique identifier (guid) of the updated process entity
      */
@@ -807,7 +814,7 @@ public class DataEngineRESTServices {
         ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID);
+        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
 
         // delete ports that are not in the process payload anymore
         List<String> obsoletePorts =
