@@ -20,7 +20,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -60,15 +64,24 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
     private static final String assertionMsg11  = " refreshed reference relationship matches original.";
     private static final String assertion12     = testCaseId + "-12";
     private static final String assertionMsg12  = " reference relationship purged.";
+
     private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " reference relationship re-homed.";
+    private static final String assertionMsg13  = " repository supports types for relationship and ends.";
+    private static final String assertion14     = testCaseId + "-14";
+    private static final String assertionMsg14  = " master relationship created.";
+    private static final String assertion15     = testCaseId + "-15";
+    private static final String assertionMsg15  = " reference relationship created with mappingProperties.";
+    private static final String assertion16     = testCaseId + "-16";
+    private static final String assertionMsg16  = " reference relationship retrieved with mappingProperties.";
 
-
+    private static final String assertion17     = testCaseId + "-17";
+    private static final String assertionMsg17  = " reference relationship re-homed.";
 
 
     private RepositoryConformanceWorkPad  workPad;
     private String                        metadataCollectionId;
     private RelationshipDef               relationshipDef;
+    private Map<String, EntityDef>        entityDefs;
     private String                        testTypeName;
 
     /*
@@ -91,6 +104,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipReferenceCopyLifecycle(RepositoryConformanceWorkPad workPad,
+                                                           Map<String, EntityDef>       entityDefs,
                                                            RelationshipDef              relationshipDef)
     {
         super(workPad,
@@ -100,6 +114,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         this.workPad              = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.relationshipDef      = relationshipDef;
+        this.entityDefs           = entityDefs;
 
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
                                                     testCaseId,
@@ -141,6 +156,26 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
+        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
+        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
+        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
+        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
+
+
+        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endOneEntityDef.getName());
+        verifyCondition((endOneEntityDef.equals(knownEnd1EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endTwoEntityDef.getName());
+        verifyCondition((endTwoEntityDef.equals(knownEnd2EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
 
@@ -201,10 +236,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         /*
          * Create the local entities.
          */
-        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
-        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
+
 
         entityOne = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
                 endOneEntityDef.getGUID(),
@@ -661,6 +693,277 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         }
 
 
+
+
+
+
+        /*
+         * ======================================================================================================
+         * The remaining tests in this test case use a different approach to creating the relationship to be saved.
+         * Instead of creating a master instance at the CTS server and relying on OMRS event propagation to
+         * trigger the save of the reference copy at the TUT, the copy is fabricated in the test code and is
+         * saved directly using the saveRelationshipReferenceCopy API.
+         */
+
+
+        /*
+         * For the next test, the local save approach is used because the test code needs access to mappingProperties.
+         */
+
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                    assertion13,
+                    testTypeName + assertionMsg13,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+        /*
+         * It is not practical to iterate over all combinations of feasible (supported) end types as it takes too long to run.
+         * For now, this test verifies relationship operation over a limited set of end types. The limitation is extreme in
+         * that it ONLY takes the first available type for each end. This is undesirable for two reasons - one is that it
+         * provides less test coverage; the other is that the types chosen depend on the order in the lists and this could
+         * vary, making results non-repeatable. For now though, it seems these limitations are necessary.
+         *
+         * A full permutation across end types would use the following nested loops...
+         *  for (String end1TypeName : end1SupportedTypeNames) {
+         *     for (String end2TypeName : end2SupportedTypeNames) {
+         *          test logic as below...
+         *      }
+         *  }
+         */
+
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+
+        /*
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the relationship
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
+         */
+
+
+        EntityDetail end1;
+        EntityDetail end2;
+        Relationship relationshipWithMappingProperties;
+
+        try {
+            /*
+             * Create a relationship reference copy of the relationship type.
+             * To do this, a local relationship is created, copied and deleted/purged. The copy is modified (so that it
+             * appears to come from an unknown/defunct remote metadata collection). It is then saved as a reference copy
+             */
+
+
+            EntityDef end1Type = entityDefs.get(end1TypeName);
+            end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+            EntityDef end2Type = entityDefs.get(end2TypeName);
+            end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+
+            relationshipWithMappingProperties = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                    relationshipDef.getGUID(),
+                    super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                    end1.getGUID(),
+                    end2.getGUID(),
+                    null);
+
+            assertCondition((true),
+                    assertion14,
+                    testTypeName + assertionMsg14,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion14,
+                    assertionMsg14,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+            return;
+        }
+
+
+        /*
+         * This test does not verify the content of the relationship - that is tested in the relationship-lifecycle tests
+         */
+
+
+        /*
+         * Make a copy of the relationship under a different variable name - not strictly necessary but makes things clearer - then modify it so
+         * it appears to be from a remote metadata collection.
+         */
+
+        Relationship remoteRelationshipWithMappingProperties = relationshipWithMappingProperties;
+
+        /*
+         * Hard delete the new entity - we have no further use for it
+         * If the repository under test supports soft delete, the entity must be deleted before being purged
+         */
+
+        try {
+            metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                    relationshipWithMappingProperties.getType().getTypeDefGUID(),
+                    relationshipWithMappingProperties.getType().getTypeDefName(),
+                    relationshipWithMappingProperties.getGUID());
+        } catch (FunctionNotSupportedException exception) {
+
+            /*
+             * This is OK - we can NO OP and just proceed to purgeEntity
+             */
+        }
+
+        metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                relationshipWithMappingProperties.getType().getTypeDefGUID(),
+                relationshipWithMappingProperties.getType().getTypeDefName(),
+                relationshipWithMappingProperties.getGUID());
+
+        // Beyond this point, there should be no further references to relationshipWithMappingProperties
+        relationshipWithMappingProperties = null;
+
+
+        /*
+         * Modify the 'remote' entity so that it looks like it came from a different home repository
+         */
+        String REMOTE_PREFIX = "remote";
+
+        String localRelationshipGUID = remoteRelationshipWithMappingProperties.getGUID();
+        String remoteRelationshipGUID = REMOTE_PREFIX + localRelationshipGUID.substring(REMOTE_PREFIX.length());
+        remoteRelationshipWithMappingProperties.setGUID(remoteRelationshipGUID);
+
+        String localMetadataCollectionName = remoteRelationshipWithMappingProperties.getMetadataCollectionName();
+        String remoteMetadataCollectionName = REMOTE_PREFIX + "-metadataCollection-not-" + localMetadataCollectionName;
+        remoteRelationshipWithMappingProperties.setMetadataCollectionName(remoteMetadataCollectionName);
+
+        String localMetadataCollectionId = remoteRelationshipWithMappingProperties.getMetadataCollectionId();
+        String remoteMetadataCollectionId = REMOTE_PREFIX + localMetadataCollectionId.substring(REMOTE_PREFIX.length());
+        remoteRelationshipWithMappingProperties.setMetadataCollectionId(remoteMetadataCollectionId);
+
+        /*
+         * Set mapping properties on the synthetic remote entity...
+         */
+
+        Map<String, Serializable> mappingProperties = new HashMap<>();
+        mappingProperties.put("stringMappingPropertyKey", "stringMappingPropertyValue");
+        mappingProperties.put("integerMappingPropertyKey", new Integer(12));
+
+        /*
+         * Save a reference copy of the 'remote' entity
+         */
+
+        try {
+
+            metadataCollection.saveRelationshipReferenceCopy(workPad.getLocalServerUserId(), remoteRelationshipWithMappingProperties);
+
+
+            assertCondition((true),
+                    assertion15,
+                    testTypeName + assertionMsg15,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            Relationship retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
+
+            assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteRelationshipWithMappingProperties)),
+                    assertion16,
+                    assertionMsg16 + relationshipDef.getName(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+
+
+            /*
+             * Purge the reference copy - this is just to clean up rather than part of the test.
+             */
+
+            metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
+                    remoteRelationshipWithMappingProperties.getGUID(),
+                    remoteRelationshipWithMappingProperties.getType().getTypeDefGUID(),
+                    remoteRelationshipWithMappingProperties.getType().getTypeDefName(),
+                    remoteRelationshipWithMappingProperties.getMetadataCollectionId());
+
+
+        }
+        catch (FunctionNotSupportedException e) {
+
+            super.addNotSupportedAssertion(assertion15,
+                    assertionMsg15,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+        }
+
+
+
+
+
+
+
+
         /*
          * Verify that it IS possible to re-home a reference copy.
          *
@@ -714,8 +1017,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
             assertCondition((true),
-                    assertion13,
-                    testTypeName + assertionMsg13,
+                    assertion17,
+                    testTypeName + assertionMsg17,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
 
@@ -753,8 +1056,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
              */
 
             assertCondition((false),
-                    assertion13,
-                    testTypeName + assertionMsg13,
+                    assertion17,
+                    testTypeName + assertionMsg17,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
         }

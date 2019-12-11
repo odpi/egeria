@@ -292,6 +292,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 }
             }
 
+
             if (relationshipDefs != null) {
 
                 for (RelationshipDef relationshipDef : relationshipDefs) {
@@ -299,7 +300,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipTestCases.add(testRelationshipLifecycle);
 
-                    TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, relationshipDef);
+                    TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
 
                     TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
@@ -505,6 +506,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             for (TestSupportedRelationshipSharingPropertySearch testCase : relationshipSharingPropertySearchTestCases) {
                 testCase.executeTest();
             }
+
 
 
             /*

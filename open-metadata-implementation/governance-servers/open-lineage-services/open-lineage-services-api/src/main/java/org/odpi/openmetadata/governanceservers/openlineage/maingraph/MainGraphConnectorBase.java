@@ -11,7 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
+public abstract class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
 
     /**
      * Initialize the connector.
@@ -40,7 +40,7 @@ public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
     }
 
     @Override
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         return null;
     }
 

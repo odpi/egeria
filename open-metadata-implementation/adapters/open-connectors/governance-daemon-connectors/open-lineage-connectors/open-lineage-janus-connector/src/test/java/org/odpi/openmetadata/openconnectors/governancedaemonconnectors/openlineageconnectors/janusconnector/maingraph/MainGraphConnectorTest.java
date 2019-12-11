@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -80,9 +80,8 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageResponse lineageResponse = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
@@ -95,8 +94,8 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageResponse lineageResponse = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -113,8 +112,8 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageResponse lineageResponse = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -136,8 +135,8 @@ public class MainGraphConnectorTest {
             expectedNodeIDs.add("p3");
             expectedNodeIDs.add("p4");
 
-            LineageResponse lineageResponse = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+            LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
             validateResponse(expectedNodeIDs, lineageVertices);
         }
@@ -171,8 +170,8 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add("c2");
         expectedNodeIDs.add("c3");
 
-        LineageResponse lineageResponse = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
-        Set<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
