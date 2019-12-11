@@ -17,7 +17,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -60,12 +63,22 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private static final String assertionMsg12 = " reference entity refreshed.";
     private static final String assertion13    = testCaseId + "-13";
     private static final String assertionMsg13 = " refreshed reference entity matches original.";
-    private static final String assertion14     = testCaseId + "-14";
+    private static final String assertion14    = testCaseId + "-14";
     private static final String assertionMsg14 = " reference entity purged following delete at CTS.";
     private static final String assertion15    = testCaseId + "-15";
     private static final String assertionMsg15 = " reference entity created.";
+
     private static final String assertion16    = testCaseId + "-16";
-    private static final String assertionMsg16 = " reference entity re-homed.";
+    private static final String assertionMsg16 = " master entity created.";
+    private static final String assertion17    = testCaseId + "-17";
+    private static final String assertionMsg17 = " reference entity created with mappingProperties.";
+    private static final String assertion18    = testCaseId + "-18";
+    private static final String assertionMsg18 = " reference entity retrieved with mappingProperties.";
+
+    private static final String assertion19    = testCaseId + "-19";
+    private static final String assertionMsg19 = " reference entity re-homed.";
+
+
 
 
 
@@ -641,6 +654,183 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         }
 
 
+        /*
+         * ======================================================================================================
+         * The remaining tests in this test case use a different approach to creating the entity to be saved.
+         * Instead of creating a master instance at the CTS server and relying on OMRS event propagation to
+         * trigger the save of the reference copy at the TUT, the copy is fabricated in the test code and is
+         * saved directly using the saveEntityReferenceCopy API.
+         *
+         * For the next test, this is because the test code needs access to mappingProperties.
+         */
+
+
+
+
+        /*
+         * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
+         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * on the test by setting the discovered property to disabled and returning.
+         */
+
+        EntityDetail entityWithMappingProperties;
+
+        try {
+            /*
+             * Create an entity reference copy of the entity type.
+             * To do this, a local entity is created, copied and deleted/purged. The copy is modified (so that it
+             * appears to come from an unknown/defunct remote metadata collection). It is then saved as a reference copy
+             */
+
+
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             */
+
+            entityWithMappingProperties = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                                       entityDef.getGUID(),
+                                                                       super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                                       null,
+                                                                       null);
+
+            assertCondition((true),
+                    assertion16,
+                    testTypeName + assertionMsg16,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a read-only repository/connector that cannot add
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
+             *
+             * Report the inability to create instances and give up on the testcase....
+             */
+
+            super.addNotSupportedAssertion(assertion16,
+                    assertionMsg16,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return;
+        }
+
+        /*
+         * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
+         */
+
+
+        /*
+         * Make a copy of the entity under a different variable name - not strictly necessary but makes things clearer - then modify it so
+         * it appears to be from a remote metadata collection.
+         */
+
+        EntityDetail remoteEntityWithMappingProperties = entityWithMappingProperties;
+
+        /*
+         * Hard delete the new entity - we have no further use for it
+         * If the repository under test supports soft delete, the entity must be deleted before being purged
+         */
+
+        try {
+            metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                            entityWithMappingProperties.getType().getTypeDefGUID(),
+                                            entityWithMappingProperties.getType().getTypeDefName(),
+                                            entityWithMappingProperties.getGUID());
+        } catch (FunctionNotSupportedException exception) {
+
+            /*
+             * This is OK - we can NO OP and just proceed to purgeEntity
+             */
+        }
+
+        metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                entityWithMappingProperties.getType().getTypeDefGUID(),
+                entityWithMappingProperties.getType().getTypeDefName(),
+                entityWithMappingProperties.getGUID());
+
+        // Beyond this point, there should be no further references to entityWithMappingProperties
+        entityWithMappingProperties = null;
+
+
+        /*
+         * Modify the 'remote' entity so that it looks like it came from a different home repository
+         */
+        String REMOTE_PREFIX = "remote";
+
+        String localEntityGUID = remoteEntityWithMappingProperties.getGUID();
+        String remoteEntityGUID = REMOTE_PREFIX + localEntityGUID.substring(REMOTE_PREFIX.length());
+        remoteEntityWithMappingProperties.setGUID(remoteEntityGUID);
+
+        String localMetadataCollectionName = remoteEntityWithMappingProperties.getMetadataCollectionName();
+        String remoteMetadataCollectionName = REMOTE_PREFIX + "-metadataCollection-not-" + localMetadataCollectionName;
+        remoteEntityWithMappingProperties.setMetadataCollectionName(remoteMetadataCollectionName);
+
+        String localMetadataCollectionId = remoteEntityWithMappingProperties.getMetadataCollectionId();
+        String remoteMetadataCollectionId = REMOTE_PREFIX + localMetadataCollectionId.substring(REMOTE_PREFIX.length());
+        remoteEntityWithMappingProperties.setMetadataCollectionId(remoteMetadataCollectionId);
+
+        /*
+         * Set mapping properties on the synthetic remote entity...
+         */
+
+        Map<String, Serializable> mappingProperties = new HashMap<>();
+        mappingProperties.put("stringMappingPropertyKey", "stringMappingPropertyValue");
+        mappingProperties.put("integerMappingPropertyKey", new Integer(12));
+
+        /*
+         * Save a reference copy of the 'remote' entity
+         */
+
+        try {
+
+            metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntityWithMappingProperties);
+
+
+            assertCondition((true),
+                    assertion17,
+                    testTypeName + assertionMsg17,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            EntityDetail retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+            assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteEntityWithMappingProperties)),
+                    assertion18,
+                    assertionMsg18 + entityDef.getName(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+
+
+            /*
+             * Purge the reference copy - this is just to clean up rather than part of the test.
+             */
+
+            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
+                                                        remoteEntityWithMappingProperties.getGUID(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                        remoteEntityWithMappingProperties.getMetadataCollectionId());
+
+
+        }
+        catch (FunctionNotSupportedException e) {
+
+            super.addNotSupportedAssertion(assertion17,
+                    assertionMsg17,
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+        }
+
+
+
 
         /*
          * Verify that it IS possible to re-home a reference copy.
@@ -696,8 +886,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
             assertCondition((true),
-                    assertion16,
-                    testTypeName + assertionMsg16,
+                    assertion19,
+                    testTypeName + assertionMsg19,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
 
@@ -738,8 +928,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              */
 
             assertCondition((false),
-                    assertion16,
-                    testTypeName + assertionMsg16,
+                    assertion19,
+                    testTypeName + assertionMsg19,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
         }
