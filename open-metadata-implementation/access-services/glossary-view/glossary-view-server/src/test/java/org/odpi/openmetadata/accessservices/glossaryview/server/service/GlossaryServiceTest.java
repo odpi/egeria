@@ -4,14 +4,16 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -33,7 +35,7 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getGlossary(USER_ID, SERVER_NAME, glossaries.get(0).getGUID());
 
         assertEquals(1, response.getResult().size());
-        assertEquals(glossaries.get(0).getGUID(), response.getResult().get(0).getGuid());
+        assertGlossaryProperties(glossaries.get(0), (Glossary)response.getResult().get(0));
     }
 
     @Test
@@ -45,13 +47,13 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
 
         assertEquals(3, response.getResult().size());
 
-        assertEquals(glossaries.get(0).getGUID(), response.getResult().get(0).getGuid());
-        assertEquals(glossaries.get(1).getGUID(), response.getResult().get(1).getGuid());
-        assertEquals(glossaries.get(2).getGUID(), response.getResult().get(2).getGuid());
+        assertGlossaryProperties(glossaries.get(0), (Glossary)response.getResult().get(0));
+        assertGlossaryProperties(glossaries.get(1), (Glossary)response.getResult().get(1));
+        assertGlossaryProperties(glossaries.get(2), (Glossary)response.getResult().get(2));
 
-        assertEquals(true, isEffective.test(response.getResult().get(0)));
-        assertEquals(true, isEffective.test(response.getResult().get(1)));
-        assertEquals(true, isEffective.test(response.getResult().get(2)));
+        assertTrue(isEffective.test(response.getResult().get(0)));
+        assertTrue(isEffective.test(response.getResult().get(1)));
+        assertTrue(isEffective.test(response.getResult().get(2)));
 
     }
 
@@ -59,45 +61,39 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
     public void getTermHomeGlossary() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
                 eq(TERM_ANCHOR_RELATIONSHIP_GUID), eq(TERM_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getTermHomeGlossary"))).thenReturn(Arrays.asList(glossaries.get(0)));
+                eq("getTermHomeGlossary"))).thenReturn(Collections.singletonList(glossaries.get(0)));
 
         GlossaryViewEntityDetailResponse response = underTest.getTermHomeGlossary(USER_ID, SERVER_NAME, terms.get(0).getGUID());
 
         assertEquals(1, response.getResult().size());
-
-        assertEquals(glossaries.get(0).getGUID(), response.getResult().get(0).getGuid());
-
-        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertGlossaryProperties(glossaries.get(0), (Glossary)response.getResult().get(0));
+        assertTrue(isEffective.test(response.getResult().get(0)));
     }
 
     @Test
     public void getCategoryHomeGlossary() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
                 eq(CATEGORY_ANCHOR_RELATIONSHIP_GUID), eq(CATEGORY_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getCategoryHomeGlossary"))).thenReturn(Arrays.asList(glossaries.get(0)));
+                eq("getCategoryHomeGlossary"))).thenReturn(Collections.singletonList(glossaries.get(0)));
 
         GlossaryViewEntityDetailResponse response = underTest.getCategoryHomeGlossary(USER_ID, SERVER_NAME, categories.get(0).getGUID());
 
         assertEquals(1, response.getResult().size());
-
-        assertEquals(glossaries.get(0).getGUID(), response.getResult().get(0).getGuid());
-
-        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertGlossaryProperties(glossaries.get(0), (Glossary)response.getResult().get(0));
+        assertTrue(isEffective.test(response.getResult().get(0)));
     }
 
     @Test
-    public void getExternalGlossaries() throws Exception{
+    public void getExternalGlossaryLinks() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
                 eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_GUID), eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaryLinks"))).thenReturn(Arrays.asList(externalGlossaryLink));
+                eq("getExternalGlossaryLinks"))).thenReturn(Collections.singletonList(externalGlossaryLink));
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
 
         assertEquals(1, response.getResult().size());
-
-        assertEquals(externalGlossaryLink.getGUID(), response.getResult().get(0).getGuid() );
-
-        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertExternalGlossaryLinkProperties(externalGlossaryLink, (ExternalGlossaryLink) response.getResult().get(0));
+        assertTrue(isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -109,12 +105,7 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getGlossary(USER_ID, SERVER_NAME, glossaries.get(0).getGUID());
 
-        assertEquals(exception.getReportedHTTPCode(), response.getRelatedHTTPCode());
-        assertEquals(exception.getReportingClassName(), response.getExceptionClassName());
-        assertEquals(exception.getReportingActionDescription(), response.getActionDescription());
-        assertEquals(exception.getErrorMessage(), response.getExceptionErrorMessage());
-        assertEquals(exception.getReportedSystemAction(), response.getExceptionSystemAction());
-        assertEquals(exception.getReportedUserAction(), response.getExceptionUserAction());
+        assertExceptionDataInResponse(exception, response);
     }
 
     @Test
@@ -128,12 +119,16 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
 
-        assertEquals(exception.getReportedHTTPCode(), response.getRelatedHTTPCode());
-        assertEquals(exception.getReportingClassName(), response.getExceptionClassName());
-        assertEquals(exception.getReportingActionDescription(), response.getActionDescription());
-        assertEquals(exception.getErrorMessage(), response.getExceptionErrorMessage());
-        assertEquals(exception.getReportedSystemAction(), response.getExceptionSystemAction());
-        assertEquals(exception.getReportedUserAction(), response.getExceptionUserAction());
+        assertExceptionDataInResponse(exception, response);
+    }
+
+    private void assertGlossaryProperties(EntityDetail expected, Glossary actual){
+        assertEquals(expected.getGUID(), actual.getGuid());
+        assertEquals(expected.getProperties().getPropertyValue("qualifiedName").valueAsString(), actual.getQualifiedName());
+        assertEquals(expected.getProperties().getPropertyValue("displayName").valueAsString(), actual.getDisplayName());
+        assertEquals(expected.getProperties().getPropertyValue("language").valueAsString(), actual.getLanguage());
+        assertEquals(expected.getProperties().getPropertyValue("description").valueAsString(), actual.getDescription());
+        assertEquals(expected.getProperties().getPropertyValue("usage").valueAsString(), actual.getUsage());
     }
 
 }
