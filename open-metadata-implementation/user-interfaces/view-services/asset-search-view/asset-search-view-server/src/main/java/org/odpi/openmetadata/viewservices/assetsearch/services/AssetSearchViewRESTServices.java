@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.viewservices.assetsearch.services;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
@@ -162,4 +159,13 @@ public class AssetSearchViewRESTServices {
         }
     }
 
+    public List<Type> getSupportedTypes(String serverName, String userId) throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, DependantServerNotAvailableException {
+        AssetCatalog assetCatalog = instanceHandler.getAssetCatalog(serverName, userId, "getSupportedTypes");
+        try {
+        return assetCatalog.getSupportedTypes(userId, null).getTypes();
+        } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            LOG.error(String.format("Error retrieving types"));
+            throw e;
+        }
+    }
 }
