@@ -192,7 +192,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     if (nodeID.equals(edge2.getSourceNodeID())) {
                         edgesToBeRemoved.add(edge2);
                         String newDestinationNodeID = edge2.getDestinationNodeID();
-                        LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, edge1.getSourceNodeID(), newDestinationNodeID);
+                        LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS, edge1.getSourceNodeID(), newDestinationNodeID);
                         edgesToBeAdded.add(newEdge);
                     }
                 }
@@ -522,10 +522,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         if (view != null) {
             switch (view) {
                 case TABLE_VIEW:
-                    edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
+                    edgeLabel = EDGE_LABEL_DATAFLOW_WITH_PROCESS;
                     break;
                 case COLUMN_VIEW:
-                    edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
+                    edgeLabel = EDGE_LABEL_DATAFLOW_WITH_PROCESS;
                     break;
             }
             return edgeLabel;
