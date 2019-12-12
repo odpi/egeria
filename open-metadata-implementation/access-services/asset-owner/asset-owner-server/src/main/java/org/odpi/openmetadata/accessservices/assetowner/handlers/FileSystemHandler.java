@@ -7,10 +7,10 @@ import org.odpi.openmetadata.accessservices.assetowner.converters.FileSystemConv
 import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
-import org.odpi.openmetadata.adapters.connectors.avrofile.AvroFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.basicfile.BasicFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;

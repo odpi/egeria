@@ -92,6 +92,7 @@ public class OMRSMetadataHighwayRESTServices
 
     /**
      * Return the local registration information used by this server to register with open metadata repository cohorts.
+     * No registration time is provided.  Use the cohort specific version to retrieve the registration time.
      *
      * @param serverName server to query
      * @param userId calling user
@@ -111,6 +112,54 @@ public class OMRSMetadataHighwayRESTServices
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
             response.setCohortMember(metadataHighwayManager.getLocalRegistration());
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (RepositoryErrorException error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the local registration information used by this server to register with the requested
+     * open metadata repository cohort.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return registration properties for server
+     */
+    public CohortMembershipResponse getLocalRegistration(String     serverName,
+                                                         String     userId,
+                                                         String     cohortName)
+    {
+        final  String   methodName = "getLocalRegistration (cohort version)";
+
+        log.debug("Calling method: " + methodName);
+
+        CohortMembershipResponse response = new CohortMembershipResponse();
+
+        try
+        {
+            OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
+
+            response.setCohortMember(metadataHighwayManager.getLocalRegistration(cohortName));
         }
         catch (InvalidParameterException  error)
         {

@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.csvfile.ffdc.exception.FileReadException;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;

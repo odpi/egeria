@@ -2496,6 +2496,7 @@ public class AssetHandler
      * @param networkAddress address to query on
      * @param startFrom place to start in query
      * @param pageSize number of results to return
+     * @param methodName calling method
      * @return list of unique identifiers for matching assets
      *
      * @throws InvalidParameterException the networkAddress is invalid

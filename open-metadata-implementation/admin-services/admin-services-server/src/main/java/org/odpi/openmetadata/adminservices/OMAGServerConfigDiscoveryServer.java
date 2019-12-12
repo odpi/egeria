@@ -162,7 +162,7 @@ public class OMAGServerConfigDiscoveryServer
                 discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryServerConfig.setAccessServiceRootURL(accessServiceServerName);
+            discoveryServerConfig.setAccessServiceServerName(accessServiceServerName);
 
             serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 

@@ -1061,9 +1061,10 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
             {
                 if (relationship != null)
                 {
-                    if (relationship.getGUID() != null)
+                    EntityProxy end1 = relationship.getEntityOneProxy();
+                    if (end1.getGUID() != null)
                     {
-                        results.add(relationship.getGUID());
+                        results.add(end1.getGUID());
                     }
                 }
             }

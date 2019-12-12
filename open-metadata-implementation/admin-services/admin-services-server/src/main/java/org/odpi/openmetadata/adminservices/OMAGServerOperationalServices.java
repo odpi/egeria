@@ -153,7 +153,7 @@ public class OMAGServerOperationalServices
             List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
             ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
             DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
-            OpenLineageServerConfig openLineageServerConfig = configuration.getOpenLineageServerConfig();
+            OpenLineageServerConfig   openLineageServerConfig     = configuration.getOpenLineageServerConfig();
             SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
             SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();

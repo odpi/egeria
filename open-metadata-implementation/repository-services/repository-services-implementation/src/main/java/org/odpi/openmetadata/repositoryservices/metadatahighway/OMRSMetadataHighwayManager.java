@@ -224,13 +224,50 @@ public class OMRSMetadataHighwayManager
     }
 
 
+    /**
+     * Return the common values used by this server to register with a cohort.
+     *
+     * @return local registration
+     */
     public MemberRegistration getLocalRegistration()
     {
         for (OMRSCohortManager  existingCohortManager : cohortManagers)
         {
             if (existingCohortManager != null)
             {
-                return existingCohortManager.getLocalRegistration();
+                MemberRegistration localRegistration = existingCohortManager.getLocalRegistration();
+
+                if (localRegistration != null)
+                {
+                    localRegistration.setRegistrationTime(null);
+                    return localRegistration;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the common values used by this server to register with a cohort.
+     *
+     * @param cohortName name of the cohort to extract the registration time from.
+     * @return local registration
+     */
+    public MemberRegistration getLocalRegistration(String cohortName)
+    {
+        if (cohortName != null)
+        {
+            for (OMRSCohortManager existingCohortManager : cohortManagers)
+            {
+                if (existingCohortManager != null)
+                {
+                    if (cohortName.equals(existingCohortManager.getCohortName()))
+                    {
+                        return existingCohortManager.getLocalRegistration();
+                    }
+                }
             }
         }
 

@@ -21,7 +21,7 @@ public class CassandraDataStoreProvider extends ConnectorProviderBase
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * data store implementation.
      */
     public CassandraDataStoreProvider()
     {

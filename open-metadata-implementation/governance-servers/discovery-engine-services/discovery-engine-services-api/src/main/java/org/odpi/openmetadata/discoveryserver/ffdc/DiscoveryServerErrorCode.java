@@ -38,22 +38,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DiscoveryServerErrorCode
 {
-    NO_CONFIG_DOC(400,"OMAS-DISCOVERY-SERVER-400-001",
+    NO_CONFIG_DOC(400,"OMAS-DISCOVERY-SERVER-400-001 ",
                   "Discovery server {0} does not have a configuration document",
                   "The server is not able to retrieve its configuration.  It fails to start.",
                   "Add the discovery configuration to the discovery server's configuration document."),
 
-    NO_OMAS_SERVER_URL(400,"OMAS-DISCOVERY-SERVER-400-002",
+    NO_OMAS_SERVER_URL(400,"OMAS-DISCOVERY-SERVER-400-002 ",
                        "Discovery server {0} is not configured with the platform URL root for the Discovery Engine OMAS",
                        "The server is not able to retrieve its configuration.  It fails to start.",
                        "Add the configuration for the platform URL root to this discovery server's configuration document."),
 
-    NO_OMAS_SERVER_NAME(400, "OMAS-DISCOVERY-SERVER-400-003",
+    NO_OMAS_SERVER_NAME(400, "OMAS-DISCOVERY-SERVER-400-003 ",
                         "Discovery server {0} is not configured with the name for the server running the Discovery Engine OMAS",
                         "The server is not able to retrieve its configuration.  It fails to start.",
                         "Add the configuration for the server name to this discovery server's configuration document."),
 
-    NO_DISCOVERY_ENGINES(400,"OMAS-DISCOVERY-SERVER-400-004",
+    NO_DISCOVERY_ENGINES(400,"OMAS-DISCOVERY-SERVER-400-004 ",
                          "Discovery server {0} is configured with no discovery engines",
                          "The server is not able to run any discovery requests.  It fails to start.",
                          "Add the configuration for at least one discovery engine to this discovery server."),
@@ -63,12 +63,12 @@ public enum DiscoveryServerErrorCode
             "The discovery engine requested on a request is not known to the discovery server.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery server.  Once the cause is resolved, retry the discovery request."),
 
-    SERVICE_INSTANCE_FAILURE(400, "DISCOVERY-SERVER-400-006",
+    SERVICE_INSTANCE_FAILURE(400, "DISCOVERY-SERVER-400-006 ",
                              "The discovery engine services are unable to initialize a new instance of discovery server {0}; error message is {1}",
                              "The discovery engine services detected an error during the start up of a specific discovery server instance.  Its discovery services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    NO_DISCOVERY_ENGINES_STARTED(400,"OMAS-DISCOVERY-SERVER-400-007",
+    NO_DISCOVERY_ENGINES_STARTED(400,"OMAS-DISCOVERY-SERVER-400-007 ",
                          "Discovery server {0} is unable to start any discovery engines",
                          "The server is not able to run any discovery requests.  It fails to start.",
                          "Add the configuration for at least one discovery engine to this discovery server.");

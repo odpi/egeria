@@ -68,7 +68,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
 
 
     /**
-     * Returns the open metadata type archive containing all of the standard open metadata types.
+     * Returns the open metadata type archive containing all of the elements extracted from the CIM.
      *
      * @return populated open metadata archive object
      */

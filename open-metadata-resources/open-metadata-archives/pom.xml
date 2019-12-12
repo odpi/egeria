@@ -25,6 +25,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>design-model-archives</module>
+        <module>open-connector-archives</module>
         <module>open-metadata-types</module>
     </modules>
 

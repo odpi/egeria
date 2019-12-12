@@ -47,6 +47,7 @@ public class MetadataHighwayServicesResource
 
     /**
      * Return the local registration information used by this server to register with open metadata repository cohorts.
+     * No registration time is provided.  Use the cohort specific version to retrieve the registration time.
      *
      * @param serverName server to query
      * @param userId calling user
@@ -61,6 +62,31 @@ public class MetadataHighwayServicesResource
     }
 
 
+    /**
+     * Return the local registration information used by this server to register with the requested
+     * open metadata repository cohort.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @return local registration properties for server
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/local-registration")
+
+    public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
+                                                         @PathVariable String   userId,
+                                                         @PathVariable String   cohortName)
+    {
+        return restAPI.getLocalRegistration(serverName, userId, cohortName);
+    }
+
+
+    /**
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of the specific cohort
+     * @return list of registration information for remote members
+     */
     @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/remote-members")
 
     public CohortMembershipListResponse getRemoteRegistrations(@PathVariable String   serverName,

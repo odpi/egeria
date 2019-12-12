@@ -644,7 +644,7 @@ public enum OMRSErrorCode
             "Source {0} has requested type {1} with an incompatible category of {2} from repository content manager.",
             "There is an error in the Open Metadata Repository Services (OMRS) operation, probably in the source component.",
             "Raise a Github issue to get this fixed."),
-    ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-TYPES-500-001 ",
+    ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-ARCHIVE-500-001 ",
             "The archive builder failed to initialize.",
             "There is an internal error in the archive building process.",
             "Raise a Github issue to get this fixed."),

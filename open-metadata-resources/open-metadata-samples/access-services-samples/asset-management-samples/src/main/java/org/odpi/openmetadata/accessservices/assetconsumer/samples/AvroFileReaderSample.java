@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.adapters.connectors.avrofile.AvroFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.avrofile.AvroFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.basicfile.ffdc.exception.FileException;
+import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
