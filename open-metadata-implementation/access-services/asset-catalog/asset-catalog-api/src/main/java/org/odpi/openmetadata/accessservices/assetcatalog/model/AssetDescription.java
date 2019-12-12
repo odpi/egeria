@@ -24,26 +24,7 @@ public class AssetDescription extends Element implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Classification> classifications;
     private List<Relationship> relationships;
-
-    /**
-     * Returns the list of classifications
-     *
-     * @return the list of available classification
-     */
-    public List<Classification> getClassifications() {
-        return classifications;
-    }
-
-    /**
-     * Set up the classification
-     *
-     * @param classifications available for the asset
-     */
-    public void setClassifications(List<Classification> classifications) {
-        this.classifications = classifications;
-    }
 
     /**
      * Returns the list of available relationships
@@ -69,12 +50,11 @@ public class AssetDescription extends Element implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         AssetDescription that = (AssetDescription) o;
-        return Objects.equals(classifications, that.classifications) &&
-                Objects.equals(relationships, that.relationships);
+        return Objects.equals(relationships, that.relationships);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), classifications, relationships);
+        return Objects.hash(super.hashCode(), relationships);
     }
 }
