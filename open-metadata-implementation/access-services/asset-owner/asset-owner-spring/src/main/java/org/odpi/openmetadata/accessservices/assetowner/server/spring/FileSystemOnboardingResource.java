@@ -334,7 +334,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/file-systems/{fileSystemGUID}")
+    @GetMapping( path = "/file-systems/{fileSystemGUID}")
 
     public FileSystemResponse getFileSystemByGUID(@PathVariable String  serverName,
                                                   @PathVariable String  userId,
@@ -356,7 +356,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/file-systems/by-name/{uniqueName}")
+    @GetMapping( path = "/file-systems/by-name/{uniqueName}")
 
     public FileSystemResponse getFileSystemByUniqueName(@PathVariable String  serverName,
                                                         @PathVariable String  userId,
@@ -379,7 +379,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/file-systems")
+    @GetMapping( path = "/file-systems")
 
     public GUIDListResponse getFileSystems(@PathVariable String  serverName,
                                            @PathVariable String  userId,
@@ -403,7 +403,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/folders/{folderGUID}")
+    @GetMapping( path = "/folders/{folderGUID}")
 
     public FolderResponse getFolderByGUID(@PathVariable String  serverName,
                                           @PathVariable String  userId,
@@ -425,7 +425,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/folders/by-path-name")
+    @GetMapping( path = "/folders/by-path-name")
 
     public FolderResponse getFolderByPathName(@PathVariable String                serverName,
                                               @PathVariable String                userId,
@@ -449,7 +449,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{anchorGUID}/folders")
+    @GetMapping( path = "/{anchorGUID}/folders")
 
     public GUIDListResponse  getNestedFolders(@PathVariable String  serverName,
                                               @PathVariable String  userId,
@@ -475,7 +475,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/folders/{folderGUID}/files")
+    @GetMapping( path = "/folders/{folderGUID}/files")
 
     public GUIDListResponse  getFolderFiles(@PathVariable String  serverName,
                                             @PathVariable String  userId,

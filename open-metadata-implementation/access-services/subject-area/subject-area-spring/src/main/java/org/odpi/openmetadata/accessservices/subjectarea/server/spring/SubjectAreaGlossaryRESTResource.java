@@ -74,7 +74,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
+    @GetMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
             return restAPI.getGlossaryByGuid(serverName, userId,guid);
     }
@@ -100,7 +100,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries")
+    @GetMapping( path = "/users/{userId}/glossaries")
     public  SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -135,7 +135,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/glossaries/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,

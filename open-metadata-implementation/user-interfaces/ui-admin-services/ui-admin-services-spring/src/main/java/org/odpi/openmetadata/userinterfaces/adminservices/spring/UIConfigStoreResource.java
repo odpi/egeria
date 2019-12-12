@@ -44,7 +44,7 @@ public class UIConfigStoreResource
 //     * @param userId calling user
 //     * @return connection response
 //     */
-//    @RequestMapping(method = RequestMethod.GET, path = "/connection")
+//    @GetMapping( path = "/connection")
 //
 //    public ConnectionResponse getConfigurationStoreConnection(@PathVariable String       userId)
 //    {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -50,7 +51,7 @@ public class CategoryResource {
      *
      * @return a category
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}")
+    @GetMapping( path = "/categories/{categoryGUID}")
     public GlossaryViewEntityDetailResponse getCategory(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
@@ -75,7 +76,7 @@ public class CategoryResource {
      *
      * @return categories
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/categories")
+    @GetMapping( path = "/glossaries/{glossaryGUID}/categories")
     public GlossaryViewEntityDetailResponse getCategoriesViaCategoryAnchorRelationships(@PathVariable("serverName") String serverName,
                                                                                         @PathVariable("userId") String userId,
                                                                                         @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
@@ -102,7 +103,7 @@ public class CategoryResource {
      *
      * @return subcategories
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/subcategories")
+    @GetMapping( path = "/categories/{categoryGUID}/subcategories")
     public GlossaryViewEntityDetailResponse getSubcategories(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
                                                              @PathVariable("categoryGUID") @NotBlank String categoryGUID,
@@ -129,7 +130,7 @@ public class CategoryResource {
      *
      * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/external-glossary-links")
+    @GetMapping( path = "/categories/{categoryGUID}/external-glossary-links")
     public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
                                                                      @PathVariable("userId") String userId,
                                                                      @PathVariable("categoryGUID") @NotBlank String categoryGUID,

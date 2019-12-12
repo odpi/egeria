@@ -30,7 +30,7 @@ public class ConfigAccessServicesResource
      * @param serverName name of server
      * @return list of access service descriptions
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/access-services/configuration")
+    @GetMapping( path = "/access-services/configuration")
 
     public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String              userId,
                                                                       @PathVariable String              serverName)

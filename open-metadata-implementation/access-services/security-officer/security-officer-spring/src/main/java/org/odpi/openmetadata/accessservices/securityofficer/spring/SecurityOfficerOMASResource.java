@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
@@ -27,7 +28,7 @@ public class SecurityOfficerOMASResource {
      * @param userId          String - userId of user making request.
      * @param schemaElementId unique identifier of the schema element
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String schemaElementId) {
         return service.getSecurityTagBySchemaElementId(serverName, userId, schemaElementId);
     }
@@ -66,7 +67,7 @@ public class SecurityOfficerOMASResource {
      * @param serverName name of the server instances for this request
      * @param userId     String - userId of user making request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/security-tag", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( path = "/security-tag", produces = MediaType.APPLICATION_JSON_VALUE)
     public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId) {
         return service.getSecurityTags(serverName, userId);
     }

@@ -80,7 +80,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories/{guid}")
+    @GetMapping( path = "/users/{userId}/categories/{guid}")
     public  SubjectAreaOMASAPIResponse getCategoryByGuid(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
        return restAPI.getCategory(serverName,userId,guid);
     }
@@ -107,7 +107,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories")
+    @GetMapping( path = "/users/{userId}/categories")
     public  SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -142,7 +142,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/categories/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
