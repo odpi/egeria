@@ -80,7 +80,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -94,7 +94,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -112,7 +112,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -135,7 +135,7 @@ public class MainGraphConnectorTest {
             expectedNodeIDs.add("p3");
             expectedNodeIDs.add("p4");
 
-            LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
             Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
             validateResponse(expectedNodeIDs, lineageVertices);
@@ -170,7 +170,7 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add("c2");
         expectedNodeIDs.add("c3");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(queriedNodeID);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -197,9 +197,9 @@ public class MainGraphConnectorTest {
         g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c3).to(c1).next();
         final String queriedNodeID = "c32";
         try{
-            mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            mainGraphConnector.ultimateSource(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            mainGraphConnector.ultimateDestination(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            mainGraphConnector.sourceAndDestination(EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         } catch (OpenLineageException e) {
             return;
         }

@@ -35,10 +35,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class MainGraphConnector extends MainGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
-    private JanusGraph bufferGraph;
+
     private JanusGraph mainGraph;
-    private JanusGraph historyGraph;
-    private JanusGraph mockGraph;
 
     /**
      * Initialize the connector.
@@ -60,7 +58,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName              main, buffer, mock, history.
      * @param scope                  source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param view                   The view queried by the user: hostview, tableview, columnview.
      * @param guid                   The guid of the node of which the lineage is queried from.
@@ -68,10 +65,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
-        Graph graph = getJanusGraph(graphName);
-        GraphTraversalSource g = graph.traversal();
+
+        GraphTraversalSource g = mainGraph.traversal();
         try {
             g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         } catch (NoSuchElementException e) {
@@ -97,19 +94,19 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         switch (scope) {
             case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = sourceAndDestination(graph, edgeLabel, guid);
+                lineageVerticesAndEdges = sourceAndDestination(edgeLabel, guid);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = endToEnd(graph, edgeLabel, guid);
+                lineageVerticesAndEdges = endToEnd(edgeLabel, guid);
                 break;
             case ULTIMATE_SOURCE:
-                lineageVerticesAndEdges = ultimateSource(graph, edgeLabel, guid);
+                lineageVerticesAndEdges = ultimateSource(edgeLabel, guid);
                 break;
             case ULTIMATE_DESTINATION:
-                lineageVerticesAndEdges = ultimateDestination(graph, edgeLabel, guid);
+                lineageVerticesAndEdges = ultimateDestination(edgeLabel, guid);
                 break;
             case GLOSSARY:
-                lineageVerticesAndEdges = glossary(graph, guid);
+                lineageVerticesAndEdges = glossary(guid);
                 break;
         }
         if (!includeProcesses)
@@ -206,13 +203,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
-     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
      * @param edgeLabel The view queried by the user: tableview, columnview.
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges endToEnd(Graph graph, String edgeLabel, String guid) {
-        GraphTraversalSource g = graph.traversal();
+    LineageVerticesAndEdges endToEnd(String edgeLabel, String guid) {
+        GraphTraversalSource g = mainGraph.traversal();
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
@@ -288,14 +284,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
      * @param edgeLabel The view queried by the user: tableview, columnview.
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateSource(String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
-        GraphTraversalSource g = graph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
@@ -335,14 +330,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
      * @param edgeLabel The view queried by the user: tableview, columnview.
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateDestination(String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
-        GraphTraversalSource g = graph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV().simplePath()).
@@ -367,14 +361,13 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param graph     MAIN, BUFFER, MOCK, HISTORY.
      * @param edgeLabel The view queried by the user: tableview, columnview.
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
-        GraphTraversalSource g = graph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabel).count().is(0)).
@@ -471,12 +464,11 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
      * columns or tables connected to synonyms of the queried glossary term.
      *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges glossary(Graph graph, String guid) {
-        GraphTraversalSource g = graph.traversal();
+    LineageVerticesAndEdges glossary(String guid) {
+        GraphTraversalSource g = mainGraph.traversal();
 
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
@@ -545,12 +537,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
      *
-     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(GraphName graphName) throws OpenLineageException {
-        JanusGraph graph = getJanusGraph(graphName);
+    public void dumpMainGraph() {
         try {
-            graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
+            mainGraph.io(IoCore.graphml()).writeGraph("mainGraph.graphml");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -559,67 +549,20 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * Return an entire graph, in GraphSon format.
      *
-     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    public String exportGraph(GraphName graphName) throws OpenLineageException {
-        JanusGraph graph = getJanusGraph(graphName);
-        return janusGraphToGraphson(graph);
-    }
-
-    /**
-     * Convert a Graph object which is originally created by a Janusgraph writer to a String in GraphSON format.
-     *
-     * @param graph The Graph object to be converted.
-     * @return The provided Graph as a String, in the GraphSON format.
-     */
-    private String janusGraphToGraphson(Graph graph) {
+    public String exportMainGraph() {
         OutputStream out = new ByteArrayOutputStream();
         GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
         GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).wrapAdjacencyList(true).create();
-
         try {
-            writer.writeGraph(out, graph);
+            writer.writeGraph(out, mainGraph);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
         return out.toString();
     }
 
-    /**
-     * Retrieve an Open Lineage Services graph.
-     *
-     * @param graphName The name of the queried graph.
-     * @return The Graph object.
-     */
-    private JanusGraph getJanusGraph(GraphName graphName) throws OpenLineageException {
-        String methodName = "MainGraphConnector.getJanusGraph";
-        JanusGraph graph = null;
-        if (graphName != null) {
-            switch (graphName) {
-                case MAIN:
-                    graph = mainGraph;
-                    break;
-                case BUFFER:
-                    graph = bufferGraph;
-                    break;
-                case HISTORY:
-                    graph = historyGraph;
-                    break;
-                case MOCK:
-                    graph = mockGraph;
-                    break;
-            }
-            return graph;
-        }
-        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SOURCE;
-        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorCode.getFormattedErrorMessage(),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
 
     public Object getMainGraph() {
         return mainGraph;

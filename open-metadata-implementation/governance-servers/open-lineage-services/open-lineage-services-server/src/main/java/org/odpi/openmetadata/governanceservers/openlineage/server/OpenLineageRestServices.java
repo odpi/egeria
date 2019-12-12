@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -23,14 +22,14 @@ public class OpenLineageRestServices {
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
-    public VoidResponse dumpGraph(String serverName, String userId, GraphName graph) {
+    public VoidResponse dumpGraph(String serverName, String userId) {
         VoidResponse response = new VoidResponse();
         final String methodName = "OpenLineageRestServices.dumpGraph";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            openLineageHandler.dumpGraph(graph);
+            openLineageHandler.dumpMainGraph();
         } catch (InvalidParameterException error) {
             openLineageExceptionHandler.captureInvalidParameterException(response, error);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error) {
@@ -43,28 +42,28 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public String exportGraph(String serverName, String userId, GraphName graph) {
+    public String exportMainGraph(String serverName, String userId) {
         String response;
         final String methodName = "OpenLineageRestServices.exportGraph";
         try {
             OpenLineageHandler graphServices = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            response = graphServices.exportGraph(graph);
+            response = graphServices.exportMainGraph();
         } catch (Exception e) {
             response = e.getMessage();
         }
         return response;
     }
 
-    public LineageResponse lineage(String serverName, String userId, GraphName graph, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(String serverName, String userId, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            response = openLineageHandler.lineage(graph, scope, view, guid, displayNameMustContain, includeProcesses);
+            response = openLineageHandler.lineage(scope, view, guid, displayNameMustContain, includeProcesses);
         } catch (InvalidParameterException error) {
             openLineageExceptionHandler.captureInvalidParameterException(response, error);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error) {

@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -35,22 +34,22 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
     }
 
     @Override
-    public void initializeGraphDB() throws OpenLineageException {
+    public void initializeGraphDB() {
 
     }
 
     @Override
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         return null;
     }
 
     @Override
-    public void dumpGraph(GraphName graphName) throws OpenLineageException {
+    public void dumpMainGraph() {
 
     }
 
     @Override
-    public String exportGraph(GraphName graphName) throws OpenLineageException {
+    public String exportMainGraph()  {
         return null;
     }
 
