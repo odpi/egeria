@@ -46,7 +46,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>1.3-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
