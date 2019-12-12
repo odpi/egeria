@@ -54,7 +54,7 @@ public class OpenLineageViewRESTServices {
         OpenLineageClient openLineageClient = instanceHandler.getOpenLineageClient(serverName, userId, "getUltimateSource");
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -77,7 +77,7 @@ public class OpenLineageViewRESTServices {
         OpenLineageClient openLineageClient = instanceHandler.getOpenLineageClient(serverName, userId, "getEndToEndLineage");
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -100,7 +100,7 @@ public class OpenLineageViewRESTServices {
         OpenLineageClient openLineageClient = instanceHandler.getOpenLineageClient(serverName, userId, "getEndToEndLineage");
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -124,7 +124,7 @@ public class OpenLineageViewRESTServices {
         OpenLineageClient openLineageClient = instanceHandler.getOpenLineageClient(serverName, userId, "getGlossaryLineage");
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -147,7 +147,7 @@ public class OpenLineageViewRESTServices {
          OpenLineageClient openLineageClient = instanceHandler.getOpenLineageClient(serverName, userId, "getSourceAndDestination");
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
+            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -169,7 +169,7 @@ public class OpenLineageViewRESTServices {
         List<Node> listNodes = new ArrayList<>();
 
         LOG.debug("Received response from open lineage service: {}", response);
-        List<LineageVertex> lineageVertices = response.getLineageVertices();
+        Set<LineageVertex> lineageVertices = response.getLineageVertices();
 
         if (response == null || lineageVertices == null || lineageVertices.isEmpty()) {
             graphData.put(EDGES_LABEL, listEdges);

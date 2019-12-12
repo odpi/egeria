@@ -255,7 +255,7 @@ public class GraphFVT
             FunctionNotSupportedException,
             MetadataServerUncontactableException,
             UnexpectedResponseException {
-        return subjectAreaGraph.getGraph(serverName,
+        return subjectAreaGraph.getGraph(
                 userId,
                 guid,
                 asOfTime,

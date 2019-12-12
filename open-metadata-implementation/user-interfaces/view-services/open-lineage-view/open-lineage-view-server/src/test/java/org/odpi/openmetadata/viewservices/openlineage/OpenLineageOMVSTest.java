@@ -24,10 +24,7 @@ import org.odpi.openmetadata.viewservices.openlineage.objects.graph.Node;
 import org.odpi.openmetadata.viewservices.openlineage.services.OpenLineageViewRESTServices;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -97,8 +94,8 @@ public class OpenLineageOMVSTest {
 
     static LineageVerticesAndEdges getPayload()  {
         LineageVerticesAndEdges payload = new LineageVerticesAndEdges();
-        List<LineageEdge> edges = new ArrayList<>();
-        List<LineageVertex> vertices = new ArrayList<>();
+        Set<LineageEdge> edges = new HashSet<>();
+        Set<LineageVertex> vertices =  new HashSet<>();
 
         LineageVertex lineageVertex1 = new LineageVertex(VERTEX1_NODEID, VERTEX1_NODETYPE);
         lineageVertex1.setDisplayName(VERTEX1_DISPLAYNAME);
@@ -128,7 +125,7 @@ public class OpenLineageOMVSTest {
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException, RESTServerException {
 
         Mockito.when(connector.callGetRESTCall(eq("lineage"), eq( LineageResponse.class), Mockito.anyString(), eq(LINEAGE_SERVER_NAME),
-                eq(USER_ID), eq(graphName.getValue()), eq(Scope.ULTIMATE_SOURCE.getValue()), eq(View.COLUMN_VIEW.getValue()),eq(guid))).thenReturn(lineageResponse);
+                eq(USER_ID), eq(graphName.getValue()), eq(Scope.ULTIMATE_SOURCE.getValue()), eq(View.COLUMN_VIEW.getValue()), Mockito.anyString(), eq(true), eq(guid))).thenReturn(lineageResponse);
 
         Map<String, List> ultimateSource =openLineageViewService.getUltimateSource(UI_SERVER_NAME, USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(ultimateSource);
@@ -139,7 +136,7 @@ public class OpenLineageOMVSTest {
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException, RESTServerException {
 
         Mockito.when(connector.callGetRESTCall(eq("lineage"), eq( LineageResponse.class), Mockito.anyString(), eq(LINEAGE_SERVER_NAME),
-                eq(USER_ID), eq(graphName.getValue()), eq(Scope.END_TO_END.getValue()), eq(View.COLUMN_VIEW.getValue()),eq(guid))).thenReturn(lineageResponse);
+                eq(USER_ID), eq(graphName.getValue()), eq(Scope.END_TO_END.getValue()), eq(View.COLUMN_VIEW.getValue()), Mockito.anyString(), eq(true), eq(guid))).thenReturn(lineageResponse);
 
         Map<String, List> response = openLineageViewService.getEndToEndLineage(UI_SERVER_NAME, USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
@@ -151,7 +148,7 @@ public class OpenLineageOMVSTest {
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException, RESTServerException {
 
         Mockito.when(connector.callGetRESTCall(eq("lineage"), eq( LineageResponse.class), Mockito.anyString(), eq(LINEAGE_SERVER_NAME),
-                eq(USER_ID), eq(graphName.getValue()), eq(Scope.ULTIMATE_DESTINATION.getValue()), eq(View.COLUMN_VIEW.getValue()),eq(guid))).thenReturn(lineageResponse);
+                eq(USER_ID), eq(graphName.getValue()), eq(Scope.ULTIMATE_DESTINATION.getValue()), eq(View.COLUMN_VIEW.getValue()), Mockito.anyString(), eq(true), eq(guid))).thenReturn(lineageResponse);
         Map<String, List> response = openLineageViewService.getUltimateDestination(UI_SERVER_NAME, USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
@@ -161,7 +158,7 @@ public class OpenLineageOMVSTest {
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException, RESTServerException {
 
         Mockito.when(connector.callGetRESTCall(eq("lineage"), eq( LineageResponse.class), Mockito.anyString(), eq(LINEAGE_SERVER_NAME),
-                eq(USER_ID), eq(graphName.getValue()), eq(Scope.SOURCE_AND_DESTINATION.getValue()), eq(View.COLUMN_VIEW.getValue()),eq(guid))).thenReturn(lineageResponse);
+                eq(USER_ID), eq(graphName.getValue()), eq(Scope.SOURCE_AND_DESTINATION.getValue()), eq(View.COLUMN_VIEW.getValue()), Mockito.anyString(), eq(true), eq(guid))).thenReturn(lineageResponse);
         Map<String, List> response = openLineageViewService.getSourceAndDestination(UI_SERVER_NAME, USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);
     }
@@ -171,7 +168,7 @@ public class OpenLineageOMVSTest {
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException, RESTServerException {
 
         Mockito.when(connector.callGetRESTCall(eq("lineage"), eq( LineageResponse.class), Mockito.anyString(), eq(LINEAGE_SERVER_NAME),
-                eq(USER_ID), eq(graphName.getValue()), eq(Scope.GLOSSARY.getValue()), eq(View.COLUMN_VIEW.getValue()),eq(guid))).thenReturn(lineageResponse);
+                eq(USER_ID), eq(graphName.getValue()), eq(Scope.GLOSSARY.getValue()), eq(View.COLUMN_VIEW.getValue()), Mockito.anyString(), eq(true), eq(guid))).thenReturn(lineageResponse);
 
         Map<String, List> response = openLineageViewService.getGlossaryLineage(UI_SERVER_NAME, USER_ID, View.COLUMN_VIEW, guid);
         checkResponse(response);

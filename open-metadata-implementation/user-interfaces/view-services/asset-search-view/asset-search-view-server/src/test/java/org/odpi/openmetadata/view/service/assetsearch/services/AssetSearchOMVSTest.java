@@ -33,17 +33,21 @@ import static org.mockito.Mockito.when;
 
 public class AssetSearchOMVSTest {
 
+
     private static final String SERVER_URL = "http://localhost:8081";
     private static final String SERVER_NAME = "TestServer";
     private static final String UI_SERVER_NAME = "UITestServer";
     private static final String USER_ID = "zebra91";
-    private static final String ASSET_ID = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
-    private static final String ASSET_TYPE = "GlossaryTerm";
+    private static final String GLOSSARY_TERM_TYPE_ID = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
+    private static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";
+    private static final String ASSET_TYPE = "Asset";
     private static final String SEARCH_CRITERIA = "employee";
     private static final String SECOND_ASSET_ID = "66d7f872-19bd-439c-98ae-3232430022";
     private static final String SECOND_ASSET_TYPE = "RelationalColumn";
     private static final String RELATIONSHIP_TYPE = "SemanticAssignment";
-    private static final String CLASSIFICATION_NAME = "Confidentiality";
+    private static final String CONFIDENTIALITY = "Confidentiality";
+    private static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
+
     private static final SearchParameters SEARCH_PARAMETERS = new SearchParameters();
     private static final Integer FROM = 0;
     private static final Integer PAGE_SIZE = 10;
@@ -75,7 +79,7 @@ public class AssetSearchOMVSTest {
         when(connector.callGetRESTCall(eq("getAssetDetails"), eq(AssetDescriptionResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID), eq(response.getAssetDescriptionList().get(0).getGuid()), eq(ASSET_TYPE))).thenReturn(response);
 
-        List<AssetDescription> resultList = assetSearchViewRESTServices.getAssetDetails(SERVER_NAME, USER_ID, ASSET_ID, ASSET_TYPE);
+        List<AssetDescription> resultList = assetSearchViewRESTServices.getAssetDetails(SERVER_NAME, USER_ID, GLOSSARY_TERM_TYPE_ID, ASSET_TYPE);
         verifyAssetDescriptionResult(resultList);
 
     }
@@ -102,21 +106,21 @@ public class AssetSearchOMVSTest {
                 anyString(),
                 eq(SERVER_NAME),
                 eq(USER_ID),
-                eq(ASSET_ID),
+                eq(GLOSSARY_TERM_TYPE_ID),
                 eq(ASSET_TYPE),
-                eq(RELATIONSHIP_TYPE),
+                eq(COMPLEX_SCHEMA_TYPE),
                 eq(FROM),
                 eq(PAGE_SIZE))).thenReturn(response);
 
         List<Relationship> relationships = assetSearchViewRESTServices.getAssetRelationships(SERVER_NAME,
                 USER_ID,
-                ASSET_ID,
+                GLOSSARY_TERM_TYPE_ID,
                 ASSET_TYPE,
-                RELATIONSHIP_TYPE,
+                COMPLEX_SCHEMA_TYPE,
                 FROM,
                 PAGE_SIZE);
 
-        Assert.assertEquals(RELATIONSHIP_TYPE, relationships.get(0).getTypeDefName());
+        Assert.assertEquals(COMPLEX_SCHEMA_TYPE, relationships.get(0).getType().getName());
     }
 
     @Test
@@ -128,18 +132,18 @@ public class AssetSearchOMVSTest {
                 anyString(),
                 eq(SERVER_NAME),
                 eq(USER_ID),
-                eq(ASSET_ID),
+                eq(GLOSSARY_TERM_TYPE_ID),
                 eq(ASSET_TYPE),
-                eq(CLASSIFICATION_NAME))).thenReturn(response);
+                eq(CONFIDENTIALITY))).thenReturn(response);
 
         List<Classification> classifications = assetSearchViewRESTServices.getClassificationsForAsset(
                 SERVER_NAME,
                 USER_ID,
-                ASSET_ID,
+                GLOSSARY_TERM_TYPE_ID,
                 ASSET_TYPE,
-                CLASSIFICATION_NAME);
+                CONFIDENTIALITY);
 
-        Assert.assertEquals(CLASSIFICATION_NAME,classifications.get(0).getName());
+        Assert.assertEquals(CONFIDENTIALITY,classifications.get(0).getName());
     }
 
     @Test
@@ -172,8 +176,8 @@ public class AssetSearchOMVSTest {
 
     private AssetElements mockTerm() {
         AssetElements assetElements = new AssetElements();
-        assetElements.setGuid(ASSET_ID);
-        assetElements.setTypeDefName(ASSET_TYPE);
+        assetElements.setGuid(GLOSSARY_TERM_TYPE_ID);
+        assetElements.setType(createNamedType(GLOSSARY_TERM_TYPE_NAME));
         return assetElements;
     }
 
@@ -220,8 +224,8 @@ public class AssetSearchOMVSTest {
     private AssetDescription mockAssetDescription() {
         AssetDescription assetDescription = new AssetDescription();
 
-        assetDescription.setGuid(ASSET_ID);
-        assetDescription.setTypeDefName(ASSET_TYPE);
+        assetDescription.setGuid(GLOSSARY_TERM_TYPE_ID);
+        assetDescription.setType(createNamedType(GLOSSARY_TERM_TYPE_NAME));
 
         assetDescription.setClassifications(mockClassifications());
         assetDescription.setRelationships(mockRelationships());
@@ -236,9 +240,9 @@ public class AssetSearchOMVSTest {
     private Relationship mockRelationship() {
         Relationship relationship = new Relationship();
 
-        relationship.setFromEntity(mockAsset(ASSET_ID, ASSET_TYPE));
+        relationship.setFromEntity(mockAsset(GLOSSARY_TERM_TYPE_ID, ASSET_TYPE));
         relationship.setToEntity(mockAsset(SECOND_ASSET_ID, SECOND_ASSET_TYPE));
-        relationship.setTypeDefName(RELATIONSHIP_TYPE);
+        relationship.setType(createNamedType(COMPLEX_SCHEMA_TYPE));
 
         return relationship;
     }
@@ -248,13 +252,19 @@ public class AssetSearchOMVSTest {
 
         asset.setGuid(defaultAssetId);
         asset.setCreatedBy("admin");
-        asset.setTypeDefName(typeName);
+        asset.setType(createNamedType(COMPLEX_SCHEMA_TYPE));
 
         return asset;
     }
 
+    private Type createNamedType(String typeName) {
+        Type type1 = new Type();
+        type1.setName(typeName);
+        return type1;
+    }
+
     private List<Classification> mockClassifications() {
-        return Collections.singletonList(mockClassification(CLASSIFICATION_NAME));
+        return Collections.singletonList(mockClassification(CONFIDENTIALITY));
     }
 
     private Classification mockClassification(String classificationName) {
@@ -288,6 +298,6 @@ public class AssetSearchOMVSTest {
     private void verifyAssetDescriptionResult(List<AssetDescription> resultList) {
         Assertions.assertFalse(resultList.isEmpty());
         AssetDescription assetDescription = resultList.get(0);
-        Assertions.assertEquals(assetDescription.getGuid(), ASSET_ID);
+        Assertions.assertEquals(assetDescription.getGuid(), GLOSSARY_TERM_TYPE_ID);
     }
 }

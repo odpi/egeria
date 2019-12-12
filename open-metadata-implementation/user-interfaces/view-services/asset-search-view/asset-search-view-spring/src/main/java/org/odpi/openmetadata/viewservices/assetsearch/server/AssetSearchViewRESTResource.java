@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.assetsearch.server;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
@@ -36,7 +37,7 @@ public class AssetSearchViewRESTResource extends SecureController {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/search")
     public List<AssetElements>  searchAssets(@PathVariable("serverName") String serverName,
-                                   @RequestParam("q") String searchCriteria,
+                                   @RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types,
                                    HttpServletRequest request) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException, DependantServerNotAvailableException {
         String userId = getUser(request);
         List<AssetElements>  assetElementList = null;
@@ -44,7 +45,11 @@ public class AssetSearchViewRESTResource extends SecureController {
             //TODO sort out how to do the error processing properly. Git issue #2015 raised
             throw new org.odpi.openmetadata.userinterface.security.springboot.exceptions.UserNotAuthorizedException("User not authorised");
         } else {
-            assetElementList = restAPI.searchAssets(serverName, userId, searchCriteria, new SearchParameters());
+            SearchParameters searchParameters = new SearchParameters();
+            if(CollectionUtils.isNotEmpty(types) ) {
+                searchParameters.setEntityTypes(types);
+            }
+            assetElementList = restAPI.searchAssets(serverName, userId, searchCriteria, searchParameters);
         }
         return assetElementList;
     }

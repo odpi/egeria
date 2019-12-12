@@ -24,7 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -243,8 +243,9 @@ public class ProcessHandler {
      * @param externalSourceName the unique name of the external source
      */
     public void addProcessPortRelationship(String userId, String processGUID, String portGUID,
-                                           String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+                                           String externalSourceName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
 
         final String methodName = "addProcessPortRelationship";
 
@@ -297,8 +298,9 @@ public class ProcessHandler {
     /**
      * Retrieve all port objects that are connected to the process
      *
-     * @param userId      the name of the calling user
-     * @param processGUID the unique identifier of the process
+     * @param userId       the name of the calling user
+     * @param processGUID  the unique identifier of the process
+     * @param portTypeName the type of the port to be retrieved
      *
      * @return A set of unique identifiers for the retrieved ports or an empty set
      *
@@ -306,9 +308,10 @@ public class ProcessHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public Set<String> getPortsForProcess(String userId, String processGUID) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException {
+    public Set<String> getPortsForProcess(String userId, String processGUID, String portTypeName) throws
+                                                                                                  InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException {
         final String methodName = "getPortsForProcess";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -325,7 +328,8 @@ public class ProcessHandler {
             return new HashSet<>();
         }
 
-        return entities.parallelStream().map(InstanceHeader::getGUID).collect(Collectors.toSet());
+        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName))
+                .map(InstanceHeader::getGUID).collect(Collectors.toSet());
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws

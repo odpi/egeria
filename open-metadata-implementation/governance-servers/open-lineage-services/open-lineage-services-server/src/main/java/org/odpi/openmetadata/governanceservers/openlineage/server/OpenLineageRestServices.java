@@ -57,14 +57,14 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public LineageResponse lineage(String serverName, String userId, GraphName graph, Scope scope, View view, String guid) {
+    public LineageResponse lineage(String serverName, String userId, GraphName graph, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            response = openLineageHandler.lineage(graph, scope, view, guid);
+            response = openLineageHandler.lineage(graph, scope, view, guid, displayNameMustContain, includeProcesses);
         } catch (InvalidParameterException error) {
             openLineageExceptionHandler.captureInvalidParameterException(response, error);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error) {

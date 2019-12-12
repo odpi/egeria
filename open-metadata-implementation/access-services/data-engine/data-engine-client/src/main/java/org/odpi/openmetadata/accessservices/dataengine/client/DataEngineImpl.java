@@ -11,8 +11,15 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -22,7 +29,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -185,9 +192,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     public String createExternalDataEngine(String userId, String qualifiedName, String name,
                                            String description, String type, String version,
                                            String patchLevel, String source) throws
-                                                                                           InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException {
+                                                                             InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
 
         final String methodName = "createExternalDataEngine";
 
@@ -200,15 +207,15 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         setExternalSourceName(qualifiedName);
 
-        return  callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
     @Override
     public String createExternalDataEngine(String userId,
                                            SoftwareServerCapability softwareServerCapability) throws
-                                                                                                      InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException {
+                                                                                              InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException {
         final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -235,7 +242,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(new SchemaType(qualifiedName, displayName, author, usage, encodingStandard,
                 versionNumber, attributeList));
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
@@ -251,7 +258,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(schemaType);
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
@@ -271,7 +278,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
                 UpdateSemantic.REPLACE));
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -291,7 +298,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
                 updateSemantic));
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -308,7 +315,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(portImplementation);
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -326,7 +333,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPortAlias(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
@@ -342,7 +349,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPortAlias(portAlias);
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
 
@@ -360,7 +367,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(lineageMappings);
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
@@ -377,7 +384,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortListRequestBody requestBody = new PortListRequestBody();
         requestBody.setPorts(portGUIDs);
-       
+
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);
