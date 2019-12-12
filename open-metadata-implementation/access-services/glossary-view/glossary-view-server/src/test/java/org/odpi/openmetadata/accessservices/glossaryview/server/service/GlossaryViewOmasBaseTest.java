@@ -4,8 +4,11 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -25,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -307,6 +311,7 @@ public class GlossaryViewOmasBaseTest {
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
         properties.setEffectiveToTime(effectiveToTime);
+        properties.setProperty("qualifiedName", createPrimitiveStringPropertyValue("Qualified Name of " + guid));
         properties.setProperty("displayName", createPrimitiveStringPropertyValue("Display Name of " + guid));
         properties.setProperty("language", createPrimitiveStringPropertyValue("Language of " + guid));
         properties.setProperty("description", createPrimitiveStringPropertyValue("Description of " + guid));
@@ -327,6 +332,7 @@ public class GlossaryViewOmasBaseTest {
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
         properties.setEffectiveToTime(effectiveToTime);
+        properties.setProperty("qualifiedName", createPrimitiveStringPropertyValue("Qualified Name of " + guid));
         properties.setProperty("displayName", createPrimitiveStringPropertyValue("Display Name of " + guid));
         properties.setProperty("description", createPrimitiveStringPropertyValue("Description of " + guid));
 
@@ -350,6 +356,7 @@ public class GlossaryViewOmasBaseTest {
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
         properties.setEffectiveToTime(effectiveToTime);
+        properties.setProperty("qualifiedName", createPrimitiveStringPropertyValue("Qualified Name of " + guid));
         properties.setProperty("displayName", createPrimitiveStringPropertyValue("Display Name of " + guid));
         properties.setProperty("summary", createPrimitiveStringPropertyValue("Summary of " + guid));
         properties.setProperty("description", createPrimitiveStringPropertyValue("Description of " + guid));
@@ -372,6 +379,7 @@ public class GlossaryViewOmasBaseTest {
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
         properties.setEffectiveToTime(effectiveToTime);
+        properties.setProperty("qualifiedName", createPrimitiveStringPropertyValue("Qualified Name of " + guid));
 
         return properties;
     }
@@ -430,6 +438,20 @@ public class GlossaryViewOmasBaseTest {
         propertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
         return propertyValue;
+    }
+
+    protected void assertExternalGlossaryLinkProperties(EntityDetail expected, ExternalGlossaryLink actual){
+        assertEquals(expected.getGUID(), actual.getGuid());
+        assertEquals(expected.getProperties().getPropertyValue("qualifiedName").valueAsString(), actual.getQualifiedName());
+    }
+
+    protected void assertExceptionDataInResponse(PropertyServerException expected, GlossaryViewEntityDetailResponse actual){
+        assertEquals(expected.getReportedHTTPCode(), actual.getRelatedHTTPCode());
+        assertEquals(expected.getReportingClassName(), actual.getExceptionClassName());
+        assertEquals(expected.getReportingActionDescription(), actual.getActionDescription());
+        assertEquals(expected.getErrorMessage(), actual.getExceptionErrorMessage());
+        assertEquals(expected.getReportedSystemAction(), actual.getExceptionSystemAction());
+        assertEquals(expected.getReportedUserAction(), actual.getExceptionUserAction());
     }
 
 }
