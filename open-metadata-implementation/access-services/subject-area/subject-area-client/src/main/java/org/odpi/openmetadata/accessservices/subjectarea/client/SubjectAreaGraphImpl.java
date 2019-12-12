@@ -57,7 +57,6 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
      *
      * The results are scoped by types of Lines, types of nodes and classifications as well as level.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid the starting point of the query.
      * @param nodeFilter Set of the names of the nodes to include in the query results.  Null means include
@@ -80,7 +79,7 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Graph getGraph(String serverName,
+    public Graph getGraph(
                           String userId,
                           String guid,
                           Date asOfTime,

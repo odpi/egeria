@@ -215,15 +215,7 @@ class DetailsPanel extends PolymerElement {
         details.innerHTML = "";
 
         // Add type header
-        
-        var boldnode = document.createElement('strong');
-        var textnode = document.createTextNode(typeCategory+" type: "+typeName);
-        boldnode.appendChild(textnode);
-        var paranode = document.createElement("p");
-        paranode.appendChild(boldnode);
-        details.appendChild(paranode);
-
-
+        details.innerHTML = "Type selected is "+typeCategory+" "+typeName;
         this.entityAddDescription(details, typeName);
         this.entityAddAttributes(details, typeName);
         this.entityAddRelationships(details, typeName);
@@ -234,6 +226,10 @@ class DetailsPanel extends PolymerElement {
 
     entityAddDescription(details, typeName) {
 
+        var textnode = document.createTextNode("Description:");
+        var paranode = document.createElement("p");
+        paranode.appendChild(textnode);
+        details.appendChild(paranode);
         var eex = this.typeManager.getEntity(typeName);
         var description = eex.entityDef.description;
         var textnode = document.createTextNode(description);
@@ -434,14 +430,9 @@ class DetailsPanel extends PolymerElement {
             para.append(button);
         }
 
-
-        // Add type header
-
-        var boldnode = document.createElement('strong');
-        var textnode = document.createTextNode(typeCategory+" type: "+typeName);
-        boldnode.appendChild(textnode);
+        var textnode = document.createTextNode("Relationship Type: "+typeName);
         var paranode = document.createElement("p");
-        paranode.appendChild(boldnode);
+        paranode.appendChild(textnode);
         details.appendChild(paranode);
 
         this.relationshipAddDescription(details, typeName);
@@ -454,6 +445,10 @@ class DetailsPanel extends PolymerElement {
 
     relationshipAddDescription(details, typeName) {
 
+        var textnode = document.createTextNode("Description:");
+        var paranode = document.createElement("p");
+        paranode.appendChild(textnode);
+        details.appendChild(paranode);
         var rex = this.typeManager.getRelationship(typeName);
         var description = rex.relationshipDef.description;
         var textnode = document.createTextNode(description);
@@ -629,14 +624,10 @@ class DetailsPanel extends PolymerElement {
             para.append(button);
         }
 
-
-        var boldnode = document.createElement('strong');
-        var textnode = document.createTextNode(typeCategory+" type: "+typeName);
-        boldnode.appendChild(textnode);
+        var textnode = document.createTextNode("Classification Type: "+typeName);
         var paranode = document.createElement("p");
-        paranode.appendChild(boldnode);
+        paranode.appendChild(textnode);
         details.appendChild(paranode);
-
 
         this.classificationAddDescription(details, typeName);
         this.classificationAddAttributes(details, typeName);
@@ -647,6 +638,10 @@ class DetailsPanel extends PolymerElement {
 
     classificationAddDescription(details, typeName) {
 
+        var textnode = document.createTextNode("Description:");
+        var paranode = document.createElement("p");
+        paranode.appendChild(textnode);
+        details.appendChild(paranode);
         var cex = this.typeManager.getClassification(typeName);
         var description = cex.classificationDef.description;
         var textnode = document.createTextNode(description);

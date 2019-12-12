@@ -10,25 +10,25 @@ import java.io.Serializable;
 public enum ViewServiceDescription implements Serializable
 {
     ASSET_SEARCH  (1010,
-            "Asset Search",
+            "Asset Search OMVS",
             "asset-search",
             "Search and understand your assets.",
             //TODO create appropriate wiki
             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/"),
     OPEN_LINEAGE  (1020,
-            "Open Lineage",
+            "Open Lineage OMVS",
             "open-lineage",
             "Explore open lineage.",
             //TODO create appropriate wiki
             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-owner/"),
     SUBJECT_AREA  (1030,
-            "Subject Area",
+            "Subject Area OMVS",
             "subject-area",
             "Subject area authoring.",
             //TODO create appropriate wiki
             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
     TYPE_EXPLORER (1040,
-            "Type Explorer",
+            "Type Explorer OMVS",
             "type-explorer",
             "Explore the open metadata types.",
             //TODO create appropriate wiki

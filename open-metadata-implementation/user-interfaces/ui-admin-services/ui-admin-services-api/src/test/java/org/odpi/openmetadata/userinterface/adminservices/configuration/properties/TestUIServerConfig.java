@@ -26,6 +26,7 @@ public class TestUIServerConfig {
 
         ViewServiceConfig subjectAreaViewServiceConfig = createViewServiceConfig(ViewServiceDescription.SUBJECT_AREA);
         subjectAreaViewServiceConfig.setViewServiceAdminClass("");
+
         viewList.add(subjectAreaViewServiceConfig);
         ViewServiceConfig assetSearchViewServiceConfig = createViewServiceConfig(ViewServiceDescription.ASSET_SEARCH);
         assetSearchViewServiceConfig.setViewServiceAdminClass("");
@@ -43,7 +44,7 @@ public class TestUIServerConfig {
         openLineageViewServiceConfig.setViewServiceOptions(openLineageOptions);
         viewList.add(openLineageViewServiceConfig);
 
-        uiServerConfig.setViewServiceConfigs(viewList);
+        uiServerConfig.setViewServicesConfig(viewList);
 
         String jsonString = objectMapper.writeValueAsString(uiServerConfig);
         assertTrue(jsonString.contains("Server1"));

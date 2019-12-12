@@ -81,7 +81,10 @@ class LoginView extends PolymerElement {
                         <paper-input value="{{password}}" label="Password" name="password" required
                                      error-message="Password is required"
                                      type="password" ></paper-input>
-                                     
+                        <paper-input value={{servername}} label="Server Name" name="servername" required
+                                     error-message="Server Name is required"
+                                     autofocus></paper-input>
+
                         <form-feedback message="{{feedback}}" level="{{feedbackLevel}}"></form-feedback>
                         <div style="float: right">
                             <paper-button id="login-button" on-tap="_logIn" raised>Login</paper-button>
@@ -114,11 +117,16 @@ class LoginView extends PolymerElement {
 
     _handleLoginSuccess(evt){
         this.token = evt.detail.xhr.getResponseHeader('x-auth-token');
+        var servername = evt.detail.xhr.getResponseHeader('egeria-ui-servername');
+        if (servername) {
+              sessionStorage.setItem('egeria-ui-servername',servername);
+        }
         this.feedback = 'Authentication successful!';
         this.feedbackLevel = 'info';
     }
 
     _handleLoginError(evt){
+        sessionStorage.removeItem('egeria-ui-servername');
         this.feedback = 'Authentication failed!';
         this.feedbackLevel='error';
     }

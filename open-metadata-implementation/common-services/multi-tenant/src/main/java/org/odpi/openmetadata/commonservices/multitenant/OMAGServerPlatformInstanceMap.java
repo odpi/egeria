@@ -867,13 +867,13 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
-     * Add a new service instance to the server map.
+     * Add a new service instance to the server map. It is public so it is visible for junit.
      *
      * @param serverName name of the server
      * @param serviceName name of the service running on the server
      * @param instance instance object
      */
-    void  addServiceInstanceToPlatform(String                    serverName,
+    public void  addServiceInstanceToPlatform(String             serverName,
                                        String                    serviceName,
                                        OMAGServerServiceInstance instance)
     {

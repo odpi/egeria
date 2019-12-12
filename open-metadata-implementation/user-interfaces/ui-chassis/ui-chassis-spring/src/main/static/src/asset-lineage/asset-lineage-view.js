@@ -138,7 +138,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?view=' + view;
+          this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/open-lineage/entities/' + guid + '/end2end?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -147,7 +147,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?view=' + view;
+          this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/open-lineage/' + guid + '/ultimate-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -156,7 +156,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?view=' + view;
+          this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/open-lineage/entities/' + guid + '/glossary-lineage?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -165,7 +165,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?view=' + view;
+          this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/open-lineage/entities/' + guid + '/source-and-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
