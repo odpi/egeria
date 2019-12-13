@@ -111,7 +111,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-officers/{governanceOfficerGUID}")
+    @GetMapping( path = "/governance-officers/{governanceOfficerGUID}")
 
     public GovernanceOfficerResponse getGovernanceOfficerByGUID(@PathVariable String     serverName,
                                                                 @PathVariable String     userId,
@@ -133,7 +133,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-officers/by-appointment-id/{appointmentId}")
+    @GetMapping( path = "/governance-officers/by-appointment-id/{appointmentId}")
 
     public GovernanceOfficerResponse   getGovernanceOfficerByAppointmentId(@PathVariable String     serverName,
                                                                            @PathVariable String     userId,
@@ -152,7 +152,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-officers")
+    @GetMapping( path = "/governance-officers")
 
     public GovernanceOfficerListResponse  getGovernanceOfficers(@PathVariable String     serverName,
                                                                 @PathVariable String     userId)
@@ -170,7 +170,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/governance-officers/active")
+    @GetMapping( path = "/governance-officers/active")
 
     public GovernanceOfficerListResponse  getActiveGovernanceOfficers(@PathVariable String     serverName,
                                                                       @PathVariable String     userId)

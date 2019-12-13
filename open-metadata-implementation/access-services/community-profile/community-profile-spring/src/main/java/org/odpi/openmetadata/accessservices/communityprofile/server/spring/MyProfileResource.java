@@ -39,7 +39,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/my-profile")
+    @GetMapping( path = "/my-profile")
 
     public PersonalProfileResponse getMyProfile(@PathVariable String serverName,
                                                 @PathVariable String userId)
@@ -82,7 +82,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/my-assets")
+    @GetMapping( path = "/my-assets")
 
     public AssetListResponse getMyAssets(@PathVariable String    serverName,
                                          @PathVariable String    userId,

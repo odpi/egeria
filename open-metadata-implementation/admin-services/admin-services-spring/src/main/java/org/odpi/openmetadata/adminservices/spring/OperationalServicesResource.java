@@ -114,7 +114,7 @@ public class OperationalServicesResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instance/configuration")
+    @GetMapping( path = "/instance/configuration")
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {

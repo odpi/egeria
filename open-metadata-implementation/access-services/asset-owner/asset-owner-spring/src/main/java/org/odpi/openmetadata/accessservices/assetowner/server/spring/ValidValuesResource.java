@@ -359,7 +359,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}")
+    @GetMapping( path = "/valid-values/{validValueGUID}")
 
     public ValidValueResponse getValidValueByGUID(@PathVariable String  serverName,
                                                   @PathVariable String  userId,
@@ -433,7 +433,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/sets/{validValueSetGUID}/members")
+    @GetMapping( path = "/valid-values/sets/{validValueSetGUID}/members")
 
     public ValidValuesResponse getValidValueSetMembers(@PathVariable String  serverName,
                                                        @PathVariable String  userId,
@@ -459,7 +459,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/set-membership")
+    @GetMapping( path = "/valid-values/{validValueGUID}/set-membership")
 
     public ValidValuesResponse getSetsForValidValue(@PathVariable String  serverName,
                                                     @PathVariable String  userId,
@@ -485,7 +485,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/consumers")
+    @GetMapping( path = "/valid-values/{validValueGUID}/consumers")
 
     public ValidValueConsumersResponse getValidValuesConsumers(@PathVariable String  serverName,
                                                                @PathVariable String  userId,
@@ -511,7 +511,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/implementations")
+    @GetMapping( path = "/valid-values/{validValueGUID}/implementations")
 
     public AssetsResponse getValidValuesImplementations(@PathVariable String  serverName,
                                                         @PathVariable String  userId,

@@ -114,7 +114,7 @@ public class UIOperationalServicesResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instance/configuration")
+    @GetMapping( path = "/instance/configuration")
     public UIServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                          @PathVariable String           serverName)
     {

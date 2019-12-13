@@ -29,7 +29,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/configuration")
+    @GetMapping( path = "/configuration")
     public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                             @PathVariable String serverName)
     {

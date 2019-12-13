@@ -29,7 +29,7 @@ public class UIConfigResource
      * UINotAuthorizedException the supplied userId is not authorized to issue this command or
      * UIInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/configuration")
+    @GetMapping( path = "/configuration")
     public UIServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                           @PathVariable String serverName)
     {

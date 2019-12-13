@@ -45,7 +45,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param userId calling user
      * @return connection response
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/platform/security/connection")
+    @GetMapping( path = "/platform/security/connection")
 
     public ConnectionResponse getPlatformSecurityConnection(@PathVariable String       userId)
     {
@@ -92,7 +92,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to retrieve configuration from
      * @return connection response
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/security/connection")
+    @GetMapping( path = "/servers/{serverName}/security/connection")
 
     public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       userId,
                                                                        @PathVariable  String       serverName)

@@ -42,7 +42,7 @@ public class LocalRepositoryServicesResource
      * @return String metadata collection id.
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
+    @GetMapping( path = "/metadata-collection-id")
 
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName,
                                                                 @PathVariable String   userId)
@@ -69,7 +69,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/all")
+    @GetMapping( path = "/types/all")
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
                                               @PathVariable String   userId)
@@ -92,7 +92,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation or
      * InvalidParameterException the name of the TypeDef is null.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/by-name")
+    @GetMapping( path = "/types/by-name")
 
     public TypeDefGalleryResponse findTypesByName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
@@ -158,7 +158,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/typedefs/by-property")
+    @GetMapping( path = "/types/typedefs/by-property")
 
     public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            serverName,
                                                       @PathVariable String            userId,
@@ -182,7 +182,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/typedefs/by-external-id")
+    @GetMapping( path = "/types/typedefs/by-external-id")
 
     public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    serverName,
                                                      @PathVariable                   String    userId,
@@ -206,7 +206,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/typedefs/by-property-value")
+    @GetMapping( path = "/types/typedefs/by-property-value")
 
     public TypeDefListResponse searchForTypeDefs(@PathVariable String serverName,
                                                  @PathVariable String userId,
@@ -230,7 +230,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/typedef/{guid}")
+    @GetMapping( path = "/types/typedef/{guid}")
 
     public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -254,7 +254,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/attribute-typedef/{guid}")
+    @GetMapping( path = "/types/attribute-typedef/{guid}")
 
     public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
                                                               @PathVariable String    userId,
@@ -279,7 +279,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/typedef/name/{name}")
+    @GetMapping( path = "/types/typedef/name/{name}")
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -303,7 +303,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/types/attribute-typedef/name/{name}")
+    @GetMapping( path = "/types/attribute-typedef/name/{name}")
 
     public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
                                                                @PathVariable String    userId,
@@ -623,7 +623,7 @@ public class LocalRepositoryServicesResource
      *                                  the metadata collection is stored.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}/existence")
+    @GetMapping( path = "/instances/entity/{guid}/existence")
 
     public EntityDetailResponse isEntityKnown(@PathVariable String     serverName,
                                               @PathVariable String     userId,
@@ -647,7 +647,7 @@ public class LocalRepositoryServicesResource
      * EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}/summary")
+    @GetMapping( path = "/instances/entity/{guid}/summary")
 
     public EntitySummaryResponse getEntitySummary(@PathVariable String     serverName,
                                                   @PathVariable String     userId,
@@ -672,7 +672,7 @@ public class LocalRepositoryServicesResource
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}")
+    @GetMapping( path = "/instances/entity/{guid}")
 
     public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
                                                 @PathVariable String    userId,
@@ -976,7 +976,7 @@ public class LocalRepositoryServicesResource
      *                                  the metadata collection is stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}/existence")
+    @GetMapping( path = "/instances/relationship/{guid}/existence")
 
     public RelationshipResponse  isRelationshipKnown(@PathVariable String     serverName,
                                                      @PathVariable String     userId,
@@ -1001,7 +1001,7 @@ public class LocalRepositoryServicesResource
      *                                         the requested GUID stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}")
+    @GetMapping( path = "/instances/relationship/{guid}")
 
     public RelationshipResponse getRelationship(@PathVariable String     serverName,
                                                 @PathVariable String     userId,
@@ -1529,7 +1529,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{entityGUID}/previous")
+    @GetMapping( path = "/instances/entity/{entityGUID}/previous")
 
     public EntityDetailResponse undoEntityUpdate(@PathVariable String  serverName,
                                                  @PathVariable String  userId,
@@ -1613,7 +1613,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support soft-delete or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{deletedEntityGUID}/restore")
+    @GetMapping( path = "/instances/entity/{deletedEntityGUID}/restore")
 
     public EntityDetailResponse restoreEntity(@PathVariable String    serverName,
                                               @PathVariable String    userId,
@@ -1850,7 +1850,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{relationshipGUID}/previous")
+    @GetMapping( path = "/instances/relationship/{relationshipGUID}/previous")
 
     public RelationshipResponse undoRelationshipUpdate(@PathVariable String  serverName,
                                                        @PathVariable String  userId,
@@ -1934,7 +1934,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support soft-deletes
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{deletedRelationshipGUID}/restore")
+    @GetMapping( path = "/instances/relationship/{deletedRelationshipGUID}/restore")
 
     public RelationshipResponse restoreRelationship(@PathVariable String    serverName,
                                                     @PathVariable String    userId,

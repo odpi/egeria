@@ -65,7 +65,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/has-as/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse getTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermHASARelationship(serverName, userId,guid);
     }
@@ -181,7 +181,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse getRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getRelatedTerm(serverName, userId,guid);
     }
@@ -298,7 +298,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse getSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getSynonymRelationship(serverName, userId,guid);
     }
@@ -414,7 +414,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse getAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getAntonymRelationship(serverName, userId,guid);
     }
@@ -530,7 +530,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/translations/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse getTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTranslationRelationship(serverName, userId,guid);
     }
@@ -647,7 +647,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse getUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getUsedInContextRelationship(serverName, userId,guid);
     }
@@ -765,7 +765,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse getPreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getPreferredTermRelationship(serverName, userId,guid);
     }
@@ -886,7 +886,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse getValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getValidValueRelationship(serverName, userId,guid);
     }
@@ -1006,7 +1006,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse getReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getReplacementTerm(serverName, userId,guid);
     }
@@ -1126,7 +1126,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse getTYPEDBYRelationshipRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermTYPEDBYRelationship(serverName, userId,guid);
     }
@@ -1245,7 +1245,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/is-as/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse getISARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getISARelationship(serverName, userId,guid);
     }
@@ -1364,7 +1364,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermISATypeOFRelationship(serverName, userId,guid);
     }
@@ -1489,7 +1489,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermCategorizationRelationship(serverName, userId,guid);
     }
@@ -1612,7 +1612,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermAnchorRelationship(serverName, userId, guid);
 
@@ -1707,7 +1707,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
     }
@@ -1797,7 +1797,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse getProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getProjectScopeRelationship(serverName, userId,guid);
     }
@@ -1887,7 +1887,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/semantic-assignments/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/semantic-assignments/{guid}")
     public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId,guid);
     }

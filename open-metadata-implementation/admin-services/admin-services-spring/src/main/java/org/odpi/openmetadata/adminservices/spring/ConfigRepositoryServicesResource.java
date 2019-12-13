@@ -242,7 +242,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/local-repository/metadata-collection-id")
+    @GetMapping( path = "/local-repository/metadata-collection-id")
 
     public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String               userId,
                                                      @PathVariable  String               serverName)

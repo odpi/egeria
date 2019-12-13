@@ -95,7 +95,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryReportGUID}")
 
     public DiscoveryAnalysisReportResponse getDiscoveryReport(@PathVariable String   serverName,
                                                               @PathVariable String   userId,
@@ -123,7 +123,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/annotations")
+    @GetMapping( path = "/assets/{assetGUID}/annotations")
 
     public AnnotationListResponse getAnnotationsForAssetByStatus(@PathVariable String            serverName,
                                                                  @PathVariable String            userId,
@@ -156,7 +156,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String   serverName,
                                                                 @PathVariable String   userId,
@@ -187,7 +187,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}/extended-annotations")
+    @GetMapping( path = "/annotations/{annotationGUID}/extended-annotations")
 
     public  AnnotationListResponse  getExtendedAnnotations(@PathVariable String   serverName,
                                                            @PathVariable String   userId,
@@ -217,7 +217,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}")
+    @GetMapping( path = "/annotations/{annotationGUID}")
 
     public  AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                              @PathVariable String   userId,

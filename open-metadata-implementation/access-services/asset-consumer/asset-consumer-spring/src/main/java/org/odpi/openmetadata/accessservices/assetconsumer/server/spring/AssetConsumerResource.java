@@ -249,7 +249,7 @@ public class AssetConsumerResource
      * NoConnectedAssetException there is no asset associated with this connection or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection-name/{connectionName}")
+    @GetMapping( path = "/assets/by-connection-name/{connectionName}")
 
     public GUIDResponse getAssetForConnectionName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
@@ -301,7 +301,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-meaning/{termGUID}")
+    @GetMapping( path = "/assets/by-meaning/{termGUID}")
 
     public GUIDListResponse getAssetsByMeaning(@PathVariable String serverName,
                                                @PathVariable String userId,
@@ -353,7 +353,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-tag/{tagGUID}")
+    @GetMapping( path = "/assets/by-tag/{tagGUID}")
 
     GUIDListResponse getAssetsByTag(@PathVariable String serverName,
                                     @PathVariable String userId,
@@ -379,7 +379,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/connections/by-name/{name}")
+    @GetMapping( path = "/connections/by-name/{name}")
 
     public ConnectionResponse getConnectionByName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
@@ -451,7 +451,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/meanings/{termGUID}")
+    @GetMapping( path = "/meanings/{termGUID}")
 
     public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
                                            @PathVariable String   userId,
@@ -473,7 +473,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/tags/{tagGUID}")
+    @GetMapping( path = "/tags/{tagGUID}")
 
     public TagResponse getTag(@PathVariable String   serverName,
                               @PathVariable String   userId,

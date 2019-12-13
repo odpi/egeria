@@ -546,7 +546,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/discovery-analysis-reports")
+    @GetMapping( path = "/assets/{assetGUID}/discovery-analysis-reports")
 
     public DiscoveryAnalysisReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
                                                                            @PathVariable String  userId,
@@ -578,7 +578,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
                                                                 @PathVariable String            userId,
@@ -612,7 +612,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}/annotations")
+    @GetMapping( path = "/annotations/{annotationGUID}/annotations")
 
     public AnnotationListResponse  getExtendedAnnotations(@PathVariable String            serverName,
                                                           @PathVariable String            userId,

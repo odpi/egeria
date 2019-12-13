@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class AssetSearchController {
      * @param searchCriteria the query parameter with the search phrase
      * @return list of assets
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/search")
+    @GetMapping( path = "/assets/search")
     public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
@@ -42,7 +43,7 @@ public class AssetSearchController {
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/types")
+    @GetMapping( path = "/types")
     public List<Type> getTypes() throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getSupportedTypes(user);
