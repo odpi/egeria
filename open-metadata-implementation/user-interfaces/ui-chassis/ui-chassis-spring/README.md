@@ -55,7 +55,7 @@ a development environment.
 * strict.ssl  - set to false if you want to ignore invalid ssl certificate of a server you want to connect to
 * startup.user - userId used to startup the list of configured servers. Default is 'system'
 * startup.server.list - CSV of servers to be started
-* logging.level.root  - looging level
+* logging.level.root  - logging level
 * authentication.source - user store to use to authenticate with db or ldap
 * authentication.mode - authentication method either session or token
 
