@@ -36,7 +36,7 @@ public class OpenLineageResource {
      * @param guid       The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/lineage/scopes/{scope}/views/{view}/entities/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public LineageResponse lineage(
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
