@@ -49,7 +49,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
 
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Create a new AssetConsumer client.
@@ -318,8 +318,8 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private void detectExceptions(String methodName,
                                   AssetCatalogOMASAPIResponse response)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, response);
+        restExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
+        restExceptionHandler.detectAndThrowPropertyServerException(methodName, response);
     }
 
 }
