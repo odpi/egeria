@@ -79,12 +79,12 @@ public enum AssetCatalogErrorCode {
     ASSET_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-007 ",
             "The requested asset {0} is not found in OMAS Server {1}",
             "The system is unable to populate the requested asset.",
-            "Check that the unique identifier for the asset is correct."),
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-008 ",
             "The requested asset {0} has not classification in OMAS Server {1}",
             "The system is unable to retrieve the classifications for the given asset.",
-            "Check that the unique identifier for the asset is correct."),
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     ASSET_WITH_CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-009 ",
             "There is no asset available for with given classification {0} in OMAS Server {1}",
@@ -99,32 +99,32 @@ public enum AssetCatalogErrorCode {
     ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
             "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighbourhood for the given asset.",
-            "Check that the unique identifier for the asset is correct."),
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-012 ",
             "There is no assets available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
-            "Check that the unique identifier for the asset is correct."),
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     NO_RELATIONSHIPS_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-013 ",
             "There is no relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
-            "Check that the unique identifier for the asset is correct."),
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     NO_RELATED_ASSETS(404, "OMAS-ASSET-CATALOG-404-014 ",
             "There is no assets that are connected directly or indirectly to the asset identified {0} in OMAS Server {1}",
-            "The system is unable to retrieve the classifications for the given asset.",
-            "Check that the unique identifier for the asset is correct."),
+            "The system is unable to retrieve any related assets.",
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
             "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
-            "The system is unable to retrieve the classifications for the given asset.",
-            "Check that the unique identifier for the asset is correct."),
+            "The system is unable to retrieve the linking relationship.",
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     LINKING_ASSETS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-016 ",
             "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
-            "The system is unable to retrieve the classifications for the given asset.",
-            "Check that the unique identifier for the asset is correct."),
+            "The system is unable to retrieve linking assets.",
+            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
     METHOD_NOT_IMPLEMENTED(501, "OMAS-ASSET-CATALOG-501-001 ",
             "The Asset Catalog OMAS method {0}({1}) is not implemented for server {2}",
@@ -174,4 +174,7 @@ public enum AssetCatalogErrorCode {
     public String getUserAction() {
         return userAction;
     }
-}
+
+    private static class Constants {
+        static final String UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT = "Check that the unique identifier for the asset is correct.";
+    }}
