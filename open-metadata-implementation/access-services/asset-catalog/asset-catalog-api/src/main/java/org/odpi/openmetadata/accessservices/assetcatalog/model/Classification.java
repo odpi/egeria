@@ -36,8 +36,7 @@ public class Classification implements Serializable {
     private Long version;
     private String status;
 
-    private String typeDefName;
-    private String typeDefDescription;
+    private Type type;
 
     private Map<String, Object> properties;
 
@@ -113,20 +112,12 @@ public class Classification implements Serializable {
         this.status = status;
     }
 
-    public String getTypeDefName() {
-        return typeDefName;
+    public Type getType() {
+        return type;
     }
 
-    public void setTypeDefName(String typeDefName) {
-        this.typeDefName = typeDefName;
-    }
-
-    public String getTypeDefDescription() {
-        return typeDefDescription;
-    }
-
-    public void setTypeDefDescription(String typeDefDescription) {
-        this.typeDefDescription = typeDefDescription;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Map<String, Object> getProperties() {
@@ -151,13 +142,12 @@ public class Classification implements Serializable {
                 Objects.equals(updateTime, that.updateTime) &&
                 Objects.equals(version, that.version) &&
                 Objects.equals(status, that.status) &&
-                Objects.equals(typeDefName, that.typeDefName) &&
-                Objects.equals(typeDefDescription, that.typeDefDescription) &&
+                Objects.equals(type, that.type) &&
                 Objects.equals(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, origin, originGUID, createdBy, createTime, updatedBy, updateTime, version, status, typeDefName, typeDefDescription, properties);
+        return Objects.hash(name, origin, originGUID, createdBy, createTime, updatedBy, updateTime, version, status, type, properties);
     }
 }

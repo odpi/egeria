@@ -158,6 +158,44 @@ public class TechnologyUnderTestWorkPad
                                             parameterName);
     }
 
+    /**
+     * Requests (completion) status of a specific workbench.
+     *
+     * @param workbenchId identifier of the workbench.
+     * @return OpenMetadataConformanceWorkbenchStatus or
+     * @throws InvalidParameterException the  workbenchId is not known.
+     */
+    public OpenMetadataConformanceWorkbenchStatus getWorkbenchStatus(String   workbenchId) throws InvalidParameterException
+    {
+        final String   methodName    = "getWorkbenchStatus";
+        final String   parameterName = "workbenchId";
+
+        if (workbenchWorkPads != null)
+        {
+            for (OpenMetadataConformanceWorkbenchWorkPad workBenchWorkPad : workbenchWorkPads)
+            {
+                if (workBenchWorkPad != null)
+                {
+                    if (workBenchWorkPad.getWorkbenchId().equals(workbenchId))
+                    {
+                        return workBenchWorkPad.getWorkbenchStatus();
+                    }
+                }
+            }
+        }
+
+        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_WORKBENCH_ID;
+        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(workbenchId);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),
+                parameterName);
+    }
+
 
     /**
      * Request a full report on the conformance of the technology under test.

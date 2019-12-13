@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class LineageEvent extends AssetLineageEventHeader {
 
-   private Map<String, Set<GraphContext>> assetContext;
+    private Map<String, Set<GraphContext>> assetContext;
+    private LineageEntity lineageEntity;
 
     /**
      * Gets asset context.
@@ -46,6 +48,10 @@ public class LineageEvent extends AssetLineageEventHeader {
     public void setAssetContext(Map<String, Set<GraphContext>> assetContext) {
 
         this.assetContext = assetContext;
+    }
+
+    public void setLineageEntity(LineageEntity lineageEntity) {
+        this.lineageEntity = lineageEntity;
     }
 
     @Override

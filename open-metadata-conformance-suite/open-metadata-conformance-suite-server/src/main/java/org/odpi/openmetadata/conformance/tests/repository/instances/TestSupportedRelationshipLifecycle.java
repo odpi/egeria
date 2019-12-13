@@ -158,7 +158,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type and end entity types match the known types from the repository helper
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -174,8 +174,23 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
+        String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
+        EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
+        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end1EntityDef.getName());
+        verifyCondition((end1EntityDef.equals(knownEnd1EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
-
+        String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
+        EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
+        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end2EntityDef.getName());
+        verifyCondition((end2EntityDef.equals(knownEnd2EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
         /*
