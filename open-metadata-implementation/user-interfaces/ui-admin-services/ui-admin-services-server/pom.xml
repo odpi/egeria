@@ -82,6 +82,11 @@
             <artifactId>repository-services-implementation</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-client</artifactId>
+        </dependency>
+
         <!-- link in the view services server modules to get access to their admin -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>

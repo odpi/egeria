@@ -63,5 +63,10 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

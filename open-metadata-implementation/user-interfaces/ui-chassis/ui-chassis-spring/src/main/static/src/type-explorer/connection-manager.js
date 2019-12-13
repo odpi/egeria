@@ -27,7 +27,6 @@ import '../token-ajax.js';
 * typesLoaded event to be sent), or fail (e.g. because the server is unavailable or the details are
 * incorrect).
 *
-*
 */
 
 class ConnectionManager extends PolymerElement {
@@ -75,7 +74,6 @@ class ConnectionManager extends PolymerElement {
             </div>
 
         `; }
-
 
     static get properties() {
         return {
@@ -173,15 +171,6 @@ class ConnectionManager extends PolymerElement {
 
     _serverNamesChanged(newValue, oldValue) {
       console.log("_serverNamesChanged" + newValue);
-      if (newValue != undefined && newValue != null && newValue.length >0) {
-            //this.$.serverdropdown.selected = 0;
-
-            //this.$.serverdropdown._setSelectedItem(newValue);
-           // this.$.servernameselector.render();
-
-           // this.$.serverNamesDomRepeat.modelForElement(event.target).set('item.checked', true);
-      }
-
     }
 
     serverNameChanged() {
@@ -201,7 +190,6 @@ class ConnectionManager extends PolymerElement {
         this.typeManager.loadServers();
     }
 
-
     displayStaleConnectionWarning() {
       var statusMsg = this.$.statusMsg;
       statusMsg.innerHTML = "Warning: types did not load; switching to offline mode; previously loaded type information may be stale";
@@ -211,7 +199,6 @@ class ConnectionManager extends PolymerElement {
       var statusMsg = this.$.statusMsg;
       statusMsg.innerHTML = "Warning: servers did not load from the UI Server. This is an unexpected error; check the UI Server is configured correctly and started.";
     }
-
 
     clearStaleConnectionWarning() {
        var statusMsg = this.$.statusMsg;

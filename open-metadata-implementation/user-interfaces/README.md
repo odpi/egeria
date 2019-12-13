@@ -15,7 +15,9 @@ experience of open metadata.
 
 * [ui-chassis](ui-chassis) the user interface platform.
 * [ui-admin-services](ui-admin-services) supports UI administration, used to configure and operate the UI server.
-
+* [ui-common](ui-common) supports common capabilities  
+* [ui-security](ui-security) supports security including authentication and mapping allowed urls
+* [view-services](view-services) supports the view services
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

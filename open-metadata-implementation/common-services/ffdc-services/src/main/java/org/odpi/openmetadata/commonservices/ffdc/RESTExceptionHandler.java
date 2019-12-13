@@ -451,7 +451,6 @@ public class RESTExceptionHandler
         }
     }
 
-
     /**
      * Set the exception information into the response.
      *

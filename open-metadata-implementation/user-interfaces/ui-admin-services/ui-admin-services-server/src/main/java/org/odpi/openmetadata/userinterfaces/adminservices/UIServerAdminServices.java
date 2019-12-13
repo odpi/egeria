@@ -495,68 +495,77 @@ public class UIServerAdminServices
         return response;
     }
 
-//TODO Support deploying one UI config to another UI server tracked in issue #1685. Uncomment and correct the following code
-//    /**
-//     * Push the configuration for the server to another UI Server Platform.
-//     *
-//     * @param userId  user that is issuing the request
-//     * @param serverName  local server name
-//     * @param destinationPlatform  location of the platform where the config is to be deployed to
-//     * @return void response or
-//     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-//     * UIConfigurationErrorException there is a problem using the supplied configuration or
-//     * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
-//     */
-//    public VoidResponse deployUIServerConfig(String         userId,
-//                                               String         serverName,
-//                                               URLRequestBody destinationPlatform)
-//    {
-//        final String methodName = "deployUIServerConfig";
-//
-//        log.debug("Calling method: " + methodName);
-//
-//        VoidResponse response = new VoidResponse();
-//
-//        try
-//        {
-//            errorHandler.validateServerName(serverName, methodName);
-//            errorHandler.validateUserId(userId, serverName, methodName);
-//
-//            UIServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-//
-//            String  serverURLRoot = serverConfig.getLocalServerURL();
-//
-//            if ((destinationPlatform != null) && (destinationPlatform.getUrlRoot() != null))
-//            {
-//                serverURLRoot = destinationPlatform.getUrlRoot();
-//            }
-//
-//            ConfigurationManagementClient client = new ConfigurationManagementClient(serverName,
-//                                                                                     serverURLRoot);
-//
-//            client.setUIServerConfig(userId, serverConfig);
-//        }
-//        catch (OMAGInvalidParameterException error)
-//        {
-//            exceptionHandler.captureInvalidParameterException(response, error);
-//        }
-//        catch (OMAGNotAuthorizedException error)
-//        {
-//            exceptionHandler.captureNotAuthorizedException(response, error);
-//        }
-//        catch (OMAGConfigurationErrorException error)
-//        {
-//            exceptionHandler.captureConfigurationErrorException(response, error);
-//        }
-//        catch (Throwable  error)
-//        {
-//            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
-//        }
-//
-//        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-//
-//        return response;
-//    }
+    /**
+     * Push the configuration for the server to another UI Server Platform.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param destinationPlatform  location of the platform where the config is to be deployed to
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UIConfigurationErrorException there is a problem using the supplied configuration or
+     * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
+     */
+    public VoidResponse deployUIServerConfig(String         userId,
+                                               String         serverName,
+                                               URLRequestBody destinationPlatform)
+    {
+        final String methodName = "deployUIServerConfig";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            UIServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            String  serverURLRoot = serverConfig.getLocalServerURL();
+
+            if ((destinationPlatform != null) && (destinationPlatform.getUrlRoot() != null))
+            {
+                serverURLRoot = destinationPlatform.getUrlRoot();
+            }
+
+            ConfigurationManagementClient client = new ConfigurationManagementClient(serverName,
+                                                                                     serverURLRoot);
+
+            client.setUIServerConfig(userId, serverConfig);
+        }
+        catch (OMAGInvalidParameterException omagError)
+        {
+            // create an FFDC exception. Can't pass the OMAGInvalidParameterException to the error handler or there is a circular Maven dependency.
+            InvalidParameterException e = new InvalidParameterException(omagError.getReportedHTTPCode(),
+                    omagError.getReportingClassName(),
+                    omagError.getReportingActionDescription(),
+                    omagError.getErrorMessage(),
+                    omagError.getReportedSystemAction(),
+                    omagError.getReportedUserAction(),
+                    omagError.getReportedCaughtException(),
+                    "",
+                    omagError.getRelatedProperties());
+            exceptionHandler.captureInvalidParameterException(response, e);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
 
 
     /*

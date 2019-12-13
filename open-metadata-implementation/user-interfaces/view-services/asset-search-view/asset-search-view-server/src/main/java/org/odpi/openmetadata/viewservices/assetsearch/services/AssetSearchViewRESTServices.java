@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The Asset Catalog OMVS Service provides an interface to search for assets using the Asset Catalog OMAS client
+ * The Asset Search OMVS Service provides an interface to search for assets using the Asset Catalog OMAS client
  */
 
 public class AssetSearchViewRESTServices {
@@ -146,7 +146,6 @@ public class AssetSearchViewRESTServices {
             LOG.error(String.format("Error searching for assets with criteria  '%s'", searchCriteria));
             throw e;
         }
-
     }
 
     public List<AssetElements>  getAssetContext(String serverName, String userId, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, UserNotAuthorizedException, DependantServerNotAvailableException {
