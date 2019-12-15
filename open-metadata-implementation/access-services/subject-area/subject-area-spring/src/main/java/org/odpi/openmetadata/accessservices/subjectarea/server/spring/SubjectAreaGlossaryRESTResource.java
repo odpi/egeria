@@ -53,7 +53,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *  ClassificationException              Error processing a classification
      *  StatusNotSupportedException          A status value is not supported
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries")
+    @PostMapping( path = "/users/{userId}/glossaries")
     public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,@PathVariable String userId, @RequestBody Glossary suppliedGlossary) {
         return restAPI.createGlossary(serverName, userId,suppliedGlossary);
     }
@@ -230,7 +230,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries/{guid}")
+    @PostMapping( path = "/users/{userId}/glossaries/{guid}")
     public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
     {
         return restAPI.restoreGlossary(serverName, userId,guid);

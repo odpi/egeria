@@ -59,7 +59,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> StatusNotSupportedException          A status value is not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories")
+    @PostMapping( path = "/users/{userId}/categories")
     public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName,@PathVariable String userId, @RequestBody Category suppliedCategory) {
         return restAPI.createCategory(serverName,userId,suppliedCategory);
     }
@@ -229,7 +229,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories/{guid}")
+    @PostMapping( path = "/users/{userId}/categories/{guid}")
     public SubjectAreaOMASAPIResponse restoreCategory( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreCategory(serverName,userId,guid);

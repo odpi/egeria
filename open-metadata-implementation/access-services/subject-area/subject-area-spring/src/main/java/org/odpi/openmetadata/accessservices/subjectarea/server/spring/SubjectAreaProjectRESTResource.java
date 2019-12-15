@@ -51,7 +51,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      *  ClassificationException              Error processing a classification
      *  StatusNotSupportedException          A status value is not supported
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/projects")
+    @PostMapping( path = "/users/{userId}/projects")
     public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,@PathVariable String userId, @RequestBody Project suppliedProject) {
         return restAPI.createProject(serverName, userId,suppliedProject);
     }
@@ -260,7 +260,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/projects/{guid}")
+    @PostMapping( path = "/users/{userId}/projects/{guid}")
     public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
     {
         return restAPI.restoreProject(serverName, userId,guid);

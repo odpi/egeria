@@ -29,7 +29,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param requestBody requestBody used to create and configure the connector that performs platform security
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/platform/security/connection")
+    @PostMapping( path = "/platform/security/connection")
 
     public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
                                                       @RequestBody  PlatformSecurityRequestBody requestBody)
@@ -75,7 +75,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param connection connection used to create and configure the connector.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/servers/{serverName}/security/connection")
+    @PostMapping( path = "/servers/{serverName}/security/connection")
 
     public synchronized VoidResponse setServerSecurityConnection(@PathVariable String       userId,
                                                                  @PathVariable String       serverName,

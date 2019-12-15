@@ -30,7 +30,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/repository-workbench/repositories")
+    @PostMapping( path = "/conformance-suite-workbenches/repository-workbench/repositories")
 
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String userId,
                                                                   @PathVariable String serverName,
@@ -52,7 +52,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/platform-workbench/platforms")
+    @PostMapping( path = "/conformance-suite-workbenches/platform-workbench/platforms")
 
     public VoidResponse enablePlatformConformanceSuiteWorkbench(@PathVariable String         userId,
                                                                 @PathVariable String         serverName,

@@ -48,7 +48,7 @@ public class AssetConsumerResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
+    @PostMapping( path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
     public GUIDResponse addCommentReply(@PathVariable String             serverName,
                                         @PathVariable String             userId,
@@ -74,7 +74,7 @@ public class AssetConsumerResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments")
+    @PostMapping( path = "/assets/{assetGUID}/comments")
 
     public GUIDResponse addCommentToAsset(@PathVariable String              serverName,
                                           @PathVariable String              userId,
@@ -99,7 +99,7 @@ public class AssetConsumerResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/likes")
+    @PostMapping( path = "/assets/{assetGUID}/likes")
 
     public VoidResponse addLikeToAsset(@PathVariable String              serverName,
                                        @PathVariable String              userId,
@@ -128,7 +128,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem adding the log message to the audit log for this asset or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/log-records")
+    @PostMapping( path = "/assets/{assetGUID}/log-records")
 
     public VoidResponse addLogMessageToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
@@ -152,7 +152,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/ratings")
+    @PostMapping( path = "/assets/{assetGUID}/ratings")
 
     public VoidResponse addRatingToAsset(@PathVariable String             serverName,
                                          @PathVariable String             userId,
@@ -177,7 +177,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/tags/{tagGUID}")
+    @PostMapping( path = "/assets/{assetGUID}/tags/{tagGUID}")
 
     public VoidResponse addTagToAsset(@PathVariable String              serverName,
                                       @PathVariable String              userId,
@@ -201,7 +201,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags")
+    @PostMapping( path = "/tags")
 
     public GUIDResponse createTag(@PathVariable String         serverName,
                                   @PathVariable String         userId,
@@ -224,7 +224,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem updating the asset properties in the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/{tagGUID}/delete")
+    @PostMapping( path = "/tags/{tagGUID}/delete")
 
     public VoidResponse   deleteTag(@PathVariable String          serverName,
                                     @PathVariable String          userId,
@@ -274,7 +274,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-search-string")
+    @PostMapping( path = "/assets/by-search-string")
 
     public GUIDListResponse findAssets(@PathVariable String   serverName,
                                        @PathVariable String   userId,
@@ -327,7 +327,7 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
+    @PostMapping( path = "/assets/by-name")
 
     public GUIDListResponse getAssetsByName(@PathVariable String   serverName,
                                             @PathVariable String   userId,
@@ -402,7 +402,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/meanings/by-name")
+    @PostMapping( path = "/meanings/by-name")
 
     public GlossaryTermListResponse getMeaningByName(@PathVariable String   serverName,
                                                      @PathVariable String   userId,
@@ -427,7 +427,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/meanings/by-search-string")
+    @PostMapping( path = "/meanings/by-search-string")
 
     public GlossaryTermListResponse findMeanings(@PathVariable String   serverName,
                                                  @PathVariable String   userId,
@@ -496,7 +496,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/by-name")
+    @PostMapping( path = "/tags/by-name")
 
     public TagsResponse getTagsByName(@PathVariable String  serverName,
                                       @PathVariable String  userId,
@@ -521,7 +521,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/private/by-name")
+    @PostMapping( path = "/tags/private/by-name")
 
     public TagsResponse getMyTagsByName(@PathVariable String  serverName,
                                         @PathVariable String  userId,
@@ -546,7 +546,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/by-search-string")
+    @PostMapping( path = "/tags/by-search-string")
 
     public TagsResponse findTags(@PathVariable String  serverName,
                                  @PathVariable String  userId,
@@ -571,7 +571,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/private/by-search-string")
+    @PostMapping( path = "/tags/private/by-search-string")
 
     public TagsResponse findMyTags(@PathVariable String  serverName,
                                    @PathVariable String  userId,
@@ -597,7 +597,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
+    @PostMapping( path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
 
     public VoidResponse removeCommentFromAsset(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -622,7 +622,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/likes/delete")
+    @PostMapping( path = "/assets/{assetGUID}/likes/delete")
 
     public VoidResponse   removeLikeFromAsset(@PathVariable String          serverName,
                                               @PathVariable String          userId,
@@ -646,7 +646,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/ratings/delete")
+    @PostMapping( path = "/assets/{assetGUID}/ratings/delete")
 
     public VoidResponse   removeRatingFromAsset(@PathVariable String          serverName,
                                                 @PathVariable String          userId,
@@ -671,7 +671,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/tags/{tagGUID}/delete")
+    @PostMapping( path = "/assets/{assetGUID}/tags/{tagGUID}/delete")
 
     public VoidResponse   removeTagFromAsset(@PathVariable String          serverName,
                                              @PathVariable String          userId,
@@ -697,7 +697,7 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "assets/{assetGUID}/comments/{commentGUID}/update")
+    @PostMapping( path = "assets/{assetGUID}/comments/{commentGUID}/update")
 
     public VoidResponse   updateComment(@PathVariable String              serverName,
                                         @PathVariable String              userId,
@@ -722,7 +722,7 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/{tagGUID}/update")
+    @PostMapping( path = "/tags/{tagGUID}/update")
 
     public VoidResponse   updateTagDescription(@PathVariable String         serverName,
                                                @PathVariable String         userId,

@@ -54,7 +54,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms")
+    @PostMapping( path = "/users/{userId}/terms")
     public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody Term suppliedTerm) {
         return restAPI.createTerm(serverName, userId,suppliedTerm);
     }
@@ -223,7 +223,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms/{guid}")
+    @PostMapping( path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTerm(serverName, userId, guid);
