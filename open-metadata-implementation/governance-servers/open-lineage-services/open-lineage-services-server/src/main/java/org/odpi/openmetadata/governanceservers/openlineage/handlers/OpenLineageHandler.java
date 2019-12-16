@@ -24,10 +24,12 @@ public class OpenLineageHandler {
      * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param view        The view queried by the user: hostview, tableview, columnview.
      * @param guid         The guid of the node of which the lineage is queried from.
+     * @param displayNameMustContain
+     * @param includeProcesses
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
-        return mainGraph.lineage(graphName, scope, view, guid);
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+        return mainGraph.lineage(graphName, scope, view, guid, displayNameMustContain, includeProcesses);
     }
 
     /**

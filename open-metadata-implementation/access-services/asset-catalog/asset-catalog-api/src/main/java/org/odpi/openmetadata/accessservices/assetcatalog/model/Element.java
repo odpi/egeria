@@ -26,8 +26,7 @@ public class Element implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String guid;
-    private String typeDefName;
-    private String typeDefGUID;
+    private Type type;
     private String metadataCollectionId;
     private String name;
     private String createdBy;
@@ -38,6 +37,7 @@ public class Element implements Serializable {
     private String status;
     private String url;
     private Map<String, Object> properties;
+    private List<Classification> classifications;
     private List<Element> parentElement;
 
     /**
@@ -63,35 +63,17 @@ public class Element implements Serializable {
      *
      * @return the type definition of the asset
      */
-    public String getTypeDefName() {
-        return typeDefName;
+    public Type getType() {
+        return type;
     }
 
     /**
      * Set up the type definition of the asset
      *
-     * @param typeDefName - the type definition of the asset
+     * @param type - the type definition of the asset
      */
-    public void setTypeDefName(String typeDefName) {
-        this.typeDefName = typeDefName;
-    }
-
-    /**
-     * Returns the type identifier of the asset
-     *
-     * @return the type identifier of the asset
-     */
-    public String getTypeDefGUID() {
-        return typeDefGUID;
-    }
-
-    /**
-     * Set up the type identifier of the asset
-     *
-     * @param typeDefGUID - the type identifier of the asset
-     */
-    public void setTypeDefGUID(String typeDefGUID) {
-        this.typeDefGUID = typeDefGUID;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     /**
@@ -247,6 +229,14 @@ public class Element implements Serializable {
         this.properties = properties;
     }
 
+    public List<Classification> getClassifications() {
+        return classifications;
+    }
+
+    public void setClassifications(List<Classification> classifications) {
+        this.classifications = classifications;
+    }
+
     public List<Element> getParentElement() {
         return parentElement;
     }
@@ -261,8 +251,7 @@ public class Element implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Element element = (Element) o;
         return Objects.equals(guid, element.guid) &&
-                Objects.equals(typeDefName, element.typeDefName) &&
-                Objects.equals(typeDefGUID, element.typeDefGUID) &&
+                Objects.equals(type.getName(), element.getType().getName()) &&
                 Objects.equals(metadataCollectionId, element.metadataCollectionId) &&
                 Objects.equals(name, element.name) &&
                 Objects.equals(createdBy, element.createdBy) &&
@@ -273,11 +262,12 @@ public class Element implements Serializable {
                 Objects.equals(status, element.status) &&
                 Objects.equals(url, element.url) &&
                 Objects.equals(properties, element.properties) &&
+                Objects.equals(classifications, element.classifications) &&
                 Objects.equals(parentElement, element.parentElement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guid, typeDefName, typeDefGUID, metadataCollectionId, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, parentElement);
+        return Objects.hash(guid, type, metadataCollectionId, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, classifications, parentElement);
     }
 }

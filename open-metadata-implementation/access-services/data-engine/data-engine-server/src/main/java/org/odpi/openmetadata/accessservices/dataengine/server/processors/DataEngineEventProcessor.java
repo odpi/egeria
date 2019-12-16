@@ -27,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
-import java.io.Closeable;
-
 /**
  * The Data Engine event processor is processing events from external data engines about
  * metadata changes. It will handle different types of events defined in Data Engine OMAS API module.
@@ -195,7 +193,8 @@ public class DataEngineEventProcessor {
     }
 
     private void logException(String dataEngineEvent, String methodName, Exception e) {
-        log.debug("Exception in processing {} from in Data Engine In Topic", methodName);
+        log.debug("Exception in processing {} from in Data Engine In Topic: {}", methodName, e);
+
         DataEngineErrorCode errorCode = DataEngineErrorCode.PARSE_EVENT_EXCEPTION;
         auditLog.logException(methodName, errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
                 errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(),

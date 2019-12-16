@@ -6,62 +6,81 @@
 
 # Top level
 
-developer-resources @mandy-chessell
+developer-resources/ @mandy-chessell @planetf1
 
-open-metadata-conformance-suite @mandy-chessell
+open-metadata-conformance-suite/ @mandy-chessell
 
-open-metadata-distribution @mandy-chessell
+open-metadata-distribution/ @mandy-chessell @planetf1
 
 # Implementation
 
-open-metadata-implementation/adapters @mandy-chessell
-open-metadata-implementation/governance-servers/data-engine-proxy-services @cmgrote
-open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector @cmgrote
-open-metadata-implementation/adapters/governance-engines-plugins @planetf1
-open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1
+open-metadata-implementation/adapters/ @mandy-chessell
+open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote
+open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
+open-metadata-implementation/adapters/governance-engines-plugins/ @planetf1
+open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation/ @planetf1
 
-open-metadata-implementation/frameworks @mandy-chessell
+open-metadata-implementation/frameworks/ @mandy-chessell
 
-open-metadata-implementation/governance-servers @mandy-chessell
+open-metadata-implementation/governance-servers/ @mandy-chessell
 
-open-metadata-implementation/access-services @mandy-chessell
-open-metadata-implementation/access-services/asset-consumer @mandy-chessell
-open-metadata-implementation/access-services/asset-owner @mandy-chessell
-open-metadata-implementation/access-services/community-profile @mandy-chessell
-open-metadata-implementation/access-services/data-engine @popa-raluca
-open-metadata-implementation/access-services/digital-architecture @mandy-chessell
-open-metadata-implementation/access-services/enterprise-architecture @mandy-chessell
-open-metadata-implementation/access-services/glossary-view @lcpopa
-open-metadata-implementation/access-services/information-view @ruxandraRosu
-open-metadata-implementation/access-services/stewardship-action @mandy-chessell
-open-metadata-implementation/access-services/security-officer @danielaotelea
-open-metadata-implementation/access-services/governance-program @mandy-chessell
-open-metadata-implementation/access-services/governance-engine @danielaotelea
-open-metadata-implementation/access-services/subject-area @davidradl
-open-metadata-implementation/access-services/asset-lineage @GuyAckermans @DimitriosMaimaris
-open-metadata-implementation/governance-servers/open-lineage-services @GuyAckermans @DimitriosMaimaris
+open-metadata-implementation/access-services/ @mandy-chessell
+open-metadata-implementation/access-services/asset-consumer/ @mandy-chessell
+open-metadata-implementation/access-services/asset-owner/ @mandy-chessell
+open-metadata-implementation/access-services/community-profile/ @mandy-chessell
+open-metadata-implementation/access-services/data-engine/ @popa-raluca
+open-metadata-implementation/access-services/digital-architecture/ @mandy-chessell
+open-metadata-implementation/access-services/enterprise-architecture/ @mandy-chessell
+open-metadata-implementation/access-services/glossary-view/ @lcpopa
+open-metadata-implementation/access-services/information-view/ @ruxandraRosu
+open-metadata-implementation/access-services/stewardship-action/ @mandy-chessell
+open-metadata-implementation/access-services/security-officer/ @danielaotelea
+open-metadata-implementation/access-services/governance-program/ @mandy-chessell
+open-metadata-implementation/access-services/governance-engine/ @danielaotelea
+open-metadata-implementation/access-services/subject-area/ @davidradl
+open-metadata-implementation/access-services/asset-lineage/ @GuyAckermans @DimitriosMaimaris
+open-metadata-implementation/governance-servers/open-lineage-services/ @GuyAckermans @DimitriosMaimaris
 
-open-metadata-implementation/repository-services @mandy-chessell
+open-metadata-implementation/repository-services/ @mandy-chessell
 
 
 # Publication
 
-open-metadata-publication @mandy-chessell
+open-metadata-publication/ @mandy-chessell
 
 # Resources
 
-open-metadata-resources @mandy-chessell
-open-metadata-resources/open-metadata-deployment @planetf1 
-open-metadata-resources/open-metadata-tutorials @mandy-chessell
+open-metadata-resources/ @mandy-chessell
+open-metadata-resources/open-metadata-deployment/ @planetf1 
+open-metadata-resources/open-metadata-tutorials/ @mandy-chessell
 
-open-metadata-resources/open-metadata-samples @mandy-chessell
-open-metadata-resources/open-metadata-samples/postman-rest-samples @planetf1
-open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples  @davidradl
+open-metadata-resources/open-metadata-samples/ @mandy-chessell
+open-metadata-resources/open-metadata-samples/postman-rest-samples/ @planetf1
+open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/  @davidradl
+
+open-metadata-resources/open-metadata-labs/ @mandy-chessell @planetf1
 # Test
 
-open-metadata-test @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt @davidradl
-open-metadata-test/open-metadata-fvt/open-types-fvt @davidradl
+open-metadata-test/ @mandy-chessell
+open-metadata-test/open-metadata-fvt/ @planetf1 @mandy-chessell
+open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @davidradl
+open-metadata-test/open-metadata-fvt/open-types-fvt/ @planetf1 @davidradl
+
+# release notes
+release-notes/ @mandy-chessell @planetf1
 
 # POMs
 pom.xml @planetf1 @mandy-chessell
+
+# Tools / CICD etc
+.azure-pipelines/ @planetf1
+.dependabot/ @planetf1
+.github/ @planetf1
+.m2/ @planetf1
+.gitignore @planetf1
+.sonarcloud* @planetf1
+Community-Guide.md @mandy-chessell @planetf1
+INFO.yaml @planetf1
+THIRD_PARTY.md @mandy-chessell @planetf1
+spotbugs* @planetf1
+CODEOWNERS @mandy-chessell @planetf1

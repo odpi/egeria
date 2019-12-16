@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -30,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -418,6 +420,37 @@ public class GraphOMRSEntityMapper {
         }
 
 
+        // mappingProperties is a Map<String, Serializable>. This is implemented as a String (that serializes the map) so it
+        // can be indexed (even on Relationships). Queries could use textRegex to search/retrieve, although it is not
+        // anticipated that it will be used for search, more for correlation.
+        if (entity.getMappingProperties() != null) {
+            Map<String, Serializable> mappingProperties = entity.getMappingProperties();
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString;
+            try {
+                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                log.debug("{} entity maintainedBy serialized to {}", methodName, jsonString);
+                vertex.property(PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES, jsonString);
+            }
+            catch (Throwable exc) {
+                log.error("{} caught exception {}", methodName, exc.getMessage());
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
+        else {
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES);
+        }
+
+
     }
 
 
@@ -637,7 +670,7 @@ public class GraphOMRSEntityMapper {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 List<String> maintainedByList = (List<String>) objectMapper.readValue(maintainedByString, List.class);
-                log.debug("{} entity has deserialized maintainBy {}", methodName, maintainedByList);
+                log.debug("{} entity has deserialized maintainedBy {}", methodName, maintainedByList);
                 entity.setMaintainedBy(maintainedByList);
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
@@ -655,6 +688,31 @@ public class GraphOMRSEntityMapper {
         }
 
         entity.setReplicatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_ENTITY_REPLICATED_BY));
+
+
+        String mappingPropertiesString = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES);
+        if (mappingPropertiesString != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
+                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                log.debug("{} entity has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
+                entity.setMappingProperties(mappingPropertiesMap);
+            } catch (Throwable exc) {
+                log.error("{} caught exception {}", methodName, exc.getMessage());
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
+
 
         // Get the classifications
         List<Classification> classifications = new ArrayList<>();

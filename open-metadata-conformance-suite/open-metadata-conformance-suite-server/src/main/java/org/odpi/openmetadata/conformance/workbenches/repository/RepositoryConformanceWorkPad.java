@@ -57,6 +57,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
     private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
+
+    //private Boolean workbenchComplete = false;
+
     /**
      * Constructor receives key information from the configuration services.
      *
@@ -122,7 +125,6 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     {
         return maxSearchResults;
     }
-
 
     /**
      * Return the server type of the technology under test.  This is extracted from the registration

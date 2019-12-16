@@ -37,7 +37,7 @@ public class SearchParameters implements Serializable {
 
     private List<String> limitResultsByClassification;
 
-    private List<String> entityTypeGUIDs;
+    private List<String> entityTypes;
     private List<String> relationshipTypeGUIDs;
 
 
@@ -130,21 +130,21 @@ public class SearchParameters implements Serializable {
     }
 
     /**
-     * Return the list of entity types to search for. Null means any types.
+     * Return the list of entity types name to search for. Null means any types.
      *
      * @return the list of entity types to search for
      */
-    public List<String> getEntityTypeGUIDs() {
-        return entityTypeGUIDs;
+    public List<String> getEntityTypes() {
+        return entityTypes;
     }
 
     /**
-     * Set up the list of entity types to search for. Null means any types.
+     * Set up the list of entity types name to search for. Null means any types.
      *
-     * @param entityTypeGUIDs the list of entity types to search for
+     * @param entityTypes the list of entity types to search for
      */
-    public void setEntityTypeGUIDs(List<String> entityTypeGUIDs) {
-        this.entityTypeGUIDs = entityTypeGUIDs;
+    public void setEntityTypes(List<String> entityTypes) {
+        this.entityTypes = entityTypes;
     }
 
     /**

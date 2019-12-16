@@ -463,8 +463,7 @@ public class PortHandler {
 
         if (relationship == null) {
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,
-                    externalSourceName,
-                    firstGUID, secondGUID, null, methodName);
+                    externalSourceName, firstGUID, secondGUID, null, methodName);
         }
     }
 

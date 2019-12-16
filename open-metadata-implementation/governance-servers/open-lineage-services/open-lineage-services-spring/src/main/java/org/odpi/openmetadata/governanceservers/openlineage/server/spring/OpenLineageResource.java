@@ -46,8 +46,10 @@ public class OpenLineageResource {
             @PathVariable("graph") GraphName graph,
             @PathVariable("scope") Scope scope,
             @PathVariable("view") View view,
-            @PathVariable("guid") String guid) {
-        return restAPI.lineage(serverName, userId, graph, scope, view, guid);
+            @PathVariable("guid") String guid,
+            @RequestParam (value = "displayname-contains", required = false, defaultValue = "") String displayNameMustContain,
+            @RequestParam (value = "include-processes", required=false, defaultValue = "true") boolean includeProcesses){
+        return restAPI.lineage(serverName, userId, graph, scope, view, guid, displayNameMustContain, includeProcesses);
     }
 
 

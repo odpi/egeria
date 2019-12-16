@@ -99,7 +99,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
         //TODO change Tabular column and Relational column with the supertupe SchemaElement when AssetLineage is ready
         List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation")
-                .has("PortImplementation", "vepropportType", "INPUT_PORT")
+                .has("PortImplementation", PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY, "INPUT_PORT")
                 .out("PortSchema").in("AttributeForSchema").out("LineageMapping").toList();
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
@@ -123,7 +123,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .bothE("AttributeForSchema")
                             .otherV().inE("PortSchema").otherV()
                             .inE("PortDelegation").otherV().
-                                    inE("ProcessPort").otherV().has("veguid", process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+                                    inE("ProcessPort").otherV().has(PROPERTY_KEY_ENTITY_GUID, process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
 
                     if (!initialProcess.isEmpty()) {
                         vertexToStart = v;
@@ -238,7 +238,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             return;
         }
         //TODO add try catch
-        fromVertex.addEdge(relationshipType, toVertex).property("edguid",relationshipGuid);
+        fromVertex.addEdge(relationshipType, toVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,relationshipGuid);
         g.tx().commit();
     }
 
@@ -284,8 +284,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         try{
             Iterator<Vertex> end =  g.V(v.id())
                     .or(__.out("AttributeForSchema").out("AssetSchemaType")
-                            .has("vename","DataFile").store("vertex"),
-                            __.out("AttributeForSchema").out("SchemaAttributeType").has("vename","RelationalTable")
+                            .has(PROPERTY_KEY_LABEL,"DataFile").store("vertex"),
+                            __.out("NestedSchemaAttribute").has(PROPERTY_KEY_LABEL,"RelationalTable")
                                     .store("vertex")).select("vertex").unfold();
 
             if (!end.hasNext()) {

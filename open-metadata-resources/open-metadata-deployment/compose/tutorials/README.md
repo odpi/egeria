@@ -19,6 +19,7 @@ Components included are:
    - Core egeria server - core:8080 internally, localhost:18080 externally
    - Datalake server    - datalake:8080 internally, localhost:18081 externally 
    - Development server - dev:8080 internally, localhost:18082 externally
+   - Factory server     - factory:8080 internally, localhost:18083 externally
    - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
  * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
  * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
@@ -43,6 +44,7 @@ Components included are:
   corePlatformURL     = os.environ.get('corePlatformURL','http://localhost:8080')
   dataLakePlatformURL = os.environ.get('dataLakePlatformURL','http://localhost:8081')
   devPlatformURL      = os.environ.get('devPlatformURL','http://localhost:8082')
+  factoryPlatformURL  = os.environ.get('factoryPlatformURL','http://localhost:8083')
  - The notebooks downloaded from git are refreshed on each start. Ensure any modifications to notebooks are saved elsewhere
 
 

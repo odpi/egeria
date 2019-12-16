@@ -6,6 +6,7 @@ import org.odpi.openmetadata.conformance.rest.TestCaseListReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestCaseReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
 import org.odpi.openmetadata.conformance.rest.WorkbenchReportResponse;
+import org.odpi.openmetadata.conformance.rest.WorkbenchStatusResponse;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteTestLabServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,5 +92,23 @@ public class ConformanceSuiteResource
                                                       @PathVariable String   serverName)
     {
         return restAPI.getConformanceReport(userId, serverName);
+    }
+
+
+    /**
+     * Interrogate a workbench to find out if it has completed (its synchronous tests)
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestLabReportResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/status/workbenches/{workbenchId}")
+    public WorkbenchStatusResponse getWorkbenchStatus(@PathVariable String   userId,
+                                                      @PathVariable String   serverName,
+                                                      @PathVariable String   workbenchId)
+    {
+        return restAPI.getWorkbenchStatus(userId, serverName, workbenchId);
     }
 }

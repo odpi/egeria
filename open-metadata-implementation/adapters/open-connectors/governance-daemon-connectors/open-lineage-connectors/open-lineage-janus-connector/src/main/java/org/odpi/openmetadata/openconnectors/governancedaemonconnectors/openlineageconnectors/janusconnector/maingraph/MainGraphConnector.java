@@ -14,7 +14,6 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
@@ -52,22 +51,24 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         super.initialize(connectorInstanceId, connectionProperties);
     }
 
-    public void initializeGraphDB(){
+    public void initializeGraphDB() {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
-        this.mainGraph = graphFactory.openGraph(graphDB,connectionProperties);
+        this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
     }
 
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName main, buffer, mock, history.
-     * @param scope     source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view      The view queried by the user: hostview, tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried from.
+     * @param graphName              main, buffer, mock, history.
+     * @param scope                  source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view                   The view queried by the user: hostview, tableview, columnview.
+     * @param guid                   The guid of the node of which the lineage is queried from.
+     * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
+     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
+    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
         Graph graph = getJanusGraph(graphName);
         GraphTraversalSource g = graph.traversal();
@@ -83,27 +84,122 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getUserAction());
         }
         String edgeLabel = getEdgeLabel(view);
-        if (scope != null) {
-            switch (scope) {
-                case SOURCE_AND_DESTINATION:
-                    return sourceAndDestination(graph, edgeLabel, guid);
-                case END_TO_END:
-                    return endToEnd(graph, edgeLabel, guid);
-                case ULTIMATE_SOURCE:
-                    return ultimateSource(graph, edgeLabel, guid);
-                case ULTIMATE_DESTINATION:
-                    return ultimateDestination(graph, edgeLabel, guid);
-                case GLOSSARY:
-                    return glossary(graph, guid);
+        LineageVerticesAndEdges lineageVerticesAndEdges = null;
+        if (scope == null) {
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                lineageVerticesAndEdges = sourceAndDestination(graph, edgeLabel, guid);
+                break;
+            case END_TO_END:
+                lineageVerticesAndEdges = endToEnd(graph, edgeLabel, guid);
+                break;
+            case ULTIMATE_SOURCE:
+                lineageVerticesAndEdges = ultimateSource(graph, edgeLabel, guid);
+                break;
+            case ULTIMATE_DESTINATION:
+                lineageVerticesAndEdges = ultimateDestination(graph, edgeLabel, guid);
+                break;
+            case GLOSSARY:
+                lineageVerticesAndEdges = glossary(graph, guid);
+                break;
+        }
+        if (!includeProcesses)
+            filterOutProcesses(lineageVerticesAndEdges);
+        if (!displayNameMustContain.isEmpty())
+            filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
+        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
+        return lineageResponse;
+    }
+
+    /**
+     * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
+     *
+     * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
+     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to
+     *                                be returned.
+     */
+    private void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
+        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
+
+        for (LineageVertex vertex : lineageVertices) {
+            String nodeID = vertex.getNodeID();
+            if (!vertex.getDisplayName().contains(displayNameMustContain)) {
+                verticesToBeRemoved.add(vertex);
+                for (LineageEdge edge : lineageEdges) {
+                    if (edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
+                        edgesToBeRemoved.add(edge);
+                }
             }
         }
-        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
-        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorCode.getFormattedErrorMessage(),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+        lineageVertices.removeAll(verticesToBeRemoved);
+        lineageEdges.removeAll(edgesToBeRemoved);
+        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
+        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
+    }
+
+    /**
+     * Removes all nodes of types sub process or process and creates new edges so that the graph will not become disjointed.
+     *
+     * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
+     * @return The original lineageVerticesAndEdges without processes or subprocesses.
+     */
+    private void filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
+
+        for (LineageVertex vertex : lineageVertices) {
+            String nodeID = vertex.getNodeID();
+            if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
+                verticesToBeRemoved.add(vertex);
+                mergeEdges(nodeID, lineageEdges);
+            }
+        }
+        lineageVertices.removeAll(verticesToBeRemoved);
+
+        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
+        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
+    }
+
+    /**
+     * Prevents the disjointing of a graph when nodes are deleted. The incoming and outgoing edges of the provided node
+     * are replaced with new ones.
+     *
+     * @param nodeID       The node of which the incoming and outcoming edges should be repaired.
+     * @param lineageEdges The set of all lineage edges.
+     */
+    private void mergeEdges(String nodeID, Set<LineageEdge> lineageEdges) {
+        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
+        Set<LineageEdge> edgesToBeAdded = new HashSet<>();
+
+        for (LineageEdge edge1 : lineageEdges) {
+            if (nodeID.equals(edge1.getDestinationNodeID())) {
+                edgesToBeRemoved.add(edge1);
+
+                for (LineageEdge edge2 : lineageEdges) {
+                    if (nodeID.equals(edge2.getSourceNodeID())) {
+                        edgesToBeRemoved.add(edge2);
+                        String newDestinationNodeID = edge2.getDestinationNodeID();
+                        LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, edge1.getSourceNodeID(), newDestinationNodeID);
+                        edgesToBeAdded.add(newEdge);
+                    }
+                }
+            }
+        }
+        lineageEdges.removeAll(edgesToBeRemoved);
+        lineageEdges.addAll(edgesToBeAdded);
     }
 
     /**
@@ -115,7 +211,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse endToEnd(Graph graph, String edgeLabel, String guid) {
+    LineageVerticesAndEdges endToEnd(Graph graph, String edgeLabel, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph endToEndGraph = (Graph)
@@ -127,8 +223,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                                         repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
-        LineageResponse lineageResponse = getLineageResponse(endToEndGraph);
-        return lineageResponse;
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(endToEndGraph);
+        return lineageVerticesAndEdges;
     }
 
     private LineageEdge abstractEdge(Edge originalEdge) {
@@ -164,18 +260,26 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     /**
-     *  Retrieve all properties from the db and return the ones that match the whitelist. This will filter out irrelevant
-     *  properties that should not be returned to a UI.
+     * Retrieve all properties from the db and return the ones that match the whitelist. This will filter out irrelevant
+     * properties that should not be returned to a UI.
+     *
      * @param originalVertex
      * @return
      */
     private Map<String, String> retrieveProperties(Vertex originalVertex) {
         Map<String, String> attributes = new HashMap<>();
         Iterator originalProperties = originalVertex.properties();
-        while(originalProperties.hasNext()){
+        while (originalProperties.hasNext()) {
             Property originalProperty = (Property) originalProperties.next();
-            if(returnedPropertiesWhiteList.contains(originalProperty.key()))
-                attributes.put(originalProperty.key(), originalProperty.value().toString());
+            if (returnedPropertiesWhiteList.contains(originalProperty.key())) {
+                //If this property key is present in filterPrefixMap, remove the "ve" prefix. If it is not in this map,
+                //use the original value. This discrepancy between the whitelist and the filtermap can happen because
+                //at the moment the "ve" prefix is used inconsistently for the main graph properties.
+                if (filterPrefixMap.containsKey(originalProperty.key()))
+                    attributes.put(filterPrefixMap.get(originalProperty.key()), originalProperty.value().toString());
+                else
+                    attributes.put(originalProperty.key(), originalProperty.value().toString());
+            }
         }
         return attributes;
     }
@@ -189,7 +293,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateSource(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = graph.traversal();
 
@@ -202,16 +306,16 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
         lineageVertices.add(queriedVertex);
 
         addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
@@ -236,7 +340,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -249,15 +353,14 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         lineageVertices.add(queriedVertex);
 
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     /**
@@ -269,7 +372,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(Graph graph, String edgeLabel, String guid) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = graph.traversal();
 
@@ -290,21 +393,21 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
         lineageVertices.add(queriedVertex);
         addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+
+        return lineageVerticesAndEdges;
     }
 
     private void addSourceCondensation(List<Vertex> sourcesList,
-                                       List<LineageVertex> lineageVertices,
-                                       List<LineageEdge> lineageEdges,
+                                       Set<LineageVertex> lineageVertices,
+                                       Set<LineageEdge> lineageEdges,
                                        Vertex originalQueriedVertex,
                                        LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
@@ -321,8 +424,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     newVertex.getNodeID(),
                     condensedVertex.getNodeID()
             );
-                lineageVertices.add(newVertex);
-                lineageEdges.add(newEdge);
+            lineageVertices.add(newVertex);
+            lineageEdges.add(newEdge);
         }
         LineageEdge sourceEdge = new LineageEdge(
                 EDGE_LABEL_CONDENSED,
@@ -333,7 +436,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     private void addDestinationCondensation
-            (List<Vertex> destinationsList, List<LineageVertex> lineageVertices, List<LineageEdge> lineageEdges, Vertex
+            (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
                     originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
@@ -370,7 +473,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-     LineageResponse glossary(Graph graph, String guid) {
+    LineageVerticesAndEdges glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
 
         Graph subGraph = (Graph)
@@ -380,16 +483,16 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 
-        LineageResponse lineageResponse = getLineageResponse(subGraph);
-        return lineageResponse;
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(subGraph);
+        return lineageVerticesAndEdges;
     }
 
-    private LineageResponse getLineageResponse(Graph subGraph) {
+    private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
 
-        List<LineageVertex> lineageVertices = new ArrayList<>();
-        List<LineageEdge> lineageEdges = new ArrayList<>();
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageEdge> lineageEdges = new HashSet<>();
 
         while (originalVertices.hasNext()) {
             LineageVertex newVertex = abstractVertex(originalVertices.next());
@@ -404,8 +507,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             }
         }
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return lineageVerticesAndEdges;
     }
 
     /**

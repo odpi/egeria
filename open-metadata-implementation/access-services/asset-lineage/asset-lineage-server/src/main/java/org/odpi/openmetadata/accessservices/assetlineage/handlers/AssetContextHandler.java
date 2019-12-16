@@ -134,24 +134,19 @@ public class AssetContextHandler {
             addContextForSchemaAttributeType(userId,entityDetail,typeDefName);
         }
 
-        if(!isComplexSchemaType(userId,typeDefName)) {
             List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName, false);
 
             if(tableTypeEntities.isEmpty()){
               tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, typeDefName, false);
-
             }
             for (EntityDetail schemaTypeEntity : tableTypeEntities) {
                 if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
                     setAssetDetails(userId, schemaTypeEntity);
                 } else {
-                    List<EntityDetail> tableEntities = buildGraphByRelationshipType(userId, schemaTypeEntity, SCHEMA_ATTRIBUTE_TYPE, typeDefName, false);
-                    if (!CollectionUtils.isEmpty(tableEntities)) {
-                        buildAssetContext(userId, tableEntities.stream().findFirst().get(), superType);
-                    }
+                        buildAssetContext(userId, tableTypeEntities.stream().findFirst().get(), superType);
+//                    }
                 }
             }
-        }
     }
 
     private List<EntityDetail> buildGraphByRelationshipType(String userId, EntityDetail startEntity,

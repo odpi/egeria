@@ -12,12 +12,12 @@ import org.junit.Test;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class MainGraphConnectorTest {
@@ -72,7 +72,7 @@ public class MainGraphConnectorTest {
     }
 
     @Test
-    public void ultimateSource() throws Exception {
+    public void ultimateSource() throws OpenLineageException {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c32";
         expectedNodeIDs.add("c11");
@@ -80,18 +80,13 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageResponse lineageResponse = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
-
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void ultimateDestination() throws Exception {
+    public void ultimateDestination() throws OpenLineageException {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c11";
         expectedNodeIDs.add("c41");
@@ -99,18 +94,14 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageResponse lineageResponse = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
+        validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void sourceAndDestination() throws Exception {
+    public void sourceAndDestination() throws OpenLineageException {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c21";
         expectedNodeIDs.add("c11");
@@ -121,18 +112,14 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageResponse lineageResponse = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
-        assert lineageVertices.size() == expectedNodeIDs.size();
-        for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
-        }
+        validateResponse(expectedNodeIDs, lineageVertices);
     }
 
         @Test
-        public void endToEnd () throws Exception {
+        public void endToEnd () {
             HashSet<String> expectedNodeIDs = new HashSet<>();
             final String queriedNodeID = "c22";
             expectedNodeIDs.add("c11");
@@ -148,18 +135,14 @@ public class MainGraphConnectorTest {
             expectedNodeIDs.add("p3");
             expectedNodeIDs.add("p4");
 
-            LineageResponse lineageResponse = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
-            List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+            LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(cyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
-            assert lineageVertices.size() == expectedNodeIDs.size();
-            for (LineageVertex returnedVertex : lineageVertices) {
-                if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                    throw new Exception();
-            }
+            validateResponse(expectedNodeIDs, lineageVertices);
         }
 
     @Test
-    public void glossary() throws Exception {
+    public void glossary() {
         JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = cyclicGlossaryGraph.traversal();
         Vertex g1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g1").next();
@@ -187,15 +170,19 @@ public class MainGraphConnectorTest {
         expectedNodeIDs.add("c2");
         expectedNodeIDs.add("c3");
 
-        LineageResponse lineageResponse = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
-        List<LineageVertex> lineageVertices = lineageResponse.getLineageVerticesAndEdges().getLineageVertices();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(cyclicGlossaryGraph, queriedNodeID);
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
-        assert lineageVertices.size() == expectedNodeIDs.size();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
+    private void validateResponse(HashSet<String> expectedNodeIDs, Set<LineageVertex> lineageVertices) {
+        assertEquals(expectedNodeIDs.size(), lineageVertices.size());
         for (LineageVertex returnedVertex : lineageVertices) {
-            if (!expectedNodeIDs.contains(returnedVertex.getNodeID()))
-                throw new Exception();
+            assertTrue(expectedNodeIDs.contains(returnedVertex.getNodeID()));
         }
     }
+
     @Test
     public void problematicCyclicGraphSourceDestination() throws Exception {
         //A triangle of three nodes
@@ -210,9 +197,9 @@ public class MainGraphConnectorTest {
         g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c3).to(c1).next();
         final String queriedNodeID = "c32";
         try{
-            mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
-            mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
-            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID).getClass();
+            mainGraphConnector.ultimateSource(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            mainGraphConnector.ultimateDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
+            mainGraphConnector.sourceAndDestination(problematicCyclicGraph, EDGE_LABEL_COLUMN_AND_PROCESS, queriedNodeID);
         } catch (OpenLineageException e) {
             return;
         }

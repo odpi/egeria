@@ -35,7 +35,7 @@ public class AssetSearchController {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
         if(CollectionUtils.isNotEmpty(types) ) {
-            searchParameters.setEntityTypeGUIDs(types);
+            searchParameters.setEntityTypes(types);
         }
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }

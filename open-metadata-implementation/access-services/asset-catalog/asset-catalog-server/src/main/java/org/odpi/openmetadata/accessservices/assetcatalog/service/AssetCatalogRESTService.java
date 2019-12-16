@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHa
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
@@ -79,7 +80,7 @@ public class AssetCatalogRESTService {
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
-            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetTypeName, ""));
+            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetDescription.getType().getName(), ""));
 
             response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
@@ -271,6 +272,26 @@ public class AssetCatalogRESTService {
             if (assetElements != null) {
                 response.setAssets(Collections.singletonList(assetElements));
             }
+
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+
+        return response;
+    }
+
+    public AssetCatalogSupportedTypes getSupportedTypes(String serverName, String userId, String type) {
+        AssetCatalogSupportedTypes response = new AssetCatalogSupportedTypes();
+        String methodName = "getTypes";
+
+        try {
+
+            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
+            response.setTypes(assetCatalogHandler.getSupportedTypes(userId, type));
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);

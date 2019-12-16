@@ -25,7 +25,7 @@ public class GraphVertexMapper {
         if (instanceProperties != null) {
 
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = "veInstanceProp"+entry.getKey();
+                String key = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+entry.getKey();
                 vertex.property(key,entry.getValue());
             }
         }
@@ -37,6 +37,7 @@ public class GraphVertexMapper {
     public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex){
 
         vertex.property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
+        vertex.property(PROPERTY_KEY_LABEL, lineageEntity.getTypeDefName());
         vertex.property(PROPERTY_KEY_ENTITY_VERSION, lineageEntity.getVersion());
 
         if (lineageEntity.getCreatedBy() != null) {

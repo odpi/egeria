@@ -182,8 +182,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
                                                    RelationshipDef relationshipDef)
     {
         super(workPad,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         this.workPad = workPad;
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
@@ -263,6 +263,23 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
+        String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
+        EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
+        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end1EntityDef.getName());
+        verifyCondition((end1EntityDef.equals(knownEnd1EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+        String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
+        EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
+        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end2EntityDef.getName());
+        verifyCondition((end2EntityDef.equals(knownEnd2EntityDef)),
+                assertion0,
+                testTypeName + assertionMsg0,
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
 
@@ -508,8 +525,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((false),
                     assertion12,
                     testTypeName + assertionMsg12,
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
         }
 
         /*
@@ -702,8 +719,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion1,
                 testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 relationships
@@ -712,8 +729,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_0)),
                 assertion2,
                 testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -746,8 +763,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion3,
                 testTypeName + assertionMsg3,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -788,8 +805,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion4,
                 testTypeName + assertionMsg4,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 relationships
@@ -798,8 +815,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_0)),
                 assertion5,
                 testTypeName + assertionMsg5,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -831,8 +848,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion6,
                 testTypeName + assertionMsg6,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -867,8 +884,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion7,
                 testTypeName + assertionMsg7,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_1 and set_2 relationships
@@ -877,8 +894,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_1) && result.containsAll(relationshipSet_2)),
                 assertion8,
                 testTypeName + assertionMsg8,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -910,8 +927,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion9,
                 testTypeName + assertionMsg9,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -945,8 +962,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion10,
                 testTypeName + assertionMsg10,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_1 relationships (and set_2 if only one property exists, since they will overlap on that property)
@@ -960,8 +977,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(expectedResult)),
                 assertion11,
                 testTypeName + assertionMsg11,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -992,8 +1009,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion12,
                 testTypeName + assertionMsg12,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -1027,8 +1044,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion13,
                 testTypeName + assertionMsg13,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_1 and sdet_2 relationships
@@ -1037,8 +1054,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_1) && result.containsAll(relationshipSet_2)),
                 assertion14,
                 testTypeName + assertionMsg14,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1073,8 +1090,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion15,
                 testTypeName + assertionMsg15,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
         /* ------------------------------------------------------------------------------------- */
@@ -1108,8 +1125,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion16,
                 testTypeName + assertionMsg16,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 relationships
@@ -1118,8 +1135,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_0)),
                 assertion17,
                 testTypeName + assertionMsg17,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1150,8 +1167,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion18,
                 testTypeName + assertionMsg18,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1222,14 +1239,14 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion19,
                 testTypeName + assertionMsg19,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         assertCondition((result.size() == relationshipCount),
                 assertion20,
                 testTypeName + assertionMsg20,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1281,8 +1298,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((result != null),
                     assertion21,
                     testTypeName + assertionMsg21,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that the result of the above search includes all set_0 relationships of the current type
@@ -1294,8 +1311,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((result.containsAll(expectedResult)),
                     assertion22,
                     testTypeName + assertionMsg22,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that any extra instances in the result are valid
@@ -1326,8 +1343,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((contamination == false),
                     assertion23,
                     testTypeName + assertionMsg23,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
         }
 
 
@@ -1379,8 +1396,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((result != null),
                     assertion24,
                     testTypeName + assertionMsg24,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that the result of the above search includes all set_1 and set_2 relationships of the current type
@@ -1393,8 +1410,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((result.containsAll(expectedResult)),
                     assertion25,
                     testTypeName + assertionMsg25,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
             /*
              * Verify that any extra instances in the result are valid
@@ -1425,8 +1442,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
             assertCondition((contamination == false),
                     assertion26,
                     testTypeName + assertionMsg26,
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CURRENT_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
         }
 
 
@@ -1482,8 +1499,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion27,
                 testTypeName + assertionMsg27,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 relationships
@@ -1492,8 +1509,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_0)),
                 assertion28,
                 testTypeName + assertionMsg28,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1525,8 +1542,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion29,
                 testTypeName + assertionMsg29,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1568,8 +1585,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result != null),
                 assertion30,
                 testTypeName + assertionMsg30,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that the result of the above search includes all set_0 relationships
@@ -1578,8 +1595,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((result.containsAll(relationshipSet_0)),
                 assertion31,
                 testTypeName + assertionMsg31,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1611,8 +1628,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion32,
                 testTypeName + assertionMsg32,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
@@ -1671,8 +1688,8 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
         assertCondition((contamination == false),
                 assertion33,
                 testTypeName + assertionMsg33,
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 

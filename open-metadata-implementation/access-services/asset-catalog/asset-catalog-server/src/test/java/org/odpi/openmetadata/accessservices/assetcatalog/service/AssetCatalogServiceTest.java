@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -99,7 +100,7 @@ public class AssetCatalogServiceTest {
                 ASSET_TYPE);
         assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetDescriptionList().get(0).getGuid());
         assertEquals(response.getGuid(), assetDetailsByGUID.getAssetDescriptionList().get(0).getGuid());
-        assertEquals(response.getTypeDefName(), assetDetailsByGUID.getAssetDescriptionList().get(0).getTypeDefName());
+        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetDescriptionList().get(0).getType().getName());
     }
 
     @Test
@@ -121,7 +122,7 @@ public class AssetCatalogServiceTest {
                 ASSET_TYPE);
         assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetDescriptionList().get(0).getGuid());
         assertEquals(response.getGuid(), assetDetailsByGUID.getAssetDescriptionList().get(0).getGuid());
-        assertEquals(response.getTypeDefName(), assetDetailsByGUID.getAssetDescriptionList().get(0).getTypeDefName());
+        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetDescriptionList().get(0).getType().getName());
         assertNotNull(assetDetailsByGUID.getAssetDescriptionList().get(0).getRelationships());
     }
 
@@ -153,7 +154,7 @@ public class AssetCatalogServiceTest {
 
         assertEquals(RELATIONSHIP_TYPE_GUID, assetRelationships.getRelationships().get(0).getGuid());
         assertEquals(response.get(0).getGuid(), assetRelationships.getRelationships().get(0).getGuid());
-        assertEquals(response.get(0).getTypeDefName(), assetRelationships.getRelationships().get(0).getTypeDefName());
+        assertEquals(response.get(0).getType().getName(), assetRelationships.getRelationships().get(0).getType().getName());
     }
 
     @Test
@@ -315,14 +316,19 @@ public class AssetCatalogServiceTest {
     private AssetDescription mockAssetDescription(String guid) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(guid);
-        assetDescription.setTypeDefName(ASSET_TYPE);
+        Type type = new Type();
+        type.setName(ASSET_TYPE);
+        assetDescription.setType(type);
         assetDescription.setRelationships(Collections.singletonList(mockRelationshipResponse()));
         return assetDescription;
     }
 
     private Relationship mockRelationshipResponse() {
         Relationship relationshipsResponse = new Relationship();
-        relationshipsResponse.setTypeDefName(RELATIONSHIP_TYPE);
+
+        Type type = new Type();
+        type.setName(RELATIONSHIP_TYPE);
+        relationshipsResponse.setType(type);
         relationshipsResponse.setGuid(RELATIONSHIP_TYPE_GUID);
         relationshipsResponse.setFromEntity(mockElement(FIRST_GUID));
         relationshipsResponse.setToEntity(mockElement(SECOND_GUID));

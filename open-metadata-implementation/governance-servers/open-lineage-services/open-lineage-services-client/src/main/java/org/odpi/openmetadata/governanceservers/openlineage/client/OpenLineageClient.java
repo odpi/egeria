@@ -22,6 +22,8 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String LINEAGE_SCOPES = "/scopes/{3}";
     private static final String LINEAGE_VIEWS = "/views/{4}";
     private static final String LINEAGE_ENTITIES = "/entities/{5}";
+    private static final String DISPLAYNAME_CONTAINS = "displayname-contains={6}";
+    private static final String INCLUDE_PROCESSES = "include-processes={7}";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -48,9 +50,11 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                                            GraphName graphName,
                                            Scope scope,
                                            View view,
-                                           String guid)
+                                           String guid,
+                                           String displayNameMustContain,
+                                           boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
-        String methodName = "lineage";
+        String methodName = "OpenLineageClient.lineage";
         LineageResponse lineageResponse = callGetRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot +
                         BASE_PATH +
@@ -58,8 +62,12 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                         LINEAGE_SOURCES +
                         LINEAGE_SCOPES +
                         LINEAGE_VIEWS +
-                        LINEAGE_ENTITIES,
-                serverName, userId, graphName.getValue(), scope.getValue(), view.getValue(), guid);
+                        LINEAGE_ENTITIES +
+                        "?" +
+                        DISPLAYNAME_CONTAINS +
+                        "&" +
+                        INCLUDE_PROCESSES,
+                serverName, userId, graphName.getValue(), scope.getValue(), view.getValue(), guid, displayNameMustContain, includeProcesses);
         detectExceptions(methodName, lineageResponse);
         LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
         return lineageVerticesAndEdges;

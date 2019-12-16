@@ -165,13 +165,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void validateEventType(EntityDetail entityDetail, String serviceOperationName){
+//
+//        Set<String> superTypes = validator.getSuperTypes(entityDetail.getType().getTypeDefName());
+//        if (superTypes.contains(SCHEMA_ELEMENT)) {
+//            processNewEntity(entityDetail,
+//                    serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
+//        }
 
-        Set<String> superTypes = validator.getSuperTypes(entityDetail.getType().getTypeDefName());
-        if (superTypes.contains(SCHEMA_ELEMENT)) {
+        if (validator.isValidLineageEntityEvent(entityDetail.getType().getTypeDefName())) {
             processNewEntity(entityDetail,
                     serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
         }
-
     }
 
     private void processUpdatedEntityEvent(EntityDetail entityDetail, String serviceOperationName) {
@@ -191,7 +195,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         final String methodName = "processNewEntity";
 
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
+        log.debug("Asset Lineage OMAS start processing new entity events for the following entity {}: ", entityDetail.getGUID());
 
         try {
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {

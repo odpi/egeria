@@ -223,16 +223,21 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
                 "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
 
-        //mock type for removeSchemaAttribute
-        mockTypeDef(SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID);
+        //mock type for removeTabularColumn & removeTabularSchemaType
+        mockTypeDef(SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME, SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID);
+        mockTypeDef(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID);
 
         dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID);
 
         verify(repositoryHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                null, null, "removeSchemaAttribute");
+                SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
+                null, null, "removeTabularColumn");
 
-        verify(schemaTypeHandler, times(1)).removeSchemaType(USER, GUID);
+        verify(repositoryHandler, times(1)).removeEntity(USER, GUID,
+                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                null, null, "removeTabularSchemaType");
+
     }
 
     private void mockFindSchemaAttribute(String qualifiedName, String guid) throws UserNotAuthorizedException,

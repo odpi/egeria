@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
@@ -39,6 +40,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private static final String SEARCH = "/search/{2}";
     private static final String ASSET_CONTEXT = "/asset-context/{2}?assetType={3}";
     private static final String RELATIONSHIP_BETWEEN_ENTITIES = "/relationship-between-entities/{2}/{3}?relationshipType={4}";
+    private static final String SUPPORTED_TYPES = "/supportedTypes?type={2}";
 
     private static final String GUID_PARAMETER = "assetGUID";
     private static final String START_ASSET_GUID = "startAssetGUID";
@@ -273,6 +275,20 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
         detectExceptions(methodName, relationshipResponse);
 
         return relationshipResponse;
+    }
+
+    @Override
+    public AssetCatalogSupportedTypes getSupportedTypes(String userId, String type)
+            throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        String methodName = "getSupportedTypes";
+
+        AssetCatalogSupportedTypes assetCatalogSupportedTypes = callGetRESTCall(methodName, AssetCatalogSupportedTypes.class,
+                serverPlatformURLRoot + BASE_PATH + SUPPORTED_TYPES,
+                serverName, userId, type);
+
+        detectExceptions(methodName, assetCatalogSupportedTypes);
+
+        return assetCatalogSupportedTypes;
     }
 
     private void validateUserAndAssetGUID(String userId,

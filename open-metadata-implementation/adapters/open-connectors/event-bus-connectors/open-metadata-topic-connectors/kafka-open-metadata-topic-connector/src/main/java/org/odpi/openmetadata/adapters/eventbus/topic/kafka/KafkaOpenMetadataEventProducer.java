@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CancellationException;
+import java.lang.InterruptedException;
 
 /**
  * KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.  This is done through called to
@@ -86,7 +88,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
 
     /**
-     * Sends the supplied event to the topic.  It retries if Kafka is not responding.
+     * Sends the supplied event to the topic.  The kafka producer will retry once if kafka is unresponsive
      *
      * @param event object containing the event properties.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
@@ -95,78 +97,58 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     {
         final String methodName = "publishEvent";
 
-        boolean                  eventSent = false;
-        long                     eventRetryCount = 0;
-
-        while (!eventSent)
+        try
         {
-            try
-            {
-                log.debug("Sending message {0}" + event);
-                ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
-                producer.send(record).get();
-                eventSent = true;
-                messageSendCount++;
-            }
-            catch (ExecutionException error)
-            {
-                /*
-                 * This may be a simple timeout or something else more
-                 */
-                log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
-                if (eventRetryCount == 10)
-                {
-                    eventRetryCount = 0;
-                }
-                else
-                {
-                    if (eventRetryCount == 0)
-                    {
-                        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+            log.debug("Sending message {0}" + event);
+            ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
+            producer.send(record).get();
+            messageSendCount++;
+        }
+        catch (ExecutionException | CancellationException | InterruptedException error)
+        {
+        /*
+         * Issue #1876 moved the retry logic into the kafka producer
+         */
+            log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
+            KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP;
+            auditLog.logRecord(methodName,
+                              auditCode.getLogMessageId(),
+                              auditCode.getSeverity(),
+                              auditCode.getFormattedLogMessage(topicName,
+                                                                Long.toString(messageSendCount),
+                                                                Long.toString(this.getSendBufferSize()),
+                                                                error.getMessage()),
+                                                                null,
+                                                                auditCode.getSystemAction(),
+                                                                auditCode.getUserAction());
+        }
+        catch (WakeupException error)
+        {
+            log.error("Wake up for shut down " + error.toString());
+        }
+        catch (Throwable error)
+        {
+            log.error("Exception in sendEvent " + error.toString());
+            KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                                                                                                     topicName,
+                                                                                                     error.getMessage());
 
-                        auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP;
-                        auditLog.logRecord(methodName,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(topicName,
-                                                                            Long.toString(messageSendCount),
-                                                                            Long.toString(this.getSendBufferSize()),
-                                                                            error.getMessage()),
-                                           null,
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
-                    }
-
-                    eventRetryCount++;
-                }
-            }
-            catch (WakeupException error)
-            {
-                log.error("Wake up for shut down " + error.toString());
-            }
-            catch (Throwable error)
-            {
-                log.error("Exception in sendEvent " + error.toString());
-                KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                         topicName,
-                                                                                                         error.getMessage());
-
-                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    error);
-            }
-            finally
-            {
-                /*
-                 * Producers have a thread and an in memory buffer
-                 */
-                producer.flush();
-            }
+            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                error);
+        }
+        finally
+        {
+            /*
+             * Producers have a thread and an in memory buffer
+             */
+            producer.flush();
         }
 
     }
