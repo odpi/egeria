@@ -35,7 +35,7 @@ public class Element implements Serializable {
     private Long version;
     private String status;
     private String url;
-    private Map<String, Object> properties;
+    private Map<String, String> properties;
     private List<Classification> classifications;
     private Element parentElement;
 
@@ -201,11 +201,11 @@ public class Element implements Serializable {
         this.url = url;
     }
 
-    public Map<String, Object> getProperties() {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
