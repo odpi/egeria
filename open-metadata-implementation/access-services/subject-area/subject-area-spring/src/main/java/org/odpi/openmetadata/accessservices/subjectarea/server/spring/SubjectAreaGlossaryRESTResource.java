@@ -171,7 +171,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}")
+    @PutMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateGlossary(serverName, userId,guid,glossary,isReplace);
     }
@@ -205,7 +205,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/glossaries/{guid}")
+    @DeleteMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
