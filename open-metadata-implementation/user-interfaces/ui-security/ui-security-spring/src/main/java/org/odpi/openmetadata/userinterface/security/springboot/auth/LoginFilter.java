@@ -32,28 +32,39 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        String serverName = request.getParameter("servername");
+        String queryString = request.getQueryString();
         String userName = request.getParameter("username");
-        String password = request.getParameter("password") ;
-
-
-        OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
-        try {
-            if (platformInstanceMap.isServerActive(userName,serverName)) {
-                // stash the server name in the response, so subsequent rest calls can use it
-                response.setHeader("egeria-ui-servername",serverName);
-
-            } else {
-                // TODO error message properly
-                throw new InternalAuthenticationServiceException("ServerName " + serverName + " is not active");
-            }
-
-
-
-        } catch (UserNotAuthorizedException e) {
+        String password = request.getParameter("password");
+        if (queryString == null) {
             // TODO error message properly
-            throw new InsufficientAuthenticationException("User " + userName + " not authorized", e);
+            throw new InternalAuthenticationServiceException("ServerName required in the query string, but there was no query string");
+
+        } else {
+            int indexOfServerName = queryString.indexOf('=');
+            if (indexOfServerName == -1) {
+                // TODO error message properly
+                throw new InternalAuthenticationServiceException("ServerName not specified in the query string");
+            } else {
+                String serverName = queryString.substring(indexOfServerName+1);
+
+                OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
+                try {
+                    if (platformInstanceMap.isServerActive(userName, serverName)) {
+                        // stash the server name in the response, so subsequent rest calls can use it
+                        response.setHeader("egeria-ui-servername", serverName);
+
+                    } else {
+                        // TODO error message properly
+                        throw new InternalAuthenticationServiceException("ServerName " + serverName + " is not active");
+                    }
+
+                } catch (UserNotAuthorizedException e) {
+                    // TODO error message properly
+                    throw new InsufficientAuthenticationException("User " + userName + " not authorized", e);
+                }
+            }
         }
+
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(userName, password));
     }

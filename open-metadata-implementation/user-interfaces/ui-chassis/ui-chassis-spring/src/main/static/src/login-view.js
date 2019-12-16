@@ -70,30 +70,34 @@ class LoginView extends PolymerElement {
       <p>
           <img class="logo" src="images/Logo_transparent.png"/>
       </p>
-       
-       <div class="container6">
+           <div class="container6">
               <div   class="login">
                  <iron-form id="form">
-                    <form method="post" action="/auth/login">
+                        <form id="postServerName" method="post">
+                        <span>
+                          <div>Login for server name </div>
+                          <div id="loginServerName"></div>
+                        </span>
                         <paper-input value={{username}} label="Username" name="username" required
                                      error-message="Username is required"                                
                                      autofocus></paper-input>
                         <paper-input value="{{password}}" label="Password" name="password" required
                                      error-message="Password is required"
                                      type="password" ></paper-input>
-                        <paper-input value={{servername}} label="Server Name" name="servername" required
-                                     error-message="Server Name is required"
-                                     autofocus></paper-input>
 
                         <form-feedback message="{{feedback}}" level="{{feedbackLevel}}"></form-feedback>
                         <div style="float: right">
                             <paper-button id="login-button" on-tap="_logIn" raised>Login</paper-button>
                         </div>
+                        <div style="float: right">
+                            <paper-button id="login-button" on-tap="_reTenant" raised>Change server name</paper-button>
+                        </div>
                         <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
                     </form>
                 </iron-form>   
                </div>
-       </div>
+          </div>
+       </template>
 
     `;
     }
@@ -111,18 +115,31 @@ class LoginView extends PolymerElement {
 
     ready() {
         super.ready();
+        var serverName = sessionStorage.getItem('egeria-ui-servername');
+        if (serverName) {
+            this.$.loginServerName.innerHTML = serverName;
+            var action = "/auth/login?serverName=" + serverName;
+            this.$.postServerName.action = action;
+        } else {
+            console.log("login-view called without a serverName - should not happen");
+            this._reTenant();
+        }
+
         this.addEventListener('iron-form-response', this._handleLoginSuccess);
         this.addEventListener('iron-form-error', this._handleLoginError);
     }
 
     _handleLoginSuccess(evt){
         this.token = evt.detail.xhr.getResponseHeader('x-auth-token');
-        var servername = evt.detail.xhr.getResponseHeader('egeria-ui-servername');
-        if (servername) {
-              sessionStorage.setItem('egeria-ui-servername',servername);
+        var serverNameFromUIServer = evt.detail.xhr.getResponseHeader('egeria-ui-servername');
+        var storedServername = sessionStorage.getItem('egeria-ui-servername');
+        if (serverNameFromUIServer == storedServername )  {
+            this.feedback = 'Authentication successful!';
+            this.feedbackLevel = 'info';
+        } else {
+            console.log('The browser and the back end do not agree what the server name should be - could be some sort of attack, so error. Browser server name is' + storedServername + ' backend server name is ' + serverNameFromUIServer +'.' );
+            _handleLoginError(null);
         }
-        this.feedback = 'Authentication successful!';
-        this.feedbackLevel = 'info';
     }
 
     _handleLoginError(evt){
@@ -134,6 +151,15 @@ class LoginView extends PolymerElement {
     _logIn() {
         this.$.form.submit();
     }
+    // remove the session storage with the server name in. my-app will recompute its serverName properties and offer up the server input form
+    _reTenant(){
+          sessionStorage.removeItem('egeria-ui-servername');
+          var  newlocation =  window.location.protocol + '//' + window.location.hostname + ':' +  window.location.port + '/';
+          console.log('tenanted url is ' + newlocation);
+          // load new page without the query parameter
+          window.location.assign(newlocation);
+    }
+
 
 
 }
