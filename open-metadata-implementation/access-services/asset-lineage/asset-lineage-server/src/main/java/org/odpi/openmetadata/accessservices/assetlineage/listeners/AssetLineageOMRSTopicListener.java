@@ -130,6 +130,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case UPDATED_ENTITY_EVENT:
                         processUpdatedEntityEvent(instanceEvent.getEntity(),
                                 serviceOperationName + UPDATED_ENTITY_EVENT.getName());
+                        break;
                     case DELETED_ENTITY_EVENT:
                         processDeleteEntity(instanceEvent.getEntity(),
                                 serviceOperationName + DELETED_ENTITY_EVENT.getName());

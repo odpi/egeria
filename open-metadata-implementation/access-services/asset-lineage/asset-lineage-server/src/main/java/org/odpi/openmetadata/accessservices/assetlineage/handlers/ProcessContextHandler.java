@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
@@ -108,8 +107,8 @@ public class ProcessContextHandler {
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 
-        List<EntityDetail> entitiesTillLastRelationship = getEntitiesLinkedWithProcessPort(userId, entityDetail);
-        if(!entitiesTillLastRelationship.isEmpty()){
+        boolean entitiesTillLastRelationshipExist = getEntitiesLinkedWithProcessPort(userId, entityDetail);
+        if(entitiesTillLastRelationshipExist){
             return graph.getNeighbors();
         }
 
@@ -123,7 +122,7 @@ public class ProcessContextHandler {
                                         RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-    private List<EntityDetail> getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+    private boolean getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                                                  PropertyServerException,
                                                                                                                  InvalidParameterException {
 
@@ -188,48 +187,48 @@ public class ProcessContextHandler {
      * entities otherwise it should take the context down to TabularColumn entities.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
-     * @return
+     * @return boolean true if relationships exist otherwise false.
      */
-    private List<EntityDetail> getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                                   PropertyServerException,
                                                                                                                   UserNotAuthorizedException {
-        List<EntityDetail> entities = new ArrayList<>();
+        boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
-            entities = endRelationship(entityDetails,userId);
+            relationshipsExist = endRelationship(entityDetails,userId);
         }
 
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            entities = getTabularSchemaTypes(entityDetails,userId);
+            relationshipsExist = getTabularSchemaTypes(entityDetails,userId);
         }
 
-        return entities;
+        return relationshipsExist;
     }
 
     /**
      * Retrieves the entities that are connected to entityDetails that are passed.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
-     * @return
+     * @return boolean true if relationships exist otherwise false.
      */
-    private List<EntityDetail> endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
+            result.addAll(getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
                                            processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                           entityDetail.getType().getTypeDefName());
+                                           entityDetail.getType().getTypeDefName()));
         }
-        return result;
+        return result.isEmpty()? false: true;
     }
 
     /**
      * Retrieves the TabularSchemaTypes that are related to a Port Implementation Entity.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
-     * @return
+     * @return boolean true if relationships exist otherwise false.
      */
-    private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
@@ -248,9 +247,9 @@ public class ProcessContextHandler {
      * Retrieves the TabularColumns tha are part of a TabularSchemaType.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
-     * @return
+     * @return boolean true if relationships exist otherwise false.
      */
-    private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
