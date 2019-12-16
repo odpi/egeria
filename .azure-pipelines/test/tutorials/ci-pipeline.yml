@@ -34,7 +34,7 @@ variables:
   parameters:
       projectName: egeria
       dockerfilePath: open-metadata-resources/open-metadata-deployment/docker/egeria
-      helmBaseChartPath: open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab
+      helmBaseChartPath: open-metadata-resources/open-metadata-deployment/charts
       helmChartName: odpi-egeria-lab
   # define 3 more variables: registryName, registryLogin and registryPassword in the build pipeline in UI
 
