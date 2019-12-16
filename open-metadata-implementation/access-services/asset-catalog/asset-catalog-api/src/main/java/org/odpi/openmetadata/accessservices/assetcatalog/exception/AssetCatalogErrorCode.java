@@ -24,77 +24,11 @@ import java.text.MessageFormat;
  */
 public enum AssetCatalogErrorCode {
 
-    NO_SEARCH_RESULTS(204, "OMAS-ASSET-CATALOG-204-001 ",
-            "Given search filter {0} did not yield any results",
-            "The system is unable to find an asset with the given details.",
-            "Provide more details for the current search."),
-
-    SERVER_URL_NOT_SPECIFIED(400, "OMAS-ASSET-CATALOG-400-001 ",
-            "The OMAS Server URL is null or empty",
-            "The system is unable to connect to the OMAS Server.",
-            "Retry the request when the OMAS Service is available."),
-
-    PARAMETER_NULL(400, "OMAS-ASSET-CATALOG-400-002 ",
-            "The parameter for {0} passed on the {0} operation is null",
-            "The system is unable to process the request without this parameter.",
-            "Correct the code in the caller to provide the parameter for this operation."),
-
-    NULL_USER_ID(400, "OMAS-ASSET-CATALOG-400-003 ",
-            "The user identifier (user id) passed on the {0} operation is null",
-            "The system is unable to process the request without a user id.",
-            "Correct the code in the caller to provide the user id."),
-
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CATALOG-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-
-    OMRS_NOT_AVAILABLE(404, "OMAS-ASSET-CATALOG-404-002 ",
-            "The open metadata repository services are not available for the {0} operation",
-            "The system is unable to connect to the open metadata property server.",
-            "Check that the server where the Asset Catalog OMAS is running initialized correctly and is not in the process of shutting down.  " +
-                    "Correct any errors discovered and retry the request when the open metadata services are available."),
-
-    NO_METADATA_COLLECTION(404, "OMAS-ASSET-CATALOG-404-003 ",
-            "The repository connector {0} is not returning a metadata collection object",
-            "The system is unable to access any metadata.",
-            "Check that the open metadata server URL is correct and the server is running.  Report the error to the system administrator."),
-
-    RELATIONSHIP_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-004 ",
-            "The requested relationship {0} is not found in OMAS Server {1}",
-            "The system is unable to populate the requested relationship.",
-            "Check that the unique identifier for the relationship is correct."),
-
-    RELATIONSHIPS_WITH_PROPERTY_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-005 ",
-            "There is no relationship with property {0} available in OMAS Server {1}",
-            "The system is unable to populate the requested relationship with the given property.",
-            "Check that the property for the relationship is correct."),
-
-    RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-006 ",
-            "There is no relationship for the asset {0} available in OMAS Server {1}",
-            "The system is unable to find a relationship with the given property value.",
-            "Provide a new criteria for the current search."),
-
-    ASSET_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-007 ",
-            "The requested asset {0} is not found in OMAS Server {1}",
-            "The system is unable to populate the requested asset.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
-
-    CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-008 ",
-            "The requested asset {0} has not classification in OMAS Server {1}",
-            "The system is unable to retrieve the classifications for the given asset.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
-
-    ASSET_WITH_CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-009 ",
-            "There is no asset available for with given classification {0} in OMAS Server {1}",
-            "The system is unable to retrieve the assets with the specified classification.",
-            "Check that the identifier for the classification is correct."),
-
-    ASSET_WITH_PROPERTY_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-010 ",
-            "There is no asset available for with given property {0} in OMAS Server {1}",
-            "The system is unable to retrieve the assets with the specified property.",
-            "Check that the unique identifier for the property is correct."),
 
     ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
             "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
@@ -111,11 +45,6 @@ public enum AssetCatalogErrorCode {
             "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
             Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
 
-    NO_RELATED_ASSETS(404, "OMAS-ASSET-CATALOG-404-014 ",
-            "There is no assets that are connected directly or indirectly to the asset identified {0} in OMAS Server {1}",
-            "The system is unable to retrieve any related assets.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
-
     LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
             "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve the linking relationship.",
@@ -125,11 +54,6 @@ public enum AssetCatalogErrorCode {
             "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve linking assets.",
             Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
-
-    METHOD_NOT_IMPLEMENTED(501, "OMAS-ASSET-CATALOG-501-001 ",
-            "The Asset Catalog OMAS method {0}({1}) is not implemented for server {2}",
-            "A method in Asset Catalog OMAS does not have a complete implementation.",
-            "Raise a Github issue to get this fixed."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",

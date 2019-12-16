@@ -97,7 +97,7 @@ public class SubjectAreaViewProjectRESTResource extends SecureController {
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+   @GetMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName, @PathVariable String guid, HttpServletRequest request) {
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse subjectAreaOMASAPIResponse = null;
@@ -178,7 +178,7 @@ public class SubjectAreaViewProjectRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+   @GetMapping( path = "/{guid}/relationships")
     public SubjectAreaOMASAPIResponse getProjectRelationships(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -234,7 +234,7 @@ public class SubjectAreaViewProjectRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+   @PutMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse updateProject(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -287,7 +287,7 @@ public class SubjectAreaViewProjectRESTResource extends SecureController {
      * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping (path = "/{guid}")
     public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
                                                     @PathVariable String guid,
                                                     @RequestParam(value = "isPurge", required = false) Boolean isPurge,
@@ -324,7 +324,7 @@ public class SubjectAreaViewProjectRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+   @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,
                                                      @PathVariable String guid,
                                                      HttpServletRequest request) {

@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+trigger: none
+pr: none
+
+variables:
+- template: ../common/cd-vars-template.yml
+  parameters:
+      projectName: egeria
+      dockerfilePath: open-metadata-resources/open-metadata-deployment/docker/egeria
+      helmBaseChartPath: open-metadata-resources/open-metadata-deployment/charts
+      helmChartName: odpi-egeria-lab
+  # define 3 more variables: registryName, registryLogin and registryPassword in the Azure pipeline UI definition
+
+resources: 
+  pipelines:
+  - pipeline: ci-pipeline
+    source: egeria-ci
+    trigger:
+      enabled: true
+      branches:
+        include:
+          - master
+
+stages:
+- stage: test
+  displayName: test
+  jobs:
+  - deployment: test
+    variables:
+      k8sNamespace: 'egeria'
+      # define 4 more variables: aks, aksSpId, aksSpSecret and aksSpTenantId in the Azure pipeline UI definition
+    displayName: deploy helm chart into AKS
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: test-$(projectName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: ../common/cd-steps-template.yml

@@ -46,7 +46,7 @@ public class TypeExplorerRESTResource extends SecureController
      *   enterpriseOption is a string "true" or "false" indicating whether to include results from the cohorts to which the server belongs
      */
 
-    @RequestMapping(method = RequestMethod.POST, path = "types")
+    @PostMapping(path = "types")
     public TypeExplorerOMVSAPIResponse typeExplorer(@PathVariable String serverName, @RequestBody Map<String,String> body, HttpServletRequest request)
     {
         String userId = getUser(request);
@@ -61,7 +61,7 @@ public class TypeExplorerRESTResource extends SecureController
         return texResp;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "metadata-server-names")
+    @GetMapping( path = "metadata-server-names")
     public TypeExplorerOMVSAPIResponse getMetadataServerNames(@PathVariable String serverName,  HttpServletRequest request)
     {
         String userId = getUser(request);

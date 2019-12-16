@@ -12,13 +12,7 @@ import org.odpi.openmetadata.userinterface.security.springboot.securitycontrolle
 import org.odpi.openmetadata.viewservices.openlineage.services.OpenLineageViewRESTServices;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +37,7 @@ public class OpenLineageViewRESTResource extends SecureController {
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate sources of the asset
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
+    @GetMapping( path = "/entities/{guid}/ultimate-source")
     public Map<String, List> ultimateSourceGraph(@PathVariable("serverName") String serverName,
                                                  @PathVariable("guid") String guid,
                                                  @RequestParam View view,
@@ -67,7 +61,7 @@ public class OpenLineageViewRESTResource extends SecureController {
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the end to end flow
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
+    @GetMapping( path = "/entities/{guid}/end2end")
     @ResponseBody
     public Map<String, List> endToEndLineage(@PathVariable("serverName") String serverName,
                                                @PathVariable("guid") String guid, @RequestParam View view, HttpServletRequest request){
@@ -88,7 +82,7 @@ public class OpenLineageViewRESTResource extends SecureController {
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate destination of the asset
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
+    @GetMapping( path = "/entities/{guid}/ultimate-destination")
     public Map<String, List> ultimateDestination(@PathVariable("serverName") String serverName,
                                                    @PathVariable("guid") String guid, @RequestParam View view, HttpServletRequest request){
         Map<String, List> exportedGraph= null;
@@ -109,7 +103,7 @@ public class OpenLineageViewRESTResource extends SecureController {
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
+    @GetMapping( path = "/entities/{guid}/glossary-lineage")
     public Map<String, List> glossaryLineage(@PathVariable("serverName") String serverName,
                                                @PathVariable("guid") String guid, @RequestParam View view, HttpServletRequest request){
         Map<String, List> exportedGraph= null;
@@ -129,7 +123,7 @@ public class OpenLineageViewRESTResource extends SecureController {
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate source and destination of the asset
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
+    @GetMapping( path = "/entities/{guid}/source-and-destination")
     public Map<String, List> sourceAndDestinationLineage(@PathVariable("serverName") String serverName,
                                                            @PathVariable("guid") String guid, @RequestParam View view, HttpServletRequest request){
         Map<String, List> exportedGraph= null;

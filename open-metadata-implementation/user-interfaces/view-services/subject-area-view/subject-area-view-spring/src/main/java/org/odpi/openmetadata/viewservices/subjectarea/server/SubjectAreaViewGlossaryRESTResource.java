@@ -64,7 +64,8 @@ public class SubjectAreaViewGlossaryRESTResource extends SecureController {
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+
+    @PostMapping( path = "/")
     public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,
                                                      @RequestBody Glossary suppliedGlossary,
                                                      HttpServletRequest request) {
@@ -97,7 +98,7 @@ public class SubjectAreaViewGlossaryRESTResource extends SecureController {
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+   @GetMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName, @PathVariable String guid, HttpServletRequest request) {
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse subjectAreaOMASAPIResponse = null;
@@ -179,7 +180,7 @@ public class SubjectAreaViewGlossaryRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+   @GetMapping( path = "/{guid}/relationships")
     public SubjectAreaOMASAPIResponse getGlossaryRelationships(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -235,7 +236,7 @@ public class SubjectAreaViewGlossaryRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+   @PutMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse updateGlossary(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -288,7 +289,7 @@ public class SubjectAreaViewGlossaryRESTResource extends SecureController {
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,
                                                      @PathVariable String guid,
                                                      @RequestParam(value = "isPurge", required = false) Boolean isPurge,

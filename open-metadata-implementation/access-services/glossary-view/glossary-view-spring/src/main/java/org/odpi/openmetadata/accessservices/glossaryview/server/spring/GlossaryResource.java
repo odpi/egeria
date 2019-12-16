@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -51,7 +52,7 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries")
+    @GetMapping( path = "/glossaries")
     public GlossaryViewEntityDetailResponse getAllGlossaries(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
@@ -75,7 +76,7 @@ public class GlossaryResource {
      *
      * @return a glossary
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}")
+    @GetMapping( path = "/glossaries/{glossaryGUID}")
     public GlossaryViewEntityDetailResponse getGlossary(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("glossaryGUID") @NotBlank String glossaryGUID) {
@@ -98,7 +99,7 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/home-glossary")
+    @GetMapping( path = "/terms/{termGUID}/home-glossary")
     public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") @NotBlank String termGUID) {
@@ -121,7 +122,7 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/home-glossary")
+    @GetMapping( path = "/categories/{categoryGUID}/home-glossary")
     public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
                                                                     @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
@@ -146,7 +147,7 @@ public class GlossaryResource {
      *
      * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossary-links")
+    @GetMapping( path = "/glossaries/{glossaryGUID}/external-glossary-links")
     public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
                                                                      @PathVariable("userId") String userId,
                                                                      @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,

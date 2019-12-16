@@ -64,7 +64,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName,
                                                  @RequestBody Term suppliedTerm,
                                                  HttpServletRequest request) {
@@ -97,7 +97,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    @GetMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse getTerm(@PathVariable String serverName, @PathVariable String guid, HttpServletRequest request) {
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse subjectAreaOMASAPIResponse = null;
@@ -131,7 +131,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping()
     public SubjectAreaOMASAPIResponse findTerm(
             @PathVariable String serverName,
             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
@@ -178,7 +178,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    @GetMapping(path = "/{guid}/relationships")
     public SubjectAreaOMASAPIResponse getTermRelationships(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -234,7 +234,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse updateTerm(
             @PathVariable String serverName,
             @PathVariable String guid,
@@ -287,7 +287,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName,
                                                  @PathVariable String guid,
                                                  @RequestParam(value = "isPurge", required = false) Boolean isPurge,
@@ -324,7 +324,7 @@ public class SubjectAreaViewTermRESTResource extends SecureController {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String serverName,
                                                   @PathVariable String guid,
                                                   HttpServletRequest request) {

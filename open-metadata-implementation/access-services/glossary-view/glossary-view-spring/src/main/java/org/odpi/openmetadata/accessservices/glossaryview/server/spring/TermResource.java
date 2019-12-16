@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -51,7 +52,7 @@ public class TermResource {
      *
      * @return term
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}")
+    @GetMapping( path = "/terms/{termGUID}")
     public GlossaryViewEntityDetailResponse getTerm(@PathVariable("serverName") String serverName,
                                                     @PathVariable("userId") String userId,
                                                     @PathVariable("termGUID") @NotBlank String termGUID) {
@@ -76,7 +77,7 @@ public class TermResource {
      *
      * @return terms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/terms")
+    @GetMapping( path = "/glossaries/{glossaryGUID}/terms")
     public GlossaryViewEntityDetailResponse getTermsViaTermAnchorRelationships(@PathVariable("serverName") String serverName,
                                                                                @PathVariable("userId") String userId,
                                                                                @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
@@ -103,7 +104,7 @@ public class TermResource {
      *
      * @return subcategories
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/terms")
+    @GetMapping( path = "/categories/{categoryGUID}/terms")
     public GlossaryViewEntityDetailResponse getTermsViaTermCategorizationRelationships(@PathVariable("serverName") String serverName,
                                                                                        @PathVariable("userId") String userId,
                                                                                        @PathVariable("categoryGUID") @NotBlank String categoryGUID,
@@ -130,7 +131,7 @@ public class TermResource {
      *
      * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/external-glossary-links")
+    @GetMapping( path = "/terms/{termGUID}/external-glossary-links")
     public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
                                                                      @PathVariable("userId") String userId,
                                                                      @PathVariable("termGUID") @NotBlank String termGUID,
@@ -157,7 +158,7 @@ public class TermResource {
      *
      * @return related terms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/see-also")
+    @GetMapping( path = "/terms/{termGUID}/see-also")
     public GlossaryViewEntityDetailResponse getRelatedTerms(@PathVariable("serverName") String serverName,
                                                             @PathVariable("userId") String userId,
                                                             @PathVariable("termGUID") @NotBlank String termGUID,
@@ -184,7 +185,7 @@ public class TermResource {
      *
      * @return synonyms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/synonyms")
+    @GetMapping( path = "/terms/{termGUID}/synonyms")
     public GlossaryViewEntityDetailResponse getSynonyms(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("termGUID") @NotBlank String termGUID,
@@ -211,7 +212,7 @@ public class TermResource {
      *
      * @return antonyms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/antonyms")
+    @GetMapping( path = "/terms/{termGUID}/antonyms")
     public GlossaryViewEntityDetailResponse getAntonyms(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("termGUID") @NotBlank String termGUID,
@@ -238,7 +239,7 @@ public class TermResource {
      *
      * @return preferred terms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/preferred-terms")
+    @GetMapping( path = "/terms/{termGUID}/preferred-terms")
     public GlossaryViewEntityDetailResponse getPreferredTerms(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("termGUID") @NotBlank String termGUID,
@@ -265,7 +266,7 @@ public class TermResource {
      *
      * @return replacement terms
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/replacement-terms")
+    @GetMapping( path = "/terms/{termGUID}/replacement-terms")
     public GlossaryViewEntityDetailResponse getReplacementTerms(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") @NotBlank String termGUID,
@@ -292,7 +293,7 @@ public class TermResource {
      *
      * @return translations
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/translations")
+    @GetMapping( path = "/terms/{termGUID}/translations")
     public GlossaryViewEntityDetailResponse getTranslations(@PathVariable("serverName") String serverName,
                                                             @PathVariable("userId") String userId,
                                                             @PathVariable("termGUID") @NotBlank String termGUID,
@@ -319,7 +320,7 @@ public class TermResource {
      *
      * @return "is a"
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/is-a")
+    @GetMapping( path = "/terms/{termGUID}/is-a")
     public GlossaryViewEntityDetailResponse getIsA(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
                                                    @PathVariable("termGUID") @NotBlank String termGUID,
@@ -346,7 +347,7 @@ public class TermResource {
      *
      * @return valid values
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/valid-values")
+    @GetMapping( path = "/terms/{termGUID}/valid-values")
     public GlossaryViewEntityDetailResponse getValidValues(@PathVariable("serverName") String serverName,
                                                            @PathVariable("userId") String userId,
                                                            @PathVariable("termGUID") @NotBlank String termGUID,
@@ -373,7 +374,7 @@ public class TermResource {
      *
      * @return "used in contexts"
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/used-in-contexts")
+    @GetMapping( path = "/terms/{termGUID}/used-in-contexts")
     public GlossaryViewEntityDetailResponse getUsedInContexts(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("termGUID") @NotBlank String termGUID,
@@ -400,7 +401,7 @@ public class TermResource {
      *
      * @return assigned elements
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/assigned-elements")
+    @GetMapping( path = "/terms/{termGUID}/assigned-elements")
     public GlossaryViewEntityDetailResponse getAssignedElements(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") @NotBlank String termGUID,
@@ -427,7 +428,7 @@ public class TermResource {
      *
      * @return attributes
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/attributes")
+    @GetMapping( path = "/terms/{termGUID}/attributes")
     public GlossaryViewEntityDetailResponse getAttributes(@PathVariable("serverName") String serverName,
                                                           @PathVariable("userId") String userId,
                                                           @PathVariable("termGUID") @NotBlank String termGUID,
@@ -454,7 +455,7 @@ public class TermResource {
      *
      * @return subtypes
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/subtypes")
+    @GetMapping( path = "/terms/{termGUID}/subtypes")
     public GlossaryViewEntityDetailResponse getSubtypes(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("termGUID") @NotBlank String termGUID,
@@ -481,7 +482,7 @@ public class TermResource {
      *
      * @return types
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/types")
+    @GetMapping( path = "/terms/{termGUID}/types")
     public GlossaryViewEntityDetailResponse getTypes(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
                                                      @PathVariable("termGUID") @NotBlank String termGUID,

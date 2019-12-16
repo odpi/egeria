@@ -30,7 +30,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/repository-workbench/repositories")
+    @PostMapping( path = "/conformance-suite-workbenches/repository-workbench/repositories")
 
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String userId,
                                                                   @PathVariable String serverName,
@@ -52,7 +52,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/conformance-suite-workbenches/platform-workbench/platforms")
+    @PostMapping( path = "/conformance-suite-workbenches/platform-workbench/platforms")
 
     public VoidResponse enablePlatformConformanceSuiteWorkbench(@PathVariable String         userId,
                                                                 @PathVariable String         serverName,
@@ -72,7 +72,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/conformance-suite-workbenches/repository-workbench")
+    @DeleteMapping( path = "/conformance-suite-workbenches/repository-workbench")
     public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    userId,
                                                                   @PathVariable String    serverName)
     {
@@ -90,7 +90,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/conformance-suite-workbenches/platform-workbench")
+    @DeleteMapping( path = "/conformance-suite-workbenches/platform-workbench")
     public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    userId,
                                                                 @PathVariable String    serverName)
     {
@@ -108,7 +108,7 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/conformance-suite-workbenches")
+    @DeleteMapping( path = "/conformance-suite-workbenches")
     public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    userId,
                                                               @PathVariable String    serverName)
     {

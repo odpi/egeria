@@ -30,7 +30,7 @@ public class UIConfigResource
      * UINotAuthorizedException the supplied userId is not authorized to issue this command or
      * UIInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/configuration")
+    @GetMapping( path = "/configuration")
     public UIServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                           @PathVariable String serverName)
     {
@@ -48,14 +48,13 @@ public class UIConfigResource
      * UINotAuthorizedException the supplied userId is not authorized to issue this command or
      * UIInvalidParameterException invalid serverName or UIServerConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/configuration")
+    @PostMapping( path = "/configuration")
     public VoidResponse setUIServerConfig(@PathVariable String         userId,
                                           @PathVariable String         serverName,
                                           @RequestBody  UIServerConfig uiServerConfig)
     {
         return adminAPI.setUIServerConfig(userId, serverName, uiServerConfig);
     }
-
     /**
      * Push the configuration for the server to another UI Server Platform.
      *
@@ -67,7 +66,7 @@ public class UIConfigResource
      * UIConfigurationErrorException there is a problem using the supplied configuration or
      * UIInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/configuration/deploy")
+    @PostMapping( path = "/configuration/deploy")
     public VoidResponse deployUIServerConfig(@PathVariable String userId,
                                                @PathVariable String           serverName,
                                                @RequestBody URLRequestBody destinationPlatform)

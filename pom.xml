@@ -121,6 +121,7 @@
         <!-- Platform encoding  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
         <junit.platform.version>1.5.2</junit.platform.version>
@@ -134,18 +135,24 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.3.1</kafka.version>
+        <kafka.version>2.4.0</kafka.version>
         <janus.version>0.4.0</janus.version>
         <gremlin.version>3.4.1</gremlin.version>
-        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
-        <spring.version>5.2.1.RELEASE</spring.version>
-        <tomcat.version>9.0.27</tomcat.version>
+        <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring-security.version>5.2.1.RELEASE</spring-security.version>
+        <spring-data.version>2.2.3.RELEASE</spring-data.version>
+        <tomcat.version>9.0.29</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.4</commons-collections.version>
         <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
+<<<<<<< HEAD
         <bytebuddy.version>1.10.4</bytebuddy.version>
         <h2-database.version>1.4.196</h2-database.version>
+=======
+        <h2-database.version>1.4.200</h2-database.version>
+>>>>>>> e5bf77e9a827c0d6c53783ebbaa58eb72f0922cf
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
@@ -414,6 +421,13 @@
                 <artifactId>tomcat-embed-core</artifactId>
                 <scope>compile</scope>
                 <version>${tomcat.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>classmate</artifactId>
+                <scope>compile</scope>
+                <version>${classmate.version}</version>
             </dependency>
 
             <dependency>
@@ -1982,13 +1996,13 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
@@ -2000,25 +2014,25 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
