@@ -173,7 +173,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/categories/{guid}")
+    @PutMapping( path = "/users/{userId}/categories/{guid}")
     public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid, Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateCategory(serverName, userId,guid,suppliedCategory,isReplace);
     }
@@ -204,7 +204,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/categories/{guid}")
+    @DeleteMapping( path = "/users/{userId}/categories/{guid}")
     public  SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.

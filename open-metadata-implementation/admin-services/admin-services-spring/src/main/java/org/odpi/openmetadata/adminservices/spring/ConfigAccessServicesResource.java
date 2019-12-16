@@ -93,7 +93,7 @@ public class ConfigAccessServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/access-services")
+    @DeleteMapping( path = "/access-services")
     public VoidResponse disableAccessServices(@PathVariable String          userId,
                                               @PathVariable String          serverName)
     {
