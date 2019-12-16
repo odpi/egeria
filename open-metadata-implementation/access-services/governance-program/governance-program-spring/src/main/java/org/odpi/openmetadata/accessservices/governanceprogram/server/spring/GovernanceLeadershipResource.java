@@ -40,7 +40,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers")
+    @PostMapping( path = "/governance-officers")
 
     public GUIDResponse createGovernanceOfficer(@PathVariable String                               serverName,
                                                 @PathVariable String                               userId,
@@ -65,7 +65,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers/{governanceOfficerGUID}")
+    @PostMapping( path = "/governance-officers/{governanceOfficerGUID}")
 
     public VoidResponse   updateGovernanceOfficer(@PathVariable String                               serverName,
                                                   @PathVariable String                               userId,
@@ -89,7 +89,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers/{governanceOfficerGUID}/delete")
+    @PostMapping( path = "/governance-officers/{governanceOfficerGUID}/delete")
 
     public VoidResponse   deleteGovernanceOfficer(@PathVariable String                                 serverName,
                                                   @PathVariable String                                 userId,
@@ -193,7 +193,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers/by-domain")
+    @PostMapping( path = "/governance-officers/by-domain")
 
     public GovernanceOfficerListResponse  getGovernanceOfficersByDomain(@PathVariable String                        serverName,
                                                                         @PathVariable String                        userId,
@@ -215,7 +215,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers/{governanceOfficerGUID}/appoint")
+    @PostMapping( path = "/governance-officers/{governanceOfficerGUID}/appoint")
 
     public VoidResponse appointGovernanceOfficer(@PathVariable String                  serverName,
                                                  @PathVariable String                  userId,
@@ -239,7 +239,7 @@ public class GovernanceLeadershipResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-officers/{governanceOfficerGUID}/relieve")
+    @PostMapping( path = "/governance-officers/{governanceOfficerGUID}/relieve")
 
     public VoidResponse relieveGovernanceOfficer(@PathVariable String                  serverName,
                                                  @PathVariable String                  userId,

@@ -51,7 +51,7 @@ public class ConfigAccessServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/access-services/{serviceURLMarker}")
+    @PostMapping( path = "/access-services/{serviceURLMarker}")
 
     public VoidResponse configureAccessService(@PathVariable                   String              userId,
                                                @PathVariable                   String              serverName,
@@ -74,7 +74,7 @@ public class ConfigAccessServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/access-services")
+    @PostMapping( path = "/access-services")
     public VoidResponse enableAccessServices(@PathVariable                  String              userId,
                                              @PathVariable                  String              serverName,
                                              @RequestBody(required = false) Map<String, Object> accessServiceOptions)
@@ -112,7 +112,7 @@ public class ConfigAccessServicesResource
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/access-services/configuration")
+    @PostMapping( path = "/access-services/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String                    userId,
                                                 @PathVariable String                    serverName,
                                                 @RequestBody  List<AccessServiceConfig> accessServicesConfig)
@@ -134,7 +134,7 @@ public class ConfigAccessServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/enterprise-access/configuration")
+    @PostMapping( path = "/enterprise-access/configuration")
     public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 userId,
                                                   @PathVariable String                 serverName,
                                                   @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)

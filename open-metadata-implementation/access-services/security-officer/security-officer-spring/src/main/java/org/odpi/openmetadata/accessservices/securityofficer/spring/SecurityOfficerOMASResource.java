@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
@@ -41,7 +42,7 @@ public class SecurityOfficerOMASResource {
      * @param securityTagClassification security tag assigned to the schema element
      * @param schemaElementId           unique identifier of the schema element
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId,
                                                                                   @PathVariable String schemaElementId,
                                                                                   @RequestBody SecurityClassification securityTagClassification) {

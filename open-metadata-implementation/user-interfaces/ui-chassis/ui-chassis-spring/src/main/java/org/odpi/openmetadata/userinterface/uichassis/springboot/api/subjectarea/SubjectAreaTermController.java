@@ -338,7 +338,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
         String serverName = subjectArea.getServerName();

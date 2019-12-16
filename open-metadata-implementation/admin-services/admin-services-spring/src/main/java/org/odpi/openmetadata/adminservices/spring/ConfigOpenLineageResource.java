@@ -26,7 +26,7 @@ public class ConfigOpenLineageResource
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/open-lineage/configuration")
+    @PostMapping( path = "/open-lineage/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
                                                 @RequestBody OpenLineageServerConfig openLineageServerConfig)
@@ -35,7 +35,7 @@ public class ConfigOpenLineageResource
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, path = "/open-lineage")
+    @PostMapping( path = "/open-lineage")
     public VoidResponse enableOpenLineageServices(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {

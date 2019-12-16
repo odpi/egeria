@@ -28,7 +28,7 @@ public class UIConfigStoreResource
      *                   the real configStore.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/connection")
+    @PostMapping( path = "/connection")
 
     public VoidResponse setConfigurationStoreConnection(@PathVariable String     userId,
                                                         @RequestBody  Connection connection)

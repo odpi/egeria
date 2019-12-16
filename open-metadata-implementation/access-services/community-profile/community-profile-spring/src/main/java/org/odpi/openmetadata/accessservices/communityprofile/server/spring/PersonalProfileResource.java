@@ -44,7 +44,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/personal-profiles")
+    @PostMapping( path = "/personal-profiles")
 
     public GUIDResponse createPersonalProfile(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
@@ -67,7 +67,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/personal-profiles/{profileGUID}")
+    @PostMapping( path = "/personal-profiles/{profileGUID}")
 
     public VoidResponse updatePersonalProfile(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
@@ -91,7 +91,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/personal-profiles/{profileGUID}/delete")
+    @PostMapping( path = "/personal-profiles/{profileGUID}/delete")
 
     public VoidResponse   deletePersonalProfile(@PathVariable String                              serverName,
                                                 @PathVariable String                              userId,

@@ -34,7 +34,7 @@ public class DiscoveryServerResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/asset-types/{assetType}/assets/{assetGUID}")
+    @PostMapping( path = "/asset-types/{assetType}/assets/{assetGUID}")
 
     public  GUIDResponse discoverAsset(@PathVariable String                       serverName,
                                        @PathVariable String                       discoveryEngineGUID,

@@ -45,7 +45,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/has-as")
+    @PostMapping( path = "/users/{userId}/relationships/has-as")
     public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship)
     {
         return restAPI.createTermHASARelationship(serverName, userId,termHASARelationship);
@@ -139,7 +139,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/has-as/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermHASARelationship(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
     {
         return restAPI.restoreTermHASARelationship(serverName, userId,guid);
@@ -161,7 +161,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/related-terms")
+    @PostMapping( path = "/users/{userId}/relationships/related-terms")
     public SubjectAreaOMASAPIResponse createRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationshipRelationship)
     {
         return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationshipRelationship);
@@ -254,7 +254,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreRelatedTerm(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
     {
         return restAPI.restoreRelatedTerm(serverName, userId,guid);
@@ -278,7 +278,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/synonyms")
+    @PostMapping( path = "/users/{userId}/relationships/synonyms")
     public SubjectAreaOMASAPIResponse createSynonym(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym)
     {
         return restAPI.createSynonym(serverName, userId,synonym);
@@ -369,7 +369,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse restoreSynonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreSynonym(serverName,userId,guid);
@@ -394,7 +394,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/antonyms")
+    @PostMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName,@PathVariable String userId, @RequestBody Antonym antonym)
     {
         return restAPI.createAntonym(serverName, userId,antonym);
@@ -485,7 +485,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse restoreAntonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreAntonym(serverName,userId,guid);
@@ -509,7 +509,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/translations")
+    @PostMapping( path = "/users/{userId}/relationships/translations")
     public SubjectAreaOMASAPIResponse createTranslation(@PathVariable String serverName,@PathVariable String userId, @RequestBody Translation  translation)
     {
         return restAPI.createTranslation(serverName, userId,translation);
@@ -603,7 +603,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/translations/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse restoreTranslation( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTranslation(serverName,userId,guid);
@@ -627,7 +627,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/used-in-contexts")
+    @PostMapping( path = "/users/{userId}/relationships/used-in-contexts")
     public SubjectAreaOMASAPIResponse createusedInContext(@PathVariable String serverName,@PathVariable String userId, @RequestBody UsedInContext  usedInContext)
     {
         return restAPI.createUsedInContext(serverName, userId,usedInContext);
@@ -719,7 +719,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse restoreUsedInContext( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreUsedInContext(serverName,userId,guid);
@@ -744,7 +744,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/preferred-terms")
+    @PostMapping( path = "/users/{userId}/relationships/preferred-terms")
     public SubjectAreaOMASAPIResponse createpreferredTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody PreferredTerm  preferredTerm)
     {
         return restAPI.createPreferredTerm(serverName, userId,preferredTerm);
@@ -839,7 +839,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse restorePreferredTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restorePreferredTerm(serverName,userId,guid);
@@ -865,7 +865,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/valid-values")
+    @PostMapping( path = "/users/{userId}/relationships/valid-values")
     public SubjectAreaOMASAPIResponse createvalidValue(@PathVariable String serverName,@PathVariable String userId, @RequestBody ValidValue  validValue)
     {
         return restAPI.createValidValue(serverName, userId,validValue);
@@ -960,7 +960,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse restoreValidValue( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreValidValue(serverName,userId,guid);
@@ -985,7 +985,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/replacement-terms")
+    @PostMapping( path = "/users/{userId}/relationships/replacement-terms")
     public SubjectAreaOMASAPIResponse createreplacementTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody ReplacementTerm  replacementTerm)
     {
         return restAPI.createReplacementTerm(serverName, userId,replacementTerm);
@@ -1080,7 +1080,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreReplacementTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreReplacementTerm(serverName,userId,guid);
@@ -1105,7 +1105,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/typed-bys")
+    @PostMapping( path = "/users/{userId}/relationships/typed-bys")
     public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermTYPEDBYRelationship  termTYPEDBYRelationship)
     {
         return restAPI.createTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship);
@@ -1199,7 +1199,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermTYPEDBYRelationship(serverName,userId,guid);
@@ -1224,7 +1224,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-as")
+    @PostMapping( path = "/users/{userId}/relationships/is-as")
     public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody ISARelationship  iSARelationship)
     {
         return restAPI.createISARelationship(serverName, userId,iSARelationship);
@@ -1317,7 +1317,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-as/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse restoreIsaRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreISARelationship(serverName,userId,guid);
@@ -1343,7 +1343,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
     public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermISATypeOFRelationship  termISATypeOFRelationship)
     {
         return restAPI.createTermISATypeOFRelationship(serverName, userId,termISATypeOFRelationship);
@@ -1442,7 +1442,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     
     
     
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermIsaTypeOfRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermISATypeOFRelationship(serverName,userId,guid);
@@ -1468,7 +1468,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations")
+    @PostMapping( path = "/users/{userId}/relationships/term-categorizations")
     public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
     {
         return  restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
@@ -1563,7 +1563,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermCategorizationRelationship(serverName,userId,guid);
@@ -1591,7 +1591,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor")
+    @PostMapping( path = "/users/{userId}/relationships/term-anchor")
     public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermAnchorRelationship  termAnchorRelationship)
     {
         return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
@@ -1659,7 +1659,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
@@ -1686,7 +1686,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor")
+    @PostMapping( path = "/users/{userId}/relationships/category-anchor")
     public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
     {
         return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
@@ -1752,7 +1752,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreCategoryAnchorRelationship(serverName, userId,  guid);
@@ -1777,7 +1777,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes")
+    @PostMapping( path = "/users/{userId}/relationships/project-scopes")
     public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope)
     {
         return restAPI.createProjectScopeRelationship(serverName, userId,projectScope);
@@ -1868,7 +1868,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse restoreProjectScoperRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid) {
         return restAPI.restoreProjectScopeRelationship(serverName, userId, guid);
     }

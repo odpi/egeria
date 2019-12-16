@@ -44,7 +44,7 @@ public class GovernanceZonesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/governance-zones")
+    @PostMapping( path = "/governance-zones")
 
     public VoidResponse  createGovernanceZone(@PathVariable String          serverName,
                                               @PathVariable String          userId,

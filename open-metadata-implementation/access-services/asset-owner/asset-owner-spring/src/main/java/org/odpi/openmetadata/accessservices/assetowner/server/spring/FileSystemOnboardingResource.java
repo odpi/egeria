@@ -47,7 +47,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/file-systems")
+    @PostMapping( path = "/file-systems")
 
     public GUIDResponse   createFileSystemInCatalog(@PathVariable String                   serverName,
                                                     @PathVariable String                   userId,
@@ -72,7 +72,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{anchorGUID}")
+    @PostMapping( path = "/folders/{anchorGUID}")
 
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
@@ -97,7 +97,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders")
+    @PostMapping( path = "/folders")
 
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
@@ -121,7 +121,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
+    @PostMapping( path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
 
     public VoidResponse attachFolderToFileSystem(@PathVariable String          serverName,
                                                  @PathVariable String          userId,
@@ -147,7 +147,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
+    @PostMapping( path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
 
     public VoidResponse detachFolderFromFileSystem(@PathVariable String          serverName,
                                                    @PathVariable String          userId,
@@ -175,7 +175,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files")
+    @PostMapping( path = "/assets/data-files")
 
     public GUIDListResponse addDataFileAssetToCatalog(@PathVariable String                  serverName,
                                                       @PathVariable String                  userId,
@@ -203,7 +203,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-folders")
+    @PostMapping( path = "/assets/data-folders")
 
     public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                  serverName,
                                                         @PathVariable String                  userId,
@@ -228,7 +228,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
+    @PostMapping( path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
 
     public VoidResponse  attachDataFileAssetToFolder(@PathVariable String          serverName,
                                                      @PathVariable String          userId,
@@ -256,7 +256,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
+    @PostMapping( path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
 
     public VoidResponse  detachDataFileAssetFromFolder(@PathVariable String          serverName,
                                                        @PathVariable String          userId,
@@ -283,7 +283,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
+    @PostMapping( path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
 
     public VoidResponse  moveDataFileInCatalog(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -310,7 +310,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
+    @PostMapping( path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
 
     public VoidResponse  moveDataFolderInCatalog(@PathVariable String          serverName,
                                                  @PathVariable String          userId,
@@ -505,7 +505,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files/avro")
+    @PostMapping( path = "/assets/data-files/avro")
 
     public GUIDListResponse  addAvroFileToCatalog(@PathVariable String                  serverName,
                                                   @PathVariable String                  userId,
@@ -534,7 +534,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files/csv")
+    @PostMapping( path = "/assets/data-files/csv")
 
     public GUIDListResponse addCSVFileToCatalog(@PathVariable String                     serverName,
                                                 @PathVariable String                     userId,
