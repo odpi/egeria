@@ -492,7 +492,7 @@ public class PortHandler {
         String errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(delegatedPort.getGUID(), portGUID);
 
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
+        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName,
                 errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), delegatedPortType);
     }
 }

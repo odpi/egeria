@@ -208,7 +208,7 @@ public class DataEngineEventProcessor {
         if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
             DataEngineErrorCode errorCode = DataEngineErrorCode.DATA_ENGINE_EXCEPTION;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(dataEngineEvent);
-            throw new DataEngineException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
+            throw new DataEngineException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName,
                     errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
         }
     }
