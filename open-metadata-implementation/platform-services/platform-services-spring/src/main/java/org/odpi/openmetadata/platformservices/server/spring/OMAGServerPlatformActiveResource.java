@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * OMAGServerPlatformActiveServices allow an external caller to determine which servers are active on the
@@ -32,7 +32,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of service descriptions
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/access-services")
+    @GetMapping( path = "/registered-services/access-services")
 
     public RegisteredOMAGServicesResponse getRegisteredAccessServices(@PathVariable String userId)
     {
@@ -47,7 +47,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of service descriptions
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/governance-services")
+    @GetMapping( path = "/registered-services/governance-services")
 
     public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(@PathVariable String userId)
     {
@@ -62,7 +62,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of service descriptions
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/common-services")
+    @GetMapping( path = "/registered-services/common-services")
 
     public RegisteredOMAGServicesResponse getRegisteredCommonServices(@PathVariable String userId)
     {
@@ -76,7 +76,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of service descriptions
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/registered-services")
+    @GetMapping( path = "/registered-services")
 
     public RegisteredOMAGServicesResponse getAllRegisteredServices(@PathVariable String userId)
     {
@@ -91,7 +91,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName server of interest
      * @return flag
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/is-known")
+    @GetMapping( path = "/servers/{serverName}/is-known")
 
     public BooleanResponse isServerKnown(@PathVariable String    userId,
                                          @PathVariable String    serverName)
@@ -106,7 +106,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of OMAG server names
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers")
+    @GetMapping( path = "/servers")
 
     public ServerListResponse getKnownServerList(@PathVariable String userId)
     {
@@ -120,7 +120,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId name of the user making the request
      * @return list of server names
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/active")
+    @GetMapping( path = "/servers/active")
 
     public ServerListResponse getActiveServerList(@PathVariable String    userId)
     {
@@ -135,7 +135,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName name of the server of interest
      * @return details of the server status
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/status")
+    @GetMapping( path = "/servers/{serverName}/status")
 
     public ServerStatusResponse getServerStatus(@PathVariable String    userId,
                                                 @PathVariable String    serverName)
@@ -151,7 +151,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName name of the server of interest
      * @return server name and list od services running within
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/services")
+    @GetMapping( path = "/servers/{serverName}/services")
 
     public ServerServicesListResponse getActiveServiceListForServer(@PathVariable String    userId,
                                                                     @PathVariable String    serverName)

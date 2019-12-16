@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -26,7 +27,7 @@ public class ServerPlatformOriginResource
      * @return String description
      */
     @Deprecated
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform-origin")
+    @GetMapping( path = "/server-platform-origin")
     public String getOldServerOrigin(@PathVariable String   userId)
     {
         return originAPI.getServerPlatformOrigin(userId);
@@ -39,7 +40,7 @@ public class ServerPlatformOriginResource
      * @param userId name of the user making the request
      * @return String description
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/origin")
+    @GetMapping( path = "/server-platform/origin")
     public String getServerOrigin(@PathVariable String   userId)
     {
         return originAPI.getServerPlatformOrigin(userId);

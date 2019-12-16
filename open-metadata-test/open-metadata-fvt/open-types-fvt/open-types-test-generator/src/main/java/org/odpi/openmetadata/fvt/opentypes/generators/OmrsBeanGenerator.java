@@ -679,10 +679,10 @@ public class OmrsBeanGenerator {
                                         attrValue = String.valueOf(attributeNumber);
                                     } else if (uppercaseattributeType.equals("LONG")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
-                                        attrValue = String.valueOf(attributeNumber);
+                                        attrValue = String.valueOf(attributeNumber) +"L";
                                     } else if (uppercaseattributeType.equals("FLOAT")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Float");
-                                        attrValue = String.valueOf(attributeNumber);
+                                        attrValue = String.valueOf(attributeNumber) + "f";
                                     } else if (uppercaseattributeType.equals("BOOLEAN")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Boolean");
                                         attrValue = String.valueOf(true);
@@ -752,10 +752,10 @@ public class OmrsBeanGenerator {
                                     attrValue = String.valueOf(attributeNumber);
                                 } else if (uppercaseattributeType.equals("LONG")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
-                                    attrValue = String.valueOf(attributeNumber);
+                                    attrValue = String.valueOf(attributeNumber) +"L";
                                 } else if (uppercaseattributeType.equals("FLOAT")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Float");
-                                    attrValue = String.valueOf(attributeNumber);
+                                    attrValue = String.valueOf(attributeNumber) + "f";
                                 } else {
                                     attrValue = "";
                                 }

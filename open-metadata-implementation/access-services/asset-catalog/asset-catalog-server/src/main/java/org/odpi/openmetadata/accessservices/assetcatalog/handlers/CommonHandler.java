@@ -40,6 +40,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.R
  */
 public class CommonHandler {
 
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final RepositoryErrorHandler errorHandler;
@@ -95,19 +96,17 @@ public class CommonHandler {
      * @param classifications asset properties
      * @return the list that contains the zone membership
      */
-    public List<String> getAssetZoneMembership(List<Classification> classifications) {
+    List<String> getAssetZoneMembership(List<Classification> classifications) {
         String methodName = "getAssetZoneMembership";
         if (CollectionUtils.isEmpty(classifications)) {
             return Collections.emptyList();
         }
 
-        Optional<Classification> assetZoneMembership = classifications.stream()
-                .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP))
-                .findFirst();
+        Optional<Classification> assetZoneMembership = getAssetZoneMembershipClassification(classifications);
 
         if (assetZoneMembership.isPresent()) {
             List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS,
-                    "zoneMembership", assetZoneMembership.get().getProperties(), methodName);
+                    ZONE_MEMBERSHIP, assetZoneMembership.get().getProperties(), methodName);
 
             if (CollectionUtils.isNotEmpty(zoneMembership)) {
                 return zoneMembership;
@@ -128,17 +127,15 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException    problem retrieving the entity.
      */
-    public EntityDetail getEntityByGUID(String userId,
-                                        String guid,
-                                        String type) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    EntityDetail getEntityByGUID(String userId,
+                                 String guid,
+                                 String type) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         String entityTypeName = type == null ? "Unknown" : type;
         String methodName = "getEntityByGUID";
         try {
             return repositoryHandler.getMetadataCollection().getEntityDetail(userId, guid);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
             errorHandler.handleUnknownEntity(e, guid, entityTypeName, methodName, GUID_PARAMETER);
@@ -178,6 +175,12 @@ public class CommonHandler {
             }
         }
         return subTypes;
+    }
+
+    private Optional<Classification> getAssetZoneMembershipClassification(List<Classification> classifications) {
+        return classifications.stream()
+                .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP))
+                .findFirst();
     }
 
     Set<String> collectSuperTypes(String userId, String typeDefName) {

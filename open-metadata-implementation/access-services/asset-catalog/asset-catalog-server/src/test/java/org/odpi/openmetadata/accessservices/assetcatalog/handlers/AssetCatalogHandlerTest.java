@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
@@ -228,7 +228,7 @@ public class AssetCatalogHandlerTest {
     @Test
     public void getLinkingRelationshipsBetweenAssets()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
+            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetCatalogException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
@@ -295,14 +295,14 @@ public class AssetCatalogHandlerTest {
         when(metadataCollection.getLinkingEntities(USER, FIRST_GUID, SECOND_GUID, Collections.singletonList(InstanceStatus.ACTIVE), null))
                 .thenReturn(null);
 
-        assertThrows(AssetNotFoundException.class,
+        assertThrows(AssetCatalogException.class,
                 () -> assetCatalogHandler.getLinkingRelationshipsBetweenAssets("server", USER, FIRST_GUID, SECOND_GUID));
     }
 
     @Test
     public void getIntermediateAssets()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
+            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetCatalogException {
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
         when(metadataCollection.getLinkingEntities(USER, FIRST_GUID, SECOND_GUID, Collections.singletonList(InstanceStatus.ACTIVE), null))
@@ -367,7 +367,7 @@ public class AssetCatalogHandlerTest {
         when(metadataCollection.getLinkingEntities(USER, FIRST_GUID, SECOND_GUID, Collections.singletonList(InstanceStatus.ACTIVE), null))
                 .thenReturn(null);
 
-        assertThrows(AssetNotFoundException.class,
+        assertThrows(AssetCatalogException.class,
                 () -> assetCatalogHandler.getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID));
     }
 
@@ -446,7 +446,7 @@ public class AssetCatalogHandlerTest {
     @Test
     public void getEntitiesFromNeighborhood()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException, TypeErrorException {
+            EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetCatalogException, TypeErrorException {
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
         when(metadataCollection.getEntityNeighborhood(USER,
@@ -558,7 +558,7 @@ public class AssetCatalogHandlerTest {
 
         SearchParameters searchParams = mockSearchParams();
 
-        assertThrows(AssetNotFoundException.class,
+        assertThrows(AssetCatalogException.class,
                 () -> assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams));
 
     }
@@ -569,11 +569,6 @@ public class AssetCatalogHandlerTest {
 
         String typeDefGUID = commonHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE);
         assertEquals(RELATIONSHIP_TYPE_GUID, typeDefGUID);
-    }
-
-    @Test
-    public void getTypeDefGUID_throwsInvalidParameterException() {
-
     }
 
     @Test

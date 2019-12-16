@@ -29,7 +29,7 @@ public class ConfigDiscoveryEngineResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-root-url")
+    @PostMapping( path = "access-service-root-url")
 
     public VoidResponse setAccessServiceRootURL(@PathVariable String userId,
                                                 @PathVariable String serverName,
@@ -49,7 +49,7 @@ public class ConfigDiscoveryEngineResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-server-name")
+    @PostMapping( path = "access-service-server-name")
 
     public VoidResponse setAccessServiceServerName(@PathVariable String userId,
                                                    @PathVariable String serverName,
@@ -69,7 +69,7 @@ public class ConfigDiscoveryEngineResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "set-discovery-engines")
+    @PostMapping( path = "set-discovery-engines")
 
     public VoidResponse setDiscoveryEngines(@PathVariable String       userId,
                                             @PathVariable String       serverName,

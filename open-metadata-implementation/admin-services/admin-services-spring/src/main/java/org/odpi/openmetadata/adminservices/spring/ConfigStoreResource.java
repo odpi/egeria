@@ -28,7 +28,7 @@ public class ConfigStoreResource
      *                   the real store.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/connection")
+    @PostMapping( path = "/connection")
 
     public VoidResponse setConfigurationStoreConnection(@PathVariable String     userId,
                                                         @RequestBody  Connection connection)
@@ -44,7 +44,7 @@ public class ConfigStoreResource
      * @param userId calling user
      * @return connection response
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/connection")
+    @GetMapping( path = "/connection")
 
     public ConnectionResponse getConfigurationStoreConnection(@PathVariable String       userId)
     {

@@ -415,6 +415,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID)))
             return;
         LineageVertex condensedVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE, NODE_LABEL_CONDENSED);
+        condensedVertex.setDisplayName(DISPLAY_NAME_OF_CONDENSED);
         lineageVertices.add(condensedVertex);
 
         for (Vertex originalVertex : sourcesList) {
@@ -442,6 +443,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
             LineageVertex condensedDestinationVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION, NODE_LABEL_CONDENSED);
+            condensedDestinationVertex.setDisplayName(DISPLAY_NAME_OF_CONDENSED);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(

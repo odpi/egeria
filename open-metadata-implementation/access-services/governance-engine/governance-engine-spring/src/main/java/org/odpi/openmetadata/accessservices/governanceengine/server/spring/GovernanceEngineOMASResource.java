@@ -42,7 +42,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
                                                           @PathVariable String userId,
                                                           @RequestParam(value = "type", required = false) List<String> type) {
@@ -63,7 +63,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( path = "/assets/{assetGuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String assetGuid) {

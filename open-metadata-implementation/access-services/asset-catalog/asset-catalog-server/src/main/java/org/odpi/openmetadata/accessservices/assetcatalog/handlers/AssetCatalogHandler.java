@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
@@ -196,14 +196,14 @@ public class AssetCatalogHandler {
      * @param startAssetGUID the  starting asset identifier
      * @param endAssetGUID   the ending  asset identifier
      * @return the linking relationship between the given assets
-     * @throws AssetNotFoundException     is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
+     * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets(
             String serverName, String userId, String startAssetGUID, String endAssetGUID)
-            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
         initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
@@ -231,12 +231,12 @@ public class AssetCatalogHandler {
             String errorMessage = errorCode.getErrorMessageId() +
                     errorCode.getFormattedErrorMessage(startAssetGUID, endAssetGUID, serverName);
 
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     "getLinkingRelationshipsBetweenAssets",
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    errorCode.getUserAction(), startAssetGUID, endAssetGUID);
         }
 
         return assetConverter.convertRelationships(linkingEntities.getRelationships());
@@ -289,13 +289,13 @@ public class AssetCatalogHandler {
      * @param startAssetGUID the  starting asset identifier
      * @param endAssetGUID   the ending  asset identifier
      * @return a list of the entities that connects the given assets from the request
-     * @throws AssetNotFoundException     is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
+     * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
     public List<AssetDescription> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
-            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getIntermediateAssets";
         initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
@@ -324,12 +324,12 @@ public class AssetCatalogHandler {
             String errorMessage = errorCode.getErrorMessageId() +
                     errorCode.getFormattedErrorMessage(startAssetGUID, endAssetGUID, serverName);
 
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     "getIntermediateAssets",
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    errorCode.getUserAction(), startAssetGUID, endAssetGUID);
         }
 
         return getAssetDescriptionsAfterValidation(methodName, linkingEntities.getEntities());
@@ -341,13 +341,13 @@ public class AssetCatalogHandler {
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
      * @return a list of entities from the neighborhood of the given entity
-     * @throws AssetNotFoundException     is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
+     * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
     public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
-            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
 
@@ -364,12 +364,12 @@ public class AssetCatalogHandler {
             String errorMessage = errorCode.getErrorMessageId() +
                     errorCode.getFormattedErrorMessage(assetGUID, serverName);
 
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     "getEntitiesFromNeighborhood",
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    errorCode.getUserAction(), assetGUID);
         }
 
         return getAssetDescriptionsAfterValidation(methodName, entities);
@@ -1028,7 +1028,7 @@ public class AssetCatalogHandler {
 
         if (endpoint != null) {
             if (parentElement != null) {
-                assetConverter.addChildElement(parentElement, Collections.singletonList(assetConverter.buildAssetElements(endpoint)));
+                assetConverter.addChildElement(parentElement, assetConverter.buildAssetElements(endpoint));
             } else {
                 assetConverter.addContextElement(assetElement, endpoint);
             }
@@ -1110,7 +1110,6 @@ public class AssetCatalogHandler {
                     method);
 
             if (CollectionUtils.isEmpty(schemaAttributes)) {
-                //search for NestedSchemaAttribute that goes directly to the table
                 schemaAttributes = repositoryHandler.getEntitiesForRelationshipType(
                         userId,
                         entityDetail.getGUID(),
@@ -1125,42 +1124,53 @@ public class AssetCatalogHandler {
                 }
             }
 
-            Element lastNode = assetConverter.getLastNode(assetElement);
-            for (EntityDetail schemaAttribute : schemaAttributes) {
-                if (lastNode == null) {
-                    assetConverter.addContextElement(assetElement, schemaAttribute);
-                } else {
-                    assetConverter.addElement(assetElement, schemaAttribute);
-                }
-            }
+            addSchemaAttributes(assetElement, schemaAttributes);
 
             for (EntityDetail schemaAttribute : schemaAttributes) {
-                Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(schemaAttribute.getType().getTypeDefName());
-                if (isComplexSchemaType.isPresent()) {
-                    setAssetDetails(userId, assetElement, schemaAttribute);
-                    return;
-                } else {
-                    List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
-                            userId,
-                            schemaAttribute.getGUID(),
-                            schemaAttribute.getType().getTypeDefName(),
-                            SCHEMA_ATTRIBUTE_TYPE_GUID,
-                            SCHEMA_ATTRIBUTE_TYPE,
-                            0,
-                            0,
-                            method);
-
-                    if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
-                        for (EntityDetail schemaAttributeTypeEntity : schemaAttributeTypeEntities) {
-                            assetConverter.addElement(assetElement, schemaAttributeTypeEntity);
-                        }
-                        findAsset(userId, schemaAttributeTypeEntities, assetElement);
-                    } else {
-                        findAsset(userId, Arrays.asList(schemaAttribute), assetElement);
-                    }
-                }
+                if (processSchemaAttribute(userId, assetElement, method, schemaAttribute)) return;
             }
         }
+    }
+
+    private boolean processSchemaAttribute(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        if (isComplexSchemaType(schemaAttribute.getType().getTypeDefName()).isPresent()) {
+            setAssetDetails(userId, assetElement, schemaAttribute);
+            return true;
+        } else {
+            processPrimitiveSchema(userId, assetElement, method, schemaAttribute);
+        }
+        return false;
+    }
+
+    private void processPrimitiveSchema(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
+                userId,
+                schemaAttribute.getGUID(),
+                schemaAttribute.getType().getTypeDefName(),
+                SCHEMA_ATTRIBUTE_TYPE_GUID,
+                SCHEMA_ATTRIBUTE_TYPE,
+                0,
+                0,
+                method);
+
+        if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
+            schemaAttributeTypeEntities.forEach(schemaAttributeTypeEntity -> assetConverter.addElement(assetElement, schemaAttributeTypeEntity));
+            findAsset(userId, schemaAttributeTypeEntities, assetElement);
+        } else {
+            findAsset(userId, Arrays.asList(schemaAttribute), assetElement);
+        }
+    }
+
+    private void addSchemaAttributes(AssetElement assetElement, List<EntityDetail> schemaAttributes) {
+        Element lastNode = assetConverter.getLastNode(assetElement);
+        schemaAttributes.forEach(schemaAttribute -> addNode(assetElement, lastNode, schemaAttribute));
+    }
+
+    private void addNode(AssetElement assetElement, Element lastNode, EntityDetail schemaAttribute) {
+        if (lastNode == null) {
+            assetConverter.addContextElement(assetElement, schemaAttribute);
+        }
+        assetConverter.addElement(assetElement, schemaAttribute);
     }
 
     private void getContextForSchemaType(String userId,
@@ -1384,7 +1394,7 @@ public class AssetCatalogHandler {
     }
 
     private InstanceGraph getAssetNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
-            throws AssetNotFoundException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
+            throws AssetCatalogException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
         InstanceGraph entityNeighborhood = null;
@@ -1415,12 +1425,12 @@ public class AssetCatalogHandler {
             String errorMessage = errorCode.getErrorMessageId() +
                     errorCode.getFormattedErrorMessage(entityGUID, serverName);
 
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     "getAssetNeighborhood",
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    errorCode.getUserAction(), entityGUID);
         }
 
         return entityNeighborhood;

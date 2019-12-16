@@ -51,7 +51,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      *  ClassificationException              Error processing a classification
      *  StatusNotSupportedException          A status value is not supported
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/projects")
+    @PostMapping( path = "/users/{userId}/projects")
     public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,@PathVariable String userId, @RequestBody Project suppliedProject) {
         return restAPI.createProject(serverName, userId,suppliedProject);
     }
@@ -72,7 +72,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/projects/{guid}")
+    @GetMapping( path = "/users/{userId}/projects/{guid}")
     public  SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
             return restAPI.getProjectByGuid(serverName, userId,guid);
     }
@@ -98,7 +98,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/projects")
+    @GetMapping( path = "/users/{userId}/projects")
     public  SubjectAreaOMASAPIResponse findProject(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -133,7 +133,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/projects/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/projects/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -169,7 +169,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/projects/{guid}/terms")
+    @GetMapping( path = "/users/{userId}/projects/{guid}/terms")
     public  SubjectAreaOMASAPIResponse getProjectTerms(@PathVariable String serverName,
                                                        @PathVariable String userId,
                                                        @PathVariable String guid,
@@ -260,7 +260,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/projects/{guid}")
+    @PostMapping( path = "/users/{userId}/projects/{guid}")
     public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
     {
         return restAPI.restoreProject(serverName, userId,guid);

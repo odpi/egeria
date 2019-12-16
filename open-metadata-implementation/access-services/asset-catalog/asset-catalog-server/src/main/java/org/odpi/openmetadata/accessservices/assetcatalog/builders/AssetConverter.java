@@ -36,7 +36,6 @@ public class AssetConverter {
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
-        assetDescription.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
 
         assetDescription.setCreatedBy(entityDetail.getCreatedBy());
         assetDescription.setCreateTime(entityDetail.getCreateTime());
@@ -180,7 +179,6 @@ public class AssetConverter {
         if (entityProxy.getUniqueProperties() != null) {
             asset.setName(repositoryHelper.getStringProperty("userID", Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
-        asset.setMetadataCollectionId(entityProxy.getMetadataCollectionId());
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
         asset.setUpdatedBy(entityProxy.getUpdatedBy());
@@ -196,22 +194,23 @@ public class AssetConverter {
     }
 
     private Element lastElementAdded(Element tree) {
-        List<Element> innerElement = tree.getParentElement();
+        Element innerElement = tree.getParentElement();
         if (innerElement == null) {
             return tree;
         }
-        return lastElementAdded(innerElement.get(innerElement.size() - 1));
+        return lastElementAdded(innerElement);
     }
 
     public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
         List<Element> context = assetElement.getContext();
-        List<Element> elements = new ArrayList<>();
-        elements.add(buildAssetElements(entityDetail));
+        AssetElements element = buildAssetElements(entityDetail);
 
         if (context != null) {
             Element leaf = lastElementAdded(context.get(context.size() - 1));
-            leaf.setParentElement(elements);
+            leaf.setParentElement(element);
         } else {
+            List<Element> elements = new ArrayList<>();
+            elements.add(element);
             assetElement.setContext(elements);
         }
     }
@@ -222,13 +221,9 @@ public class AssetConverter {
         return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
     }
 
-    public void addChildElement(Element parentElement, List<Element> elements) {
+    public void addChildElement(Element parentElement, Element element) {
         if (parentElement != null) {
-            if (parentElement.getParentElement() != null) {
-                parentElement.getParentElement().addAll(elements);
-            } else {
-                parentElement.setParentElement(elements);
-            }
+            parentElement.setParentElement(element);
         }
     }
 

@@ -34,7 +34,7 @@ public class DiscoveryServerResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/asset-types/{assetType}/assets/{assetGUID}")
+    @PostMapping( path = "/asset-types/{assetType}/assets/{assetGUID}")
 
     public  GUIDResponse discoverAsset(@PathVariable String                       serverName,
                                        @PathVariable String                       discoveryEngineGUID,
@@ -64,7 +64,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryRequestGUID}")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}")
 
     public DiscoveryAnalysisReportResponse getDiscoveryReport(@PathVariable String   serverName,
                                                               @PathVariable String   discoveryEngineGUID,
@@ -89,7 +89,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String   serverName,
                                                                 @PathVariable String   discoveryEngineGUID,
@@ -122,7 +122,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations/{annotationGUID}/extended-annotations")
+    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations/{annotationGUID}/extended-annotations")
 
     public AnnotationListResponse getExtendedAnnotations(@PathVariable String   serverName,
                                                          @PathVariable String   discoveryEngineGUID,
@@ -156,7 +156,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "discovery-analysis-reports/{discoveryRequestGUID}//annotations/{annotationGUID}")
+    @GetMapping( path = "discovery-analysis-reports/{discoveryRequestGUID}//annotations/{annotationGUID}")
 
     public AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                             @PathVariable String   discoveryEngineGUID,
