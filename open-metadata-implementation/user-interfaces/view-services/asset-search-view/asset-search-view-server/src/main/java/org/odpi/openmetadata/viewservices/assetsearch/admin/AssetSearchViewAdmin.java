@@ -11,8 +11,6 @@ import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 import org.odpi.openmetadata.viewservices.assetsearch.admin.serviceinstances.AssetSearchViewServicesInstance;
 import org.odpi.userinterface.adminservices.configuration.auditlog.ViewServiceAuditCode;
 import org.odpi.userinterface.adminservices.configuration.registration.ViewServiceAdmin;
-
-import javax.naming.ConfigurationException;
 import java.util.Map;
 
 /**

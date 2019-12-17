@@ -3,12 +3,10 @@
 package org.odpi.openmetadata.viewservices.assetsearch.admin.serviceinstances;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 
 /**
  * AssetSearchViewServicesInstance caches references to objects it needs for a specific server.
