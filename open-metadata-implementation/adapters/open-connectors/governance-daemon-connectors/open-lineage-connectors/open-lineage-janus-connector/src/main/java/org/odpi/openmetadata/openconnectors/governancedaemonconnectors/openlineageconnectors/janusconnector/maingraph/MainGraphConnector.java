@@ -77,15 +77,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         }
         String edgeLabel = helper.getEdgeLabel(view);
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
-        if (scope == null) {
-            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_SCOPE;
-            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
 
         switch (scope) {
             case SOURCE_AND_DESTINATION:

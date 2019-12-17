@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
@@ -16,12 +19,8 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/open-lineage/users/{1}";
 
-    private static final String LINEAGE = "/lineage";
-    private static final String LINEAGE_SCOPES = "/scopes/{2}";
-    private static final String LINEAGE_VIEWS = "/views/{3}";
-    private static final String LINEAGE_ENTITIES = "/entities/{4}";
-    private static final String DISPLAYNAME_CONTAINS = "displayname-contains={5}";
-    private static final String INCLUDE_PROCESSES = "include-processes={6}";
+    private static final String LINEAGE = "/lineage/";
+    private static final String ENTITIES = "/entities/{2}";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -41,6 +40,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -52,18 +52,11 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                                            boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.lineage";
-        LineageResponse lineageResponse = callGetRESTCall(methodName, LineageResponse.class,
-                serverPlatformURLRoot +
-                        BASE_PATH +
-                        LINEAGE +
-                        LINEAGE_SCOPES +
-                        LINEAGE_VIEWS +
-                        LINEAGE_ENTITIES +
-                        "?" +
-                        DISPLAYNAME_CONTAINS +
-                        "&" +
-                        INCLUDE_PROCESSES,
-                serverName, userId, scope.getValue(), view.getValue(), guid, displayNameMustContain, includeProcesses);
+        LineageQueryParameters postBody = new LineageQueryParameters(scope, view, displayNameMustContain, includeProcesses);
+
+        LineageResponse lineageResponse = callPostRESTCall(methodName, LineageResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES, postBody, serverName, userId, guid);
+
         detectExceptions(methodName, lineageResponse);
         LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
         return lineageVerticesAndEdges;

@@ -205,7 +205,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
         AssetDescriptionResponse response = callPostRESTCall(methodName, AssetDescriptionResponse.class,
-                serverPlatformURLRoot + BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, serverName, userId, assetGUID, searchParameters);
+                serverPlatformURLRoot + BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, searchParameters, serverName, userId, assetGUID);
 
         detectExceptions(methodName, response);
 

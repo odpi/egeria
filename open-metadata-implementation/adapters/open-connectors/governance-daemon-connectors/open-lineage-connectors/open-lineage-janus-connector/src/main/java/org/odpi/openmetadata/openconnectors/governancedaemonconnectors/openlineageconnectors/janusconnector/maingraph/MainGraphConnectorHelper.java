@@ -435,10 +435,8 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
      * @param view The view queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-     String getEdgeLabel(View view) throws OpenLineageException {
-        String methodName = "MainGraphConnector.getEdgeLabel";
+     String getEdgeLabel(View view){
         String edgeLabel = "";
-        if (view != null) {
             switch (view) {
                 case TABLE_VIEW:
                     edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
@@ -448,16 +446,5 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
                     break;
             }
             return edgeLabel;
-        }
-        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.INVALID_VIEW;
-        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorCode.getFormattedErrorMessage(),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
-
-
-
 }
