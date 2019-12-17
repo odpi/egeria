@@ -22,9 +22,9 @@ pr:
   branches:
     include:
       - master
-    paths:
-      include:
-        - .azure-pipelines/test
+  paths:
+    include:
+      - .azure-pipelines/test
 
 pool:
   vmImage: 'ubuntu-latest'
