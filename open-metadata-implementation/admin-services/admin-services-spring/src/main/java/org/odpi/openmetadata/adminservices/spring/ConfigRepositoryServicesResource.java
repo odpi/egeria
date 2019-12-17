@@ -75,7 +75,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/local-repository")
+    @DeleteMapping( path = "/local-repository")
     public VoidResponse setNoRepositoryMode(@PathVariable String userId,
                                             @PathVariable String serverName)
     {
@@ -287,7 +287,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/cohorts/{cohortName}")
+    @DeleteMapping( path = "/cohorts/{cohortName}")
     public VoidResponse disableCohortRegistration(@PathVariable String          userId,
                                                   @PathVariable String          serverName,
                                                   @PathVariable String          cohortName)

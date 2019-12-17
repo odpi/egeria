@@ -86,7 +86,7 @@ public class ConfigDiscoveryEngineResource
      * @param serverName  local server name.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "")
+    @DeleteMapping( path = "")
 
     VoidResponse deleteService(@PathVariable String userId,
                                @PathVariable String serverName)
