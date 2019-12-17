@@ -129,7 +129,7 @@ public class AssetCatalogHandlerTest {
                 methodName)).thenReturn(relationshipsByType);
 
         List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship>
-                result = assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE);
+                result = assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE);
 
 
         assertEquals(relationshipsByType.get(0).getGUID(), result.get(0).getGuid());
@@ -156,7 +156,7 @@ public class AssetCatalogHandlerTest {
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
         assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
-                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE));
+                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE));
 
     }
 
@@ -173,7 +173,7 @@ public class AssetCatalogHandlerTest {
                 methodName);
 
         assertThrows(PropertyServerException.class,
-                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE));
+                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class AssetCatalogHandlerTest {
                 methodName);
 
         assertThrows(UserNotAuthorizedException.class,
-                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE));
+                () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE));
     }
 
 

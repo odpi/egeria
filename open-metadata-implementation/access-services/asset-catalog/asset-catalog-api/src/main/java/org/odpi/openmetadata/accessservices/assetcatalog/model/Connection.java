@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Map<String, Object> securedProperties = null;
+    private Map<String, String> securedProperties = null;
     private String guid;
     private String displayName;
     private String description;
@@ -67,11 +67,11 @@ public class Connection implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
-    public Map<String, Object> getSecuredProperties() {
+    public Map<String, String> getSecuredProperties() {
         return securedProperties;
     }
 
-    public void setSecuredProperties(Map<String, Object> securedProperties) {
+    public void setSecuredProperties(Map<String, String> securedProperties) {
         this.securedProperties = securedProperties;
     }
 
