@@ -43,7 +43,12 @@ public class AuthFilter extends GenericFilterBean {
             LOG.error("Authentication exception", e);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        }
+        catch (Exception e) {
+            LOG.error("An unknown error occured", e);
+        }
         SecurityContextHolder.getContext().setAuthentication(null);
 
     }
