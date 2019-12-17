@@ -74,10 +74,6 @@ class LoginView extends PolymerElement {
               <div   class="login">
                  <iron-form id="form">
                         <form id="postServerName" method="post">
-                        <span>
-                          <div>Login for server name </div>
-                          <div id="loginServerName"></div>
-                        </span>
                         <paper-input value={{username}} label="Username" name="username" required
                                      error-message="Username is required"                                
                                      autofocus></paper-input>
@@ -117,7 +113,6 @@ class LoginView extends PolymerElement {
         super.ready();
         var serverName = sessionStorage.getItem('egeria-ui-servername');
         if (serverName) {
-            this.$.loginServerName.innerHTML = serverName;
             var action = "/auth/login?serverName=" + serverName;
             this.$.postServerName.action = action;
         } else {
