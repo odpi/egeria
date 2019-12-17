@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Asset object holds properties that are used for displaying details of an entity.
+ * Element object holds properties that are used for displaying details of an entity.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,7 +27,6 @@ public class Element implements Serializable {
 
     private String guid;
     private Type type;
-    private String metadataCollectionId;
     private String name;
     private String createdBy;
     private Date createTime;
@@ -36,9 +35,9 @@ public class Element implements Serializable {
     private Long version;
     private String status;
     private String url;
-    private Map<String, Object> properties;
+    private Map<String, String> properties;
     private List<Classification> classifications;
-    private List<Element> parentElement;
+    private Element parentElement;
 
     /**
      * Return the asset unique identifier
@@ -74,25 +73,6 @@ public class Element implements Serializable {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Returns the metadata collection identifier of the repository where the asset can be find
-     *
-     * @return string the metadata collection id
-     */
-
-    public String getMetadataCollectionId() {
-        return metadataCollectionId;
-    }
-
-    /**
-     * Set up the metadata collection identifier of the repository where the asset can be
-     *
-     * @param metadataCollectionId string that contains the unique identifier of the metadata collection
-     */
-    public void setMetadataCollectionId(String metadataCollectionId) {
-        this.metadataCollectionId = metadataCollectionId;
     }
 
     public String getName() {
@@ -221,11 +201,11 @@ public class Element implements Serializable {
         this.url = url;
     }
 
-    public Map<String, Object> getProperties() {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
@@ -237,11 +217,11 @@ public class Element implements Serializable {
         this.classifications = classifications;
     }
 
-    public List<Element> getParentElement() {
+    public Element getParentElement() {
         return parentElement;
     }
 
-    public void setParentElement(List<Element> parentElement) {
+    public void setParentElement(Element parentElement) {
         this.parentElement = parentElement;
     }
 
@@ -252,7 +232,6 @@ public class Element implements Serializable {
         Element element = (Element) o;
         return Objects.equals(guid, element.guid) &&
                 Objects.equals(type.getName(), element.getType().getName()) &&
-                Objects.equals(metadataCollectionId, element.metadataCollectionId) &&
                 Objects.equals(name, element.name) &&
                 Objects.equals(createdBy, element.createdBy) &&
                 Objects.equals(createTime, element.createTime) &&
@@ -268,6 +247,6 @@ public class Element implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(guid, type, metadataCollectionId, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, classifications, parentElement);
+        return Objects.hash(guid, type, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, classifications, parentElement);
     }
 }

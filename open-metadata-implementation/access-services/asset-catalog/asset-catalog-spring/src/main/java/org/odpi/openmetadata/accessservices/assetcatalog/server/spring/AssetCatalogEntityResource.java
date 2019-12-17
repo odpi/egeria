@@ -177,11 +177,10 @@ public class AssetCatalogEntityResource {
      * @param searchParameters constrains to make the assets's search results more precise
      * @return list of properties used to narrow the search
      */
-    @PostMapping(path = "/search/{searchCriteria}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchByType(@PathVariable("serverName") String serverName,
                                       @PathVariable("userId") String userId,
-                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
+                                      @RequestParam("searchCriteria") @NotBlank String searchCriteria,
                                       @RequestBody SearchParameters searchParameters) {
         return assetService.searchByType(serverName, userId, searchCriteria, searchParameters);
     }

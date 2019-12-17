@@ -40,7 +40,7 @@ public class AnonRepositoryServicesResource
      * @return String metadata collection id.
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
+    @GetMapping( path = "/metadata-collection-id")
 
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName)
     {
@@ -70,7 +70,7 @@ public class AnonRepositoryServicesResource
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}")
+    @GetMapping( path = "/instances/entity/{guid}")
 
     public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
                                                 @PathVariable String    guid)
@@ -94,7 +94,7 @@ public class AnonRepositoryServicesResource
      *                                         the requested GUID stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}")
+    @GetMapping( path = "/instances/relationship/{guid}")
 
     public RelationshipResponse getRelationship(@PathVariable String     serverName,
                                                 @PathVariable String     guid)

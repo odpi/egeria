@@ -94,7 +94,7 @@ class AssetCatalogOMASServiceTest {
         expectedDescription.setGuid(assetId);
         Type type = mockType(typeDef);
         expectedDescription.setType(type);
-        Map<String, Object> propertiesMap = new HashMap<>();
+        Map<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("summary", "Short description of term First Name");
         propertiesMap.put("displayName", "First Name");
         expectedDescription.setProperties(propertiesMap);

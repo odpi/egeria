@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
@@ -182,7 +182,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
+    public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         List<AssetDescription> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));
 
@@ -204,7 +204,7 @@ public class AssetCatalogServiceTest {
     }
 
     @Test
-    public void testGetLinkingRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
+    public void testGetLinkingRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         List<Relationship> response = new ArrayList<>();
         response.add(mockRelationshipResponse());
 
@@ -227,7 +227,7 @@ public class AssetCatalogServiceTest {
 
     @Test
     public void testGetAssetsFromNeighborhood()
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetNotFoundException, RepositoryErrorException {
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         SearchParameters searchParameters = mockSearchParams();
         List<AssetDescription> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));

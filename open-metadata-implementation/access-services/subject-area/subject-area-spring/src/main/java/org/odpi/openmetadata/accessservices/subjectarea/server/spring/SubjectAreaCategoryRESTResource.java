@@ -59,7 +59,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> StatusNotSupportedException          A status value is not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories")
+    @PostMapping( path = "/users/{userId}/categories")
     public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName,@PathVariable String userId, @RequestBody Category suppliedCategory) {
         return restAPI.createCategory(serverName,userId,suppliedCategory);
     }
@@ -80,7 +80,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories/{guid}")
+    @GetMapping( path = "/users/{userId}/categories/{guid}")
     public  SubjectAreaOMASAPIResponse getCategoryByGuid(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
        return restAPI.getCategory(serverName,userId,guid);
     }
@@ -107,7 +107,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories")
+    @GetMapping( path = "/users/{userId}/categories")
     public  SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -142,7 +142,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/categories/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/categories/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -173,7 +173,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/categories/{guid}")
+    @PutMapping( path = "/users/{userId}/categories/{guid}")
     public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid, Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateCategory(serverName, userId,guid,suppliedCategory,isReplace);
     }
@@ -204,7 +204,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/categories/{guid}")
+    @DeleteMapping( path = "/users/{userId}/categories/{guid}")
     public  SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -229,7 +229,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories/{guid}")
+    @PostMapping( path = "/users/{userId}/categories/{guid}")
     public SubjectAreaOMASAPIResponse restoreCategory( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreCategory(serverName,userId,guid);

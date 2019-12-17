@@ -70,7 +70,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createGlossary(@RequestBody Glossary suppliedGlossary, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -101,7 +101,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String guid,HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -137,7 +137,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping()
     public  SubjectAreaOMASAPIResponse findGlossary(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -188,7 +188,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    @GetMapping( path = "/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getGlossaryRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -238,7 +238,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateGlossary(
                                                       @PathVariable String guid,
                                                       @RequestBody Glossary glossary,
@@ -294,7 +294,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -335,7 +335,7 @@ public class SubjectAreaGlossaryController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String guid,HttpServletRequest request)
     {
         String serverName = subjectArea.getServerName();

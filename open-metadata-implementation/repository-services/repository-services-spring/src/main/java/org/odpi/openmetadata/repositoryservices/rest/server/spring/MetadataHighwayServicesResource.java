@@ -7,8 +7,9 @@ import org.odpi.openmetadata.repositoryservices.rest.server.OMRSMetadataHighwayR
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -36,7 +37,7 @@ public class MetadataHighwayServicesResource
      * @param userId calling user
      * @return variety of properties
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/cohort-descriptions")
+    @GetMapping( path = "/cohort-descriptions")
 
     public CohortListResponse getCohorts(@PathVariable String   serverName,
                                          @PathVariable String   userId)
@@ -52,7 +53,7 @@ public class MetadataHighwayServicesResource
      * @param userId calling user
      * @return registration properties for server
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/local-registration")
+    @GetMapping( path = "/local-registration")
 
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
                                                          @PathVariable String   userId)
@@ -61,7 +62,7 @@ public class MetadataHighwayServicesResource
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/remote-members")
+    @GetMapping( path = "/cohorts/{cohortName}/remote-members")
 
     public CohortMembershipListResponse getRemoteRegistrations(@PathVariable String   serverName,
                                                                @PathVariable String   userId,
