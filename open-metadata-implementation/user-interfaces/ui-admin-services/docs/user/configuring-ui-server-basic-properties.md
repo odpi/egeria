@@ -26,7 +26,7 @@ The basic properties are:
 
 * **localServerURL** - network address of the UI server platform where this server runs
   (typically host and port number but must also include the initial part of the URL before "open-metadata" if defined).
-  The default value is "http://localhost:8080".
+  The default value is "https://localhost:8443".
  
 * **localServerUserId** - UserId to use for server initiated REST calls. The default is "OMAGServer".
 
@@ -41,7 +41,7 @@ Server's role.
 It may be a department name, when serving UIs for a particular department. 
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="CDO Office Metadata Repository"
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="CDO Office Metadata Repository"
 ```
 
 ## Set organization name
@@ -51,7 +51,7 @@ team supported by the server.
 Here the organization name is set to "Clinical Trials".
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
 ```
 
 
