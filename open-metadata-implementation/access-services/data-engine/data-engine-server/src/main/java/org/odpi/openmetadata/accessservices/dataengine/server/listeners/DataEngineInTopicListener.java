@@ -43,15 +43,14 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String dataEngineEvent) {
-        log.debug("Processing instance event", dataEngineEvent);
+        log.debug("Processing instance event {}", dataEngineEvent);
 
         if (dataEngineEvent == null) {
             log.debug("Null instance event - ignoring event");
         } else {
 
             try {
-                DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent,
-                        DataEngineEventHeader.class);
+                DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineEventHeader.class);
 
                 if ((dataEngineEventHeader != null)) {
                     switch (dataEngineEventHeader.getEventType()) {
@@ -74,6 +73,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case PROCESSES_EVENT:
                             dataEngineEventProcessor.processProcessesEvent(dataEngineEvent);
                             break;
+                        default:
+                            log.debug("Ignored instance event - unknown event type");
+                            break;
                     }
                 } else {
                     log.debug("Ignored instance event - null Data Engine event type");
@@ -81,14 +83,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
             } catch (JsonProcessingException e) {
                 log.debug("Exception processing event from in Data Engine In Topic", e);
                 DataEngineErrorCode errorCode = DataEngineErrorCode.PROCESS_EVENT_EXCEPTION;
-                auditLog.logException("process Data Engine inTopic Event",
-                        errorCode.getErrorMessageId(),
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                        errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()),
-                        e.getMessage(),
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e);
+                auditLog.logException("process Data Engine inTopic Event", errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
+                        errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
+                        errorCode.getUserAction(), e);
             }
         }
     }

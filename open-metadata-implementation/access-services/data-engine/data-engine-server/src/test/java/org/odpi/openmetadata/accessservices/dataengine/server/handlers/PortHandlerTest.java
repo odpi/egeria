@@ -343,7 +343,7 @@ class PortHandlerTest {
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-        assertEquals(resultGUID, GUID);
+        assertEquals(GUID, resultGUID);
     }
 
     @Test
