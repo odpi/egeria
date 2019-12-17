@@ -80,7 +80,7 @@ public class AssetCatalogRESTService {
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
-            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetDescription.getType().getName(), ""));
+            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetDescription.getType().getName()));
 
             response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {

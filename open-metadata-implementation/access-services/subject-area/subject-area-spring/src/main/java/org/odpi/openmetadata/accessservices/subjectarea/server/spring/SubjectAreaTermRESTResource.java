@@ -167,7 +167,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/terms/{guid}")
+    @PutMapping( path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestBody Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
@@ -198,7 +198,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/terms/{guid}")
     public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.

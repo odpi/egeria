@@ -67,7 +67,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -241,7 +241,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateTerm(
                                                       @PathVariable String guid,
                                                       @RequestBody Term term,
@@ -297,7 +297,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.

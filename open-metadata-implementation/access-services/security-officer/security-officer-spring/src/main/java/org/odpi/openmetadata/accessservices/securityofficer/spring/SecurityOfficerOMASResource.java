@@ -11,11 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
 public class SecurityOfficerOMASResource {
@@ -56,7 +56,7 @@ public class SecurityOfficerOMASResource {
      * @param userId          String - userId of user making request.
      * @param schemaElementId unique identifier of the schema element
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping( path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SecurityOfficerOMASAPIResponse deleteSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId,
                                                                                      @PathVariable String schemaElementId) {
         return service.deleteSecurityTag(serverName, userId, schemaElementId);

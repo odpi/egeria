@@ -72,7 +72,7 @@ public class UIOperationalServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/instance")
+    @DeleteMapping( path = "/instance")
     public VoidResponse deactivateTemporarily(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
@@ -90,7 +90,7 @@ public class UIOperationalServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "")
+    @DeleteMapping( path = "")
     public VoidResponse deactivatePermanently(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
