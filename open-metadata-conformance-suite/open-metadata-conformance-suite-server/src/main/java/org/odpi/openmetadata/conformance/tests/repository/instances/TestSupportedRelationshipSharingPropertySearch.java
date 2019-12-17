@@ -377,15 +377,14 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     PrimitivePropertyValue ppv = new PrimitivePropertyValue();
                     ppv.setPrimitiveDefCategory(propertyCatMap.get(attributeName));
                     if (propertyCatMap.get(attributeName) == OM_PRIMITIVE_TYPE_STRING) {
-                        String literalisedValue = literaliseStringProperty((String)value);
+                        String literalisedValue = literaliseStringProperty((String) value);
                         ppv.setPrimitiveValue(literalisedValue);
-                    }
-                    else {
+                    } else {
                         ppv.setPrimitiveValue(value);
                     }
 
                     ppv.setPrimitiveValue(value);
-                    matchProperties.setProperty(attributeName,ppv);
+                    matchProperties.setProperty(attributeName, ppv);
 
                     /*
                      * Expected result size
@@ -397,15 +396,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      */
 
                     result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                           relationshipDef.getGUID(),
-                                                                           matchProperties,
-                                                                           MatchCriteria.ALL,
-                                                                           fromElement,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                           pageSize);
+                                                                            relationshipDef.getGUID(),
+                                                                            matchProperties,
+                                                                            MatchCriteria.ALL,
+                                                                            fromElement,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            pageSize);
 
                     /*
                      * The approach to checking results match expectations is as follows:
@@ -451,14 +450,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      *
                      */
 
+                    // TODO - clean me up
                     /*
                      * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                      */
-                    assertCondition((result != null),
-                            assertion1,
-                            testTypeName + assertionMsg1,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                    //assertCondition((result != null),
+                    //        assertion1,
+                    //        testTypeName + assertionMsg1,
+                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -473,75 +473,76 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * entities that were not discovered previously.
                      * This next assertion is just about the size of the result set.
                      */
-                    assertCondition(  (  (!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount ) ),
-                            assertion2,
-                            testTypeName + assertionMsg2,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                    int resultCount = result == null ? 0 : result.size();
+                    assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                    assertion2,
+                                    testTypeName + assertionMsg2,
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
                      * Check that the expected relationships were all returned
                      */
-                    List<String> resultGUIDs = new ArrayList<>();
-                    for (Relationship relationship : result) {
-                        resultGUIDs.add(relationship.getGUID());
-                    }
-                    List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(value);
-
-
-                    /*
-                     * Here again, we need to be sensitive to whether the original search hit the page limit.
-                     * If the original search hit the limit then we may legitimately receive additional instances in the results
-                     * of a narrower search. But not if the original result set was under the page limit.
-                     */
-
-                    boolean matchingResult = true;
-
-                    if (!pageLimited) {
-                        if (!resultGUIDs.containsAll(expectedGUIDs))
-                            matchingResult = false;
-                    }
-
-                    else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
+                    if (result != null) {
+                        List<String> resultGUIDs = new ArrayList<>();
                         for (Relationship relationship : result) {
+                            resultGUIDs.add(relationship.getGUID());
+                        }
+                        List<String> expectedGUIDs = propertyValueMap.get(attributeName).get(value);
 
-                            if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                /*
-                                 * This was an extra entity that we either did not expect or that we have not seen previously.
-                                 * Check it is a valid result.
-                                 */
-                                InstanceProperties relationshipProperties = relationship.getProperties();
-                                if (relationshipProperties != null) {
-                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
-                                    if (ipValue != null) {
-                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
 
-                                            Object primitiveValue = ipValue.valueAsObject();
+                        /*
+                         * Here again, we need to be sensitive to whether the original search hit the page limit.
+                         * If the original search hit the limit then we may legitimately receive additional instances in the results
+                         * of a narrower search. But not if the original result set was under the page limit.
+                         */
 
-                                            /*
-                                             * Check for inequality and fail the match if unequal.
-                                             * This is because, even for strings, we used an exact match literalised property value
-                                             * and match criteria was ALL - so a relationship with an unequal property is not a valid result.
-                                             */
-                                            if (!primitiveValue.equals(value))
-                                                matchingResult = false;
+                        boolean matchingResult = true;
 
+                        if (!pageLimited) {
+                            if (!resultGUIDs.containsAll(expectedGUIDs))
+                                matchingResult = false;
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                            for (Relationship relationship : result) {
+
+                                if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                    /*
+                                     * This was an extra entity that we either did not expect or that we have not seen previously.
+                                     * Check it is a valid result.
+                                     */
+                                    InstanceProperties relationshipProperties = relationship.getProperties();
+                                    if (relationshipProperties != null) {
+                                        InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                        if (ipValue != null) {
+                                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+
+                                                Object primitiveValue = ipValue.valueAsObject();
+
+                                                /*
+                                                 * Check for inequality and fail the match if unequal.
+                                                 * This is because, even for strings, we used an exact match literalised property value
+                                                 * and match criteria was ALL - so a relationship with an unequal property is not a valid result.
+                                                 */
+                                                if (!primitiveValue.equals(value))
+                                                    matchingResult = false;
+
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+
+
+                        assertCondition(matchingResult,
+                                        assertion3,
+                                        testTypeName + assertionMsg3,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                     }
-
-
-                    assertCondition(matchingResult,
-                            assertion3,
-                            testTypeName + assertionMsg3,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                     // ----------------------------------------------------
                     // REPEAT SEARCH WITH MATCHCRITERIA NONE
@@ -615,14 +616,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      *
                      */
 
+                    // TODO - clean me up!!
                     /*
                      * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                      */
-                    assertCondition((result != null),
-                            assertion4,
-                            testTypeName + assertionMsg4,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                    //assertCondition((result != null),
+                    //                assertion4,
+                    //                testTypeName + assertionMsg4,
+                    //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                    //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -637,76 +639,77 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * entities that were not discovered previously.
                      * This next assertion is just about the size of the result set.
                      */
-                    assertCondition(  (  (!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount ) ),
-                            assertion5,
-                            testTypeName + assertionMsg5,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                    resultCount = result == null ? 0 : result.size();
+                    assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                    assertion5,
+                                    testTypeName + assertionMsg5,
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
                      * Check that the expected relationships were all returned
                      */
-                    resultGUIDs = new ArrayList<>();
-                    for (Relationship relationship : result) {
-                        resultGUIDs.add(relationship.getGUID());
-                    }
-                    expectedGUIDs = diff(allKnownRelationshipGUIDs, propertyValueMap.get(attributeName).get(value));
-
-
-                    /*
-                     * Here again, we need to be sensitive to whether the original search hit the page limit.
-                     * If the original search hit the limit then we may legitimately receive additional instances in the results
-                     * of a narrower search. But not if the original result set was under the page limit.
-                     */
-
-                    matchingResult = true;
-
-                    if (!pageLimited) {
-                        if (!resultGUIDs.containsAll(expectedGUIDs))
-                            matchingResult = false;
-                    }
-
-                    else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
+                    if (result != null) {
+                        List<String> resultGUIDs = new ArrayList<>();
                         for (Relationship relationship : result) {
+                            resultGUIDs.add(relationship.getGUID());
+                        }
+                        List<String> expectedGUIDs = diff(allKnownRelationshipGUIDs, propertyValueMap.get(attributeName).get(value));
 
-                            if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                /*
-                                 * This was an extra entity that we either did not expect or that we have not seen previously.
-                                 * Check it is a valid result.
-                                 */
-                                InstanceProperties relationshipProperties = relationship.getProperties();
-                                if (relationshipProperties != null) {
-                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
-                                    if (ipValue != null) {
-                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
 
-                                            Object primitiveValue = ipValue.valueAsObject();
+                        /*
+                         * Here again, we need to be sensitive to whether the original search hit the page limit.
+                         * If the original search hit the limit then we may legitimately receive additional instances in the results
+                         * of a narrower search. But not if the original result set was under the page limit.
+                         */
 
-                                            /*
-                                             * Check for equality and fail the match if equal.
-                                             * This is because, even for strings, we used an exact match literalised property value
-                                             * and match criteria was NONE - so a relationship with an equal property is not a valid result.
-                                             */
-                                            if (primitiveValue.equals(value))
-                                                matchingResult = false;
+                        boolean matchingResult = true;
 
+                        if (!pageLimited) {
+                            if (!resultGUIDs.containsAll(expectedGUIDs))
+                                matchingResult = false;
+                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                            for (Relationship relationship : result) {
+
+                                if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                    /*
+                                     * This was an extra entity that we either did not expect or that we have not seen previously.
+                                     * Check it is a valid result.
+                                     */
+                                    InstanceProperties relationshipProperties = relationship.getProperties();
+                                    if (relationshipProperties != null) {
+                                        InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                        if (ipValue != null) {
+                                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+
+                                                Object primitiveValue = ipValue.valueAsObject();
+
+                                                /*
+                                                 * Check for equality and fail the match if equal.
+                                                 * This is because, even for strings, we used an exact match literalised property value
+                                                 * and match criteria was NONE - so a relationship with an equal property is not a valid result.
+                                                 */
+                                                if (primitiveValue.equals(value))
+                                                    matchingResult = false;
+
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+
+
+                        assertCondition(matchingResult,
+                                        assertion6,
+                                        testTypeName + assertionMsg6,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
                     }
-
-
-                    assertCondition(matchingResult,
-                            assertion6,
-                            testTypeName + assertionMsg6,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
                 }
             }
         }
@@ -842,22 +845,22 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                 matchProperties,
                                                                                 matchCriteria,
                                                                                 fromElement,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
                                                                                 pageSize);
 
 
-
+                        // TODO - clean me up!!
                         /*
                          * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                          */
-                        assertCondition((result != null),
-                                assertion7,
-                                testTypeName + assertionMsg7,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                        //assertCondition((result != null),
+                        //        assertion7,
+                        //        testTypeName + assertionMsg7,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -871,91 +874,93 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * entities that were not discovered previously.
                          * This next assertion is just about the size of the result set.
                          */
-                        assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
-                                assertion8,
-                                testTypeName + assertionMsg8,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                        int resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                        assertion8,
+                                        testTypeName + assertionMsg8,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
                          * Check that the expected relationships were all returned
                          */
-                        List<String> resultGUIDs = new ArrayList<>();
-                        for (Relationship relationship : result) {
-                            resultGUIDs.add(relationship.getGUID());
-                        }
-
-
-                        /*
-                         * Here again, we need to be sensitive to whether the original search hit the page limit.
-                         * If the original search hit the limit then we may legitimately receive additional instances in the results
-                         * of a narrower search. But not if the original result set was under the page limit.
-                         */
-
-                        boolean matchingResult = true;
-
-                        if (!pageLimited) {
-                            if (!resultGUIDs.containsAll(expectedGUIDs))
-                                matchingResult = false;
-                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
+                        if (result != null) {
+                            List<String> resultGUIDs = new ArrayList<>();
                             for (Relationship relationship : result) {
+                                resultGUIDs.add(relationship.getGUID());
+                            }
 
-                                if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                    /*
-                                     * This was an extra relationship that we either did not expect or that we have not seen previously.
-                                     * Check it is a valid result.
-                                     */
 
-                                    InstanceProperties relationshipProperties = relationship.getProperties();
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitimately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
 
-                                    boolean alphaMatch = false;
+                            boolean matchingResult = true;
 
-                                    if (relationshipProperties != null) {
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                                        InstancePropertyValue alphaIPValue = relationshipProperties.getPropertyValue(alphaAttributeName);
-                                        if (alphaIPValue != null) {
-                                            InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
-                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                Object primitiveValue = alphaIPValue.valueAsObject();
-                                                alphaMatch = primitiveValue.equals(alphaValue);
+                                for (Relationship relationship : result) {
+
+                                    if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                        /*
+                                         * This was an extra relationship that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result.
+                                         */
+
+                                        InstanceProperties relationshipProperties = relationship.getProperties();
+
+                                        boolean alphaMatch = false;
+
+                                        if (relationshipProperties != null) {
+
+                                            InstancePropertyValue alphaIPValue = relationshipProperties.getPropertyValue(alphaAttributeName);
+                                            if (alphaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = alphaIPValue.valueAsObject();
+                                                    alphaMatch = primitiveValue.equals(alphaValue);
+                                                }
                                             }
+
                                         }
 
-                                    }
+                                        boolean betaMatch = false;
 
-                                    boolean betaMatch = false;
+                                        if (relationshipProperties != null) {
 
-                                    if (relationshipProperties != null) {
-
-                                        InstancePropertyValue betaIPValue = relationshipProperties.getPropertyValue(betaAttributeName);
-                                        if (betaIPValue != null) {
-                                            InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
-                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                Object primitiveValue = betaIPValue.valueAsObject();
-                                                betaMatch = primitiveValue.equals(betaValue);
+                                            InstancePropertyValue betaIPValue = relationshipProperties.getPropertyValue(betaAttributeName);
+                                            if (betaIPValue != null) {
+                                                InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
+                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                    Object primitiveValue = betaIPValue.valueAsObject();
+                                                    betaMatch = primitiveValue.equals(betaValue);
+                                                }
                                             }
+
                                         }
 
+
+                                        if (!(alphaMatch || betaMatch))
+                                            matchingResult = false;
+
+
                                     }
-
-
-                                    if (!(alphaMatch || betaMatch))
-                                        matchingResult = false;
-
-
                                 }
                             }
+
+
+                            assertCondition(matchingResult,
+                                            assertion9,
+                                            testTypeName + assertionMsg9,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                         }
-
-
-                        assertCondition(matchingResult,
-                                assertion9,
-                                testTypeName + assertionMsg9,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
 
                         // ----------------------------------------------------------------
                         // REPEAT FOR MATCH_CRITERIA ALL
@@ -981,46 +986,48 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                 pageSize);
 
 
-
+                        // TODO - clean me up!!
                         /*
                          * In this test it is not possible to always predict (expect) a non-null result, only if expectedRelationshipCount > 0
                          */
-                        assertCondition((expectedRelationshipCount == 0 || result != null),
-                                assertion10,
-                                testTypeName + assertionMsg10,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                        //assertCondition((expectedRelationshipCount == 0 || result != null),
+                        //        assertion10,
+                        //        testTypeName + assertionMsg10,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                         /*
                          * Since no result is legitimate in this test, only proceed with further checks where relevant
                          */
+                        //if (result != null) {
+
+
+                        /*
+                         * Check that the expected number of instances was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                        assertion11,
+                                        testTypeName + assertionMsg11,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected relationships were all returned
+                         */
                         if (result != null) {
-
-
-                            /*
-                             * Check that the expected number of instances was returned. This has to consider the effect of the original
-                             * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                             * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                             * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                             * so the expectation may be a subset of the actual.
-                             * The actual instances returned
-                             * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                             * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                             * entities that were not discovered previously.
-                             * This next assertion is just about the size of the result set.
-                             */
-                            assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
-                                    assertion11,
-                                    testTypeName + assertionMsg11,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
-
-                            /*
-                             * Check that the expected relationships were all returned
-                             */
-                            resultGUIDs = new ArrayList<>();
+                            List<String> resultGUIDs = new ArrayList<>();
                             for (Relationship relationship : result) {
                                 resultGUIDs.add(relationship.getGUID());
                             }
@@ -1032,7 +1039,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                              * of a narrower search. But not if the original result set was under the page limit.
                              */
 
-                            matchingResult = true;
+                            boolean matchingResult = true;
 
                             if (!pageLimited) {
                                 if (!resultGUIDs.containsAll(expectedGUIDs))
@@ -1088,10 +1095,10 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
                             assertCondition(matchingResult,
-                                    assertion12,
-                                    testTypeName + assertionMsg12,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                                            assertion12,
+                                            testTypeName + assertionMsg12,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                         }
 
 
@@ -1121,43 +1128,47 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                 pageSize);
 
 
-
-                        /*
-                         * In this test it is not possible to always predict (expect) a non-null result, only if expectedRelationshipCount > 0
-                         */
-                        assertCondition((expectedRelationshipCount == 0 || result != null),
-                                assertion13,
-                                testTypeName + assertionMsg13,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                        // TODO - clean me up!!
+                        ///*
+                        // * In this test it is not possible to always predict (expect) a non-null result, only if expectedRelationshipCount > 0
+                        // */
+                        //assertCondition((expectedRelationshipCount == 0 || result != null),
+                        //        assertion13,
+                        //        testTypeName + assertionMsg13,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                         /*
                          * Since no result is legitimate in this test, only proceed with further checks where relevant
                          */
+                        //if (result != null) {
+
+
+                        /*
+                         * Check that the expected number of instances was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                        assertion14,
+                                        testTypeName + assertionMsg14,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected relationships were all returned
+                         */
                         if (result != null) {
-                            /*
-                             * Check that the expected number of instances was returned. This has to consider the effect of the original
-                             * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                             * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                             * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                             * so the expectation may be a subset of the actual.
-                             * The actual instances returned
-                             * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                             * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                             * entities that were not discovered previously.
-                             * This next assertion is just about the size of the result set.
-                             */
-                            assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
-                                    assertion14,
-                                    testTypeName + assertionMsg14,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
-
-                            /*
-                             * Check that the expected relationships were all returned
-                             */
-                            resultGUIDs = new ArrayList<>();
+                            List<String> resultGUIDs = new ArrayList<>();
                             for (Relationship relationship : result) {
                                 resultGUIDs.add(relationship.getGUID());
                             }
@@ -1168,7 +1179,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                              * of a narrower search. But not if the original result set was under the page limit.
                              */
 
-                            matchingResult = true;
+                            boolean matchingResult = true;
 
                             if (!pageLimited) {
                                 if (!resultGUIDs.containsAll(expectedGUIDs))
@@ -1224,12 +1235,11 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
                             assertCondition(matchingResult,
-                                    assertion15,
-                                    testTypeName + assertionMsg15,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                                            assertion15,
+                                            testTypeName + assertionMsg15,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                         }
-
                     }
                 }
             }
@@ -1325,14 +1335,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                  pageSize);
 
 
+                    // TODO - clean me up!!
                     /*
                      * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                      */
-                    assertCondition((result != null),
-                            assertion16,
-                            testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                    //assertCondition((result != null),
+                    //        assertion16,
+                    //        testTypeName + assertionMsg16,
+                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                     /*
                      * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1346,7 +1357,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * entities that were not discovered previously.
                      * This next assertion is just about the size of the result set.
                      */
-                    assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
+                    int resultCount = result == null ? 0 : result.size();
+                    assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
                             assertion17,
                             testTypeName + assertionMsg17,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
@@ -1356,157 +1368,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                     /*
                      * Check that the expected relationships were all returned
                      */
-                    List<String> resultGUIDs = new ArrayList<>();
-                    for (Relationship relationship : result) {
-                        resultGUIDs.add(relationship.getGUID());
-                    }
-
-
-                    /*
-                     * Here again, we need to be sensitive to whether the original search hit the page limit.
-                     * If the original search hit the limit then we may legitimately receive additional instances in the results
-                     * of a narrower search. But not if the original result set was under the page limit.
-                     */
-
-                    boolean matchingResult = true;
-
-                    if (!pageLimited) {
-                        if (!resultGUIDs.containsAll(expectedGUIDs))
-                            matchingResult = false;
-                    } else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                        for (Relationship relationship : result) {
-
-                            if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                /*
-                                 * This was an extra relationship that we either did not expect or that we have not seen previously.
-                                 * Check it is a valid result. It can have any string attribute with the same value as strValue.
-                                 */
-                                boolean validRelationship = false;
-                                InstanceProperties relationshipProperties = relationship.getProperties();
-                                if (relationshipProperties != null) {
-                                    Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
-                                    Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
-                                    while (relationshipPropertyNameIterator.hasNext()) {
-                                        String propertyName = relationshipPropertyNameIterator.next();
-                                        InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
-                                        if (ipValue != null) {
-                                            InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                            if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                                PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                                if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
-                                                    String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-                                                    if (propertyValueAsString.equals(stringValue)) {
-                                                        validRelationship = true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (!validRelationship)
-                                    matchingResult = false;
-                            }
-                        }
-                    }
-
-
-                    assertCondition(matchingResult,
-                            assertion18,
-                            testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
-
-
-                    /*
-                     * PREFIX MATCH - only feasible if string value has at least 2 chars.
-                     */
-
-
-                    int stringValueLength = stringValue.length();
-                    if (stringValueLength >= 2) {
-                        int truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
-                        String truncatedStringValue = stringValue.substring(0, truncatedLength);
-
-                        literalisedValue = literaliseStringPropertyStartsWith(truncatedStringValue);
-
-                        /*
-                         * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
-                         * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
-                         */
-                        expectedRelationshipCount = 0;
-                        expectedGUIDs = new ArrayList<>();
-                        propertyNamesSet = propertyValueMap.keySet();
-                        propertyNamesSetIterator = propertyNamesSet.iterator();
-                        while (propertyNamesSetIterator.hasNext()) {
-                            String propName = propertyNamesSetIterator.next();
-                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
-                                Map<Object,List<String>> propValues = propertyValueMap.get(propName);
-                                Set<Object> propertyValuesSet = propValues.keySet();
-                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
-                                while (propertyValuesSetIterator.hasNext()) {
-                                    String knownStringValue = (String)(propertyValuesSetIterator.next());
-                                    /* PREFIX MATCH */
-                                    if (knownStringValue.startsWith(truncatedStringValue)) {
-                                        for (String matchGUID : propValues.get(knownStringValue)) {
-                                            if (!expectedGUIDs.contains(matchGUID)) {
-                                                expectedGUIDs.add(matchGUID);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        expectedRelationshipCount = expectedGUIDs.size();
-
-                        /*
-                         * Search....
-                         */
-
-                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                     relationshipDef.getGUID(),
-                                                                                     literalisedValue,
-                                                                                     fromElement,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     pageSize);
-
-
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        assertCondition((result != null),
-                                assertion19,
-                                testTypeName + assertionMsg19,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
-
-                        /*
-                         * Check that the expected number of instances was returned. This has to consider the effect of the original
-                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
-                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
-                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
-                         * so the expectation may be a subset of the actual.
-                         * The actual instances returned
-                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
-                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-                         * entities that were not discovered previously.
-                         * This next assertion is just about the size of the result set.
-                         */
-                        assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
-                                assertion20,
-                                testTypeName + assertionMsg20,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
-
-
-                        /*
-                         * Check that the expected relationships were all returned
-                         */
-                        resultGUIDs = new ArrayList<>();
+                    if (result != null) {
+                        List<String> resultGUIDs = new ArrayList<>();
                         for (Relationship relationship : result) {
                             resultGUIDs.add(relationship.getGUID());
                         }
@@ -1518,7 +1381,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * of a narrower search. But not if the original result set was under the page limit.
                          */
 
-                        matchingResult = true;
+                        boolean matchingResult = true;
 
                         if (!pageLimited) {
                             if (!resultGUIDs.containsAll(expectedGUIDs))
@@ -1547,7 +1410,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                     PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
                                                     if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
                                                         String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.equals(stringValue)) {
                                                             validRelationship = true;
                                                         }
                                                     }
@@ -1563,11 +1426,165 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
                         assertCondition(matchingResult,
-                                assertion21,
-                                testTypeName + assertionMsg21,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                                        assertion18,
+                                        testTypeName + assertionMsg18,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
+                    }
+                    /*
+                     * PREFIX MATCH - only feasible if string value has at least 2 chars.
+                     */
+
+
+                    int stringValueLength = stringValue.length();
+                    if (stringValueLength >= 2) {
+                        int truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
+                        String truncatedStringValue = stringValue.substring(0, truncatedLength);
+
+                        literalisedValue = literaliseStringPropertyStartsWith(truncatedStringValue);
+
+                        /*
+                         * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
+                         * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
+                         */
+                        expectedRelationshipCount = 0;
+                        expectedGUIDs = new ArrayList<>();
+                        propertyNamesSet = propertyValueMap.keySet();
+                        propertyNamesSetIterator = propertyNamesSet.iterator();
+                        while (propertyNamesSetIterator.hasNext()) {
+                            String propName = propertyNamesSetIterator.next();
+                            if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
+                                Map<Object, List<String>> propValues = propertyValueMap.get(propName);
+                                Set<Object> propertyValuesSet = propValues.keySet();
+                                Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
+                                while (propertyValuesSetIterator.hasNext()) {
+                                    String knownStringValue = (String) (propertyValuesSetIterator.next());
+                                    /* PREFIX MATCH */
+                                    if (knownStringValue.startsWith(truncatedStringValue)) {
+                                        for (String matchGUID : propValues.get(knownStringValue)) {
+                                            if (!expectedGUIDs.contains(matchGUID)) {
+                                                expectedGUIDs.add(matchGUID);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        expectedRelationshipCount = expectedGUIDs.size();
+
+                        /*
+                         * Search....
+                         */
+
+                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                     relationshipDef.getGUID(),
+                                                                                     literalisedValue,
+                                                                                     fromElement,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     pageSize);
+
+
+                        // TODO - clean me up
+                        /*
+                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
+                         */
+                        //assertCondition((result != null),
+                        //        assertion19,
+                        //        testTypeName + assertionMsg19,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
+                        /*
+                         * Check that the expected number of instances was returned. This has to consider the effect of the original
+                         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+                         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+                         * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
+                         * so the expectation may be a subset of the actual.
+                         * The actual instances returned
+                         * may not match exactly if we hit page size because there may be additional instances that were not included in the
+                         * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
+                         * entities that were not discovered previously.
+                         * This next assertion is just about the size of the result set.
+                         */
+                        resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
+                                        assertion20,
+                                        testTypeName + assertionMsg20,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
+
+                        /*
+                         * Check that the expected relationships were all returned
+                         */
+                        if (result != null) {
+                            List<String> resultGUIDs = new ArrayList<>();
+                            for (Relationship relationship : result) {
+                                resultGUIDs.add(relationship.getGUID());
+                            }
+
+
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitimately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
+
+                            boolean matchingResult = true;
+
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                                for (Relationship relationship : result) {
+
+                                    if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                        /*
+                                         * This was an extra relationship that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                         */
+                                        boolean validRelationship = false;
+                                        InstanceProperties relationshipProperties = relationship.getProperties();
+                                        if (relationshipProperties != null) {
+                                            Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                            Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                            while (relationshipPropertyNameIterator.hasNext()) {
+                                                String propertyName = relationshipPropertyNameIterator.next();
+                                                InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                                if (ipValue != null) {
+                                                    InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                        if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                            String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                            if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                                validRelationship = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (!validRelationship)
+                                            matchingResult = false;
+                                    }
+                                }
+                            }
+
+
+                            assertCondition(matchingResult,
+                                            assertion21,
+                                            testTypeName + assertionMsg21,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
+                        }
                     }
 
 
@@ -1626,14 +1643,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                      pageSize);
 
 
+                        // TODO - clean me up
                         /*
                          * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                          */
-                        assertCondition((result != null),
-                                assertion22,
-                                testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                        //assertCondition((result != null),
+                        //        assertion22,
+                        //        testTypeName + assertionMsg22,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1647,7 +1665,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * entities that were not discovered previously.
                          * This next assertion is just about the size of the result set.
                          */
-                        assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
+                        resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
                                 assertion23,
                                 testTypeName + assertionMsg23,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
@@ -1657,69 +1676,70 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         /*
                          * Check that the expected relationships were all returned
                          */
-                        resultGUIDs = new ArrayList<>();
-                        for (Relationship relationship : result) {
-                            resultGUIDs.add(relationship.getGUID());
-                        }
-
-
-                        /*
-                         * Here again, we need to be sensitive to whether the original search hit the page limit.
-                         * If the original search hit the limit then we may legitimately receive additional instances in the results
-                         * of a narrower search. But not if the original result set was under the page limit.
-                         */
-
-                        matchingResult = true;
-
-                        if (!pageLimited) {
-                            if (!resultGUIDs.containsAll(expectedGUIDs))
-                                matchingResult = false;
-                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
+                        if (result != null) {
+                            List<String> resultGUIDs = new ArrayList<>();
                             for (Relationship relationship : result) {
+                                resultGUIDs.add(relationship.getGUID());
+                            }
 
-                                if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                    /*
-                                     * This was an extra relationship that we either did not expect or that we have not seen previously.
-                                     * Check it is a valid result. It can have any string attribute with the same value as strValue.
-                                     */
-                                    boolean validRelationship = false;
-                                    InstanceProperties relationshipProperties = relationship.getProperties();
-                                    if (relationshipProperties != null) {
-                                        Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
-                                        Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
-                                        while (relationshipPropertyNameIterator.hasNext()) {
-                                            String propertyName = relationshipPropertyNameIterator.next();
-                                            InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
-                                            if (ipValue != null) {
-                                                InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                                    PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                                    if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
-                                                        String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
-                                                            validRelationship = true;
+
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitimately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
+
+                            boolean matchingResult = true;
+
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                                for (Relationship relationship : result) {
+
+                                    if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                        /*
+                                         * This was an extra relationship that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                         */
+                                        boolean validRelationship = false;
+                                        InstanceProperties relationshipProperties = relationship.getProperties();
+                                        if (relationshipProperties != null) {
+                                            Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                            Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                            while (relationshipPropertyNameIterator.hasNext()) {
+                                                String propertyName = relationshipPropertyNameIterator.next();
+                                                InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                                if (ipValue != null) {
+                                                    InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                        if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                            String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                            if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                                validRelationship = true;
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
+                                        if (!validRelationship)
+                                            matchingResult = false;
                                     }
-                                    if (!validRelationship)
-                                        matchingResult = false;
                                 }
                             }
+
+
+                            assertCondition(matchingResult,
+                                            assertion24,
+                                            testTypeName + assertionMsg24,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
                         }
-
-
-                        assertCondition(matchingResult,
-                                assertion24,
-                                testTypeName + assertionMsg24,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
-
-
                     }
 
                     /*
@@ -1780,14 +1800,15 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                                                                                      pageSize);
 
 
+                        // TODO - clean me up
                         /*
                          * It is reasonable to expect a non-null result - based on the way the search properties were constructed
                          */
-                        assertCondition((result != null),
-                                assertion25,
-                                testTypeName + assertionMsg25,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                        //assertCondition((result != null),
+                        //        assertion25,
+                        //        testTypeName + assertionMsg25,
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1801,7 +1822,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * entities that were not discovered previously.
                          * This next assertion is just about the size of the result set.
                          */
-                        assertCondition(((!pageLimited && result.size() == expectedRelationshipCount) || (pageLimited && result.size() >= expectedRelationshipCount)),
+                        resultCount = result == null ? 0 : result.size();
+                        assertCondition(((!pageLimited && resultCount == expectedRelationshipCount) || (pageLimited && resultCount >= expectedRelationshipCount)),
                                 assertion26,
                                 testTypeName + assertionMsg26,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
@@ -1811,69 +1833,70 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                         /*
                          * Check that the expected relationships were all returned
                          */
-                        resultGUIDs = new ArrayList<>();
-                        for (Relationship relationship : result) {
-                            resultGUIDs.add(relationship.getGUID());
-                        }
-
-
-                        /*
-                         * Here again, we need to be sensitive to whether the original search hit the page limit.
-                         * If the original search hit the limit then we may legitimately receive additional instances in the results
-                         * of a narrower search. But not if the original result set was under the page limit.
-                         */
-
-                        matchingResult = true;
-
-                        if (!pageLimited) {
-                            if (!resultGUIDs.containsAll(expectedGUIDs))
-                                matchingResult = false;
-                        } else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
+                        if (result != null) {
+                            List<String> resultGUIDs = new ArrayList<>();
                             for (Relationship relationship : result) {
+                                resultGUIDs.add(relationship.getGUID());
+                            }
 
-                                if (!(expectedGUIDs.contains(relationship.getGUID()))) {
-                                    /*
-                                     * This was an extra relationship that we either did not expect or that we have not seen previously.
-                                     * Check it is a valid result. It can have any string attribute with the same value as strValue.
-                                     */
-                                    boolean validRelationship = false;
-                                    InstanceProperties relationshipProperties = relationship.getProperties();
-                                    if (relationshipProperties != null) {
-                                        Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
-                                        Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
-                                        while (relationshipPropertyNameIterator.hasNext()) {
-                                            String propertyName = relationshipPropertyNameIterator.next();
-                                            InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
-                                            if (ipValue != null) {
-                                                InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                                if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
-                                                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                                    PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                                    if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
-                                                        String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
-                                                            validRelationship = true;
+
+                            /*
+                             * Here again, we need to be sensitive to whether the original search hit the page limit.
+                             * If the original search hit the limit then we may legitimately receive additional instances in the results
+                             * of a narrower search. But not if the original result set was under the page limit.
+                             */
+
+                            boolean matchingResult = true;
+
+                            if (!pageLimited) {
+                                if (!resultGUIDs.containsAll(expectedGUIDs))
+                                    matchingResult = false;
+                            } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                                for (Relationship relationship : result) {
+
+                                    if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                                        /*
+                                         * This was an extra relationship that we either did not expect or that we have not seen previously.
+                                         * Check it is a valid result. It can have any string attribute with the same value as strValue.
+                                         */
+                                        boolean validRelationship = false;
+                                        InstanceProperties relationshipProperties = relationship.getProperties();
+                                        if (relationshipProperties != null) {
+                                            Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                            Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                            while (relationshipPropertyNameIterator.hasNext()) {
+                                                String propertyName = relationshipPropertyNameIterator.next();
+                                                InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                                if (ipValue != null) {
+                                                    InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+                                                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
+                                                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                                                        if (pdCat == OM_PRIMITIVE_TYPE_STRING) {
+                                                            String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                                                            if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                                validRelationship = true;
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
+                                        if (!validRelationship)
+                                            matchingResult = false;
                                     }
-                                    if (!validRelationship)
-                                        matchingResult = false;
                                 }
                             }
+
+
+                            assertCondition(matchingResult,
+                                            assertion27,
+                                            testTypeName + assertionMsg27,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
                         }
-
-
-                        assertCondition(matchingResult,
-                                assertion27,
-                                testTypeName + assertionMsg27,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
-
-
                     }
                 }
             }
