@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+parameters:
+  projectName: ''
+  dockerfilePath: ''
+  helmBaseChartPath: ''
+  helmChartName: ''
+
+variables:
+  helmVersion: 3.0.1
+  registryServerName: '$(registryName).azurecr.io'
+  projectName: ${{ parameters.projectName }}
+  dockerfilePath: ${{ parameters.dockerfilePath }}
+  helmBaseChartPath: ${{ parameters.helmchartPath }}
+  helmChartName: ${{ parameters.helmchartPath }}
+

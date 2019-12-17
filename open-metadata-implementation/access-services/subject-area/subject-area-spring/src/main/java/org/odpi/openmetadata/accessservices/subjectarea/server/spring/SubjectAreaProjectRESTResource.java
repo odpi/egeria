@@ -203,7 +203,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/projects/{guid}")
+    @PutMapping( path = "/users/{userId}/projects/{guid}")
     public  SubjectAreaOMASAPIResponse updateProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Project Project,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateProject(serverName, userId,guid,Project,isReplace);
     }
@@ -235,7 +235,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> GUIDNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/projects/{guid}")
+    @DeleteMapping( path = "/users/{userId}/projects/{guid}")
     public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.

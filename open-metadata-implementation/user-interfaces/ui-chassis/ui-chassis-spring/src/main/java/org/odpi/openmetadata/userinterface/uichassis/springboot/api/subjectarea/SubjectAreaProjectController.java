@@ -64,7 +64,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -131,7 +131,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping()
     public  SubjectAreaOMASAPIResponse findProject(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -232,7 +232,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateProject(
                                                       @PathVariable String guid,
                                                       @RequestBody Project project,
@@ -286,7 +286,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
