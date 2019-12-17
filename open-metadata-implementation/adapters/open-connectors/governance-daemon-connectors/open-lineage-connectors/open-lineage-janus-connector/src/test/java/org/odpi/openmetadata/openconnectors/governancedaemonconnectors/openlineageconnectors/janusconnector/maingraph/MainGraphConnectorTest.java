@@ -25,52 +25,52 @@ public class MainGraphConnectorTest {
     private static Graph cyclicGraph;
     private final MainGraphConnector mainGraphConnector = new MainGraphConnector();
 
-    @BeforeClass
-    public static void beforeClass() {
-        cyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = cyclicGraph.traversal();
-
-        Vertex c11 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c11").next();
-        Vertex c12 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c12").next();
-        Vertex c21 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c21").next();
-        Vertex c22 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c22").next();
-        Vertex c31 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c31").next();
-        Vertex c32 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c32").next();
-        Vertex c41 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c41").next();
-        Vertex c42 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c42").next();
-
-        Vertex p1 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p1").next();
-        Vertex p2 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p2").next();
-        Vertex p3 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p3").next();
-        Vertex p4 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p4").next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c11).to(p1).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c12).to(p1).next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p1).to(c21).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p1).to(c21).next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c21).to(p2).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c22).to(p2).next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p2).to(c31).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p2).to(c32).next();
-
-        //p3 branch causes the cycle
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c31).to(p3).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c32).to(p3).next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p3).to(c21).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p3).to(c22).next();
-
-        //p4 branch leads to the destination
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c31).to(p4).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c32).to(p4).next();
-
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p4).to(c41).next();
-        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p4).to(c42).next();
-    }
-
+//    @BeforeClass
+//    public static void beforeClass() {
+//        cyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
+//        GraphTraversalSource g = cyclicGraph.traversal();
+//
+//        Vertex c11 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c11").next();
+//        Vertex c12 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c12").next();
+//        Vertex c21 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c21").next();
+//        Vertex c22 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c22").next();
+//        Vertex c31 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c31").next();
+//        Vertex c32 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c32").next();
+//        Vertex c41 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c41").next();
+//        Vertex c42 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c42").next();
+//
+//        Vertex p1 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p1").next();
+//        Vertex p2 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p2").next();
+//        Vertex p3 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p3").next();
+//        Vertex p4 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_NODE_ID, "p4").next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c11).to(p1).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c12).to(p1).next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p1).to(c21).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p1).to(c21).next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c21).to(p2).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c22).to(p2).next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p2).to(c31).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p2).to(c32).next();
+//
+//        //p3 branch causes the cycle
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c31).to(p3).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c32).to(p3).next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p3).to(c21).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p3).to(c22).next();
+//
+//        //p4 branch leads to the destination
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c31).to(p4).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(c32).to(p4).next();
+//
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p4).to(c41).next();
+//        g.addE(EDGE_LABEL_COLUMN_AND_PROCESS).from(p4).to(c42).next();
+//    }
+//
 
 //    @Test
 //    public void ultimateSource() throws OpenLineageException {
