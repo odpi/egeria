@@ -70,12 +70,12 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     </vaadin-button>
                 </template>
             </vaadin-grid-column>
-            
+               
              <vaadin-grid-column width="6em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="type">Type</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="type.name">Type</vaadin-grid-sorter>
                 </template>
-                <template>[[item.type]]</template>
+                <template>[[item.type.name]]</template>
             </vaadin-grid-column>
             
             <vaadin-grid-column width="15em" resizable>
