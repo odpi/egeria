@@ -5,7 +5,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 
 import java.util.Date;
 
@@ -37,7 +36,7 @@ public class InputValidator {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    UIServerConfig.METADATA_SERVER_URL,
+                    omasServerURL,
                     null
                     );
         }
@@ -67,7 +66,7 @@ public class InputValidator {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    UIServerConfig.METADATA_SERVER_NAME,
+                    omasServerURL,
                     null
             );
         }
