@@ -53,10 +53,6 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-api</artifactId>
-        </dependency>
 
     </dependencies>
 
