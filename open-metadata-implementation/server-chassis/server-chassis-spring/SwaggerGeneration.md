@@ -4,7 +4,7 @@
 # Swagger API Documentation
 
 The [OMAG Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server)
-and the UI Server PLatform supports the Swagger API for all of its REST 
+and the UI Server Platform supports the Swagger API for all of its REST 
 
 ## SpringFox Usage
 

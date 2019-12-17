@@ -24,6 +24,7 @@ import org.odpi.openmetadata.viewservices.assetsearch.admin.serviceinstances.Ass
 import org.odpi.openmetadata.viewservices.assetsearch.services.AssetSearchViewRESTServices;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 

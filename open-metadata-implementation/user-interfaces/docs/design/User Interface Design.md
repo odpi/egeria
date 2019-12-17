@@ -16,20 +16,22 @@ All access to pluggable capabilities is done using the connector framework.
 
 Environment variables can be specified in the application.properties 
 
-The [ui-chassis-spring](../../ui-chassis/ui-chassis-spring) contains the EgeriaUIPLatform which needs to be started in order to use the UI.
+The [ui-chassis-spring](../../ui-chassis/ui-chassis-spring) contains the EgeriaUIPlatform which needs to be started in order to use the UI.
 It also contains all the web resources including javascript.   
   
 
 ## Maven considerations
 The structure of the Maven modules is [UI Maven module](UI-Maven-structure.png).
 
-The spring component scan requires the UI-chassis-spring to depend on all the spirng modules it needs to bring in;
-the dependency checker in the build has been changed to not flag this as an error (normally a dependency not explicity 
+The spring component scan requires the ui-chassis-spring to depend on all the spring modules it needs to bring in;
+the dependency checker in the build has been changed to not flag this as an error (normally a dependency not explicitly 
 used by the code is flagged as an error - as it is redundant). 
- 
 
-  
+## Login considerations
 
+We need the login to occur on a per server view (tenant) basis. So the login screen needs to be associated with a
+tenant, currently this is coded as a query parameter. In the future, the intent is to change the urls to include 
+a tenant segment. 
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

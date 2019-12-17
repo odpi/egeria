@@ -91,21 +91,25 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-search-view-server</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>type-explorer-view-server</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-view-server</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-view-server</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>

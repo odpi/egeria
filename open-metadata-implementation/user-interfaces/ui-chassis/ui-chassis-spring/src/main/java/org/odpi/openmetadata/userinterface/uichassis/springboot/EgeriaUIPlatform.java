@@ -91,10 +91,10 @@ public class EgeriaUIPlatform {
             for (String server : servers) {
                 SuccessMessageResponse response = operationalServices.activateWithStoredConfig(sysUser, server);
                 if (response.getRelatedHTTPCode() == 200) {
-                    startupMessage += "OMAG Server '" + server + "' SUCCESS start , with message: " +
+                    startupMessage += "UI Server '" + server + "' SUCCESS start , with message: " +
                             response.getSuccessMessage() + System.lineSeparator();
                 } else {
-                    startupMessage += "OMAG Server '" + server + "' ERROR while startup, with error message: " +
+                    startupMessage += "UI Server '" + server + "' ERROR while startup, with error message: " +
                             response.getExceptionErrorMessage() + System.lineSeparator();
                     StartupFailEvent customSpringEvent =
                             new StartupFailEvent(this, "server " + server + " startup failed.");
@@ -105,8 +105,8 @@ public class EgeriaUIPlatform {
             }
 
         } else {
-            log.info("No OMAG server in startup configuration");
-            startupMessage = "No OMAG server in startup configuration";
+            log.info("No UI server in startup configuration");
+            startupMessage = "No UI server in startup configuration";
         }
     }
 

@@ -27,10 +27,6 @@
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
         <npm.version>6.4.1</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
-        <frontend.plugin.version>1.6</frontend.plugin.version>
-        <resources.plugin.version>3.1.0</resources.plugin.version>
-        <exec.plugin.version>1.6.0</exec.plugin.version>
-        <jjwt.version>0.6.0</jjwt.version>
     </properties>
 
     <dependencies>
@@ -97,16 +93,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-spi</artifactId>
         </dependency>
@@ -135,6 +121,16 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>platform-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
