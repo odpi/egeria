@@ -175,6 +175,7 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad         place for parameters and results
+     * @param entityDefs      types of entities
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipPropertySearch(RepositoryConformanceWorkPad workPad,

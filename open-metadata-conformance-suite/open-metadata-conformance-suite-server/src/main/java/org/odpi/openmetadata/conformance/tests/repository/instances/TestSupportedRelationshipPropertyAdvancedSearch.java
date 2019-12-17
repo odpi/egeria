@@ -148,7 +148,8 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad         place for parameters and results
-     * @param relationshipDef type of valid relationships
+     * @param entityDefs      types of entities
+     * @param relationshipDef type of relationship
      */
     public TestSupportedRelationshipPropertyAdvancedSearch(RepositoryConformanceWorkPad workPad,
                                                            Map<String, EntityDef>       entityDefs,

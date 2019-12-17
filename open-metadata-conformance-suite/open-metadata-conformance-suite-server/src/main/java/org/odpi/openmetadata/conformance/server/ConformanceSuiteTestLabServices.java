@@ -187,6 +187,7 @@ public class ConformanceSuiteTestLabServices
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
+     * @param workbenchId the id of the workbench.
      * @return WorkbenchStatusResponse or
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.

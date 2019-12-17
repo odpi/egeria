@@ -78,7 +78,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
-     * @param relationshipDef type of valid entities
+     * @param entityDefs      types of valid entities
+     * @param relationshipDef type of relationship
      */
     public TestSupportedRelationshipReidentify(RepositoryConformanceWorkPad workPad,
                                                Map<String, EntityDef>       entityDefs,

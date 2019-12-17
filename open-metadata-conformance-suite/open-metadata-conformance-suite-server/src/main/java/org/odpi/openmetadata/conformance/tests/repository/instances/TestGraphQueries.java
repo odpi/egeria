@@ -120,6 +120,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param relationshipDefs - list of typedefs
+     * @param entityDefs - list of typedefs
      */
     public TestGraphQueries(RepositoryConformanceWorkPad workPad, List<RelationshipDef> relationshipDefs, Map<String,EntityDef> entityDefs)
     {
