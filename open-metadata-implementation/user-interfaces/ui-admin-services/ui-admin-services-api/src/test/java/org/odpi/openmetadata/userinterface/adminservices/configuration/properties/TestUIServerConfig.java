@@ -17,9 +17,9 @@ public class TestUIServerConfig {
     @Test
     void testdeser() throws JsonProcessingException {
         UIServerConfig uiServerConfig = new UIServerConfig();
-        uiServerConfig.setLocalServerName("aaa");
+        uiServerConfig.setLocalServerName("cocoUIS1");
         uiServerConfig.setLocalServerPassword("bbb");
-        uiServerConfig.setMetadataServerName("Server1");
+        uiServerConfig.setMetadataServerName("cocoMDS1");
         uiServerConfig.setMetadataServerURL("http://localhost:8080");
         ObjectMapper objectMapper = new ObjectMapper();
         List<ViewServiceConfig> viewList = new ArrayList<>();
@@ -38,7 +38,7 @@ public class TestUIServerConfig {
         ViewServiceConfig openLineageViewServiceConfig = createViewServiceConfig(ViewServiceDescription.OPEN_LINEAGE);
 
         Map<String, Object> openLineageOptions = new HashMap<>();
-        openLineageOptions.put("openLineageServerName","lin1");
+        openLineageOptions.put("openLineageServerName","cocoLINS1");
         openLineageOptions.put("openLineageServerURL","http://localhost:8081");
 
         openLineageViewServiceConfig.setViewServiceOptions(openLineageOptions);
@@ -47,7 +47,7 @@ public class TestUIServerConfig {
         uiServerConfig.setViewServicesConfig(viewList);
 
         String jsonString = objectMapper.writeValueAsString(uiServerConfig);
-        assertTrue(jsonString.contains("Server1"));
+        assertTrue(jsonString.contains("cocoMDS1"));
         assertTrue(jsonString.contains("8080"));
         assertTrue(jsonString.contains("8081"));
         System.err.println(jsonString);

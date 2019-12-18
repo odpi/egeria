@@ -16,13 +16,13 @@ with body:
 { 
    "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig",
    "localServerId":"90083805-8ecf-45a6-9d7e-e0895592c090",
-   "localServerName":"aaa",
-   "localServerURL":"http://localhost:8443",
+   "localServerName":"cocoUIS1",
+   "localServerURL":"https://localhost:8443",
    "localServerUserId":"UIServer",
    "localServerPassword":"bbb",
    "localServerType":"User Interface for the Open Metadata and Governance Server",
    "maxPageSize":1000,
-   "metadataServerName":"Server1",
+   "metadataServerName":"cocoMDS1",
    "metadataServerURL":"http://localhost:8080",
    "viewServicesConfig":[ 
       { 
@@ -78,8 +78,8 @@ with body:
                "elementOrigin":"CONFIGURATION"
             },
             "guid":"5390bf3e-6b38-4eda-b34a-de55ac4252a7",
-            "qualifiedName":"DefaultAuditLog.Connection.Server1",
-            "displayName":"DefaultAuditLog.Connection.Server1",
+            "qualifiedName":"DefaultAuditLog.Connection.cocoMDS1",
+            "displayName":"DefaultAuditLog.Connection.cocoMDS1",
             "description":"OMRS default audit log connection.",
             "connectorType":{ 
                "class":"ConnectorType",
@@ -108,10 +108,10 @@ with body:
                   "elementOrigin":"CONFIGURATION"
                },
                "guid":"836efeae-ab34-4425-89f0-6adf2faa1f2e",
-               "qualifiedName":"DefaultAuditLog.Endpoint.Server1.auditlog",
-               "displayName":"DefaultAuditLog.Endpoint.Server1.auditlog",
+               "qualifiedName":"DefaultAuditLog.Endpoint.cocoMDS1.auditlog",
+               "displayName":"DefaultAuditLog.Endpoint.cocoMDS1.auditlog",
                "description":"OMRS default audit log endpoint.",
-               "address":"Server1.auditlog"
+               "address":"cocoMDS1.auditlog"
             }
          }
       ]
