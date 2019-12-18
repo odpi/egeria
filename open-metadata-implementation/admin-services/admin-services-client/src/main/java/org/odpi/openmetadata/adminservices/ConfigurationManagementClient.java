@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 
 /**
  * ConfigurationManagementClient is able to issue calls to an OMAG Server PPlatform that manages configuration
@@ -118,52 +117,6 @@ public class ConfigurationManagementClient
                                                                       uiServerConfig,
                                                                       userId,
                                                                       serverName);
-
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-        }
-        catch (InvalidParameterException  error)
-        {
-            throw new OMAGInvalidParameterException(error);
-        }
-        catch (UserNotAuthorizedException  error)
-        {
-            throw new OMAGNotAuthorizedException(error);
-        }
-        catch (PropertyServerException  error)
-        {
-            throw new OMAGConfigurationErrorException(error);
-        }
-    }
-
-    /**
-     * Set up the configuration properties for an OMAG Server in a single command.
-     *
-     * @param userId  user that is issuing the request
-     * @param uiServerConfig  configuration for the server
-     *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * @throws OMAGConfigurationErrorException there is a problem using the supplied configuration or
-     * @throws OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
-     */
-    public void setUIServerConfig(String           userId,
-                                    UIServerConfig uiServerConfig) throws OMAGNotAuthorizedException,
-            OMAGConfigurationErrorException,
-            OMAGInvalidParameterException
-    {
-        final String methodName = "deployUIServerConfig";
-
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/configuration";
-
-
-        try
-        {
-            VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                    serverPlatformRootURL + urlTemplate,
-                    uiServerConfig,
-                    userId,
-                    serverName);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

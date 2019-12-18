@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterfaces.adminservices;
 
-import org.odpi.openmetadata.adminservices.ConfigurationManagementClient;
+import org.odpi.openmetadata.userinterfaces.adminservices.ConfigurationManagementClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
