@@ -4,33 +4,33 @@
 # Activating and deactivating the OMAG server
 
 Once a [configuration document](../concepts/configuration-document.md) has been completed
-for an [OMAG Server](../concepts/ui-server.md), it can be started using the following
+for an [UI Server](../concepts/ui-server.md), it can be started using the following
 REST call:
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/instance
 ```
 
 and stopped, as follows:
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+DELETE http://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/instance
 ```
 
 The configuration document is not changed by these calls.
 It is possible to query the running server's configuration using the following REST API:
 
 ```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance/configuration
+GET https://localhost:8443/open-metadata/admin-services/users/garygeeke/servers/cocoUIS1/instance/configuration
 ```
 
 If you want to delete the server's configuration document then issue:
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
+DELETE https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1
 ```
 
-If the OMAG server is running, this command also unregisters the named server from the cohorts it
+If the UI server is running, this command also unregisters the named server from the cohorts it
 is connected to.
 Only use this command if the server is being permanently removed.
 
