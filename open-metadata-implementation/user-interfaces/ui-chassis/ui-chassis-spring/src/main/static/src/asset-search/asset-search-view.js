@@ -66,7 +66,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>
                     <vaadin-button theme="tertiary" on-tap="_showItemDetails">
-                        [[item.properties.displayName]][[item.properties.name]]
+                        [[item.properties.displayName]]
                     </vaadin-button>
                 </template>
             </vaadin-grid-column>
@@ -147,10 +147,11 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     _showItemDetails(e){
         // alert(e.model.item.properties.name + e.model.item.properties.displayName);
         var  properties = e.model.item.properties;
-        for(var key in properties) {
-            var value = properties[key];
-            console.log(key + ' is ' + value);
+
+        if (properties.displayName == null && properties.name != null) {
+                properties.displayName = properties.name;
         }
+
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
