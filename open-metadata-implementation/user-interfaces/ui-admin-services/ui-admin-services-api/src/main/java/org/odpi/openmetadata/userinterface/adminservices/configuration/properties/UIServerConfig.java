@@ -47,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         localServerURL - network address of the UI server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
  *
- *         The default value is "http://localhost:8443".
+ *         The default value is "https://localhost:8443".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.

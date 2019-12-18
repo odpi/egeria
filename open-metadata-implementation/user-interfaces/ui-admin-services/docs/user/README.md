@@ -62,9 +62,9 @@ in the UI Server.
 
 In the descriptions of the configuration commands the following values are used as examples:
 
-* The UI server platform is running on the localhost, at port 8080 (ie **http://localhost:8080**).
+* The UI server platform is running on the localhost, at port 8443 (ie **https://localhost:8443**).
 * The user id of the administrator is **garygeeke**.
-* The name of the logical UI server (serverName) is **cocoMDS1**.
+* The name of the logical UI server (serverName) is **cocoUIS1**.
 
 ### Common Configuration Tasks
 
@@ -87,14 +87,14 @@ In the descriptions of the configuration commands the following values are used 
 It is possible to query the configuration document for a specific UI server using the following command.
 
 ```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
+GET https://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
 For the Egeria UI Server Platform, the response is "ODPI Egeria UI Server Platform (version 1.3-SNAPSHOT)".
 
 ```
-GET http://localhost:8443/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
+GET https://localhost:8443/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
 ```
 
 ## Examples of configuration calls

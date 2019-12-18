@@ -14,7 +14,7 @@ POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/serv
 and stopped, as follows:
 
 ```
-DELETE http://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/instance
+DELETE https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/instance
 ```
 
 The configuration document is not changed by these calls.

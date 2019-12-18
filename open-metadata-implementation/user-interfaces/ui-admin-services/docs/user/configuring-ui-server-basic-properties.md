@@ -18,7 +18,7 @@ The basic properties are:
   This value is set to the server name assigned when the configuration is created.
 
 * **localServerType** - descriptive type name for the server.  Again this is useful information for the
-  administrator to understand the role of the server. The default value is "Open Metadata and Governance Server".
+  administrator to understand the role of the server. The default value is "User Interface for the Open Metadata and Governance Server".
  
 * **organizationName** - descriptive name for the organization that owns the local server/repository.
   This is useful when the open metadata repository cluster consists of metadata servers from different

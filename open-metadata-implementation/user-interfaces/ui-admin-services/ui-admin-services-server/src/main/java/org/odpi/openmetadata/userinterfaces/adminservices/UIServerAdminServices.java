@@ -344,7 +344,7 @@ public class UIServerAdminServices
 //     * this server's REST interfaces that is used by other members of the cohorts that this server
 //     * connects to.
 //     *
-//     * The default value is "localhost:8080".
+//     * The default value is "localhost:8443".
 //     *
 //     * ServerURLRoot is used during the configuration of the local repository.  If called
 //     * after the local repository is configured, it has no effect.
