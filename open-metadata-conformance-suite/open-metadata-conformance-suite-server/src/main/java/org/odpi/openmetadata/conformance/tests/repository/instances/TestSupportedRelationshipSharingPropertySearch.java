@@ -128,6 +128,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
     private RepositoryConformanceWorkPad  workPad;
     private String                        metadataCollectionId;
     private RelationshipDef               relationshipDef;
+    private Map<String, EntityDef>        entityDefs;
     private List<TypeDefAttribute>        attrList;
     private String                        testTypeName;
 
@@ -143,7 +144,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipSharingPropertySearch(RepositoryConformanceWorkPad workPad,
-                                                          RelationshipDef                    relationshipDef)
+                                                          Map<String, EntityDef>       entityDefs,
+                                                          RelationshipDef              relationshipDef)
     {
         super(workPad,
               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
@@ -152,6 +154,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
         this.workPad               = workPad;
         this.metadataCollectionId  = workPad.getTutMetadataCollectionId();
         this.relationshipDef       = relationshipDef;
+        this.entityDefs            = entityDefs;
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(), testCaseId, testCaseName);
 
     }
@@ -178,7 +181,9 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type matches the known type from the repository helper.
+         *
+         * The entity types used by the ends are not verified on this test - they are verified in the supported entity tests
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -189,27 +194,6 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
 
         RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
         verifyCondition((relationshipDef.equals(knownRelationshipDef)),
-                assertion0,
-                testTypeName + assertionMsg0,
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-        String endOneEntityDefGUID = relationshipDef.getEndDef1().getEntityType().getGUID();
-        String endTwoEntityDefGUID = relationshipDef.getEndDef2().getEntityType().getGUID();
-        EntityDef endOneEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endOneEntityDefGUID);
-        EntityDef endTwoEntityDef = (EntityDef) metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), endTwoEntityDefGUID);
-
-
-        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endOneEntityDef.getName());
-        verifyCondition((endOneEntityDef.equals(knownEnd1EntityDef)),
-                assertion0,
-                testTypeName + assertionMsg0,
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-
-        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), endTwoEntityDef.getName());
-        verifyCondition((endTwoEntityDef.equals(knownEnd2EntityDef)),
                 assertion0,
                 testTypeName + assertionMsg0,
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
