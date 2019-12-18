@@ -22,11 +22,6 @@ public class LineageMapping implements Serializable {
     public LineageMapping() {
     }
 
-    public LineageMapping(String sourceAttribute, String targetAttribute) {
-        this.sourceAttribute = sourceAttribute;
-        this.targetAttribute = targetAttribute;
-    }
-
     public String getSourceAttribute() {
         return sourceAttribute;
     }

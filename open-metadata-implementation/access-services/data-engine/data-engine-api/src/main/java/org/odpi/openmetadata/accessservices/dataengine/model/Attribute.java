@@ -31,21 +31,6 @@ public class Attribute implements Serializable {
     public Attribute() {
     }
 
-    public Attribute(String qualifiedName, String displayName, String minCardinality, String maxCardinality,
-                     String allowsDuplicateValues, String orderedValues, int position, String defaultValueOverride,
-                     String dataType, String defaultValue) {
-        this.qualifiedName = qualifiedName;
-        this.displayName = displayName;
-        this.minCardinality = minCardinality;
-        this.maxCardinality = maxCardinality;
-        this.allowsDuplicateValues = allowsDuplicateValues;
-        this.orderedValues = orderedValues;
-        this.position = position;
-        this.defaultValueOverride = defaultValueOverride;
-        this.dataType = dataType;
-        this.defaultValue = defaultValue;
-    }
-
     public String getQualifiedName() {
         return qualifiedName;
     }

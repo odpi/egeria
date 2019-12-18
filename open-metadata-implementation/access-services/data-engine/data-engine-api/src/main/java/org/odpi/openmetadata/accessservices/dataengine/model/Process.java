@@ -32,34 +32,6 @@ public class Process extends Asset {
     public Process() {
     }
 
-    public Process(String qualifiedName, String name, String description, String latestChange,
-                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
-                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
-                   List<LineageMapping> lineageMappings) {
-        this.qualifiedName = qualifiedName;
-        this.name = name;
-        this.description = description;
-        this.latestChange = latestChange;
-        this.zoneMembership = zoneMembership;
-        this.displayName = displayName;
-        this.formula = formula;
-        this.owner = owner;
-        this.ownerType = ownerType;
-        this.portImplementations = portImplementations;
-        this.portAliases = portAliases;
-        this.lineageMappings = lineageMappings;
-        this.updateSemantic = UpdateSemantic.REPLACE;
-    }
-
-    public Process(String qualifiedName, String name, String description, String latestChange,
-                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
-                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
-                   List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) {
-        this(qualifiedName, name, description, latestChange, zoneMembership, displayName, formula, owner, ownerType,
-                portImplementations, portAliases, lineageMappings);
-        this.updateSemantic = updateSemantic;
-    }
-
     public Process(Asset asset) {
         super(asset);
     }
