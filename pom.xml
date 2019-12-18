@@ -148,7 +148,7 @@
         <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <bytebuddy.version>1.10.5</bytebuddy.version>
-        <h2-database.version>1.4.196</h2-database.version>
+        <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
