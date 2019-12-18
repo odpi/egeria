@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Configuring the basic properties of an OMAG server
+# Configuring the basic properties of an UI server
 
-The basic properties of the logical OMAG server are used in logging and events originating
+The basic properties of the logical UI server are used in logging and events originating
 from the server. They help to document the purpose of the server (which helps with problem determination)
 and enable performance improvements by allowing the server to ignore activity or
 metadata that is not relevant to its operation.
@@ -28,7 +28,7 @@ The basic properties are:
   (typically host and port number but must also include the initial part of the URL before "open-metadata" if defined).
   The default value is "https://localhost:8443".
  
-* **localServerUserId** - UserId to use for server initiated REST calls. The default is "OMAGServer".
+* **localServerUserId** - UserId to use for server initiated REST calls. The default is "UIServer".
 
 * **maxPageSize** - the maximum page size that can be set on requests to the server. The default value is 1000.
 
@@ -41,7 +41,7 @@ Server's role.
 It may be a department name, when serving UIs for a particular department. 
 
 ```
-POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="CDO Office Metadata Repository"
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/server-type?typeName="CDO Office UI"
 ```
 
 ## Set organization name
@@ -51,7 +51,7 @@ team supported by the server.
 Here the organization name is set to "Clinical Trials".
 
 ```
-POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/organization-name?name="Clinical Trials UI"
 ```
 
 
