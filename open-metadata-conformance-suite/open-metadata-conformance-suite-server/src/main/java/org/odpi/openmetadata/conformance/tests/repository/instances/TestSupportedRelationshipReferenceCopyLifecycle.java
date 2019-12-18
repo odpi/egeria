@@ -81,10 +81,11 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
     private static final String assertion19    = testCaseId + "-19";
     private static final String assertionMsg19 = " rehomed master entity has correct home metadataCollectionId.";
 
-
+    private static final String assertion100     = testCaseId + "-100";
+    private static final String assertionMsg100  = " reference relationship re-homed.";
 
     private static final String assertion101     = testCaseId + "-101";
-    private static final String assertionMsg101  = " reference relationship re-homed.";
+    private static final String assertionMsg101  = " repository supports a viable entity type for each end of relationship.";
 
 
     private RepositoryConformanceWorkPad  workPad;
@@ -149,7 +150,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type matches the known type from the repository helper.
+         *
+         * The entity types used by the ends are not verified on this test - they are verified in the supported entity tests
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -165,23 +168,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
-        String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
-        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end1TypeDefName);
-        EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
-        verifyCondition( (end1EntityDef != null) && end1EntityDef.equals(knownEnd1EntityDef),
-                         assertion0,
-                         testTypeName + assertionMsg0,
-                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
-        String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
-        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end2TypeDefName);
-        EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
-        verifyCondition((end2EntityDef != null) && end2EntityDef.equals(knownEnd2EntityDef),
-                        assertion0,
-                        testTypeName + assertionMsg0,
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
 
@@ -232,6 +219,89 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * This test needs a connector to the local repository - i.e. the in-memory repository running locally to the CTS server.
          */
         OMRSMetadataCollection ctsMetadataCollection = repositoryConformanceWorkPad.getLocalRepositoryConnector().getMetadataCollection();
+
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                            assertion100,
+                            testTypeName + assertionMsg100,
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+        }
+
+        /*
+         * It is not practical to iterate over all combinations of feasible (supported) end types as it takes too long to run.
+         * For now, this test verifies relationship operation over a limited set of end types. The limitation is extreme in
+         * that it ONLY takes the first available type for each end. This is undesirable for two reasons - one is that it
+         * provides less test coverage; the other is that the types chosen depend on the order in the lists and this could
+         * vary, making results non-repeatable. For now though, it seems these limitations are necessary.
+         *
+         * A full permutation across end types would use the following nested loops...
+         *  for (String end1TypeName : end1SupportedTypeNames) {
+         *     for (String end2TypeName : end2SupportedTypeNames) {
+         *          test logic as below...
+         *      }
+         *  }
+         */
+
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+
+
+        EntityDef end1EntityDef = entityDefs.get(end1TypeName);
+        EntityDef end2EntityDef = entityDefs.get(end2TypeName);
 
 
         EntityDetail entityOne;
@@ -753,86 +823,10 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         /*
          * For the next test, the local save approach is used because the test code needs access to mappingProperties.
+         * The end types used are as selected in the first part of the testcase (above), i.e. end1Type and end2Type.
          */
 
 
-        /*
-         * In this testcase the repository is believed to support the relationship type defined by
-         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
-         * support a subset of entity types. So although the relationship type may have end definitions
-         * each specifying a given entity type - the repository may only support certain sub-types of the
-         * specified type. This is OK, and the testcase needs to only try to use entity types that are
-         * supported by the repository being tested. To do this it needs to start with the specified
-         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
-         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
-         * each combination of end1Type and end2Type - but only for types that are within the
-         * active set for this repository.
-         */
-
-        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
-        List<String> end1DefTypeNames = new ArrayList<>();
-        end1DefTypeNames.add(end1DefName);
-        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
-            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
-        }
-
-
-        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
-        List<String> end2DefTypeNames = new ArrayList<>();
-        end2DefTypeNames.add(end2DefName);
-        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
-            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
-        }
-
-        /*
-         * Filter the possible types to only include types that are supported by the repository
-         */
-
-        List<String> end1SupportedTypeNames = new ArrayList<>();
-        for (String end1TypeName : end1DefTypeNames) {
-            if (entityDefs.get(end1TypeName) != null)
-                end1SupportedTypeNames.add(end1TypeName);
-        }
-
-        List<String> end2SupportedTypeNames = new ArrayList<>();
-        for (String end2TypeName : end2DefTypeNames) {
-            if (entityDefs.get(end2TypeName) != null)
-                end2SupportedTypeNames.add(end2TypeName);
-        }
-
-        /*
-         * Check that neither list is empty
-         */
-        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
-
-            /*
-             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
-             */
-            assertCondition((false),
-                    assertion13,
-                    testTypeName + assertionMsg13,
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
-        }
-
-        /*
-         * It is not practical to iterate over all combinations of feasible (supported) end types as it takes too long to run.
-         * For now, this test verifies relationship operation over a limited set of end types. The limitation is extreme in
-         * that it ONLY takes the first available type for each end. This is undesirable for two reasons - one is that it
-         * provides less test coverage; the other is that the types chosen depend on the order in the lists and this could
-         * vary, making results non-repeatable. For now though, it seems these limitations are necessary.
-         *
-         * A full permutation across end types would use the following nested loops...
-         *  for (String end1TypeName : end1SupportedTypeNames) {
-         *     for (String end2TypeName : end2SupportedTypeNames) {
-         *          test logic as below...
-         *      }
-         *  }
-         */
-
-
-        String end1TypeName = end1SupportedTypeNames.get(0);
-        String end2TypeName = end2SupportedTypeNames.get(0);
 
         /*
          * To accommodate repositories that do not support the creation of instances, wrap the creation of the relationship

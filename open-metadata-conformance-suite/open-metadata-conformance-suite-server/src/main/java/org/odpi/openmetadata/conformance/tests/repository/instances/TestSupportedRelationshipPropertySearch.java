@@ -247,7 +247,9 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type matches the known type from the repository helper.
+         *
+         * The entity types used by the ends are not verified on this test - they are verified in the supported entity tests
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -262,25 +264,6 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
                 testTypeName + assertionMsg0,
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-        String end1TypeDefName = relationshipDef.getEndDef1().getEntityType().getName();
-        EntityDef knownEnd1EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end1TypeDefName);
-        EntityDef end1EntityDef = entityDefs.get(end1TypeDefName);
-        verifyCondition( (end1EntityDef != null) && end1EntityDef.equals(knownEnd1EntityDef),
-                         assertion0,
-                         testTypeName + assertionMsg0,
-                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-        String end2TypeDefName = relationshipDef.getEndDef2().getEntityType().getName();
-        EntityDef knownEnd2EntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), end2TypeDefName);
-        EntityDef end2EntityDef = entityDefs.get(end2TypeDefName);
-        verifyCondition((end2EntityDef != null) && end2EntityDef.equals(knownEnd2EntityDef),
-                        assertion0,
-                        testTypeName + assertionMsg0,
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
 
 
 
