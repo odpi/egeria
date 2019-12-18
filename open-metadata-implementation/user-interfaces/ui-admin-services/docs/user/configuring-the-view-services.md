@@ -17,7 +17,7 @@ The view service configuration depends on the definitions of the [local server's
 To enable all of the view services with default configuration values use the following command.
 
 ```
-POST http://localhost:8080/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/view-services
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/view-services
 ```
 
 ## Disable the view services
@@ -28,7 +28,7 @@ This also disables the enterprise repository services since they
 are not being used.
 
 ```
-DELETE http://localhost:8080/open-metadata/ui-admin-services/users/garygeeke/servers/cocoMDS1/view-services
+DELETE https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/servers/cocoUIS1/view-services
 ```
 
 

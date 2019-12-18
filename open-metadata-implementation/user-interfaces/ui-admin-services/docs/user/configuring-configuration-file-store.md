@@ -4,14 +4,14 @@
 # Overriding the location for storing configuration documents
 
 By default, [configuration documents](../concepts/configuration-document.md) are stored as a
-file in the OMAG server platform's home directory.
+file in the UI server platform's home directory.
 The file name is 
 
 ```
 omag.server.{serverName}.config
 ```
 
-where serverName is the name of the logical OMAG server (cocoMDS1 for example).
+where serverName is the name of the logical UI server (cocoUIS1 for example).
 
 The management of the configuration documents on the disk is implemented by a connector.
 To change the connector used for the configuration
@@ -19,7 +19,7 @@ To change the connector used for the configuration
 with the connection object of the new connector as the request body.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection
+POST https://localhost:8443/open-metadata/ui-admin-services/users/garygeeke/stores/connection
 ```
 
 The JSON below is an example of a [Connection](../../../frameworks/open-connector-framework/docs/concepts/connection.md) object.
