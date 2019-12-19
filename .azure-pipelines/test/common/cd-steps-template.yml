@@ -2,30 +2,30 @@
 # Copyright Contributors to the ODPi Egeria project.
 ---
 steps:
-- checkout: none
-- task: HelmInstaller@1
-  displayName: 'install helm'
-  inputs:
-    helmVersionToInstall: $(helmVersion)
-- download: ci-pipeline
-  artifact: build-artifact
-- bash: |
-   az login \
+  - checkout: none
+  - task: HelmInstaller@1
+    displayName: 'install helm'
+    inputs:
+      helmVersionToInstall: $(helmVersion)
+  - download: ci-pipeline
+    artifact: build-artifact
+  - bash: |
+     az login \
         --service-principal \
         -u $(aksSpId) \
         -p $(aksSpSecret) \
         --tenant $(aksSpTenantId)
-    az aks get-credentials \
+      az aks get-credentials \
         -n $(aks) \
         -g $(aks)
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm repo add \
+      helm repo add bitnami https://charts.bitnami.com/bitnami
+      helm repo add \
         $(registryName) \
         https://$(registryServerName)/helm/v1/repo \
         --username $(registryLogin) \
         --password $(registryPassword)
-    helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/ci-pipeline/build-artifact/variables.json -r)
-    helm upgrade \
+      helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/ci-pipeline/build-artifact/variables.json -r)
+      helm upgrade \
         --namespace $(k8sNamespace) \
         --install \
         --wait \
@@ -34,5 +34,5 @@ steps:
         --set ingress.enabled=false \
         $(helmChartName) \
         $(registryName)/$(projectName)
-  failOnStderr: true
-  displayName: 'deploy helm chart'
+    failOnStderr: true
+    displayName: 'deploy helm chart'
