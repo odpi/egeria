@@ -30,6 +30,7 @@ import './my-icons.js';
 import './token-ajax';
 import './toast-feedback';
 import './login-view.js';
+import './server-input.js';
 import './user-options-menu';
 import './shared-styles';
 import './common/breadcrumb.js';
@@ -136,7 +137,13 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
        <toast-feedback duration="0"></toast-feedback> 
        
         <template is="dom-if" if="[[!token]]"  restamp="true">
-            <login-view id="loginView" token="{{token}}"></login-view>
+              <template is="dom-if" if="[[tenanted]]"  restamp="true">
+                  <login-view id="loginView" token="{{token}}"></login-view>
+              </template>
+              <template is="dom-if" if="[[!tenanted]]"  restamp="true">
+                  <server-input id="serverInput" token="{{token}}"></server-input>
+              </template>
+
         </template>
       
         <template is="dom-if" if="[[token]]"  restamp="true">
@@ -145,7 +152,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
-                        class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
+                        class="drawer-list" selectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]/[[subrouteData2.guid]]">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
@@ -206,10 +213,17 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 type: String,
                 reflectToAttribute: true
             },
+
+            // authentication token.
             token: {
                 type: Object,
                 notify: true,
                 observer: '_tokenChanged'
+            },
+            tenanted: {
+                type: Boolean,
+                computed: '_computeTenanted()',
+                notify: true
             },
             routeData: Object,
             subview: {
@@ -261,6 +275,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
         this.addEventListener('set-title', this._onSetTitle);
+    }
+
+    _computeTenanted() {
+        var servername = sessionStorage.getItem('egeria-ui-servername');
+        if (servername) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     _getDrawer(){
@@ -323,6 +346,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     _onPageChanged(event) {
         this.page = event.detail.page;
+    }
+    _tenantChanged(event) {
+        console.log('tenant changed');
+    }
+    _serverNameChanged(event) {
+        console.log('server name changed');
     }
 
     _onLogout(event) {

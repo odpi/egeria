@@ -4,7 +4,7 @@
 # Swagger API Documentation
 
 The [OMAG Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server)
-supports the Swagger API for all of its REST 
+and the UI Server Platform supports the Swagger API for all of its REST 
 
 ## SpringFox Usage
 
@@ -66,7 +66,7 @@ You can customize the endpoints/paths that are to be described by following the
 
 ## Endpoints produced
 
-The following endpoints are produced in the server chassis. 
+The following endpoints are produced in the ui and server chassis. 
 
 | Endpoint                                  | Module Dependency    | Description                                                                |
 |-------------------------------------------|----------------------|----------------------------------------------------------------------------|

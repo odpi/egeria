@@ -28,7 +28,6 @@ public class SubjectAreaImpl implements SubjectArea {
     public final String serverName;
     public final String omasServerUrl;
 
-
     /**
      * Default Constructor used once a connector is created.
      *
@@ -38,7 +37,8 @@ public class SubjectAreaImpl implements SubjectArea {
      */
     public SubjectAreaImpl(String serverName, String omasServerURL) throws InvalidParameterException {
         String methodName = "SubjectAreaImpl";
-        InputValidator.validateOMASServerURLNotNull(className, methodName, omasServerURL);
+        InputValidator.validateMetadataServerURLNotNull(className, methodName, serverName);
+        InputValidator.validateMetadataServerURLNotNull(className, methodName, omasServerURL);
         this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
         this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
         this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
