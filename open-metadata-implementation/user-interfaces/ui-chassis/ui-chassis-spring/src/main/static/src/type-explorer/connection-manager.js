@@ -16,9 +16,8 @@ import '../token-ajax.js';
 *
 * ConnectionManager implements a web component for specification of server details
 *
-* It should present to the user 5 controls for:
+* It should present to the user 4 controls for:
 *   * server name        - a string
-*   * server URL Root    - a string
 *   * enterprise scope   - a boolean
 *   * a Load! button     - a button to initiate a connection using the displayed settings
 *   * status             - a string - displays if a load failure occurs
@@ -27,7 +26,6 @@ import '../token-ajax.js';
 * This will initiate a connection attempt by the TypeManager - which will either succeed (causing the
 * typesLoaded event to be sent), or fail (e.g. because the server is unavailable or the details are
 * incorrect).
-*
 *
 */
 
@@ -45,23 +43,17 @@ class ConnectionManager extends PolymerElement {
 
             <div id='connectionParameters' >
                 Load types from:
-                <paper-input
-                    no-label-float
-                    class="inline-element"
-                    style="width:150px; height:0px; padding-left:20px; padding-right:20px; "
-                    id = 'serverNameInput'
-                    label = "Server Name"
-                    value={{serverName}}
-                    on-change="serverNameChanged">
-                </paper-input>
-                <paper-input
-                    no-label-float
-                    class="inline-element"
-                    style="width:200px; height:0px; padding-right:20px;"
-                    label = "Server URL Root"
-                    value={{serverURLRoot}}
-                    on-change="serverURLRootChanged">
-                </paper-input>
+                 <paper-dropdown-menu label="Metadata server name"
+                                            id="servernameselector"
+                                            selected="[[selectedServerName]]"
+                                            attr-for-selected="value"
+                                            on-iron-select="_itemSelected">
+                                            <paper-listbox slot="dropdown-content" id="serverdropdown">
+                                               <template is="dom-repeat" id="serverNamesDomRepeat" items="[[serverNames]]">
+                                                 <paper-item>[[item]]</paper-item>
+                                               </template>
+                                            </paper-listbox>
+                       </paper-dropdown-menu>
                 <paper-checkbox disabled
                     class="inline-element"
                     style="padding-right:20px; "
@@ -75,7 +67,7 @@ class ConnectionManager extends PolymerElement {
                     style="padding-left:10px; padding-right:10px; "
                     id = "loadButton"
                     raised
-                    on-click="doLoad" >
+                    on-click="doLoadTypes" >
                     Load!
                 </paper-button>
                 <div class="inline-element" id='statusMsg'></div>
@@ -83,24 +75,19 @@ class ConnectionManager extends PolymerElement {
 
         `; }
 
-
     static get properties() {
         return {
 
             //  user-specified serverName - using bi-directional databind
             serverName: {
                 type               : String,
-                value              : "",
-                notify             : true,
-                reflectToAttribute : true
+                notify: true
             },
 
-            //  user-specified serverURLRoot
-            serverURLRoot: {
-                type               : String,
-                value              : "",
-                notify             : true,
-                reflectToAttribute : true
+            serverNames: {
+                type: Object,
+                notify: true,
+                observer: "_serverNamesChanged"
             },
 
             //  user-specified enterprise scope option (true | false)
@@ -116,13 +103,19 @@ class ConnectionManager extends PolymerElement {
             // once we are all initialised. This avoids any direct dependency from ConnectionManager
             // on TypeManager.
 
-            typeManager: Object
+            typeManager: {
+                type               :Object,
+                observer: '_onTypeManagerChanged'
+            }
 
         };
     }
-
-
-
+    // wait until the type manager exists befor trying to load the servers using it
+    _onTypeManagerChanged(newValue,oldValue) {
+         if (newValue) {
+             this.doLoadServers();
+         }
+    }
 
     /*
      * Element is ready
@@ -143,35 +136,68 @@ class ConnectionManager extends PolymerElement {
     }
 
     /*
-     *  Inbound event: types-loaded
+     *  Inbound event: types-not-loaded
      */
     inEvtTypesNotLoaded() {
         this.displayStaleConnectionWarning();
     }
 
+    /*
+     *  Inbound event: server-names-loaded
+     */
+    inEvtServerNamesLoaded(serverNamesFromEvent) {
+        this.clearStaleConnectionWarning();
+        this.serverNames = serverNamesFromEvent;
 
+    }
+
+    /*
+     *  Inbound event: server-names-not-loaded
+     */
+    inEvtServerNamesNotLoaded() {
+        this.displayUnableToGetServersWarning();
+    }
+
+    /**
+     * driven when an item is selected. Issue a custom event to pass up the selected item.
+     */
+    _itemSelected(e) {
+        var selectedItem = e.target.selectedItem;
+        if (selectedItem) {
+           console.log("selected: " + selectedItem.innerText);
+           this.serverName = selectedItem.innerText;
+        }
+    }
+
+    _serverNamesChanged(newValue, oldValue) {
+      console.log("_serverNamesChanged" + newValue);
+    }
 
     serverNameChanged() {
         // No action
     }
 
-    serverURLRootChanged() {
-        // No action
-    }
 
     enterpriseScopeChanged() {
         // No action
     }
 
-    doLoad() {
-        var typeManager = this.typeManager;
-        typeManager.loadTypes(this.serverName, this.serverURLRoot, this.enterpriseScope);
+    doLoadTypes() {
+        this.typeManager.loadTypes(this.serverName, this.enterpriseScope);
     }
 
+    doLoadServers() {
+        this.typeManager.loadServers();
+    }
 
     displayStaleConnectionWarning() {
       var statusMsg = this.$.statusMsg;
       statusMsg.innerHTML = "Warning: types did not load; switching to offline mode; previously loaded type information may be stale";
+    }
+
+    displayUnableToGetServersWarning() {
+      var statusMsg = this.$.statusMsg;
+      statusMsg.innerHTML = "Warning: servers did not load from the UI Server. This is an unexpected error; check the UI Server is configured correctly and started.";
     }
 
     clearStaleConnectionWarning() {

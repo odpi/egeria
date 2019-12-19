@@ -126,7 +126,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
-        this.$.tokenAjaxTypes.url = '/api/types';
+        this.$.tokenAjaxTypes.url = '/servers/<<servername>>/open-metadata/view-services/asset-search/types';
         this.$.tokenAjaxTypes._go();
 
     }
@@ -140,7 +140,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             types.push( item.name);
         });
 
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
+        this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/asset-search/search?q='+this.q + '&types=' + types;
         this.$.tokenAjax._go();
     }
 
@@ -155,9 +155,11 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
-            detail: {page: "asset-lineage",
-                     subview: "ultimateSource"
-            }}));
+            detail: {
+                 page: "asset-lineage",
+                 subview: "ultimateSource"
+            }
+        }));
     }
 
     attached() {

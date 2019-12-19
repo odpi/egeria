@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
@@ -16,7 +17,6 @@ import java.util.List;
 {
     /**
      * Create a Term
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param suppliedTerm Term to create
      * @return the created term.
@@ -32,7 +32,7 @@ import java.util.List;
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-     Term createTerm(String serverName, String userId, Term suppliedTerm) throws
+     Term createTerm(String userId, Term suppliedTerm) throws
                                                                                 MetadataServerUncontactableException,
                                                                                 InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -41,7 +41,6 @@ import java.util.List;
                                                                                 UnexpectedResponseException ;
     /**
      * Get a term by guid.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the term to get
      * @return the requested term.
@@ -56,7 +55,7 @@ import java.util.List;
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      Term getTermByGuid(String serverName, String userId, String guid) throws
+      Term getTermByGuid(String userId, String guid) throws
                                                                               MetadataServerUncontactableException,
                                                                               UserNotAuthorizedException,
                                                                               InvalidParameterException,
@@ -65,9 +64,7 @@ import java.util.List;
     /**
      * Get Term relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
      * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
@@ -87,12 +84,13 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getTermRelationships(String serverName, String userId, String guid,
-                                           Date asOfTime,
-                                           int offset,
-                                           int pageSize,
-                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                           String sequencingProperty) throws
+     List<Line> getTermRelationships(String userId,
+                                     String guid,
+                                     Date asOfTime,
+                                     int offset,
+                                     int pageSize,
+                                     SequencingOrder sequencingOrder,
+                                     String sequencingProperty) throws
              MetadataServerUncontactableException,
              UserNotAuthorizedException,
              InvalidParameterException,
@@ -104,7 +102,6 @@ import java.util.List;
      * Status is not updated using this call.
      * The GovernanceAction content if specified replaces what is on the server.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
@@ -118,7 +115,7 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Term replaceTerm(String serverName, String userId, String guid, Term suppliedTerm) throws
+     Term replaceTerm(String userId, String guid, Term suppliedTerm) throws
                                                                                               UnexpectedResponseException,
                                                                                               UserNotAuthorizedException,
                                                                                               FunctionNotSupportedException,
@@ -134,7 +131,6 @@ import java.util.List;
      * Status is not updated using this call.
      * The GovernanceAction content if specified replaces what is on the server.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
@@ -148,7 +144,7 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Term updateTerm(String serverName, String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
+     Term updateTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     FunctionNotSupportedException,
                                                                                                     InvalidParameterException,
@@ -159,7 +155,6 @@ import java.util.List;
      * A delete (also known as a soft delete) means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the term to be deleted.
      * @return the deleted term
@@ -175,7 +170,7 @@ import java.util.List;
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-     Term deleteTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+     Term deleteTerm(String userId, String guid) throws InvalidParameterException,
                                                                                 MetadataServerUncontactableException,
                                                                                 UserNotAuthorizedException,
                                                                                 FunctionNotSupportedException,
@@ -187,7 +182,6 @@ import java.util.List;
      *
      * A purge means that the term will not exist after the operation.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the term to be deleted.
      *
@@ -200,7 +194,7 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-      void purgeTerm(String serverName, String userId, String guid) throws InvalidParameterException,
+      void purgeTerm(String userId, String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
                                                                                 GUIDNotPurgedException,
@@ -211,7 +205,6 @@ import java.util.List;
      * Restore a Term
      *
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the term to restore
      * @return the restored term
@@ -223,7 +216,7 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-      Term restoreTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+      Term restoreTerm(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
@@ -232,7 +225,6 @@ import java.util.List;
     /**
      * Find Term
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content).
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
@@ -253,13 +245,13 @@ import java.util.List;
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Term> findTerm(String serverName, String userId,
-                               String searchCriteria,
-                               Date asOfTime,
-                               int offset,
-                               int pageSize,
-                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                               String sequencingProperty) throws
+     List<Term> findTerm(String userId,
+                         String searchCriteria,
+                         Date asOfTime,
+                         int offset,
+                         int pageSize,
+                         SequencingOrder sequencingOrder,
+                         String sequencingProperty) throws
              MetadataServerUncontactableException,
              UserNotAuthorizedException,
              InvalidParameterException,

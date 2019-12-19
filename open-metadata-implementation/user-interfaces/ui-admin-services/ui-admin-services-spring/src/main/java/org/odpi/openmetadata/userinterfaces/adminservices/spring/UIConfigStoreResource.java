@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterfaces.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.userinterfaces.adminservices.UIServerAdminStoreServices;

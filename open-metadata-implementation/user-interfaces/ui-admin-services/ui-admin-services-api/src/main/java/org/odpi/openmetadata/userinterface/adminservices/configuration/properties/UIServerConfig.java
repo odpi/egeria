@@ -47,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         localServerURL - network address of the UI server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
  *
- *         The default value is "http://localhost:8443".
+ *         The default value is "https://localhost:8443".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
@@ -75,6 +75,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class UIServerConfig extends UIAdminServicesConfigHeader
 {
     public static final String         VERSION_ONE = "V1.0";
+    public static final String         METADATA_SERVER_NAME = "metadataServerName";
+    public static final String         METADATA_SERVER_URL = "metadataServerURL";
 
     /*
      * Configuration document version number - if not in document then assume V1.0.
@@ -108,7 +110,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
     private List<Connection>          auditLogConnections            = new ArrayList<>();
 
     // views
-    private List<ViewServiceConfig>   viewServiceConfigs = null;
+    private List<ViewServiceConfig> viewServicesConfig = null;
 
     // audit
     private List<String>              auditTrail                = null;
@@ -149,7 +151,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
             metadataServerName = template.getMetadataServerName();
             metadataServerURL = template.getMetadataServerURL();
             // View services
-            viewServiceConfigs = template.getViewServiceConfigs();
+            viewServicesConfig = template.getViewServicesConfig();
             // audit
             auditLogConnections = template.getAuditLogConnections();
         }
@@ -507,20 +509,20 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
      *
      * @return array of configuration properties one for each view service.
      */
-    public List<ViewServiceConfig> getViewServiceConfigs()
+    public List<ViewServiceConfig> getViewServicesConfig()
     {
-        return viewServiceConfigs;
+        return viewServicesConfig;
     }
 
 
     /**
      * Set up the configuration for the registered view services.
      *
-     * @param viewServiceConfigs array of configuration properties one for each view service
+     * @param viewServicesConfig array of configuration properties one for each view service
      */
-    public void setViewServiceConfigs(List<ViewServiceConfig> viewServiceConfigs)
+    public void setViewServicesConfig(List<ViewServiceConfig> viewServicesConfig)
     {
-        this.viewServiceConfigs = viewServiceConfigs;
+        this.viewServicesConfig = viewServicesConfig;
     }
     
 
@@ -570,7 +572,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
                 ", description=" + description +
                 ", auditTrail=" + auditTrail +
                 ", auditLogConnections=" + auditLogConnections +
-                ", viewServiceConfigs" + viewServiceConfigs + '\'' +
+                ", viewServicesConfig" + viewServicesConfig + '\'' +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -601,7 +603,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
                 Objects.equals(getDescription(),this.getDescription()) &&
                 Objects.equals(getAuditLogConnections(), that.getAuditLogConnections()) &&
                 Objects.equals(getVersionId(), that.getVersionId()) &&
-                Objects.equals(getViewServiceConfigs(), that.getViewServiceConfigs());
+                Objects.equals(getViewServicesConfig(), that.getViewServicesConfig());
     }
     /**
      * Return a hash code based on the values of this object.
@@ -615,7 +617,7 @@ public class UIServerConfig extends UIAdminServicesConfigHeader
                         getLocalServerPassword(), getLocalServerType(), getLocalServerURL(), getMaxPageSize(),
                         getOrganizationName(), getServerSecurityConnection(), getMetadataServerName(),
                         getMetadataServerURL(), getAuthenticationSource(), getAuditLogConnections(), getDescription(),
-                        getViewServiceConfigs(), getAuditTrail()));
+                        getViewServicesConfig(), getAuditTrail()));
     }
 
 

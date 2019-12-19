@@ -7,14 +7,6 @@ The UI chassis is the component that provides the base
 server infrastructure for the
 [UI Server Platform](../../open-metadata-publication/website/ui-server).
 
-It is written using [Spring Boot](https://spring.io/projects/spring-boot).
-and manages the REST APIs' endpoint.  Calls to the ui chassis result in rest calls
-to appropriate Open Metadata or Goverance Services.
-
-Since this is a Spring Boot application, it can be
-[customized using the application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
-file found in the `resources` directory and using environment variables.
-
 The ui chassis code is here:
 * **[ui-chassis-spring](ui-chassis-spring)** - ui chassis using Spring.
 
