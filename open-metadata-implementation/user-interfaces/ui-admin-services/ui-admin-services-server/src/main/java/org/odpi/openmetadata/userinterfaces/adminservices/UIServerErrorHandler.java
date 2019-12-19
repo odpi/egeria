@@ -8,7 +8,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
-import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceOperationalStatus;
+import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 
 import java.net.MalformedURLException;
@@ -368,5 +369,43 @@ public class UIServerErrorHandler
                 // catch url error
             }
         return isValid;
+    }
+
+    /**
+     * Check that the view service is registered for the server, by checking the supplied registration, and throwing the appropriate
+     * exception if not valid.
+     *
+     * @param registration registration
+     * @param serviceURLMarker service URI marker
+     * @param serverName server name
+     * @param methodName caller
+     * @throws OMAGConfigurationErrorException configuration error occurred because the view service registration was not valid.
+     */
+    public void validateViewServiceIsRegistered(ViewServiceRegistration registration, String serviceURLMarker, String serverName, String methodName) throws OMAGConfigurationErrorException {
+        if (registration == null)
+        {
+            UIAdminErrorCode errorCode    = UIAdminErrorCode.VIEW_SERVICE_NOT_RECOGNIZED;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        else if (registration.getViewServiceOperationalStatus() != ViewServiceOperationalStatus.ENABLED)
+        {
+            UIAdminErrorCode errorCode    = UIAdminErrorCode.VIEW_SERVICE_NOT_ENABLED;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
     }
 }

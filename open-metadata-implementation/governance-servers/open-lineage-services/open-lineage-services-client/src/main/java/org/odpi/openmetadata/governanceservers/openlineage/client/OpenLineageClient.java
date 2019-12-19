@@ -54,7 +54,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                                            String displayNameMustContain,
                                            boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
-        String methodName = "OpenLineageClient.lineage";
+        String methodName = "lineage";
         LineageResponse lineageResponse = callGetRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot +
                         BASE_PATH +

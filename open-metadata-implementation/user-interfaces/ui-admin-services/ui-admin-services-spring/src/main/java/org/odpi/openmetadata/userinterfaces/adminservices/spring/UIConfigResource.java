@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterfaces.adminservices.spring;
 
 
+import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 import org.odpi.openmetadata.userinterface.adminservices.rest.UIServerConfigResponse;
@@ -54,24 +55,22 @@ public class UIConfigResource
     {
         return adminAPI.setUIServerConfig(userId, serverName, uiServerConfig);
     }
-
-//TODO Support deploying one UI config to another UI server tracked in issue #1685. Uncomment and correct the following code
-//    /**
-//     * Push the configuration for the server to another UI Server Platform.
-//     *
-//     * @param userId  user that is issuing the request
-//     * @param serverName  local server name
-//     * @param destinationPlatform  location of the platform where the config is to be deployed to
-//     * @return void response or
-//     * UINotAuthorizedException the supplied userId is not authorized to issue this command or
-//     * UIConfigurationErrorException there is a problem using the supplied configuration or
-//     * UIInvalidParameterException invalid serverName or destinationPlatform parameter.
-//     */
-//    @PostMapping( path = "/configuration/deploy")
-//    public VoidResponse deployUIServerConfig(@PathVariable String userId,
-//                                               @PathVariable String           serverName,
-//                                               @RequestBody URLRequestBody destinationPlatform)
-//    {
-//        return adminAPI.deployUIServerConfig(userId, serverName, destinationPlatform);
-//    }
+    /**
+     * Push the configuration for the server to another UI Server Platform.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param destinationPlatform  location of the platform where the config is to be deployed to
+     * @return void response or
+     * UINotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UIConfigurationErrorException there is a problem using the supplied configuration or
+     * UIInvalidParameterException invalid serverName or destinationPlatform parameter.
+     */
+    @PostMapping( path = "/configuration/deploy")
+    public VoidResponse deployUIServerConfig(@PathVariable String userId,
+                                               @PathVariable String           serverName,
+                                               @RequestBody URLRequestBody destinationPlatform)
+    {
+        return adminAPI.deployUIServerConfig(userId, serverName, destinationPlatform);
+    }
 }
