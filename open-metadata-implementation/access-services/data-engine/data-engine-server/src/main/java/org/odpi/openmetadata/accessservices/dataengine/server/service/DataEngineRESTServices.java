@@ -604,9 +604,7 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        String schemaTypeGUID = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(userId, schemaType.getQualifiedName(),
-                schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(), schemaType.getUsage(),
-                schemaType.getVersionNumber(), schemaType.getAttributeList(), externalSourceName);
+        String schemaTypeGUID = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(userId, schemaType, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, schemaTypeGUID);
 
@@ -679,14 +677,6 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         String qualifiedName = process.getQualifiedName();
-        String processName = process.getName();
-        String description = process.getDescription();
-        String latestChange = process.getLatestChange();
-        List<String> zoneMembership = process.getZoneMembership();
-        String displayName = process.getDisplayName();
-        String formula = process.getFormula();
-        String owner = process.getOwner();
-        OwnerType ownerType = process.getOwnerType();
         List<PortImplementation> portImplementations = process.getPortImplementations();
         List<PortAlias> portAliases = process.getPortAliases();
         List<LineageMapping> lineageMappings = process.getLineageMappings();
@@ -710,11 +700,9 @@ public class DataEngineRESTServices {
             String processGUID = processHandler.findProcess(userId, qualifiedName);
 
             if (StringUtils.isEmpty(processGUID)) {
-                processGUID = processHandler.createProcess(userId, qualifiedName, processName, description, latestChange, zoneMembership, displayName,
-                        formula, owner, ownerType, externalSourceName);
+                processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
-                processHandler.updateProcess(userId, processGUID, qualifiedName, processName, description, latestChange, zoneMembership, displayName,
-                        formula, owner, ownerType);
+                processHandler.updateProcess(userId, processGUID, process);
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {

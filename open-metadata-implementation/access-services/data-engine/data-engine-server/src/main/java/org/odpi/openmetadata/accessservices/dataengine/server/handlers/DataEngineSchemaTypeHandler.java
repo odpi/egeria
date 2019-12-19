@@ -71,13 +71,7 @@ public class DataEngineSchemaTypeHandler {
      * Create the schema type entity, with the corresponding schema attributes and relationships
      *
      * @param userId             the name of the calling user
-     * @param qualifiedName      the qualifiedName name of the schema type
-     * @param displayName        the display name of the schema type
-     * @param author             the author of the schema type
-     * @param encodingStandard   the encoding for the schema type
-     * @param usage              the usage for the schema type
-     * @param versionNumber      the version number for the schema type
-     * @param attributeList      the list of attributes for the schema type
+     * @param schemaType         the schema type values
      * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the schema type in the repository
@@ -86,27 +80,27 @@ public class DataEngineSchemaTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createOrUpdateSchemaType(String userId, String qualifiedName, String displayName, String author, String encodingStandard,
-                                           String usage, String versionNumber, List<Attribute> attributeList, String externalSourceName) throws
-                                                                                                                                         InvalidParameterException,
-                                                                                                                                         PropertyServerException,
-                                                                                                                                         UserNotAuthorizedException {
+    public String createOrUpdateSchemaType(String userId, org.odpi.openmetadata.accessservices.dataengine.model.SchemaType schemaType,
+                                           String externalSourceName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException {
         final String methodName = "createOrUpdateSchemaType";
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(schemaType.getQualifiedName(), SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(schemaType.getDisplayName(), SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
 
-        SchemaType newSchemaType = createTabularSchemaType(qualifiedName, displayName, author, encodingStandard, usage, versionNumber);
+        SchemaType newSchemaType = createTabularSchemaType(schemaType.getQualifiedName(), schemaType.getDisplayName(), schemaType.getAuthor(),
+                schemaType.getEncodingStandard(), schemaType.getUsage(), schemaType.getVersionNumber());
 
-        List<SchemaAttribute> newSchemaAttributes = createTabularColumns(attributeList);
+        List<SchemaAttribute> newSchemaAttributes = createTabularColumns(schemaType.getAttributeList());
 
         //TODO refactor to create the classifications through SchemaTypeHandler
         String schemaTypeGUID = schemaTypeHandler.saveExternalSchemaType(userId, newSchemaType, newSchemaAttributes, externalSourceGUID,
                 externalSourceName, methodName);
-        addTypeEmbeddedAttributeClassification(userId, attributeList);
+        addTypeEmbeddedAttributeClassification(userId, schemaType.getAttributeList());
 
         return schemaTypeGUID;
     }

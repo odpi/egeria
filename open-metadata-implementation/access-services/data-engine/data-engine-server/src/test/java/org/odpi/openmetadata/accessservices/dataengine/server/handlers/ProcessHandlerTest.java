@@ -12,6 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -34,6 +39,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -65,6 +71,7 @@ class ProcessHandlerTest {
     private static final String PORT_ALIAS_GUID = "portAliasGUID";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
+    private static final List<String> ZONES = Collections.singletonList("ZONE");
 
     @Captor
     private ArgumentCaptor<Asset> originalProcessCaptor;
@@ -110,15 +117,12 @@ class ProcessHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        Asset asset = mock(Asset.class);
-        when(assetHandler.createEmptyAsset(ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName)).thenReturn(asset);
-
         when(repositoryHandler.createExternalEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
 
-        String result = processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        when(securityVerifier.initializeAssetZones(any(), any())).thenReturn(ZONES);
+        String result = processHandler.createProcess(USER, getProcess(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -149,8 +153,7 @@ class ProcessHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                        null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                processHandler.createProcess(USER, getProcess(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -163,8 +166,7 @@ class ProcessHandlerTest {
         when(repositoryHandler.getEntityByGUID(USER, PROCESS_GUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName)).thenReturn(entityDetail);
 
-        processHandler.updateProcess(USER, PROCESS_GUID, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID);
+        processHandler.updateProcess(USER, PROCESS_GUID, getProcess());
 
         verify(assetHandler, times(1)).updateAsset(any(), originalProcessCaptor.capture(),
                 assetHeaderCaptor.capture(), updatedProcessCaptor.capture(), any(), any(), any(), any());
@@ -186,8 +188,7 @@ class ProcessHandlerTest {
                 assetHeaderCaptor.capture(), updatedProcessCaptor.capture(), any(), any(), any(), any());
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.updateProcess(USER, PROCESS_GUID, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                        null, NAME, FORMULA, OWNER, OwnerType.USER_ID));
+                processHandler.updateProcess(USER, PROCESS_GUID, getProcess()));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -364,5 +365,21 @@ class ProcessHandlerTest {
 
         when(entityTypeDef.getName()).thenReturn(typeName);
         when(entityTypeDef.getGUID()).thenReturn(typeGUID);
+    }
+
+    private Process getProcess() {
+        Process process = new Process();
+
+        process.setQualifiedName(QUALIFIED_NAME);
+        process.setName(NAME);
+        process.setDisplayName(NAME);
+        process.setDescription(DESCRIPTION);
+        process.setLatestChange(LATEST_CHANGE);
+        process.setFormula(FORMULA);
+        process.setOwner(OWNER);
+        process.setOwnerType(OwnerType.USER_ID);
+        process.setUpdateSemantic(UpdateSemantic.REPLACE);
+
+        return process;
     }
 }

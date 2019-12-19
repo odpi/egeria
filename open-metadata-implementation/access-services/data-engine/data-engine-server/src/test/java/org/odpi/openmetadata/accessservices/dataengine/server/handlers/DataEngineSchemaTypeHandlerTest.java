@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
@@ -78,6 +79,10 @@ class DataEngineSchemaTypeHandlerTest {
     @InjectMocks
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
 
+    private Attribute attribute = getAttribute();
+
+    private List<Attribute> attributeList = Collections.singletonList(attribute);
+
     @Test
     void createSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "createOrUpdateSchemaType";
@@ -87,7 +92,9 @@ class DataEngineSchemaTypeHandlerTest {
 
         when(schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
                 SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME)).thenReturn(schemaType);
+
         when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+
 
         when(schemaTypeHandler.saveExternalSchemaType(USER, schemaType, Collections.singletonList(schemaAttribute), EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, methodName)).thenReturn(GUID);
@@ -97,16 +104,13 @@ class DataEngineSchemaTypeHandlerTest {
         mockFindSchemaAttribute(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID);
         mockTypeDef(SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
 
-        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD, USAGE, VERSION,
-                Collections.singletonList(getAttribute()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME,
-                SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(repositoryHandler, times(1)).classifyEntity(USER, ATTRIBUTE_GUID, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME,
                 SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, null, "addTypeEmbeddedAttributeClassifications");
     }
@@ -136,8 +140,7 @@ class DataEngineSchemaTypeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD, USAGE, VERSION,
-                        Collections.singletonList(getAttribute()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -251,5 +254,20 @@ class DataEngineSchemaTypeHandlerTest {
         attribute.setPosition(1);
 
         return attribute;
+    }
+
+    private SchemaType getSchemaType() {
+        SchemaType schemaType = new SchemaType();
+
+        schemaType.setQualifiedName(QUALIFIED_NAME);
+        schemaType.setDisplayName(NAME);
+        schemaType.setAuthor(AUTHOR);
+        schemaType.setUsage(USAGE);
+        schemaType.setEncodingStandard(ENCODING_STANDARD);
+        schemaType.setVersionNumber(VERSION);
+
+        schemaType.setAttributeList(attributeList);
+
+        return schemaType;
     }
 }
