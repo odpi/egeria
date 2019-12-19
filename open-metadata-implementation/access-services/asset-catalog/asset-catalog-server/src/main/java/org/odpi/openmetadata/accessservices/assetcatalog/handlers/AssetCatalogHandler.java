@@ -121,10 +121,9 @@ public class AssetCatalogHandler {
      * Returns a list of the relationships for the given entity identifier.
      * Relationship type name can be used for filtering.
      *
-     * @param userId           user identifier that issues the call
-     * @param assetGUID        the asset identifier
-     * @param assetTypeName    the asset type name
-     * @param relationshipType the relationship type name
+     * @param userId        user identifier that issues the call
+     * @param assetGUID     the asset identifier
+     * @param assetTypeName the asset type name
      * @return a list of Relationships
      * @throws UserNotAuthorizedException                                                     is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      * @throws PropertyServerException                                                        reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
@@ -132,8 +131,7 @@ public class AssetCatalogHandler {
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationshipsByEntityGUID(String userId,
                                                                                                                    String assetGUID,
-                                                                                                                   String assetTypeName,
-                                                                                                                   String relationshipType)
+                                                                                                                   String assetTypeName)
             throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         String methodName = "getRelationshipsByEntityGUID";
 
@@ -144,7 +142,7 @@ public class AssetCatalogHandler {
                 assetGUID,
                 assetTypeName,
                 null,
-                relationshipType,
+                null,
                 methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {

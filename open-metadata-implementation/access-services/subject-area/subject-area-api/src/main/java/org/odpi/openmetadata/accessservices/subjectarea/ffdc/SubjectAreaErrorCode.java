@@ -307,6 +307,10 @@ public enum SubjectAreaErrorCode {
             "Cannot create a Project without a name",
             "The system is unable to process the request.",
             "Correct the code in the caller to create a Project with a name."),
+    SERVER_NAME_NOT_SPECIFIED(400, "OMAS-SUBJECTAREA-400-001 ",
+            "The OMAS server name is null",
+            "The system is unable to connect to the OMAS Server to retrieve metadata properties.",
+            "Ensure a valid OMAS Server name is passed to the Subject Area OMAS when it is created."),
 
 
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",

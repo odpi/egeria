@@ -170,7 +170,7 @@ public class CategoryHierarchyFVT
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         category.setParentCategory(parentCategorysummary);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,userId, category);
+        Category newCategory = subjectAreaCategory.createCategory(userId, category);
         FVTUtils.validateNode(newCategory);
         System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
@@ -191,7 +191,7 @@ public class CategoryHierarchyFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,userId, category);
+        Category newCategory = subjectAreaCategory.createCategory(userId, category);
         FVTUtils.validateNode(newCategory);
         System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;

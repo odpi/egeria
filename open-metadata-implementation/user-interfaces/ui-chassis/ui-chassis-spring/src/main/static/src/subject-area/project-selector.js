@@ -165,7 +165,7 @@ class ProjectSelector extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
         this.$.addProjectAjaxId.method ="post";
         this.$.addProjectAjaxId.body = project;
-        this.$.addProjectAjaxId.url = "/api/subject-area/projects";
+        this.$.addProjectAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/subject-area/projects";
         this.$.addProjectAjaxId._go();
   }
 
@@ -192,7 +192,7 @@ class ProjectSelector extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
   */
   getProjects() {
       this.$.getProjectsAjaxId.method ="get";
-      this.$.getProjectsAjaxId.url = "/api/subject-area/projects";
+      this.$.getProjectsAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/subject-area/projects";
       this.$.getProjectsAjaxId._go();
   }
  /**

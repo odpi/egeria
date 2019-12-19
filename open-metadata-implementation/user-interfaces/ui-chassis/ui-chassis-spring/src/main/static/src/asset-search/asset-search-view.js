@@ -66,16 +66,16 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>
                     <vaadin-button theme="tertiary" on-tap="_showItemDetails">
-                        [[item.properties.displayName]][[item.properties.name]]
+                        [[item.properties.displayName]]
                     </vaadin-button>
                 </template>
             </vaadin-grid-column>
-            
+               
              <vaadin-grid-column width="6em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="type">Type</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="type.name">Type</vaadin-grid-sorter>
                 </template>
-                <template>[[item.type]]</template>
+                <template>[[item.type.name]]</template>
             </vaadin-grid-column>
             
             <vaadin-grid-column width="15em" resizable>
@@ -126,7 +126,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
-        this.$.tokenAjaxTypes.url = '/api/types';
+        this.$.tokenAjaxTypes.url = '/servers/<<servername>>/open-metadata/view-services/asset-search/types';
         this.$.tokenAjaxTypes._go();
 
     }
@@ -140,23 +140,26 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             types.push( item.name);
         });
 
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
+        this.$.tokenAjax.url = '/servers/<<servername>>/open-metadata/view-services/asset-search/search?q='+this.q + '&types=' + types;
         this.$.tokenAjax._go();
     }
 
     _showItemDetails(e){
         // alert(e.model.item.properties.name + e.model.item.properties.displayName);
         var  properties = e.model.item.properties;
-        for(var key in properties) {
-            var value = properties[key];
-            console.log(key + ' is ' + value);
+
+        if (properties.displayName == null && properties.name != null) {
+                properties.displayName = properties.name;
         }
+
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
-            detail: {page: "asset-lineage",
-                     subview: "ultimateSource"
-            }}));
+            detail: {
+                 page: "asset-lineage",
+                 subview: "ultimateSource"
+            }
+        }));
     }
 
     attached() {

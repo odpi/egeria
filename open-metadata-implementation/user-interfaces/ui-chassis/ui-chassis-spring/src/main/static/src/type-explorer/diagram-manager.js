@@ -203,7 +203,7 @@ class DiagramManager extends PolymerElement {
         var diagSelector = this.$.diagramSelector;
         var opt = document.createElement('option');
         opt.value = "Inheritance";
-        opt.innerHTML = "Entity Inheritance";
+        opt.innerHTML = "Inheritance";
         opt.selected = true;
         diagSelector.appendChild(opt);
 
@@ -225,7 +225,7 @@ class DiagramManager extends PolymerElement {
         var diagSelector = this.$.diagramSelector;
         var opt = document.createElement('option');
         opt.value = "Neighbourhood";
-        opt.innerHTML = "Entity Neighborhood";
+        opt.innerHTML = "Neighbourhood";
         opt.selected = false;
         diagSelector.appendChild(opt);
 

@@ -141,7 +141,7 @@ public class GlossaryFVT
     }
 
     public Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
-        Glossary newGlossary = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
+        Glossary newGlossary = subjectAreaGlossary.createGlossary(this.userId, glossary);
         if (newGlossary != null)
         {
             System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
@@ -166,7 +166,7 @@ public class GlossaryFVT
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveToTime(new Date(now-10));
-        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(this.userId, glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
 
@@ -179,7 +179,7 @@ public class GlossaryFVT
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now-10));
-       return  subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
+       return  subjectAreaGlossary.createGlossary(this.userId, glossary);
     }
     public  Glossary createInvalidEffectiveDateGlossary(String name) throws SubjectAreaCheckedExceptionBase
     {
@@ -189,7 +189,7 @@ public class GlossaryFVT
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now - 10));
         glossary.setEffectiveToTime(new Date(now - 11));
-        return  subjectAreaGlossary.createGlossary(serverName, this.userId, glossary);
+        return  subjectAreaGlossary.createGlossary(this.userId, glossary);
     }
 
     public  Glossary createFutureGlossary(String name) throws SubjectAreaCheckedExceptionBase
@@ -200,7 +200,7 @@ public class GlossaryFVT
         // make the glossary effective in a days time for day
         glossary.setEffectiveFromTime(new Date(now+1000*60*60*24));
         glossary.setEffectiveToTime(new Date(now+2000*60*60*24));
-        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(this.userId, glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
         return newGlossary;
@@ -208,7 +208,6 @@ public class GlossaryFVT
     public List<Glossary> findGlossaries(String criteria) throws SubjectAreaCheckedExceptionBase
     {
         List<Glossary> glossaries = subjectAreaGlossary.findGlossary(
-                serverName,
                 this.userId,
                 criteria,
                 null,
@@ -220,7 +219,7 @@ public class GlossaryFVT
     }
 
     public  Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase {
-        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName, this.userId, guid);
+        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(this.userId, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with guid " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
 
@@ -228,7 +227,7 @@ public class GlossaryFVT
     }
     public  Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(serverName,this.userId, guid, glossary);
+        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(this.userId, guid, glossary);
         FVTUtils.validateNode(updatedGlossary);
         System.out.println("Updated Glossary name to " + updatedGlossary.getName());
         return updatedGlossary;
@@ -236,14 +235,14 @@ public class GlossaryFVT
 
     public Glossary deleteGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(serverName,this.userId, guid);
+        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(this.userId, guid);
         FVTUtils.validateNode(deletedGlossary);
         System.out.println("Deleted Glossary name is " + deletedGlossary.getName());
         return deletedGlossary;
     }
     public Glossary restoreGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary restoredGlossary = subjectAreaGlossary.restoreGlossary(serverName,this.userId, guid);
+        Glossary restoredGlossary = subjectAreaGlossary.restoreGlossary(this.userId, guid);
         FVTUtils.validateNode(restoredGlossary);
         System.out.println("Restored Glossary name is " + restoredGlossary.getName());
         return restoredGlossary;
@@ -251,11 +250,11 @@ public class GlossaryFVT
 
     public  void purgeGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaGlossary.purgeGlossary(serverName,this.userId, guid);
+        subjectAreaGlossary.purgeGlossary(this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public List<Line> getGlossaryRelationships(Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaGlossary.getGlossaryRelationships(serverName,this.userId,
+        return subjectAreaGlossary.getGlossaryRelationships(this.userId,
                 glossary.getSystemAttributes().getGUID(),
                 null,
                 0,
