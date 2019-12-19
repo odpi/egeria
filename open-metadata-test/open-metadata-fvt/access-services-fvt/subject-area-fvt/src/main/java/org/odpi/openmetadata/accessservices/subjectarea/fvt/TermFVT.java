@@ -234,7 +234,7 @@ public class TermFVT
     }
 
     public Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
-        Term newTerm = subjectAreaTerm.createTerm(this.userId, term);
+        Term newTerm = subjectAreaTerm.createTerm(serverName,this.userId, term);
         if (newTerm != null)
         {
             System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
@@ -299,7 +299,7 @@ public class TermFVT
 
     public Term getTermByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Term term = subjectAreaTerm.getTermByGuid(this.userId, guid);
+        Term term = subjectAreaTerm.getTermByGuid(serverName,this.userId, guid);
         if (term != null)
         {
             System.out.println("Got Term " + term.getName() + " with guid " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
@@ -309,6 +309,7 @@ public class TermFVT
     public List<Term> findTerms(String criteria) throws SubjectAreaCheckedExceptionBase
     {
         List<Term> terms = subjectAreaTerm.findTerm(
+                serverName,
                 this.userId,
                 criteria,
                 null,
@@ -321,7 +322,7 @@ public class TermFVT
 
     public Term updateTerm(String guid, Term term) throws SubjectAreaCheckedExceptionBase
     {
-        Term updatedTerm = subjectAreaTerm.updateTerm(this.userId, guid, term);
+        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,this.userId, guid, term);
         if (updatedTerm != null)
         {
             System.out.println("Updated Term name to " + updatedTerm.getName());
@@ -330,7 +331,7 @@ public class TermFVT
     }
     public Term restoreTerm(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Term restoredTerm = subjectAreaTerm.restoreTerm(this.userId, guid);
+        Term restoredTerm = subjectAreaTerm.restoreTerm(serverName,this.userId, guid);
         if (restoredTerm != null)
         {
             System.out.println("Restored Term " + restoredTerm.getName());
@@ -344,7 +345,7 @@ public class TermFVT
        term.setEffectiveFromTime(new Date(now+6*1000*60*60*24));
        term.setEffectiveToTime(new Date(now+7*1000*60*60*24));
 
-        Term updatedTerm = subjectAreaTerm.updateTerm(this.userId, guid, term);
+        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,this.userId, guid, term);
         if (updatedTerm != null)
         {
             System.out.println("Updated Term name to " + updatedTerm.getName());
@@ -354,7 +355,7 @@ public class TermFVT
 
     public Term deleteTerm(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Term deletedTerm = subjectAreaTerm.deleteTerm(this.userId, guid);
+        Term deletedTerm = subjectAreaTerm.deleteTerm(serverName,this.userId, guid);
         if (deletedTerm != null)
         {
             System.out.println("Deleted Term name is " + deletedTerm.getName());
@@ -364,12 +365,12 @@ public class TermFVT
 
     public void purgeTerm(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaTerm.purgeTerm(this.userId, guid);
+        subjectAreaTerm.purgeTerm(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
     }
 
     public List<Line> getTermRelationships(Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaTerm.getTermRelationships(this.userId,
+        return subjectAreaTerm.getTermRelationships(serverName,this.userId,
                 term.getSystemAttributes().getGUID(),
                 null,
                 0,
@@ -379,7 +380,7 @@ public class TermFVT
     }
 
     public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaTerm.getTermRelationships(this.userId,
+        return subjectAreaTerm.getTermRelationships(serverName,this.userId,
                 term.getSystemAttributes().getGUID(),
                 asOfTime,
                 offset,

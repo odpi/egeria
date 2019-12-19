@@ -209,7 +209,6 @@ public class UIServerAdminStoreServices
      * @param methodName  method requesting the server details
      * @return  configuration properties
      * @throws OMAGNotAuthorizedException problem with the configuration file
-     * @throws OMAGInvalidParameterException invalid parameter
      */
     public UIServerConfig getServerConfig(String   userId,
                                        String   serverName,

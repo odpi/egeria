@@ -34,8 +34,7 @@ public class LineageResponse extends FFDCResponseBase {
         return lineageVerticesAndEdges;
     }
 
-    public LineageResponse setLineageVerticesAndEdges(LineageVerticesAndEdges lineageVerticesAndEdges) {
+    public void setLineageVerticesAndEdges(LineageVerticesAndEdges lineageVerticesAndEdges) {
         this.lineageVerticesAndEdges = lineageVerticesAndEdges;
-        return null;
     }
 }

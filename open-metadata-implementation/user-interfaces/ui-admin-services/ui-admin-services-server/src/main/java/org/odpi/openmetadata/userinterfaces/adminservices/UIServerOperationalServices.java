@@ -28,7 +28,6 @@ import org.odpi.openmetadata.userinterface.adminservices.configuration.propertie
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 import org.odpi.openmetadata.userinterface.adminservices.rest.UIServerConfigResponse;
-import org.odpi.userinterface.adminservices.configuration.registration.ViewServiceAdmin;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -148,7 +147,7 @@ public class UIServerOperationalServices
             /*
              * Next verify that there are views configured.
              */
-            List<ViewServiceConfig> viewServiceConfigList   = configuration.getViewServicesConfig();
+            List<ViewServiceConfig> viewServiceConfigList   = configuration.getViewServiceConfigs();
 
             if ((viewServiceConfigList == null) || (viewServiceConfigList.isEmpty()))
             {
@@ -242,9 +241,9 @@ public class UIServerOperationalServices
 
                             updatedViewServiceConfigList.add(updatedViewServiceConfig);
                             operationalViewServiceAdminList.add(viewServiceAdmin);
-                            activatedServiceList.add(updatedViewServiceConfig.getViewServiceName());
+                            activatedServiceList.add(updatedViewServiceConfig.getViewServiceName() + " OMVS");
                             // update the config with the updated (expanded) view service content.
-                            configuration.setViewServicesConfig(updatedViewServiceConfigList);
+                            configuration.setViewServiceConfigs(updatedViewServiceConfigList);
                         }
                     }
                     else
@@ -398,7 +397,10 @@ public class UIServerOperationalServices
                                                    boolean                         permanentDeactivation) throws InvalidParameterException,
             PropertyServerException
     {
+
+        //TODO terminal user store and views?
         instanceHandler.removeServerServiceInstance(serverName);
+
         platformInstanceMap.shutdownServerInstance(userId, serverName, methodName);
     }
 
