@@ -60,6 +60,7 @@ public class InTopicListener implements OpenMetadataTopicListener {
                 break;
             case UPDATE_ENTITY_EVENT:
                 storingServices.updateEntity(event);
+                break;
             case DELETE_ENTITY_EVENT:
                 storingServices.deleteEntity(event);
             default:
