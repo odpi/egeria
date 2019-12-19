@@ -213,11 +213,9 @@ public class PortHandler {
         invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
         createRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef, methodName,
-                externalSourceGUID, externalSourceName);
+                externalSourceName);
 
     }
 
@@ -278,8 +276,6 @@ public class PortHandler {
         invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(delegatesTo, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-
         EntityDetail delegatedPort = getPortEntityDetailByQualifiedName(userId, delegatesTo);
         String delegatedPortType = getPortType(delegatedPort);
 
@@ -287,7 +283,7 @@ public class PortHandler {
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME);
 
             createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef, methodName,
-                    externalSourceGUID, externalSourceName);
+                    externalSourceName);
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
         }
@@ -433,13 +429,16 @@ public class PortHandler {
     }
 
     private void createRelationship(String userId, String firstGUID, String secondGUID, String firstEntityTypeName, TypeDef relationshipTypeDef,
-                                    String methodName, String externalSourceGUID, String externalSourceName) throws UserNotAuthorizedException,
-                                                                                                                    PropertyServerException {
+                                    String methodName, String externalSourceName) throws UserNotAuthorizedException,
+                                                                                         PropertyServerException,
+                                                                                         InvalidParameterException {
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID, firstEntityTypeName, secondGUID,
                 relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
+            String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName, firstGUID,
                     secondGUID, null, methodName);
         }
