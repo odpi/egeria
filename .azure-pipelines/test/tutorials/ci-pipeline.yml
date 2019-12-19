@@ -3,40 +3,27 @@
 ---
 # Initial build pipeline to publish from source to a k8s deployment in Azure
 # Trigger will be a change to master - ie a merge.
-# This overlaps with the standard 'merge.yml' merge build currently, but is separate for debugging
-# This pipeline will also build an image from source, rather than using dockerhub
+# overlaps with the standard 'merge.yml' merge build, but separate for debugging
+# pipeline will also build an image from source, rather than using dockerhub
 trigger:
   batch: true
   branches:
-    include: 
-    - master
-  # Any directory for now
-  #paths:
-    #include:
-    #- dir/
-
-# No PR builds usually - but enable to assist in testing these pipelines if modified
-# remove once stable
-pr:
-  autoCancel: true
-  branches:
     include:
       - master
-  paths:
-    include:
-      - .azure-pipelines/test
+
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-- template: ../common/ci-vars-template.yml
-  parameters:
+  # define 3 more: registryName, registryLogin and registryPassword in the UI
+  - template: ../common/ci-vars-template.yml
+    parameters:
       projectName: egeria
       dockerfilePath: open-metadata-resources/open-metadata-deployment/docker/egeria
       helmBaseChartPath: open-metadata-resources/open-metadata-deployment/charts
       helmChartName: odpi-egeria-lab
-  # define 3 more variables: registryName, registryLogin and registryPassword in the build pipeline in UI
 
 steps:
-- template: ../common/ci-steps-template.yml
+  - template: ../common/ci-steps-template.yml

@@ -2,50 +2,50 @@
 # Copyright Contributors to the ODPi Egeria project.
 ---
 steps:
-- bash: |
-    cd $(projectName)/$(dockerfilePath)
-    docker build \
+  - bash: |
+      cd $(projectName)/$(dockerfilePath)
+      docker build \
         -t $(registryServerName)/$(imageName):$(imageTag) \
         .
-  failOnStderr: true
-  displayName: 'docker build'
-- bash: |
-    echo $(registryPassword) | docker login \
+    failOnStderr: true
+    displayName: 'docker build'
+  - bash: |
+      echo $(registryPassword) | docker login \
         $(registryServerName) \
         -u $(registryLogin) \
         --password-stdin
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-  displayName: 'docker login'
-- bash: |
-    docker push $(registryServerName)/$(imageName):$(imageTag)
-  failOnStderr: true
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-  displayName: 'docker push'
-- task: HelmInstaller@1
-  displayName: 'install helm'
-  inputs:
-    helmVersionToInstall: $(helmVersion)
-- bash: |
-    cd $(projectName)/$(helmBaseChartPath)
-    helm package -u \
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    displayName: 'docker login'
+  - bash: |
+      docker push $(registryServerName)/$(imageName):$(imageTag)
+    failOnStderr: true
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    displayName: 'docker push'
+  - task: HelmInstaller@1
+    displayName: 'install helm'
+    inputs:
+      helmVersionToInstall: $(helmVersion)
+  - bash: |
+      cd $(projectName)/$(helmBaseChartPath)
+      helm package -u \
         --version $(helmChartVersion) \
         --app-version $(imageTag) \
-       $(helmChartName)
-  failOnStderr: true
-  displayName: 'helm package'
-- bash: |
-    cd $(projectName)/$(helmBaseChartPath)
-    chartPackage=$(ls $(helmChartName)-*.tgz)
-    az acr helm push \
+        $(helmChartName)
+    failOnStderr: true
+    displayName: 'helm package'
+  - bash: |
+      cd $(projectName)/$(helmBaseChartPath)
+      chartPackage=$(ls $(helmChartName)-*.tgz)
+      az acr helm push \
         -n $(registryName) \
         -u $(registryLogin) \
         -p $(registryPassword) \
         $chartPackage
-    echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
-  failOnStderr: true
-  name: helmPush
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-  displayName: 'az acr helm push'
-- publish: $(build.artifactStagingDirectory)
-  artifact: build-artifact
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+      echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
+    failOnStderr: true
+    name: helmPush
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    displayName: 'az acr helm push'
+  - publish: $(build.artifactStagingDirectory)
+    artifact: build-artifact
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
