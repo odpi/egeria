@@ -14,6 +14,8 @@ experience of open metadata.
 
 Quick start on the UI: 
 * [Review applications.properties](ui-chassis/ui-chassis-spring/README.md)
+* Start and configure the OMAGPlatform if not already started. 
+* Start the EgeriaUIIPlatform.
 * [Configure the UI server](ui-admin-services/README.md)
 
 
