@@ -160,6 +160,27 @@ public enum UIAdminErrorCode
             "The system is unable to add this governance server name to the configuration document for the local server.",
             "The user configStore configuration is supplied by the caller to the UI Server. This call needs to be corrected before the server can operate correctly."),
 
+    VIEW_SERVICE_NOT_RECOGNIZED(400, "UI-ADMIN-400-033 ",
+            "Unable to configure server {0} since view service {1} is not registered in this UI Server Platform",
+            "The system is unable to configure the local server.",
+            "Validate and correct the name of the view service URL marker."),
+
+    VIEW_SERVICE_NOT_ENABLED(400, "UI-ADMIN-400-034 ",
+            "Unable to configure server {0} since view service {1} is not enabled in this UI Server Platform",
+            "The system is unable to configure the local server.",
+            "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
+
+    BAD_CONFIG_PROPERTIES(400, "UI-ADMIN-400-035 ",
+        "The {0} Open Metadata View Service (OMVS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}",
+        "The view service has not been passed valid configuration.",
+        "Correct the configuration and restart the service."),
+
+    CREATE_VIEW_SERVICE_INSTANCE_FAILED(400, "UI-ADMIN-400-036 ",
+        "The {0} Open Metadata View Service (OMVS) for server {1} has been passed an invalid value for the {3} property.",
+        "The view service has not been passed valid configuration.",
+        "Correct the configuration and restart the service."),
+
+
     UNEXPECTED_EXCEPTION(500, "UI-ADMIN-500-001 ",
             "Method {1} for UI Server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the UI Server.",
@@ -177,7 +198,6 @@ public enum UIAdminErrorCode
 
 
             ;
-
 
     private int    httpErrorCode;
     private String errorMessageId;

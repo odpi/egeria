@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UIServerConfigResponse extends UIAdminServicesAPIResponse
 {
-    private UIServerConfig serverConfig = null;
+    private UIServerConfig uiServerConfig = null;
 
 
     /**
@@ -40,13 +40,13 @@ public class UIServerConfigResponse extends UIAdminServicesAPIResponse
      */
     public UIServerConfig getUIServerConfig()
     {
-        if (serverConfig == null)
+        if (uiServerConfig == null)
         {
             return null;
         }
         else
         {
-            return new UIServerConfig(serverConfig);
+            return new UIServerConfig(uiServerConfig);
         }
     }
 
@@ -54,11 +54,11 @@ public class UIServerConfigResponse extends UIAdminServicesAPIResponse
     /**
      * Set up the UIServerConfig object.
      *
-     * @param serverConfig - UIServerConfig object
+     * @param uiServerConfig - UIServerConfig object
      */
-    public void setUIServerConfig(UIServerConfig serverConfig)
+    public void setUIServerConfig(UIServerConfig uiServerConfig)
     {
-        this.serverConfig = serverConfig;
+        this.uiServerConfig = uiServerConfig;
     }
 
 
@@ -71,7 +71,7 @@ public class UIServerConfigResponse extends UIAdminServicesAPIResponse
     public String toString()
     {
         return "UIServerConfigResponse{" +
-                "serverConfig=" + serverConfig +
+                "uiServerConfig=" + uiServerConfig +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -104,7 +104,7 @@ public class UIServerConfigResponse extends UIAdminServicesAPIResponse
             return false;
         }
         UIServerConfigResponse that = (UIServerConfigResponse) objectToCompare;
-        return Objects.equals(serverConfig, that.serverConfig);
+        return Objects.equals(uiServerConfig, that.uiServerConfig);
     }
 
 
@@ -117,6 +117,6 @@ public class UIServerConfigResponse extends UIAdminServicesAPIResponse
     public int hashCode()
     {
 
-        return Objects.hash(super.hashCode(), serverConfig);
+        return Objects.hash(super.hashCode(), uiServerConfig);
     }
 }

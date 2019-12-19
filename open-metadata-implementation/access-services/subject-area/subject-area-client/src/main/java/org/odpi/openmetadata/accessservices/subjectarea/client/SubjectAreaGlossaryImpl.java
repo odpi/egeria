@@ -53,7 +53,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
      * Glossaries with the same name can be confusing. Best practise is to createGlossaries that have unique names.
      * This Create call does not police that glossary names are unique. So it is possible to create Glossaries with the same name as each other.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedGlossary Glossary to create
      * @return the created glossary.
@@ -70,7 +69,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Glossary createGlossary(String serverName, String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Glossary createGlossary(String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName ="createGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
@@ -117,7 +116,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
 
     /**
      * Get a glossary by guid.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+    *
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to get
      * @return the requested glossary.
@@ -133,7 +132,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Glossary getGlossaryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
+    public  Glossary getGlossaryByGuid(String userId,String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getGlossaryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -156,7 +155,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     /**
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the glossary to get
      * @param guid   guid of the glossary to get
@@ -178,7 +176,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public List<Line> getGlossaryRelationships(String serverName, String userId, String guid,
+    public List<Line> getGlossaryRelationships(String userId,String guid,
                                            Date asOfTime,
                                            int offset,
                                            int pageSize,
@@ -193,7 +191,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        List<Line> relationships = getRelationships(BASE_URL,serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -203,7 +201,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     /**
      * Find Glossary
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Glossary properties. If not specified then all glossaries are returned.
      * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
@@ -224,7 +221,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public List<Glossary> findGlossary(String serverName, String userId,
+    public List<Glossary> findGlossary(String userId,
                                    String searchCriteria,
                                    Date asOfTime,
                                    int offset,
@@ -295,7 +292,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+    *
      * @param userId           userId under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
@@ -308,7 +305,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary replaceGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws
+    public Glossary replaceGlossary(String userId,String guid, Glossary suppliedGlossary) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
@@ -317,7 +314,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        Glossary glossary = updateGlossary(serverName, userId,guid,suppliedGlossary,true);
+        Glossary glossary = updateGlossary( userId, guid,suppliedGlossary,true);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -332,7 +329,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName       serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
@@ -345,7 +341,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
+    public Glossary updateGlossary(String userId,String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     MetadataServerUncontactableException {
@@ -353,7 +349,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        Glossary glossary = updateGlossary(serverName, userId,guid,suppliedGlossary,false);
+        Glossary glossary = updateGlossary(userId, guid,suppliedGlossary,false);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -369,7 +365,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * A delete (also known as a soft delete) means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+    *
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to be deleted.
      * @return the deleted glossary
@@ -383,7 +379,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-    public Glossary deleteGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+    public Glossary deleteGlossary(String userId, String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnrecognizedGUIDException,
@@ -420,7 +416,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
      * A purge means that the glossary will not exist after the operation.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+    *
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to be deleted.
      *
@@ -434,7 +430,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+    public  void purgeGlossary(String userId, String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
@@ -466,7 +462,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
      * If the caller has chosen to incorporate the glossary name in their Glossary Terms qualified name, renaming the glossary will cause those
      * qualified names to mismatch the Glossary name.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+    *
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to update
      * @param suppliedGlossary Glossary to be updated
@@ -481,7 +477,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    private  Glossary updateGlossary(String serverName, String userId,String guid,Glossary suppliedGlossary,boolean isReplace) throws
+    private  Glossary updateGlossary(String userId, String guid,Glossary suppliedGlossary,boolean isReplace) throws
                                                                                                                                UserNotAuthorizedException,
                                                                                                                                InvalidParameterException,
                                                                                                                                MetadataServerUncontactableException,
@@ -516,7 +512,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * Restore a Glossary
      *
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to restore
      * @return the restored glossary
@@ -528,7 +523,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  Glossary restoreGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+    public  Glossary restoreGlossary(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
