@@ -17,7 +17,7 @@ public class OmasRegistration {
     static final String PAGE_SIZE_DEFAULT_VALUE = "100";
     static final int PAGE_SIZE_MAX_VALUE = 1000;
 
-    static{
+    public OmasRegistration(){
         GlossaryViewRegistration.registerAccessService();
     }
 
