@@ -12,7 +12,12 @@ particularly for a larger organization.
 The user interface supports user-facing view services. A view service is a personna orientated
 experience of open metadata.
 
+Quick start on the UI: 
+* [Review applications.properties](ui-chassis/ui-chassis-spring/README.md)
+* [Configure the UI server](ui-admin-services/README.md)
 
+
+Modules:
 * [ui-chassis](ui-chassis) the user interface platform.
 * [ui-admin-services](ui-admin-services) supports UI administration, used to configure and operate the UI server.
 * [ui-common](ui-common) supports common capabilities  

@@ -10,20 +10,40 @@ This configuration determines how to connect to the OMAG Server platform service
 It also supports the starting and stopping of logical [OMAG UI Servers](docs/concepts/logical-ui-server.md)
 on the OMAG UI platform and querying the runtime (operational) state of these ui servers.
 
-An example rest call to configure the UI is a post call to https://localhost:8443/open-metadata/ui-admin-services/users/<userid>/servers/<server>/configuration
+After you have 
+ [Reviewed and amended the applications.properties file](../ui-chassis/ui-chassis-spring/README.md).
+* [Configure your UI Server](#uiconfig)
+* [Start the ui server](#uistartserver)
+
+<a name="uiconfig"></a>
+## Configure the server
+
+Replace the values in << >> with the ones you want to use. The main ones are:
+* << admin-user >>         - the user id to used on the admin calls
+* << localServerName >>     - this is the ui server name e.g. cocoUIS1
+* << localServerURL >>     - this is the ui server url e.g. https://localhost:8443
+* << metadataServerName >> - this is the metadata server name (previously called the omas server) 
+* << metadataServerName >>  - this is the metadata server name (previously called the omas url) 
+<p>
+To use open lineage
+* << openLineageServerName >>  - the open lineage server name
+* << openLineageServerURL >>  - the open lineage server url
+<p>
+The rest call to configure the UI is a post call to https://<< localServerURL >>/open-metadata/ui-admin-services/users/<< admin-user >>/servers/<< ui-server-name >>/configuration
 with body:
+<p>
 ```
 { 
    "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig",
    "localServerId":"90083805-8ecf-45a6-9d7e-e0895592c090",
-   "localServerName":"cocoUIS1",
-   "localServerURL":"https://localhost:8443",
-   "localServerUserId":"UIServer",
-   "localServerPassword":"bbb",
+   "localServerName":"<< localServerName >>",
+   "localServerURL":"<< localServerURL >>",
+   "localServerUserId":"<< localServerUserId >>",
+   "localServerPassword":"<< localServerPassword >>",
    "localServerType":"User Interface for the Open Metadata and Governance Server",
    "maxPageSize":1000,
-   "metadataServerName":"cocoMDS1",
-   "metadataServerURL":"http://localhost:8080",
+   "metadataServerName":"<< metadataServerName >>",
+   "metadataServerURL":"<< metadataServerName >>",
    "viewServicesConfig":[ 
       { 
          "class":"org.odpi.openmetadata.userinterface.adminservices.configuration.properties.ViewServiceConfig",
@@ -58,8 +78,8 @@ with body:
          "viewServiceName":"Open Lineage OMVS",
          "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.openlineage.admin.OpenLineageViewAdmin",
          "viewServiceOptions":{
-            "openLineageServerName":"lin1",
-            "openLineageServerURL":"http://localhost:8081"
+            "openLineageServerName":"<< openLineageServerName >>",
+            "openLineageServerURL":"<< openLineageServerURL >>"
          },
          "viewServiceURLMarker":"open-lineage",
          "viewServiceDescription":"Explore open lineage.",
@@ -117,10 +137,16 @@ with body:
       ]
 }
 ```
-
+<p>
 in addition to configuration, you can start and stop the UI services. In the future, this is functionality will be
 utilized at runtime.
+<p>
+<a name="uistartserver"></a>
+## Start UI server
 
+Post this command:
+
+https://<< localServerURL >>/open-metadata/ui-admin-services/users/<< admin-user >>/servers//<< localServerName >>/instance
 
 ## Further reading
 
