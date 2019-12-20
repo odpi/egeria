@@ -179,6 +179,14 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 && Objects.equals(retrieveServerConfig(), that.retrieveServerConfig());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getConfigStoreName(), getKeystore(), retrieveServerConfig());
+    }
+
     private String getConfigStoreName() { return configStoreName; }
 
     private File getKeystore() {
