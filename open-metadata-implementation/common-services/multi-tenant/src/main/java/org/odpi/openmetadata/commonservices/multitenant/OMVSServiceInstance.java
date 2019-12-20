@@ -14,7 +14,6 @@ public class OMVSServiceInstance extends AuditableServerServiceInstance
     /**
      * Set up the OMVS service instance
      *
-     * @param serverName name of this server
      * @param serviceName name of this service
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
@@ -22,14 +21,13 @@ public class OMVSServiceInstance extends AuditableServerServiceInstance
      * @param metadataServerName  metadata server name
      * @param metadataServerURL metadata server URL
      */
-    public OMVSServiceInstance(String                  serverName,
-                               String                  serviceName,
+    public OMVSServiceInstance(String                  serviceName,
                                OMRSAuditLog            auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize,
                                String                  metadataServerName,
                                String                  metadataServerURL ) {
-        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
+        super(null, serviceName, auditLog, localServerUserId, maxPageSize);
         this.metadataServerName = metadataServerName;
         this.metadataServerURL = metadataServerURL;
     }

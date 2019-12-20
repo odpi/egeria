@@ -18,7 +18,7 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
     /**
      * Constructor
      *
-     * @param serviceName a descriptive name for the OMVS
+     * @param serviceName a descriptive name for the OMAS
      */
     public OMVSServiceInstanceHandler(String   serviceName)
     {

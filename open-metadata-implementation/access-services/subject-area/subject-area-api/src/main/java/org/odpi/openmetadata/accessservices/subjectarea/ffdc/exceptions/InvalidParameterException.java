@@ -11,24 +11,6 @@ import java.util.Map;
  */
 public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
 {
-    /**
-     * invalid property name
-     * @return invalid property name
-     */
-    public String getInvalidPropertyName() {
-        return invalidPropertyName;
-    }
-
-    /**
-     * invalid property value
-     * @return in valid property value
-     */
-    public String getInvalidPropertyValue() {
-        return invalidPropertyValue;
-    }
-
-    private String invalidPropertyName;
-    private String invalidPropertyValue;
     private Map<String,Object> relatedProperties;
     /**
      * This is the typical constructor used for creating a InvalidParameterException.
@@ -60,12 +42,6 @@ public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
     public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-    }
-
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String invalidPropertyName, String invalidPropertyValue) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-        this.invalidPropertyName = invalidPropertyName;
-        this.invalidPropertyValue = invalidPropertyValue;
     }
 
     public Map<String, Object> getRelatedProperties() {

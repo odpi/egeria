@@ -120,7 +120,7 @@ public class SubjectAreaDefinitionCategoryFVT
         CategorySummary parentCategory = new CategorySummary();
         parentCategory.setGuid(parentGuid);
         subjectArea.setParentCategory(parentCategory);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(this.userId, subjectArea);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(serverName,this.userId, subjectArea);
 
 
         if (newSubjectAreaDefinition != null)
@@ -137,7 +137,7 @@ public class SubjectAreaDefinitionCategoryFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectArea.setGlossary(glossarySummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(this.userId, subjectArea);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(serverName,this.userId, subjectArea);
         if (newSubjectAreaDefinition != null)
         {
             System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
@@ -148,7 +148,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public  SubjectAreaDefinition getSubjectAreaDefinitionByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition subjectArea = subjectAreaCategory.getSubjectAreaDefinitionByGuid(this.userId, guid);
+        SubjectAreaDefinition subjectArea = subjectAreaCategory.getSubjectAreaDefinitionByGuid(serverName,this.userId, guid);
         if (subjectArea != null)
         {
             System.out.println("Got SubjectAreaDefinition " + subjectArea.getName() + " with guid " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
@@ -158,7 +158,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public SubjectAreaDefinition updateSubjectAreaDefinition(String guid, SubjectAreaDefinition subjectArea) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.updateSubjectAreaDefinition(this.userId, guid, subjectArea);
+        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.updateSubjectAreaDefinition(serverName,this.userId, guid, subjectArea);
         if (updatedSubjectAreaDefinition != null)
         {
             System.out.println("Updated SubjectAreaDefinition name to " + updatedSubjectAreaDefinition.getName());
@@ -168,7 +168,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public SubjectAreaDefinition deleteSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition deletedSubjectAreaDefinition = subjectAreaCategory.deleteSubjectAreaDefinition(this.userId, guid);
+        SubjectAreaDefinition deletedSubjectAreaDefinition = subjectAreaCategory.deleteSubjectAreaDefinition(serverName,this.userId, guid);
         if (deletedSubjectAreaDefinition != null)
         {
             System.out.println("Deleted SubjectAreaDefinition name is " + deletedSubjectAreaDefinition.getName());
@@ -178,12 +178,12 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public void purgeSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeSubjectAreaDefinition(this.userId, guid);
+        subjectAreaCategory.purgeSubjectAreaDefinition(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public SubjectAreaDefinition restoreSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(this.userId, guid);
+        SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(serverName,this.userId, guid);
         if (restoredSubjectAreaDefinition != null)
         {
             System.out.println("Deleted SubjectAreaDefinition name is " + restoredSubjectAreaDefinition.getName());
