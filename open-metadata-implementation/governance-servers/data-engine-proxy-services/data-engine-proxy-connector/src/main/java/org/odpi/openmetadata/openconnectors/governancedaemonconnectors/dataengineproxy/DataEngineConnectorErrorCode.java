@@ -26,6 +26,10 @@ public enum DataEngineConnectorErrorCode {
             "The user is not authorized for the Data Engine OMAS operation",
             "The system is unable to process the operation due to the user not being authorized to do so.",
             "Check your OMAS configuration and user authorizations."),
+    UNKNOWN_ERROR(500, "DATA-ENGINE-CONNECTOR-500-003",
+            "An unknown error occurred",
+            "The system is unable to process the operation due to an unknown runtime error.",
+            "Check your OMAS configuration and server logs to troubleshoot."),
     NO_CONFIG(404, "DATA-ENGINE-CONNECTOR-404-003",
             "No configuration was provided for the Data Engine Proxy server",
             "The system is unable to process the operation due to a lack of a configuration document.",
@@ -99,8 +103,7 @@ public enum DataEngineConnectorErrorCode {
      */
     public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-        return result;
+        return mf.format(params);
     }
 
 

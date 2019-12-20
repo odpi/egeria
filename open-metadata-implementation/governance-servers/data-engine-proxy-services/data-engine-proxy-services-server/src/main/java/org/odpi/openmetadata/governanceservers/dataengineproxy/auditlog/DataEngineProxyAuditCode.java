@@ -60,7 +60,12 @@ public enum DataEngineProxyAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The service is not shutdown properly.",
             "The connection could not be shutdown.",
-            "Try again. ")
+            "Try again. "),
+    POLLING("DATA-ENGINE-PROXY-0009",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Data Engine Proxy is polling for changes since {0}",
+            "The local server is looking for changes since the last poll interval.",
+            "No action is required.  This is part of the normal operation of the service."),
     ;
 
     private String logMessageId;
