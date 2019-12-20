@@ -434,16 +434,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
 
 
 
-                    // TODO clean me up!!
-                    ///*
-                    // * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                    // */
-                    //
-                    //assertCondition((result != null),
-                    //        assertion1,
-                    //        testTypeName + assertionMsg1,
-                    //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                    //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -607,16 +597,6 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                      */
 
 
-
-                    // TODO clean me up!!
-                    ///*
-                    // * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                    // */
-                    //assertCondition((result != null),
-                    //        assertion4,
-                    //        testTypeName + assertionMsg4,
-                    //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                    //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                     /*
@@ -846,15 +826,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                            pageSize);
 
 
-                        // TODO - clean me up!!
-                        ///*
-                        // * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                        // */
-                        //assertCondition((result != null),
-                        //        assertion7,
-                        //        testTypeName + assertionMsg7,
-                        //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -978,21 +950,8 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                            pageSize);
 
 
-                        // TODO - clean me up!!
-                        ///*
-                        // * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
-                        //*/
-                        //assertCondition((expectedEntityCount == 0 || result != null),
-                        //        assertion10,
-                        //        testTypeName + assertionMsg10,
-                        //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
-                        ///*
-                        // * Since no result is legitimate in this test, only proceed with further checks where relevant
-                        // */
-                        //if (result != null) {
 
 
                         /*
@@ -1122,20 +1081,9 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                            pageSize);
 
 
-                        // TODO - clean me up!!
-                        ///*
-                        // * In this test it is not possible to always predict (expect) a non-null result, only if expectedEntityCount > 0
-                        // */
-                        //assertCondition((expectedEntityCount == 0 || result != null),
-                        //                assertion13,
-                        //                testTypeName + assertionMsg13,
-                        //                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                        //                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
-                        ///*
-                        // * Since no result is legitimate in this test, only proceed with further checks where relevant
-                        // */
-                        //if (result != null) {
+
+
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1333,15 +1281,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                             pageSize);
 
 
-                    // TODO - clean me up!!
-                    /*
-                     * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                     */
-                    //assertCondition((result != null),
-                    //        assertion16,
-                    //        testTypeName + assertionMsg16,
-                    //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                    //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+
 
                     /*
                      * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1488,15 +1428,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                                 pageSize);
 
 
-                        // TODO - clean me up!!
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion19,
-                        //        testTypeName + assertionMsg19,
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1643,15 +1575,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                                 pageSize);
 
 
-                        // TODO - clean me up!!
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion22,
-                        //        testTypeName + assertionMsg22,
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
@@ -1802,15 +1726,7 @@ public class TestSupportedEntitySharingPropertySearch extends RepositoryConforma
                                                                                 pageSize);
 
 
-                        // TODO - clean me up!!
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion25,
-                        //        testTypeName + assertionMsg25,
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+
 
                         /*
                          * Check that the expected number of entities was returned. This has to consider the effect of the original
