@@ -151,7 +151,7 @@ public class SubjectAreaDefinitionSample
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
-        return subjectAreaCategory.createSubjectAreaDefinition(clientUserId, subjectAreaDefinition);
+        return subjectAreaCategory.createSubjectAreaDefinition(serverName, clientUserId, subjectAreaDefinition);
     }
 
 
@@ -173,7 +173,8 @@ public class SubjectAreaDefinitionSample
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         subjectAreaDefinition.setParentCategory(parentCategorysummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(clientUserId,
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(serverName,
+                                                                                                         clientUserId,
                                                                                                          subjectAreaDefinition);
         if (newSubjectAreaDefinition != null)
         {
@@ -197,7 +198,7 @@ public class SubjectAreaDefinitionSample
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         glossary.setDescription(glossaryDescription);
-        return subjectAreaGlossary.createGlossary(userId, glossary);
+        return subjectAreaGlossary.createGlossary(serverName, userId, glossary);
     }
 
 

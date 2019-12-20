@@ -29,7 +29,6 @@ class TypeManager extends PolymerElement {
         return html`
 
             <token-ajax id="loadTypeExplorerAjaxId" last-response="{{lastLoadTypeExplorerResp}}" ></token-ajax>
-             <token-ajax id="serverNamesAjaxId" last-response="{{lastServerNamesResp}}" ></token-ajax>
         `; }
 
 
@@ -41,10 +40,6 @@ class TypeManager extends PolymerElement {
             lastLoadTypeExplorerResp: {
                 type: Object,
                 observer: '_loadTypeExplorerRespChanged'    // Observer called  when this property changes
-            },
-            lastServerNamesResp: {
-                 type: Object,
-                 observer: '_lastServerNamesChanged'    // Observer called  when this property changes
             },
 
             // TEX - this holds all the extended type information
@@ -69,11 +64,11 @@ class TypeManager extends PolymerElement {
     /*
      *  Ask the UI Aoplication to retrieve the type information from the named OMAG Server
      */
-    loadTypes(serverName, enterpriseQuery) {
+    loadTypes(serverName, serverURLRoot, enterpriseQuery) {
 
-        if (this.validate(serverName)) {
+        if (this.validate(serverName) && this.validate(serverURLRoot)) {
 
-            if (serverName.length > 0) {
+            if (serverName.length > 0 && serverURLRoot.length > 0) {
 
                 /*
                  * Requesting new type information but do not clear what was previously loaded.
@@ -85,7 +80,8 @@ class TypeManager extends PolymerElement {
                  */
                 var serverDetails              = {};
                 serverDetails.serverName       = serverName;
-                serverDetails.enterpriseOption = enterpriseQuery ? "true" : "false";
+                serverDetails.serverURLRoot    = serverURLRoot;
+                serverDetails.enterpriseOption =  enterpriseQuery ? "true" : "false";
 
 
                 /*
@@ -95,26 +91,15 @@ class TypeManager extends PolymerElement {
 
                 this.$.loadTypeExplorerAjaxId.method ="post";
                 this.$.loadTypeExplorerAjaxId.body = serverDetails;
-                this.$.loadTypeExplorerAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/type-explorer/types";
+                this.$.loadTypeExplorerAjaxId.url = "/api/types/typeExplorer";
                 this.$.loadTypeExplorerAjaxId._go();
 
             }
         }
         else {
-            alert("Please check serverName field is set - then retry");
+            alert("Please check serverName and serverURLRoot fields are set - then retry");
         }
 
-    }
-
-    loadServers() {
-                /*
-                 * Issue the AJAX query
-                 * The userId under which the back-end REST call will be made is retrieved in the UI Application from the HTTP request's session context
-                 */
-
-                this.$.serverNamesAjaxId.method ="get";
-                this.$.serverNamesAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/type-explorer/metadata-server-names";
-                this.$.serverNamesAjaxId._go();
     }
 
     validate(parameter) {
@@ -165,43 +150,6 @@ class TypeManager extends PolymerElement {
         }
     }
 
-    _lastServerNamesChanged(newValue,oldValue) {
-
-
-        if (newValue !== undefined && newValue !== null) {
-
-            if (newValue.httpStatusCode == 200) {
-
-                // Success create event with server names in
-
-                var customEvent = new CustomEvent('server-names-loaded', {
-                 bubbles: true,
-                 composed: true,
-                 detail: {source: "type-manager",serverNames: newValue.metadataServerNames}  });
-                this.dispatchEvent(customEvent);
-
-            }
-            else {
-
-                // Failure
-
-                if (newValue.exceptionText) {
-
-                    alert('Error occurred: ' +newValue.exceptionText);
-
-                }
-                else {
-
-                    alert('Error occurred: no exception message given');
-
-                }
-
-                // Generate a failure to load event - this will allow the status to be reported
-                var customEvent = new CustomEvent('server-names-not-loaded', { bubbles: true, composed: true, detail: {source: "type-manager"}  });
-                this.dispatchEvent(customEvent);
-            }
-        }
-    }
 
     /*
      * Helper function to retrieve entities from TEX
