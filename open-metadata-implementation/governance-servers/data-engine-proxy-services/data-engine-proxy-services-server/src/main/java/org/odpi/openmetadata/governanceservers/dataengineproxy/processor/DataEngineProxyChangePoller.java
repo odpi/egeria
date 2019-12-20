@@ -30,7 +30,6 @@ public class DataEngineProxyChangePoller implements Runnable {
     private DataEngineProxyConfig dataEngineProxyConfig;
     private DataEngineImpl dataEngineOMASClient;
     private DataEngineConnectorBase connector;
-    private String engineGuid;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
@@ -97,7 +96,17 @@ public class DataEngineProxyChangePoller implements Runnable {
                         e
                 );
             } catch (ConnectorCheckedException e) {
-                log.error("Error in starting the Data Engine Proxy connector.", e);
+                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.UNKNOWN_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+                throw new OCFRuntimeException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction(),
+                        e
+                );
             }
         } else {
             DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.NO_CONFIG;
@@ -112,7 +121,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             );
         }
 
-        if (connector != null && connector.isActive()) {
+        if (connector.isActive()) {
             auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
             this.auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
@@ -147,50 +156,36 @@ public class DataEngineProxyChangePoller implements Runnable {
         running.set(true);
         while (running.get()) {
             try {
+
                 Date changesLastSynced = connector.getChangesLastSynced();
                 Date changesCutoff = new Date();
-                if (dataEngineOMASClient.getExternalSourceName()==null)
-                {
-                    dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getSoftwareServerCapability().getQualifiedName());
-                }
+
+                ensureSourceNameIsSet();
+
                 if (log.isInfoEnabled()) { log.info("Polling for changes since: {}", changesLastSynced); }
-                List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
-                if (changedSchemaTypes != null) {
-                    for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
-                        dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
-                    }
-                }
-                List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
-                if (changedPortImplementations != null) {
-                    for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
-                        dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
-                    }
-                }
-                List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
-                if (changedPortAliases != null) {
-                    for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
-                        dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
-                    }
-                }
-                if (log.isInfoEnabled()) { log.info(" ... getting changed processes."); }
-                List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
-                if (changedProcesses != null) {
-                    for (DataEngineProcess changedProcess : changedProcesses) {
-                        dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
-                    }
-                    if (log.isInfoEnabled()) { log.info(" ... completing process changes."); }
-                }
-                if (log.isInfoEnabled()) { log.info(" ... getting changed lineage mappings."); }
-                List<DataEngineLineageMappings> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
-                if (changedLineageMappings != null) {
-                    for (DataEngineLineageMappings changedLineageMapping : changedLineageMappings) {
-                        dataEngineOMASClient.addLineageMappings(changedLineageMapping.getUserId(), new ArrayList<>(changedLineageMapping.getLineageMappings()));
-                    }
-                }
+                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.POLLING;
+                this.auditLog.logRecord("Polling",
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(changesLastSynced == null ? "(all changes)" : changesLastSynced.toString()),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+
+                // Send the changes, and ordering here is important
+                upsertSchemaTypes(changesLastSynced, changesCutoff);
+                upsertPortImplementations(changesLastSynced, changesCutoff);
+                upsertPortAliases(changesLastSynced, changesCutoff);
+                upsertProcesses(changesLastSynced, changesCutoff);
+                upsertLineageMappings(changesLastSynced, changesCutoff);
+
+                // Update the timestamp at which changes were last synced
                 connector.setChangesLastSynced(changesCutoff);
+
+                // Sleep for the poll interval before continuing with the next poll
                 Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
+
             } catch (InvalidParameterException | PropertyServerException e) {
-                log.error("Exception caught!", e);
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
                 throw new OCFRuntimeException(
@@ -203,7 +198,6 @@ public class DataEngineProxyChangePoller implements Runnable {
                         e
                 );
             } catch (UserNotAuthorizedException e) {
-                log.error("Exception caught!", e);
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
                 throw new OCFRuntimeException(
@@ -216,10 +210,101 @@ public class DataEngineProxyChangePoller implements Runnable {
                         e
                 );
             } catch (Exception e) {
-                log.error("Fatal error occurred during processing.", e);
+                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.UNKNOWN_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+                throw new OCFRuntimeException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction(),
+                        e
+                );
             }
         }
 
+    }
+
+    private void ensureSourceNameIsSet() {
+        if (dataEngineOMASClient.getExternalSourceName() == null) {
+            dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getSoftwareServerCapability().getQualifiedName());
+        }
+    }
+
+    private void upsertSchemaTypes(Date changesLastSynced,
+                                   Date changesCutoff) throws
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        if (log.isInfoEnabled()) { log.info(" ... getting changed schema types."); }
+        List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
+        if (changedSchemaTypes != null) {
+            for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
+                dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
+            }
+            if (log.isInfoEnabled()) { log.info(" ... completing schema type changes."); }
+        }
+    }
+
+    private void upsertPortImplementations(Date changesLastSynced,
+                                           Date changesCutoff) throws
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        if (log.isInfoEnabled()) { log.info(" ... getting changed port implementations."); }
+        List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
+        if (changedPortImplementations != null) {
+            for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
+                dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
+            }
+            if (log.isInfoEnabled()) { log.info(" ... completing port implementation changes."); }
+        }
+    }
+
+    private void upsertPortAliases(Date changesLastSynced,
+                                   Date changesCutoff) throws
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        if (log.isInfoEnabled()) { log.info(" ... getting changed port aliases."); }
+        List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
+        if (changedPortAliases != null) {
+            for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
+                dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
+            }
+            if (log.isInfoEnabled()) { log.info(" ... completing port alias changes."); }
+        }
+    }
+
+    private void upsertProcesses(Date changesLastSynced,
+                                 Date changesCutoff) throws
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        if (log.isInfoEnabled()) { log.info(" ... getting changed processes."); }
+        List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
+        if (changedProcesses != null) {
+            for (DataEngineProcess changedProcess : changedProcesses) {
+                dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
+            }
+            if (log.isInfoEnabled()) { log.info(" ... completing process changes."); }
+        }
+    }
+
+    private void upsertLineageMappings(Date changesLastSynced,
+                                       Date changesCutoff) throws
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        if (log.isInfoEnabled()) { log.info(" ... getting changed lineage mappings."); }
+        List<DataEngineLineageMappings> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
+        if (changedLineageMappings != null) {
+            for (DataEngineLineageMappings changedLineageMapping : changedLineageMappings) {
+                dataEngineOMASClient.addLineageMappings(changedLineageMapping.getUserId(), new ArrayList<>(changedLineageMapping.getLineageMappings()));
+            }
+            if (log.isInfoEnabled()) { log.info(" ... completing lineage mapping changes."); }
+        }
     }
 
 }
