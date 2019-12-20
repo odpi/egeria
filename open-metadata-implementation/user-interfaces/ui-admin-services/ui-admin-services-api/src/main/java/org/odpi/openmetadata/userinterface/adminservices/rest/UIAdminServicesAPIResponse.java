@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.userinterface.adminservices.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

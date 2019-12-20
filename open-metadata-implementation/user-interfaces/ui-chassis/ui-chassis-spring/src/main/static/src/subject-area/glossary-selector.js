@@ -177,7 +177,7 @@ class GlossarySelector extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
 
         this.$.addGlossaryAjaxId.method ="post";
         this.$.addGlossaryAjaxId.body = glossary;
-        this.$.addGlossaryAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/subject-area/glossaries";
+        this.$.addGlossaryAjaxId.url = "/api/subject-area/glossaries";
         this.$.addGlossaryAjaxId._go();
   }
 
@@ -204,7 +204,7 @@ class GlossarySelector extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
   */
   getGlossaries() {
       this.$.getGlossariesAjaxId.method ="get";
-      this.$.getGlossariesAjaxId.url = "/servers/<<servername>>/open-metadata/view-services/subject-area/glossaries";
+      this.$.getGlossariesAjaxId.url = "/api/subject-area/glossaries";
       this.$.getGlossariesAjaxId._go();
   }
  /**

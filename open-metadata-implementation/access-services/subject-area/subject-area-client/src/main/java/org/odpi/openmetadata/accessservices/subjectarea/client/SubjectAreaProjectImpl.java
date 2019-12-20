@@ -56,6 +56,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      *
      * Projects that are created using this call will be GlossaryProjects.
      * <p>
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
      * @return the created project.
@@ -72,7 +73,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Project createProject(String serverName, String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName ="createProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
@@ -120,6 +121,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
 
     /**
      * Get a project by guid.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the project to get
      * @return the requested project.
@@ -135,7 +137,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
+    public  Project getProjectByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -158,6 +160,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     /**
      * Get Project relationships
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the project to get
      * @param guid   guid of the project to get
@@ -179,7 +182,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public List<Line> getProjectRelationships(String userId, String guid,
+    public List<Line> getProjectRelationships(String serverName, String userId, String guid,
                                            Date asOfTime,
                                            int offset,
                                            int pageSize,
@@ -194,16 +197,17 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        List<Line> relationships = getRelationships(BASE_URL,serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return relationships;
     }
 
-    /**
+    /*
      * Get the terms in this project.
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
@@ -219,7 +223,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public List<Term> getProjectTerms(
+    public List<Term> getProjectTerms(String serverName,
                                String userId,
                                String guid,
                                Date asOfTime
@@ -247,6 +251,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     /**
      * Find Project
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Project properties. If not specified then all projects are returned.
      * @param asOfTime the projects returned as they were at this time. null indicates at the current time.
@@ -267,7 +272,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public List<Project> findProject(String userId,
+    public List<Project> findProject(String serverName, String userId,
                                    String searchCriteria,
                                    Date asOfTime,
                                    int offset,
@@ -338,6 +343,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the project to update
      * @param suppliedProject project to be updated
@@ -350,7 +356,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Project replaceProject(String userId, String guid, Project suppliedProject) throws
+    public Project replaceProject(String serverName, String userId, String guid, Project suppliedProject) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
@@ -359,7 +365,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        Project project = updateProject(userId,guid,suppliedProject,true);
+        Project project = updateProject(serverName, userId,guid,suppliedProject,true);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -374,6 +380,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
+     * @param serverName       serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the project to update
      * @param suppliedProject project to be updated
@@ -386,7 +393,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Project updateProject(String userId, String guid, Project suppliedProject) throws UnexpectedResponseException,
+    public Project updateProject(String serverName, String userId, String guid, Project suppliedProject) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     MetadataServerUncontactableException {
@@ -394,7 +401,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        Project project = updateProject(userId,guid,suppliedProject,false);
+        Project project = updateProject(serverName, userId,guid,suppliedProject,false);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -410,6 +417,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * A delete (also known as a soft delete) means that the project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the project to be deleted.
      * @return the deleted project
@@ -423,7 +431,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-    public Project deleteProject(String userId,String guid) throws InvalidParameterException,
+    public Project deleteProject(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnrecognizedGUIDException,
@@ -460,6 +468,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      *
      * A purge means that the project will not exist after the operation.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the project to be deleted.
      *
@@ -473,7 +482,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeProject(String userId,String guid) throws InvalidParameterException,
+    public  void purgeProject(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
@@ -520,7 +529,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    private  Project updateProject(String userId,String guid,Project suppliedProject,boolean isReplace) throws
+    private  Project updateProject(String serverName, String userId,String guid,Project suppliedProject,boolean isReplace) throws
                                                                                                                                UserNotAuthorizedException,
                                                                                                                                InvalidParameterException,
                                                                                                                                MetadataServerUncontactableException,
@@ -555,6 +564,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Restore a Project
      *
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the project to restore
      * @return the restored project
@@ -566,7 +576,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  Project restoreProject(String userId,String guid) throws InvalidParameterException,
+    public  Project restoreProject(String serverName, String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

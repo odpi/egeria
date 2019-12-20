@@ -28,10 +28,6 @@
     <modules>
         <module>ui-admin-services</module>
         <module>ui-chassis</module>
-        <module>ui-common</module>
-        <module>ui-security</module>
-        <module>view-services</module>
-
     </modules>
 
 

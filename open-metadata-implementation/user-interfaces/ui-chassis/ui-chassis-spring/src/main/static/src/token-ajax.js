@@ -91,25 +91,15 @@ class TokenAjax extends PolymerElement {
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
             this.$.ajax.headers['x-auth-token'] = this.token;
-            if (this.$.ajax.url.includes('/servers/<<servername>>/')) {
-                var servername = sessionStorage.getItem('egeria-ui-servername');
-                console.log(this.id + ' -- server name ' + servername);
-
-                this.$.ajax.url = this.$.ajax.url.replace('/servers/<<servername>>/','/servers/'+ servername + '/');
-            }
-
             this.$.ajax.generateRequest();
         }else{
             console.debug('No token set to token-ajax: no _go');
-            sessionStorage.removeItem('egeria-ui-servername');
         }
     }
 
     _tokenUpdated(){
-        console.log(this.id + ' -- token updated with authentication :'+this.token);
+        console.log(this.id + ' -- token updated with:'+this.token)
         this.$.ajax.headers['x-auth-token'] = this.token;
-
-        //TODO do we have access to the uri here to do the replacement?
     }
 
     _requestOptionsChanged(auto){
@@ -121,7 +111,6 @@ class TokenAjax extends PolymerElement {
     _handleErrorResponse(evt){
         var status = evt.detail.request.xhr.status;
         var resp   = evt.detail.request.xhr.response;
-        sessionStorage.removeItem('egeria-ui-servername');
         // Token is not valid, log out.
         if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
             console.log('Token invalid:'+ this.token);
@@ -135,8 +124,8 @@ class TokenAjax extends PolymerElement {
                 bubbles: true,
                 composed: true,
                 detail: {message: "We are experiencing an unexpected error. Please try again later!", level: 'error'}}));
-        }
-        this.$.backdrop.close();
+            }
+            this.$.backdrop.close();
     }
 
     _onLoadingChanged(){

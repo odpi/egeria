@@ -15,7 +15,7 @@
 
     <artifactId>ui-admin-services-spring</artifactId>
 
-    <name>Administration Services with Spring</name>
+    <name>User Interface Administration Services with Spring</name>
     <description>
         The ui administration services with Spring module uses Spring to implement a RESTful service
         for the ui server administration services.
@@ -46,11 +46,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
     </dependencies>
