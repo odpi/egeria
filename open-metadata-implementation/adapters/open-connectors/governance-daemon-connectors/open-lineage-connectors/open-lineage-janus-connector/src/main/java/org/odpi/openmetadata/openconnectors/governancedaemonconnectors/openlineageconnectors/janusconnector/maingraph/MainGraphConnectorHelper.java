@@ -38,7 +38,7 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
 
     private JanusGraph mainGraph;
 
-    public MainGraphConnectorHelper(JanusGraph mainGraph){
+    public MainGraphConnectorHelper(JanusGraph mainGraph) {
         this.mainGraph = mainGraph;
     }
 
@@ -175,7 +175,7 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
      * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
      * columns or tables connected to synonyms of the queried glossary term.
      *
-     * @param guid  The guid of the glossary term of which the lineage is queried of.
+     * @param guid The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges glossary(String guid) {
@@ -199,7 +199,7 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
      * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to
      *                                be returned.
      */
-     void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
+    void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
         Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
@@ -227,7 +227,7 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
      * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
      * @return The original lineageVerticesAndEdges without processes or subprocesses.
      */
-     void filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
+    void filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
         Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
@@ -390,10 +390,8 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
                         condensedDestinationVertex.getNodeID(),
                         newVertex.getNodeID()
                 );
-                if (newVertex != null)
-                    lineageVertices.add(newVertex);
-                if (newEdge != null)
-                    lineageEdges.add(newEdge);
+                lineageVertices.add(newVertex);
+                lineageEdges.add(newEdge);
             }
             LineageEdge destinationEdge = new LineageEdge(
                     EDGE_LABEL_CONDENSED,
@@ -435,16 +433,16 @@ public class MainGraphConnectorHelper extends MainGraphConnectorBase {
      * @param view The view queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-     String getEdgeLabel(View view){
+    String getEdgeLabel(View view) {
         String edgeLabel = "";
-            switch (view) {
-                case TABLE_VIEW:
-                    edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
-                    break;
-                case COLUMN_VIEW:
-                    edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
-                    break;
-            }
-            return edgeLabel;
+        switch (view) {
+            case TABLE_VIEW:
+                edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
+                break;
+            case COLUMN_VIEW:
+                edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
+                break;
+        }
+        return edgeLabel;
     }
 }
