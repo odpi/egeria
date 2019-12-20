@@ -14,4 +14,3 @@ variables:
   dockerfilePath: ${{ parameters.dockerfilePath }}
   helmBaseChartPath: ${{ parameters.helmchartPath }}
   helmChartName: ${{ parameters.helmchartPath }}
-

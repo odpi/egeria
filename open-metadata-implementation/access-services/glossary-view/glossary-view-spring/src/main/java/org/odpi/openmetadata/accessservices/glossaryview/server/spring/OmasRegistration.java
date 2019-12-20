@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Triggers the registration of this OMAS. No endpoints must be defined in this rest controller
- * TODO: find a better way to do it
+ * TODO: find a better way to do it. Big doubts that registration on spring controller init is correct
  */
 @RestController
-public class OmasRegistrationResource {
+public class OmasRegistration {
 
-    static{
+    static final String PAGE_FROM_DEFAULT_VALUE = "0";
+    static final String PAGE_SIZE_DEFAULT_VALUE = "100";
+    static final int PAGE_SIZE_MAX_VALUE = 1000;
+
+    public OmasRegistration(){
         GlossaryViewRegistration.registerAccessService();
     }
 
