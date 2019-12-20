@@ -5,7 +5,6 @@
  */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
 
 import java.util.Date;
