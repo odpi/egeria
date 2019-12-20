@@ -38,7 +38,7 @@ public abstract class OpenMetadataTestCase
      * Enumerated type for control of multi-phase tests
      */
     public static enum TestPhase {
-        CREATE,
+        SEED,
         EXECUTE,
         CLEAN
     }

@@ -174,7 +174,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Search testcases - these are multi-phase tests (create, execute, clean)
              */
 
-            List<TestSupportedEntitySearch> entitySearchTestCases = new ArrayList<>();   // NEW -- TODO clean up the old ones when you can!!
+            List<TestSupportedEntitySearch> entitySearchTestCases = new ArrayList<>();                    // NEW -- TODO clean up the old ones when you can!!
+            List<TestSupportedRelationshipSearch> relationshipSearchTestCases = new ArrayList<>();        // NEW -- TODO clean up the old ones when you can!!
 
             List<TestSupportedEntityPropertySearch> entityPropertySearchTestCases = new ArrayList<>();
             List<TestSupportedEntityPropertyAdvancedSearch> entityPropertyAdvancedSearchTestCases = new ArrayList<>();
@@ -309,32 +310,45 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
 
-            if (false) {
+
                 if (relationshipDefs != null) {
 
                     for (RelationshipDef relationshipDef : relationshipDefs) {
 
-                        TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
-                        relationshipTestCases.add(testRelationshipLifecycle);
+                        if (relationshipDef.getName().equals("SemanticAssignment")) {
 
-                        TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
-                        relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
+                            if (false) {
 
-                        TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
-                        relationshipReidentifyTestCases.add(testRelationshipReidentify);
+                                TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
+                                relationshipTestCases.add(testRelationshipLifecycle);
 
-                        TestSupportedRelationshipPropertySearch testRelationshipPropertySearch = new TestSupportedRelationshipPropertySearch(workPad, entityDefs, relationshipDef);
-                        relationshipPropertySearchTestCases.add(testRelationshipPropertySearch);
+                                TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
+                                relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
 
-                        TestSupportedRelationshipPropertyAdvancedSearch testRelationshipPropertyAdvancedSearch = new TestSupportedRelationshipPropertyAdvancedSearch(workPad, entityDefs, relationshipDef);
-                        relationshipPropertyAdvancedSearchTestCases.add(testRelationshipPropertyAdvancedSearch);
+                                TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
+                                relationshipReidentifyTestCases.add(testRelationshipReidentify);
+                            }
 
-                        TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, relationshipDef);
-                        relationshipSharingPropertySearchTestCases.add(testRelationshipsharingPropertySearch);
+                            TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
+                            relationshipSearchTestCases.add(testRelationshipSearch);
 
+                            if (false) {
+
+                                TestSupportedRelationshipPropertySearch testRelationshipPropertySearch = new TestSupportedRelationshipPropertySearch(workPad, entityDefs, relationshipDef);
+                                relationshipPropertySearchTestCases.add(testRelationshipPropertySearch);
+
+                                TestSupportedRelationshipPropertyAdvancedSearch testRelationshipPropertyAdvancedSearch = new TestSupportedRelationshipPropertyAdvancedSearch(workPad, entityDefs, relationshipDef);
+                                relationshipPropertyAdvancedSearchTestCases.add(testRelationshipPropertyAdvancedSearch);
+
+                                TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, relationshipDef);
+                                relationshipSharingPropertySearchTestCases.add(testRelationshipsharingPropertySearch);
+                            }
+
+                        }
                     }
                 }
 
+                if (false) {
 
                 if (classificationDefs != null) {
 
@@ -435,7 +449,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Phase 1
              */
             for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
             /*
              * Phase 2
@@ -456,7 +470,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Phase 1
              */
             for (TestSupportedEntityPropertySearch testCase : entityPropertySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
             /*
              * Phase 2
@@ -474,8 +488,26 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             /*
              * Phase 1
              */
+            for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
+            }
+            /*
+             * Phase 2
+             */
+            for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.EXECUTE);
+            }
+            /*
+             * Phase 3
+             */
             for (TestSupportedRelationshipPropertySearch testCase : relationshipPropertySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
+            }
+            /*
+             * Phase 1
+             */
+            for (TestSupportedRelationshipPropertySearch testCase : relationshipPropertySearchTestCases) {
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
             /*
              * Phase 2
@@ -499,7 +531,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Phase 1
              */
             for (TestSupportedEntityPropertyAdvancedSearch testCase : entityPropertyAdvancedSearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
             /*
              * Phase 2
@@ -518,7 +550,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Phase 1
              */
             for (TestSupportedRelationshipPropertyAdvancedSearch testCase : relationshipPropertyAdvancedSearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CREATE);
+                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
             /*
              * Phase 2

@@ -8,13 +8,14 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -34,18 +35,18 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
 
 
 /**
- * Test that all defined entities can be retrieved by property searches.
+ * Test that all defined relationships can be retrieved by property searches.
  *
- * This testcase covers Entity searches using basic and advanced search criteria/values.
+ * This testcase covers relationship searches using basic and advanced search criteria/values.
  * The difference is:
  *    basic     = only literal values or repo helper regexes can be used for values of string match properties or as searchCriteria
  *    advanced  = arbitrary regexes can be used for values of string match properties or as searchCriteria
  *
  */
-public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
+public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId = "repository-entity-property-search";
-    private static final String testCaseName = "Repository entity property search test case";
+    private static final String testCaseId = "repository-relationship-property-search";
+    private static final String testCaseName = "Repository relationship property search test case";
 
     /* Assertions for multi set tests */
 
@@ -74,51 +75,55 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String assertionMsg108  = " TODO .";
 
     private static final String assertion301     = testCaseId + "-301";
-    private static final String assertionMsg301  = " search criteria test returned valid number of entities.";
+    private static final String assertionMsg301  = " search criteria test returned valid number of relationships.";
 
     private static final String assertion303     = testCaseId + "-303";
-    private static final String assertionMsg303  = " search criteria test returned valid entities.";
+    private static final String assertionMsg303  = " search criteria test returned valid relationships.";
 
 
     private static final String assertion401     = testCaseId + "-401";
-    private static final String assertionMsg401  = " type filtering test returned valid number of entities.";
+    private static final String assertionMsg401  = " type filtering test returned valid number of relationships.";
 
     private static final String assertion402     = testCaseId + "-402";
-    private static final String assertionMsg402  = " type filtering test returned valid entities.";
+    private static final String assertionMsg402  = " type filtering test returned valid relationships.";
 
 
     private static final String assertion501     = testCaseId + "-501";
-    private static final String assertionMsg501  = " advanced search criteria test returned valid number of entities.";
+    private static final String assertionMsg501  = " advanced search criteria test returned valid number of relationships.";
 
     private static final String assertion502     = testCaseId + "-502";
-    private static final String assertionMsg502  = " advanced search criteria test returned valid entities.";
+    private static final String assertionMsg502  = " advanced search criteria test returned valid relationships.";
 
     private static final String assertion503     = testCaseId + "-503";
-    private static final String assertionMsg503  = " advanced match properties test returned valid number of entities.";
+    private static final String assertionMsg503  = " advanced match properties test returned valid number of relationships.";
 
     private static final String assertion504     = testCaseId + "-504";
-    private static final String assertionMsg504  = " advanced match properties test returned valid entities.";
+    private static final String assertionMsg504  = " advanced match properties test returned valid relationships.";
+
+    private static final String assertion1001    = testCaseId + "-1001";
+    private static final String assertionMsg1001 = " repository does not support entity type needed for relationship end.";
 
 
-    private RepositoryConformanceWorkPad workPad;
-    private String                       metadataCollectionId;
-    private OMRSMetadataCollection       metadataCollection;
-    private EntityDef                    entityDef;
-    private List<TypeDefAttribute>       attrList;
-    private String                       testTypeName;
+    private RepositoryConformanceWorkPad              workPad;
+    private String                                    metadataCollectionId;
+    private OMRSMetadataCollection                    metadataCollection;
+    private RelationshipDef                           relationshipDef;
+    private Map<String,EntityDef>                     entityDefs;
+    private List<TypeDefAttribute>                    attrList;
+    private String                                    testTypeName;
 
-    private List<EntityDetail>           knownInstances;
-    private List<String>                 knownInstancesGUIDs;
-    private List<EntityDetail>           createdInstances;
-    private boolean                      pageLimited;
+    private List<Relationship>                        knownInstances;
+    private List<String>                              knownInstancesGUIDs;
+    private List<Relationship>                        createdInstances;
+    private boolean                                   pageLimited;
 
-    private List<String> uniqueAttributeNames;
-    private List<String> definedAttributeNames;
+    private List<String>                              uniqueAttributeNames;
+    private List<String>                              definedAttributeNames;
 
-    private Map<String, Map <Object, List<String>>>   propertyValueMap  ;
-    private Map<String,PrimitiveDefCategory>          propertyCatMap     ;
+    private Map<String, Map <Object, List<String>>>   propertyValueMap;
+    private Map<String,PrimitiveDefCategory>          propertyCatMap;
 
-    private int                pageSize               ;
+    private int                                       pageSize;
 
 
 
@@ -126,20 +131,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
-     * @param entityDef type of valid entities
+     * @param relationshipDef type of valid relationships
      */
-    public TestSupportedEntitySearch(RepositoryConformanceWorkPad workPad,
-                                     EntityDef                    entityDef)
+    public TestSupportedRelationshipSearch(RepositoryConformanceWorkPad   workPad,
+                                           Map<String,EntityDef>          entityDefs,
+                                           RelationshipDef                relationshipDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+              RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+              RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
         this.workPad               = workPad;
         this.metadataCollectionId  = workPad.getTutMetadataCollectionId();
-        this.entityDef             = entityDef;
+        this.relationshipDef       = relationshipDef;
+        this.entityDefs            = entityDefs;
 
-        this.testTypeName          = this.updateTestIdByType(entityDef.getName(), testCaseId, testCaseName);
+        this.testTypeName          = this.updateTestIdByType(relationshipDef.getName(), testCaseId, testCaseName);
 
         this.knownInstances        = null;
         this.knownInstancesGUIDs   = null;
@@ -190,15 +197,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          *
          * Phase 3: This is the clean up phase - if any instances were created they are cleaned up.
          *
-         * This test case does not classify entities or search by classification - they are tested in the accompanying TestSupportedClassificationLifecycle
+         * This test case does not classify relationships or search by classification - they are tested in the accompanying TestSupportedClassificationLifecycle
          * and TestSupportedClassificationSearch testcases.
          *
          *
          * The following searches are performed:
          *   Find By Instance (Match) Properties - with match property values using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for ENTITY_ADVANCED_SEARCH
+         *                                         arbitrary regexes for RELATIONSHIP_ADVANCED_SEARCH
          *   Find By Property Value              - with searchCriteria using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for ENTITY_ADVANCED_SEARCH
+         *                                         arbitrary regexes for RELATIONSHIP_ADVANCED_SEARCH
          *
          *
          */
@@ -217,8 +224,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
         }
 
-        EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
-        verifyCondition((entityDef.equals(knownEntityDef)),
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
                         assertion101,
                         testTypeName + assertionMsg101,
                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
@@ -229,7 +236,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          * Take a look at the attributes for the type being tested
          */
 
-        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), entityDef);
+        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
 
         if (this.attrList == null || this.attrList.isEmpty()) {
 
@@ -245,7 +252,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          *
          * There are attributes for this type
          *
-         * Construct a list of primitive TypeDefAttributes that are specified by the known Entity type
+         * Construct a list of primitive TypeDefAttributes that are specified by the known Relationship type
          */
 
 
@@ -292,31 +299,30 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         /*
          * Perform an initial discovery search against the repository....
          *
-         * This initial search uses findEntitiesByProperty() with an empty match properties object. The purpose of this
+         * This initial search uses findRelationshipsByProperty() with an empty match properties object. The purpose of this
          * is to retrieve up to a page-worth of instances of the type being tested. These instances are then recorded and
          * analysed in order to predict the expected results from the actual test searches during the EXECUTE phase.
          */
 
 
         /*
-         *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
+         *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize relationships of the current type
          */
 
         InstanceProperties emptyMatchProperties    = new InstanceProperties();
 
 
 
-        knownInstances = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                              entityDef.getGUID(),
-                                                                              emptyMatchProperties,
-                                                                              MatchCriteria.ALL,
-                                                                              0,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              pageSize);
+        knownInstances = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        relationshipDef.getGUID(),
+                                                                        emptyMatchProperties,
+                                                                        MatchCriteria.ALL,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
 
 
         if (knownInstances == null) {
@@ -329,7 +335,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Also set result to the created instances, so this will be used in the tests. If it is not possible to create instances then
              * the test is abandoned as no assertions can be made (the result for this test will be UNKNOWN_STATUS).
              *
-             * Want to come out of this with List<EntityDetail> result - or having quietly given up....
+             * Want to come out of this with List<Relationship> result - or having quietly given up....
              */
 
 
@@ -358,17 +364,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 for (int instanceCount = 0 ; instanceCount < numInstancesToCreate ; instanceCount++ ) {
 
-                    EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                             entityDef.getGUID(),
-                                                             super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount),
-                                                             null,
-                                                             null);
+
+                    Relationship newRelationship = createRelationship(relationshipDef,
+                                                                      super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount));
+
+                    //Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
+                    //                                         relationshipDef.getGUID(),
+                    //                                         super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount),
+                    //                                         null,
+                    //                                         null);
 
                     // Record the created instance for result prediction and verification
-                    knownInstances.add(newEntity);
+                    knownInstances.add(newRelationship);
 
                     // Record the created instance's GUID for later clean up.
-                    createdInstances.add(newEntity);
+                    createdInstances.add(newRelationship);
 
                 }
 
@@ -378,8 +388,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition((true),
                                 assertion102,
                                 testTypeName + assertionMsg102,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
             }
             catch (FunctionNotSupportedException exception) {
@@ -401,8 +411,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 super.addNotSupportedAssertion(assertion102,
                                                assertionMsg102,
-                                               RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                               RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
                 return;
@@ -428,22 +438,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
         /*
-         * Record the total instance count and the overall set of discovered or created entities. There may be more than
-         * pageSize entities (we know this to be true in the created case). The test assertions below allow for the fact
-         * that hitherto unseen entities may be returned.
+         * Record the total instance count and the overall set of discovered or created relationships. There may be more than
+         * pageSize relationships (we know this to be true in the created case). The test assertions below allow for the fact
+         * that hitherto unseen relationships may be returned.
          */
 
         if (knownInstances.size() >= pageSize)
             pageLimited = true;
 
         knownInstancesGUIDs = new ArrayList<>();
-        for (EntityDetail entity : knownInstances) {
-            knownInstancesGUIDs.add(entity.getGUID());
+        for (Relationship relationship : knownInstances) {
+            knownInstancesGUIDs.add(relationship.getGUID());
         }
 
 
         /*
-         * Construct a reverse index of entity GUIDs by property name and property value.
+         * Construct a reverse index of relationship GUIDs by property name and property value.
          * This is only performed for primitives.
          */
 
@@ -459,10 +469,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 Map<Object, List<String>> valueMap = new HashMap<>();
                 propertyValueMap.put(attrName, valueMap);
 
-                for (EntityDetail entity : knownInstances) {
-                    InstanceProperties entityProperties = entity.getProperties();
-                    if (entityProperties != null) {
-                        InstancePropertyValue ipValue = entityProperties.getPropertyValue(attrName);
+                for (Relationship relationship : knownInstances) {
+                    InstanceProperties relationshipProperties = relationship.getProperties();
+                    if (relationshipProperties != null) {
+                        InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attrName);
                         if (ipValue != null) {
                             InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                             if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -471,8 +481,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                     List<String> newList = new ArrayList<>();
                                     valueMap.put(primitiveValue, newList);
                                 }
-                                List<String> entityGUIDs = valueMap.get(primitiveValue);
-                                entityGUIDs.add(entity.getGUID());
+                                List<String> relationshipGUIDs = valueMap.get(primitiveValue);
+                                relationshipGUIDs.add(relationship.getGUID());
                             }
                         }
                     }
@@ -483,9 +493,99 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
     }
 
+    private Relationship createRelationship(RelationshipDef relationshipDef, InstanceProperties instanceProps) throws Exception {
+
+        /*
+         * In this testcase the repository is believed to support the relationship type defined by
+         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * support a subset of entity types. So although the relationship type may have end definitions
+         * each specifying a given entity type - the repository may only support certain sub-types of the
+         * specified type. This is OK, and the testcase needs to only try to use entity types that are
+         * supported by the repository being tested. To do this it needs to start with the specified
+         * end type, e.g. Referenceable, and walk down the hierarchy looking for each subtype that
+         * is supported by the repository (i.e. is in the entityDefs map). The test is run for
+         * each combination of end1Type and end2Type - but only for types that are within the
+         * active set for this repository.
+         */
+
+        String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
+        List<String> end1DefTypeNames = new ArrayList<>();
+        end1DefTypeNames.add(end1DefName);
+        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+            end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
+        }
+
+
+        String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
+        List<String> end2DefTypeNames = new ArrayList<>();
+        end2DefTypeNames.add(end2DefName);
+        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+            end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
+        }
+
+        /*
+         * Filter the possible types to only include types that are supported by the repository
+         */
+
+        List<String> end1SupportedTypeNames = new ArrayList<>();
+        for (String end1TypeName : end1DefTypeNames) {
+            if (entityDefs.get(end1TypeName) != null)
+                end1SupportedTypeNames.add(end1TypeName);
+        }
+
+        List<String> end2SupportedTypeNames = new ArrayList<>();
+        for (String end2TypeName : end2DefTypeNames) {
+            if (entityDefs.get(end2TypeName) != null)
+                end2SupportedTypeNames.add(end2TypeName);
+        }
+
+        /*
+         * Check that neither list is empty
+         */
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
+
+            /*
+             * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
+             */
+            assertCondition((false),
+                            assertion1001,
+                            testTypeName + assertionMsg1001,
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+        }
+
+        /*
+         * The test does not iterate over all possible end types - but it must select an end type that is supported by the repository,
+         * so it uses the first type in the supported list for each end.
+         */
+
+        String end1TypeName = end1SupportedTypeNames.get(0);
+        String end2TypeName = end2SupportedTypeNames.get(0);
+
+        /*
+         * Local variables for entity creation - entities need to be cleaned up when relationships are deleted.
+         */
+        EntityDef end1Type;
+        EntityDetail end1;
+        EntityDef    end2Type;
+        EntityDetail end2;
+
+
+        end1Type = entityDefs.get(end1TypeName);
+        end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+
+        end2Type = entityDefs.get(end2TypeName);
+        end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+
+        Relationship retRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null);
+
+        return retRelationship;
+
+    }
 
     /*
-     * Clean up all entities created by this testcase
+     * Clean up all relationships created by this testcase
      */
     private void cleanInstances() throws Exception
     {
@@ -496,22 +596,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdInstances) {
+            for (Relationship relationship : createdInstances) {
                 try {
 
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                                                    entity.getType().getTypeDefGUID(),
-                                                    entity.getType().getTypeDefName(),
-                                                    entity.getGUID());
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                                                    relationship.getType().getTypeDefGUID(),
+                                                    relationship.getType().getTypeDefName(),
+                                                    relationship.getGUID());
 
                 } catch (FunctionNotSupportedException exception) {
                     // NO OP - can proceed to purge
                 }
 
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                                               entity.getType().getTypeDefGUID(),
-                                               entity.getType().getTypeDefName(),
-                                               entity.getGUID());
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                                               relationship.getType().getTypeDefGUID(),
+                                               relationship.getType().getTypeDefName(),
+                                               relationship.getGUID());
             }
         }
     }
@@ -531,7 +631,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         if (!definedAttributeNames.isEmpty()) {
 
             /*
-             * Perform single property findEntitiesByProperty() tests - these take each attribute in turn and for each attribute,
+             * Perform single property findRelationshipsByProperty() tests - these take each attribute in turn and for each attribute,
              * take one known value to search for instances using matchProperties containing the individual primitive property.
              * The test is repeated for MatchCriteria ALL and NONE.
              * This is only done for primitives.
@@ -554,7 +654,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * matchProperties object containing the pair of primitive properties. This tests matchCriteria ALL, ANY & NONE.
              * Defined attributes only includes primitives.
              */
-
 
             /*
              * Pick one pair of properties for dual property tests - if there are less than two properties skip this test
@@ -627,7 +726,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
             /*
-             * Perform generalised regex tests - these are part of the ENTITY_ADVANCED_SEARCH profile
+             * Perform generalised regex tests - these are part of the RELATIONSHIP_ADVANCED_SEARCH profile
              */
 
             /*
@@ -661,7 +760,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         /*
          * Completion of searches - indicate success of testcase.
          */
-        super.setSuccessMessage("Entities can be searched by property and property value");
+        super.setSuccessMessage("Relationships can be searched by property and property value");
     }
 
 
@@ -750,40 +849,39 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * Formulate expected result
              */
-            List<String> entitiesWithValue = propertyValueMap.get(attributeName).get(value);
+            List<String> relationshipsWithValue = propertyValueMap.get(attributeName).get(value);
             List<String> expectedGUIDs = null;
 
             switch (matchCriteria) {
                 case ALL:
                 case ANY:
                     /* This is a single property test, so ANY and ALL are equivalent */
-                    expectedGUIDs = entitiesWithValue;
+                    expectedGUIDs = relationshipsWithValue;
                     break;
                 case NONE:
-                    expectedGUIDs = diff(knownInstancesGUIDs, entitiesWithValue);
+                    expectedGUIDs = diff(knownInstancesGUIDs, relationshipsWithValue);
                     break;
                 default:
                     /* Invalid matchCriteria value passed */
                     return;
             }
-            int expectedEntityCount = expectedGUIDs.size();
+            int expectedRelationshipCount = expectedGUIDs.size();
             // In the case where the instances were created, expected may exceed pageSize.
 
             /*
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                                  entityDef.getGUID(),
-                                                                                  matchProperties,
-                                                                                  matchCriteria,
-                                                                                  0,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  pageSize);
+            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                       relationshipDef.getGUID(),
+                                                                                       matchProperties,
+                                                                                       matchCriteria,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       pageSize);
 
 
             /*
@@ -851,37 +949,37 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
              * In addition the result size should be no more than a page.
              */
-            boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+            boolean unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
             /*
              * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
              * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
              * So in that latter case we need to accept Min().
              */
-            boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
+            boolean limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             assertCondition((acceptable_result_size),
                             assertion104,
                             testTypeName + "attribute" + attributeName + "match criteria" + matchCriteria + assertionMsg104,
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
             /*
-             * If there were any result, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
+             * If there were any result, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
              */
             if (resultCount > 0) {
 
                 List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result) {
-                    resultGUIDs.add(entity.getGUID());
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
                 }
 
 
                 /*
-                 * Here again, we need to be sensitive to whether there are (or may be) more entities than the page limit.
+                 * Here again, we need to be sensitive to whether there are (or may be) more relationships than the page limit.
                  * If the original search hit the limit then we may legitimately receive additional instances in the results
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
@@ -895,16 +993,16 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                    for (EntityDetail entity : result) {
+                    for (Relationship relationship : result) {
 
-                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                             /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
                              * Check it is a valid result.
                              */
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null) {
-                                InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                            InstanceProperties relationshipProperties = relationship.getProperties();
+                            if (relationshipProperties != null) {
+                                InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
                                 if (ipValue != null) {
                                     InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                                     if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -914,7 +1012,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                         /*
                                          * Check for inequality and fail the match if unequal.
                                          * This is because, even for strings, we used an exact match literalised property value
-                                         * and match criteria was ALL - so an entity with an unequal property is not a valid result.
+                                         * and match criteria was ALL - so an relationship with an unequal property is not a valid result.
                                          */
                                         switch (matchCriteria) {
                                             case ALL:
@@ -942,8 +1040,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition(matchingResult,
                                 assertion105,
                                 testTypeName + "attribute" + attributeName + "match criteria" + matchCriteria + assertionMsg105,
-                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
 
         }
@@ -1011,29 +1109,29 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Formulate expected result
              */
 
-            List<String> entitiesWithAlphaValue = propertyValueMap.get(alphaAttributeName).get(alphaValue);
-            List<String> entitiesWithBetaValue  = propertyValueMap.get(betaAttributeName).get(betaValue);
+            List<String> relationshipsWithAlphaValue = propertyValueMap.get(alphaAttributeName).get(alphaValue);
+            List<String> relationshipsWithBetaValue  = propertyValueMap.get(betaAttributeName).get(betaValue);
             List<String> expectedGUIDs = null;
 
             switch (matchCriteria) {
                 case ALL:
                     /* MatchCriteria.ALL ==> INTERSECTION */
-                    expectedGUIDs = intersection(entitiesWithAlphaValue, entitiesWithBetaValue);
+                    expectedGUIDs = intersection(relationshipsWithAlphaValue, relationshipsWithBetaValue);
                     break;
                 case ANY:
                     /* MatchCriteria.ANY ==> UNION */
-                    expectedGUIDs = union(entitiesWithAlphaValue, entitiesWithBetaValue);
+                    expectedGUIDs = union(relationshipsWithAlphaValue, relationshipsWithBetaValue);
                     break;
                 case NONE:
                     /* MatchCriteria.NONE ==> UNION COMPLEMENT */
-                    expectedGUIDs = diff(knownInstancesGUIDs, entitiesWithAlphaValue);
-                    expectedGUIDs = diff(expectedGUIDs, entitiesWithBetaValue);
+                    expectedGUIDs = diff(knownInstancesGUIDs, relationshipsWithAlphaValue);
+                    expectedGUIDs = diff(expectedGUIDs, relationshipsWithBetaValue);
                     break;
                 default:
                     /* Invalid matchCriteria value passed */
                     return;
             }
-            int expectedEntityCount = expectedGUIDs.size();
+            int expectedRelationshipCount = expectedGUIDs.size();
 
 
 
@@ -1041,17 +1139,16 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                               entityDef.getGUID(),
-                                                               matchProperties,
-                                                               matchCriteria,
-                                                               0,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               pageSize);
+            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                       relationshipDef.getGUID(),
+                                                                                       matchProperties,
+                                                                                       matchCriteria,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       pageSize);
 
 
 
@@ -1061,11 +1158,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             //assertCondition((result != null),
             //                assertion106,
             //                testTypeName + assertionMsg106,
-            //                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-            //                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+            //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+            //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
             /*
-             * Check that the expected number of entities was returned. This has to consider the effect of the original
+             * Check that the expected number of relationships was returned. This has to consider the effect of the original
              * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
              * But if the limit was hit (on the original search) then there may be additional instances in the repository
              * that were not seen on the original search; the expected result was computed from only thos instance that WERE seen,
@@ -1073,7 +1170,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * The actual instances returned
              * may not match exactly if we hit page size because there may be additional instances that were not included in the
              * initial set, due to the initial set being limited by pageSize; the narrower search may pull in additional
-             * entities that were not discovered previously.
+             * relationships that were not discovered previously.
              * This next assertion is just about the size of the result set.
              */
 
@@ -1086,32 +1183,32 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
              * In addition the result size should be no more than a page.
              */
-            boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+            boolean unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
             /*
              * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
              * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
              * So in that latter case we need to accept Min().
              */
-            boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
+            boolean limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             assertCondition((acceptable_result_size),
                             assertion107,
                             testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria + assertionMsg107,
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
 
             /*
-             * If there were any result, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
+             * If there were any result, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
              */
             if (resultCount > 0) {
                 List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result) {
-                    resultGUIDs.add(entity.getGUID());
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
                 }
 
                 /*
@@ -1127,21 +1224,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         matchingResult = false;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                    for (EntityDetail entity : result) {
+                    for (Relationship relationship : result) {
 
-                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                             /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
                              * Check it is a valid result.
                              */
 
-                            InstanceProperties entityProperties = entity.getProperties();
+                            InstanceProperties relationshipProperties = relationship.getProperties();
 
                             boolean alphaMatch = false;
 
-                            if (entityProperties != null) {
+                            if (relationshipProperties != null) {
 
-                                InstancePropertyValue alphaIPValue = entityProperties.getPropertyValue(alphaAttributeName);
+                                InstancePropertyValue alphaIPValue = relationshipProperties.getPropertyValue(alphaAttributeName);
                                 if (alphaIPValue != null) {
                                     InstancePropertyCategory ipCategory = alphaIPValue.getInstancePropertyCategory();
                                     if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -1153,9 +1250,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                             boolean betaMatch = false;
 
-                            if (entityProperties != null) {
+                            if (relationshipProperties != null) {
 
-                                InstancePropertyValue betaIPValue = entityProperties.getPropertyValue(betaAttributeName);
+                                InstancePropertyValue betaIPValue = relationshipProperties.getPropertyValue(betaAttributeName);
                                 if (betaIPValue != null) {
                                     InstancePropertyCategory ipCategory = betaIPValue.getInstancePropertyCategory();
                                     if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -1191,8 +1288,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition(matchingResult,
                                 assertion108,
                                 testTypeName + assertionMsg108,
-                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
 
         }
@@ -1272,10 +1369,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
              * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
-             * Care needed to detect entities that are matched by more than one property - to avoid duplication it's
-             * important to check that the entity was not already included in the expected set.
+             * Care needed to detect relationships that are matched by more than one property - to avoid duplication it's
+             * important to check that the relationship was not already included in the expected set.
              */
-            int expectedEntityCount = 0;
+            int expectedRelationshipCount = 0;
             List<String> expectedGUIDs = new ArrayList<>();
             Set<String> propertyNamesSet = propertyValueMap.keySet();
             Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
@@ -1334,23 +1431,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
             }
-            expectedEntityCount = expectedGUIDs.size();
+            expectedRelationshipCount = expectedGUIDs.size();
 
 
             /*
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                    entityDef.getGUID(),
-                                                                    literalisedValue,
-                                                                    0,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    pageSize);
+            List<Relationship> result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                            relationshipDef.getGUID(),
+                                                                                            literalisedValue,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            pageSize);
 
 
 
@@ -1362,32 +1458,32 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
              * In addition the result size should be no more than a page.
              */
-            boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+            boolean unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
             /*
              * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
              * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
              * So in that latter case we need to accept Min().
              */
-            boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
+            boolean limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             assertCondition((acceptable_result_size),
                             assertion301,
                             testTypeName + " attribute " +attributeName+" match type "+matchType+ " " + assertionMsg301,
-                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
 
             /*
-             * If there were any results, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
+             * If there were any results, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
              */
             if (resultCount > 0) {
 
                 List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result) {
-                    resultGUIDs.add(entity.getGUID());
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
                 }
 
 
@@ -1404,21 +1500,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         matchingResult = false;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                    for (EntityDetail entity : result) {
+                    for (Relationship relationship : result) {
 
-                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                             /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
                              * Check it is a valid result. It can have any string attribute with the same value as strValue.
                              */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null) {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                            boolean validRelationship = false;
+                            InstanceProperties relationshipProperties = relationship.getProperties();
+                            if (relationshipProperties != null) {
+                                Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                while (relationshipPropertyNameIterator.hasNext()) {
+                                    String propertyName = relationshipPropertyNameIterator.next();
+                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                                         if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -1431,25 +1527,25 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                     case Exact:
                                                         /* EXACT MATCH */
                                                         if (propertyValueAsString.equals(stringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
                                                         if (propertyValueAsString.startsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
                                                         if (propertyValueAsString.endsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
                                                         if (propertyValueAsString.contains(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                 }
@@ -1459,7 +1555,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                     }
                                 }
                             }
-                            if (!validEntity)
+                            if (!validRelationship)
                                 matchingResult = false;
                         }
                     }
@@ -1469,8 +1565,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition(matchingResult,
                                 assertion303,
                                 testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg303,
-                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
             }
 
         }
@@ -1709,17 +1805,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * Perform the search without type filtering
              */
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                                  null,
-                                                                                  matchProperties,
-                                                                                  MatchCriteria.ALL,
-                                                                                  0,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  pageSize);
+            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                       null,
+                                                                                       matchProperties, MatchCriteria.ALL,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       pageSize);
 
 
 
@@ -1730,49 +1824,44 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 if (result.size() == pageSize) {
                     /*
                      * Need to note whether this wild search hit the page limit - if so then there may be more
-                     * entities that we have not seen; pull the expected list together (below) and the expected
-                     * count, and tolerate and verify any additional entities that are returned in the more
+                     * relationships that we have not seen; pull the expected list together (below) and the expected
+                     * count, and tolerate and verify any additional relationships that are returned in the more
                      * type-specific search below.
                      */
                     wildSearchPageLimited = true;
                 }
                 /*
-                 * Count the entities that are of current type or subtypes...
+                 * Count the relationships that are of current type
                  */
-                String entityTypeName = entityDef.getName();
+                String relationshipTypeName = relationshipDef.getName();
                 List<String> countableTypeNames = new ArrayList<>();
-                List<String> countableSubTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityTypeName);
-                if (countableSubTypeNames != null) {
-                    countableTypeNames.addAll(countableSubTypeNames);
-                }
-                countableTypeNames.add(entityTypeName);
+                countableTypeNames.add(relationshipTypeName);
 
                 expectedGUIDs = new ArrayList<>();
 
-                for (EntityDetail entityDetail : result) {
-                    String typeName = entityDetail.getType().getTypeDefName();
+                for (Relationship relationship : result) {
+                    String typeName = relationship.getType().getTypeDefName();
                     if (countableTypeNames.contains(typeName)) {
-                        expectedGUIDs.add(entityDetail.getGUID());
+                        expectedGUIDs.add(relationship.getGUID());
                     }
                 }
 
-                int expectedEntityCount = expectedGUIDs.size();
+                int expectedRelationshipCount = expectedGUIDs.size();
 
 
                 /*
                  * Repeat the search being specific about type
                  */
-                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                   entityDef.getGUID(),
-                                                                   matchProperties,
-                                                                   MatchCriteria.ALL,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   pageSize);
+                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        relationshipDef.getGUID(),
+                                                                        matchProperties,
+                                                                        MatchCriteria.ALL,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
 
                 /*
                  * We need to check that we got (at least) the expected number of results - which could include zero.
@@ -1782,37 +1871,37 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * If the broader wild query hit the page limit then we should have been able to exactly predict the expected result.
                  * In addition the result size should be no more than a page.
                  */
-                boolean unlimited_case = !wildSearchPageLimited && resultCount == expectedEntityCount;
+                boolean unlimited_case = !wildSearchPageLimited && resultCount == expectedRelationshipCount;
                 /*
                  * If the broader wild query hit the page limit then we have to tolerate hitherto unseen instances in the results.
                  * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
                  * So in that latter case we need to accept Min().
                  */
-                boolean limited_large_case = wildSearchPageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-                boolean limited_small_case = wildSearchPageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
+                boolean limited_large_case = wildSearchPageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+                boolean limited_small_case = wildSearchPageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
                 boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
                 assertCondition((acceptable_result_size),
                                 assertion401,
                                 testTypeName + "attribute" + attributeName + assertionMsg401,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
 
                 /*
-                 * If there were any result, check that all expected entities were returned and (in the pageLimited case) that any
-                 * additional entities were valid results for the search.
+                 * If there were any result, check that all expected relationships were returned and (in the pageLimited case) that any
+                 * additional relationships were valid results for the search.
                  */
                 if (resultCount > 0) {
 
                     List<String> resultGUIDs = new ArrayList<>();
-                    for (EntityDetail entity : result) {
-                        resultGUIDs.add(entity.getGUID());
+                    for (Relationship relationship : result) {
+                        resultGUIDs.add(relationship.getGUID());
                     }
 
 
                     /*
-                     * Here again, we need to be sensitive to whether there are (or may be) more entities than the page limit.
+                     * Here again, we need to be sensitive to whether there are (or may be) more relationships than the page limit.
                      * If the original search hit the limit then we may legitimately receive additional instances in the results
                      * of a narrower search. But not if the original result set was under the page limit.
                      */
@@ -1826,16 +1915,16 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                     } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                        for (EntityDetail entity : result) {
+                        for (Relationship relationship : result) {
 
-                            if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                            if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                                 /*
-                                 * This was an extra entity that we either did not expect or that we have not seen previously.
+                                 * This was an extra relationship that we either did not expect or that we have not seen previously.
                                  * Check it is a valid result.
                                  */
-                                InstanceProperties entityProperties = entity.getProperties();
-                                if (entityProperties != null) {
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                                InstanceProperties relationshipProperties = relationship.getProperties();
+                                if (relationshipProperties != null) {
+                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                                         if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -1845,7 +1934,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                             /*
                                              * Check for inequality and fail the match if unequal.
                                              * This is because we used an exact match literalised property value
-                                             * and match criteria was ALL - so an entity with an unequal property
+                                             * and match criteria was ALL - so an relationship with an unequal property
                                              * is not a valid result.
                                              */
 
@@ -1864,8 +1953,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     assertCondition(matchingResult,
                                     assertion402,
                                     testTypeName + "attribute" + attributeName  + assertionMsg402,
-                                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
                 }
             }
         }
@@ -1876,7 +1965,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
     /*
      * This method tests ability to handle arbitrary regular epresseions.
-     *  This method includes both searchCriteria based findEntitiesByPropertyValue tests and matchProperty based findEntitiesByProperty tests
+     * This method includes both searchCriteria based findRelationshipByPropertyValue tests and matchProperty based findRelationshipByProperty tests
      */
     private void performAdvancedSearchTests(String attributeName, RegexMatchType matchType) throws Exception {
 
@@ -1947,10 +2036,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
              * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
-             * Care needed to detect entities that are matched by more than one property - to avoid duplication it's
-             * important to check that the entity was not already included in the expected set.
+             * Care needed to detect relationships that are matched by more than one property - to avoid duplication it's
+             * important to check that the relationship was not already included in the expected set.
              */
-            int expectedEntityCount = 0;
+            int expectedRelationshipCount = 0;
             List<String> expectedGUIDs = new ArrayList<>();
             Set<String> propertyNamesSet = propertyValueMap.keySet();
             Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
@@ -2009,23 +2098,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
             }
-            expectedEntityCount = expectedGUIDs.size();
+            expectedRelationshipCount = expectedGUIDs.size();
 
 
             /*
-             * Test search using findEntitiesByPropertyValue
+             * Test search using findRelationshipsByPropertyValue
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                       entityDef.getGUID(),
-                                                                                       regexValue,
-                                                                                       0,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       pageSize);
+            List<Relationship> result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                            relationshipDef.getGUID(),
+                                                                                            regexValue,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            pageSize);
 
 
 
@@ -2037,32 +2125,32 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
              * In addition the result size should be no more than a page.
              */
-            boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+            boolean unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
             /*
              * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
              * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
              * So in that latter case we need to accept Min().
              */
-            boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
+            boolean limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            boolean limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             assertCondition((acceptable_result_size),
                             assertion501,
                             testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg501,
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
 
             /*
-             * If there were any results, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
+             * If there were any results, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
              */
             if (resultCount > 0) {
 
                 List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result) {
-                    resultGUIDs.add(entity.getGUID());
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
                 }
 
 
@@ -2079,21 +2167,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         matchingResult = false;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                    for (EntityDetail entity : result) {
+                    for (Relationship relationship : result) {
 
-                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                             /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
                              * Check it is a valid result. It can have any string attribute with the same value as strValue.
                              */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null) {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                            boolean validRelationship = false;
+                            InstanceProperties relationshipProperties = relationship.getProperties();
+                            if (relationshipProperties != null) {
+                                Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                while (relationshipPropertyNameIterator.hasNext()) {
+                                    String propertyName = relationshipPropertyNameIterator.next();
+                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                                         if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -2106,25 +2194,25 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                     case Exact:
                                                         /* EXACT MATCH */
                                                         if (propertyValueAsString.equals(stringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
                                                         if (propertyValueAsString.startsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
                                                         if (propertyValueAsString.endsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
                                                         if (propertyValueAsString.contains(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                 }
@@ -2134,7 +2222,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                     }
                                 }
                             }
-                            if (!validEntity)
+                            if (!validRelationship)
                                 matchingResult = false;
                         }
                     }
@@ -2144,15 +2232,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition(matchingResult,
                                 assertion502,
                                 testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg502,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
             }
 
 
 
 
             /*
-             * Repeat the same search using findEntitiesByProperty and a MatchProperties object
+             * Repeat the same search using findRelationshipsByProperty and a MatchProperties object
              */
 
 
@@ -2164,17 +2252,16 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             matchProperties.setProperty(attributeName, mppv);
 
 
-            result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                               entityDef.getGUID(),
-                                                               matchProperties,
-                                                               MatchCriteria.ALL,
-                                                               0,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               pageSize);
+            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                    relationshipDef.getGUID(),
+                                                                    matchProperties,
+                                                                    MatchCriteria.ALL,
+                                                                    0,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    pageSize);
 
 
 
@@ -2186,32 +2273,32 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
              * In addition the result size should be no more than a page.
              */
-            unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+            unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
             /*
              * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
              * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
              * So in that latter case we need to accept Min().
              */
-            limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
+            limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             assertCondition((acceptable_result_size),
                             assertion503,
                             testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg503,
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
 
             /*
-             * If there were any results, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
+             * If there were any results, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
              */
             if (resultCount > 0) {
 
                 List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result) {
-                    resultGUIDs.add(entity.getGUID());
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
                 }
 
 
@@ -2228,21 +2315,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         matchingResult = false;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
-                    for (EntityDetail entity : result) {
+                    for (Relationship relationship : result) {
 
-                        if (!(expectedGUIDs.contains(entity.getGUID()))) {
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
                             /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
                              * Check it is a valid result. It can have any string attribute with the same value as strValue.
                              */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null) {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
+                            boolean validRelationship = false;
+                            InstanceProperties relationshipProperties = relationship.getProperties();
+                            if (relationshipProperties != null) {
+                                Set<String> relationshipPropertyNames = relationshipProperties.getInstanceProperties().keySet();
+                                Iterator<String> relationshipPropertyNameIterator = relationshipPropertyNames.iterator();
+                                while (relationshipPropertyNameIterator.hasNext()) {
+                                    String propertyName = relationshipPropertyNameIterator.next();
+                                    InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
                                         if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
@@ -2255,25 +2342,25 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                     case Exact:
                                                         /* EXACT MATCH */
                                                         if (propertyValueAsString.equals(stringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
                                                         if (propertyValueAsString.startsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
                                                         if (propertyValueAsString.endsWith(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
                                                         if (propertyValueAsString.contains(truncatedStringValue)) {
-                                                            validEntity = true;
+                                                            validRelationship = true;
                                                         }
                                                         break;
                                                 }
@@ -2283,7 +2370,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                     }
                                 }
                             }
-                            if (!validEntity)
+                            if (!validRelationship)
                                 matchingResult = false;
                         }
                     }
@@ -2293,8 +2380,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 assertCondition(matchingResult,
                                 assertion504,
                                 testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg504,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }
         }
 
