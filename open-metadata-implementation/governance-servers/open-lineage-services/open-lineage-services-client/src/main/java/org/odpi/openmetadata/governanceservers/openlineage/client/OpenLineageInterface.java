@@ -3,7 +3,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.client;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
@@ -18,7 +17,6 @@ public interface OpenLineageInterface {
      * the condensed path by querying a different method.
      *
      * @param userId calling user.
-     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @param scope ULTIMATE_SOURCE, ULTIMATE_DESTINATION, GLOSSARY.
      * @param view TABLE_VIEW, COLUMN_VIEW.
      * @param guid The guid of the node of which the lineage is queried of.
@@ -27,6 +25,6 @@ public interface OpenLineageInterface {
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    LineageVerticesAndEdges lineage(String userId, GraphName graphName, Scope scope, View view, String guid, String displaynameMustContain, boolean includeProcesses)
+    LineageVerticesAndEdges lineage(String userId, Scope scope, View view, String guid, String displaynameMustContain, boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException;
 }
