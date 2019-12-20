@@ -57,7 +57,7 @@ public interface UIServerAdministration
 
     /**
      * Set up the root URL for this server that is used to construct full URL paths to calls for
-     * this server's REST interfaces.  The default value is "localhost:8443".
+     * this server's REST interfaces.  The default value is "localhost:8080".
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.

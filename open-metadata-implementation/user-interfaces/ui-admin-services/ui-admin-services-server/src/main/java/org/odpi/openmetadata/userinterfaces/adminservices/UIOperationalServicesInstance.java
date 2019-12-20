@@ -4,8 +4,6 @@ package org.odpi.openmetadata.userinterfaces.adminservices;
 
 import org.odpi.openmetadata.adminservices.OMAGOperationalServicesInstance;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
-import org.odpi.userinterface.adminservices.configuration.registration.ViewServiceAdmin;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public interface SubjectAreaProject
      *
      * Projects that are created using this call will be GlossaryProjects.
      * <p>
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
      * @return the created Project.
@@ -40,9 +40,10 @@ public interface SubjectAreaProject
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-     Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException;
+     Project createProject(String serverName, String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get a Project by guid.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the Project to get
      * @return the requested Project.
@@ -58,10 +59,11 @@ public interface SubjectAreaProject
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+      Project getProjectByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get Project relationships
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
      * @param guid   guid of the Project to get
@@ -83,7 +85,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getProjectRelationships(String userId, String guid,
+     List<Line> getProjectRelationships(String serverName, String userId, String guid,
                                          Date asOfTime,
                                          int offset,
                                          int pageSize,
@@ -94,9 +96,10 @@ public interface SubjectAreaProject
             FunctionNotSupportedException,
             UnexpectedResponseException,
             MetadataServerUncontactableException;
-    /**
+    /*
      * Get the terms in this project.
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
@@ -112,7 +115,7 @@ public interface SubjectAreaProject
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    List<Term> getProjectTerms(
+    List<Term> getProjectTerms( String serverName,
                                       String userId,
                                       String guid,
                                       Date asOfTime
@@ -121,6 +124,7 @@ public interface SubjectAreaProject
     /**
      * Find Project
      *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Project properties. If not specified then all projects are returned.
      * @param asOfTime Projects returned as they were at this time. null indicates at the current time.
@@ -141,7 +145,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    List<Project> findProject(String userId,
+    List<Project> findProject(String serverName, String userId,
                                 String searchCriteria,
                                 Date asOfTime,
                                 int offset,
@@ -162,6 +166,7 @@ public interface SubjectAreaProject
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the Project to update
      * @param suppliedProject Project to be updated
@@ -175,7 +180,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Project replaceProject(String userId, String guid, Project suppliedProject) throws
+     Project replaceProject(String serverName, String userId, String guid, Project suppliedProject) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
@@ -190,6 +195,7 @@ public interface SubjectAreaProject
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the Project to update
      * @param suppliedProject Project to be updated
@@ -203,7 +209,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Project updateProject(String userId, String guid, Project suppliedProject) throws UnexpectedResponseException,
+     Project updateProject(String serverName, String userId, String guid, Project suppliedProject) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     FunctionNotSupportedException,
@@ -217,6 +223,7 @@ public interface SubjectAreaProject
      * A delete (also known as a soft delete) means that the Project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the Project to be deleted.
      * @return the deleted Project
@@ -230,7 +237,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-     Project deleteProject(String userId, String guid) throws InvalidParameterException,
+     Project deleteProject(String serverName, String userId, String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnrecognizedGUIDException,
@@ -244,6 +251,7 @@ public interface SubjectAreaProject
      *
      * A purge means that the Project will not exist after the operation.
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the Project to be deleted.
      *
@@ -258,7 +266,7 @@ public interface SubjectAreaProject
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      void purgeProject(String userId, String guid) throws InvalidParameterException,
+      void purgeProject(String serverName, String userId, String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
@@ -269,6 +277,7 @@ public interface SubjectAreaProject
      * Restore a Project
      *
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Project to restore
      * @return the restored Project
@@ -280,7 +289,7 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-      Project restoreProject(String userId, String guid) throws InvalidParameterException,
+      Project restoreProject(String serverName, String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

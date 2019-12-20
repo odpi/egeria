@@ -13,14 +13,14 @@ import java.util.Date;
  */
 public class InputValidator {
     /**
-     * Throw an exception if the metadata server URL (which comes from the configuration has not been supplied on the constructor.
+     * Throw an exception if a org.odpi.openmetadata.accessservices.subjectarea.server URL has not been supplied on the constructor.
      *
      * @param className - name of the class making the call.
      * @param methodName - name of the method making the call.
-     * @param omasServerURL - metadata server url.
+     * @param omasServerURL - omas server url.
      * @throws InvalidParameterException - the org.odpi.openmetadata.accessservices.subjectarea.server URL is not set
      */
-    static public void validateMetadataServerURLNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
+    static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws InvalidParameterException
     {
         if (omasServerURL == null)
         {
@@ -35,40 +35,7 @@ public class InputValidator {
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    omasServerURL,
-                    null
-                    );
-        }
-    }
-
-    /**
-     * Throw an exception if the metadata server Name (which comes from the configuration has not been supplied on the constructor.
-     *
-     * @param className - name of the class making the call.
-     * @param methodName - name of the method making the call.
-     * @param omasServerURL - metadata server url.
-     * @throws InvalidParameterException - the org.odpi.openmetadata.accessservices.subjectarea.server URL is not set
-     */
-    static public void validateMetadataServerNameNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
-    {
-        if (omasServerURL == null)
-        {
-            /*
-             * It is not possible to retrieve a connection without knowledge of where the OMAS Server is located.
-             */
-            SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.SERVER_NAME_NOT_SPECIFIED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    className,
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    omasServerURL,
-                    null
-            );
+                    errorCode.getUserAction());
         }
     }
 

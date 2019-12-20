@@ -29,7 +29,15 @@
         <module>ui-admin-services-client</module>
         <module>ui-admin-services-server</module>
         <module>ui-admin-services-spring</module>
-        <module>ui-admin-services-registration</module>
     </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
