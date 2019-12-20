@@ -22,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +62,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
     private static final String assertionMsg0 = " relationship type definition matches known type  ";
 
     private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " positive search returned results.";
+    private static final String assertionMsg1  = " repository supports optional relationship search functions.";
+
     private static final String assertion2     = testCaseId + "-02";
     private static final String assertionMsg2  = " positive search contained expected number of results.";
     private static final String assertion3     = testCaseId + "-03";
@@ -122,6 +124,8 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
     private static final String assertionMsg26  = " contains search contained expected number of results.";
     private static final String assertion27     = testCaseId + "-27";
     private static final String assertionMsg27  = " contains search contained expected results.";
+
+
 
 
 
@@ -255,17 +259,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
          */
 
 
-        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                relationshipDef.getGUID(),
-                                                                emptyMatchProperties,
-                                                                MatchCriteria.ANY,
-                                                                fromElement,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                                pageSize);
+        try {
+            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                    relationshipDef.getGUID(),
+                                                                    emptyMatchProperties,
+                                                                    MatchCriteria.ANY,
+                                                                    fromElement,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    pageSize);
 
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If running against a repository/connector that does not support relationship searches
+             * report that the optional cpability is not supported and give up on the test.
+             */
+
+            super.addNotSupportedAssertion(assertion1,
+                                           assertionMsg1,
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+            return;
+
+        }
 
         if (result == null) {
             /*
@@ -379,16 +400,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * Search....
                      */
 
-                    result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                            relationshipDef.getGUID(),
-                                                                            matchProperties,
-                                                                            MatchCriteria.ALL,
-                                                                            fromElement,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            pageSize);
+                    try {
+
+                        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                relationshipDef.getGUID(),
+                                                                                matchProperties,
+                                                                                MatchCriteria.ALL,
+                                                                                fromElement,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                pageSize);
+                    }
+                    catch (FunctionNotSupportedException exception) {
+
+                        /*
+                         * If running against a repository/connector that does not support relationship searches
+                         * report that the optional cpability is not supported and give up on the test.
+                         */
+
+                        super.addNotSupportedAssertion(assertion1,
+                                                       assertionMsg1,
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                        return;
+
+                    }
 
                     /*
                      * The approach to checking results match expectations is as follows:
@@ -434,15 +473,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      *
                      */
 
-                    // TODO - clean me up
-                    /*
-                     * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                     */
-                    //assertCondition((result != null),
-                    //        assertion1,
-                    //        testTypeName + assertionMsg1,
-                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
 
 
                     /*
@@ -545,16 +576,33 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * Search....
                      */
 
-                    result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                            relationshipDef.getGUID(),
-                                                                            matchProperties,
-                                                                            MatchCriteria.NONE,
-                                                                            fromElement,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            pageSize);
+                    try {
+                        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                relationshipDef.getGUID(),
+                                                                                matchProperties,
+                                                                                MatchCriteria.NONE,
+                                                                                fromElement,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                pageSize);
+                    }
+                    catch (FunctionNotSupportedException exception) {
+
+                        /*
+                         * If running against a repository/connector that does not support relationship searches
+                         * report that the optional cpability is not supported and give up on the test.
+                         */
+
+                        super.addNotSupportedAssertion(assertion1,
+                                                       assertionMsg1,
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                        return;
+
+                    }
 
                     /*
                      * The approach to checking results match expectations is as follows:
@@ -600,15 +648,7 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      *
                      */
 
-                    // TODO - clean me up!!
-                    /*
-                     * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                     */
-                    //assertCondition((result != null),
-                    //                assertion4,
-                    //                testTypeName + assertionMsg4,
-                    //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                    //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
 
 
                     /*
@@ -824,27 +864,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                relationshipDef.getGUID(),
-                                                                                matchProperties,
-                                                                                matchCriteria,
-                                                                                fromElement,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                    relationshipDef.getGUID(),
+                                                                                    matchProperties,
+                                                                                    matchCriteria,
+                                                                                    fromElement,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    pageSize);
+                        }
+                        catch (FunctionNotSupportedException exception) {
 
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
 
-                        // TODO - clean me up!!
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion7,
-                        //        testTypeName + assertionMsg7,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                            return;
+
+                        }
+
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -958,33 +1005,36 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                relationshipDef.getGUID(),
-                                                                                matchProperties,
-                                                                                matchCriteria,
-                                                                                fromElement,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                    relationshipDef.getGUID(),
+                                                                                    matchProperties,
+                                                                                    matchCriteria,
+                                                                                    fromElement,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    pageSize);
+
+                        }
+                        catch (FunctionNotSupportedException exception) {
+
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
+
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                            return;
+
+                        }
 
 
-                        // TODO - clean me up!!
-                        /*
-                         * In this test it is not possible to always predict (expect) a non-null result, only if expectedRelationshipCount > 0
-                         */
-                        //assertCondition((expectedRelationshipCount == 0 || result != null),
-                        //        assertion10,
-                        //        testTypeName + assertionMsg10,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
-
-                        /*
-                         * Since no result is legitimate in this test, only proceed with further checks where relevant
-                         */
-                        //if (result != null) {
 
 
                         /*
@@ -1100,32 +1150,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                relationshipDef.getGUID(),
-                                                                                matchProperties,
-                                                                                matchCriteria,
-                                                                                fromElement,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                                    relationshipDef.getGUID(),
+                                                                                    matchProperties,
+                                                                                    matchCriteria,
+                                                                                    fromElement,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    pageSize);
+                        }
+                        catch (FunctionNotSupportedException exception) {
 
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
 
-                        // TODO - clean me up!!
-                        ///*
-                        // * In this test it is not possible to always predict (expect) a non-null result, only if expectedRelationshipCount > 0
-                        // */
-                        //assertCondition((expectedRelationshipCount == 0 || result != null),
-                        //        assertion13,
-                        //        testTypeName + assertionMsg13,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
-                        /*
-                         * Since no result is legitimate in this test, only proceed with further checks where relevant
-                         */
-                        //if (result != null) {
+                            return;
+
+                        }
+
 
 
                         /*
@@ -1308,26 +1360,35 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                      * Search....
                      */
 
-                    result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                 relationshipDef.getGUID(),
-                                                                                 literalisedValue,
-                                                                                 fromElement,
-                                                                                 null,
-                                                                                 null,
-                                                                                 null,
-                                                                                 null,
-                                                                                 pageSize);
+                    try {
+                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                     relationshipDef.getGUID(),
+                                                                                     literalisedValue,
+                                                                                     fromElement,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     pageSize);
+
+                    }
+                    catch (FunctionNotSupportedException exception) {
+
+                        /*
+                         * If running against a repository/connector that does not support relationship searches
+                         * report that the optional cpability is not supported and give up on the test.
+                         */
+
+                        super.addNotSupportedAssertion(assertion1,
+                                                       assertionMsg1,
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                       RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                        return;
+
+                    }
 
 
-                    // TODO - clean me up!!
-                    /*
-                     * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                     */
-                    //assertCondition((result != null),
-                    //        assertion16,
-                    //        testTypeName + assertionMsg16,
-                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                    //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                     /*
                      * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1461,26 +1522,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                     relationshipDef.getGUID(),
-                                                                                     literalisedValue,
-                                                                                     fromElement,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                         relationshipDef.getGUID(),
+                                                                                         literalisedValue,
+                                                                                         fromElement,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         pageSize);
+                        }
+                        catch (FunctionNotSupportedException exception) {
+
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
+
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                            return;
+
+                        }
 
 
-                        // TODO - clean me up
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion19,
-                        //        testTypeName + assertionMsg19,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1616,26 +1685,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                     relationshipDef.getGUID(),
-                                                                                     literalisedValue,
-                                                                                     fromElement,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                         relationshipDef.getGUID(),
+                                                                                         literalisedValue,
+                                                                                         fromElement,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         pageSize);
+                        }
+                        catch (FunctionNotSupportedException exception) {
+
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
+
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                            return;
+
+                        }
 
 
-                        // TODO - clean me up
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion22,
-                        //        testTypeName + assertionMsg22,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original
@@ -1773,26 +1850,34 @@ public class TestSupportedRelationshipSharingPropertySearch extends RepositoryCo
                          * Search....
                          */
 
-                        result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                     relationshipDef.getGUID(),
-                                                                                     literalisedValue,
-                                                                                     fromElement,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     pageSize);
+                        try {
+                            result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                                         relationshipDef.getGUID(),
+                                                                                         literalisedValue,
+                                                                                         fromElement,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         pageSize);
 
+                        }
+                        catch (FunctionNotSupportedException exception) {
 
-                        // TODO - clean me up
-                        /*
-                         * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-                         */
-                        //assertCondition((result != null),
-                        //        assertion25,
-                        //        testTypeName + assertionMsg25,
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                        //        RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                            /*
+                             * If running against a repository/connector that does not support relationship searches
+                             * report that the optional cpability is not supported and give up on the test.
+                             */
+
+                            super.addNotSupportedAssertion(assertion1,
+                                                           assertionMsg1,
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+                            return;
+
+                        }
+
 
                         /*
                          * Check that the expected number of instances was returned. This has to consider the effect of the original

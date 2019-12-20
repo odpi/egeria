@@ -8,6 +8,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengin
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @return boolean
      */
-    public boolean requiresPolling() { return true; };
+    public boolean requiresPolling() { return true; }
 
     /**
      * Retrieve the date and time at which changes were last synchronized.
@@ -58,9 +59,8 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * Persist the date and time at which changes were last successfully synchronized.
      *
      * @param time the time to record for the last synchronization
-     * @throws OCFRuntimeException if there is any problem persisting the date and time
      */
-    public void setChangesLastSynced(Date time) throws OCFRuntimeException {
+    public void setChangesLastSynced(Date time) {
         log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented).");
     }
 
@@ -73,7 +73,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to) {
         log.warn("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to) {
         log.warn("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to) {
         log.warn("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -109,7 +109,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public List<DataEngineProcess> getChangedProcesses(Date from, Date to) {
         log.warn("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -121,7 +121,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to) {
         log.warn("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
-        return null;
+        return Collections.emptyList();
     }
 
 }
