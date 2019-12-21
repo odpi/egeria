@@ -33,7 +33,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private JanusGraph mainGraph;
     private MainGraphConnectorHelper helper;
 
-
     /**
      * {@inheritDoc}
      */
