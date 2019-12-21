@@ -98,7 +98,7 @@ public enum OpenLineageServerErrorCode {
     LINEAGE_CYCLE(503, "OPEN-LINEAGE-SERVICES-001",
             "A possible cycle in the lineage graph has been detected. ",
             "No nodes were returned by the lineage query. This could mean that the ultimate sources/destinations of the " +
-                    "queried node are included in a cyclic data flow. This is not supported by Open lineage Services.",
+                    "queried node are included in a cyclic data flow. This is not supported by the Open lineage Services.",
             "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
     ;
 

@@ -34,7 +34,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class MainGraphConnectorHelper {
 
- private JanusGraph mainGraph;
+    private JanusGraph mainGraph;
 
     public MainGraphConnectorHelper(JanusGraph mainGraph) {
         this.mainGraph = mainGraph;
@@ -272,13 +272,11 @@ public class MainGraphConnectorHelper {
         lineageEdges.addAll(edgesToBeAdded);
     }
 
-    private LineageEdge abstractEdge(Edge originalEdge) {
-        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
-        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
-        LineageEdge lineageEdge = new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
-        return lineageEdge;
-    }
-
+    /**
+     * Map a Tinkerpop vertex to the Open Lineage format.
+     * @param originalVertex The vertex to be mapped.
+     * @return The vertex in the Open Lineage format.
+     */
     private LineageVertex abstractVertex(Vertex originalVertex) {
         String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         String nodeType = originalVertex.label();
@@ -302,6 +300,18 @@ public class MainGraphConnectorHelper {
         Map<String, String> attributes = retrieveProperties(originalVertex);
         lineageVertex.setAttributes(attributes);
         return lineageVertex;
+    }
+
+    /**
+     * Map a Tinkerpop edge to the Open Lineage format.
+     * @param originalEdge The edge to be mapped
+     * @return The edge in the Open Lineage format.
+     */
+    private LineageEdge abstractEdge(Edge originalEdge) {
+        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        LineageEdge lineageEdge = new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
+        return lineageEdge;
     }
 
     /**
@@ -329,6 +339,13 @@ public class MainGraphConnectorHelper {
         return attributes;
     }
 
+    /**
+     * Check whether the ultimate sources/destinations of the queried node are included in a cyclic data flow.
+     * This is not supported by Open lineage Services.
+     * @param methodName The name of the calling method.
+     * @param vertexList The to be validated result of the Gremlin query.
+     * @throws OpenLineageException
+     */
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
         if (!vertexList.isEmpty())
             return;
@@ -342,6 +359,15 @@ public class MainGraphConnectorHelper {
     }
 
 
+    /**
+     * Remove all nodes and edges from the response graph that are in between the ultimate sources and the queried node
+     * and replace them by a single "condensed" node.
+     * @param sourcesList The list of ultimate sources.
+     * @param lineageVertices The list of all vertices returned by the Gremlin query.
+     * @param lineageEdges The list of all edges returned by the Gremlin query.
+     * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
+     * @param queriedVertex The vertex which guid was queried by the user as an Open Lineage vertex object.
+     */
     private void addSourceCondensation(List<Vertex> sourcesList,
                                        Set<LineageVertex> lineageVertices,
                                        Set<LineageEdge> lineageEdges,
@@ -373,6 +399,15 @@ public class MainGraphConnectorHelper {
         lineageEdges.add(sourceEdge);
     }
 
+    /**
+     * Remove all nodes and edges from the response graph that are in between the ultimate destinations and the queried node
+     * and replace them by a single "condensed" node.
+     * @param destinationsList The list of ultimate destinations.
+     * @param lineageVertices The list of all vertices returned by the Gremlin query.
+     * @param lineageEdges The list of all edges returned by the Gremlin query.
+     * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
+     * @param queriedVertex The vertex which guid was queried by the user as an Open Lineage vertex object.
+     */
     private void addDestinationCondensation
             (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
                     originalQueriedVertex, LineageVertex queriedVertex) {
@@ -402,6 +437,12 @@ public class MainGraphConnectorHelper {
     }
 
 
+    /**
+     * Map a tinkerpop Graph object to an Open Lineage specific format.
+     *
+     * @param subGraph The graph to be mapped.
+     * @return The graph in in an Open Lineage specific format.
+     */
     private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
@@ -411,15 +452,11 @@ public class MainGraphConnectorHelper {
 
         while (originalVertices.hasNext()) {
             LineageVertex newVertex = abstractVertex(originalVertices.next());
-            if (newVertex != null) {
-                lineageVertices.add(newVertex);
-            }
+            lineageVertices.add(newVertex);
         }
         while (originalEdges.hasNext()) {
             LineageEdge newLineageEdge = abstractEdge(originalEdges.next());
-            if (newLineageEdge != null) {
-                lineageEdges.add(newLineageEdge);
-            }
+            lineageEdges.add(newLineageEdge);
         }
         LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
         return lineageVerticesAndEdges;
