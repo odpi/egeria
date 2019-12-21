@@ -4247,7 +4247,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Pass request to real repository
          */
-        realMetadataCollection.deleteEntityReferenceCopy(userId, entity);
+        realMetadataCollection.purgeEntityReferenceCopy(userId, entity);
     }
 
 
