@@ -32,11 +32,9 @@ import java.util.*;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class MainGraphConnectorHelper extends MainGraphConnectorBase {
+public class MainGraphConnectorHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(MainGraphConnectorHelper.class);
-
-    private JanusGraph mainGraph;
+ private JanusGraph mainGraph;
 
     public MainGraphConnectorHelper(JanusGraph mainGraph) {
         this.mainGraph = mainGraph;

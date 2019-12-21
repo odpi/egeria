@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
 public interface BufferGraph extends OpenLineageGraph {
 
@@ -13,6 +14,8 @@ public interface BufferGraph extends OpenLineageGraph {
      * @param lineageEvent event
      */
     void addEntity(LineageEvent lineageEvent);
+
+    void initializeGraphDB() throws OpenLineageException;
 
     /**
      * Task that the scheduler performs based on the interval

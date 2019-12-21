@@ -101,6 +101,7 @@ public enum OpenLineageServerErrorCode {
                     "queried node are included in a cyclic data flow. This is not supported by Open lineage Services.",
             "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
     ;
+
     private int httpErrorCode;
     private String errorMessageId;
     private String errorMessage;

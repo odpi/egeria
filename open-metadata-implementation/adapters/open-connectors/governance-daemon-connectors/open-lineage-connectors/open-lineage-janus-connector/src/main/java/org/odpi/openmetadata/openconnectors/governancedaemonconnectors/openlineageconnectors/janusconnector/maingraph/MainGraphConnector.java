@@ -15,6 +15,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphCo
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,33 +33,29 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     private JanusGraph mainGraph;
     private MainGraphConnectorHelper helper;
 
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId, connectionProperties);
-    }
 
-    public void initializeGraphDB() {
+    /**
+     * {@inheritDoc}
+     */
+    public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
-        this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
+        try {
+            this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
+        } catch (JanusConnectorException error) {
+            throw new OpenLineageException(500,
+                    error.getReportingClassName(),
+                    error.getReportingActionDescription(),
+                    error.getReportedErrorMessage(),
+                    error.getReportedSystemAction(),
+                    error.getReportedUserAction()
+            );
+        }
         this.helper = new MainGraphConnectorHelper(mainGraph);
     }
 
     /**
-     * Returns a lineage subgraph.
-     *
-     * @param scope                  source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view                   The view queried by the user: hostview, tableview, columnview.
-     * @param guid                   The guid of the node of which the lineage is queried from.
-     * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
-     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
-     * @return A subgraph containing all relevant paths, in graphSON format.
+     * {@inheritDoc}
      */
     public LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
@@ -102,10 +99,11 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
         return lineageResponse;
     }
+
     /**
-     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
-     *
+     * {@inheritDoc}
      */
+    //TODO Remove before pentest or production
     public void dumpMainGraph() {
         try {
             mainGraph.io(IoCore.graphml()).writeGraph("mainGraph.graphml");
@@ -115,9 +113,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     }
 
     /**
-     * Return an entire graph, in GraphSon format.
-     *
-     * @return The queried graph, in graphSON format.
+     * {@inheritDoc}
      */
     public String exportMainGraph() {
         OutputStream out = new ByteArrayOutputStream();
@@ -131,6 +127,10 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return out.toString();
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     public Object getMainGraph() {
         return mainGraph;
     }

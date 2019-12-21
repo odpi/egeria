@@ -93,10 +93,12 @@ public class OpenLineageServerOperationalServices {
 
         BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
         MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
+
         try {
+            bufferGraphConnector.initializeGraphDB();
             mainGraphConnector.initializeGraphDB();
         } catch (OpenLineageException e) {
-            logAudit(OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
+            logAudit(OpenLineageServerAuditCode.CANNOT_OPEN_GRAPH_DB, actionDescription);
             toOMAGConfigurationErrorException(e);
         }
         Object mainGraph = mainGraphConnector.getMainGraph();
