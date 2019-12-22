@@ -14,8 +14,7 @@ The Open Lineage Services data format is structured as follows:
 
 ![Main graph data schema](assets/img/main_graph.png)
 *The labels of the edges between columns, tables and processes. Glossary term nodes have been omitted for clarity.*
-&NewLine;
-&NewLine;
+
 ![Glossary lineage](assets/img/glossary_lineage.png)
 &NewLine;
 *The labels of the edges between glossary term nodes and columns and tables.*
@@ -48,8 +47,6 @@ The Open Lineage Services data format is structured as follows:
 - System
 - Organization
 - Geographical Location
-
-
 
 **Column**
 
@@ -95,10 +92,28 @@ The Open Lineage Services data format is structured as follows:
 
 ## OMAG Server Platform configuration
 
-1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
+1. Build the open-lineage-janus-connector jar by running:
+
+```
+mvn clean install
+```
+
+in directory
+
+```
+/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/```
+```
+
+Add the jar to the classpath of Egeria module:
+
+```
+server-chassis-spring
+```
+
+2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
 run the default call for setting the server URL, eventbus and the cohort.
 
-2. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
+3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
@@ -143,13 +158,13 @@ With the following body:
 }
 ```
 
-3. Enable the Open Lineage Services by issuing the following HTTP request:
+4. Enable the Open Lineage Services by issuing the following HTTP request:
 
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
 ```
 
-4. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
+5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
     
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
