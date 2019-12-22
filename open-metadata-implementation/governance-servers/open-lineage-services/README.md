@@ -93,7 +93,7 @@ The nodes have the following properties:
 
 ## OMAG Server Platform configuration
 
-###1. Build the open-lineage-janus-connector jar by running:
+1. Build the open-lineage-janus-connector jar by running:
 
 ```
 mvn clean install
@@ -108,12 +108,13 @@ in directory
 The jar can now be found in the target directory of the open-lineage-janus-connector module.
 Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
 
-###2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
+2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
 run the default call for setting the server URL, eventbus and the cohort.
 
-###3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset  Lineage OMAS Out topic via the following HTTP request:
+3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
+Lineage OMAS Out topic via the following HTTP request:
 ```
-POST {{base-url}}/openmetadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
 ```
 With the following body: 
 ```json
@@ -155,13 +156,13 @@ With the following body:
 }
 ```
 
-###4. Enable the Open Lineage Services by issuing the following HTTP request:
+4. Enable the Open Lineage Services by issuing the following HTTP request:
 
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
 ```
 
-###5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
+5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
     
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
