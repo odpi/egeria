@@ -2,4 +2,4 @@
   
 # Open Lineage Janus Connector
 
-The Open Lineage Janus connector allows the Open Lineages to connect with a Janusgraph database.
+The Open Lineage Janus connector allows the Open Lineages Services to connect with a Janusgraph database.
