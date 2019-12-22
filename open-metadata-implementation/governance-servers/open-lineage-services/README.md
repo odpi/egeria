@@ -102,11 +102,11 @@ mvn clean install
 in directory
 
 ```
-/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/```
+/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/
 ```
 
 The jar can now be found in the target directory of the open-lineage-janus-connector module.
-Add the jar-with-dependencies to the classpath of the server-chassis-spring  module.
+Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
 
 2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
 run the default call for setting the server URL, eventbus and the cohort.
