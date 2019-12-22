@@ -14,10 +14,10 @@ The Open Lineage Services data format is structured as follows:
 
 ![Main graph data schema](assets/img/main_graph.png)
 *The labels of the edges between columns, tables and processes. Glossary term nodes have been omitted for clarity.*
-
-
+&nbsp;
+&nbsp;
 ![Glossary lineage](assets/img/glossary_lineage.png)
-
+&nbsp;
 *The labels of the edges between glossary term nodes and columns and tables.*
 
 **Glossaryterm**
