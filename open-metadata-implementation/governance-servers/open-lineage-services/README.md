@@ -7,7 +7,8 @@ The Open Lineage Services provides a historic reporting warehouse for lineage. I
 by the Asset Lineage OMAS, and stores lineage data in a database. This lineage can then be queried through
 the Open Lineage Services client and by its REST API, for example by a lineage GUI. While the data format of events sent
 out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage services store lineage data in a very basic
-data format in order to optimize query performance.
+data format in order to optimize query performance. Instructions on how to configure an OMAG server to run the 
+Open Lineage Services can be found further below.
 
 The Open Lineage Services data format consists of the following nodes (node properties included):
 
@@ -86,7 +87,9 @@ The Open Lineage Services data format consists of the following nodes (node prop
 
 ## OMAG Server Platform configuration
 
-1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
+1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
+run the default call for setting the server URL, eventbus and the cohort.
+
 2. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
 ```
