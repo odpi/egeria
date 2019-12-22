@@ -16,7 +16,7 @@ with security enforcement points.
 that automatically configure data virtualization platforms from
 open metadata.
 
-* **[open-lineage-connectors](view-generator-connectors)** provide plugins to the governance daemon
+* **[open-lineage-connectors](open-lineage-connectors)** provide plugins to the governance daemon
 that allow the Open Lineage Services to connect with databases.
 
 
