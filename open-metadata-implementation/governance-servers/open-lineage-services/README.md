@@ -10,7 +10,15 @@ out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage serv
 data format in order to optimize query performance. Instructions on how to configure an OMAG server to run the 
 Open Lineage Services can be found further below.
 
-The Open Lineage Services data format consists of the following nodes (node properties included):
+The Open Lineage Services data format is structured as follows:
+
+![Main graph data schema](assets/img/main_graph.png)
+The labels of the edges between columns, tables and processes. Glossary term nodes have been omitted for clarity.
+
+
+
+![Glossary lineage](assets/img/glossary_lineage.png)
+The labels of the edges between glossary term nodes and columns and tables.
 
 **Glossaryterm**
 
