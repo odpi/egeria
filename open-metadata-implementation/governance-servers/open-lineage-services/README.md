@@ -17,6 +17,7 @@ The Open Lineage Services data format is structured as follows:
 
 
 ![Glossary lineage](assets/img/glossary_lineage.png)
+
 *The labels of the edges between glossary term nodes and columns and tables.*
 
 **Glossaryterm**
