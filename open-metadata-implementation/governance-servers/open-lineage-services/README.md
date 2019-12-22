@@ -88,9 +88,9 @@ The Open Lineage Services data format consists of the following nodes (node prop
 
 1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
 2. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
-Lineage OMAS Out topic via a POST call to:
+Lineage OMAS Out topic via the following HTTP request:
 ```
-{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
 ```
 With the following body: 
 ```json
@@ -132,17 +132,17 @@ With the following body:
 }
 ```
 
-3. Enable the Open Lineage Services by issueing a POST request to:
+3. Enable the Open Lineage Services by issuing the following HTTP request:
 
 ```
-{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
 ```
 
-4. Start the instance of the OMAG Server Platform by issueing a POST request to:
+4. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
     
-    ```
-    {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
-   ```
+```
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
+```
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
