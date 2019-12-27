@@ -12,49 +12,34 @@ import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResp
 
 public abstract class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
 
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId,connectionProperties);
-    }
 
     /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * {@inheritDoc}
      */
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-    }
-
     @Override
-    public void initializeGraphDB() {
+    public abstract void initializeGraphDB() throws OpenLineageException;
 
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
-        return null;
-    }
+    public abstract LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void dumpMainGraph() {
+    public abstract void dumpMainGraph();
 
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String exportMainGraph()  {
-        return null;
-    }
+    public abstract String exportMainGraph();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Object getMainGraph() {
-        return null;
-    }
+    public abstract Object getMainGraph();
 }

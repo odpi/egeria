@@ -13,30 +13,41 @@ public interface MainGraph extends OpenLineageGraph {
     /**
      * Returns a lineage subgraph.
      *
-     * @param scope     source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view      The view queried by the user: hostview, tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried from.
-     * @param displayNameMustContain
-     * @param includeProcesses
+     * @param scope                  The specific lineage query.
+     * @param view                   The view queried by the user.
+     * @param guid                   The guid of the node of which the lineage is queried from.
+     * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
+     * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
-     *
      */
+    //TODO Remove before pentest or production
     void dumpMainGraph() throws OpenLineageException;
 
+    /**
+     * Initialize the mainGraph database.
+     */
     void initializeGraphDB() throws OpenLineageException;
 
     /**
-     * Return an entire graph, in GraphSon format.
+     * Write the maingraph to JSON (GraphSON) format.
      *
      * @return The queried graph, in graphSON format.
      */
+    //TODO Remove before pentest or production
     String exportMainGraph() throws OpenLineageException;
 
+
+    /**
+     * Allows the BufferGraphConnector to obtain an instance of mainGraph. Is of type Object so that
+     * OpenLineageServerOperationalServices will not require a dependency on Janusgraph.
+     *
+     * @return main graph object
+     */
     Object getMainGraph();
 }
 
