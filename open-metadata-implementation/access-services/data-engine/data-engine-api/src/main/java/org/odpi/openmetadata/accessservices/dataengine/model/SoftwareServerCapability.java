@@ -29,17 +29,6 @@ public class SoftwareServerCapability implements Serializable {
     public SoftwareServerCapability() {
     }
 
-    public SoftwareServerCapability(String qualifiedName, String displayName, String description, String engineType,
-                                    String engineVersion, String patchLevel, String source) {
-        this.qualifiedName = qualifiedName;
-        this.displayName = displayName;
-        this.description = description;
-        this.engineType = engineType;
-        this.engineVersion = engineVersion;
-        this.patchLevel = patchLevel;
-        this.source = source;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
