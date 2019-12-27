@@ -11,8 +11,14 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -27,7 +33,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +60,7 @@ public class DataEngineRESTServices {
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
     private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
-    public static final String DEBUG_METHOD_RETURN_VOID_RESPONSE = "Returning from method: {} with void response";
+    private static final String DEBUG_METHOD_RETURN_VOID_RESPONSE = "Returning from method: {} with void response";
 
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 

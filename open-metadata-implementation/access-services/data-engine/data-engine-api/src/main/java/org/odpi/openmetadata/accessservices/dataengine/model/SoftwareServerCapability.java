@@ -26,9 +26,6 @@ public class SoftwareServerCapability implements Serializable {
     private String patchLevel;
     private String source;
 
-    public SoftwareServerCapability() {
-    }
-
     public String getDisplayName() {
         return displayName;
     }
