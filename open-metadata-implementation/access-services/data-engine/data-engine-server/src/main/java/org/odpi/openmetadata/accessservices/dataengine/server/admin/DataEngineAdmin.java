@@ -16,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,7 +127,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR));
 
             return topicConnector;
-        } catch (Throwable error) {
+        } catch (Exception error) {
             String methodName = "getTopicConnector";
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
@@ -137,7 +136,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(), this.getClass().getName(),
                     methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), error);
 
-            log.debug("Exception in returning the topic connector for Data Engine: {}", e);
+            log.error("Exception in returning the topic connector for Data Engine: {}", e);
 
             throw e;
         }
