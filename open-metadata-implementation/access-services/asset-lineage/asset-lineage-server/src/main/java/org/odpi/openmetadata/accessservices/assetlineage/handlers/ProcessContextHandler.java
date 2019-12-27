@@ -78,10 +78,6 @@ public class ProcessContextHandler {
             Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid, PROCESS);
             if (!entityDetail.isPresent()) {
                 log.error("Entity with guid {} was not found in any metadata repository", processGuid);
-//                AssetLineageErrorCode errorCode = AssetLineageErrorCode.ENTITY_NOT_FOUND;
-//
-//                String errorMessage = errorCode.getErrorMessageId() +
-//                        errorCode.getFormattedErrorMessage(processGuid, serverName);
 
                 throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
                                                 this.getClass().getName(),
@@ -107,7 +103,7 @@ public class ProcessContextHandler {
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 
-        boolean entitiesTillLastRelationshipExist = getEntitiesLinkedWithProcessPort(userId, entityDetail);
+        boolean entitiesTillLastRelationshipExist = hasEntititesLinkedWithProcessPort(userId, entityDetail);
         if(entitiesTillLastRelationshipExist){
             return graph.getNeighbors();
         }
@@ -122,7 +118,7 @@ public class ProcessContextHandler {
                                         RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-    private boolean getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+    private boolean hasEntititesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                                                  PropertyServerException,
                                                                                                                  InvalidParameterException {
 
@@ -219,7 +215,7 @@ public class ProcessContextHandler {
                                            processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                            entityDetail.getType().getTypeDefName()));
         }
-        return result.isEmpty()? false: true;
+        return  !result.isEmpty();
     }
 
     /**

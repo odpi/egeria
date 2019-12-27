@@ -166,12 +166,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void validateEventType(EntityDetail entityDetail, String serviceOperationName){
-//
-//        Set<String> superTypes = validator.getSuperTypes(entityDetail.getType().getTypeDefName());
-//        if (superTypes.contains(SCHEMA_ELEMENT)) {
-//            processNewEntity(entityDetail,
-//                    serviceOperationName + NEW_ENTITY_EVENT.getName(),SCHEMA_ELEMENT);
-//        }
 
         if (validator.isValidLineageEntityEvent(entityDetail.getType().getTypeDefName())) {
             processNewEntity(entityDetail,
@@ -202,7 +196,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
             } else {
-                getAssetContext(entityDetail, serviceOperationName,supertype);
+                getAssetContext(entityDetail, serviceOperationName);
             }
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
@@ -338,13 +332,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName,String superType) throws InvalidParameterException,
+    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContextHandler newAssetContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName(),superType);
+        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext,validator);

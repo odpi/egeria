@@ -73,7 +73,7 @@ public class AssetContextHandler {
      * @param type       the type
      * @return the asset context
      */
-    public AssetContext getAssetContext(String serverName, String userId, String guid, String type,String superType) {
+    public AssetContext getAssetContext(String serverName, String userId, String guid, String type) {
 
         String methodName = "getAssetContext";
 
@@ -95,7 +95,7 @@ public class AssetContextHandler {
                                                 ENTITY_NOT_FOUND.getSystemAction(),
                                                 ENTITY_NOT_FOUND.getUserAction());
             }
-            buildAssetContext(userId, entityDetail.get(),superType);
+            buildAssetContext(userId, entityDetail.get());
             return graph;
 
         }
@@ -120,7 +120,7 @@ public class AssetContextHandler {
     }
 
 
-    private void buildAssetContext(String userId, EntityDetail entityDetail,String superType) throws UserNotAuthorizedException,
+    private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                     PropertyServerException,
                                                                                     InvalidParameterException,
                                                                                     RepositoryErrorException,
@@ -143,7 +143,7 @@ public class AssetContextHandler {
                 if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
                     setAssetDetails(userId, schemaTypeEntity);
                 } else {
-                        buildAssetContext(userId, tableTypeEntities.stream().findFirst().get(), superType);
+                        buildAssetContext(userId, tableTypeEntities.stream().findFirst().get());
 //                    }
                 }
             }
