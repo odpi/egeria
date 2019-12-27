@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.2 (Planned November 2019)
+# Release 1.2
 
 Release 1.2 provides the ability to build an asset catalog, search for assets and also
 access the data and function provided by these assets.

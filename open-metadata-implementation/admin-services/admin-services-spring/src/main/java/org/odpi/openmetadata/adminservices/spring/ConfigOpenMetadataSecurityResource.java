@@ -59,7 +59,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param userId calling user
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/platform/security/connection")
+    @DeleteMapping( path = "/platform/security/connection")
 
     public  VoidResponse clearPlatformSecurityConnection(@PathVariable String   userId)
     {
@@ -109,7 +109,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to configure
      * @return connection response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/servers/{serverName}/security/connection")
+    @DeleteMapping( path = "/servers/{serverName}/security/connection")
 
     public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   userId,
                                                                    @PathVariable  String   serverName)

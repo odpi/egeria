@@ -239,6 +239,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     'asset-search': {label: 'Asset Search', href: "/asset-search"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
+                    'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
                     'ultimateSource': {label: 'Ultimate Source', href: "/ultimateSource"},
                     'ultimateDestination': {label: 'Ultimate Destination', href: "/ultimateDestination"},
                     'endToEnd': {label: 'End To End Lineage', href: "/endToEnd"},
