@@ -58,7 +58,7 @@ public class ConfigStoreResource
      * @param userId calling user
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/connection")
+    @DeleteMapping( path = "/connection")
 
     public  VoidResponse clearConfigurationStoreConnection(@PathVariable String   userId)
     {

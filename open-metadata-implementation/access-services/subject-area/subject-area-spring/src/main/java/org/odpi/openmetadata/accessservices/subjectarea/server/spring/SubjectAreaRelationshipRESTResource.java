@@ -88,7 +88,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/has-as")
+    @PutMapping( path = "/users/{userId}/relationships/has-as")
     public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermHASARelationship(serverName, userId,termHASARelationship,isReplace);
     }
@@ -112,7 +112,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/has-as/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermHASARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -204,7 +204,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/related-terms")
+    @PutMapping( path = "/users/{userId}/relationships/related-terms")
     public SubjectAreaOMASAPIResponse updateRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateRelatedTerm(serverName, userId,relatedTermRelationship,isReplace);
     }
@@ -227,7 +227,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -321,7 +321,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/synonyms")
+    @PutMapping( path = "/users/{userId}/relationships/synonyms")
     public SubjectAreaOMASAPIResponse updateSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateSynonymRelationship(serverName, userId,synonym,isReplace);
     }
@@ -344,7 +344,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -437,7 +437,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/antonyms")
+    @PutMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse updateAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Antonym antonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateAntonymRelationship(serverName, userId,antonym,isReplace);
     }
@@ -460,7 +460,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -554,7 +554,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/translations")
+    @PutMapping( path = "/users/{userId}/relationships/translations")
     public SubjectAreaOMASAPIResponse updateTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Translation translation,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTranslationRelationship(serverName, userId,translation,isReplace);
     }
@@ -578,7 +578,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/translations/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -670,7 +670,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/used-in-contexts")
+    @PutMapping( path = "/users/{userId}/relationships/used-in-contexts")
     public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody UsedInContext usedInContext,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateUsedInContextRelationship(serverName, userId,usedInContext,isReplace);
     }
@@ -694,7 +694,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -790,7 +790,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/preferred-terms")
+    @PutMapping( path = "/users/{userId}/relationships/preferred-terms")
     public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody PreferredTerm preferredTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updatePreferredTermRelationship(serverName, userId,preferredTerm,isReplace);
     }
@@ -814,7 +814,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -910,7 +910,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/valid-values")
+    @PutMapping( path = "/users/{userId}/relationships/valid-values")
     public SubjectAreaOMASAPIResponse updateValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ValidValue validValue,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateValidValueRelationship(serverName, userId,validValue,isReplace);
     }
@@ -935,7 +935,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1030,7 +1030,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/replacement-terms")
+    @PutMapping( path = "/users/{userId}/relationships/replacement-terms")
     public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ReplacementTerm replacementTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateReplacementTerm
                 (serverName, userId,replacementTerm,isReplace);
@@ -1055,7 +1055,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse deleteReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1150,7 +1150,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/typed-bys")
+    @PutMapping( path = "/users/{userId}/relationships/typed-bys")
     public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermTYPEDBYRelationship termTYPEDBYRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship,isReplace);
     }
@@ -1174,7 +1174,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse deleteTypedByRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1269,7 +1269,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/is-as")
+    @PutMapping( path = "/users/{userId}/relationships/is-as")
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ISARelationship isa,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId,isa,isReplace);
     }
@@ -1292,7 +1292,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/is-as/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermISARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1388,7 +1388,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PutMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermISATypeOFRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId,isatypeof,isReplace);
     }
@@ -1413,7 +1413,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1513,7 +1513,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/term-categorizations")
+    @PutMapping( path = "/users/{userId}/relationships/term-categorizations")
     public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId,isatypeof,isReplace);
     }
@@ -1538,7 +1538,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1638,7 +1638,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteTermAnchorRelationship(serverName, userId, guid,isPurge);
     }
@@ -1731,7 +1731,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid,isPurge);
     }
@@ -1820,7 +1820,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/project-scopes")
+    @PutMapping( path = "/users/{userId}/relationships/project-scopes")
     public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId,projectScope,isReplace);
     }
@@ -1843,7 +1843,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -42,8 +41,6 @@ public class OpenLineageService {
     public static final String GLOSSARY_TERM = "glossaryTerm";
     private final OpenLineageClient openLineageClient;
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
-    @Value("${open.lineage.graph.source}")
-    private GraphName graphName;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
@@ -66,7 +63,7 @@ public class OpenLineageService {
     public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -87,7 +84,7 @@ public class OpenLineageService {
     public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.END_TO_END, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -108,7 +105,7 @@ public class OpenLineageService {
     public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -130,7 +127,7 @@ public class OpenLineageService {
     public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.GLOSSARY, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {
@@ -152,7 +149,7 @@ public class OpenLineageService {
         LineageVerticesAndEdges response =
                 null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
         } catch (InvalidParameterException e) {
             e.printStackTrace();
         } catch (PropertyServerException e) {

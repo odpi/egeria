@@ -48,7 +48,7 @@ public class OMAGServerDataEngineProxyService {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (OMAGNotAuthorizedException error) {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable  error) {
+        } catch (Exception error) {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
@@ -86,7 +86,7 @@ public class OMAGServerDataEngineProxyService {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (OMAGNotAuthorizedException error) {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable  error) {
+        } catch (Exception error) {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 

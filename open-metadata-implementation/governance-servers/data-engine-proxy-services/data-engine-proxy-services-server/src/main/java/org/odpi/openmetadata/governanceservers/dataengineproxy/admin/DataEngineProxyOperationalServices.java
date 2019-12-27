@@ -143,7 +143,7 @@ public class DataEngineProxyOperationalServices {
         // Configure the connector
         Connection dataEngineConnection = dataEngineProxyConfig.getDataEngineConnection();
         if (dataEngineConnection != null) {
-            log.info("Found connection: " + dataEngineConnection);
+            log.info("Found connection, attempting to retrieve connector via broker.");
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
