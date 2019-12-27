@@ -79,10 +79,8 @@ public class DataEngineRegistrationHandler {
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
-        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
-                methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
     }
 
     /**

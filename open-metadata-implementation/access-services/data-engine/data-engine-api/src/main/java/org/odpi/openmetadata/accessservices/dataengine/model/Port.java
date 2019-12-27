@@ -24,17 +24,6 @@ public class Port implements Serializable {
     private PortType portType;
     private UpdateSemantic updateSemantic;
 
-    Port(String displayName, String qualifiedName, PortType portType) {
-        this.displayName = displayName;
-        this.qualifiedName = qualifiedName;
-        this.portType = portType;
-    }
-
-    Port(String displayName, String qualifiedName, PortType portType, UpdateSemantic updateSemantic) {
-        this(displayName, qualifiedName, portType);
-        this.updateSemantic = updateSemantic;
-    }
-
     Port() {
     }
 

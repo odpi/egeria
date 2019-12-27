@@ -20,11 +20,6 @@ public class PortAlias extends Port {
     public PortAlias() {
     }
 
-    public PortAlias(String displayName, String qualifiedName, PortType portType, String delegatesTo) {
-        super(displayName, qualifiedName, portType);
-        this.delegatesTo = delegatesTo;
-    }
-
     public String getDelegatesTo() {
         return delegatesTo;
     }

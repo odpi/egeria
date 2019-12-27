@@ -18,4 +18,6 @@ public class DataEnginePropertiesMapper {
     public static final String SOURCE_PROPERTY_NAME = "source";
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
 
+    private DataEnginePropertiesMapper() {
+    }
 }

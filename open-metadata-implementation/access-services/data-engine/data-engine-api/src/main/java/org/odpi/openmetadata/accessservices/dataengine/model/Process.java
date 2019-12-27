@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Process extends Asset {
     private static final long serialVersionUID = 1L;
 
-    private String qualifiedName;
     private String name;
     private String formula;
     private List<PortImplementation> portImplementations;
@@ -33,44 +32,8 @@ public class Process extends Asset {
     public Process() {
     }
 
-    public Process(String qualifiedName, String name, String description, String latestChange,
-                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
-                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
-                   List<LineageMapping> lineageMappings) {
-        this.qualifiedName = qualifiedName;
-        this.name = name;
-        this.description = description;
-        this.latestChange = latestChange;
-        this.zoneMembership = zoneMembership;
-        this.displayName = displayName;
-        this.formula = formula;
-        this.owner = owner;
-        this.ownerType = ownerType;
-        this.portImplementations = portImplementations;
-        this.portAliases = portAliases;
-        this.lineageMappings = lineageMappings;
-        this.updateSemantic = UpdateSemantic.REPLACE;
-    }
-
-    public Process(String qualifiedName, String name, String description, String latestChange,
-                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
-                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
-                   List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) {
-        this(qualifiedName, name, description, latestChange, zoneMembership, displayName, formula, owner, ownerType,
-                portImplementations, portAliases, lineageMappings);
-        this.updateSemantic = updateSemantic;
-    }
-
     public Process(Asset asset) {
         super(asset);
-    }
-
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
     }
 
     public String getName() {
@@ -79,54 +42,6 @@ public class Process extends Asset {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLatestChange() {
-        return latestChange;
-    }
-
-    public void setLatestChange(String latestChange) {
-        this.latestChange = latestChange;
-    }
-
-    public List<String> getZoneMembership() {
-        return zoneMembership;
-    }
-
-    public void setZoneMembership(List<String> zoneMembership) {
-        this.zoneMembership = zoneMembership;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public OwnerType getOwnerType() {
-        return ownerType;
-    }
-
-    public void setOwnerType(OwnerType ownerType) {
-        this.ownerType = ownerType;
     }
 
     public String getFormula() {
