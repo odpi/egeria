@@ -28,9 +28,6 @@ public class Attribute implements Serializable {
     private String dataType;
     private String defaultValue;
 
-    public Attribute() {
-    }
-
     public String getQualifiedName() {
         return qualifiedName;
     }

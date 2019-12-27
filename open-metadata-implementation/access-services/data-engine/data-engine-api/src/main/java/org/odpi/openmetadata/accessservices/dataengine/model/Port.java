@@ -24,9 +24,6 @@ public class Port implements Serializable {
     private PortType portType;
     private UpdateSemantic updateSemantic;
 
-    Port() {
-    }
-
     public String getDisplayName() {
         return displayName;
     }
