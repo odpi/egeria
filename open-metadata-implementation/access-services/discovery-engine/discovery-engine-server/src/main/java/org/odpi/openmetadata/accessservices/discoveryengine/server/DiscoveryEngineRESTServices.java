@@ -51,8 +51,10 @@ public class DiscoveryEngineRESTServices
      * Return the next set of assets to process.
      *
      * @param serverName name of server instance to route request to
+     * @param userId calling user
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
+     * @param requestBody null request body
      * @return list of unique identifiers for located assets or
      *
      *  InvalidParameterException one of the parameters is null or invalid.

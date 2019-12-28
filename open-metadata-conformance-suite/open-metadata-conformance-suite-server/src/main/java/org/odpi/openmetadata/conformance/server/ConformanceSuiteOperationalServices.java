@@ -136,6 +136,7 @@ public class ConformanceSuiteOperationalServices
 
         if (conformanceSuiteConfig.getRepositoryWorkbenchConfig() != null)
         {
+            final String workBenchName = "Repository Conformance Workbench";
             RepositoryConformanceWorkPad   repositoryConformanceWorkPad = new RepositoryConformanceWorkPad(localServerUserId,
                                                                                                            localServerPassword,
                                                                                                            maxPageSize,
@@ -146,7 +147,7 @@ public class ConformanceSuiteOperationalServices
             RepositoryConformanceWorkbench repositoryConformanceWorkbench = new RepositoryConformanceWorkbench(repositoryConformanceWorkPad);
             runningWorkbenches.add(repositoryConformanceWorkbench);
 
-            Thread repositoryWorkbenchThread = new Thread(repositoryConformanceWorkbench, "Repository Conformance Workbench");
+            Thread repositoryWorkbenchThread = new Thread(repositoryConformanceWorkbench, workBenchName);
             repositoryWorkbenchThread.start();
 
             ConformanceSuiteConnectorConsumer connectorConsumer = new ConformanceSuiteConnectorConsumer(repositoryConformanceWorkPad);
@@ -154,7 +155,7 @@ public class ConformanceSuiteOperationalServices
 
             ConformanceSuiteOMRSTopicListener omrsTopicListener = new ConformanceSuiteOMRSTopicListener(repositoryConformanceWorkPad);
 
-            enterpriseTopicConnector.registerListener(omrsTopicListener);
+            enterpriseTopicConnector.registerListener(omrsTopicListener, workBenchName);
         }
 
         instanceMap.setNewInstance(localServerName, new ConformanceServicesInstance(new TechnologyUnderTestWorkPad(workbenchWorkPads),

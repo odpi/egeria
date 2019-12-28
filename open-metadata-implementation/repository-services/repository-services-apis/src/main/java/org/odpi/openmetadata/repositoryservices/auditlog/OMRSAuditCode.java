@@ -295,7 +295,7 @@ public enum OMRSAuditCode
 
     NULL_PROPERTIES_IN_ARCHIVE("OMRS-AUDIT-0052",
                         OMRSAuditLogRecordSeverity.ERROR,
-                        "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive because it is empty",
+                        "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive {0} because it is empty",
                         "The local server is skipping an open metadata archive because it is empty.",
                         "Review the list of archives for the server and determine which archive is in error. " +
                            "Request a new version of the archive or remove it from the server's archive list."),
@@ -790,9 +790,15 @@ public enum OMRSAuditCode
 
     UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9016",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        "Service {0} threw an unexpected exception {1} with message {2}; the stack trace was {4}",
-                        "The contents of the event were not accepted by the local repository.",
-                        "Review the exception and resolve the issue it documents.")
+                        "The topic listener for the {0} service caught an unexpected exception {1} with message {2}; the stack trace was {3}",
+                        "The contents of the event were not accepted by the topic listener.",
+                        "Review the exception and resolve the issue that it documents."),
+
+    UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9017",
+                       OMRSAuditLogRecordSeverity.EXCEPTION,
+                       "The topic listener for the {0} service threw an unexpected exception {1} with message {2}; the stack trace was {3}",
+                       "The contents of the event were not accepted by the topic listener.",
+                       "Review the exception and resolve the issue that it documents.")
 
 
     ;

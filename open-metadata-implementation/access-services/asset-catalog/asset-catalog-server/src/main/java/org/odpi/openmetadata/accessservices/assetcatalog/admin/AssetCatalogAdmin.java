@@ -69,20 +69,21 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (OMAGConfigurationErrorException error) {
             throw error;
         } catch (Exception error) {
             auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 

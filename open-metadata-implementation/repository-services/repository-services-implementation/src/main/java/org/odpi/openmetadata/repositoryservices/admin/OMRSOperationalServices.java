@@ -749,9 +749,11 @@ public class OMRSOperationalServices
      *
      * @param openMetadataArchiveConnection connection to the archive
      */
-    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection)
+    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection,
+                                       String        archiveSource)
     {
-        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection));
+        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection),
+                                              archiveSource);
     }
 
 
@@ -899,13 +901,14 @@ public class OMRSOperationalServices
                                 + errorCode.getFormattedErrorMessage(localServerName);
 
             OMRSAuditCode auditCode = OMRSAuditCode.BAD_AUDIT_LOG_DESTINATION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(methodName,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                                  null,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),

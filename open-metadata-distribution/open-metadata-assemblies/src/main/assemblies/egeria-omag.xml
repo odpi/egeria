@@ -51,6 +51,58 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
+        <!-- Open Connectors -->
+        <!-- Copy the Jars for all of the connector implementations -->
+
+        <!-- Standard Open Connectors -->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Sample Security Connectors -->
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Open Metadata Archives -->
+        <!-- Copy the generated archives -->
+
+        <!-- Standard Open Connectors -->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/*/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
         <!-- OMAG Clients-->
         <!-- Copy the Jars for the OMAG Clients-->
 

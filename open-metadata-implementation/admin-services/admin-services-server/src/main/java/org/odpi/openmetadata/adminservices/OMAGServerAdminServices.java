@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -33,16 +34,17 @@ public class OMAGServerAdminServices
 {
     private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminServices.class);
 
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private            OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
+    private            OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
+    private            OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
+
     /*
      * =============================================================
      * Configure server - basic options using defaults
      */
 
 
-    /**
+                                                                                          /**
      * Set up the descriptive type of the server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
      *
@@ -586,7 +588,7 @@ public class OMAGServerAdminServices
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse setDefaultAuditLog(String userId,
                                            String serverName)
@@ -602,13 +604,210 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            ConnectorConfigurationFactory configurationFactory     = new ConnectorConfigurationFactory();
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            List<Connection>  auditLogConnections = new ArrayList<>();
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getDefaultAuditLogConnection(serverName));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
 
-            auditLogConnections.add(configurationFactory.getDefaultAuditLogConnection(serverName));
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
-            this.setAuditLogDestinations(userId, serverName, auditLogConnections);
+        return response;
+    }
+
+
+    /**
+     * Set up the console (stdout) audit log destination for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addConsoleAuditLogDestination(String       userId,
+                                                      String       serverName,
+                                                      List<String> supportedSeverities)
+    {
+        final String methodName = "addConsoleAuditLogDestination";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(serverName, supportedSeverities));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the Log4J audit log destination for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addLog4JAuditLogDestination(String       userId,
+                                                    String       serverName,
+                                                    List<String> supportedSeverities)
+    {
+        final String methodName = "addLog4JAuditLogDestination";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getLog4JAuditLogConnection(serverName, supportedSeverities));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the File based audit log destination for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addFileAuditLogDestination(String       userId,
+                                                   String       serverName,
+                                                   List<String> supportedSeverities)
+    {
+        final String methodName = "addFileAuditLogDestination";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getFileBasedAuditLogConnection(serverName, supportedSeverities));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the File based audit log destination for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addEventTopicAuditLogDestination(String       userId,
+                                                         String       serverName,
+                                                         List<String> supportedSeverities)
+    {
+        final String methodName = "addEventTopicAuditLogDestination";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
+
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getEventTopicAuditLogConnection(serverName,
+                                                                                                                 supportedSeverities,
+                                                                                                                 eventBusConfig.getConnectorProvider(),
+                                                                                                                 eventBusConfig.getTopicURLRoot(),
+                                                                                                                 serverConfig.getLocalServerId(),
+                                                                                                                 eventBusConfig.getConfigurationProperties()));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1496,6 +1695,112 @@ public class OMAGServerAdminServices
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param auditLogDestination connection object for audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse addAuditLogDestination(String                userId,
+                                               String                serverName,
+                                               Connection            auditLogDestination)
+    {
+        final String methodName = "setAuditLogDestinations";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            if (auditLogDestination != null)
+            {
+                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+                List<String>     configAuditTrail = serverConfig.getAuditTrail();
+
+                if (configAuditTrail == null)
+                {
+                    configAuditTrail = new ArrayList<>();
+                }
+
+                RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+                if (repositoryServicesConfig == null)
+                {
+                    OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+
+                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                }
+
+                List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
+
+                if (auditLogDestinations == null)
+                {
+                    auditLogDestinations = new ArrayList<>();
+                    configAuditTrail.add(new Date().toString() + " " + userId + " created first audit log destination.");
+
+                }
+                else
+                {
+                    configAuditTrail.add(new Date().toString() + " " + userId + " added to list of audit log destinations.");
+                }
+
+                auditLogDestinations.add(auditLogDestination);
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+
+                serverConfig.setAuditTrail(configAuditTrail);
+
+                /*
+                 * Save the open metadata repository services config in the server's config
+                 */
+                serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+                configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse clearAuditLogDestinations(String userId,
+                                                  String serverName)
+    {
+        return this.setAuditLogDestinations(userId, serverName, null);
     }
 
 

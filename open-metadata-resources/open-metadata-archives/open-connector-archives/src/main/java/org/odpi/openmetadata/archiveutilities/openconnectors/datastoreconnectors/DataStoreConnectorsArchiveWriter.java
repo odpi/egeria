@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
  */
 public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
 {
-    static final String defaultOpenMetadataArchiveFileName = "DataStoreConnectorTypes.json";
+    private static final String defaultOpenMetadataArchiveFileName = "DataStoreConnectorTypes.json";
 
     /**
      * Default constructor
@@ -26,7 +26,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
      * Generates and writes out an open metadata archive containing all of the connector types
      * describing the ODPi Egeria data store open connectors.
      */
-    void writeOpenMetadataArchive()
+    private void writeOpenMetadataArchive()
     {
         try
         {
@@ -45,6 +45,8 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
     /**
      * Main program to initiate the archive writer for the connector types for data store connectors supported by
      * ODPi Egeria.
+     *
+     * @param args ignored
      */
     public static void main(String[] args)
     {

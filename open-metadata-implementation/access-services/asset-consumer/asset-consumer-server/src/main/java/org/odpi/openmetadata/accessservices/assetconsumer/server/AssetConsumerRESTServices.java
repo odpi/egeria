@@ -15,13 +15,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -31,11 +26,12 @@ import java.util.List;
  */
 public class AssetConsumerRESTServices
 {
-    private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
+    private static AssetConsumerInstanceHandler   instanceHandler      = new AssetConsumerInstanceHandler();
     private        RESTExceptionHandler           restExceptionHandler = new RESTExceptionHandler();
 
-    private static RESTCallLogger                  restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
-                                                                                             instanceHandler.getServiceName());
+    private static RESTCallLogger                 restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
+                                                                                            instanceHandler.getServiceName());
+
     /**
      * Default constructor
      */

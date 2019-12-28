@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetConsumerEventHeader provides a common base for all events from the access service.
+ * AssetConsumerEvent provides a common base for all events from the access service.
  * It implements Serializable and a version Id.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AssetEvent.class, name = "AssetEvent")
 })
-public abstract class AssetConsumerEventHeader implements Serializable
+public abstract class AssetConsumerEvent implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
     /**
      * Default Constructor sets the properties to nulls
      */
-    AssetConsumerEventHeader()
+    AssetConsumerEvent()
     {
         /*
          * Nothing to do.
@@ -50,7 +50,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
      *
      * @param template object to copy
      */
-    AssetConsumerEventHeader(AssetConsumerEventHeader template)
+    AssetConsumerEvent(AssetConsumerEvent template)
     {
         if (template != null)
         {
@@ -113,7 +113,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
     @Override
     public String toString()
     {
-        return "AssetConsumerEventHeader{" +
+        return "AssetConsumerEvent{" +
                 "eventVersionId=" + eventVersionId +
                 ", eventType=" + eventType +
                 '}';
@@ -137,7 +137,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
         {
             return false;
         }
-        AssetConsumerEventHeader that = (AssetConsumerEventHeader) objectToCompare;
+        AssetConsumerEvent that = (AssetConsumerEvent) objectToCompare;
         return getEventVersionId() == that.getEventVersionId() &&
                 getEventType() == that.getEventType();
     }

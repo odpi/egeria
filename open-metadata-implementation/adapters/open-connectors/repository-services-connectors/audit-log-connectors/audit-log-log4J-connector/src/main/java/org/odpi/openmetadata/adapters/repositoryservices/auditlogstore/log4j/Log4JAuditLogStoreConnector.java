@@ -1,0 +1,75 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.log4j;
+
+
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Log4JAuditLogStoreConnector provides a connector implementation for a log4J audit log destination.
+ */
+public class Log4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
+{
+    private Map<String, Logger>  loggerMap = new HashMap<>();
+
+    /**
+     * Default constructor used by the connector provider.
+     */
+    public Log4JAuditLogStoreConnector()
+    {
+    }
+
+
+    /**
+     * Store the audit log record in the audit log store.
+     *
+     * @param logRecord  log record to store
+     * @return unique identifier assigned to the log record
+     * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
+     */
+    public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
+    {
+        final String   methodName = "storeLogRecord";
+
+        super.validateLogRecord(logRecord, methodName);
+
+        String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getReportingComponent().getComponentName();
+        Logger log = loggerMap.get(loggerName);
+
+        if (log == null)
+        {
+            log = LoggerFactory.getLogger(loggerName);
+
+            loggerMap.put(loggerName, log);
+        }
+
+        if (super.isSupportedSeverity(logRecord))
+        {
+            if ((OMRSAuditLogRecordSeverity.ERROR.getName().equals(logRecord.getSeverity())) ||
+                    (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity())))
+            {
+                log.error(logRecord.getOriginator().getServerName() + logRecord.getGUID() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
+                if (logRecord.getExceptionClassName() != null)
+                {
+                    log.error(logRecord.getOriginator().getServerName() + logRecord.getGUID() + " " + logRecord.getExceptionClassName() + " returned " +
+                                      "message of " + logRecord.getExceptionMessage() +
+                                      " and stacktrace of " + logRecord.getExceptionStackTrace());
+                }
+            }
+            else
+            {
+                log.info(logRecord.getOriginator().getServerName() + logRecord.getGUID() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
+            }
+        }
+
+        return logRecord.getGUID();
+    }
+}

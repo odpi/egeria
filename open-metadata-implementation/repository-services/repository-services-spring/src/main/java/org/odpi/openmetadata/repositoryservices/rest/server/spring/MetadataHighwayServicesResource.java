@@ -68,6 +68,7 @@ public class MetadataHighwayServicesResource
      *
      * @param serverName server to query
      * @param userId calling user
+     * @param cohortName name of the specific cohort to query for the registration information
      * @return local registration properties for server
      */
     @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/local-registration")

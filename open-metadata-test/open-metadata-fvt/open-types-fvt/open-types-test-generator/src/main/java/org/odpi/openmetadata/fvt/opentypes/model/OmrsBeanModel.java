@@ -22,10 +22,10 @@ public class OmrsBeanModel {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     //references
-    private List<OmrsBeanReference> omrsBeanReferences = new ArrayList();
+    private List<OmrsBeanReference> omrsBeanReferences = new ArrayList<>();
 
     private Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = new HashMap<String, List<OmrsBeanAttribute>>();
-    private Set<String> typesWithRelationships = new HashSet();
+    private Set<String> typesWithRelationships = new HashSet<>();
     // map entity name to its attributes
     private Map<String, List<OmrsBeanAttribute>> omrsBeanEntityAttributesMap = new HashMap<String, List<OmrsBeanAttribute>>();
     // map entity name to its description
@@ -106,7 +106,7 @@ public class OmrsBeanModel {
             if (attributeDefs==null) {
                 attributeDefs=new ArrayList<TypeDefAttribute>();
             }
-            Set<String> attrNamesSet = new HashSet();
+            Set<String> attrNamesSet = new HashSet<>();
             for (TypeDefAttribute attr:attributeDefs) {
                 attrNamesSet.add((attr.getAttributeName()));
             }
@@ -188,7 +188,7 @@ public class OmrsBeanModel {
     }
 
     private List<OmrsBeanAttribute> createOmrsBeanAttributeList(List<TypeDefAttribute> attributeDefs) {
-        List<OmrsBeanAttribute> omrsBeanattributeList = new ArrayList();
+        List<OmrsBeanAttribute> omrsBeanattributeList = new ArrayList<>();
         if (attributeDefs !=null ) {
             for (TypeDefAttribute attributeDef : attributeDefs) {
                 // deal with primitives , collections and enum attributes
@@ -286,7 +286,7 @@ public class OmrsBeanModel {
 
                 List<OmrsBeanAttribute> entityOmrsBeanReferencesAsAttributes = omrsBeanReferencesAsAttributesByEntity.get(omrsBeanReference.myType);
                 if (entityOmrsBeanReferencesAsAttributes == null) {
-                    entityOmrsBeanReferencesAsAttributes = new ArrayList();
+                    entityOmrsBeanReferencesAsAttributes = new ArrayList<>();
                 }
                 OmrsBeanAttribute omrsBeanAttribute = new OmrsBeanAttribute();
                 omrsBeanAttribute.name = omrsBeanReference.referenceName;
@@ -325,7 +325,7 @@ public class OmrsBeanModel {
 
                 List<OmrsBeanAttribute> entityOmrsBeanReferences1 = omrsBeanReferencesAsAttributesByEntity.get(omrsBeanReference1.myType);
                 if (entityOmrsBeanReferences1 == null) {
-                    entityOmrsBeanReferences1 = new ArrayList();
+                    entityOmrsBeanReferences1 = new ArrayList<>();
                 }
                 OmrsBeanAttribute omrsBeanAttribute1 = new OmrsBeanAttribute();
                 omrsBeanAttribute1.name = omrsBeanReference1.referenceName;
@@ -338,7 +338,7 @@ public class OmrsBeanModel {
                 omrsBeanReferencesAsAttributesByEntity.put(omrsBeanReference1.myType, entityOmrsBeanReferences1);
                 List<OmrsBeanAttribute> entityOmrsBeanReferences2 = omrsBeanReferencesAsAttributesByEntity.get(omrsBeanReference2.myType);
                 if (entityOmrsBeanReferences2 == null) {
-                    entityOmrsBeanReferences2 = new ArrayList();
+                    entityOmrsBeanReferences2 = new ArrayList<>();
                 }
                 OmrsBeanAttribute omrsBeanAttribute2 = new OmrsBeanAttribute();
                 omrsBeanAttribute2.name = omrsBeanReference2.referenceName;
@@ -357,7 +357,7 @@ public class OmrsBeanModel {
             EntityDef entityDef = this.omEntityTypedefs.get(entityDefName);
             List<OmrsBeanAttribute> deduplicatedOmrsBeanAttributes = this.omrsBeanReferencesAsAttributesByEntity.get(entityDefName);
             // get all the attribute names
-            Set<String> attributeNames = new HashSet();
+            Set<String> attributeNames = new HashSet<>();
             if (deduplicatedOmrsBeanAttributes !=null) {
                 for (OmrsBeanAttribute omrsBeanAttribute : deduplicatedOmrsBeanAttributes) {
                     attributeNames.add(omrsBeanAttribute.name);
@@ -378,7 +378,7 @@ public class OmrsBeanModel {
                     Set<OmrsBeanAttribute>  newAttributes = new HashSet<>();
                     // may not have found any attributes yet.
                     if (deduplicatedOmrsBeanAttributes == null ) {
-                        deduplicatedOmrsBeanAttributes = new ArrayList();
+                        deduplicatedOmrsBeanAttributes = new ArrayList<>();
                     }
                     // we have deduplicated attributes
                     for (OmrsBeanAttribute omrsBeanAttribute : parentOmrsBeanAttributes) {

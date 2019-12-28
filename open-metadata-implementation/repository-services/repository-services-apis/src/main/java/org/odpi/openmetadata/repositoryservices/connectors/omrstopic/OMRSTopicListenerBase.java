@@ -58,10 +58,12 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * Log an audit log message to record an unexpected exception.  We should never see this message.
      * It indicates a logic error in the service that threw the exception.
      *
+     * @param event string version of the event
      * @param error exception
      * @param actionDescription calling activity
      */
-    private void logUnexpectedException(Throwable  error,
+    private void logUnexpectedException(String     event,
+                                        Throwable  error,
                                         String     actionDescription)
     {
         log.error("Unexpected exception from " + actionDescription, error);
@@ -78,7 +80,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                                error.getClass().getName(),
                                                                error.getMessage(),
                                                                stackTrace.toString()),
-                              null,
+                              event,
                               auditCode.getSystemAction(),
                               auditCode.getUserAction(),
                               error);
@@ -299,13 +301,13 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         }
         catch (Throwable error)
         {
-            this.logUnexpectedException(error, actionDescription);
+            this.logUnexpectedException(registryEvent.toString(), error, actionDescription);
         }
     }
 
 
     /**
-     * Method to pass a Registry event received on topic.
+     * Method to pass a TypeDef event received on topic.
      *
      * @param typeDefEvent inbound event
      */
@@ -451,13 +453,13 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         }
         catch (Throwable error)
         {
-            this.logUnexpectedException(error, actionDescription);
+            this.logUnexpectedException(typeDefEvent.toString(), error, actionDescription);
         }
     }
 
 
     /**
-     * Method to pass a instance event received on topic.
+     * Method to pass an Instance event received on topic.
      *
      * @param instanceEvent inbound event
      */
@@ -804,7 +806,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         }
         catch (Throwable  error)
         {
-            this.logUnexpectedException(error, actionDescription);
+            this.logUnexpectedException(instanceEvent.toString(), error, actionDescription);
         }
     }
 

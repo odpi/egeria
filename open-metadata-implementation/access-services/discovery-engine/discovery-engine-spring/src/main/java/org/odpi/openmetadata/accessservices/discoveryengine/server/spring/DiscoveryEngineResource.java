@@ -38,8 +38,10 @@ public class DiscoveryEngineResource
      * Return the next set of assets to process.
      *
      * @param serverName name of server instance to route request to
+     * @param userId calling user
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
+     * @param requestBody null request body
      * @return list of unique identifiers for located assets or
      *
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -174,7 +176,7 @@ public class DiscoveryEngineResource
      * @param assetGUID             unique identifier for asset.
      * @param discoveryService      unique name for discoveryService.
      * @param message               message to log
-     *
+     * @return void or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.

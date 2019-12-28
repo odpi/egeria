@@ -103,7 +103,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
@@ -111,13 +111,14 @@ public class DataPlatformAdmin extends AccessServiceAdmin
             throw error;
         } catch (Throwable error) {
             auditCode = DataPlatformAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 

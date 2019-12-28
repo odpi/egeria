@@ -43,7 +43,7 @@ public class AccessServiceEventHeaderTest
     {
         MockAccessServiceEventHeader  testObject = new MockAccessServiceEventHeader();
 
-        assertTrue(testObject.toString().contains("AssetConsumerEventHeader"));
+        assertTrue(testObject.toString().contains("AssetConsumerEvent"));
     }
 
 

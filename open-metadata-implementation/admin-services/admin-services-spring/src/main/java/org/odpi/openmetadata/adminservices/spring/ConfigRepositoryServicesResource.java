@@ -30,7 +30,7 @@ public class ConfigRepositoryServicesResource
      */
 
     /**
-     * Set up the default audit log for the server.
+     * Set up the default audit log for the server.  This adds the console audit log destination.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -43,6 +43,118 @@ public class ConfigRepositoryServicesResource
                                            @PathVariable String serverName)
     {
         return adminAPI.setDefaultAuditLog(userId, serverName);
+    }
+
+
+    /**
+     * Set up the default audit log for the server.  This
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/console")
+    public VoidResponse addConsoleAuditLogDestination(@PathVariable String       userId,
+                                                      @PathVariable String       serverName,
+                                                      @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addConsoleAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log4j records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/log4j")
+    public VoidResponse addLog4JAuditLogDestination(@PathVariable String       userId,
+                                                    @PathVariable String       serverName,
+                                                    @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addLog4JAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log records as JSON files in a shared directory.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/files")
+    public VoidResponse addFileAuditLogDestination(@PathVariable String       userId,
+                                                   @PathVariable String       serverName,
+                                                   @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addFileAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that sends each log record as an event on the supplied event topic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/event-topic")
+    public VoidResponse addEventTopicAuditLogDestination(@PathVariable String       userId,
+                                                         @PathVariable String       serverName,
+                                                         @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addEventTopicAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that is defined by the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/connection")
+    public VoidResponse addAuditLogDestination(@PathVariable String     userId,
+                                               @PathVariable String     serverName,
+                                               @RequestBody  Connection connection)
+    {
+        return adminAPI.addAuditLogDestination(userId, serverName, connection);
+    }
+
+
+    /**
+     * Clears all audit log destinations for this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/none")
+    public VoidResponse clearAuditLogDestinations(@PathVariable String userId,
+                                                  @PathVariable String serverName)
+    {
+        return adminAPI.clearAuditLogDestinations(userId, serverName);
     }
 
 

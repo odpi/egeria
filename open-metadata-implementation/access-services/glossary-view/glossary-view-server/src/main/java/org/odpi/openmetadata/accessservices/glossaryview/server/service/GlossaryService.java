@@ -39,8 +39,8 @@ public class GlossaryService extends GlossaryViewOMAS {
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param from from
-     * @param size size
+     * @param from offset start for the return values
+     * @param size maximum number of results
      *
      * @return EntityDetailResponse all glossaries
      */
@@ -82,8 +82,8 @@ public class GlossaryService extends GlossaryViewOMAS {
      * @param userId calling user
      * @param serverName instance to call
      * @param glossaryGUID glossary GUID
-     * @param from from
-     * @param size size
+     * @param from offset start for the return values
+     * @param size maximum number of results
      *
      * @return EntityDetailResponse all external glossary links
      */
