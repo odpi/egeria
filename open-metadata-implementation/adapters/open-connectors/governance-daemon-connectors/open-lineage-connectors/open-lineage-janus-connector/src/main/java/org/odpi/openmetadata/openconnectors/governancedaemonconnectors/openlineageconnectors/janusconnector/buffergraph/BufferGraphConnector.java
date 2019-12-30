@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -32,40 +33,23 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
     private JanusGraph bufferGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
-
     private JanusGraph mainGraph;
 
 
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId, connectionProperties);
-        initializeGraphDB();
-    }
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-    }
-
-    /**
-     * Initializes bufferGraph based on the configurations is being passed from the POST call.
-     *
-     */
-    private void initializeGraphDB(){
+    public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
-        this.bufferGraph = graphFactory.openGraph(graphDB,connectionProperties);
+        try {
+            this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
+        } catch (JanusConnectorException error) {
+            throw new OpenLineageException(500,
+                    error.getReportingClassName(),
+                    error.getReportingActionDescription(),
+                    error.getReportedErrorMessage(),
+                    error.getReportedSystemAction(),
+                    error.getReportedUserAction()
+            );
+        }
     }
 
     /**
@@ -182,7 +166,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
     }
 
-    private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
+    private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode)  throws JanusConnectorException{
         LineageEntity fromEntity = nodeToNode.getFromVertex();
         LineageEntity toEntity = nodeToNode.getToVertex();
 
@@ -194,10 +178,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     }
 
-    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity){
+    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
         final String methodName = "addVertex";
-
-
 
         Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
@@ -219,7 +201,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
      *
      */
-    private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex){
+    private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex) throws JanusConnectorException{
         String methodName = "addRelationship";
 
         if (relationshipType == null) {
@@ -246,7 +228,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * Creates a new vertex if it does not exist
      * @param lineageEntity - LineageEntity object to be created
      */
-    private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity){
+    private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity) throws JanusConnectorException{
         final String methodName = "addPropertiesToVertex";
 
         try {
@@ -312,7 +294,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).hasNext();
     }
 
-    private void throwException(JanusConnectorErrorCode errorCode,String guid,String methodName){
+    private void throwException(JanusConnectorErrorCode errorCode,String guid,String methodName) throws JanusConnectorException {
 
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
                 this.getClass().getName());

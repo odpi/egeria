@@ -35,6 +35,7 @@ import org.springframework.http.HttpStatus;
 public class DataEngineEventProcessor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(DataEngineEventProcessor.class);
+    private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
 
     private final OMRSAuditLog auditLog;
     private final String serverName;
@@ -50,8 +51,7 @@ public class DataEngineEventProcessor {
      *
      * @throws NewInstanceException * @throws NewInstanceException a problem occurred during initialization
      */
-    public DataEngineEventProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) throws
-                                                                                                NewInstanceException {
+    public DataEngineEventProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) throws NewInstanceException {
         this.auditLog = auditLog;
         this.serverName = instance.getServerName();
     }
@@ -64,10 +64,9 @@ public class DataEngineEventProcessor {
     public void processDataEngineRegistrationEvent(String dataEngineEvent) {
         final String methodName = "processDataEngineRegistrationEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
-                    DataEngineRegistrationEvent.class);
+            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
                     dataEngineRegistrationEvent.getSoftwareServerCapability());
 
@@ -84,12 +83,12 @@ public class DataEngineEventProcessor {
     public void processPortAliasEvent(String dataEngineEvent) {
         final String methodName = "processPortAliasEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
-            dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName,
-                    portAliasEvent.getPort(), portAliasEvent.getExternalSourceName());
+            dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
+                    portAliasEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -104,14 +103,12 @@ public class DataEngineEventProcessor {
     public void processPortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processPortImplementationEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
-                    PortImplementationEvent.class);
+            PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
-            dataEngineRESTServices.createOrUpdatePortImplementationWithSchemaType(portImplementationEvent.getUserId(),
-                    serverName, portImplementationEvent.getPortImplementation(),
-                    portImplementationEvent.getExternalSourceName());
+            dataEngineRESTServices.createOrUpdatePortImplementationWithSchemaType(portImplementationEvent.getUserId(), serverName,
+                    portImplementationEvent.getPortImplementation(), portImplementationEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -126,15 +123,13 @@ public class DataEngineEventProcessor {
     public void processProcessToPortListEvent(String dataEngineEvent) {
         final String methodName = "processProcessToPortListEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
-            ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
-                    ProcessToPortListEvent.class);
+            ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessToPortListEvent.class);
 
-            dataEngineRESTServices.addPortsToProcess(processToPortListEvent.getUserId(), serverName,
-                    processToPortListEvent.getProcessGUID(), processToPortListEvent.getPorts(),
-                    processToPortListEvent.getExternalSourceName());
+            dataEngineRESTServices.addPortsToProcess(processToPortListEvent.getUserId(), serverName, processToPortListEvent.getProcessGUID(),
+                    processToPortListEvent.getPorts(), processToPortListEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -149,19 +144,18 @@ public class DataEngineEventProcessor {
     public void processLineageMappingsEvent(String dataEngineEvent) {
         final String methodName = "processLineageMappingsEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
-            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent,
-                    LineageMappingsEvent.class);
+            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
 
             if (CollectionUtils.isEmpty(lineageMappingsEvent.getLineageMappings())) {
                 return;
             }
 
             FFDCResponseBase response = new FFDCResponseBase();
-            dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName,
-                    lineageMappingsEvent.getLineageMappings(), response, lineageMappingsEvent.getExternalSourceName());
+            dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
+                    response, lineageMappingsEvent.getExternalSourceName());
 
             validateResponse(response, dataEngineEvent, methodName);
 
@@ -178,12 +172,12 @@ public class DataEngineEventProcessor {
     public void processProcessesEvent(String dataEngineEvent) {
         final String methodName = "processProcessesEvent";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-            ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(),
-                    serverName, processesEvent.getProcesses(), processesEvent.getExternalSourceName());
+            ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(), serverName,
+                    processesEvent.getProcesses(), processesEvent.getExternalSourceName());
             validateResponse(response, dataEngineEvent, methodName);
 
         } catch (JsonProcessingException | DataEngineException e) {
@@ -197,19 +191,18 @@ public class DataEngineEventProcessor {
 
         DataEngineErrorCode errorCode = DataEngineErrorCode.PARSE_EVENT_EXCEPTION;
         auditLog.logException(methodName, errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
-                errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(),
-                errorCode.getSystemAction(), errorCode.getUserAction(), e);
+                errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
+                errorCode.getUserAction(), e);
     }
 
-    private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws
-                                                                                                        DataEngineException {
+    private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws DataEngineException {
         // extra validation needed because the FFDCResponseBase object captures the potential exceptions
         // thrown during a parallel processing
         if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
             DataEngineErrorCode errorCode = DataEngineErrorCode.DATA_ENGINE_EXCEPTION;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(dataEngineEvent);
-            throw new DataEngineException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
-                    errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
+            throw new DataEngineException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
+                    errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
         }
     }
 }

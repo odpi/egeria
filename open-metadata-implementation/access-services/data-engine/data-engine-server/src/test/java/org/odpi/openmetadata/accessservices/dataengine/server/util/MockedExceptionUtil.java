@@ -18,7 +18,7 @@ public class MockedExceptionUtil {
         Constructor<T> constructor = exceptionClass.getConstructor(Integer.TYPE, String.class,
                 String.class, String.class, String.class, String.class, String.class);
 
-        return constructor.newInstance(errorCode.getHTTPErrorCode(), MockedExceptionUtil.class.getName(), methodName,
+        return constructor.newInstance(errorCode.getHttpErrorCode(), MockedExceptionUtil.class.getName(), methodName,
                 errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), "");
     }
 }

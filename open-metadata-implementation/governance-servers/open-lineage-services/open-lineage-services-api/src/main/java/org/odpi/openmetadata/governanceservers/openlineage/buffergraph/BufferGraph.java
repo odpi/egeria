@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public interface BufferGraph extends OpenLineageGraph {
      * @param lineageEvent event
      */
     void addEntity(LineageEvent lineageEvent);
+
+    void initializeGraphDB() throws OpenLineageException;
 
     /**
      * Updates a vertex in the Graph

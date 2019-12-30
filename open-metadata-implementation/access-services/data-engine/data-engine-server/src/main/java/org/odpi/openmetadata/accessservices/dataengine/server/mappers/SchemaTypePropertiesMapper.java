@@ -19,4 +19,7 @@ public class SchemaTypePropertiesMapper {
     public static final String ORDERED_VALUES = "orderedValues";
     public static final String TYPE_EMBEDDED_ATTRIBUTE_NAME = "TypeEmbeddedAttribute";
     public static final String DATA_TYPE = "dataType";
+
+    private SchemaTypePropertiesMapper() {
+    }
 }

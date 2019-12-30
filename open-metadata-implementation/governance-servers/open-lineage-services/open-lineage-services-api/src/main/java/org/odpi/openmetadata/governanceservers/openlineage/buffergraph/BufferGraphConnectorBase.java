@@ -4,36 +4,15 @@ package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
-public class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
-
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId,connectionProperties);
-    }
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-    }
+public abstract class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
 
     @Override
-    public void addEntity(LineageEvent lineageEvent) {
+    public abstract void initializeGraphDB() throws OpenLineageException;
 
-    }
+    @Override
+    public abstract void addEntity(LineageEvent lineageEvent);
 
     @Override
     public void updateEntity(LineageEvent lineageEvent) {
@@ -46,12 +25,9 @@ public class BufferGraphConnectorBase extends ConnectorBase implements BufferGra
     }
 
     @Override
-    public void schedulerTask() {
-
-    }
+    public abstract void schedulerTask();
 
     @Override
-    public void setMainGraph(Object mainGraph) {
+    public abstract void setMainGraph(Object mainGraph);
 
-    }
 }
