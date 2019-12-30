@@ -8,7 +8,6 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
@@ -42,6 +41,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
+            log.error("main Graph cannot be initialized, something went wrong. The error is {}", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -95,8 +95,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
             helper.filterOutProcesses(lineageVerticesAndEdges);
         if (!displayNameMustContain.isEmpty())
             helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
-        LineageResponse lineageResponse = new LineageResponse(lineageVerticesAndEdges);
-        return lineageResponse;
+        return new LineageResponse(lineageVerticesAndEdges);
     }
 
     /**
