@@ -163,7 +163,13 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 }
         );
 
-        verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
+        verticesToBeAdded.stream().forEach(entry -> {
+            try {
+                addVerticesAndRelationship(g, entry);
+            } catch (JanusConnectorException e) {
+                log.error("An exception occured", e);
+            }
+        });
     }
 
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode)  throws JanusConnectorException{
@@ -214,7 +220,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
         if (edgeIt.hasNext()) {
             g.tx().rollback();
-//            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
             log.debug("{} found existing edge {}", methodName, edgeIt);
 
             return;

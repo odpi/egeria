@@ -103,7 +103,7 @@ public class ProcessContextHandler {
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 
-        boolean entitiesTillLastRelationshipExist = hasEntititesLinkedWithProcessPort(userId, entityDetail);
+        boolean entitiesTillLastRelationshipExist = hasEntitiesLinkedWithProcessPort(userId, entityDetail);
         if(entitiesTillLastRelationshipExist){
             return graph.getNeighbors();
         }
@@ -118,7 +118,7 @@ public class ProcessContextHandler {
                                         RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-    private boolean hasEntititesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+    private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                                                  PropertyServerException,
                                                                                                                  InvalidParameterException {
 
@@ -136,7 +136,7 @@ public class ProcessContextHandler {
                                             RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-       return getRelationshipBasedOnType(entityDetails, userId);
+       return hasRelationshipBasedOnType(entityDetails, userId);
 
     }
 
@@ -185,28 +185,28 @@ public class ProcessContextHandler {
      * @param userId             String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                                   PropertyServerException,
                                                                                                                   UserNotAuthorizedException {
         boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
-            relationshipsExist = endRelationship(entityDetails,userId);
+            relationshipsExist = hasEndRelationship(entityDetails,userId);
         }
 
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            relationshipsExist = getTabularSchemaTypes(entityDetails,userId);
+            relationshipsExist = hasTabularSchemaTypes(entityDetails,userId);
         }
 
         return relationshipsExist;
     }
 
     /**
-     * Retrieves the entities that are connected to entityDetails that are passed.
+     * Returns if the entities that are passed as an argument in the method have any relationships.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
@@ -219,12 +219,12 @@ public class ProcessContextHandler {
     }
 
     /**
-     * Retrieves the TabularSchemaTypes that are related to a Port Implementation Entity.
+     * Returns if there are any TabularSchemaTypes that are related to a Port Implementation Entity.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
@@ -236,16 +236,16 @@ public class ProcessContextHandler {
             Optional<EntityDetail> first = tabularSchemaType.stream().findFirst();
             result.add(first.orElse(null));
         }
-        return getSchemaAttributes(result,userId);
+        return hasSchemaAttributes(result,userId);
     }
 
     /**
-     * Retrieves the TabularColumns tha are part of a TabularSchemaType.
+     * Returns if the TabularColumns are part of a TabularSchemaType.
      * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
@@ -257,7 +257,7 @@ public class ProcessContextHandler {
                                                                                          entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }
-        return endRelationship(result,userId);
+        return hasEndRelationship(result,userId);
     }
 
     /**
