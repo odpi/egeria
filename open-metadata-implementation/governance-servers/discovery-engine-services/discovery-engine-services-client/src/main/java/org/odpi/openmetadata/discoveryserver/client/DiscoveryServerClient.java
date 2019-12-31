@@ -5,6 +5,7 @@ package org.odpi.openmetadata.discoveryserver.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
@@ -85,7 +86,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
      *
      * @return unique id for the discovery request.
      *
@@ -95,11 +96,11 @@ public class DiscoveryServerClient extends DiscoveryEngine
      */
     public  String discoverAsset(String   userId,
                                  String   assetGUID,
-                                 String   assetType) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            DiscoveryEngineException
+                                 String   assetDiscoveryType) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     DiscoveryEngineException
     {
-        return this.discoverAsset(userId, assetGUID, assetType, null, null);
+        return this.discoverAsset(userId, assetGUID, assetDiscoveryType, null, null);
     }
 
 
@@ -110,7 +111,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      *
      * @return unique id for the discovery request.
@@ -121,12 +122,12 @@ public class DiscoveryServerClient extends DiscoveryEngine
      */
     public  String discoverAsset(String              userId,
                                  String              assetGUID,
-                                 String              assetType,
+                                 String              assetDiscoveryType,
                                  Map<String, String> analysisParameters) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 DiscoveryEngineException
     {
-        return this.discoverAsset(userId, assetGUID, assetType, analysisParameters, null);
+        return this.discoverAsset(userId, assetGUID, assetDiscoveryType, analysisParameters, null);
     }
 
 
@@ -135,7 +136,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      * @param annotationTypes list of the types of annotations to produce (and no others)
      *
@@ -147,20 +148,20 @@ public class DiscoveryServerClient extends DiscoveryEngine
      */
     public  String discoverAsset(String              userId,
                                  String              assetGUID,
-                                 String              assetType,
+                                 String              assetDiscoveryType,
                                  Map<String, String> analysisParameters,
                                  List<String>        annotationTypes) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              DiscoveryEngineException
     {
-        final String   methodName = "discoverAsset";
-        final String   assetGUIDParameterName = "assetGUID";
-        final String   assetTypeParameterName = "assetType";
-        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/asset-types/{3}/assets/{4}";
+        final String methodName = "discoverAsset";
+        final String assetGUIDParameterName = "assetGUID";
+        final String assetTypeParameterName = "assetDiscoveryType";
+        final String urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/asset-discovery-types/{3}/assets/{4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetType, assetTypeParameterName, methodName);
+        invalidParameterHandler.validateName(assetDiscoveryType, assetTypeParameterName, methodName);
 
         DiscoveryRequestRequestBody requestBody = new DiscoveryRequestRequestBody();
 
@@ -175,7 +176,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
                                                                       serverName,
                                                                       userId,
                                                                       discoveryEngineGUID,
-                                                                      assetType,
+                                                                      assetDiscoveryType,
                                                                       assetGUID);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -183,6 +184,59 @@ public class DiscoveryServerClient extends DiscoveryEngine
             exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             return restResult.getGUID();
+        }
+        catch (PropertyServerException  exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
+    }
+
+
+    /**
+     * Explore each of the assets in the asset store.  A new instance of the discovery service is started for
+     * each retrieved asset.
+     *
+     * @param userId identifier of calling user
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
+     * @param analysisParameters name value properties to control the analysis
+     * @param annotationTypes list of the types of annotations to produce (and no others)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public void scanAllAssets(String              userId,
+                              String              assetDiscoveryType,
+                              Map<String, String> analysisParameters,
+                              List<String>        annotationTypes) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          DiscoveryEngineException
+    {
+        final String methodName = "discoverAsset";
+        final String assetTypeParameterName = "assetDiscoveryType";
+        final String urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/asset-discovery-types/{3}/assets";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(assetDiscoveryType, assetTypeParameterName, methodName);
+
+        DiscoveryRequestRequestBody requestBody = new DiscoveryRequestRequestBody();
+
+        requestBody.setAnalysisParameters(analysisParameters);
+        requestBody.setAnnotationTypes(annotationTypes);
+
+        try
+        {
+            VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
+                                                                      serverPlatformRootURL + urlTemplate,
+                                                                      requestBody,
+                                                                      serverName,
+                                                                      userId,
+                                                                      discoveryEngineGUID,
+                                                                      assetDiscoveryType);
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
         }
         catch (PropertyServerException  exception)
         {

@@ -713,7 +713,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param assetTypes list of asset types that this discovery service is able to process.
+     * @param assetDiscoveryTypes list of asset types that this discovery service is able to process.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -722,24 +722,24 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
     public  void  registerDiscoveryServiceWithEngine(String        userId,
                                                      String        discoveryEngineGUID,
                                                      String        discoveryServiceGUID,
-                                                     List<String>  assetTypes) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                     List<String>  assetDiscoveryTypes) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String assetTypesParameter = "assetTypes";
+        final String assetDiscoveryTypesParameter = "assetDiscoveryTypes";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        invalidParameterHandler.validateStringArray(assetTypes, assetTypesParameter, methodName);
+        invalidParameterHandler.validateStringArray(assetDiscoveryTypes, assetDiscoveryTypesParameter, methodName);
 
         DiscoveryServiceRegistrationRequestBody requestBody = new DiscoveryServiceRegistrationRequestBody();
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);
-        requestBody.setAssetTypes(assetTypes);
+        requestBody.setAssetDiscoveryTypes(assetDiscoveryTypes);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,

@@ -24,21 +24,21 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
 {
     private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
+
     /**
      * Constructor sets up the key parameters for accessing the annotations store.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the annotations should be attached to
-     * @param discoveryReportGUID unique identifier of the discovery request that is used to identifier the
-     *                            discovery report.
+     * @param discoveryReportClient discovery report that is linked to the annotations.
      * @param discoveryEngineClient client for calling REST APIs
      */
     public DiscoveryAnnotationStoreClient(String                userId,
                                           String                assetGUID,
-                                          String                discoveryReportGUID,
+                                          DiscoveryReportClient discoveryReportClient,
                                           DiscoveryEngineClient discoveryEngineClient)
     {
-        super(userId, assetGUID, discoveryReportGUID);
+        super(userId, assetGUID, discoveryReportClient);
 
         this.discoveryEngineClient = discoveryEngineClient;
     }
@@ -103,7 +103,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
     {
         final String   methodName = "getNewAnnotationsForAsset";
 
-        return discoveryEngineClient.getDiscoveryReportAnnotations(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
+        return discoveryEngineClient.getDiscoveryReportAnnotations(userId, discoveryReport.getDiscoveryReportGUID(), startingFrom, maximumResults, methodName);
     }
 
 
@@ -126,7 +126,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return discoveryEngineClient.getExtendedAnnotations(userId, discoveryReportGUID, annotationGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getExtendedAnnotations(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID, startingFrom, maximumResults);
     }
 
 
@@ -143,7 +143,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return discoveryEngineClient.getAnnotation(userId, discoveryReportGUID, annotationGUID);
+        return discoveryEngineClient.getAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID);
     }
 
 
@@ -160,7 +160,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return discoveryEngineClient.addAnnotationToDiscoveryReport(userId, discoveryReportGUID, annotation);
+        return discoveryEngineClient.addAnnotationToDiscoveryReport(userId, discoveryReport.getDiscoveryReportGUID(), annotation);
     }
 
 
@@ -179,7 +179,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return discoveryEngineClient.addAnnotationToAnnotation(userId, discoveryReportGUID, anchorAnnotationGUID, annotation);
+        return discoveryEngineClient.addAnnotationToAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), anchorAnnotationGUID, annotation);
     }
 
 
@@ -197,7 +197,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        discoveryEngineClient.linkAnnotation(userId, discoveryReportGUID, anchorGUID, annotationGUID);
+        discoveryEngineClient.linkAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), anchorGUID, annotationGUID);
     }
 
 
@@ -215,7 +215,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        discoveryEngineClient.unlinkAnnotation(userId, discoveryReportGUID, anchorGUID, annotationGUID);
+        discoveryEngineClient.unlinkAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), anchorGUID, annotationGUID);
     }
 
 
@@ -233,7 +233,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return discoveryEngineClient.updateAnnotation(userId, discoveryReportGUID, annotation);
+        return discoveryEngineClient.updateAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotation);
     }
 
 
@@ -249,7 +249,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        discoveryEngineClient.deleteAnnotation(userId, discoveryReportGUID, annotationGUID);
+        discoveryEngineClient.deleteAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID);
     }
 
 
@@ -268,7 +268,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return discoveryEngineClient.getPreviousDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getPreviousDataFieldsForAsset(userId, discoveryReport.getDiscoveryReportGUID(), startingFrom, maximumResults);
     }
 
 
@@ -287,7 +287,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return discoveryEngineClient.getNewDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getNewDataFieldsForAsset(userId, discoveryReport.getDiscoveryReportGUID(), startingFrom, maximumResults);
     }
 
 
@@ -310,7 +310,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return discoveryEngineClient.getNestedDataFields(userId, discoveryReportGUID, anchorDataFieldGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getNestedDataFields(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, startingFrom, maximumResults);
     }
 
 
@@ -327,7 +327,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return discoveryEngineClient.getDataField(userId, discoveryReportGUID, dataFieldGUID);
+        return discoveryEngineClient.getDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataFieldGUID);
     }
 
 
@@ -347,7 +347,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return discoveryEngineClient.addDataFieldToDiscoveryReport(userId, discoveryReportGUID, annotationGUID, dataField);
+        return discoveryEngineClient.addDataFieldToDiscoveryReport(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID, dataField);
     }
 
 
@@ -366,7 +366,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return discoveryEngineClient.addDataFieldToDataField(userId, discoveryReportGUID, anchorDataFieldGUID, dataField);
+        return discoveryEngineClient.addDataFieldToDataField(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, dataField);
     }
 
 
@@ -385,7 +385,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return discoveryEngineClient.addAnnotationToDataField(userId, discoveryReportGUID, anchorDataFieldGUID, annotation);
+        return discoveryEngineClient.addAnnotationToDataField(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, annotation);
 
     }
 
@@ -404,7 +404,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return discoveryEngineClient.updateDataField(userId, discoveryReportGUID, dataField);
+        return discoveryEngineClient.updateDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataField);
     }
 
 
@@ -420,6 +420,6 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        discoveryEngineClient.deleteDataField(userId, discoveryReportGUID, dataFieldGUID);
+        discoveryEngineClient.deleteDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataFieldGUID);
     }
 }

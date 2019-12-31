@@ -211,7 +211,7 @@ public class DiscoveryAnalysisReportHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;
@@ -284,7 +284,7 @@ public class DiscoveryAnalysisReportHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;

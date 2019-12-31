@@ -106,7 +106,7 @@ public class OMRSArchiveManager
          */
         for (OpenMetadataArchiveStoreConnector archiveStore : this.openMetadataArchiveStores)
         {
-            processOpenMetadataArchiveStore(archiveStore, repositoryContentManager, instanceProcessor);
+            processOpenMetadataArchiveStore(archiveStore, "Startup archive list", repositoryContentManager, instanceProcessor);
         }
     }
 
@@ -116,10 +116,12 @@ public class OMRSArchiveManager
      * This method allows archives to be loaded into a running server.
      *
      * @param archiveStore  new open metadata archive to process
+     * @param archiveSource source of the archive
      */
-    public void addOpenMetadataArchive(OpenMetadataArchiveStoreConnector     archiveStore)
+    public void addOpenMetadataArchive(OpenMetadataArchiveStoreConnector     archiveStore,
+                                       String                                archiveSource)
     {
-        this.processOpenMetadataArchiveStore(archiveStore, repositoryContentManager, localInstanceEventProcessor);
+        this.processOpenMetadataArchiveStore(archiveStore, archiveSource, repositoryContentManager, localInstanceEventProcessor);
         this.openMetadataArchiveStores.add(archiveStore);
     }
 
@@ -134,7 +136,7 @@ public class OMRSArchiveManager
         OpenMetadataArchive      openMetadataTypes        = openMetadataTypesArchive.getOpenMetadataArchive();
 
         repositoryContentManager.setOpenMetadataTypesOriginGUID(openMetadataTypesArchive.getArchiveGUID());
-        processOpenMetadataArchive(openMetadataTypes, repositoryContentManager, localInstanceEventProcessor);
+        processOpenMetadataArchive(openMetadataTypes, "Open Metadata Types", repositoryContentManager, localInstanceEventProcessor);
     }
 
 
@@ -143,10 +145,12 @@ public class OMRSArchiveManager
      * repository (if it exists).
      *
      * @param archiveStore open metadata archive  to process
+     * @param archiveSource source of the archive - such as file name
      * @param typeDefProcessor receiver of new TypeDefs
      * @param instanceProcessor receiver of new instances
      */
     private void processOpenMetadataArchiveStore(OpenMetadataArchiveStoreConnector    archiveStore,
+                                                 String                               archiveSource,
                                                  OMRSTypeDefEventProcessorInterface   typeDefProcessor,
                                                  OMRSInstanceEventProcessorInterface  instanceProcessor)
     {
@@ -166,14 +170,14 @@ public class OMRSArchiveManager
                 auditLog.logRecord(actionDescription,
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
+                                   auditCode.getFormattedLogMessage(archiveSource),
                                    null,
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
             }
             else
             {
-                processOpenMetadataArchive(archiveContent, typeDefProcessor, instanceProcessor);
+                processOpenMetadataArchive(archiveContent, archiveSource, typeDefProcessor, instanceProcessor);
             }
         }
     }
@@ -184,10 +188,12 @@ public class OMRSArchiveManager
      * exists).
      *
      * @param archiveContent open metadata archive to process
+     * @param archiveSource source of the archive - such as file name
      * @param typeDefProcessor processor of type definitions found in the archive
      * @param instanceProcessor processor of instances found in the archive
      */
     private void processOpenMetadataArchive(OpenMetadataArchive                   archiveContent,
+                                            String                                archiveSource,
                                             OMRSTypeDefEventProcessorInterface    typeDefProcessor,
                                             OMRSInstanceEventProcessorInterface   instanceProcessor)
     {
@@ -242,7 +248,7 @@ public class OMRSArchiveManager
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
+                               auditCode.getFormattedLogMessage(archiveSource),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());

@@ -56,7 +56,7 @@ public class Validator {
      * @return the boolean
      */
     public boolean isValidLineageEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(GLOSSARY_TERM, TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
+        final List<String> types = Arrays.asList(GLOSSARY_TERM, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
         return types.contains(typeDefName);
     }
 

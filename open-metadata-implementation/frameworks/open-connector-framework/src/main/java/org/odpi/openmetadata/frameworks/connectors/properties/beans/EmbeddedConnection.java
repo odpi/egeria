@@ -26,6 +26,7 @@ public class EmbeddedConnection extends PropertyBase
     /*
      * Attributes of an embedded connection
      */
+    protected int                 position           = 0;
     protected String              displayName        = null;
     protected Map<String, Object> arguments          = null;
     protected Connection          embeddedConnection = null;
@@ -43,21 +44,43 @@ public class EmbeddedConnection extends PropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param templateEmbeddedConnection element to copy
+     * @param template element to copy
      */
-    public EmbeddedConnection(EmbeddedConnection templateEmbeddedConnection)
+    public EmbeddedConnection(EmbeddedConnection template)
     {
         /*
          * Save the parent asset description.
          */
-        super(templateEmbeddedConnection);
+        super(template);
 
-        if (templateEmbeddedConnection != null)
+        if (template != null)
         {
-            displayName = templateEmbeddedConnection.getDisplayName();
-            arguments = templateEmbeddedConnection.getArguments();
-            embeddedConnection = templateEmbeddedConnection.getEmbeddedConnection();
+            displayName = template.getDisplayName();
+            arguments = template.getArguments();
+            embeddedConnection = template.getEmbeddedConnection();
         }
+    }
+
+
+    /**
+     * Return the position that this connector is in the list of embedded connectors.
+     *
+     * @return int
+     */
+    public int getPosition()
+    {
+        return position;
+    }
+
+
+    /**
+     * Set up the position that this connector is in the list of embedded connectors.
+     *
+     * @param position int
+     */
+    public void setPosition(int position)
+    {
+        this.position = position;
     }
 
 

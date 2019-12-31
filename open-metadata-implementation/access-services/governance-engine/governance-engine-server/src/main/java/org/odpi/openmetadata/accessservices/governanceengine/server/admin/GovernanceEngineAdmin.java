@@ -72,7 +72,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                         auditCode.getUserAction());
 
                 GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher);
-                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener);
+                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener, accessServiceConfigurationProperties.getAccessServiceName());
             }
 
             auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
@@ -80,18 +80,19 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (Exception error) {
             auditCode = GovernanceEngineAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 

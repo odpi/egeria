@@ -2,10 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -60,6 +65,58 @@ public abstract class DiscoveryService extends ConnectorBase
 
 
     /**
+     * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
+     * This is used by DiscoveryPipelines and DiscoveryScanningServices.
+     *
+     * @param embeddedConnectors list of supplied connector instances supplied by the Connector Broker.
+     *
+     * @return list of discovery service connectors
+     *
+     * @throws DiscoveryServiceException one of the embedded connectors is not a discovery service
+     */
+    protected List<DiscoveryService> getEmbeddedDiscoveryServices(List<Connector>  embeddedConnectors) throws DiscoveryServiceException
+    {
+        final String           methodName        = "getEmbeddedDiscoveryServices";
+        List<DiscoveryService> discoveryServices = null;
+
+        if (embeddedConnectors != null)
+        {
+            discoveryServices = new ArrayList<>();
+
+            for (Connector embeddedConnector : embeddedConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    if (embeddedConnector instanceof DiscoveryService)
+                    {
+                        discoveryServices.add((DiscoveryService)embeddedConnector);
+                    }
+                    else
+                    {
+                        ODFErrorCode errorCode    = ODFErrorCode.INVALID_EMBEDDED_DISCOVERY_SERVICE;
+                        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
+
+                        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+                                                            this.getClass().getName(),
+                                                            methodName,
+                                                            errorMessage,
+                                                            errorCode.getSystemAction(),
+                                                            errorCode.getUserAction());
+                    }
+                }
+            }
+
+            if (discoveryServices.isEmpty())
+            {
+                discoveryServices = null;
+            }
+        }
+
+        return discoveryServices;
+    }
+
+
+    /**
      * Indicates that the discovery service is completely configured and can begin processing.
      *
      * @throws DiscoveryServiceException there is a problem within the discovery service.
@@ -68,9 +125,10 @@ public abstract class DiscoveryService extends ConnectorBase
     {
         super.start();
 
+        final String methodName = "start";
+
         if (discoveryContext == null)
         {
-            final String methodName = "start";
             ODFErrorCode errorCode    = ODFErrorCode.NULL_DISCOVERY_CONTEXT;
             String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
 
@@ -112,10 +170,12 @@ public abstract class DiscoveryService extends ConnectorBase
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public  void disconnect() throws ConnectorCheckedException
     {
+        final String methodName = "disconnect";
+
         super.disconnect();
     }
 }

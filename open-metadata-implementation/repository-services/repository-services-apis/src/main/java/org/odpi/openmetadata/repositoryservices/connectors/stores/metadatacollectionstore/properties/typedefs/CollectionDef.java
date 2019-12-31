@@ -162,14 +162,7 @@ public class CollectionDef extends AttributeTypeDef
      */
     public void setArgumentTypes(List<PrimitiveDefCategory> argumentTypes)
     {
-        if (argumentTypes == null)
-        {
-            this.argumentTypes = null;
-        }
-        else
-        {
-            this.argumentTypes = new ArrayList<>(argumentTypes);
-        }
+        this.argumentTypes = argumentTypes;
     }
 
 

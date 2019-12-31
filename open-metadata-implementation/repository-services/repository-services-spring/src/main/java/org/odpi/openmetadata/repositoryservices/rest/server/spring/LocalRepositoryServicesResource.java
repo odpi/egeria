@@ -42,7 +42,7 @@ public class LocalRepositoryServicesResource
      * @return String metadata collection id.
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
-    @GetMapping( path = "/metadata-collection-id")
+    @GetMapping(path = "/metadata-collection-id")
 
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName,
                                                                 @PathVariable String   userId)
@@ -69,7 +69,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/all")
+    @GetMapping(path = "/types/all")
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
                                               @PathVariable String   userId)
@@ -92,7 +92,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation or
      * InvalidParameterException the name of the TypeDef is null.
      */
-    @GetMapping( path = "/types/by-name")
+    @GetMapping(path = "/types/by-name")
 
     public TypeDefGalleryResponse findTypesByName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
@@ -114,7 +114,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedefs/by-category")
+    @PostMapping(path = "/types/typedefs/by-category")
 
     public TypeDefListResponse findTypeDefsByCategory(@PathVariable String           serverName,
                                                       @PathVariable String           userId,
@@ -136,7 +136,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/attribute-typedefs/by-category")
+    @PostMapping(path = "/types/attribute-typedefs/by-category")
 
     public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                   serverName,
                                                                         @PathVariable String                   userId,
@@ -158,7 +158,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/typedefs/by-property")
+    @GetMapping(path = "/types/typedefs/by-property")
 
     public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            serverName,
                                                       @PathVariable String            userId,
@@ -182,7 +182,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/typedefs/by-external-id")
+    @GetMapping(path = "/types/typedefs/by-external-id")
 
     public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    serverName,
                                                      @PathVariable                   String    userId,
@@ -206,7 +206,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/typedefs/by-property-value")
+    @GetMapping(path = "/types/typedefs/by-property-value")
 
     public TypeDefListResponse searchForTypeDefs(@PathVariable String serverName,
                                                  @PathVariable String userId,
@@ -230,7 +230,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/typedef/{guid}")
+    @GetMapping(path = "/types/typedef/{guid}")
 
     public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -254,7 +254,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/attribute-typedef/{guid}")
+    @GetMapping(path = "/types/attribute-typedef/{guid}")
 
     public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
                                                               @PathVariable String    userId,
@@ -279,7 +279,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/typedef/name/{name}")
+    @GetMapping(path = "/types/typedef/name/{name}")
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -303,7 +303,7 @@ public class LocalRepositoryServicesResource
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/types/attribute-typedef/name/{name}")
+    @GetMapping(path = "/types/attribute-typedef/name/{name}")
 
     public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
                                                                @PathVariable String    userId,
@@ -331,7 +331,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types")
+    @PostMapping(path = "/types")
 
     public  VoidResponse addTypeDefGallery(@PathVariable String         serverName,
                                            @PathVariable String         userId,
@@ -359,7 +359,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedef")
+    @PostMapping(path = "/types/typedef")
 
     public VoidResponse addTypeDef(@PathVariable String    serverName,
                                    @PathVariable String    userId,
@@ -387,7 +387,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/attribute-typedef")
+    @PostMapping(path = "/types/attribute-typedef")
 
     public  VoidResponse addAttributeTypeDef(@PathVariable String             serverName,
                                              @PathVariable String             userId,
@@ -413,7 +413,7 @@ public class LocalRepositoryServicesResource
      * InvalidTypeDefException the new TypeDef has invalid contents.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedef/compatibility")
+    @PostMapping(path = "/types/typedef/compatibility")
 
     public BooleanResponse verifyTypeDef(@PathVariable String    serverName,
                                          @PathVariable String    userId,
@@ -439,7 +439,7 @@ public class LocalRepositoryServicesResource
      * InvalidTypeDefException the new TypeDef has invalid contents or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/attribute-typedef/compatibility")
+    @PostMapping(path = "/types/attribute-typedef/compatibility")
 
     public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            serverName,
                                                    @PathVariable String            userId,
@@ -467,7 +467,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedef/update")
+    @PostMapping(path = "/types/typedef/update")
 
     public TypeDefResponse updateTypeDef(@PathVariable String       serverName,
                                          @PathVariable String       userId,
@@ -497,7 +497,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedef/{guid}/delete")
+    @PostMapping(path = "/types/typedef/{guid}/delete")
 
     public VoidResponse deleteTypeDef(@PathVariable String    serverName,
                                       @PathVariable String    userId,
@@ -528,7 +528,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/attribute-typedef/{guid}/delete")
+    @PostMapping(path = "/types/attribute-typedef/{guid}/delete")
 
     public VoidResponse deleteAttributeTypeDef(@PathVariable String    serverName,
                                                @PathVariable String    userId,
@@ -559,7 +559,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/typedef/{originalTypeDefGUID}/identifier")
+    @PostMapping(path = "/types/typedef/{originalTypeDefGUID}/identifier")
 
     public  TypeDefResponse reIdentifyTypeDef(@PathVariable String                   serverName,
                                               @PathVariable String                   userId,
@@ -592,7 +592,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
+    @PostMapping(path = "/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
 
     public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String                    serverName,
                                                                 @PathVariable String                    userId,
@@ -623,7 +623,7 @@ public class LocalRepositoryServicesResource
      *                                  the metadata collection is stored.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/entity/{guid}/existence")
+    @GetMapping(path = "/instances/entity/{guid}/existence")
 
     public EntityDetailResponse isEntityKnown(@PathVariable String     serverName,
                                               @PathVariable String     userId,
@@ -647,7 +647,7 @@ public class LocalRepositoryServicesResource
      * EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/entity/{guid}/summary")
+    @GetMapping(path = "/instances/entity/{guid}/summary")
 
     public EntitySummaryResponse getEntitySummary(@PathVariable String     serverName,
                                                   @PathVariable String     userId,
@@ -672,7 +672,7 @@ public class LocalRepositoryServicesResource
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/entity/{guid}")
+    @GetMapping(path = "/instances/entity/{guid}")
 
     public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
                                                 @PathVariable String    userId,
@@ -700,7 +700,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{guid}/history")
+    @PostMapping(path = "/instances/entity/{guid}/history")
 
     public  EntityDetailResponse getEntityDetail(@PathVariable String         serverName,
                                                  @PathVariable String         userId,
@@ -730,7 +730,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/relationships")
+    @PostMapping(path = "/instances/entity/{entityGUID}/relationships")
 
     public RelationshipListResponse getRelationshipsForEntity(@PathVariable String                     serverName,
                                                               @PathVariable String                     userId,
@@ -762,7 +762,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/relationships/history")
+    @PostMapping(path = "/instances/entity/{entityGUID}/relationships/history")
 
     public RelationshipListResponse getRelationshipsForEntityHistory(@PathVariable String                            serverName,
                                                                      @PathVariable String                            userId,
@@ -795,7 +795,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-property")
+    @PostMapping(path = "/instances/entities/by-property")
 
     public  EntityListResponse findEntitiesByProperty(@PathVariable String                    serverName,
                                                       @PathVariable String                    userId,
@@ -825,7 +825,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-property/history")
+    @PostMapping(path = "/instances/entities/by-property/history")
 
     public  EntityListResponse findEntitiesByPropertyHistory(@PathVariable String                              serverName,
                                                              @PathVariable String                              userId,
@@ -856,7 +856,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-classification/{classificationName}")
+    @PostMapping(path = "/instances/entities/by-classification/{classificationName}")
 
     public  EntityListResponse findEntitiesByClassification(@PathVariable String                   serverName,
                                                             @PathVariable String                   userId,
@@ -888,7 +888,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-classification/{classificationName}/history")
+    @PostMapping(path = "/instances/entities/by-classification/{classificationName}/history")
 
     public  EntityListResponse findEntitiesByClassificationHistory(@PathVariable String                             serverName,
                                                                    @PathVariable String                             userId,
@@ -920,7 +920,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-property-value")
+    @PostMapping(path = "/instances/entities/by-property-value")
 
     public  EntityListResponse findEntitiesByPropertyValue(@PathVariable String                    serverName,
                                                            @PathVariable String                    userId,
@@ -952,7 +952,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/by-property-value/history")
+    @PostMapping(path = "/instances/entities/by-property-value/history")
 
     public  EntityListResponse findEntitiesByPropertyValueHistory(@PathVariable String                              serverName,
                                                                   @PathVariable String                              userId,
@@ -976,7 +976,7 @@ public class LocalRepositoryServicesResource
      *                                  the metadata collection is stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/relationship/{guid}/existence")
+    @GetMapping(path = "/instances/relationship/{guid}/existence")
 
     public RelationshipResponse  isRelationshipKnown(@PathVariable String     serverName,
                                                      @PathVariable String     userId,
@@ -1001,7 +1001,7 @@ public class LocalRepositoryServicesResource
      *                                         the requested GUID stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/relationship/{guid}")
+    @GetMapping(path = "/instances/relationship/{guid}")
 
     public RelationshipResponse getRelationship(@PathVariable String     serverName,
                                                 @PathVariable String     userId,
@@ -1028,7 +1028,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{guid}/history")
+    @PostMapping(path = "/instances/relationship/{guid}/history")
 
     public  RelationshipResponse getRelationship(@PathVariable String         serverName,
                                                  @PathVariable String         userId,
@@ -1058,7 +1058,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/by-property")
+    @PostMapping(path = "/instances/relationships/by-property")
 
     public  RelationshipListResponse findRelationshipsByProperty(@PathVariable String                   serverName,
                                                                  @PathVariable String                   userId,
@@ -1087,7 +1087,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/by-property/history")
+    @PostMapping(path = "/instances/relationships/by-property/history")
 
     public  RelationshipListResponse findRelationshipsByPropertyHistory(@PathVariable String                             serverName,
                                                                         @PathVariable String                             userId,
@@ -1115,7 +1115,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/by-property-value")
+    @PostMapping(path = "/instances/relationships/by-property-value")
 
     public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String                    serverName,
                                                                       @PathVariable String                    userId,
@@ -1144,7 +1144,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/by-property-value/history")
+    @PostMapping(path = "/instances/relationships/by-property-value/history")
 
     public  RelationshipListResponse findRelationshipsByPropertyValueHistory(@PathVariable String                              serverName,
                                                                              @PathVariable String                              userId,
@@ -1174,7 +1174,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage")
+    @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage")
 
     public  InstanceGraphResponse getLinkingEntities(@PathVariable String             serverName,
                                                      @PathVariable String             userId,
@@ -1205,7 +1205,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage/history")
+    @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage/history")
 
     public  InstanceGraphResponse getLinkingEntitiesHistory(@PathVariable String                        serverName,
                                                             @PathVariable String                        userId,
@@ -1238,7 +1238,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood")
+    @PostMapping(path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood")
 
     public  InstanceGraphResponse getEntityNeighborhood(@PathVariable String                        serverName,
                                                         @PathVariable String                        userId,
@@ -1271,7 +1271,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood/history")
+    @PostMapping(path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood/history")
 
     public  InstanceGraphResponse getEntityNeighborhoodHistory(@PathVariable String                                  serverName,
                                                                @PathVariable String                                  userId,
@@ -1307,7 +1307,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship")
+    @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship")
 
     public  EntityListResponse getRelatedEntities(@PathVariable String                      serverName,
                                                   @PathVariable String                      userId,
@@ -1342,7 +1342,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship/history")
+    @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship/history")
 
     public  EntityListResponse getRelatedEntitiesHistory(@PathVariable String                                serverName,
                                                          @PathVariable String                                userId,
@@ -1378,7 +1378,7 @@ public class LocalRepositoryServicesResource
      *                                       the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity")
+    @PostMapping(path = "/instances/entity")
 
     public EntityDetailResponse addEntity(@PathVariable String               serverName,
                                           @PathVariable String               userId,
@@ -1415,7 +1415,7 @@ public class LocalRepositoryServicesResource
      *                                       the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/external")
+    @PostMapping(path = "/instances/entity/external")
 
     public EntityDetailResponse addExternalEntity(@PathVariable String               serverName,
                                                   @PathVariable String               userId,
@@ -1448,7 +1448,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support entity proxies as first class elements or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity-proxy")
+    @PostMapping(path = "/instances/entity-proxy")
 
     public VoidResponse addEntityProxy(@PathVariable String      serverName,
                                        @PathVariable String      userId,
@@ -1475,7 +1475,7 @@ public class LocalRepositoryServicesResource
      *                                      the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/status")
+    @PostMapping(path = "/instances/entity/{entityGUID}/status")
 
     public EntityDetailResponse updateEntityStatus(@PathVariable String           serverName,
                                                    @PathVariable String           userId,
@@ -1503,7 +1503,7 @@ public class LocalRepositoryServicesResource
      *                                characteristics in the TypeDef for this entity's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/properties")
+    @PostMapping(path = "/instances/entity/{entityGUID}/properties")
 
     public EntityDetailResponse updateEntityProperties(@PathVariable String                      serverName,
                                                        @PathVariable String                      userId,
@@ -1529,7 +1529,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/entity/{entityGUID}/previous")
+    @GetMapping(path = "/instances/entity/{entityGUID}/previous")
 
     public EntityDetailResponse undoEntityUpdate(@PathVariable String  serverName,
                                                  @PathVariable String  userId,
@@ -1559,7 +1559,7 @@ public class LocalRepositoryServicesResource
      *                                       soft-deletes (use purgeEntity() to remove the entity permanently) or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{obsoleteEntityGUID}/delete")
+    @PostMapping(path = "/instances/entity/{obsoleteEntityGUID}/delete")
 
     public EntityDetailResponse  deleteEntity(@PathVariable String                        serverName,
                                               @PathVariable String                        userId,
@@ -1586,7 +1586,7 @@ public class LocalRepositoryServicesResource
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{deletedEntityGUID}/purge")
+    @PostMapping(path = "/instances/entity/{deletedEntityGUID}/purge")
 
     public VoidResponse purgeEntity(@PathVariable String                        serverName,
                                     @PathVariable String                        userId,
@@ -1613,7 +1613,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support soft-delete or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/entity/{deletedEntityGUID}/restore")
+    @GetMapping(path = "/instances/entity/{deletedEntityGUID}/restore")
 
     public EntityDetailResponse restoreEntity(@PathVariable String    serverName,
                                               @PathVariable String    userId,
@@ -1643,7 +1643,7 @@ public class LocalRepositoryServicesResource
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/classification/{classificationName}")
+    @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}")
 
     public EntityDetailResponse classifyEntity(@PathVariable String                      serverName,
                                                @PathVariable String                      userId,
@@ -1672,7 +1672,7 @@ public class LocalRepositoryServicesResource
      * ClassificationErrorException the requested classification is not set on the entity or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/classification/{classificationName}/delete")
+    @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/delete")
 
     public EntityDetailResponse declassifyEntity(@PathVariable String          serverName,
                                                  @PathVariable String          userId,
@@ -1703,7 +1703,7 @@ public class LocalRepositoryServicesResource
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/classification/{classificationName}/properties")
+    @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/properties")
 
     public EntityDetailResponse updateEntityClassification(@PathVariable String                      serverName,
                                                            @PathVariable String                      userId,
@@ -1735,7 +1735,7 @@ public class LocalRepositoryServicesResource
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship")
+    @PostMapping(path = "/instances/relationship")
 
     public RelationshipResponse addRelationship(@PathVariable String                    serverName,
                                                 @PathVariable String                    userId,
@@ -1769,7 +1769,7 @@ public class LocalRepositoryServicesResource
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/external")
+    @PostMapping(path = "/instances/relationship/external")
 
     public RelationshipResponse addExternalRelationship(@PathVariable String                    serverName,
                                                         @PathVariable String                    userId,
@@ -1796,7 +1796,7 @@ public class LocalRepositoryServicesResource
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{relationshipGUID}/status")
+    @PostMapping(path = "/instances/relationship/{relationshipGUID}/status")
 
     public RelationshipResponse updateRelationshipStatus(@PathVariable String           serverName,
                                                          @PathVariable String           userId,
@@ -1824,7 +1824,7 @@ public class LocalRepositoryServicesResource
      *                                characteristics in the TypeDef for this relationship's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{relationshipGUID}/properties")
+    @PostMapping(path = "/instances/relationship/{relationshipGUID}/properties")
 
     public RelationshipResponse updateRelationshipProperties(@PathVariable String                      serverName,
                                                              @PathVariable String                      userId,
@@ -1850,7 +1850,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/relationship/{relationshipGUID}/previous")
+    @GetMapping(path = "/instances/relationship/{relationshipGUID}/previous")
 
     public RelationshipResponse undoRelationshipUpdate(@PathVariable String  serverName,
                                                        @PathVariable String  userId,
@@ -1879,7 +1879,7 @@ public class LocalRepositoryServicesResource
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{obsoleteRelationshipGUID}/delete")
+    @PostMapping(path = "/instances/relationship/{obsoleteRelationshipGUID}/delete")
 
     public RelationshipResponse deleteRelationship(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -1906,7 +1906,7 @@ public class LocalRepositoryServicesResource
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{deletedRelationshipGUID}/purge")
+    @PostMapping(path = "/instances/relationship/{deletedRelationshipGUID}/purge")
 
     public VoidResponse purgeRelationship(@PathVariable String                        serverName,
                                           @PathVariable String                        userId,
@@ -1934,7 +1934,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support soft-deletes
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping( path = "/instances/relationship/{deletedRelationshipGUID}/restore")
+    @GetMapping(path = "/instances/relationship/{deletedRelationshipGUID}/restore")
 
     public RelationshipResponse restoreRelationship(@PathVariable String    serverName,
                                                     @PathVariable String    userId,
@@ -1968,7 +1968,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/identity")
+    @PostMapping(path = "/instances/entity/{entityGUID}/identity")
 
     public EntityDetailResponse reIdentifyEntity(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2002,7 +2002,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/type")
+    @PostMapping(path = "/instances/entity/{entityGUID}/type")
 
     public EntityDetailResponse reTypeEntity(@PathVariable String                serverName,
                                              @PathVariable String                userId,
@@ -2034,7 +2034,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
+    @PostMapping(path = "/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
 
     public EntityDetailResponse reHomeEntity(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
@@ -2074,7 +2074,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{relationshipGUID}/identity")
+    @PostMapping(path = "/instances/relationship/{relationshipGUID}/identity")
 
     public RelationshipResponse reIdentifyRelationship(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2108,7 +2108,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{relationshipGUID}/type")
+    @PostMapping(path = "/instances/relationship/{relationshipGUID}/type")
 
     public RelationshipResponse reTypeRelationship(@PathVariable String                serverName,
                                                    @PathVariable String                userId,
@@ -2141,7 +2141,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationship/{relationshipGUID}/home/{homeMetadataCollectionId}")
+    @PostMapping(path = "/instances/relationship/{relationshipGUID}/home/{homeMetadataCollectionId}")
 
     public RelationshipResponse reHomeRelationship(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -2190,7 +2190,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/reference-copy")
+    @PostMapping(path = "/instances/entities/reference-copy")
 
     public VoidResponse saveEntityReferenceCopy(@PathVariable String       serverName,
                                                 @PathVariable String       userId,
@@ -2219,7 +2219,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/reference-copy/delete")
+    @PostMapping(path = "/instances/entities/reference-copy/delete")
 
     public VoidResponse deleteEntityReferenceCopy(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
@@ -2229,7 +2229,7 @@ public class LocalRepositoryServicesResource
     }
 
 
-    @PostMapping( path = "/instances/entities/reference-copy/purge")
+    @PostMapping(path = "/instances/entities/reference-copy/purge")
 
     public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2260,7 +2260,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/reference-copy/{entityGUID}/purge")
+    @PostMapping(path = "/instances/entities/reference-copy/{entityGUID}/purge")
 
     public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2292,7 +2292,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/entities/reference-copy/{entityGUID}/refresh")
+    @PostMapping(path = "/instances/entities/reference-copy/{entityGUID}/refresh")
 
     public VoidResponse refreshEntityReferenceCopy(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -2332,7 +2332,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/reference-copy")
+    @PostMapping(path = "/instances/relationships/reference-copy")
 
     public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         serverName,
                                                       @PathVariable String         userId,
@@ -2369,7 +2369,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/reference-copy/delete")
+    @PostMapping(path = "/instances/relationships/reference-copy/delete")
 
     public VoidResponse deleteRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                         @PathVariable String                        userId,
@@ -2405,7 +2405,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/reference-copy/purge")
+    @PostMapping(path = "/instances/relationships/reference-copy/purge")
 
     public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2436,7 +2436,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/reference-copy/{relationshipGUID}/purge")
+    @PostMapping(path = "/instances/relationships/reference-copy/{relationshipGUID}/purge")
 
     public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2472,7 +2472,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances/relationships/reference-copy/{relationshipGUID}/refresh")
+    @PostMapping(path = "/instances/relationships/reference-copy/{relationshipGUID}/refresh")
 
     public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                          @PathVariable String                        userId,
@@ -2512,7 +2512,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support reference copies of instances or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @PostMapping( path = "/instances")
+    @PostMapping(path = "/instances")
 
     public VoidResponse  saveInstanceReferenceCopies(@PathVariable String                 serverName,
                                                      @PathVariable String                 userId,

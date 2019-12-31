@@ -100,6 +100,18 @@ public class GovernedAssetHandler {
      * @param userId - String - userId of user making request.
      * @param type   - types to start query from.
      * @return List of Governed Access
+     * @throws InvalidParameterException bad parameter
+     * @throws EntityProxyOnlyException full entity not available
+     * @throws TypeErrorException error in type
+     * @throws FunctionNotSupportedException function not supported
+     * @throws PropertyErrorException bad property parameter
+     * @throws EntityNotKnownException unknown entity
+     * @throws TypeDefNotKnownException unknown type
+     * @throws PagingErrorException bad paging parameters
+     * @throws UserNotAuthorizedException user not authorized
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException bad parameter
+     * @throws RepositoryErrorException repository not available
+     * @throws ClassificationErrorException invalid classification
      */
     public List<GovernedAsset> getGovernedAssets(String userId,
                                                  List<String> type) throws InvalidParameterException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {

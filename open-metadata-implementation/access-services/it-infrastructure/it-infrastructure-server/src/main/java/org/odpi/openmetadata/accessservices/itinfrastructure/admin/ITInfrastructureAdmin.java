@@ -20,9 +20,9 @@ import java.util.List;
  */
 public class ITInfrastructureAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                       auditLog            = null;
+    private OMRSAuditLog                      auditLog            = null;
     private ITInfrastructureServicesInstance  instance            = null;
-    private String                             serverName          = null;
+    private String                            serverName          = null;
 
     /**
      * Default constructor
@@ -60,19 +60,19 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
+        this.auditLog = auditLog;
+
         try
         {
-            this.auditLog = auditLog;
-
             List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                       accessServiceConfig.getAccessServiceName(),
                                                                       auditLog);
 
             this.instance = new ITInfrastructureServicesInstance(repositoryConnector,
-                                                              supportedZones,
-                                                              auditLog,
-                                                              serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                                 supportedZones,
+                                                                 auditLog,
+                                                                 serverUserName,
+                                                                 repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             /*
@@ -100,7 +100,7 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfig.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
@@ -111,13 +111,14 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
         catch (Throwable error)
         {
             auditCode = ITInfrastructureAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

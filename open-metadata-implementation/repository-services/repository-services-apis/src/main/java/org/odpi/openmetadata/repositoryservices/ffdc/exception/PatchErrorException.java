@@ -42,4 +42,21 @@ public class PatchErrorException extends OMRSCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtException);
     }
+
+
+    /**
+     * Construct a Patch error that is caused because it references an invalid type.
+     *
+     * @param error invalid type error.
+     */
+    public PatchErrorException(TypeErrorException   error)
+    {
+        super(error.getReportedHTTPCode(),
+              error.getReportingClassName(),
+              error.getReportingActionDescription(),
+              error.getErrorMessage(),
+              error.getReportedSystemAction(),
+              error.getReportedUserAction(),
+              error);
+    }
 }

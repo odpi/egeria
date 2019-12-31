@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 public class OMRSClient {
 
-    private GlossaryViewInstanceHandler instanceHandler = new GlossaryViewInstanceHandler();
+    protected GlossaryViewInstanceHandler instanceHandler = new GlossaryViewInstanceHandler();
 
     /**
      * Extract an entity detail for the given GUID
@@ -28,6 +28,7 @@ public class OMRSClient {
      * @param serverName instance to call
      * @param guid entity to extract
      * @param entityTypeName entity type name
+     * @param methodName calling method
      *
      * @return optional with entity details if found, empty optional if not found
      *
@@ -53,10 +54,12 @@ public class OMRSClient {
      * @param userId calling user
      * @param serverName instance to call
      * @param entityGUID target entity
+     * @param entityTypeName entity type name
      * @param relationshipTypeGUID relationship type guid to navigate
      * @param relationshipTypeName relationship type name to navigate
      * @param from from
      * @param size size
+     * @param methodName calling method
      *
      * @return entities if found
      *
@@ -86,11 +89,13 @@ public class OMRSClient {
      * @param userId calling user
      * @param serverName instance to call
      * @param entityGUID target entity
+     * @param entityTypeName entity type name
      * @param anchorAtEnd1 which end should the target entity be at
      * @param relationshipTypeGUID relationship type guid to navigate
      * @param relationshipTypeName relationship type name to navigate
      * @param from from
      * @param size size
+     * @param methodName calling method
      *
      * @return entities if found
      *
@@ -124,14 +129,14 @@ public class OMRSClient {
      * @param entityTypeGUID entity type
      * @param from from
      * @param size size
+     * @param methodName calling method
      *
      * @return entities if found
      *
      * @throws GlossaryViewOmasException if any exception is thrown from repository level
      */
     protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String entityTypeGUID, Integer from, Integer size,
-                                                     String methodName)
-            throws GlossaryViewOmasException {
+                                                     String methodName) throws GlossaryViewOmasException {
         List<EntityDetail> entities;
         try {
             entities = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
@@ -143,25 +148,4 @@ public class OMRSClient {
 
         return entities;
     }
-
-    /**
-     * Returns the repository helper for the given serverName
-     *
-     * @param userId calling user
-     * @param serverName instance to call
-     *
-     * @return optional with helper if found
-     *         empty optional if not found
-     */
-    protected Optional<OMRSRepositoryHelper> getOMRSRepositoryHelper(String userId, String serverName, String serviceOperationName){
-        Optional<OMRSRepositoryHelper> helper = Optional.empty();
-        try {
-            helper = Optional.ofNullable(instanceHandler.getRepositoryConnector(userId, serverName, serviceOperationName)
-                    .getRepositoryHelper());
-        }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
-            return helper;
-        }
-        return helper;
-    }
-
 }

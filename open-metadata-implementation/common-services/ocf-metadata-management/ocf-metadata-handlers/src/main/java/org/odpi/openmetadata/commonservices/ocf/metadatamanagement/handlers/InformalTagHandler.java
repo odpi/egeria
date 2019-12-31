@@ -414,7 +414,7 @@ public class InformalTagHandler extends FeedbackHandlerBase
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         InformalTagBuilder builder = new InformalTagBuilder(name,
                                                             userId,
@@ -427,13 +427,17 @@ public class InformalTagHandler extends FeedbackHandlerBase
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        /*
+         * The loop is necessary because some of the tags returned may not be visible to the calling user.
+         * Once they are filtered out, more tags need to be retrieved to fill the gaps.
+         */
+        while (moreResultsAvailable && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getNameInstanceProperties(methodName),
                                                                                        InformalTagMapper.INFORMAL_TAG_TYPE_GUID,
                                                                                        startNextQueryFrom,
-                                                                                       pageSize,
+                                                                                       queryPageSize,
                                                                                        methodName);
 
             if (retrievedEntities != null)
@@ -441,10 +445,10 @@ public class InformalTagHandler extends FeedbackHandlerBase
                 results = this.getTagList(userId,
                                           retrievedEntities,
                                           results,
-                                          pageSize);
+                                          queryPageSize);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -488,7 +492,7 @@ public class InformalTagHandler extends FeedbackHandlerBase
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         InformalTagBuilder builder = new InformalTagBuilder(name,
                                                             userId,
@@ -501,23 +505,26 @@ public class InformalTagHandler extends FeedbackHandlerBase
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        /*
+         * The loop is necessary because some of the tags returned may not be visible to the calling user.
+         * Once they are filtered out, more tags need to be retrieved to fill the gaps.
+         */
+        while (moreResultsAvailable && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
-
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByAllProperties(userId,
                                                                                                 builder.getUserNameInstanceProperties(methodName),
                                                                                                 InformalTagMapper.INFORMAL_TAG_TYPE_GUID,
                                                                                                 startNextQueryFrom,
-                                                                                                pageSize,
+                                                                                                queryPageSize,
                                                                                                 methodName);
 
 
             if (retrievedEntities != null)
             {
-                results = this.getMyTagList(retrievedEntities, results, pageSize);
+                results = this.getMyTagList(retrievedEntities, results, queryPageSize);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -561,7 +568,7 @@ public class InformalTagHandler extends FeedbackHandlerBase
         final String nameParameterName = "searchString";
 
         invalidParameterHandler.validateName(searchString, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         InformalTagBuilder builder = new InformalTagBuilder(searchString,
                                                             searchString,
@@ -576,13 +583,17 @@ public class InformalTagHandler extends FeedbackHandlerBase
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        /*
+         * The loop is necessary because some of the tags returned may not be visible to the calling user.
+         * Once they are filtered out, more tags need to be retrieved to fill the gaps.
+         */
+        while (moreResultsAvailable && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getSearchInstanceProperties(methodName),
                                                                                        InformalTagMapper.INFORMAL_TAG_TYPE_GUID,
                                                                                        startNextQueryFrom,
-                                                                                       pageSize,
+                                                                                       queryPageSize,
                                                                                        methodName);
 
             if (retrievedEntities != null)
@@ -590,10 +601,10 @@ public class InformalTagHandler extends FeedbackHandlerBase
                 results = this.getTagList(userId,
                                           retrievedEntities,
                                           results,
-                                          pageSize);
+                                          queryPageSize);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -637,7 +648,7 @@ public class InformalTagHandler extends FeedbackHandlerBase
         final String nameParameterName = "searchString";
 
         invalidParameterHandler.validateName(searchString, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         InformalTagBuilder builder = new InformalTagBuilder(searchString,
                                                             searchString,
@@ -652,13 +663,17 @@ public class InformalTagHandler extends FeedbackHandlerBase
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        /*
+         * The loop is necessary because some of the tags returned may not be visible to the calling user.
+         * Once they are filtered out, more tags need to be retrieved to fill the gaps.
+         */
+        while (moreResultsAvailable && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByAllProperties(userId,
                                                                                                 builder.getUserSearchInstanceProperties(methodName),
                                                                                                 InformalTagMapper.INFORMAL_TAG_TYPE_GUID,
                                                                                                 startNextQueryFrom,
-                                                                                                pageSize,
+                                                                                                queryPageSize,
                                                                                                 methodName);
 
             if (retrievedEntities != null)
@@ -666,10 +681,10 @@ public class InformalTagHandler extends FeedbackHandlerBase
                 results = this.getTagList(userId,
                                           retrievedEntities,
                                           results,
-                                          pageSize);
+                                          queryPageSize);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -718,21 +733,12 @@ public class InformalTagHandler extends FeedbackHandlerBase
                     InformalTagConverter  converter = new InformalTagConverter(entity, null, repositoryHelper, serviceName);
                     InformalTag           informalTag = converter.getBean();
 
-                    try
+                    if (informalTag != null)
                     {
-                        if (informalTag != null)
+                        if ((! informalTag.isPrivateTag() || (userId.equals(informalTag.getUser()))))
                         {
-                            if ((! informalTag.isPrivateTag() || (userId.equals(informalTag.getUser()))))
-                            {
-                                results.add(informalTag);
-                            }
+                            results.add(informalTag);
                         }
-                    }
-                    catch (Throwable error)
-                    {
-                        /*
-                         * ignore invisible informalTag
-                         */
                     }
                 }
             }
@@ -770,21 +776,12 @@ public class InformalTagHandler extends FeedbackHandlerBase
                     InformalTagConverter  converter = new InformalTagConverter(entity, null, repositoryHelper, serviceName);
                     InformalTag           informalTag = converter.getBean();
 
-                    try
+                    if (informalTag != null)
                     {
-                        if (informalTag != null)
+                        if (informalTag.isPrivateTag())
                         {
-                            if (informalTag.isPrivateTag())
-                            {
-                                results.add(informalTag);
-                            }
+                            results.add(informalTag);
                         }
-                    }
-                    catch (Throwable error)
-                    {
-                        /*
-                         * ignore invisible informalTag
-                         */
                     }
                 }
             }

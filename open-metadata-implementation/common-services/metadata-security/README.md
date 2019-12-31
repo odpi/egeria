@@ -3,23 +3,61 @@
 
 # Open Metadata Security
 
-Open Metadata Security defines the base classes and interfaces for the
-open metadata security connectors that
-validate access to specific Open Metadata services and instances
-for individual users.
+Open Metadata Security provides fine-grained authorization services for open metadata services, types and instances.
+Since each organization will have different security requirements, the support is implemented through connectors.
+Egeria defines the interfaces and when it will call the connector.  You define the behaviour when the connector is called
+and Egeria acts on the returned decision.
+
+The `metadata-security` module defines the base classes and interfaces for the
+open metadata security connectors.
 
 There are two types of connector:
 
 * **Open metadata platform security connector** - secures access to the
-platform services that are not specific to an OMAG Server.
+platform services that are not specific to an OMAG Server.  This includes
+the admin services to create new servers, the ability to start and stop new servers as well as the
+ability to query whether a server is running, and if it is, what services are active.
 
-* **Open metadata server security connector** - secures access to the specific services of an OMAG server.
+* **Open metadata server security connector** - secures access to the specific services of an OMAG server.  This includes
+the server itself, specific services within the server, specific Assets and Connections managed by the server and
+the types and instances stored in the local repository.
+
+The 2 types of connectors are shown in Figure 1:
+
+![Figure 1](docs/security-connectors.png)
+> **Figure 1:** positioning of the security connectors
+
+Within an OMAG Server Platform there is one instance of the 
+open metadata platform security connector.  This connector is
+configured once the platform is running using the admin service call:
+```
+POST /open-metadata/admin-services/users/{userId}/platform/security/connection
+```
+where the `{userId}` is the administrator's userId.
+The connection for the connector and the platform URL root are passed
+in the request body.  There are `GET` and `DELETE` services with the same URL
+to retrieve and remove this connector respectively.
+
+The open metadata server security connector is configured for each
+OMAG server to allow for each server to have a different implementation.
+The admin services command to configure a security connector for a server is:
+```
+POST /open-metadata/admin-services/users/{userId}/servers/{serverName}/security/connection
+```
+where the `{userId}` is the administrator's userId and `{serverName}` is the name of the server where the connector is to run.
+The connection for the server security connector is passed
+in the request body.  Again, there are `GET` and `DELETE` services with the same URL
+to retrieve and remove this connector respectively.
 
 The connectors are optional.  If they are not defined then there are no additional authorization checks
-performed inside the OMAG Server Platform.
+performed inside the OMAG Server Platform nor the OMAG Servers hosted on the platform.
+As such, it is important that the open metadata platform security connector is configured
+as soon as the platform is started, and the server security connector is configured before the server is started for the first time.
 
-This module provides the interfaces, connector implementation and plug points that sit in the
-server.
+The `metadata-security` module provides the interfaces, connector implementation and plug points that sit in the
+server and server platform.  Details of the specifics of these interfaces follow.  There are sample
+implementations of these connectors for [Coco Pharmaceuticals](https://opengovernance.odpi.org/coco-pharmaceuticals/)
+in the samples module under [open-metadata-security-samples](../../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples)
 
 ## Open metadata platform security connector interface
 
@@ -38,8 +76,14 @@ The connector that plugs in to the platform implements the following interface.
   
 ## Open metadata server security connector interface
 
-The connector that can be defined for an OMAG Server implements the
-following interfaces:
+The connector that can be defined for an OMAG Server offers a series of layers of
+security checks.  An organization can chose which layers to make use of and which to allow
+all requests to pass.  Figure 2 shows the layers:
+
+![Figure 2](docs/layers-of-security-checks.png)
+> **Figure 2:** Layers of security checks within a server
+
+Below are the methods for the different layers:
 
 * **OpenMetadataServerSecurity** - provides the root interface for a connector that validates access to Open
  Metadata services and instances for a specific user.  There are other optional interfaces that

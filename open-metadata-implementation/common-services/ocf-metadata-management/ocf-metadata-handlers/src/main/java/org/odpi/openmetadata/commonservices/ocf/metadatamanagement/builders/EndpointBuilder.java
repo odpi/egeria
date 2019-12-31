@@ -183,4 +183,29 @@ public class EndpointBuilder extends ReferenceableBuilder
 
         return properties;
     }
+
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getNetworkAddressInstanceProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (networkAddress != null)
+        {
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      EndpointMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                      literalName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
 }
