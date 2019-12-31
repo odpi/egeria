@@ -281,12 +281,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getAllDiscoveryEngines";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
                                                                                    DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                                                                    startingFrom,
-                                                                                   maximumResults,
+                                                                                   queryPageSize,
                                                                                    methodName);
 
         /*
@@ -661,12 +661,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getAllDiscoveryServices";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
                                                                                    DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                                                    startingFrom,
-                                                                                   maximumResults,
+                                                                                   queryPageSize,
                                                                                    methodName);
 
         /*
@@ -933,7 +933,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param assetTypes list of asset types that this discovery service is able to process.
+     * @param assetDiscoveryTypes list of asset discovery types that this discovery service is able to process.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -942,26 +942,26 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     public  void  registerDiscoveryServiceWithEngine(String        userId,
                                                      String        discoveryEngineGUID,
                                                      String        discoveryServiceGUID,
-                                                     List<String>  assetTypes) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                     List<String>  assetDiscoveryTypes) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String assetTypesParameter = "assetTypes";
+        final String assetDiscoveryTypesParameter = "assetDiscoveryTypes";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        invalidParameterHandler.validateStringArray(assetTypes, assetTypesParameter, methodName);
+        invalidParameterHandler.validateStringArray(assetDiscoveryTypes, assetDiscoveryTypesParameter, methodName);
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
         repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                           instanceProperties,
-                                                          DiscoveryEnginePropertiesMapper.ASSET_TYPES_PROPERTY_NAME,
-                                                          assetTypes,
+                                                          DiscoveryEnginePropertiesMapper.ASSET_DISCOVERY_TYPES_PROPERTY_NAME,
+                                                          assetDiscoveryTypes,
                                                           methodName);
         repositoryHandler.createRelationship(userId,
                                              DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
@@ -1042,7 +1042,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<Relationship> relationships = repositoryHandler.getPagedRelationshipsByType(userId,
                                                                                          discoveryEngineGUID,
@@ -1050,7 +1050,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                          DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
                                                                                          DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
                                                                                          startingFrom,
-                                                                                         maximumResults,
+                                                                                         queryPageSize,
                                                                                          methodName);
 
         List<String> results = new ArrayList<>();
@@ -1061,9 +1061,10 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
             {
                 if (relationship != null)
                 {
-                    if (relationship.getGUID() != null)
+                    EntityProxy end1 = relationship.getEntityOneProxy();
+                    if (end1.getGUID() != null)
                     {
-                        results.add(relationship.getGUID());
+                        results.add(end1.getGUID());
                     }
                 }
             }

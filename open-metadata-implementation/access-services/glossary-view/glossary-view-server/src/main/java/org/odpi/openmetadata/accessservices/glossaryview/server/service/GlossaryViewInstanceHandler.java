@@ -6,10 +6,13 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 
+/**
+ * GlossaryViewInstanceHandler provides the bridge between the REST call and the server instance.
+ */
 public class GlossaryViewInstanceHandler extends OCFOMASServiceInstanceHandler {
 
-    public GlossaryViewInstanceHandler(){
-        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName());
+    public GlossaryViewInstanceHandler() {
+        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName() + " OMAS");
     }
 
 }

@@ -24,5 +24,9 @@
 
     <artifactId>access-services-connectors</artifactId>
 
+    <packaging>pom</packaging>
+    <modules>
+        <module>stewardship-action-connectors</module>
+    </modules>
 
 </project>

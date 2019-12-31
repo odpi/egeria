@@ -38,6 +38,7 @@ public class AssetHandler
     private CertificationHandler      certificationHandler;
     private CommentHandler            commentHandler;
     private ConnectionHandler         connectionHandler;
+    private EndpointHandler           endpointHandler;
     private ExternalIdentifierHandler externalIdentifierHandler;
     private ExternalReferenceHandler  externalReferenceHandler;
     private InformalTagHandler        informalTagHandler;
@@ -67,6 +68,7 @@ public class AssetHandler
      * @param certificationHandler handler for certification objects
      * @param commentHandler handler for comment objects
      * @param connectionHandler handler for connection objects
+     * @param endpointHandler handler for endpoint objects
      * @param externalIdentifierHandler handler for external identifier objects
      * @param externalReferenceHandler handler for external reference objects
      * @param informalTagHandler handler for informal tag objects
@@ -89,6 +91,7 @@ public class AssetHandler
                         CertificationHandler      certificationHandler,
                         CommentHandler            commentHandler,
                         ConnectionHandler         connectionHandler,
+                        EndpointHandler           endpointHandler,
                         ExternalIdentifierHandler externalIdentifierHandler,
                         ExternalReferenceHandler  externalReferenceHandler,
                         InformalTagHandler        informalTagHandler,
@@ -111,6 +114,7 @@ public class AssetHandler
         this.certificationHandler      = certificationHandler;
         this.commentHandler            = commentHandler;
         this.connectionHandler         = connectionHandler;
+        this.endpointHandler           = endpointHandler;
         this.externalIdentifierHandler = externalIdentifierHandler;
         this.externalReferenceHandler  = externalReferenceHandler;
         this.informalTagHandler        = informalTagHandler;
@@ -1751,6 +1755,65 @@ public class AssetHandler
      *
      * @param userId calling user
      * @param supportedZones override the default supported zones.
+     * @param assetConnectionRelationship link between the asset and the connection.
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @return Asset bean
+     *
+     * @throws InvalidParameterException the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Asset getAsset(String                 userId,
+                          List<String>           supportedZones,
+                          Relationship           assetConnectionRelationship,
+                          String                 serviceName,
+                          String                 methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        final String  guidParameterName = "assetGUID";
+
+        if (assetConnectionRelationship != null)
+        {
+            EntityProxy connectionProxy = assetConnectionRelationship.getEntityOneProxy();
+            EntityProxy assetProxy      = assetConnectionRelationship.getEntityTwoProxy();
+
+            if ((connectionProxy != null) && (assetProxy != null))
+            {
+                /*
+                 * This method throws exceptions if the asset entity can not be found
+                 */
+                EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                             assetProxy.getGUID(),
+                                                                             guidParameterName,
+                                                                             AssetMapper.ASSET_TYPE_NAME,
+                                                                             methodName);
+
+
+                AssetConverter assetConverter = new AssetConverter(assetEntity,
+                                                                   assetConnectionRelationship,
+                                                                   repositoryHelper,
+                                                                   methodName);
+
+                return validatedVisibleAsset(userId,
+                                             supportedZones,
+                                             guidParameterName,
+                                             assetConverter.getAssetBean(),
+                                             serviceName,
+                                             methodName);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the requested asset object.
+     *
+     * @param userId calling user
+     * @param supportedZones override the default supported zones.
      * @param assetGUID unique identifier of the asset object.
      * @param connectionGUID unique identifier of the attached connection object.
      * @param serviceName calling service
@@ -1998,6 +2061,34 @@ public class AssetHandler
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    public List<String>  assetGUIDsScan(String   userId,
+                                        String   subTypeGUID,
+                                        String   subTypeName,
+                                        int      startFrom,
+                                        int      pageSize,
+                                        String   methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return(this.getGUIDs(assetScan(userId, subTypeGUID, subTypeName, startFrom, pageSize, methodName)));
+    }
+
+    /**
+     * Scan through the repository looking for assets by type.  The type name
+     * may be null which means, all assets will be returned.
+     *
+     * @param userId calling user
+     * @param subTypeGUID type of asset to scan for (null for all asset types)
+     * @param subTypeName type of asset to scan for (null for all asset types)
+     * @param startFrom scan pointer
+     * @param pageSize maximum number of results
+     * @param methodName calling method
+     * @return list of matching assets
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
     public List<Asset>  assetScan(String   userId,
                                   String   subTypeGUID,
                                   String   subTypeName,
@@ -2149,6 +2240,172 @@ public class AssetHandler
 
 
     /**
+     * Return a list of GUIDs based on a list of Assets.
+     *
+     * @param assets list of assets
+     * @return list of GUIDs
+     */
+    private List<String> getGUIDs(List<Asset>  assets)
+    {
+        if ((assets != null) && (! assets.isEmpty()))
+        {
+            List<String>  results = new ArrayList<>();
+
+            for (Asset asset : assets)
+            {
+                if (asset != null)
+                {
+                    String guid = asset.getGUID();
+
+                    if (guid != null)
+                    {
+                        results.add(guid);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return  results;
+            }
+
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of unique identifiers of Asset
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetGUIDsByQualifiedName(String   userId,
+                                                     String   name,
+                                                     int      startFrom,
+                                                     int      pageSize,
+                                                     String   methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        return (getGUIDs(this.getAssetsByQualifiedName(userId, name, startFrom, pageSize, methodName)));
+    }
+
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of Asset summaries
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<Asset> getAssetsByQualifiedName(String   userId,
+                                                String   name,
+                                                int      startFrom,
+                                                int      pageSize,
+                                                String   methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetBuilder builder = new AssetBuilder(name,
+                                                name,
+                                                repositoryHelper,
+                                                serviceName,
+                                                serverName);
+
+        List<Asset>  results = new ArrayList<>();
+        boolean      moreResultsAvailable = true;
+        int          startNextQueryFrom = startFrom;
+
+        while (moreResultsAvailable && (queryPageSize == 0 || results.size() < queryPageSize))
+        {
+            List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                       builder.getQualifiedNameInstanceProperties(methodName),
+                                                                                       AssetMapper.ASSET_TYPE_GUID,
+                                                                                       startFrom,
+                                                                                       queryPageSize,
+                                                                                       methodName);
+
+            if (retrievedEntities != null)
+            {
+                results = this.getAssetList(userId,
+                                            retrievedEntities,
+                                            results,
+                                            queryPageSize,
+                                            methodName);
+
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
+            }
+            else
+            {
+                moreResultsAvailable = false;
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of unique identifiers of Asset
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getAssetGUIDsByName(String   userId,
+                                            String   name,
+                                            int      startFrom,
+                                            int      pageSize,
+                                            String   methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        return this.getGUIDs(this.getAssetsByName(userId, name, startFrom, pageSize, methodName));
+    }
+
+
+    /**
      * Return a list of assets with the requested name.
      *
      * @param userId calling user
@@ -2174,7 +2431,7 @@ public class AssetHandler
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         AssetBuilder builder = new AssetBuilder(name,
                                                 name,
@@ -2186,13 +2443,13 @@ public class AssetHandler
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        while (moreResultsAvailable && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getQualifiedNameInstanceProperties(methodName),
                                                                                        AssetMapper.ASSET_TYPE_GUID,
                                                                                        startFrom,
-                                                                                       pageSize,
+                                                                                       queryPageSize,
                                                                                        methodName);
             if (retrievedEntities == null)
             {
@@ -2200,7 +2457,7 @@ public class AssetHandler
                                                                         builder.getNameInstanceProperties(methodName),
                                                                         AssetMapper.ASSET_TYPE_GUID,
                                                                         startFrom,
-                                                                        pageSize,
+                                                                        queryPageSize,
                                                                         methodName);
             }
 
@@ -2209,11 +2466,11 @@ public class AssetHandler
                 results = this.getAssetList(userId,
                                             retrievedEntities,
                                             results,
-                                            pageSize,
+                                            queryPageSize,
                                             methodName);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -2229,6 +2486,178 @@ public class AssetHandler
         {
             return results;
         }
+    }
+
+
+    /**
+     * Return the list of assets that have the same endpoint address.
+     *
+     * @param userId calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @param methodName calling method
+     * @return list of unique identifiers for matching assets
+     *
+     * @throws InvalidParameterException the networkAddress is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public  List<String> getAssetGUIDsByEndpoint(String   userId,
+                                                 String   networkAddress,
+                                                 int      startFrom,
+                                                 int      pageSize,
+                                                 String   methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        return(this.getGUIDs(this.getAssetsByEndpoint(userId, networkAddress, startFrom, pageSize, methodName)));
+    }
+
+
+    /**
+     * Return the list of assets that have the same endpoint address.
+     *
+     * @param userId calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @param methodName calling method
+     * @return list of  matching assets
+     *
+     * @throws InvalidParameterException the networkAddress is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public  List<Asset> getAssetsByEndpoint(String   userId,
+                                            String   networkAddress,
+                                            int      startFrom,
+                                            int      pageSize,
+                                            String   methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String addressParameterName = "networkAddress";
+
+        invalidParameterHandler.validateName(networkAddress, addressParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<Asset>     assets    = new ArrayList<>();
+        boolean         moreResultsAvailable = true;
+        int             startNextQueryFrom = startFrom;
+
+
+        while (moreResultsAvailable && ((queryPageSize == 0) || (assets.size() < queryPageSize)))
+        {
+            List<Endpoint> endpoints = endpointHandler.getEndpointsByNetworkAddress(userId, networkAddress, startFrom, queryPageSize, methodName);
+
+            if (endpoints != null)
+            {
+                for (Endpoint endpoint : endpoints)
+                {
+                    if (endpoint != null)
+                    {
+                        List<EntityDetail> connectionEntities = repositoryHandler.getEntitiesForRelationshipType(userId,
+                                                                                                                 endpoint.getGUID(),
+                                                                                                                 EndpointMapper.ENDPOINT_TYPE_NAME,
+                                                                                                                 ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                                                                                 ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                                 startNextQueryFrom,
+                                                                                                                 queryPageSize,
+                                                                                                                 methodName);
+
+                        if (connectionEntities != null)
+                        {
+                            for (EntityDetail connectionEntity : connectionEntities)
+                            {
+                                if (connectionEntity != null)
+                                {
+                                    List<Relationship> connectionRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                                                          connectionEntity.getGUID(),
+                                                                                                                          ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                                                                                          AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                                                                          AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                                                          startFrom,
+                                                                                                                          queryPageSize,
+                                                                                                                          methodName);
+
+                                    if (connectionRelationships != null)
+                                    {
+                                        for (Relationship connectionRelationship : connectionRelationships)
+                                        {
+                                            if (connectionRelationship != null)
+                                            {
+                                                Asset asset = this.getAsset(userId,
+                                                                            supportedZones,
+                                                                            connectionRelationship,
+                                                                            serviceName,
+                                                                            methodName);
+
+                                                if ((asset != null) && assets.size() <= queryPageSize)
+                                                {
+                                                    assets.add(asset);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
+             * If there are more endpoints to process, and the number of assets returned has not reached the max page size then
+             * it is possible to receive more endpoints in an attempt to receive as many assets as possible.
+             */
+            if ((endpoints.size() < queryPageSize) || (assets.size() == queryPageSize))
+            {
+                moreResultsAvailable = false;
+            }
+            else
+            {
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
+            }
+        }
+
+        if (assets.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return assets;
+        }
+    }
+
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of unique identifiers for assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<String>  findAssetGUIDs(String   userId,
+                                        String   searchString,
+                                        int      startFrom,
+                                        int      pageSize,
+                                        String   methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return(this.getGUIDs(this.findAssets(userId, searchString, startFrom, pageSize, methodName)));
     }
 
 
@@ -2259,7 +2688,7 @@ public class AssetHandler
         final String   searchParameter = "searchString";
 
         invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         AssetBuilder builder = new AssetBuilder(searchString,
                                                 searchString,
@@ -2272,13 +2701,13 @@ public class AssetHandler
         boolean      moreResultsAvailable = true;
         int          startNextQueryFrom = startFrom;
 
-        while (moreResultsAvailable && (results.size() < pageSize))
+        while (moreResultsAvailable && (queryPageSize == 0 || (results.size() < queryPageSize)))
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getSearchInstanceProperties(methodName),
                                                                                        AssetMapper.ASSET_TYPE_GUID,
                                                                                        startNextQueryFrom,
-                                                                                       pageSize,
+                                                                                       queryPageSize,
                                                                                        methodName);
 
             if (retrievedEntities != null)
@@ -2286,11 +2715,11 @@ public class AssetHandler
                 results = this.getAssetList(userId,
                                             retrievedEntities,
                                             results,
-                                            pageSize,
+                                            queryPageSize,
                                             methodName);
 
-                moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                startNextQueryFrom = startNextQueryFrom + pageSize;
+                moreResultsAvailable = (retrievedEntities.size() == queryPageSize);
+                startNextQueryFrom = startNextQueryFrom + queryPageSize;
             }
             else
             {
@@ -3155,7 +3584,7 @@ public class AssetHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         String relationshipTypeDisplayName = "all";
 
@@ -3170,7 +3599,7 @@ public class AssetHandler
                                                                                           relationshipTypeGUID,
                                                                                           relationshipTypeDisplayName,
                                                                                           startFrom,
-                                                                                          pageSize,
+                                                                                          queryPageSize,
                                                                                           methodName);
 
         if (assetRelationships != null)
@@ -3192,8 +3621,7 @@ public class AssetHandler
                             RelatedAsset relatedAsset = new RelatedAsset();
 
                             relatedAsset.setTypeName(relatedEntityProxy.getType().getTypeDefName());
-                            relatedAsset.setAttributeName(
-                                    repositoryHelper.getOtherEndName(serviceName, anchorGUID, relationship));
+                            relatedAsset.setAttributeName(repositoryHelper.getOtherEndName(serviceName, anchorGUID, relationship));
                             relatedAsset.setRelatedAsset(this.getAsset(userId,
                                                                        supportedZones,
                                                                        relatedEntityProxy.getGUID(),

@@ -22,17 +22,17 @@ public class VirtualizationResource
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @PostMapping( path = "/virtualization-service/configuration")
-    public VoidResponse setAccessServicesConfig(@PathVariable String userId,
-                                                @PathVariable String serverName,
+    @PostMapping(path = "/virtualization-service/configuration")
+    public VoidResponse setAccessServicesConfig(@PathVariable String               userId,
+                                                @PathVariable String               serverName,
                                                 @RequestBody  VirtualizationConfig virtualizationConfig)
     {
         return adminAPI.setVirtualizerConfig(userId, serverName, virtualizationConfig);
     }
 
-    @PostMapping( path = "/virtualization-service")
+    @PostMapping(path = "/virtualization-service")
     public VoidResponse enableVirtualizationService(@PathVariable String userId,
-                                                  @PathVariable String serverName)
+                                                    @PathVariable String serverName)
     {
         return adminAPI.enableVirtualizationService(userId, serverName);
     }

@@ -126,11 +126,44 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param topicListener object implementing the OMRSTopicListener interface
      */
+    @Deprecated
     public void registerListener(OMRSTopicListener  topicListener)
     {
         if (topicListener != null)
         {
-            internalTopicListeners.add(topicListener);
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, auditLog));
+        }
+        else
+        {
+            final String            methodName = "registerListener";
+
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(connectionName);
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Register a listener object.  This object will be supplied with all of the events
+     * received on the topic.
+     *
+     * @param topicListener object implementing the OMRSTopicListener interface
+     * @param serviceName name os service that the listener is from
+     */
+    public void registerListener(OMRSTopicListener topicListener,
+                                 String            serviceName)
+    {
+        if (topicListener != null)
+        {
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, serviceName, auditLog));
         }
         else
         {
@@ -218,6 +251,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
          */
         if (this.eventBusConnectors.isEmpty())
         {
+            final String            methodName = "start";
+
             if (auditLog != null)
             {
                 OMRSAuditCode auditCode = OMRSAuditCode.OMRS_TOPIC_LISTENER_DEAF;
@@ -229,12 +264,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
             }
-        }
-
-
-        if (this.eventBusConnectors.isEmpty())
-        {
-            final String            methodName = "start";
 
             OMRSErrorCode errorCode = OMRSErrorCode.NO_EVENT_BUS_CONNECTORS;
             String        errorMessage = errorCode.getErrorMessageId()

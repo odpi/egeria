@@ -27,7 +27,7 @@ public class ServerOriginResource
      * @param serverName name of the server that the request is for
      * @return String description
      */
-    @GetMapping( path = "/servers/{serverName}/server-origin")
+    @GetMapping(path = "/servers/{serverName}/server-origin")
     @Deprecated
     public String getServerOrigin(@PathVariable String   userId,
                                   @PathVariable String   serverName)
@@ -41,7 +41,7 @@ public class ServerOriginResource
      * @param userId name of the user making the request
      * @return String description
      */
-    @GetMapping( path = "/server-origin")
+    @GetMapping(path = "/server-origin")
     @Deprecated
     public String getServerOrigin(@PathVariable String   userId)
     {

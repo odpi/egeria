@@ -44,7 +44,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @PostMapping( path = "/personal-profiles")
+    @PostMapping(path = "/personal-profiles")
 
     public GUIDResponse createPersonalProfile(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
@@ -67,7 +67,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @PostMapping( path = "/personal-profiles/{profileGUID}")
+    @PostMapping(path = "/personal-profiles/{profileGUID}")
 
     public VoidResponse updatePersonalProfile(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
@@ -91,7 +91,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @PostMapping( path = "/personal-profiles/{profileGUID}/delete")
+    @PostMapping(path = "/personal-profiles/{profileGUID}/delete")
 
     public VoidResponse   deletePersonalProfile(@PathVariable String                              serverName,
                                                 @PathVariable String                              userId,
@@ -114,7 +114,7 @@ public class PersonalProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping( path = "/personal-profiles/user/{profileUserId}")
+    @GetMapping(path = "/personal-profiles/user/{profileUserId}")
 
     public PersonalProfileResponse getPersonalProfileForUser(@PathVariable String serverName,
                                                              @PathVariable String userId,
@@ -135,7 +135,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @GetMapping( path = "/personal-profiles/{profileGUID}")
+    @GetMapping(path = "/personal-profiles/{profileGUID}")
 
     public PersonalProfileResponse getPersonalProfileByGUID(@PathVariable String        serverName,
                                                             @PathVariable String        userId,
@@ -157,7 +157,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @GetMapping( path = "/personal-profiles/by-employee-number/{employeeNumber}")
+    @GetMapping(path = "/personal-profiles/by-employee-number/{employeeNumber}")
 
     public PersonalProfileResponse getPersonalProfileByEmployeeNumber(@PathVariable String         serverName,
                                                                       @PathVariable String         userId,
@@ -181,7 +181,7 @@ public class PersonalProfileResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @GetMapping( path = "/personal-profiles/by-name/{name}")
+    @GetMapping(path = "/personal-profiles/by-name/{name}")
 
     public PersonalProfileListResponse getPersonalProfilesByName(@PathVariable String        serverName,
                                                                  @PathVariable String        userId,

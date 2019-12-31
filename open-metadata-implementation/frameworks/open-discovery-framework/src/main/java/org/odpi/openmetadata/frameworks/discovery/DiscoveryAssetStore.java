@@ -94,13 +94,15 @@ public abstract class DiscoveryAssetStore
     /**
      * Log an audit message about this asset.
      *
+     * @param discoveryService name of discovery service
      * @param message message to log
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public abstract void logAssetAuditMessage(String    message) throws InvalidParameterException,
+    public abstract void logAssetAuditMessage(String    discoveryService,
+                                              String    message) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException;
 

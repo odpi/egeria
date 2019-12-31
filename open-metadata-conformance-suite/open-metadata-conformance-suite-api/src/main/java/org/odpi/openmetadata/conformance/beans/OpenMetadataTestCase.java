@@ -396,7 +396,9 @@ public abstract class OpenMetadataTestCase
     /**
      * Request from the workbench to execute this test and generate a result object.  This method is used for
      * synchronous test cases. This variant of the method accepts a test phase parameter to allow explicit
-     * execution of create, execute and clean phases
+     * execution of create, execute and clean phases.
+     *
+     * @param phase test phase
      */
     public void executeTest(TestPhase phase)
     {

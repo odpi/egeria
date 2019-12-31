@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
@@ -18,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DiscoveryEngineClient provides the client-side operational REST APIs for a running Discovery Engine
+ * DiscoveryEngineClient provides the client-side operational REST APIs for a running Discovery Engine.
+ * The discovery engine embeds this client in each of the special store clients defined by the
+ * Open Discovery Framework (ODF).
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
@@ -41,6 +44,198 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         super(serverName, serverPlatformRootURL);
 
         this.restClient = restClient;
+    }
+
+
+    /**
+     * Return the next set of assets to process.
+     *
+     * @param userId calling user
+     * @param startFrom starting point of the query
+     * @param pageSize maximum number of results to return
+     * @return list of unique identifiers for located assets
+     * @throws InvalidParameterException one of the parameters is not recognized
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public List<String> getAssets(String  userId,
+                                  int     startFrom,
+                                  int     pageSize) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets?startFrom={2}&pageSize={3}";
+        final String   methodName = "getAssets";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          nullRequestBody,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          pageSize);
+
+        return restResult.getGUIDs();
+    }
+
+
+    /**
+     * Return the assets with the same qualified name.  If all is well there should be only one
+     * returned.
+     *
+     * @param userId calling user
+     * @param searchParameter the value to query on
+     * @param searchParameterName the name of the parameter that provides the search parameter
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @param methodName calling method
+     * @return list of unique identifiers for matching assets
+     * @throws InvalidParameterException one of the parameters is not recognized
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    private List<String>  retrieveAssetGUIDList(String userId,
+                                                String urlTemplate,
+                                                String searchParameter,
+                                                String searchParameterName,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchParameter, searchParameterName, methodName);
+
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          searchParameter,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          pageSize);
+
+        return restResult.getGUIDs();
+    }
+
+
+    /**
+     * Return the assets with the same qualified name.  If all is well there should be only one
+     * returned.
+     *
+     * @param userId calling user
+     * @param name the qualified name to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets
+     * @throws InvalidParameterException one of the parameters is not recognized
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public List<String>  getAssetsByQualifiedName(String   userId,
+                                                  String   name,
+                                                  int      startFrom,
+                                                  int      pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-qualified-name?startFrom={2}&pageSize={3}";
+        final String   methodName = "getAssetsByQualifiedName";
+        final String   searchParameterName = "name";
+
+        return retrieveAssetGUIDList(userId, urlTemplate, name, searchParameterName, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return the list of matching assets that have the supplied name as either the
+     * qualified name or display name.  This is an exact match retrieval.
+     *
+     * @param userId calling user
+     * @param name name to query for
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets
+     * @throws InvalidParameterException one of the parameters is not recognized
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public List<String>  getAssetsByName(String   userId,
+                                         String   name,
+                                         int      startFrom,
+                                         int      pageSize) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
+        final String   methodName = "getAssetsByName";
+        final String   searchParameterName = "name";
+
+        return retrieveAssetGUIDList(userId, urlTemplate, name, searchParameterName, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<String>  findAssets(String   userId,
+                                    String   searchString,
+                                    int      startFrom,
+                                    int      pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
+        final String   methodName = "findAssets";
+        final String   searchParameterName = "searchString";
+
+        return retrieveAssetGUIDList(userId, urlTemplate, searchString, searchParameterName, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return the list of assets that have the same endpoint address.
+     *
+     * @param userId calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets
+     * @throws InvalidParameterException one of the parameters is not recognized
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public  List<String>  findAssetsByEndpoint(String   userId,
+                                               String   networkAddress,
+                                               int      startFrom,
+                                               int      pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-endpoint-address?startFrom={2}&pageSize={3}";
+        final String   methodName = "findAssetsByEndpoint";
+        final String   searchParameterName = "networkAddress";
+
+        return retrieveAssetGUIDList(userId, urlTemplate, networkAddress, searchParameterName, startFrom, pageSize, methodName);
     }
 
 
@@ -123,6 +318,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      *
      * @param userId         userId of user making request.
      * @param assetGUID      unique identifier for asset.
+     * @param discoveryService      unique name for discoveryService.
      * @param message        message to log
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -131,10 +327,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      */
     public void logAssetAuditMessage(String    userId,
                                      String    assetGUID,
+                                     String    discoveryService,
                                      String    message) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
+        final String   methodName = "logAssetAuditMessage";
+        final String   guidParameter = "assetGUID";
+        final String   discoveryServiceParameter = "discoveryService";
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/{2}/log-records/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+        invalidParameterHandler.validateName(discoveryService, discoveryServiceParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        message,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        discoveryService);
     }
 
 

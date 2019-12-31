@@ -217,7 +217,7 @@ public class NewAssetEventTest
         /*
          * Through super-superclass
          */
-        AssetConsumerEventHeader superSuperObject = getTestObject();
+        AssetConsumerEvent superSuperObject = getTestObject();
 
         try
         {
@@ -230,7 +230,7 @@ public class NewAssetEventTest
 
         try
         {
-            validateResultObject((NewAssetEvent) objectMapper.readValue(jsonString, AssetConsumerEventHeader.class));
+            validateResultObject((NewAssetEvent) objectMapper.readValue(jsonString, AssetConsumerEvent.class));
         }
         catch (Throwable  exc)
         {

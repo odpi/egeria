@@ -99,7 +99,7 @@ debug:
 
 # Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
 logging:
-  level: NONE
+  level: OFF
 
 # Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
 cts:

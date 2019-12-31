@@ -95,6 +95,17 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
 
 
     /**
+     * Return the position that this connector is in the list of embedded connectors.
+     *
+     * @return int
+     */
+    public int getPosition()
+    {
+        return embeddedConnectionBean.getPosition();
+    }
+
+
+    /**
      * Return the display name of the embedded connection.
      *
      * @return String name

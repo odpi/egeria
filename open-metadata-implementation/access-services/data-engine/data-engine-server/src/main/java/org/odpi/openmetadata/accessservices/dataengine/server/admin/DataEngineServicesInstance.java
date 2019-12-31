@@ -42,7 +42,9 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
                                OMRSAuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
 
-        super(description.getAccessServiceName(), repositoryConnector, supportedZones, defaultZones, auditLog, localServerUserId, maxPageSize);
+
+        super(description.getAccessServiceName() + " OMAS", repositoryConnector, supportedZones, defaultZones, auditLog,
+                localServerUserId, maxPageSize);
 
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,

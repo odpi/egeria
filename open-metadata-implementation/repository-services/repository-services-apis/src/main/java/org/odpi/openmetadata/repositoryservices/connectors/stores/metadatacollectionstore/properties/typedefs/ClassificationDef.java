@@ -96,6 +96,10 @@ public class ClassificationDef extends TypeDef
         {
             return null;
         }
+        else if (validEntityDefs.isEmpty())
+        {
+            return null;
+        }
         else
         {
             List<TypeDefLink> resultList = new ArrayList<>();

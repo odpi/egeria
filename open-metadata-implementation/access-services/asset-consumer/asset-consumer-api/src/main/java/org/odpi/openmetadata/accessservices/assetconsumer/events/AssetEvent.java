@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = NewAssetEvent.class, name = "NewAssetEvent"),
         @JsonSubTypes.Type(value = UpdatedAssetEvent.class, name = "UpdatedAssetEvent")
 })
-public class AssetEvent extends AssetConsumerEventHeader
+public class AssetEvent extends AssetConsumerEvent
 {
     private Asset asset = null;
 

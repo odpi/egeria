@@ -29,37 +29,42 @@ public enum DiscoveryServerAuditCode
                         "Discovery server {0} is initializing",
                         "A new OMAG server has been started that is configured to run as a discovery server.  " +
                                  "Within the discovery server are one or more discovery engines that analyze the " +
-                                 "content of assets on demand and create annotation metadata.",
+                                 "content of assets on demand and create annotation metadata. The configuration for the " +
+                                "discovery engines is retrieved from the metadata server and the discovery engines are initialized.",
                         "No action is required.  This is part of the normal operation of the service."),
 
     NO_OMAS_SERVER_URL("OMAS-DISCOVERY-SERVER-0002",
                          OMRSAuditLogRecordSeverity.ERROR,
                          "Discovery server {0} is not configured with the platform URL root for the Discovery Engine OMAS",
                          "The server is not able to retrieve its configuration.  It fails to start.",
-                         "Add the configuration for the platform URL root to this discovery server's configuration document."),
+                         "Add the platform URL root of the open metadata server where the Discovery Engine OMAS is running " +
+                               "to this discovery server's configuration document."),
 
     NO_OMAS_SERVER_NAME("OMAS-DISCOVERY-SERVER-0003",
                         OMRSAuditLogRecordSeverity.ERROR,
                        "Discovery server {0} is not configured with the name for the server running the Discovery Engine OMAS",
                       "The server is not able to retrieve its configuration.  It fails to start.",
-                     "Add the configuration for the server name to this discovery server's configuration document."),
+                     "Add the server name of the open metadata server where the Discovery Engine OMAS is running " +
+                                "to this discovery server's configuration document."),
 
     NO_DISCOVERY_ENGINES("OMAS-DISCOVERY-SERVER-0004",
                         OMRSAuditLogRecordSeverity.ERROR,
                        "Discovery server {0} is configured with no discovery engines",
                        "The server is not able to run any discovery requests.  It fails to start.",
-                       "Add the configuration for at least one discovery engine to this discovery server."),
+                       "Add the qualified name for at least one discovery engine to this discovery server's configuration document."),
 
     ENGINE_INITIALIZING("OMAS-DISCOVERY-SERVER-0005",
                         OMRSAuditLogRecordSeverity.INFO,
                         "A new discovery engine instance {0} is initializing in discovery server {1}",
                         "The discovery server is initializing a discovery engine to analyze the " +
-                                "content of assets on demand and create annotation metadata.",
+                                "content of assets on demand and create annotation metadata.  The configuration for this discovery engine was " +
+                                "retrieved from the Discovery Engine OMAS running in the open metadata server",
                         "No action is required.  This is part of the normal operation of the service."),
 
     NO_CONFIG_SERVER("OMAS-DISCOVERY-SERVER-0006",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                         "Discovery engine {0} in discovery server {1} is not able to retrieve any metadata from the Discovery Engine OMAS running in server {2} on OMAG Server Platform {3}.  The Error message was: {4}",
+                         "Discovery engine {0} in discovery server {1} is not able to retrieve any metadata from the Discovery Engine OMAS" +
+                             "running in server {2} on OMAG Server Platform {3}.  The Error message was: {4}",
                          "The discovery engine is unable to retrieved its configuration.  " +
                              "It has failed to start and will not be able to process any discovery requests.",
                          "Diagnose why the calls to Discovery Engine OMAS are not working.  " +
@@ -69,11 +74,13 @@ public enum DiscoveryServerAuditCode
 
     SERVER_NOT_AUTHORIZED("OMAS-DISCOVERY-SERVER-0007",
                      OMRSAuditLogRecordSeverity.EXCEPTION,
-                     "Discovery engine {0} in discovery server {1} is not able to retrieve any its configuration from the Discovery Engine OMAS running in server {2} on OMAG Server Platform {3} with userId {4}.  The Error message was: {5}",
+                     "Discovery engine {0} in discovery server {1} is not able to retrieve any its configuration from the Discovery Engine " +
+                                  "OMAS running in server {2} on OMAG Server Platform {3} with userId {4}.  The Error message was: {5}",
                      "The discovery engine is unable to retrieved its configuration.  " +
                              "It has failed to start and will not be able to process any discovery requests.",
                      "Diagnose why the calls to Discovery Engine OMAS are not working.  " +
-                             "It could be because because this discovery server is configured with the wrong userId, it is calling the wrong server, or the remote server is correct but it needs updating to allow this userId.  The error message should help to narrow down the cause of the error.  " +
+                             "It could be because because this discovery server is configured with the wrong userId, it is calling the wrong server, or the " +
+                                  "remote server is correct but it needs updating to allow this userId.  The error message should help to narrow down the cause of the error.  " +
                              "Once the problem has been resolved, restart the discovery engine"),
 
     SUPPORTED_ASSET_TYPE("OMAS-DISCOVERY-SERVER-0008",
@@ -161,6 +168,14 @@ public enum DiscoveryServerAuditCode
                                  "Discovery engine {0} is unable to update failed status for discovery service {1}.  The exception was {2} with error message {3}",
                                  "The server is not able to record the failed result for a discovery request. The discovery report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the discovery request."),
+
+    UNKNOWN_DISCOVERY_ENGINE_NAME( "OMAS-DISCOVERY-SERVER-0022",
+                                   OMRSAuditLogRecordSeverity.EXCEPTION,
+                                  "Properties for discovery engine called {0} are not returned by open metadata server {1}.  Exception {2} with message {3} returned to discovery server {4}",
+                                  "The discovery server is not able to initialize the discovery engine and so it will not de able to support " +
+                                           "discovery requests targeted to this discovery engine.",
+                                  "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
+                                          "configuration of the discovery server.  Once the cause is resolved, restart the discovery server."),
 
     ;
 
