@@ -47,7 +47,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Set up the default audit log for the server.  This
+     * Set up the console audit log for the server.  This writes selected parts of the audit log record to stdout.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.

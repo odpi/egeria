@@ -4,21 +4,21 @@
 # OMAG Server Platform Administration Services User Guide
 
 An **[Open Metadata and Governance (OMAG) Server Platform](../../../../open-metadata-publication/website/omag-server)**
-hosts one or more logical **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
-and governance capabilities.
+hosts one or more **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
+and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md)
 
-The capabilities that are enabled in a specific instance of a logical OMAG Server
+The subsystems that are enabled in a specific instance of an OMAG Server
 are defined in a JSON **[configuration document](../concepts/configuration-document.md)**.
-When the configuration document is loaded to the OMAG server platform, the logical OMAG server
-is started, and the capabilities defined in the configuration document are activated.
+When the configuration document is loaded into the OMAG server platform, the OMAG server
+is started, and the subsystems defined in the configuration document are activated.
 
 In an open metadata landscape, it is anticipated that there may be multiple
-instances of the logical OMAG Server running, each performing a different role.
-The capabilities of each of these instances would be defined in a different configuration document.
-They could all, however, be loaded into the same OMAG server platform, or distributed across
-different OMAG server platforms.
+instances of the OMAG Server running, each performing a different role.
+The active subsystems of each of these instances would be defined in a different configuration document.
+They could all, however, be loaded into the same OMAG Server Platform, or distributed across
+different OMAG Server Platforms ([more information](../concepts/omag-server-personalities.md)).
 
-The configuration document for a specific logical OMAG server is identified by the server's name.
+The configuration document for a specific OMAG server is identified by the server's name.
 This is passed on the URL of every admin services API request along with the user
 id of the administrator.  By default, the configuration is stored in a file called:
 
@@ -33,20 +33,20 @@ The administration services that set up this file all begin with a URL like this
 ```
 
 The **serverName** specified on these calls determines which configuration
-document is used, and hence which of the logical OMAG server's configuration it is working with.
+document is used, and hence which of the OMAG server's configuration it is working with.
 
-The OMAG server platform starts up without any open metadata capabilities enabled.
+The OMAG Server Platform starts up without any OMAG servers active.
 Once it is running, it can be used to set up the configuration documents
-that describe the open metadata capabilities needed for each server instance.
+that describe the open metadata subsystems needed for each OMAG server instance.
 
-Once the configuration document is in place, the open metadata services
+Once the configuration document is in place, the OMAG Server
 can be activated and deactivated multiple times, across multiple
-restarts of the server platform.
+restarts of the OMAG Server Platform.
 
-## Building a configuration document for a server
+## Building a configuration document for an OMAG server
 
-The configuration document for the logical OMAG Server determines the types of open
-metadata and governance services that should be activated in the logical OMAG server.
+The configuration document for the OMAG Server determines which OMAG subsystems (and hence the types of open
+metadata and governance services) that should be activated in the OMAG Server.
 For example:
 
 * Basic descriptive properties of the server that are used in logging and events
@@ -64,11 +64,11 @@ In the descriptions of the configuration commands the following values are used 
 
 * The OMAG server platform is running on the localhost, at port 8080 (ie **http://localhost:8080**).
 * The user id of the administrator is **garygeeke**.
-* The name of the logical OMAG server (serverName) is **cocoMDS1**.
+* The name of the OMAG server (serverName) is **cocoMDS1**.
 
 ### Common Configuration Tasks
 
-* [Setting basic properties for a logical OMAG server](configuring-omag-server-basic-properties.md)
+* [Setting basic properties for an OMAG server](configuring-omag-server-basic-properties.md)
 * Setting up default configuration parameters
    * [Setting up the default event bus](configuring-event-bus.md)
    * [Configuring the default local server URL root](configuring-local-server-url.md)
@@ -93,7 +93,7 @@ GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/c
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPI Egeria OMAG Server Platform (version 1.3-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.3-SNAPSHOT)".
 
 ```
 GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
