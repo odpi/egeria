@@ -57,7 +57,67 @@
         <!-- Standard Open Connectors -->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/target</directory>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/cassandra-data-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/avro-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/csv-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/data-folder-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-topic-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}.jar</include>
@@ -79,29 +139,71 @@
         </fileSet>
 
         <!-- Open Metadata Archives -->
-        <!-- Copy the generated archives -->
-
-        <!-- Standard Open Connectors -->
+        <!-- Copy the archive utilities -->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/target</directory>
-            <outputDirectory>./server/lib</outputDirectory>
+            <directory>../../open-metadata-resources/open-metadata-archives/open-metadata-types/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}*</include>
             </includes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/adapters/open-connectors/*/*/*/target</directory>
-            <outputDirectory>./server/lib</outputDirectory>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}*</include>
             </includes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/open-connector-archives/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Open Metadata Samples -->
+        <!-- Copy the archive utilities -->
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-samples/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
 
         <!-- OMAG Clients-->
         <!-- Copy the Jars for the OMAG Clients-->
