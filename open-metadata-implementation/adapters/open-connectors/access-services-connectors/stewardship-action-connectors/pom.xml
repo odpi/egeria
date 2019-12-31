@@ -9,24 +9,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>access-services-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.3-SNAPSHOT</version>
     </parent>
 
-    <name>Access Services Connectors</name>
+    <name>Stewardship Action Connectors</name>
     <description>
-        Access Services Connectors contains the topic connector implementations
-        for each of the access services that support inbound events through an InTopic.
+        Stewardship Action Connectors support the topic connector implementations
+        for the Stewardship Action OMAS.
     </description>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>access-services-connectors</artifactId>
+    <artifactId>stewardship-action-connectors</artifactId>
 
-    <packaging>pom</packaging>
-    <modules>
-        <module>stewardship-action-connectors</module>
-    </modules>
 
 </project>

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +125,10 @@ public abstract class DiscoveryService extends ConnectorBase
     {
         super.start();
 
+        final String methodName = "start";
+
         if (discoveryContext == null)
         {
-            final String methodName = "start";
             ODFErrorCode errorCode    = ODFErrorCode.NULL_DISCOVERY_CONTEXT;
             String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
 
@@ -168,10 +170,12 @@ public abstract class DiscoveryService extends ConnectorBase
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public  void disconnect() throws ConnectorCheckedException
     {
+        final String methodName = "disconnect";
+
         super.disconnect();
     }
 }

@@ -27,7 +27,10 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
     private String        accessServiceServerName  = null;
 
     /* List of discovery engines that run in this server */
+    /* It is possible to specify this as a list of GUIds or a list of names.  The names override the guids. */
+    /* Using names is easier for the people setting up and managing the discovery engines. */
     private List<String>  discoveryEngineGUIDs = null;
+    private List<String>  discoveryEngineNames = null;
 
     /**
      * Default constructor
@@ -51,7 +54,11 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
         {
             accessServiceRootURL = template.getAccessServiceRootURL();
             accessServiceServerName = template.getAccessServiceServerName();
-            discoveryEngineGUIDs = template.getDiscoveryEngineGUIDs();
+            discoveryEngineNames = template.getDiscoveryEngineNames();
+            if (discoveryEngineNames == null)
+            {
+                discoveryEngineGUIDs = template.getDiscoveryEngineGUIDs();
+            }
         }
     }
 
@@ -101,11 +108,11 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the connection used to access the topic that passes discovery requests to the discovery engine
-     * services.
+     * Return the list of unique identifiers (guids) for the discovery engines that will run in this discover server.
      *
-     * @return connection object
+     * @return list of GUIDs
      */
+    @Deprecated
     public List<String> getDiscoveryEngineGUIDs()
     {
         return discoveryEngineGUIDs;
@@ -114,13 +121,38 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
 
     /**
      * Set up the list of unique identifiers (guids) for the discovery engines that will run in this discovery
-     * server.
+     * server.  Note, this value is ignored if the discovery engine names is set.
      *
-     * @param discoveryEngineGUIDs connection object
+     * @param discoveryEngineGUIDs list of GUIDs
      */
+    @Deprecated
     public void setDiscoveryEngineGUIDs(List<String> discoveryEngineGUIDs)
     {
         this.discoveryEngineGUIDs = discoveryEngineGUIDs;
+    }
+
+
+    /**
+     * Return the list of unique names (qualifiedName) for the discovery engines that will run in this discover server.
+     *
+     * @return list of qualified names
+     */
+    public List<String> getDiscoveryEngineNames()
+    {
+        return discoveryEngineNames;
+    }
+
+
+    /**
+     * Set up the list of unique names (qualifiedName) for the discovery engines that will run in this discovery
+     * server.
+     *
+     * @param discoveryEngineNames list of qualified names
+     */
+    @Deprecated
+    public void setDiscoveryEngineNames(List<String> discoveryEngineNames)
+    {
+        this.discoveryEngineNames = discoveryEngineNames;
     }
 
 

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.discoveryserver.handlers;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
+import org.odpi.openmetadata.frameworks.discovery.DiscoveryReport;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
@@ -18,13 +18,11 @@ import java.util.Date;
 public class DiscoveryServiceHandler implements Runnable
 {
     private DiscoveryEngineProperties discoveryEngineProperties;
-    private String                    assetType;
+    private String                    assetDiscoveryType;
     private String                    discoveryServiceName;
     private DiscoveryService          discoveryService;
     private DiscoveryContext          discoveryContext;
     private OMRSAuditLog              auditLog;
-    private DiscoveryEngineClient     discoveryEngineClient;
-    private String                    discoveryEngineUserId;
 
 
     /**
@@ -33,31 +31,25 @@ public class DiscoveryServiceHandler implements Runnable
      * The action happens in the run() method.
      *
      * @param discoveryEngineProperties properties of the discovery engine - used for message logging
-     * @param assetType type of asset to analyse - used for message logging
+     * @param assetDiscoveryType type of asset to analyse - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
      * @param discoveryService connector that does the work
      * @param discoveryContext context for the connector
      * @param auditLog destination for log messages
-     * @param discoveryEngineClient client connected to the metadata repository
-     * @param discoveryEngineUserId this server's userId for calling the metadata repository
      */
      DiscoveryServiceHandler(DiscoveryEngineProperties discoveryEngineProperties,
-                             String                    assetType,
+                             String                    assetDiscoveryType,
                              String                    discoveryServiceName,
                              DiscoveryService          discoveryService,
                              DiscoveryContext          discoveryContext,
-                             OMRSAuditLog              auditLog,
-                             DiscoveryEngineClient     discoveryEngineClient,
-                             String                    discoveryEngineUserId)
+                             OMRSAuditLog              auditLog)
     {
         this.discoveryEngineProperties = discoveryEngineProperties;
-        this.assetType = assetType;
-        this.discoveryServiceName = discoveryServiceName;
-        this.discoveryService = discoveryService;
-        this.discoveryContext = discoveryContext;
-        this.auditLog = auditLog;
-        this.discoveryEngineClient = discoveryEngineClient;
-        this.discoveryEngineUserId = discoveryEngineUserId;
+        this.assetDiscoveryType        = assetDiscoveryType;
+        this.discoveryServiceName      = discoveryServiceName;
+        this.discoveryService          = discoveryService;
+        this.discoveryContext          = discoveryContext;
+        this.auditLog                  = auditLog;
     }
 
 
@@ -71,49 +63,54 @@ public class DiscoveryServiceHandler implements Runnable
         Date                     startTime;
         Date                     endTime;
 
-        final String actionDescription = "discoverAsset";
+        final String actionDescription = "Analyse an Asset";
 
-        auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_STARTING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryServiceName,
-                                                            discoveryContext.getAssetGUID(),
-                                                            assetType,
-                                                            discoveryEngineProperties.getQualifiedName(),
-                                                            discoveryEngineProperties.getGUID(),
-                                                            discoveryContext.getDiscoveryReportGUID()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        String discoveryReportGUID = null;
 
         try
         {
-            discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
-                                                     discoveryContext.getDiscoveryReportGUID(),
-                                                     DiscoveryRequestStatus.IN_PROGRESS);
+            DiscoveryReport discoveryReport = discoveryContext.getAnnotationStore().getDiscoveryReport();
+
+            discoveryReportGUID = discoveryReport.getDiscoveryReportGUID();
+
+            auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_STARTING;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(discoveryServiceName,
+                                                                discoveryContext.getAssetGUID(),
+                                                                assetDiscoveryType,
+                                                                discoveryEngineProperties.getQualifiedName(),
+                                                                discoveryEngineProperties.getGUID(),
+                                                                discoveryReport.getDiscoveryReportGUID()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
+
+            discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.IN_PROGRESS);
 
             discoveryService.setDiscoveryContext(discoveryContext);
             discoveryService.setDiscoveryServiceName(discoveryServiceName);
+
             startTime = new Date();
             discoveryService.start();
             endTime = new Date();
+
             auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_COMPLETE;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(discoveryServiceName,
                                                                 discoveryContext.getAssetGUID(),
-                                                                assetType,
+                                                                assetDiscoveryType,
                                                                 Long.toString(endTime.getTime() - startTime.getTime()),
-                                                                discoveryContext.getDiscoveryReportGUID()),
+                                                                discoveryReport.getDiscoveryReportGUID()),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
-                                                     discoveryContext.getDiscoveryReportGUID(),
-                                                     DiscoveryRequestStatus.COMPLETED);
+            discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.COMPLETED);
             discoveryService.disconnect();
         }
         catch (Throwable  error)
@@ -124,9 +121,9 @@ public class DiscoveryServiceHandler implements Runnable
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(discoveryServiceName,
                                                                 error.getClass().getName(),
-                                                                discoveryContext.getDiscoveryReportGUID(),
+                                                                discoveryReportGUID,
                                                                 discoveryContext.getAssetGUID(),
-                                                                assetType,
+                                                                assetDiscoveryType,
                                                                 discoveryEngineProperties.getQualifiedName(),
                                                                 discoveryEngineProperties.getGUID(),
                                                                 error.getMessage()),
@@ -136,9 +133,8 @@ public class DiscoveryServiceHandler implements Runnable
 
             try
             {
-                discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
-                                                         discoveryContext.getDiscoveryReportGUID(),
-                                                         DiscoveryRequestStatus.FAILED);
+                DiscoveryReport discoveryReport = discoveryContext.getAnnotationStore().getDiscoveryReport();
+                discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.FAILED);
             }
             catch (Throwable statusError)
             {

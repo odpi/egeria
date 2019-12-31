@@ -14,7 +14,7 @@ import java.util.List;
  * DiscoveryPipeline is a discovery service that is responsible for choreographing the discovery services
  * passed on initializeEmbeddedConnectors.
  */
-public class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
+public abstract class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
 {
     protected List<Connector>        embeddedConnectors = null;
     protected List<DiscoveryService> embeddedDiscoveryServices = null;
@@ -36,14 +36,17 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
 
 
     /**
-     * This implementation provides an inline sequential invocation of the supplied discovery services.
+     * Start the pipeline.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public void start() throws ConnectorCheckedException
     {
         final String methodName   = "start";
 
+        /*
+         * Check that the discovery context is not null and anything else is set up correctly
+         */
         super.start();
 
         embeddedDiscoveryServices = getEmbeddedDiscoveryServices(embeddedConnectors);
@@ -61,22 +64,22 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
                                                 errorCode.getUserAction());
         }
 
-        for (DiscoveryService discoveryService : embeddedDiscoveryServices)
-        {
-            if (discoveryService != null)
-            {
-                discoveryService.setDiscoveryContext(super.discoveryContext);
-                discoveryService.start();
-                discoveryService.disconnect();
-            }
-        }
+        runDiscoveryPipeline();
     }
+
+
+    /**
+     * This implementation provides an inline sequential invocation of the supplied discovery services.
+     *
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     */
+    protected abstract void runDiscoveryPipeline() throws ConnectorCheckedException;
 
 
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public  void disconnect() throws ConnectorCheckedException
     {

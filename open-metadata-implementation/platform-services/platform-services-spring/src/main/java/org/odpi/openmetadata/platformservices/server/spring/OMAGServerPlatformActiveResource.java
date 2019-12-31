@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * OMAGServerPlatformActiveServices allow an external caller to determine which servers are active on the
+ * OMAGServerPlatformActiveResource allow an external caller to determine which servers are active on the
  * platform and the services that are active within them.
  */
 @RestController

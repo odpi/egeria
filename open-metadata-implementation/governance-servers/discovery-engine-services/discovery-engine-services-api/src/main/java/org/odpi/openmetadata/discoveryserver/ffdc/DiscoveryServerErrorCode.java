@@ -63,12 +63,18 @@ public enum DiscoveryServerErrorCode
             "The discovery engine requested on a request is not known to the discovery server.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery server.  Once the cause is resolved, retry the discovery request."),
 
-    SERVICE_INSTANCE_FAILURE(400, "DISCOVERY-SERVER-400-006 ",
+    UNKNOWN_DISCOVERY_ENGINE_NAME(400, "DISCOVERY-SERVER-400-006 ",
+                             "Properties for discovery engine called {0} are not returned by open metadata server {1}.  Exception {2} with message {3} returned to discovery server {4}",
+                             "The discovery server is not able to initialize the discovery engine and so it will not de able to support discovery requests targeted to this discovery engine.",
+                             "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
+                                          "configuration of the discovery server.  Once the cause is resolved, restart the discovery server."),
+
+    SERVICE_INSTANCE_FAILURE(400, "DISCOVERY-SERVER-400-007 ",
                              "The discovery engine services are unable to initialize a new instance of discovery server {0}; error message is {1}",
                              "The discovery engine services detected an error during the start up of a specific discovery server instance.  Its discovery services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    NO_DISCOVERY_ENGINES_STARTED(400,"OMAS-DISCOVERY-SERVER-400-007 ",
+    NO_DISCOVERY_ENGINES_STARTED(400,"OMAS-DISCOVERY-SERVER-400-008 ",
                          "Discovery server {0} is unable to start any discovery engines",
                          "The server is not able to run any discovery requests.  It fails to start.",
                          "Add the configuration for at least one discovery engine to this discovery server.");

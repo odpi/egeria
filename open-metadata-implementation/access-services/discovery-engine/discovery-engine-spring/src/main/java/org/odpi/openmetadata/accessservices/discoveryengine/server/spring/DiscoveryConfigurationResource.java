@@ -342,7 +342,7 @@ public class DiscoveryConfigurationResource
      * @param guid unique identifier of the discovery engine.
      * @param requestBody containing:
      *                    guid - unique identifier of the discovery service;
-     *                    assetTypes - list of asset types that this discovery service is able to process.
+     *                    assetDiscoveryTypes - list of asset discovery types that this discovery service is able to process.
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or

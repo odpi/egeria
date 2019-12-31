@@ -246,6 +246,8 @@ public class ConnectorBroker
             AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
             Connection           connectionBean       = accessibleConnection.getConnectionBean();
 
+            int                  position             = embeddedConnection.getPosition();
+            String               displayName          = embeddedConnection.getDisplayName();
             Map<String, Object>  arguments            = embeddedConnection.getArguments();
 
             if (arguments != null)
