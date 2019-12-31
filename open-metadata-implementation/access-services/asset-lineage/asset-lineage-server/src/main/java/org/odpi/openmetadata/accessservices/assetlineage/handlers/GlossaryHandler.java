@@ -81,7 +81,6 @@ public class GlossaryHandler {
 
         String methodName = "getGlossaryTerm";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
                 
         try {

@@ -165,7 +165,8 @@ public class MainGraphMapper {
                                                      .outV();
 
         if(glossaryTermBuffer.hasNext()) {
-            String guidGlossary = glossaryTermBuffer.next().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+            Vertex glossaryBuffer = glossaryTermBuffer.next();
+            String guidGlossary = glossaryBuffer.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
 
            Vertex glossaryMain =   mainG.V().has(PROPERTY_KEY_ENTITY_GUID, guidGlossary).
                     fold().
@@ -175,6 +176,8 @@ public class MainGraphMapper {
                         V(glossaryMain.id()).
                         coalesce(__.outE(EDGE_LABEL_SEMANTIC).where(inV().as("v")),
                                 addE(EDGE_LABEL_SEMANTIC).from("v")).next();
+
+            copyVertexProperties(glossaryBuffer,glossaryMain);
         }
 
         //TODO copy glossaryterm

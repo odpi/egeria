@@ -117,9 +117,6 @@ public class GraphOMRSEntityMapper {
     }
 
 
-
-
-
     // Inbound methods - i.e. writing to store
 
     public void mapEntityDetailToVertex(EntityDetail entity, Vertex vertex)
