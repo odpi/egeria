@@ -50,6 +50,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     /**
      * Return the next set of assets to process.
      *
+     * @param userId calling user
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
      * @return list of unique identifiers for located assets

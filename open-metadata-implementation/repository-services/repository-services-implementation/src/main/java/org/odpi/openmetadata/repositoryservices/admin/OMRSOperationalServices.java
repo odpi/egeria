@@ -748,6 +748,7 @@ public class OMRSOperationalServices
      * Add an open metadata archive to the local repository.
      *
      * @param openMetadataArchiveConnection connection to the archive
+     * @param archiveSource descriptive name of the archive source
      */
     public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection,
                                        String        archiveSource)
