@@ -18,7 +18,7 @@
     <name>Open Connectors</name>
     <description>
         Open Connectors are connectors that support the
-        Open Connector Framework (OCF)   see the open-connector-framework module.
+        Open Connector Framework (OCF) -  see the open-connector-framework module.
         This is the principle (preferred) mechanism for supporting pluggable
         components in the open metadata implementation.
     </description>
@@ -32,10 +32,11 @@
         <module>access-services-connectors</module>
         <module>data-store-connectors</module>
         <module>governance-daemon-connectors</module>
+        <module>discovery-service-connectors</module>
+        <module>governance-action-connectors</module>
         <module>configuration-store-connectors</module>
         <module>rest-client-connectors</module>
         <module>connector-configuration-factory</module>
     </modules>
-
 
 </project>

@@ -7,6 +7,7 @@
 * [Event Bus](event-bus.md)
 * [OMAG Server](omag-server.md)
 * [OMAG Server Platform](omag-server-platform.md)
+* [OMAG Server Personalities](omag-server-personalities.md)
 
 
 

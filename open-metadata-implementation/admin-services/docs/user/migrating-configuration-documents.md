@@ -26,7 +26,7 @@ The guidance for each version change is below ...
 
 The `additionalProperties` property name changed to `configurationProperties`.
 To migrate the configuration document, make a global change from 
-`additionalProperties` to `configurationProperties`.
+`additionalProperties` to `configurationProperties` throughout the configuration document.
 
 
 ----

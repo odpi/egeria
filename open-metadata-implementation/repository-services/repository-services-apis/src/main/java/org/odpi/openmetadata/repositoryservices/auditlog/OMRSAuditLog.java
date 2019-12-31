@@ -110,7 +110,8 @@ public class OMRSAuditLog
 
 
     /**
-     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     * Log an audit log record for an event, decision, error, or exception detected by the open
+     * metadata services.
      *
      * @param actionDescription description of the activity creating the audit log record
      * @param logMessageId id for the audit log record
@@ -140,7 +141,7 @@ public class OMRSAuditLog
 
 
     /**
-     * Log details of an unexpected exception detected by the OMRS.  These exceptions typically mean that the local
+     * Log details of an unexpected exception detected by the open metadata modules.  These exceptions typically mean that the local
      * server is not configured correctly, or there is a logic error in the code.  When exceptions are logged, it is
      * important that they are investigated and the cause corrected since the local repository is not able to operate
      * as a proper peer in the metadata repository cluster whilst these conditions persist.
@@ -163,25 +164,14 @@ public class OMRSAuditLog
                              String                      userAction,
                              Throwable                   caughtException)
     {
-        if (caughtException != null)
-        {
-            this.logRecord(actionDescription,
-                           logMessageId,
-                           severity,
-                           logMessage,
-                           additionalInformation + caughtException.toString(),
-                           systemAction,
-                           userAction);
-        }
-        else
-        {
-            this.logRecord(actionDescription,
-                           logMessageId,
-                           severity,
-                           logMessage,
-                           additionalInformation,
-                           systemAction,
-                           userAction);
-        }
+        destination.logException(reportingComponent,
+                                 actionDescription,
+                                 logMessageId,
+                                 severity,
+                                 logMessage,
+                                 additionalInformation,
+                                 systemAction,
+                                 userAction,
+                                 caughtException);
     }
 }

@@ -20,14 +20,17 @@ public class GlossaryViewServiceInstance extends OCFOMASServiceInstance {
      *
      * @param omrsRepositoryConnector responsible for servicing the REST calls
      * @param omrsAuditLog            audit log
-     *
+     * @param localServerUserId       userId for server requests
+     * @param maxPageSize             maximum values to return on any single call
      * @throws NewInstanceException if a problem occurred during initialization
      */
-    public GlossaryViewServiceInstance(OMRSRepositoryConnector omrsRepositoryConnector, OMRSAuditLog omrsAuditLog)
-            throws NewInstanceException {
+    public GlossaryViewServiceInstance(OMRSRepositoryConnector omrsRepositoryConnector,
+                                       OMRSAuditLog            omrsAuditLog,
+                                       String                  localServerUserId,
+                                       int                     maxPageSize) throws NewInstanceException {
 
-        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName(), omrsRepositoryConnector,
-                null, null, omrsAuditLog);
+        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName() + " OMAS",
+              omrsRepositoryConnector, omrsAuditLog, localServerUserId, maxPageSize);
     }
 
 }

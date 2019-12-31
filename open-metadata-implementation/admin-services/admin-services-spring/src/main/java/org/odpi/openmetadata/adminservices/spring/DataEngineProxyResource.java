@@ -27,10 +27,11 @@ public class DataEngineProxyResource {
      * OMAGNotAuthorizedException    the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @PostMapping( path = "/configuration")
-    public VoidResponse setDataEngineProxyConfig(@PathVariable String userId,
-                                                 @PathVariable String serverName,
-                                                 @RequestBody DataEngineProxyConfig dataEngineProxyConfig) {
+    @PostMapping(path = "/configuration")
+    public VoidResponse setDataEngineProxyConfig(@PathVariable String                userId,
+                                                 @PathVariable String                serverName,
+                                                 @RequestBody  DataEngineProxyConfig dataEngineProxyConfig)
+    {
         return adminAPI.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig);
     }
 
@@ -41,9 +42,10 @@ public class DataEngineProxyResource {
      * @param serverName local server name
      * @return void response
      */
-    @DeleteMapping( path = "")
-    public VoidResponse deleteDataEngineProxy(@PathVariable String userId,
-                                       @PathVariable String serverName) {
+    @DeleteMapping(path = "")
+    public VoidResponse deleteDataEngineProxy(@PathVariable String userId, 
+                                              @PathVariable String serverName)
+    {
         return adminAPI.deleteDataEngineProxy(userId, serverName);
     }
 

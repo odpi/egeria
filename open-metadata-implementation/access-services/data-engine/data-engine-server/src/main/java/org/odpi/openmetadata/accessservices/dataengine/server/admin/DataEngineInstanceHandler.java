@@ -55,6 +55,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @param userId     calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of called operation
      *
      * @return handler for use by the requested instance
      *

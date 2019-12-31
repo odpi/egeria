@@ -19,9 +19,9 @@ import java.util.List;
  */
 public abstract class DiscoveryAnnotationStore
 {
-    protected String  userId;
-    protected String  assetGUID;
-    protected String  discoveryReportGUID;
+    protected String           userId;
+    protected String           assetGUID;
+    protected DiscoveryReport  discoveryReport;
 
 
     /**
@@ -29,14 +29,25 @@ public abstract class DiscoveryAnnotationStore
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the annotations should be attached to
-     * @param discoveryReportGUID unique identifier of the discovery request that is used to identifier the
-     *                            discovery report.
+     * @param discoveryReport discovery report that these annotations will be filed against.
      */
-    public DiscoveryAnnotationStore(String userId, String assetGUID, String discoveryReportGUID)
+    public DiscoveryAnnotationStore(String userId, String assetGUID, DiscoveryReport discoveryReport)
     {
         this.userId = userId;
         this.assetGUID = assetGUID;
-        this.discoveryReportGUID = discoveryReportGUID;
+        this.discoveryReport = discoveryReport;
+    }
+
+
+    /**
+     * Return the report identifier for this discovery context.  Any new annotations added to tis discovery context
+     * will be linked to this report.
+     *
+     * @return the new discovery report.
+     */
+    public DiscoveryReport getDiscoveryReport()
+    {
+        return discoveryReport;
     }
 
 

@@ -324,9 +324,29 @@ public interface OMRSRepositoryValidator
                             String name,
                             String methodName) throws InvalidParameterException;
 
+    /**
+     * Validate that a TypeDef's identifiers are not null and return the type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName  name of the parameter that passed the guid.
+     * @param nameParameterName  name of the parameter that passed the name.
+     * @param guid  unique identifier for a type or an instance passed on the request
+     * @param name  name of TypeDef.
+     * @param methodName  method receiving the call
+     * @return retrieved type
+     * @throws InvalidParameterException  no guid provided
+     */
+    TypeDef getValidTypeDefFromIds(String sourceName,
+                                   String guidParameterName,
+                                   String nameParameterName,
+                                   String guid,
+                                   String name,
+                                   String methodName) throws InvalidParameterException;
+
+
 
     /**
-     * Validate that an AttributeTypeDef's identifiers are not null and are recognized.
+     * Validate that an AttributeTypeDef's identifiers are not null.
      *
      * @param sourceName  source of the request (used for logging)
      * @param guidParameterName  name of the parameter that passed the guid.
@@ -342,6 +362,28 @@ public interface OMRSRepositoryValidator
                                      String guid,
                                      String name,
                                      String methodName) throws InvalidParameterException;
+
+
+    /**
+     * Validate that an AttributeTypeDef's identifiers are not null and are recognized
+     * and return the type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName  name of the parameter that passed the guid.
+     * @param nameParameterName  name of the parameter that passed the name.
+     * @param guid  unique identifier for a type or an instance passed on the request
+     * @param name  name of TypeDef.
+     * @param methodName  method receiving the call
+     * @return retrieved type
+     * @throws InvalidParameterException  no guid, or name provided
+     */
+    AttributeTypeDef getValidAttributeTypeDefFromIds(String sourceName,
+                                                     String guidParameterName,
+                                                     String nameParameterName,
+                                                     String guid,
+                                                     String name,
+                                                     String methodName) throws InvalidParameterException;
+
 
 
     /**
@@ -382,13 +424,14 @@ public interface OMRSRepositoryValidator
      * @param sourceName  source of the request (used for logging)
      * @param patch  patch to test
      * @param methodName  calling method
+     * @return current value of the type
      * @throws InvalidParameterException  the patch is null
      * @throws PatchErrorException  the patch is invalid
      */
-    void validateTypeDefPatch(String       sourceName,
-                              TypeDefPatch patch,
-                              String       methodName) throws InvalidParameterException,
-                                                              PatchErrorException;
+    TypeDef validateTypeDefPatch(String       sourceName,
+                                 TypeDefPatch patch,
+                                 String       methodName) throws InvalidParameterException,
+                                                                 PatchErrorException;
 
 
     /**

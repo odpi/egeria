@@ -8,14 +8,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * DiscoveryPipeline is a discovery service that is responsible for choreographing the discovery services
  * passed on initializeEmbeddedConnectors.
  */
-public class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
+public abstract class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
 {
     protected List<Connector>        embeddedConnectors = null;
     protected List<DiscoveryService> embeddedDiscoveryServices = null;
@@ -37,65 +36,17 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
 
 
     /**
-     * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
+     * Start the pipeline.
      *
-     * @param embeddedConnectors list of supplied connector instances supplied by the Connector Broker.
-     *
-     * @return list of discovery service connectors
-     *
-     * @throws DiscoveryServiceException one of the embedded connectors is not a discovery service
-     */
-    private List<DiscoveryService> getEmbeddedDiscoveryServices(List<Connector>  embeddedConnectors) throws DiscoveryServiceException
-    {
-        final String           methodName   = "getEmbeddedDiscoveryServices";
-        List<DiscoveryService> discoveryServices = null;
-
-        if (embeddedConnectors != null)
-        {
-            discoveryServices = new ArrayList<>();
-
-            for (Connector embeddedConnector : embeddedConnectors)
-            {
-                if (embeddedConnector != null)
-                {
-                    if (embeddedConnector instanceof DiscoveryService)
-                    {
-                        discoveryServices.add((DiscoveryService)embeddedConnector);
-                    }
-                    else
-                    {
-                        ODFErrorCode errorCode    = ODFErrorCode.INVALID_EMBEDDED_DISCOVERY_SERVICE;
-                        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(super.discoveryServiceName);
-
-                        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
-                                                            this.getClass().getName(),
-                                                            methodName,
-                                                            errorMessage,
-                                                            errorCode.getSystemAction(),
-                                                            errorCode.getUserAction());
-                    }
-                }
-            }
-
-            if (discoveryServices.isEmpty())
-            {
-                discoveryServices = null;
-            }
-        }
-
-        return discoveryServices;
-    }
-
-
-    /**
-     * This implementation provides an inline sequential invocation of the supplied discovery services.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public void start() throws ConnectorCheckedException
     {
         final String methodName   = "start";
 
+        /*
+         * Check that the discovery context is not null and anything else is set up correctly
+         */
         super.start();
 
         embeddedDiscoveryServices = getEmbeddedDiscoveryServices(embeddedConnectors);
@@ -113,22 +64,22 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
                                                 errorCode.getUserAction());
         }
 
-        for (DiscoveryService discoveryService : embeddedDiscoveryServices)
-        {
-            if (discoveryService != null)
-            {
-                discoveryService.setDiscoveryContext(super.discoveryContext);
-                discoveryService.start();
-                discoveryService.disconnect();
-            }
-        }
+        runDiscoveryPipeline();
     }
+
+
+    /**
+     * This implementation provides an inline sequential invocation of the supplied discovery services.
+     *
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     */
+    protected abstract void runDiscoveryPipeline() throws ConnectorCheckedException;
 
 
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public  void disconnect() throws ConnectorCheckedException
     {

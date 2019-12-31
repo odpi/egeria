@@ -38,8 +38,8 @@ public class CategoryService extends GlossaryViewOMAS {
      * @param userId calling user
      * @param serverName instance to call
      * @param glossaryGUID glossary GUID
-     * @param from from
-     * @param size size
+     * @param from offset start for the return values
+     * @param size maximum number of results
      *
      * @return EntityDetailResponse all external glossaries
      */
@@ -55,8 +55,8 @@ public class CategoryService extends GlossaryViewOMAS {
      * @param userId calling user
      * @param serverName instance to call
      * @param categoryGUID category GUID
-     * @param from from
-     * @param size size
+     * @param from offset start for the return values
+     * @param size maximum number of results
      *
      * @return EntityDetailResponse subcategories
      */
@@ -72,8 +72,8 @@ public class CategoryService extends GlossaryViewOMAS {
      * @param userId calling user
      * @param serverName instance to call
      * @param categoryGUID glossary GUID
-     * @param from
-     * @param size
+     * @param from offset start for the return values
+     * @param size maximum number of results
      *
      * @return EntityDetailResponse all external glossaries
      */

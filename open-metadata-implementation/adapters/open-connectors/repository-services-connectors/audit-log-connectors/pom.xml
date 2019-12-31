@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -17,15 +18,18 @@
 
     <name>Audit Log Connectors</name>
     <description>
-        The audit log connectors supports different destinations for
+        The audit log destination connectors supports different destinations for
         open metadata audit log messages.
     </description>
-    <modules>
-        <module>audit-log-console-connector</module>
-        <module>audit-log-file-connector</module>
-    </modules>
 
     <artifactId>audit-log-connectors</artifactId>
+
+    <modules>
+        <module>audit-log-console-connector</module>
+        <module>audit-log-log4j-connector</module>
+        <module>audit-log-file-connector</module>
+        <module>audit-log-event-topic-connector</module>
+    </modules>
 
     <dependencies>
 

@@ -34,7 +34,7 @@ public class OperationalServicesResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @PostMapping( path = "/instance")
+    @PostMapping(path = "/instance")
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
@@ -54,7 +54,7 @@ public class OperationalServicesResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @PostMapping( path = "/instance/configuration")
+    @PostMapping(path = "/instance/configuration")
     public SuccessMessageResponse activateWithSuppliedConfig(@PathVariable String           userId,
                                                              @PathVariable String           serverName,
                                                              @RequestBody  OMAGServerConfig configuration)
@@ -72,7 +72,7 @@ public class OperationalServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    @DeleteMapping( path = "/instance")
+    @DeleteMapping(path = "/instance")
     public VoidResponse deactivateTemporarily(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
@@ -90,7 +90,7 @@ public class OperationalServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    @DeleteMapping( path = "")
+    @DeleteMapping(path = "")
     public VoidResponse deactivatePermanently(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
@@ -114,7 +114,7 @@ public class OperationalServicesResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @GetMapping( path = "/instance/configuration")
+    @GetMapping(path = "/instance/configuration")
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {
@@ -132,7 +132,7 @@ public class OperationalServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or fileName parameter.
      */
-    @PostMapping( path = "/instance/open-metadata-archives/file")
+    @PostMapping(path = "/instance/open-metadata-archives/file")
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
                                                    @PathVariable String serverName,

@@ -1514,4 +1514,27 @@ public class OMRSArchiveBuilder
                                               errorCode.getUserAction());
         }
     }
+
+
+    /**
+     * Throws an exception if there is a problem retrieving the archive.
+     *
+     * @param methodName calling method
+     */
+    public void logBadArchiveContent(String   methodName)
+    {
+        /*
+         * This is a logic error since it means the creation of the archive builder threw an exception
+         * in the constructor and so this object should not be used.
+         */
+        OMRSErrorCode errorCode  = OMRSErrorCode.ARCHIVE_UNAVAILABLE;
+        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+    }
 }

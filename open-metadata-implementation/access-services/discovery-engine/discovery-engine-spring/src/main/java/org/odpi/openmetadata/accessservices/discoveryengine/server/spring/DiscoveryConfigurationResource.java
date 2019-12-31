@@ -36,7 +36,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-engines")
+    @PostMapping(path = "/discovery-engines")
 
     public GUIDResponse createDiscoveryEngine(@PathVariable String                        serverName,
                                               @PathVariable String                        userId,
@@ -58,7 +58,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-engines/{guid}")
+    @GetMapping(path = "/discovery-engines/{guid}")
 
     public DiscoveryEnginePropertiesResponse getDiscoveryEngineByGUID(@PathVariable String    serverName,
                                                                       @PathVariable String    userId,
@@ -80,7 +80,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-engines/by-name/{name}")
+    @GetMapping(path = "/discovery-engines/by-name/{name}")
 
     public  DiscoveryEnginePropertiesResponse getDiscoveryEngineByName(@PathVariable String    serverName,
                                                                        @PathVariable String    userId,
@@ -103,7 +103,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-engines")
+    @GetMapping(path = "/discovery-engines")
 
     public DiscoveryEngineListResponse getAllDiscoveryEngines(@PathVariable String  serverName,
                                                               @PathVariable String  userId,
@@ -129,7 +129,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-engines/{guid}")
+    @PostMapping(path = "/discovery-engines/{guid}")
 
     public VoidResponse updateDiscoveryEngine(@PathVariable String                           serverName,
                                               @PathVariable String                           userId,
@@ -154,7 +154,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-engines/{guid}/delete")
+    @PostMapping(path = "/discovery-engines/{guid}/delete")
 
     public  VoidResponse    deleteDiscoveryEngine(@PathVariable String             serverName,
                                                   @PathVariable String             userId,
@@ -182,7 +182,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-services")
+    @PostMapping(path = "/discovery-services")
 
     public  GUIDResponse  createDiscoveryService(@PathVariable String                         serverName,
                                                  @PathVariable String                         userId,
@@ -204,7 +204,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-services/{guid}")
+    @GetMapping(path = "/discovery-services/{guid}")
 
     public DiscoveryServicePropertiesResponse getDiscoveryServiceByGUID(@PathVariable String    serverName,
                                                                         @PathVariable String    userId,
@@ -226,7 +226,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-services/by-name/{name}")
+    @GetMapping(path = "/discovery-services/by-name/{name}")
 
     public  DiscoveryServicePropertiesResponse getDiscoveryServiceByName(@PathVariable String    serverName,
                                                                          @PathVariable String    userId,
@@ -249,7 +249,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-services")
+    @GetMapping(path = "/discovery-services")
 
     public  DiscoveryServiceListResponse getAllDiscoveryServices(@PathVariable String  serverName,
                                                                  @PathVariable String  userId,
@@ -272,7 +272,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-services/{guid}/registrations")
+    @GetMapping(path = "/discovery-services/{guid}/registrations")
 
     public GUIDListResponse getDiscoveryServiceRegistrations(@PathVariable String   serverName,
                                                              @PathVariable String   userId,
@@ -297,7 +297,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-services/{guid}")
+    @PostMapping(path = "/discovery-services/{guid}")
 
     public  VoidResponse    updateDiscoveryService(@PathVariable String                             serverName,
                                                    @PathVariable String                             userId,
@@ -323,7 +323,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-services/{guid}/delete")
+    @PostMapping(path = "/discovery-services/{guid}/delete")
 
     public  VoidResponse    deleteDiscoveryService(@PathVariable String             serverName,
                                                    @PathVariable String             userId,
@@ -342,14 +342,14 @@ public class DiscoveryConfigurationResource
      * @param guid unique identifier of the discovery engine.
      * @param requestBody containing:
      *                    guid - unique identifier of the discovery service;
-     *                    assetTypes - list of asset types that this discovery service is able to process.
+     *                    assetDiscoveryTypes - list of asset discovery types that this discovery service is able to process.
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-engines/{guid}/discovery-services")
+    @PostMapping(path = "/discovery-engines/{guid}/discovery-services")
 
     public  VoidResponse  registerDiscoveryServiceWithEngine(@PathVariable String                                  serverName,
                                                              @PathVariable String                                  userId,
@@ -373,7 +373,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-engines/{discoveryEngineGUID}/discovery-services/{discoveryServiceGUID}")
+    @GetMapping(path = "/discovery-engines/{discoveryEngineGUID}/discovery-services/{discoveryServiceGUID}")
 
     public RegisteredDiscoveryServiceResponse getRegisteredDiscoveryService(@PathVariable String  serverName,
                                                                             @PathVariable String  userId,
@@ -398,7 +398,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @GetMapping( path = "/discovery-engines/{discoveryEngineGUID}/discovery-services")
+    @GetMapping(path = "/discovery-engines/{discoveryEngineGUID}/discovery-services")
 
     public  GUIDListResponse  getRegisteredDiscoveryServices(@PathVariable String  serverName,
                                                              @PathVariable String  userId,
@@ -424,7 +424,7 @@ public class DiscoveryConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    @PostMapping( path = "/discovery-engines/{discoveryEngineGUID}/discovery-services/{discoveryServiceGUID}/delete")
+    @PostMapping(path = "/discovery-engines/{discoveryEngineGUID}/discovery-services/{discoveryServiceGUID}/delete")
 
     public VoidResponse unregisterDiscoveryServiceFromEngine(@PathVariable String           serverName,
                                                              @PathVariable String           userId,

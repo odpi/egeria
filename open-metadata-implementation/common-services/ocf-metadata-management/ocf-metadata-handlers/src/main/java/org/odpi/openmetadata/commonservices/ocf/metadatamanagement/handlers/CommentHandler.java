@@ -104,7 +104,7 @@ public class CommentHandler extends FeedbackHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<Relationship>  relationships = super.getAttachmentLinks(userId,
                                                                      anchorGUID,
@@ -112,7 +112,7 @@ public class CommentHandler extends FeedbackHandlerBase
                                                                      CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                                                      CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                                                      startingFrom,
-                                                                     pageSize,
+                                                                     queryPageSize,
                                                                      methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))

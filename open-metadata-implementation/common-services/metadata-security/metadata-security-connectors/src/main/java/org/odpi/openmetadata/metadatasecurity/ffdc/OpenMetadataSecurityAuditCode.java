@@ -126,16 +126,23 @@ public enum OpenMetadataSecurityAuditCode
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0016",
+    UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0016",
+                                 OMRSAuditLogRecordSeverity.SECURITY,
+                                 "User {0} is not authorized to create an open metadata instance of type {1} on server {2}",
+                                 "The security service detected an unauthorized access of an open metadata type.",
+                                 "Review the security policies and settings to determine if this access should be allowed or not." +
+                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0017",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The security service detected an unauthorized access of an open metadata type.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0017",
+    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0018",
                              OMRSAuditLogRecordSeverity.SECURITY,
-                             "User {0} is not authorized to change open metadata type {1} of type {2} on server {3}",
+                             "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
                              "The security service detected an unauthorized change of an open metadata instance.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),

@@ -379,12 +379,6 @@ public enum OMRSErrorCode
                     "normally once the server has successfully unregistered with the cohort. " +
                     "Then re-establish the local repository configuration." +
             "Restart the server once the configuration is correct."),
-    NULL_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-001 ",
-            "The Audit Log Store for server {0} is not available.",
-            "The system is unable to process any open metadata registry services (OMRS) requests because " +
-                                 "the audit log for this server is unavailable.",
-            "Correct the configuration for the audit log store connection in the server configuration. " +
-                                "Retry the request when the audit log store configuration is correct."),
     NULL_ARCHIVE_STORE(400, "OMRS-ARCHIVE-MANAGER-400-001 ",
             "An open metadata archive configured for server {0} is not accessible.",
              "The system is unable to process the contents of this open metadata archive.  " +
@@ -398,6 +392,12 @@ public enum OMRSErrorCode
                               "Other services may fail if they were dependent on this event notification.",
              "Correct the configuration for the repository event mapper connection in the server configuration. " +
                                "Retry the request when the repository event mapper configuration is correct."),
+    NOT_FOR_LOCAL_COLLECTION(400, "OMRS-LOCAL-REPOSITORY-400-002 ",
+                      "The local repository is not able to re-home the instance {0} of type {1} ({2}) because it is not managing the repository " +
+                              "with the requested home metadata collection of {3}.  This local repository is managing the {4} metadata collection",
+                      "The system is unable to process the request.",
+                      "Retry the request on the repository with the requested metadata collection identifier or retry the request on this " +
+                                     "repository with the local metadata collection identifier."),
     DUPLICATE_COHORT_NAME(400, "OMRS-METADATA-HIGHWAY-404-001 ",
             "There are more than one cohort configurations with the same name of {0}.",
             "The system is unable to connect to more than one cohort with the same name.",
@@ -461,14 +461,42 @@ public enum OMRSErrorCode
             "Type name {0} is invalid because it contains a blank character.",
             "The build of the archive terminates.",
             "Verify the definition of the types being added to the archive. Once the definitions have been corrected, rerun the request."),
-    NULL_LOG_RECORD(400, "OMRS-AUDIT-LOG-400-001 ",
-            "A null log record has been passed by the audit log to the audit log store.",
-            "The audit log store throws an exception and the log record is not written to the audit log store.",
+    NO_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-001 ",
+            "There are no Audit Log destinations configured for server {0}",
+            "The system is unable to support diagnostic and audit logging because it has not been configured with any audit log destinations.",
+            "Add the configuration for at least one audit log destination in the server configuration. " +
+                          "Retry the request when the audit log configuration is correct."),
+    NULL_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-002 ",
+            "An Audit Log destination for server {0} is not correctly configured.",
+            "The system is unable to send diagnostic and audit information to one of the configured audit log destinations because the supplied " +
+                                 "connector failed to initialize.",
+            "Correct the configuration for the audit log store connection in the server configuration. " +
+                                 "Retry the request when the audit log store configuration is correct."),
+    NULL_LOG_RECORD(400, "OMRS-AUDIT-LOG-400-003 ",
+            "A null log record has been passed by the audit log to the audit log destination {0}.",
+            "The audit log destination throws an exception and the log record is not written to the audit log destination.",
             "This is probably an internal error in the audit log.  Raise a Github issue to get this fixed."),
-    NULL_LOG_RECORD_ORIGINATOR(400, "OMRS-AUDIT-LOG-400-002 ",
-            "A null log record originator has been passed by the audit log to the audit log store.",
-            "The audit log store throws an exception and the log record is not written to the audit log store.",
+    NULL_LOG_RECORD_ORIGINATOR(400, "OMRS-AUDIT-LOG-400-004 ",
+            "A log record with a null originator has been passed by the audit log to the audit log destination {0}.",
+            "The audit log destination throws an exception and the log record is not written to the audit log destination.",
             "This is probably an internal error in the audit log.  Raise a Github issue to get this fixed."),
+    NULL_LOG_RECORD_REPORTING_COMPONENT(400, "OMRS-AUDIT-LOG-400-005 ",
+            "A log record with a null reporting component has been passed by the audit log to the audit log destination {0}.",
+            "The audit log destination throws an exception and the log record is not written to the audit log destination.",
+            "This is probably an internal error in the audit log.  Raise a Github issue to get this fixed."),
+    CAN_NOT_QUERY_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-006 ",
+            "The Audit Log destination {0} is not able to support queries.",
+            "The system is unable to process the query request and throws the FunctionNotSupportedException.",
+            "If queries on the audit log are required, then add a new audit log destination that supports queries and restart the server."),
+    AUDIT_LOG_STORE_NOT_AVAILABLE(400, "OMRS-AUDIT-LOG-400-007 ",
+            "The Audit Log destination {0} is not available.  The error returned was {1}",
+            "The system is unable to store any diagnostics or audit information to this destination because it is currently unavailable.",
+            "Restart or correct the configuration of this audit log destination."),
+    AUDIT_LOG_RECORD_NOT_JSON_ENABLED(400, "OMRS-AUDIT-LOG-400-008 ",
+            "The Audit Log destination {0} is not able to convert an audit log record to JSON format",
+            "The system is unable to store the log record to this destination because it is not able to" +
+                                              " convert its contents into a suitable format.",
+            "Investigate and correct the cause of the conversion failure."),
     REPOSITORY_NOT_AVAILABLE(404, "OMRS-REPOSITORY-404-001 ",
             "The open metadata repository connector for server {0} is not active and is unable to service the {1} request",
             "The system is unable to retrieve any metadata properties from this repository.",
@@ -638,7 +666,7 @@ public enum OMRSErrorCode
             "Source {0} has requested type {1} with an incompatible category of {2} from repository content manager.",
             "There is an error in the Open Metadata Repository Services (OMRS) operation, probably in the source component.",
             "Raise a Github issue to get this fixed."),
-    ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-TYPES-500-001 ",
+    ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-ARCHIVE-500-001 ",
             "The archive builder failed to initialize.",
             "There is an internal error in the archive building process.",
             "Raise a Github issue to get this fixed."),
@@ -744,6 +772,24 @@ public enum OMRSErrorCode
              "An OMRS repository connector or access server {0} has passed a null classification to the repository helper {1} operation as part of the {2} request",
              "The repository connector has called the repository helper operations in the wrong order or has a similar logic error.",
              "Raise a Github issue to get this fixed."),
+    ENTITY_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-009 ",
+             "The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner." +
+                                 "It is not able to complete the {2} request",
+             "There is a logic error either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
+                                 "routed to the wrong repository, or there is an error in the local repository.",
+             "Raise a Github issue to get this fixed."),
+    RELATIONSHIP_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-010 ",
+                              "The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner." +
+                                      "It is not able to complete the {2} request",
+             "There is a logic error either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
+                                      "routed to the wrong repository, or there is an error in the local repository.",
+             "Raise a Github issue to get this fixed."),
+    NULL_INSTANCE(503, "OMRS-LOCAL-REPOSITORY-503-011 ",
+             "The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned." +
+                                            "It is not able to complete the {2} request",
+             "There is probably a logic error in the repository connector for the real repository because it should have thrown an exception rather" +
+                          " than return null.",
+             "Raise an issue with the supplier of the real repository connector to get this fixed."),
     NO_LOCAL_REPOSITORY(503, "OMRS-REST-API-503-001 ",
             "There is no local repository to support REST API call {0}",
             "The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.",

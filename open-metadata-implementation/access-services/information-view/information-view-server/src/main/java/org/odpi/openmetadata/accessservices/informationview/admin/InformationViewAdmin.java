@@ -69,7 +69,6 @@ public class InformationViewAdmin extends AccessServiceAdmin
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
-
         this.auditLog = auditLog;
 
         if (enterpriseConnector != null)
@@ -95,7 +94,7 @@ public class InformationViewAdmin extends AccessServiceAdmin
 
             eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, supportedZones, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
-            enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
+            enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener, accessServiceConfigurationProperties.getAccessServiceName());
         }
 
         if (informationViewOutTopicConnector != null) {
@@ -114,7 +113,7 @@ public class InformationViewAdmin extends AccessServiceAdmin
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
                 auditCode.getFormattedLogMessage(serverName),
-                null,
+                accessServiceConfigurationProperties.toString(),
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
     }
@@ -134,20 +133,21 @@ public class InformationViewAdmin extends AccessServiceAdmin
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
             auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(topicName, serverName),
                     null,
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    e);
             throw new OMAGConfigurationErrorException(400,
                     InformationViewAdmin.class.getSimpleName(),
                     actionDescription,
                     auditCode.getFormattedLogMessage(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction()
-            );
+                    auditCode.getUserAction(),
+                    e);
         }
     }
 
@@ -167,13 +167,14 @@ public class InformationViewAdmin extends AccessServiceAdmin
                 return getTopicConnector(topicConnection);
             } catch (Exception e) {
                 InformationViewAuditCode auditCode = InformationViewAuditCode.ERROR_INITIALIZING_CONNECTION;
-                auditLog.logRecord(actionDescription,
+                auditLog.logException(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
                         auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()),
-                        null,
+                        topicConnection.toString(),
                         auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                        auditCode.getUserAction(),
+                        e);
                 throw e;
             }
 

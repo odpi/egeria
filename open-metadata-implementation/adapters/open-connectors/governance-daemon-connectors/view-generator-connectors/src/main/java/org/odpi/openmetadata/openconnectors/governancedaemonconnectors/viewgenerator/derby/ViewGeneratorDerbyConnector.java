@@ -193,7 +193,7 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
     private List<LogicTable> getAllLogicTables() {
         final String actionDescription = "getAllLogicTables";
 
-        List logicTableList = new ArrayList();
+        List<LogicTable> logicTableList = new ArrayList<>();
 
         try {
             derbyStatement = derbyConnection.createStatement();
@@ -358,7 +358,7 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
 
     private Map<String, String> createTableDefinitions(TableContextEvent tableContextEvent, String gaianNodeName, String technicalTableName, String businessTableName, String logicalTableName, List<MappedColumn> mappedColumns){
         String methodName = "createTableDefinitions";
-        Map<String, String> createdTables = new HashMap();
+        Map<String, String> createdTables = new HashMap<>();
         LogicTable backendTable = getMatchingTables(gaianNodeName, Collections.singletonList(logicalTableName));
         if (backendTable != null) {
             if (!backendTable.getNodeName().equals(gaianFrontendName)) {
