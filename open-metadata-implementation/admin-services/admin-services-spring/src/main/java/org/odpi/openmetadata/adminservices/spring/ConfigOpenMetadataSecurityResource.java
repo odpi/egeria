@@ -29,7 +29,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param requestBody requestBody used to create and configure the connector that performs platform security
      * @return void response
      */
-    @PostMapping( path = "/platform/security/connection")
+    @PostMapping(path = "/platform/security/connection")
 
     public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
                                                       @RequestBody  PlatformSecurityRequestBody requestBody)
@@ -45,7 +45,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param userId calling user
      * @return connection response
      */
-    @GetMapping( path = "/platform/security/connection")
+    @GetMapping(path = "/platform/security/connection")
 
     public ConnectionResponse getPlatformSecurityConnection(@PathVariable String       userId)
     {
@@ -59,7 +59,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param userId calling user
      * @return void response
      */
-    @DeleteMapping( path = "/platform/security/connection")
+    @DeleteMapping(path = "/platform/security/connection")
 
     public  VoidResponse clearPlatformSecurityConnection(@PathVariable String   userId)
     {
@@ -75,7 +75,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param connection connection used to create and configure the connector.
      * @return void response
      */
-    @PostMapping( path = "/servers/{serverName}/security/connection")
+    @PostMapping(path = "/servers/{serverName}/security/connection")
 
     public synchronized VoidResponse setServerSecurityConnection(@PathVariable String       userId,
                                                                  @PathVariable String       serverName,
@@ -92,7 +92,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to retrieve configuration from
      * @return connection response
      */
-    @GetMapping( path = "/servers/{serverName}/security/connection")
+    @GetMapping(path = "/servers/{serverName}/security/connection")
 
     public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       userId,
                                                                        @PathVariable  String       serverName)
@@ -109,7 +109,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to configure
      * @return connection response
      */
-    @DeleteMapping( path = "/servers/{serverName}/security/connection")
+    @DeleteMapping(path = "/servers/{serverName}/security/connection")
 
     public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   userId,
                                                                    @PathVariable  String   serverName)

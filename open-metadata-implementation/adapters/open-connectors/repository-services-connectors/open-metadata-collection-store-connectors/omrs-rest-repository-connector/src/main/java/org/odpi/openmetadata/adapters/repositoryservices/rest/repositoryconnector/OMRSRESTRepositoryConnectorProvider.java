@@ -28,7 +28,7 @@ public class OMRSRESTRepositoryConnectorProvider extends OMRSRepositoryConnector
      */
     public OMRSRESTRepositoryConnectorProvider()
     {
-        Class    connectorClass = OMRSRESTRepositoryConnector.class;
+        Class<OMRSRESTRepositoryConnector> connectorClass = OMRSRESTRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

@@ -107,7 +107,11 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                                               repositoryConnector.getRepositoryHelper(),
                                                                                               instance);
 
-                omrsTopicConnector.registerListener(omrsTopicProcessor);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                                                  serverName,
+                                                  omrsTopicConnector,
+                                                  omrsTopicProcessor,
+                                                  auditLog);
             }
 
 
@@ -126,7 +130,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfig.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
@@ -138,13 +142,14 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
         {
             auditCode = CommunityProfileAuditCode.SERVICE_INSTANCE_FAILURE;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
 
             OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
 

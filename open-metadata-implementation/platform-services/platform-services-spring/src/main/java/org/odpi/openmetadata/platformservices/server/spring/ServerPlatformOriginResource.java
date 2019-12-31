@@ -27,7 +27,7 @@ public class ServerPlatformOriginResource
      * @return String description
      */
     @Deprecated
-    @GetMapping( path = "/server-platform-origin")
+    @GetMapping(path = "/server-platform-origin")
     public String getOldServerOrigin(@PathVariable String   userId)
     {
         return originAPI.getServerPlatformOrigin(userId);
@@ -40,7 +40,7 @@ public class ServerPlatformOriginResource
      * @param userId name of the user making the request
      * @return String description
      */
-    @GetMapping( path = "/server-platform/origin")
+    @GetMapping(path = "/server-platform/origin")
     public String getServerOrigin(@PathVariable String   userId)
     {
         return originAPI.getServerPlatformOrigin(userId);

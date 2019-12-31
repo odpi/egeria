@@ -438,8 +438,7 @@ public class GraphOMRSClassificationMapper {
         try {
             String typeName = (String) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_TYPE_NAME);
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
-            TypeDefSummary typeDefSummary = new TypeDefSummary(TypeDefCategory.CLASSIFICATION_DEF, typeDef.getGUID(), typeDef.getName(), typeDef.getVersion(), typeDef.getVersionName());
-            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDefSummary);
+            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDef);
             classification.setType(instanceType);
 
         } catch (TypeErrorException e) {

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
+import org.odpi.openmetadata.adminservices.auditlog.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -31,6 +32,7 @@ import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.Steward
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
@@ -52,6 +54,8 @@ public class OMAGServerOperationalServices
     private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+
+
     /*
      * =============================================================
      * Initialization and shutdown
@@ -153,7 +157,7 @@ public class OMAGServerOperationalServices
             List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
             ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
             DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
-            OpenLineageServerConfig openLineageServerConfig = configuration.getOpenLineageServerConfig();
+            OpenLineageServerConfig   openLineageServerConfig     = configuration.getOpenLineageServerConfig();
             SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
             SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();
@@ -328,6 +332,10 @@ public class OMAGServerOperationalServices
 
                         if (accessServiceAdminClassName != null)
                         {
+                            OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
+                                                                                              accessServiceConfig.getAccessServiceName(),
+                                                                                              accessServiceConfig.getAccessServiceDescription(),
+                                                                                              accessServiceConfig.getAccessServiceWiki());
                             try
                             {
                                 AccessServiceAdmin accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
@@ -335,16 +343,39 @@ public class OMAGServerOperationalServices
                                 accessServiceAdmin.initialize(accessServiceConfig,
                                                               enterpriseTopicConnector,
                                                               operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
-                                                              operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
-                                                                                                        accessServiceConfig.getAccessServiceName(),
-                                                                                                        accessServiceConfig.getAccessServiceDescription(),
-                                                                                                        accessServiceConfig.getAccessServiceWiki()),
+                                                              auditLog,
                                                               configuration.getLocalServerUserId());
                                 operationalAccessServiceAdminList.add(accessServiceAdmin);
                                 activatedServiceList.add(accessServiceConfig.getAccessServiceName() + " OMAS");
                             }
+                            catch (OMAGConfigurationErrorException  error)
+                            {
+                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                                auditLog.logException(methodName,
+                                                      auditCode.getLogMessageId(),
+                                                      auditCode.getSeverity(),
+                                                      auditCode.getFormattedLogMessage(accessServiceConfig.getAccessServiceName(),
+                                                                                       error.getMessage()),
+                                                      accessServiceConfig.toString(),
+                                                      auditCode.getSystemAction(),
+                                                      auditCode.getUserAction(),
+                                                      error);
+                                throw error;
+                            }
                             catch (Throwable  error)
                             {
+                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                                auditLog.logException(methodName,
+                                                      auditCode.getLogMessageId(),
+                                                      auditCode.getSeverity(),
+                                                      auditCode.getFormattedLogMessage(error.getMessage(),
+                                                                                       accessServiceConfig.getAccessServiceName(),
+                                                                                       error.getMessage()),
+                                                      accessServiceConfig.toString(),
+                                                      auditCode.getSystemAction(),
+                                                      auditCode.getUserAction(),
+                                                      error);
+
                                 OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
                                 String        errorMessage = errorCode.getErrorMessageId()
                                                            + errorCode.getFormattedErrorMessage(serverName,
@@ -356,7 +387,8 @@ public class OMAGServerOperationalServices
                                                                           methodName,
                                                                           errorMessage,
                                                                           errorCode.getSystemAction(),
-                                                                          errorCode.getUserAction());
+                                                                          errorCode.getUserAction(),
+                                                                          error);
                             }
                         }
                         else
@@ -613,7 +645,8 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
             }
 
-            response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
+            String successMessage = new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString();
+            response.setSuccessMessage(successMessage);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -954,7 +987,7 @@ public class OMAGServerOperationalServices
             OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
-            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive);
+            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive, fileName);
         }
         catch (InvalidParameterException error)
         {

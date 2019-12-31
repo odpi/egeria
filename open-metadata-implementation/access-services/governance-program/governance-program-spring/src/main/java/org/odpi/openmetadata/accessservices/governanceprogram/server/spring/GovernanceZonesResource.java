@@ -44,7 +44,7 @@ public class GovernanceZonesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping( path = "/governance-zones")
+    @PostMapping(path = "/governance-zones")
 
     public VoidResponse  createGovernanceZone(@PathVariable String          serverName,
                                               @PathVariable String          userId,
@@ -67,7 +67,7 @@ public class GovernanceZonesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @GetMapping( path = "/governance-zones")
+    @GetMapping(path = "/governance-zones")
 
     public ZoneListResponse getGovernanceZones(@PathVariable String   serverName,
                                                @PathVariable String   userId,
@@ -90,7 +90,7 @@ public class GovernanceZonesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @GetMapping( path = "/governance-zones/name/{qualifiedName}")
+    @GetMapping(path = "/governance-zones/name/{qualifiedName}")
 
     public ZoneResponse getGovernanceZone(@PathVariable String   serverName,
                                           @PathVariable String   userId,

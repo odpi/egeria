@@ -115,8 +115,6 @@ public abstract class OMRSMetadataCollection
     protected OMRSRepositoryConnector parentConnector        = null;                   /* Initialized in constructor */
     protected String                  repositoryName         = defaultRepositoryName;  /* Initialized in constructor */
 
-    protected OMRSMetadataSecurity    securityVerifier       = new OMRSMetadataSecurity();
-
     /**
      * Constructor to save the metadata collection id.
      *
@@ -143,22 +141,6 @@ public abstract class OMRSMetadataCollection
                                               errorCode.getUserAction());
 
         }
-    }
-
-
-    /**
-     * Set up a new security verifier (the handler runs with a default verifier until this
-     * method is called).
-     *
-     * The security verifier provides authorization checks for access and maintenance
-     * changes to open metadata.  Authorization checks are enabled through the
-     * OpenMetadataServerSecurityConnector.
-     *
-     * @param securityVerifier new security verifier
-     */
-    public void setSecurityVerifier(OpenMetadataRepositorySecurity securityVerifier)
-    {
-        this.securityVerifier.setSecurityVerifier(securityVerifier);
     }
 
 

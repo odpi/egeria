@@ -3,7 +3,7 @@
 
 # Configuring the basic properties of an OMAG server
 
-The basic properties of the logical OMAG server are used in logging and events originating
+The basic properties of the OMAG server are used in logging and events originating
 from the server. They help to document the purpose of the server (which helps with problem determination)
 and enable performance improvements by allowing the server to ignore activity or
 metadata that is not relevant to its operation.
@@ -36,7 +36,7 @@ The sections that follow cover how to set up these values.
 
 ## Set server type name
 
-The server type name should be set to something that describes the logical OMAG
+The server type name should be set to something that describes the OMAG
 Server's role.
 It may be the name of a specific product that it is enabling, or a role
 in the metadata and governance landscape.

@@ -29,7 +29,7 @@ public class SecurityOfficerResource {
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @PostMapping( path = "/security-officer-service/configuration")
+    @PostMapping(path = "/security-officer-service/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
                                                 @RequestBody  SecurityOfficerConfig securityOfficerConfig)
@@ -37,7 +37,7 @@ public class SecurityOfficerResource {
         return adminAPI.setSecurityOfficerConfig(userId, serverName, securityOfficerConfig);
     }
 
-    @PostMapping( path = "/security-officer-service")
+    @PostMapping(path = "/security-officer-service")
     public VoidResponse enableSecuritySyncService(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {

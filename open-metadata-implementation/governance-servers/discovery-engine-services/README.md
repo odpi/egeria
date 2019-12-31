@@ -3,13 +3,34 @@
 
 # Discovery Engine Services
 
-The discovery engine services provide the implementation of a
-[discovery server](../../frameworks/open-discovery-framework/docs/discovery-server.md))
-that hosts one or more
-[discovery engines](../../frameworks/open-discovery-framework/docs/discovery-engine.md).
+The discovery engine services provide the core subsystem for a discovery server.
+A discovery server is an [OMAG Server](../../../open-metadata-publication/website/omag-server/omag-server.md)
+that hosts [automated metadata discovery](../../../open-metadata-publication/website/metadata-discovery).
 
-A discovery engine is a server capability that runs
-[Open Discovery Services](../../frameworks/open-discovery-framework/docs/discovery-service.md) on request.
+The discovery engine services subsystem hosts one or more
+[discovery engines](../../frameworks/open-discovery-framework/docs/discovery-engine.md)
+and supports a REST API to request that a discovery engine runs an
+[open discovery service](../../frameworks/open-discovery-framework/docs/discovery-service.md)
+to analyse an [asset](../../access-services/docs/concepts/assets) and to access the results.
+
+The REST API also supports a request to a discovery engine to run a specific open discovery service
+against each asset it has access to.
+
+The discovery engine services call the
+[Discovery Engine Open Metadata Access Service (OMAS)](../../access-services/discovery-engine)
+running in an open metadata server to retrieve information about assets and to
+store the results of the discovery services.
+
+## Open Discovery Framework (ODF)
+
+The terminology associated with the discovery engine services comes from the
+[Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework/docs).
+This framework provides the interface
+definitions for the
+open discovery services
+and the services that support them.
+
+
 
 An open discovery service is a specialized component from the
 [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework/docs).

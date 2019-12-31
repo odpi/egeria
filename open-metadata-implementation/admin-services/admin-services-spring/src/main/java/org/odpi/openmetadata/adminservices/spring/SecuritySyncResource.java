@@ -26,7 +26,7 @@ public class SecuritySyncResource
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @PostMapping( path = "/security-sync-service/configuration")
+    @PostMapping(path = "/security-sync-service/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
                                                 @RequestBody  SecuritySyncConfig securitySyncConfig)
@@ -34,7 +34,7 @@ public class SecuritySyncResource
         return adminAPI.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
     }
 
-    @PostMapping( path = "/security-sync-service")
+    @PostMapping(path = "/security-sync-service")
     public VoidResponse enableSecuritySyncService(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {

@@ -29,7 +29,7 @@ public class UserIdentityResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/user-identity")
+    @PostMapping(path = "/user-identity")
 
     public VoidResponse createUserIdentity(@PathVariable String                  serverName,
                                            @PathVariable String                  userId,
@@ -53,7 +53,7 @@ public class UserIdentityResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/personal-profiles/{profileGUID}/user-identity")
+    @PostMapping(path = "/personal-profiles/{profileGUID}/user-identity")
 
     public VoidResponse  addIdentityToProfile(@PathVariable String                  serverName,
                                               @PathVariable String                  userId,
@@ -78,7 +78,7 @@ public class UserIdentityResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/personal-profiles/{profileGUID}/user-identity/delete")
+    @PostMapping(path = "/personal-profiles/{profileGUID}/user-identity/delete")
 
     public VoidResponse removeIdentityFromProfile(@PathVariable String                  serverName,
                                                   @PathVariable String                  userId,
@@ -102,7 +102,7 @@ public class UserIdentityResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/user-identity/delete")
+    @PostMapping(path = "/user-identity/delete")
 
     public VoidResponse removeUserIdentity(@PathVariable String                  serverName,
                                            @PathVariable String                  userId,

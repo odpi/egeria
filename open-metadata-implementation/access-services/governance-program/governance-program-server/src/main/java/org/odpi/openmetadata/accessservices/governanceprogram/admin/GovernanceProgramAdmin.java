@@ -50,9 +50,8 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String               actionDescription = "initialize";
-        GovernanceProgramAuditCode auditCode;
 
-        auditCode = GovernanceProgramAuditCode.SERVICE_INITIALIZING;
+        GovernanceProgramAuditCode auditCode = GovernanceProgramAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
@@ -63,6 +62,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
 
         try
         {
+            this.auditLog = auditLog;
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
             this.instance = new GovernanceProgramServicesInstance(repositoryConnector,
                                                                   auditLog,
@@ -74,46 +74,46 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
             this.omrsTopicConnector = enterpriseOMRSTopicConnector;
             this.serverUserName = serverUserName;
 
-            if (omrsTopicConnector != null)
+            /*
+             * Only set up the listening and event publishing if requested in the config.
+             */
+            if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                auditCode = GovernanceProgramAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(serverName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                GovernanceProgramOMRSTopicListener omrsTopicListener;
 
                 omrsTopicListener = new GovernanceProgramOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
                                                                            repositoryConnector.getRepositoryHelper(),
                                                                            repositoryConnector.getRepositoryValidator(),
                                                                            accessServiceConfig.getAccessServiceName());
 
-                omrsTopicConnector.registerListener(omrsTopicListener);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                                                  serverName,
+                                                  omrsTopicConnector,
+                                                  omrsTopicListener,
+                                                  auditLog);
             }
 
-            this.auditLog = auditLog;
 
             auditCode = GovernanceProgramAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfigurationProperties.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
         catch (Throwable error)
         {
             auditCode = GovernanceProgramAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfigurationProperties.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

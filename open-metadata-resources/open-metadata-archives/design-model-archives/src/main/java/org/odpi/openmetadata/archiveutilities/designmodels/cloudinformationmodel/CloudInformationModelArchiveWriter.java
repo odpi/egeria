@@ -31,9 +31,9 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the open metadata types.
+     * Generates and writes out an open metadata archive containing all of the elements extracted from the CIM.
      */
-    void writeOpenMetadataArchive() throws IOException
+    void writeOpenMetadataArchive()
     {
         try
         {

@@ -23,5 +23,5 @@ public class DiscoveryEnginePropertiesMapper
     public static final String SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME     = "SupportedDiscoveryService";
     /* End1 = OpenDiscoveryService; End 2 = OpenDiscoveryEngine */
 
-    public static final String ASSET_TYPES_PROPERTY_NAME                 = "assetTypes";
+    public static final String ASSET_DISCOVERY_TYPES_PROPERTY_NAME = "assetTypes";
 }

@@ -36,7 +36,7 @@ public class ConfigDefaultsResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
-    @PostMapping( path = "/server-url-root")
+    @PostMapping(path = "/server-url-root")
     public VoidResponse setServerURLRoot(@PathVariable String userId,
                                          @PathVariable String serverName,
                                          @RequestParam String url)
@@ -63,7 +63,7 @@ public class ConfigDefaultsResource
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
      * OMAGInvalidParameterException invalid serverName or serviceMode parameter.
      */
-    @PostMapping( path = "/event-bus")
+    @PostMapping(path = "/event-bus")
     public VoidResponse setEventBus(@PathVariable                   String              userId,
                                     @PathVariable                   String              serverName,
                                     @RequestParam(required = false) String              connectorProvider,

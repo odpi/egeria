@@ -245,7 +245,7 @@ public class OMRSCohortManager
                                                                               this.cohortRegistry,
                                                                               this.cohortRepositoryEventManager,
                                                                               auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_LISTENER));
-                cohortTopicConnector.registerListener(cohortEventListener);
+                cohortTopicConnector.registerListener(cohortEventListener, cohortName);
                 cohortTopicConnector.start();
                 this.cohortTopicConnector = cohortTopicConnector;
                 this.cohortEventListener = cohortEventListener;

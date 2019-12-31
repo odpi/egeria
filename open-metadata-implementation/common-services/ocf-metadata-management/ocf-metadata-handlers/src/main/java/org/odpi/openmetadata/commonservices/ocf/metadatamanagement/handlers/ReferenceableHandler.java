@@ -74,7 +74,7 @@ public class ReferenceableHandler
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail>  entitiesForRelationshipType = repositoryHandler.getEntitiesForRelationshipType(userId,
                                                                                                            elementGUID,
@@ -82,7 +82,7 @@ public class ReferenceableHandler
                                                                                                            ReferenceableMapper.REFERENCEABLE_TO_MORE_INTO_TYPE_GUID,
                                                                                                            ReferenceableMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                                                                                            startFrom,
-                                                                                                           pageSize,
+                                                                                                           queryPageSize,
                                                                                                            methodName);
 
         if (entitiesForRelationshipType != null)
