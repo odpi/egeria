@@ -22,7 +22,7 @@ public final class Constants {
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String SCHEMA_TYPE = "SchemaType";
-
+    public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     //Area 5 Types
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE = "RelationalTable";

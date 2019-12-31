@@ -4,8 +4,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
 public abstract class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
@@ -15,6 +13,16 @@ public abstract class BufferGraphConnectorBase extends ConnectorBase implements 
 
     @Override
     public abstract void addEntity(LineageEvent lineageEvent);
+
+    @Override
+    public void updateEntity(LineageEvent lineageEvent) {
+
+    }
+
+    @Override
+    public void deleteEntity(String guid) {
+
+    }
 
     @Override
     public abstract void schedulerTask();
