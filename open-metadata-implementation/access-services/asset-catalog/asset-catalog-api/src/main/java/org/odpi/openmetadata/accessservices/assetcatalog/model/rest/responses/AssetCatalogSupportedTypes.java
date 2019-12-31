@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
 
@@ -18,5 +19,19 @@ public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
 
     public void setTypes(List<Type> types) {
         this.types = types;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AssetCatalogSupportedTypes that = (AssetCatalogSupportedTypes) o;
+        return Objects.equals(types, that.types);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), types);
     }
 }

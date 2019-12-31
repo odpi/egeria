@@ -54,7 +54,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms")
+    @PostMapping( path = "/users/{userId}/terms")
     public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody Term suppliedTerm) {
         return restAPI.createTerm(serverName, userId,suppliedTerm);
     }
@@ -74,7 +74,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}")
+    @GetMapping( path = "/users/{userId}/terms/{guid}")
     public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
         return restAPI.getTermByGuid(serverName, userId, guid);
     }
@@ -100,7 +100,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms")
+    @GetMapping( path = "/users/{userId}/terms")
     public  SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -136,7 +136,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/terms/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -167,7 +167,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/terms/{guid}")
+    @PutMapping( path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestBody Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
@@ -198,7 +198,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/terms/{guid}")
     public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -223,7 +223,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms/{guid}")
+    @PostMapping( path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTerm(serverName, userId, guid);

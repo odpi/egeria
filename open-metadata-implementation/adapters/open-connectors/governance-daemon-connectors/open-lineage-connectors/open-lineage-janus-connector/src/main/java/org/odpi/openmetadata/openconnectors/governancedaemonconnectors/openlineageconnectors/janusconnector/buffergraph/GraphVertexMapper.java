@@ -19,7 +19,7 @@ public class GraphVertexMapper {
     private static final Logger log = LoggerFactory.getLogger(GraphVertexMapper.class);
 
 
-    public void mapEntityToVertex(LineageEntity lineageEntity, Vertex vertex){
+    public void mapEntityToVertex(LineageEntity lineageEntity, Vertex vertex) throws JanusConnectorException {
 
         mapEntitySummaryToVertex(lineageEntity, vertex);
 
@@ -38,7 +38,7 @@ public class GraphVertexMapper {
 
 
 
-    public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex){
+    public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex) throws JanusConnectorException {
         String methodName = "mapEntitySummaryToVertex";
 
         // Some properties are mandatory. If any of these are null then throw exception

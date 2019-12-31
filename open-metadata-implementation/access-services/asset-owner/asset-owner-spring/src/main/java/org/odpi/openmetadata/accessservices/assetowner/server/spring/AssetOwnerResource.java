@@ -55,7 +55,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{typeName}")
+    @PostMapping(path = "/assets/{typeName}")
 
     public GUIDResponse addAssetToCatalog(@PathVariable String           serverName,
                                           @PathVariable String           userId,
@@ -83,7 +83,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/schema-type")
+    @PostMapping(path = "/assets/{assetGUID}/schema-type")
 
     public GUIDResponse   addSchemaToAsset(@PathVariable String            serverName,
                                            @PathVariable String            userId,
@@ -108,7 +108,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/schemas/{schemaTypeGUID}/schema-attributes")
+    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
 
     public VoidResponse addSchemaAttributesToSchema(@PathVariable String                 serverName,
                                                     @PathVariable String                 userId,
@@ -135,7 +135,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/connection")
+    @PostMapping(path = "/assets/{assetGUID}/connection")
 
     public VoidResponse addConnectionToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
@@ -168,7 +168,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}")
+    @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}")
 
     public VoidResponse  addSemanticAssignment(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -200,7 +200,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}")
+    @PostMapping(path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}")
 
     public VoidResponse  addSemanticAssignment(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -233,7 +233,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/delete")
+    @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/delete")
 
     VoidResponse  removeSemanticAssignment(@PathVariable String          serverName,
                                            @PathVariable String          userId,
@@ -261,7 +261,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}/delete")
+    @PostMapping(path = "/assets/{assetGUID}/attachments/{assetElementGUID}/meanings/{glossaryTermGUID}/delete")
 
     public VoidResponse  removeSemanticAssignment(@PathVariable String          serverName,
                                                   @PathVariable String          userId,
@@ -287,7 +287,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/origin")
+    @PostMapping(path = "/assets/{assetGUID}/origin")
 
     public VoidResponse  addAssetOrigin(@PathVariable String            serverName,
                                         @PathVariable String            userId,
@@ -311,7 +311,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/origin/delete")
+    @PostMapping(path = "/assets/{assetGUID}/origin/delete")
 
     public VoidResponse  removeAssetOrigin(@PathVariable String                serverName,
                                            @PathVariable String                userId,
@@ -336,7 +336,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/governance-zones")
+    @PostMapping(path = "/assets/{assetGUID}/governance-zones")
 
     public VoidResponse updateAssetZones(@PathVariable String        serverName,
                                          @PathVariable String        userId,
@@ -361,7 +361,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/owner")
+    @PostMapping(path = "/assets/{assetGUID}/owner")
 
     public VoidResponse  updateAssetOwner(@PathVariable String           serverName,
                                           @PathVariable String           userId,
@@ -385,7 +385,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/security-tags")
+    @PostMapping(path = "/assets/{assetGUID}/security-tags")
 
     public VoidResponse  addSecurityTags(@PathVariable String                  serverName,
                                          @PathVariable String                  userId,
@@ -410,7 +410,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags")
+    @PostMapping(path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags")
 
     public VoidResponse  addSecurityTags(@PathVariable String                  serverName,
                                          @PathVariable String                  userId,
@@ -435,7 +435,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/security-tags/delete")
+    @PostMapping(path = "/assets/{assetGUID}/security-tags/delete")
 
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
@@ -460,7 +460,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags/delete")
+    @PostMapping(path = "/assets/{assetGUID}/attachments/{assetElementGUID}/security-tags/delete")
 
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
@@ -493,7 +493,7 @@ public class AssetOwnerResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
+    @PostMapping(path = "/assets/by-name")
 
     public AssetsResponse getAssetsByName(@PathVariable String   serverName,
                                           @PathVariable String   userId,
@@ -520,7 +520,7 @@ public class AssetOwnerResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-search-string")
+    @PostMapping(path = "/assets/by-search-string")
 
     public AssetsResponse  findAssets(@PathVariable String   serverName,
                                       @PathVariable String   userId,
@@ -546,7 +546,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/discovery-analysis-reports")
+    @GetMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
     public DiscoveryAnalysisReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
                                                                            @PathVariable String  userId,
@@ -578,7 +578,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
                                                                 @PathVariable String            userId,
@@ -612,7 +612,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}/annotations")
+    @GetMapping(path = "/annotations/{annotationGUID}/annotations")
 
     public AnnotationListResponse  getExtendedAnnotations(@PathVariable String            serverName,
                                                           @PathVariable String            userId,
@@ -654,7 +654,7 @@ public class AssetOwnerResource
      *  PropertyServerException problem accessing property server or
      *  UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/delete")
+    @PostMapping(path = "/assets/{assetGUID}/delete")
 
     public VoidResponse deleteAsset(@PathVariable String          serverName,
                                     @PathVariable String          userId,

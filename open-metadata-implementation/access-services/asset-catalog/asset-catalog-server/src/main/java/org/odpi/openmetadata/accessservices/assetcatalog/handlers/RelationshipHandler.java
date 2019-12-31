@@ -20,7 +20,8 @@ public class RelationshipHandler {
 
     /**
      * Construct the handler information needed to interact with the repository services
-     *  @param invalidParameterHandler handler for managing parameter errors
+     *
+     * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param errorHandler

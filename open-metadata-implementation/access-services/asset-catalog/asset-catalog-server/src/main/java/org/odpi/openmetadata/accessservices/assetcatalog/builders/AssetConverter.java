@@ -13,13 +13,16 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +39,6 @@ public class AssetConverter {
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
-        assetDescription.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
 
         assetDescription.setCreatedBy(entityDetail.getCreatedBy());
         assetDescription.setCreateTime(entityDetail.getCreateTime());
@@ -53,9 +55,8 @@ public class AssetConverter {
             assetDescription.setStatus(entityDetail.getStatus().getName());
         }
 
-        if (entityDetail.getProperties() != null) {
-            assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
-        }
+        assetDescription.setProperties(extractProperties(entityDetail.getProperties()));
+
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -129,14 +130,49 @@ public class AssetConverter {
             if (classificationEntity.getType() != null) {
                 classification.setType(convertInstanceType(classificationEntity.getType()));
             }
-            if (classificationEntity.getProperties() != null) {
-                classification.setProperties(repositoryHelper.getInstancePropertiesAsMap(classificationEntity.getProperties()));
-            }
+
+            classification.setProperties(extractProperties(classificationEntity.getProperties()));
 
             classifications.add(classification);
         }
 
         return classifications;
+    }
+
+
+    public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        AssetElements element = buildAssetElements(entityDetail);
+
+        if (context != null) {
+            Element leaf = lastElementAdded(context.get(context.size() - 1));
+            leaf.setParentElement(element);
+        } else {
+            List<Element> elements = new ArrayList<>();
+            elements.add(element);
+            assetElement.setContext(elements);
+        }
+    }
+
+    public Element getLastNode(AssetElement assetElement) {
+        List<Element> context = assetElement.getContext();
+
+        return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
+    }
+
+    public void addChildElement(Element parentElement, Element element) {
+        if (parentElement != null) {
+            parentElement.setParentElement(element);
+        }
+    }
+
+    public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        if (context == null) {
+            context = new ArrayList<>();
+        }
+        context.add(buildAssetElements(entityDetail));
+        assetElement.setContext(context);
     }
 
     public Type convertType(TypeDef openType) {
@@ -156,7 +192,7 @@ public class AssetConverter {
         AssetElements element = new AssetElements();
         element.setGuid(entityDetail.getGUID());
         element.setType(convertInstanceType(entityDetail.getType()));
-        element.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
+        element.setProperties(extractProperties(entityDetail.getProperties()));
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             element.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -164,7 +200,7 @@ public class AssetConverter {
         return element;
     }
 
-    Type convertInstanceType(InstanceType instanceType) {
+    private Type convertInstanceType(InstanceType instanceType) {
         Type type = new Type();
         type.setName(instanceType.getTypeDefName());
         type.setDescription(instanceType.getTypeDefDescription());
@@ -180,7 +216,6 @@ public class AssetConverter {
         if (entityProxy.getUniqueProperties() != null) {
             asset.setName(repositoryHelper.getStringProperty("userID", Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
-        asset.setMetadataCollectionId(entityProxy.getMetadataCollectionId());
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
         asset.setUpdatedBy(entityProxy.getUpdatedBy());
@@ -196,49 +231,19 @@ public class AssetConverter {
     }
 
     private Element lastElementAdded(Element tree) {
-        List<Element> innerElement = tree.getParentElement();
+        Element innerElement = tree.getParentElement();
         if (innerElement == null) {
             return tree;
         }
-        return lastElementAdded(innerElement.get(innerElement.size() - 1));
+        return lastElementAdded(innerElement);
     }
 
-    public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
-        List<Element> elements = new ArrayList<>();
-        elements.add(buildAssetElements(entityDetail));
+    private Map<String, String> extractProperties(InstanceProperties instanceProperties) {
+        Map<String, String> properties = new HashMap<>();
 
-        if (context != null) {
-            Element leaf = lastElementAdded(context.get(context.size() - 1));
-            leaf.setParentElement(elements);
-        } else {
-            assetElement.setContext(elements);
+        if (instanceProperties != null) {
+            instanceProperties.getInstanceProperties().forEach((key, value) -> properties.put(key, value.valueAsString()));
         }
+        return properties;
     }
-
-    public Element getLastNode(AssetElement assetElement) {
-        List<Element> context = assetElement.getContext();
-
-        return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
-    }
-
-    public void addChildElement(Element parentElement, List<Element> elements) {
-        if (parentElement != null) {
-            if (parentElement.getParentElement() != null) {
-                parentElement.getParentElement().addAll(elements);
-            } else {
-                parentElement.setParentElement(elements);
-            }
-        }
-    }
-
-    public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
-        if (context == null) {
-            context = new ArrayList<>();
-        }
-        context.add(buildAssetElements(entityDetail));
-        assetElement.setContext(context);
-    }
-
 }

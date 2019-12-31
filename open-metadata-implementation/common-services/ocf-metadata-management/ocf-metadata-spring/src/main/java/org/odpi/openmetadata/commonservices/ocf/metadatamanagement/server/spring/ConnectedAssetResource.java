@@ -40,7 +40,7 @@ public class ConnectedAssetResource
      * PropertyServerException there is a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/connections/{guid}")
+    @GetMapping(path = "/connections/{guid}")
 
     public ConnectionResponse getConnectionByGUID(@PathVariable String     serverName,
                                                   @PathVariable String     serviceURLName,
@@ -65,7 +65,7 @@ public class ConnectedAssetResource
      * PropertyServerException there is a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
+    @GetMapping(path = "/assets/{assetGUID}/connection")
 
     public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
                                                     @PathVariable String   serviceURLName,
@@ -91,7 +91,7 @@ public class ConnectedAssetResource
      * NoConnectedAssetException there is no asset associated with this connection or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection/{connectionGUID}")
+    @GetMapping(path = "/assets/by-connection/{connectionGUID}")
 
     public GUIDResponse getAssetForConnectionGUID(@PathVariable String   serverName,
                                                   @PathVariable String   serviceURLName,
@@ -119,7 +119,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/via-connection/{connectionGUID}")
+    @GetMapping(path = "/assets/{assetGUID}/via-connection/{connectionGUID}")
 
     public AssetResponse getConnectedAssetSummary(@PathVariable String   serverName,
                                                   @PathVariable String   serviceURLName,
@@ -144,7 +144,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}")
+    @GetMapping(path = "/assets/{assetGUID}")
 
     public AssetResponse getAssetSummary(@PathVariable String   serverName,
                                          @PathVariable String   serviceURLName,
@@ -171,7 +171,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/certifications")
+    @GetMapping(path = "/assets/{assetGUID}/certifications")
 
     public CertificationsResponse getCertifications(@PathVariable String  serverName,
                                                     @PathVariable String  serviceURLName,
@@ -200,7 +200,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments")
+    @GetMapping(path = "/assets/{assetGUID}/comments")
 
     public CommentsResponse getAssetComments(@PathVariable String  serverName,
                                              @PathVariable String  serviceURLName,
@@ -230,7 +230,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
+    @GetMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
     public CommentsResponse getAssetCommentReplies(@PathVariable String  serverName,
                                                    @PathVariable String  serviceURLName,
@@ -260,7 +260,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connections")
+    @GetMapping(path = "/assets/{assetGUID}/connections")
 
     public ConnectionsResponse getConnections(@PathVariable String  serverName,
                                               @PathVariable String  serviceURLName,
@@ -289,7 +289,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-identifiers")
+    @GetMapping(path = "/assets/{assetGUID}/external-identifiers")
 
     public ExternalIdentifiersResponse getExternalIdentifiers(@PathVariable String  serverName,
                                                               @PathVariable String  serviceURLName,
@@ -318,7 +318,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-references")
+    @GetMapping(path = "/assets/{assetGUID}/external-references")
 
     public ExternalReferencesResponse getExternalReferences(@PathVariable String  serverName,
                                                             @PathVariable String  serviceURLName,
@@ -347,7 +347,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/informal-tags")
+    @GetMapping(path = "/assets/{assetGUID}/informal-tags")
 
     public InformalTagsResponse getInformalTags(@PathVariable String  serverName,
                                                 @PathVariable String  serviceURLName,
@@ -376,7 +376,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/licenses")
+    @GetMapping(path = "/assets/{assetGUID}/licenses")
 
     public LicensesResponse getLicenses(@PathVariable String  serverName,
                                         @PathVariable String  serviceURLName,
@@ -405,7 +405,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/likes")
+    @GetMapping(path = "/assets/{assetGUID}/likes")
 
     public LikesResponse getLikes(@PathVariable String  serverName,
                                   @PathVariable String  serviceURLName,
@@ -434,7 +434,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/known-locations")
+    @GetMapping(path = "/assets/{assetGUID}/known-locations")
 
     public LocationsResponse getKnownLocations(@PathVariable String  serverName,
                                                @PathVariable String  serviceURLName,
@@ -463,7 +463,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/note-logs")
+    @GetMapping(path = "/assets/{assetGUID}/note-logs")
 
     public NoteLogsResponse getNoteLogs(@PathVariable String  serverName,
                                         @PathVariable String  serviceURLName,
@@ -492,7 +492,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/note-log/{noteLogGUID}/notes")
+    @GetMapping(path = "/note-log/{noteLogGUID}/notes")
 
     public NotesResponse getNotes(@PathVariable String  serverName,
                                   @PathVariable String  serviceURLName,
@@ -521,7 +521,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/ratings")
+    @GetMapping(path = "/assets/{assetGUID}/ratings")
 
     public RatingsResponse getRatings(@PathVariable String  serverName,
                                       @PathVariable String  serviceURLName,
@@ -550,7 +550,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-assets")
+    @GetMapping(path = "/assets/{assetGUID}/related-assets")
 
     public RelatedAssetsResponse getRelatedAssets(@PathVariable String  serverName,
                                                   @PathVariable String  serviceURLName,
@@ -579,7 +579,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/referenceables/{elementGUID}/more-information")
+    @GetMapping(path = "/referenceables/{elementGUID}/more-information")
 
     public MoreInformationResponse getMoreInformation(@PathVariable String  serverName,
                                                       @PathVariable String  serviceURLName,
@@ -608,7 +608,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-media-references")
+    @GetMapping(path = "/assets/{assetGUID}/related-media-references")
 
     public RelatedMediaReferencesResponse getRelatedMediaReferences(@PathVariable String  serverName,
                                                                     @PathVariable String  serviceURLName,
@@ -637,7 +637,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{schemaTypeGUID}/schema-attributes")
+    @GetMapping(path = "/assets/{schemaTypeGUID}/schema-attributes")
 
     public SchemaAttributesResponse getSchemaAttributes(@PathVariable String  serverName,
                                                         @PathVariable String  serviceURLName,

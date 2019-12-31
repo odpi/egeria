@@ -2265,7 +2265,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection.
      * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     protected void getEntityNeighborhoodParameterValidation(String               userId,
@@ -3024,7 +3024,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
@@ -3061,8 +3061,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Perform operation
          */
-        reportUnsupportedAsOfTimeFunction(methodName, asOfTime);
-
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -3097,7 +3096,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws PropertyErrorException there is a problem with one of the other parameters.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      * @see OMRSRepositoryHelper#getContainsRegex(String)
@@ -3136,8 +3135,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         /*
          * Perform operation
          */
-        reportUnsupportedAsOfTimeFunction(methodName, asOfTime);
-
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -3160,7 +3158,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
      *                                   is not found in the metadata collection.
      * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraph getLinkingEntities(String                    userId,
@@ -3219,7 +3217,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection.
      * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraph getEntityNeighborhood(String               userId,
@@ -3291,7 +3289,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  List<EntityDetail> getRelatedEntities(String               userId,

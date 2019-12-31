@@ -39,23 +39,22 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
-                               List<String> defaultZones, OMRSAuditLog auditLog, String localServerUserId,
-                               int maxPageSize) throws NewInstanceException {
+    DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
+                               OMRSAuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
+
 
         super(description.getAccessServiceName() + " OMAS", repositoryConnector, supportedZones, defaultZones, auditLog,
                 localServerUserId, maxPageSize);
 
         if (repositoryHandler != null) {
-            dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper);
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
-            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler,
+            dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper);
+            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
+            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    schemaTypeHandler, dataEngineRegistrationHandler);
+            portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineRegistrationHandler);
-            portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, dataEngineRegistrationHandler);
 
             if (securityVerifier != null) {
                 processHandler.setSecurityVerifier(securityVerifier);
@@ -67,8 +66,8 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
             DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
-                    errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+            throw new NewInstanceException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
+                    errorCode.getSystemAction(), errorCode.getUserAction());
         }
     }
 

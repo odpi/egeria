@@ -4,16 +4,16 @@ package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSMetadataHighwayRESTServices;
-import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
- * AnonRepositoryServicesResource provides the server-side support for the OMRS Repository REST Services API
- * that do not include a userId.
+ * MetadataHighwayServicesResource provides the server-side support for the OMRS Repository REST Services API
+ * that provide information about the local server's interaction with an open metadata repository cohort.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/metadata-highway")
@@ -36,7 +36,7 @@ public class MetadataHighwayServicesResource
      * @param userId calling user
      * @return variety of properties
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/cohort-descriptions")
+    @GetMapping(path = "/cohort-descriptions")
 
     public CohortListResponse getCohorts(@PathVariable String   serverName,
                                          @PathVariable String   userId)
@@ -53,7 +53,7 @@ public class MetadataHighwayServicesResource
      * @param userId calling user
      * @return registration properties for server
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/local-registration")
+    @GetMapping(path = "/local-registration")
 
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
                                                          @PathVariable String   userId)
@@ -71,7 +71,7 @@ public class MetadataHighwayServicesResource
      * @param cohortName name of the specific cohort to query for the registration information
      * @return local registration properties for server
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/local-registration")
+    @GetMapping(path = "/cohorts/{cohortName}/local-registration")
 
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
                                                          @PathVariable String   userId,
@@ -82,13 +82,14 @@ public class MetadataHighwayServicesResource
 
 
     /**
+     * Return the list of registrations received from remote members of the cohort.
      *
      * @param serverName server to query
      * @param userId calling user
      * @param cohortName name of the specific cohort
      * @return list of registration information for remote members
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/cohorts/{cohortName}/remote-members")
+    @GetMapping(path = "/cohorts/{cohortName}/remote-members")
 
     public CohortMembershipListResponse getRemoteRegistrations(@PathVariable String   serverName,
                                                                @PathVariable String   userId,

@@ -91,6 +91,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
@@ -150,6 +151,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
+    @Override
     public InstanceProperties getNameInstanceProperties(String  methodName)
     {
         InstanceProperties properties = super.getNameInstanceProperties(methodName);
@@ -175,6 +177,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
+    @Override
     public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
     {
         return super.getNameInstanceProperties(methodName);

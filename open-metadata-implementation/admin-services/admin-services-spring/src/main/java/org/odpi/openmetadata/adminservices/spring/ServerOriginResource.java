@@ -5,8 +5,9 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerOriginServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -26,7 +27,7 @@ public class ServerOriginResource
      * @param serverName name of the server that the request is for
      * @return String description
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/server-origin")
+    @GetMapping(path = "/servers/{serverName}/server-origin")
     @Deprecated
     public String getServerOrigin(@PathVariable String   userId,
                                   @PathVariable String   serverName)
@@ -40,7 +41,7 @@ public class ServerOriginResource
      * @param userId name of the user making the request
      * @return String description
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-origin")
+    @GetMapping(path = "/server-origin")
     @Deprecated
     public String getServerOrigin(@PathVariable String   userId)
     {
