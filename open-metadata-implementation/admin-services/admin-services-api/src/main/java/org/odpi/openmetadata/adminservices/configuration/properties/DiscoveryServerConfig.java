@@ -149,7 +149,6 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
      *
      * @param discoveryEngineNames list of qualified names
      */
-    @Deprecated
     public void setDiscoveryEngineNames(List<String> discoveryEngineNames)
     {
         this.discoveryEngineNames = discoveryEngineNames;
