@@ -430,7 +430,83 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         validateRepositoryContentManager(methodName);
 
         EntityDetail entity = new EntityDetail();
-        String       guid   = UUID.randomUUID().toString();
+
+        populateSkeletonEntity(
+                entity,
+                UUID.randomUUID().toString(),
+                sourceName,
+                metadataCollectionId,
+                provenanceType,
+                userName,
+                typeName,
+                methodName
+        );
+
+        return entity;
+    }
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to classifications
+     * to complete the set up of the entity.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @return partially filled out entity needs classifications
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    public EntitySummary getSkeletonEntitySummary(String                 sourceName,
+                                                  String                 metadataCollectionId,
+                                                  InstanceProvenanceType provenanceType,
+                                                  String                 userName,
+                                                  String                 typeName) throws TypeErrorException
+    {
+        final String methodName = "getSkeletonEntitySummary";
+
+        validateRepositoryContentManager(methodName);
+
+        EntitySummary entity = new EntitySummary();
+
+        populateSkeletonEntity(
+                entity,
+                UUID.randomUUID().toString(),
+                sourceName,
+                metadataCollectionId,
+                provenanceType,
+                userName,
+                typeName,
+                methodName
+        );
+
+        return entity;
+    }
+
+
+    /**
+     * Populate the skeleton entity with vital header and type information, regardless of whether it is an EntityDetail
+     * or EntitySummary.
+     *
+     * @param entity               the skeleton entity to populate
+     * @param guid                 the GUID to give to the entity
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin of the entity
+     * @param userName             name of the creator
+     * @param typeName             name of the type
+     * @param methodName           name of the invoking method (used for logging)
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    private void populateSkeletonEntity(EntitySummary          entity,
+                                        String                 guid,
+                                        String                 sourceName,
+                                        String                 metadataCollectionId,
+                                        InstanceProvenanceType provenanceType,
+                                        String                 userName,
+                                        String                 typeName,
+                                        String                 methodName) throws TypeErrorException {
 
         entity.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         entity.setInstanceProvenanceType(provenanceType);
@@ -444,7 +520,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setCreatedBy(userName);
         entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
 
-        return entity;
     }
 
 
