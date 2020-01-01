@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipDef extends TypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private ClassificationPropagationRule propagationRule          = ClassificationPropagationRule.NONE;
     private RelationshipEndDef            endDef1                  = null;
     private RelationshipEndDef            endDef2                  = null;

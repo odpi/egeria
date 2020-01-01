@@ -18,6 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EntityDef extends TypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Minimal constructor initializes the superclass as an Entity
      */

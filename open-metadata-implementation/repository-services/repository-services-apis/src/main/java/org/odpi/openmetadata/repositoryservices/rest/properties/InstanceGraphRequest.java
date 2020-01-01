@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InstanceGraphRequest extends OMRSAPIRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<EntityDetail> entityElementList       = null;
     private List<Relationship> relationshipElementList = null;
 

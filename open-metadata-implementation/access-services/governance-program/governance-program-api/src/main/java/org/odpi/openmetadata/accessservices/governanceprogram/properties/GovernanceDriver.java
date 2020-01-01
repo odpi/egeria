@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class GovernanceDriver extends GovernanceDefinition
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<GovernanceRelationship> relatedGovernanceDrivers = null;
     private List<GovernanceRelationship> governancePolicies       = null;
 

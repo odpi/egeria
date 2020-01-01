@@ -30,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class PersonalRole extends ReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              scope                = null;
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;

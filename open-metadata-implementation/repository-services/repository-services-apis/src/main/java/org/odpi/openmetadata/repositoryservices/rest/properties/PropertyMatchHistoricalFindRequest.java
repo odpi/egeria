@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PropertyMatchHistoricalFindRequest extends PropertyMatchFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date asOfTime = null;
 
     /**

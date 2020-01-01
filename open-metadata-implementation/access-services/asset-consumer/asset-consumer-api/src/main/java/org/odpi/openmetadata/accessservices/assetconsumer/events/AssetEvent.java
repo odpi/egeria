@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class AssetEvent extends AssetConsumerEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     private Asset asset = null;
 
 

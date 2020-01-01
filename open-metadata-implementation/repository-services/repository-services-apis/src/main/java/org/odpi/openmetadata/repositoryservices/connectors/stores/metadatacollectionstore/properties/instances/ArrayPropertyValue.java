@@ -21,7 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ArrayPropertyValue extends InstancePropertyValue {
+public class ArrayPropertyValue extends InstancePropertyValue
+{
+    private static final long    serialVersionUID = 1L;
+
     private int arrayCount = 0;
     private InstanceProperties arrayValues = null;
 
@@ -39,10 +42,12 @@ public class ArrayPropertyValue extends InstancePropertyValue {
      *
      * @param template ArrayPropertyValue
      */
-    public ArrayPropertyValue(ArrayPropertyValue template) {
+    public ArrayPropertyValue(ArrayPropertyValue template)
+    {
         super(template);
 
-        if (template != null) {
+        if (template != null)
+        {
             arrayCount = template.getArrayCount();
             arrayValues = template.getArrayValues();
         }
@@ -104,10 +109,14 @@ public class ArrayPropertyValue extends InstancePropertyValue {
      *
      * @return InstanceProperties containing the array elements
      */
-    public InstanceProperties getArrayValues() {
-        if (arrayValues == null) {
+    public InstanceProperties getArrayValues()
+    {
+        if (arrayValues == null)
+        {
             return null;
-        } else {
+        }
+        else
+        {
             return new InstanceProperties(arrayValues);
         }
     }
@@ -119,28 +128,33 @@ public class ArrayPropertyValue extends InstancePropertyValue {
      * @param elementNumber index number of the element in the array
      * @param propertyValue value to store
      */
-    public void setArrayValue(int elementNumber, InstancePropertyValue propertyValue) {
-        if (arrayCount > elementNumber) {
-            if (arrayValues == null) {
+    public void setArrayValue(int elementNumber, InstancePropertyValue propertyValue)
+    {
+        if (arrayCount > elementNumber)
+        {
+            if (arrayValues == null)
+            {
                 arrayValues = new InstanceProperties();
             }
             arrayValues.setProperty(Integer.toString(elementNumber), propertyValue);
-        } else {
+        }
+        else
+        {
             /*
              * Throw runtime exception to show the caller they are not using the array correctly.
              */
             OMRSErrorCode errorCode = OMRSErrorCode.ARRAY_OUT_OF_BOUNDS;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                    Integer.toString(elementNumber),
-                    Integer.toString(arrayCount));
+                                                         Integer.toString(elementNumber),
+                                                         Integer.toString(arrayCount));
 
             throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    "setArrayValue",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                                           this.getClass().getName(),
+                                           "setArrayValue",
+                                           errorMessage,
+                                           errorCode.getSystemAction(),
+                                           errorCode.getUserAction());
         }
     }
 
@@ -179,11 +193,14 @@ public class ArrayPropertyValue extends InstancePropertyValue {
      * @return boolean result
      */
     @Override
-    public boolean equals(Object objectToCompare) {
-        if (this == objectToCompare) {
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) {
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
             return false;
         }
         ArrayPropertyValue that = (ArrayPropertyValue) objectToCompare;

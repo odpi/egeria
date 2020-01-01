@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 public class URLRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String urlRoot = null;
 
 

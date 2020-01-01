@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefSummary extends TypeDefLink
 {
+    private static final long    serialVersionUID = 1L;
+
     protected long            version     = 0L;
     protected String          versionName = null;
     protected TypeDefCategory category    = TypeDefCategory.UNKNOWN_DEF;

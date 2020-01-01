@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceOfficer extends GovernanceReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private GovernanceDomain    governanceDomain    = null;
 
     private String                           appointmentId      = null;
