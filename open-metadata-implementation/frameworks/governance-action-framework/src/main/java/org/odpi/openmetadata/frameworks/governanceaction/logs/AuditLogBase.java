@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * AuditLogBase is a simple audit log capability that uses log4j as an initial implementation.  At a later date
- * this will be updated to support manageable audit log files that can be used by analysts to monitor and
- * understand the activity in the data environment.
+ * AuditLogBase is a simple audit log capability.
  *
  * An AuditLogBase should be initialized with details of the caller, resource and context before the first call
  * to addLogRecord.  The contextId may be changed from time to time as the caller's activity changes.
