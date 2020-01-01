@@ -149,7 +149,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.getTypeDefByName(sourceName, typeDefName);
+        return repositoryContentManager.getTypeDefByName(typeDefName);
     }
 
 
@@ -208,7 +208,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.getAttributeTypeDefByName(sourceName, attributeTypeDefName);
+        return repositoryContentManager.getAttributeTypeDefByName(attributeTypeDefName);
     }
 
 
@@ -316,312 +316,21 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * the type or version that either represents.
      *
      * @param sourceName      source of the TypeDef (used for logging)
+     * @param originalTypeDef typeDef to update
      * @param typeDefPatch    patch to apply
-     * @param originalTypeDef typeDef to patch
      * @return updated TypeDef
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
      * @throws PatchErrorException       the patch is either badly formatted, or does not apply to the supplied TypeDef
-     * @throws InvalidParameterException the TypeDefPatch is null.
      */
     public TypeDef applyPatch(String       sourceName,
                               TypeDef      originalTypeDef,
-                              TypeDefPatch typeDefPatch) throws PatchErrorException,
-                                                                InvalidParameterException
+                              TypeDefPatch typeDefPatch) throws InvalidParameterException, PatchErrorException
     {
         final String  methodName = "applyPatch";
 
         validateRepositoryContentManager(methodName);
 
-        TypeDef clonedTypeDef  = null;
-        TypeDef updatedTypeDef = null;
-
-        /*
-         * Begin with simple validation of the typeDef patch.
-         */
-        if (typeDefPatch != null)
-        {
-            // TODO invalid parameter exception
-        }
-
-        long newVersion = typeDefPatch.getUpdateToVersion();
-        if (newVersion <= typeDefPatch.getApplyToVersion())
-        {
-            // TODO PatchError
-        }
-
-
-        /*
-         * Is the version compatible?
-         */
-        if (originalTypeDef.getVersion() != typeDefPatch.getApplyToVersion())
-        {
-            // TODO throw PatchException incompatible versions
-        }
-
-        /*
-         * OK to perform the update.  Need to create a new TypeDef object.  TypeDef is an abstract class
-         * so need to use the TypeDefCategory to create a new object of the correct type.
-         */
-        TypeDefCategory category = originalTypeDef.getCategory();
-        if (category == null)
-        {
-            // TODO Throw PatchError as base type is messed up
-        }
-
-        try
-        {
-            switch (category)
-            {
-                case ENTITY_DEF:
-                    clonedTypeDef = new EntityDef((EntityDef) originalTypeDef);
-                    break;
-
-                case RELATIONSHIP_DEF:
-                    clonedTypeDef = new RelationshipDef((RelationshipDef) originalTypeDef);
-                    break;
-
-                case CLASSIFICATION_DEF:
-                    clonedTypeDef = new ClassificationDef((ClassificationDef) originalTypeDef);
-                    break;
-            }
-        }
-        catch (ClassCastException castError)
-        {
-            // TODO Throw PatchError as base type is messed up
-        }
-
-
-        if (updatedTypeDef != null)
-        {
-            updatedTypeDef.setVersion(typeDefPatch.getUpdateToVersion());
-            updatedTypeDef.setVersionName(typeDefPatch.getNewVersionName());
-        }
-
-        return updatedTypeDef;
-    }
-
-
-    /**
-     * Add the supplied attributes to the properties definition for the cloned typedef.
-     *
-     * @param clonedTypeDef     TypeDef object to update
-     * @param typeDefAttributes new attributes to add.
-     * @return updated TypeDef
-     * @throws PatchErrorException problem adding attributes
-     */
-    private TypeDef patchTypeDefAttributes(TypeDef                clonedTypeDef,
-                                           List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
-    {
-        List<TypeDefAttribute> propertyDefinitions = clonedTypeDef.getPropertiesDefinition();
-
-        if (propertyDefinitions == null)
-        {
-            propertyDefinitions = new ArrayList<>();
-        }
-
-        for (TypeDefAttribute newAttribute : typeDefAttributes)
-        {
-            if (newAttribute != null)
-            {
-                String           attributeName = newAttribute.getAttributeName();
-                AttributeTypeDef attributeType = newAttribute.getAttributeType();
-
-                if ((attributeName != null) && (attributeType != null))
-                {
-                    if (propertyDefinitions.contains(newAttribute))
-                    {
-                        // TODO Patch error as Duplicate Attribute
-                    }
-                    else
-                    {
-                        propertyDefinitions.add(newAttribute);
-                    }
-                }
-                else
-                {
-                    // TODO Patch Error as Invalid Attribute in patch
-                }
-            }
-        }
-
-        if (propertyDefinitions.size() > 0)
-        {
-            clonedTypeDef.setPropertiesDefinition(propertyDefinitions);
-        }
-        else
-        {
-            clonedTypeDef.setPropertiesDefinition(null);
-        }
-
-        return clonedTypeDef;
-    }
-
-
-    /**
-     * @param clonedTypeDef  TypeDef object to update
-     * @param typeDefOptions new options to add
-     * @return updated TypeDef
-     * @throws PatchErrorException problem adding options
-     */
-    private TypeDef patchTypeDefNewOptions(TypeDef             clonedTypeDef,
-                                           Map<String, String> typeDefOptions) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * @param clonedTypeDef  TypeDef object to update
-     * @param typeDefOptions options to update
-     * @return updated TypeDef
-     * @throws PatchErrorException problem updating options
-     */
-    private TypeDef patchTypeDefUpdateOptions(TypeDef             clonedTypeDef,
-                                              Map<String, String> typeDefOptions) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * @param clonedTypeDef  TypeDef object to update
-     * @param typeDefOptions options to delete
-     * @return updated TypeDef
-     * @throws PatchErrorException problem deleting options
-     */
-    private TypeDef patchTypeDefDeleteOptions(TypeDef             clonedTypeDef,
-                                              Map<String, String> typeDefOptions) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * Add new mappings to external standards to the TypeDef.
-     *
-     * @param clonedTypeDef            TypeDef object to update
-     * @param externalStandardMappings new mappings to add
-     * @param typeDefAttributes new attributes to add.
-     * @return updated TypeDef
-     * @throws PatchErrorException problem adding mapping(s)
-     */
-    private TypeDef patchTypeDefAddExternalStandards(TypeDef                       clonedTypeDef,
-                                                     List<ExternalStandardMapping> externalStandardMappings,
-                                                     List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * Update the supplied mappings from the TypeDef.
-     *
-     * @param clonedTypeDef            TypeDef object to update
-     * @param externalStandardMappings mappings to update
-     * @param typeDefAttributes new attributes to add.
-     * @return updated TypeDef
-     * @throws PatchErrorException problem updating mapping(s)
-     */
-    private TypeDef patchTypeDefUpdateExternalStandards(TypeDef                       clonedTypeDef,
-                                                        List<ExternalStandardMapping> externalStandardMappings,
-                                                        List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * Delete the supplied mappings from the TypeDef.
-     *
-     * @param clonedTypeDef            TypeDef object to update
-     * @param externalStandardMappings list of mappings to delete
-     * @param typeDefAttributes new attributes to add.
-     * @return updated TypeDef
-     * @throws PatchErrorException problem deleting mapping(s)
-     */
-    private TypeDef patchTypeDefDeleteExternalStandards(TypeDef                       clonedTypeDef,
-                                                        List<ExternalStandardMapping> externalStandardMappings,
-                                                        List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
-    {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * Update the descriptions for the TypeDef or any of its attributes.  If the description values are null, they are
-     * not changes in the TypeDef.  This means there is no way to clear a description, just update it for a better one.
-     *
-     * @param clonedTypeDef   TypeDef object to update
-     * @param description     new description
-     * @param descriptionGUID new unique identifier for glossary term that provides detailed description of TypeDef
-     * @param typeDefAttributes new attributes to add.
-     * @return updated TypeDef
-     * @throws PatchErrorException problem adding new description
-     */
-    private TypeDef patchTypeDefNewDescriptions(TypeDef                clonedTypeDef,
-                                                String                 description,
-                                                String                 descriptionGUID,
-                                                List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
-    {
-        if (description != null)
-        {
-            clonedTypeDef.setDescription(description);
-        }
-        if (descriptionGUID != null)
-        {
-            clonedTypeDef.setDescriptionGUID(descriptionGUID);
-        }
-
-        if (typeDefAttributes != null)
-        {
-            List<TypeDefAttribute> propertiesDefinition = clonedTypeDef.getPropertiesDefinition();
-
-            if (propertiesDefinition == null)
-            {
-                // TODO throw patch error as attempting to Patch TypeDef with no properties
-            }
-
-            for (TypeDefAttribute patchTypeDefAttribute : typeDefAttributes)
-            {
-                if (patchTypeDefAttribute != null)
-                {
-                    String patchTypeDefAttributeName = patchTypeDefAttribute.getAttributeName();
-
-                    if (patchTypeDefAttributeName != null)
-                    {
-                        for (TypeDefAttribute existingProperty : propertiesDefinition)
-                        {
-                            if (existingProperty != null)
-                            {
-                                if (patchTypeDefAttributeName.equals(existingProperty.getAttributeName()))
-                                {
-
-                                }
-                            }
-                            else
-                            {
-                                // TODO throw Patch Error because basic Type is messed up
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //  TODO throw Patch Error null attribute name
-                    }
-                }
-                else
-                {
-                    // TODO throw Patch Error null attribute included
-                }
-            }
-        }
-
-        return clonedTypeDef;
+        return this.applyPatch(sourceName, originalTypeDef, typeDefPatch, methodName);
     }
 
 
@@ -1538,10 +1247,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
             if (entityTwoProxy != null)
             {
-                if (entityGUID.equals(entityTwoProxy.getGUID()))
-                {
-                    return true;
-                }
+                return entityGUID.equals(entityTwoProxy.getGUID());
             }
         }
 
@@ -2153,7 +1859,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     private int getToIndex(int fromIndex, int pageSize, int totalSize)
     {
-        int toIndex = 0;
+        int toIndex;
 
         if (totalSize < fromIndex + pageSize)
         {
