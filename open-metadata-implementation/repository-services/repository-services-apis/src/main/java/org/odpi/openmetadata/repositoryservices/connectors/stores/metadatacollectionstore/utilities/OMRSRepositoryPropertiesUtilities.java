@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1560,6 +1560,327 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Verify that a TypeDefPatch is not null and is for a recognized type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefPatch typeDefPatch to test
+     * @param methodName calling method
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
+     * @throws PatchErrorException the typeDefPatch is invalid
+     */
+    public void validateTypeDefPatch(String       sourceName,
+                                     TypeDefPatch typeDefPatch,
+                                     String       methodName) throws InvalidParameterException,
+                                                                        PatchErrorException
+    {
+        final String  thisMethodName = "validateTypeDefPatch";
+
+
+
+        if (typeDefPatch == null)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF_PATCH;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                            sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                thisMethodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+
+
+        if (typeDefPatch.getUpdateToVersion() <= typeDefPatch.getApplyToVersion())
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PATCH_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                            sourceName,
+                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                            Long.toString(typeDefPatch.getUpdateToVersion()),
+                                                                                                            typeDefPatch.toString());
+
+            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+        }
+
+        if (typeDefPatch.getNewVersionName() == null)
+        {
+            logNullMandatoryPatchField(sourceName, typeDefPatch, "newVersionName", methodName);
+        }
+
+        if (typeDefPatch.getUpdatedBy() == null)
+        {
+            logNullMandatoryPatchField(sourceName, typeDefPatch, "updatedBy", methodName);
+        }
+
+        if (typeDefPatch.getUpdateTime() == null)
+        {
+            logNullMandatoryPatchField(sourceName, typeDefPatch, "updatedTime", methodName);
+        }
+    }
+
+
+    /**
+     * Report a null field in a TypeDefPatch that is actually mandatory.
+     *
+     * @param sourceName source of the TypeDef
+     * @param typeDefPatch patch in error
+     * @param fieldName null field name
+     * @param methodName calling method
+     * @throws PatchErrorException resulting exception
+     */
+    private void logNullMandatoryPatchField(String       sourceName,
+                                            TypeDefPatch typeDefPatch,
+                                            String       fieldName,
+                                            String       methodName) throws PatchErrorException
+    {
+        OMRSErrorCode errorCode    = OMRSErrorCode.NULL_MANDATORY_PATCH_FIELD;
+        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                        sourceName,
+                                                                                                        fieldName,
+                                                                                                        typeDefPatch.toString());
+
+        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                      this.getClass().getName(),
+                                      methodName,
+                                      errorMessage,
+                                      errorCode.getSystemAction(),
+                                      errorCode.getUserAction());
+    }
+
+
+    /**
+     * Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
+     * the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
+     * the type or version that either represents.
+     *
+     * @param sourceName      source of the TypeDef (used for logging)
+     * @param originalTypeDef typeDef to update
+     * @param typeDefPatch    patch to apply
+     * @param methodName      calling method
+     * @return updated TypeDef
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
+     * @throws PatchErrorException  the patch is either badly formatted, or does not apply to the supplied TypeDef
+     */
+    public TypeDef applyPatch(String       sourceName,
+                              TypeDef      originalTypeDef,
+                              TypeDefPatch typeDefPatch,
+                              String       methodName) throws InvalidParameterException, PatchErrorException
+    {
+        final String  thisMethodName = "applyPatch";
+        final String  typeDefParameterName = "originalTypeDef";
+
+        this.validateTypeDefPatch(sourceName, typeDefPatch, methodName);
+
+        if (originalTypeDef == null)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefParameterName,
+                                                                                                            methodName,
+                                                                                                            sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                thisMethodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+
+        TypeDef updatedTypeDef  = originalTypeDef.cloneFromSubclass();
+
+        if (originalTypeDef.getVersion() == typeDefPatch.getApplyToVersion())
+        {
+            updatedTypeDef.setVersion(typeDefPatch.getUpdateToVersion());
+            updatedTypeDef.setVersionName(typeDefPatch.getNewVersionName());
+            updatedTypeDef.setUpdatedBy(typeDefPatch.getUpdatedBy());
+            updatedTypeDef.setUpdateTime(typeDefPatch.getUpdateTime());
+
+            if (typeDefPatch.getDescription() != null)
+            {
+                updatedTypeDef.setDescription(typeDefPatch.getDescription());
+            }
+
+            if (typeDefPatch.getDescriptionGUID() != null)
+            {
+                updatedTypeDef.setDescriptionGUID(typeDefPatch.getDescriptionGUID());
+            }
+
+            if (typeDefPatch.getPropertyDefinitions() != null)
+            {
+                /*
+                 * New attributes have been defined - or existing ones updated.
+                 */
+                List<TypeDefAttribute> existingProperties = originalTypeDef.getPropertiesDefinition();
+
+                if (existingProperties == null)
+                {
+                    updatedTypeDef.setPropertiesDefinition(typeDefPatch.getPropertyDefinitions());
+                }
+                else
+                {
+                    /*
+                     * Using a map to ensure no duplicate definitions for a property occur
+                     * in the resulting property list.
+                     */
+                    Map<String, TypeDefAttribute> newProperties = new HashMap<>();
+
+                    for (TypeDefAttribute propertyDefinition : existingProperties)
+                    {
+                        /*
+                         * The existing properties are initially preserved.  The new properties from the
+                         * patch will be added over the top as lon as they are compatible.
+                         */
+                        if (propertyDefinition != null)
+                        {
+                            newProperties.put(propertyDefinition.getAttributeName(), propertyDefinition);
+                        }
+                    }
+
+                    for (TypeDefAttribute newPropertyDefinition : typeDefPatch.getPropertyDefinitions())
+                    {
+                        if (newPropertyDefinition != null)
+                        {
+                            String newPropertyName = newPropertyDefinition.getAttributeName();
+
+                            if (newPropertyName != null)
+                            {
+                                TypeDefAttribute oldPropertyDefinition = newProperties.put(newPropertyName, newPropertyDefinition);
+
+                                if (oldPropertyDefinition != null)
+                                {
+                                    /*
+                                     * The type of the property must not change.  Note we trust that the current type is valid but not the patch.
+                                     */
+                                    if (! oldPropertyDefinition.getAttributeType().equals(newPropertyDefinition.getAttributeType()))
+                                    {
+                                        String newPropertyType = "<null>";
+
+                                        if (newPropertyDefinition.getAttributeType() != null)
+                                        {
+                                            newPropertyType = newPropertyDefinition.getAttributeType().toString();
+                                        }
+
+                                        OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PROPERTY_PATCH;
+                                        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                                                        sourceName,
+                                                                                                                                        newPropertyName,
+                                                                                                                                        oldPropertyDefinition.getAttributeType().toString(),
+                                                                                                                                        newPropertyType,
+                                                                                                                                        typeDefPatch.toString());
+
+                                        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                                                      this.getClass().getName(),
+                                                                      methodName,
+                                                                      errorMessage,
+                                                                      errorCode.getSystemAction(),
+                                                                      errorCode.getUserAction());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    updatedTypeDef.setPropertiesDefinition(new ArrayList<>(newProperties.values()));
+                }
+            }
+
+            if (typeDefPatch.getTypeDefOptions() != null)
+            {
+                updatedTypeDef.setOptions(typeDefPatch.getTypeDefOptions());
+            }
+
+            if (typeDefPatch.getExternalStandardMappings() != null)
+            {
+                updatedTypeDef.setExternalStandardMappings(typeDefPatch.getExternalStandardMappings());
+            }
+
+            if (typeDefPatch.getValidInstanceStatusList() != null)
+            {
+                updatedTypeDef.setValidInstanceStatusList(typeDefPatch.getValidInstanceStatusList());
+            }
+
+            if (typeDefPatch.getInitialStatus() != null)
+            {
+                updatedTypeDef.setInitialStatus(typeDefPatch.getInitialStatus());
+            }
+
+            /*
+             * OK to perform the update.  Need to create a new TypeDef object.  TypeDef is an abstract class
+             * so need to use the TypeDefCategory to create a new object of the correct type.
+             */
+            TypeDefCategory category = originalTypeDef.getCategory();
+
+            try
+            {
+                switch (category)
+                {
+                    case ENTITY_DEF:
+                        break;
+
+                    case RELATIONSHIP_DEF:
+                        RelationshipDef relationshipDef = (RelationshipDef) updatedTypeDef;
+                        if (typeDefPatch.getEndDef1() != null)
+                        {
+                            relationshipDef.setEndDef1(typeDefPatch.getEndDef1());
+                        }
+                        if (typeDefPatch.getEndDef2() != null)
+                        {
+                            relationshipDef.setEndDef2(typeDefPatch.getEndDef2());
+                        }
+                        break;
+
+                    case CLASSIFICATION_DEF:
+                        ClassificationDef classificationDef = (ClassificationDef) updatedTypeDef;
+                        if (typeDefPatch.getValidEntityDefs() != null)
+                        {
+                            classificationDef.setValidEntityDefs(typeDefPatch.getValidEntityDefs());
+                        }
+                        break;
+                }
+            }
+            catch (ClassCastException castError)
+            {
+                throwHelperLogicError(sourceName, methodName, thisMethodName, castError);
+            }
+
+            return updatedTypeDef;
+        }
+        else if (typeDefPatch.getApplyToVersion() < originalTypeDef.getVersion())
+        {
+            /*
+             * The patch has already been applied and so can be ignored.  This is not an
+             * error because all members of the cohort broadcast new types so it is to be
+             * expected that the same patch will come in multiple times.
+             */
+            return originalTypeDef;
+        }
+        else
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PATCH_VERSION;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                            sourceName,
+                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                            Long.toString(originalTypeDef.getVersion()),
+                                                                                                            typeDefPatch.toString());
+
+            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Throws a logic error exception when the repository helper is called with invalid parameters.
      * Normally this means the repository helper methods have been called in the wrong order.
      *
@@ -1582,5 +1903,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
+    }
+
+
+    /**
+     * Throws a logic error exception when the repository helper is called with invalid parameters.
+     * Normally this means the repository helper methods have been called in the wrong order.
+     *
+     * @param sourceName name of the calling repository or service
+     * @param originatingMethodName method that called the repository validator
+     * @param localMethodName local method that deleted the error
+     * @param unexpectedException unexpected exception caught by the helper logic
+     */
+    private void throwHelperLogicError(String     sourceName,
+                                       String     originatingMethodName,
+                                       String     localMethodName,
+                                       Throwable  unexpectedException)
+    {
+        OMRSErrorCode errorCode = OMRSErrorCode.HELPER_LOGIC_EXCEPTION;
+        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
+                                                                                                     localMethodName,
+                                                                                                     originatingMethodName);
+
+        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          localMethodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          unexpectedException);
     }
 }

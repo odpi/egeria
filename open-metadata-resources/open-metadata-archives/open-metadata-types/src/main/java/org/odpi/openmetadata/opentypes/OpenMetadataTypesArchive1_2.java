@@ -5,10 +5,12 @@ package org.odpi.openmetadata.opentypes;
 
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,20 +27,67 @@ import java.util.List;
  */
 public class OpenMetadataTypesArchive1_2
 {
+    /*
+     * This is the header information for the archive.
+     */
+    private static final String                  archiveGUID        = "bce3b0a0-662a-4f87-b8dc-844078a11a6e";
+    private static final String                  archiveName        = "Open Metadata Types";
+    private static final String                  archiveVersion     = "1.2";
+    private static final String                  archiveDescription = "Standard types for open metadata repositories.";
+    private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
+    private static final String                  originatorName     = "ODPi Egeria";
+    private static final String                  originatorLicense  = "Apache 2.0";
+    private static final Date                    creationDate       = new Date(1577886131090L);
+
+    /*
+     * Specific values for initializing TypeDefs
+     */
+    private static final long   versionNumber = 1L;
+    private static final String versionName   = "1.0";
+
+
     private OMRSArchiveBuilder archiveBuilder;
     private OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
+     */
+    public OpenMetadataTypesArchive1_2()
+    {
+        this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
+                                                     archiveName,
+                                                     archiveDescription,
+                                                     archiveType,
+                                                     archiveVersion,
+                                                     originatorName,
+                                                     originatorLicense,
+                                                     creationDate,
+                                                     null);
+
+        this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
+                                                   archiveGUID,
+                                                   originatorName,
+                                                   creationDate,
+                                                   versionNumber,
+                                                   versionName);
+    }
+
+
+    /**
+     * Chained constructor sets up the archive builder.  This in turn sets up the header for the archive.
      *
      * @param archiveBuilder accumulator for types
-     * @param archiveHelper helper class for building types
      */
-    public OpenMetadataTypesArchive1_2(OMRSArchiveBuilder archiveBuilder,
-                                       OMRSArchiveHelper  archiveHelper)
+    public OpenMetadataTypesArchive1_2(OMRSArchiveBuilder archiveBuilder)
     {
         this.archiveBuilder = archiveBuilder;
-        this.archiveHelper = archiveHelper;
+
+        this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
+                                                   archiveGUID,
+                                                   originatorName,
+                                                   creationDate,
+                                                   versionNumber,
+                                                   versionName);
     }
 
 

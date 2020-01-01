@@ -426,11 +426,13 @@ public interface OMRSRepositoryValidator
      * @param methodName  calling method
      * @return current value of the type
      * @throws InvalidParameterException  the patch is null
+     * @throws TypeDefNotKnownException the type is not known
      * @throws PatchErrorException  the patch is invalid
      */
     TypeDef validateTypeDefPatch(String       sourceName,
                                  TypeDefPatch patch,
                                  String       methodName) throws InvalidParameterException,
+                                                                 TypeDefNotKnownException,
                                                                  PatchErrorException;
 
 

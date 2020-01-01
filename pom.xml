@@ -727,7 +727,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>audit-log-log4j-connector</artifactId>
+                <artifactId>audit-log-slf4j-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
