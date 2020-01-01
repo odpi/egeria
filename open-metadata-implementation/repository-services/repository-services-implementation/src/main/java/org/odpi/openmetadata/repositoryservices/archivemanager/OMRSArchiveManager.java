@@ -283,6 +283,7 @@ public class OMRSArchiveManager
             String       originatorServerName = archiveProperties.getArchiveName();
             String       originatorServerType = null;
             String       originatorName = archiveProperties.getOriginatorName();
+            String       archiveVersion = archiveProperties.getArchiveVersion();
             String       originatorOrganizationName = archiveProperties.getOriginatorOrganization();
 
             /*
@@ -293,26 +294,11 @@ public class OMRSArchiveManager
                 originatorName = sourceName;
             }
 
+            String archiveId = originatorName + " (" + archiveVersion + ")";
+
             if (archiveProperties.getArchiveType() != null)
             {
                 originatorServerType = archiveProperties.getArchiveType().getName();
-            }
-
-            if (typeDefPatches != null)
-            {
-                for (TypeDefPatch typeDefPatch : typeDefPatches)
-                {
-                    if (typeDefPatch != null)
-                    {
-                        typeDefProcessor.processUpdatedTypeDefEvent(originatorName,
-                                                                    originatorMetadataCollectionId,
-                                                                    originatorServerName,
-                                                                    originatorServerType,
-                                                                    originatorOrganizationName,
-                                                                    typeDefPatch);
-                        typeCount ++;
-                    }
-                }
             }
 
             if (newAttributeTypeDefs != null)
@@ -321,12 +307,12 @@ public class OMRSArchiveManager
                 {
                     if (newAttributeTypeDef != null)
                     {
-                        typeDefProcessor.processNewAttributeTypeDefEvent(originatorName,
-                                                                originatorMetadataCollectionId,
-                                                                originatorServerName,
-                                                                originatorServerType,
-                                                                originatorOrganizationName,
-                                                                newAttributeTypeDef);
+                        typeDefProcessor.processNewAttributeTypeDefEvent(archiveId,
+                                                                         originatorMetadataCollectionId,
+                                                                         originatorServerName,
+                                                                         originatorServerType,
+                                                                         originatorOrganizationName,
+                                                                         newAttributeTypeDef);
 
                         typeCount ++;
                     }
@@ -339,12 +325,29 @@ public class OMRSArchiveManager
                 {
                     if (newTypeDef != null)
                     {
-                        typeDefProcessor.processNewTypeDefEvent(originatorName,
+                        typeDefProcessor.processNewTypeDefEvent(archiveId,
                                                                 originatorMetadataCollectionId,
                                                                 originatorServerName,
                                                                 originatorServerType,
                                                                 originatorOrganizationName,
                                                                 newTypeDef);
+                        typeCount ++;
+                    }
+                }
+            }
+
+            if (typeDefPatches != null)
+            {
+                for (TypeDefPatch typeDefPatch : typeDefPatches)
+                {
+                    if (typeDefPatch != null)
+                    {
+                        typeDefProcessor.processUpdatedTypeDefEvent(archiveId,
+                                                                    originatorMetadataCollectionId,
+                                                                    originatorServerName,
+                                                                    originatorServerType,
+                                                                    originatorOrganizationName,
+                                                                    typeDefPatch);
                         typeCount ++;
                     }
                 }
@@ -387,9 +390,11 @@ public class OMRSArchiveManager
             InstanceProvenanceType provenanceType             = InstanceProvenanceType.CONTENT_PACK;
             Date                   archiveCreationTime        = archiveProperties.getCreationDate();
             String                 originatorName             = archiveProperties.getOriginatorName();
+            String                 archiveVersion             = archiveProperties.getArchiveVersion();
             String                 originatorOrganizationName = archiveProperties.getOriginatorOrganization();
             String                 originatorLicense          = archiveProperties.getOriginatorLicense();
 
+            String archiveId = originatorName + " (" + archiveVersion + ")";
 
             if (archiveProperties.getArchiveType() == OpenMetadataArchiveType.METADATA_EXPORT)
             {
@@ -412,7 +417,7 @@ public class OMRSArchiveManager
                                                     originatorLicense,
                                                     entity);
 
-                        instanceProcessor.processNewEntityEvent(sourceName,
+                        instanceProcessor.processNewEntityEvent(archiveId,
                                                                 homeMetadataCollectionId,
                                                                 archiveName,
                                                                 originatorServerType,
@@ -439,7 +444,7 @@ public class OMRSArchiveManager
                                                     originatorLicense,
                                                     relationship);
 
-                        instanceProcessor.processNewRelationshipEvent(sourceName,
+                        instanceProcessor.processNewRelationshipEvent(archiveId,
                                                                       homeMetadataCollectionId,
                                                                       archiveName,
                                                                       originatorServerType,
@@ -472,7 +477,7 @@ public class OMRSArchiveManager
 
                         // Todo
                         /* new method required
-                        instanceProcessor.processNewClassificationEvent(sourceName,
+                        instanceProcessor.processNewClassificationEvent(archiveId,
                                                                         homeMetadataCollectionId,
                                                                         originatorServerName,
                                                                         originatorServerType,

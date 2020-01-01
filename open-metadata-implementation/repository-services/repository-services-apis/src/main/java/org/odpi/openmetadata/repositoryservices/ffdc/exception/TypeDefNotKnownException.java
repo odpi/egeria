@@ -26,6 +26,25 @@ public class TypeDefNotKnownException extends OMRSCheckedExceptionBase
 
 
     /**
+     * This constructor is used when an unexpected type error exception has been caught that needs to be wrapped in a
+     * TypeDefNotKnownException in order to add the essential details about the error, where it occurred and
+     * how to fix it.
+     *
+     * @param caughtException the exception/error that caused this exception to be raised
+     */
+    public TypeDefNotKnownException(TypeErrorException caughtException)
+    {
+        super(caughtException.getReportedHTTPCode(),
+              caughtException.getReportingClassName(),
+              caughtException.getReportingActionDescription(),
+              caughtException.getErrorMessage(),
+              caughtException.getReportedSystemAction(),
+              caughtException.getReportedUserAction(),
+              caughtException);
+    }
+
+
+    /**
      * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
      * TypeDefNotKnownException in order to add the essential details about the error, where it occurred and
      * how to fix it.

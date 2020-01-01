@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -124,7 +125,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isActiveTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isActiveTypeId(typeGUID);
     }
 
 
@@ -159,7 +160,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isOpenTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isOpenTypeId(typeGUID);
     }
 
 
@@ -194,7 +195,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isKnownTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isKnownTypeId(typeGUID);
     }
 
 
@@ -819,37 +820,20 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param methodName calling method
      * @return current value of the type
      * @throws InvalidParameterException the patch is null
+     * @throws TypeDefNotKnownException the type is not known
      * @throws PatchErrorException the patch is invalid
      */
     public TypeDef validateTypeDefPatch(String       sourceName,
                                         TypeDefPatch patch,
-                                        String       methodName) throws InvalidParameterException, PatchErrorException
+                                        String       methodName) throws InvalidParameterException,
+                                                                        TypeDefNotKnownException,
+                                                                        PatchErrorException
     {
-        if (patch == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF_PATCH;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName);
+        OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
 
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
-        }
+        utilities.validateTypeDefPatch(sourceName, patch, methodName);
 
-        TypeDef typeDef = null;
-        try
-        {
-            typeDef = repositoryContentManager.getTypeDef(sourceName, "patch", patch.getTypeDefGUID(), methodName);
-        }
-        catch (TypeErrorException  error)
-        {
-            throw new PatchErrorException(error);
-        }
-
-        return typeDef;
+        return repositoryContentManager.getTypeDefByName(patch.getTypeDefName());
     }
 
 
@@ -1651,7 +1635,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getUserAction());
         }
 
-        TypeDef typeDef = repositoryContentManager.getTypeDefByName(sourceName, classificationName);
+        TypeDef typeDef = repositoryContentManager.getTypeDefByName(classificationName);
 
         if (typeDef == null)
         {
@@ -1690,7 +1674,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         validateRepositoryContentManager(methodName);
 
-        TypeDef   classificationTypeDef = repositoryContentManager.getTypeDefByName(sourceName, classificationName);
+        TypeDef   classificationTypeDef = repositoryContentManager.getTypeDefByName(classificationName);
 
         if (classificationTypeDef != null)
         {
@@ -1794,8 +1778,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     this.validatePropertiesForType(sourceName,
                                                    parameterName,
-                                                   repositoryContentManager.getTypeDefByName(sourceName,
-                                                                                             classification.getName()),
+                                                   repositoryContentManager.getTypeDefByName(classification.getName()),
                                                    classification.getProperties(),
                                                    methodName);
                 }

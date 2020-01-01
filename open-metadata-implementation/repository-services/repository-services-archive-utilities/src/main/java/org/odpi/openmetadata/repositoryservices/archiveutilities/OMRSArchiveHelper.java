@@ -283,6 +283,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.ACTIVE);
 
+        entityDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
+
         return entityDef;
     }
 
@@ -316,6 +318,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -351,6 +355,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -384,6 +390,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -419,6 +427,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -453,6 +463,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -486,6 +498,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -522,6 +536,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -556,6 +572,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -592,6 +610,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -626,6 +646,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -662,6 +684,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -697,6 +721,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -731,6 +757,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -768,6 +796,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -803,6 +833,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -862,6 +894,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
          * Use the supplied propagation rule.
          */
         relationshipDef.setPropagationRule(propagationRule);
+
+        relationshipDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
         return relationshipDef;
     }
@@ -955,6 +989,8 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         validEntityDefs.add(validEntityDef);
         classificationDef.setValidEntityDefs(validEntityDefs);
         classificationDef.setPropagatable(propagatable);
+
+        classificationDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
         return classificationDef;
     }

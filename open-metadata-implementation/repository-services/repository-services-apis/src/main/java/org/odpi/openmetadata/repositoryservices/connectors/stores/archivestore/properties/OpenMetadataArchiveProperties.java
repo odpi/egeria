@@ -35,6 +35,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         or to create metadata to send to a disconnected cohort.
  *     </li>
  *     <li>
+ *         Archive Version.  A descriptive name for the version of this archive.
+ *     </li>
+ *     <li>
  *         Originator name.  This becomes the creation user id in the elements if it is not
  *         already specified.
  *     </li>
@@ -63,6 +66,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
     private String                  archiveName            = null;
     private String                  archiveDescription     = null;
     private OpenMetadataArchiveType archiveType            = null;
+    private String                  archiveVersion         = null;
     private String                  originatorName         = null;
     private String                  originatorOrganization = null;
     private String                  originatorLicense      = null;
@@ -188,6 +192,28 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
     public void setArchiveType(OpenMetadataArchiveType archiveType)
     {
         this.archiveType = archiveType;
+    }
+
+
+    /**
+     * Return the descriptive version name for this archive.
+     *
+     * @return string version
+     */
+    public String getArchiveVersion()
+    {
+        return archiveVersion;
+    }
+
+
+    /**
+     * Set up the descriptive version name for this archive.
+     *
+     * @param archiveVersion string version
+     */
+    public void setArchiveVersion(String archiveVersion)
+    {
+        this.archiveVersion = archiveVersion;
     }
 
 
@@ -328,6 +354,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
                 ", archiveName='" + archiveName + '\'' +
                 ", archiveDescription='" + archiveDescription + '\'' +
                 ", archiveType=" + archiveType +
+                ", archiveVersion=" + archiveVersion +
                 ", originatorName='" + originatorName + '\'' +
                 ", originatorOrganization='" + originatorOrganization + '\'' +
                 ", originatorLicense='" + originatorLicense + '\'' +
@@ -359,6 +386,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
                 Objects.equals(getArchiveName(), that.getArchiveName()) &&
                 Objects.equals(getArchiveDescription(), that.getArchiveDescription()) &&
                 getArchiveType() == that.getArchiveType() &&
+                Objects.equals(getArchiveVersion(), that.getArchiveVersion()) &&
                 Objects.equals(getOriginatorName(), that.getOriginatorName()) &&
                 Objects.equals(getOriginatorOrganization(), that.getOriginatorOrganization()) &&
                 Objects.equals(getOriginatorLicense(), that.getOriginatorLicense()) &&
@@ -375,7 +403,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getArchiveGUID(), getArchiveName(), getArchiveDescription(), getArchiveType(),
+        return Objects.hash(getArchiveGUID(), getArchiveName(), getArchiveDescription(), getArchiveType(), getArchiveVersion(),
                             getOriginatorName(), getOriginatorOrganization(), getOriginatorLicense(), getCreationDate(),
                             getDependsOnArchives());
     }
