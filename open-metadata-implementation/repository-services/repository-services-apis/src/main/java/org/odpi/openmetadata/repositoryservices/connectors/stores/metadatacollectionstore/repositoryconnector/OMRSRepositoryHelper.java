@@ -214,15 +214,15 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * the type or version that either represents.
      *
      * @param sourceName       source of the TypeDef (used for logging)
+     * @param originalTypeDef typeDef to update
      * @param typeDefPatch     patch to apply
-     * @param originalTypeDef  typeDef to patch
      * @return updated TypeDef
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
      * @throws PatchErrorException        the patch is either badly formatted, or does not apply to the supplied TypeDef
-     * @throws InvalidParameterException  the TypeDefPatch is null.
      */
     TypeDef applyPatch(String       sourceName,
                        TypeDef      originalTypeDef,
-                       TypeDefPatch typeDefPatch) throws PatchErrorException, InvalidParameterException;
+                       TypeDefPatch typeDefPatch) throws InvalidParameterException, PatchErrorException;
 
 
     /**

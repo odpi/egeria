@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -42,7 +43,6 @@ public class OMRSArchiveBuilder
     private List<EntityDef>                            entityDefList         = new ArrayList<>();
     private Map<String, RelationshipDef>               relationshipDefMap    = new HashMap<>();
     private List<RelationshipDef>                      relationshipDefList   = new ArrayList<>();
-    private Map<String, TypeDefPatch>                  typeDefPatchMap       = new HashMap<>();
     private List<TypeDefPatch>                         typeDefPatchList      = new ArrayList<>();
     private Map<String, EntityDetail>                  entityDetailMap       = new HashMap<>();
     private List<EntityDetail>                         entityDetailList      = new ArrayList<>();
@@ -59,7 +59,7 @@ public class OMRSArchiveBuilder
 
 
     /**
-     * Typical constructor passes parameters used to build the open metadata archive's property header.
+     * Simple constructor.
      *
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveName name of the open metadata archive.
@@ -77,7 +77,15 @@ public class OMRSArchiveBuilder
                               Date                       creationDate,
                               List<OpenMetadataArchive>  dependsOnArchives)
     {
-        this(archiveGUID, archiveName, archiveDescription, archiveType, originatorName, null, creationDate, dependsOnArchives);
+        this(archiveGUID,
+             archiveName,
+             archiveDescription,
+             archiveType,
+             null,
+             originatorName,
+             null,
+             creationDate,
+             dependsOnArchives);
     }
 
 
@@ -109,6 +117,48 @@ public class OMRSArchiveBuilder
                               Date                       creationDate,
                               List<OpenMetadataArchive>  dependsOnArchives)
     {
+        this(archiveGUID,
+             archiveName,
+             archiveDescription,
+             archiveType,
+             null,
+             originatorName,
+             originatorLicense,
+             creationDate,
+             dependsOnArchives);
+    }
+
+
+    /**
+     * Full constructor.
+     *
+     * It passes parameters used to build the open metadata archive's property header including the
+     * default license string.  This determines the license and copyright for all instances in the
+     * archive that do not have their own explicit license string.  The default license string
+     * will be inserted into each instance with a null license when it is loaded into an open metadata
+     * repository.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param archiveVersion descriptive name for the version of the archive.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param originatorLicense default license string for content.
+     * @param creationDate data that this archive was created.
+     * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
+     */
+    public OMRSArchiveBuilder(String                     archiveGUID,
+                              String                     archiveName,
+                              String                     archiveDescription,
+                              OpenMetadataArchiveType    archiveType,
+                              String                     archiveVersion,
+                              String                     originatorName,
+                              String                     originatorLicense,
+                              Date                       creationDate,
+                              List<OpenMetadataArchive>  dependsOnArchives)
+    {
+        final String methodName = "OMRSArchiveBuilder constructor";
 
         this.archiveProperties = new OpenMetadataArchiveProperties();
 
@@ -116,6 +166,7 @@ public class OMRSArchiveBuilder
         this.archiveProperties.setArchiveName(archiveName);
         this.archiveProperties.setArchiveDescription(archiveDescription);
         this.archiveProperties.setArchiveType(archiveType);
+        this.archiveProperties.setArchiveVersion(archiveVersion);
         this.archiveProperties.setOriginatorName(originatorName);
         this.archiveProperties.setOriginatorLicense(originatorLicense);
         this.archiveProperties.setCreationDate(creationDate);
@@ -189,22 +240,50 @@ public class OMRSArchiveBuilder
                             {
                                 if (typeDef != null)
                                 {
-                                    guidMap.put(typeDef.getGUID(), typeDef);
-                                    nameMap.put(typeDef.getName(), typeDef);
+                                    addTypeToMaps(typeDef);
+                                }
+                            }
+                        }
 
-                                    switch (typeDef.getCategory())
+                        List<TypeDefPatch> typeDefPatches = typeStore.getTypeDefPatches();
+
+                        if (typeDefPatches != null)
+                        {
+                            OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+
+                            for (TypeDefPatch typeDefPatch : typeDefPatches)
+                            {
+                                if (typeDefPatch != null)
+                                {
+                                    TypeDef originalTypeDef = getTypeDefByName(typeDefPatch.getTypeDefName());
+
+                                    try
                                     {
-                                        case ENTITY_DEF:
-                                            entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
-                                            break;
+                                        TypeDef updatedTypeDef = utilities.applyPatch(openMetadataArchive.getArchiveProperties().getArchiveName(),
+                                                                                      originalTypeDef,
+                                                                                      typeDefPatch,
+                                                                                      methodName);
 
-                                        case RELATIONSHIP_DEF:
-                                            relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
-                                            break;
+                                        if (updatedTypeDef != null)
+                                        {
+                                            this.addTypeToMaps(updatedTypeDef);
+                                        }
+                                    }
+                                    catch (Throwable error)
+                                    {
+                                        OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION;
+                                        String        errorMessage = errorCode.getErrorMessageId()
+                                                                   + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                                                                                                        methodName,
+                                                                                                        error.getMessage());
 
-                                        case CLASSIFICATION_DEF:
-                                            classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
-                                            break;
+                                        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                                                          this.getClass().getName(),
+                                                                          methodName,
+                                                                          errorMessage,
+                                                                          errorCode.getSystemAction(),
+                                                                          errorCode.getUserAction(),
+                                                                          error);
                                     }
                                 }
                             }
@@ -218,9 +297,55 @@ public class OMRSArchiveBuilder
 
                     if (instanceStore != null)
                     {
+                        List<EntityDetail> entities = instanceStore.getEntities();
 
+                        if (entities !=null)
+                        {
+                            for (EntityDetail entity : entities)
+                            {
+                                if (entity != null)
+                                {
+                                    guidMap.put(entity.getGUID(), entity);
+
+                                    entityDetailMap.put(entity.getGUID(), entity);
+                                    entityDetailList.add(entity);
+                                }
+                            }
+                        }
+
+                        List<Relationship> relationships = instanceStore.getRelationships();
+
+                        if (relationships != null)
+                        {
+                            for (Relationship relationship : relationships)
+                            {
+                                if (relationship != null)
+                                {
+                                    guidMap.put(relationship.getGUID(), relationship);
+
+                                    relationshipMap.put(relationship.getGUID(), relationship);
+                                    relationshipList.add(relationship);
+
+                                }
+                            }
+                        }
+
+                        List<ClassificationEntityExtension> classifications = instanceStore.getClassifications();
+
+                        if (classifications != null)
+                        {
+                            for (ClassificationEntityExtension classification : classifications)
+                            {
+                                if (classification != null)
+                                {
+                                    String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
+
+                                    ClassificationEntityExtension   duplicateElement = classificationMap.put(classificationId, classification);
+                                    classificationList.add(classification);
+                                }
+                            }
+                        }
                     }
-
                 }
             }
 
@@ -234,6 +359,34 @@ public class OMRSArchiveBuilder
             }
         }
     }
+
+
+    /**
+     * Update the maps with new TypeDefs.
+     *
+     * @param typeDef type definition
+     */
+    private void addTypeToMaps(TypeDef   typeDef)
+    {
+        guidMap.put(typeDef.getGUID(), typeDef);
+        nameMap.put(typeDef.getName(), typeDef);
+
+        switch (typeDef.getCategory())
+        {
+            case ENTITY_DEF:
+                entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
+                break;
+
+            case RELATIONSHIP_DEF:
+                relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                break;
+
+            case CLASSIFICATION_DEF:
+                classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
+                break;
+        }
+    }
+
 
 
     /**
@@ -1151,6 +1304,53 @@ public class OMRSArchiveBuilder
             }
         }
     }
+
+
+    /**
+     * Create a skeleton patch for a TypeDefPatch.
+     *
+     * @param typeName name of type
+     * @return TypeDefPatch
+     */
+    public TypeDefPatch  getPatchForType(String  typeName)
+    {
+        TypeDef  typeDef = this.getTypeDefByName(typeName);
+
+        if (typeDef != null)
+        {
+            TypeDefPatch patch = new TypeDefPatch();
+
+            patch.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+            patch.setTypeDefGUID(typeDef.getGUID());
+            patch.setTypeDefName(typeDef.getName());
+            patch.setApplyToVersion(typeDef.getVersion());
+            patch.setUpdateToVersion(typeDef.getVersion() + 1);
+            patch.setNewVersionName(typeDef.getVersionName());
+
+            return patch;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a new patch to the archive.
+     *
+     * @param typeDefPatch patch
+     */
+    public void addTypeDefPatch(TypeDefPatch  typeDefPatch)
+    {
+        if (typeDefPatch != null)
+        {
+            log.debug("Adding TypeDefPatch: " + typeDefPatch.toString());
+
+            this.checkForBlanksInTypeName(typeDefPatch.getTypeDefName());
+
+            typeDefPatchList.add(typeDefPatch);
+        }
+    }
+
 
 
     /**

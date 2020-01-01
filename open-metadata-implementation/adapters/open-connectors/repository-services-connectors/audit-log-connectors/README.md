@@ -9,7 +9,7 @@ The audit log connectors supports different destinations for audit log messages.
 
 * **[audit-log-file-connector](audit-log-file-connector)** - supports a directory of JSON files that each contain an audit log record.
 
-* **[audit-log-log4J-connector](audit-log-log4J-connector)** - supports the logging of log record to the log4j ecosystem.
+* **[audit-log-slf4j-connector](audit-log-slf4j-connector)** - supports the logging of log record to the slf4j ecosystem.
 
 * **[audit-log-event-topic-connector](audit-log-event-topic-connector)** - supports the publishing of log records to an event topic.
 

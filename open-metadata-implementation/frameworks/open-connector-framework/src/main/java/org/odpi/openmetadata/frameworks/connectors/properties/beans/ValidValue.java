@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ValidValue extends Referenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected String displayName    = null;
     protected String description    = null;
     protected String usage          = null;

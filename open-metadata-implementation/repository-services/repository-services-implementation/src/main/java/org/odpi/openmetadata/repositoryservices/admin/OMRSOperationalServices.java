@@ -300,7 +300,8 @@ public class OMRSOperationalServices
          * used to manage the validation of TypeDefs and the creation of metadata instances.
          * It is loaded with any TypeDefs from the archives to seed its in-memory TypeDef cache.
          */
-        localRepositoryContentManager = new OMRSRepositoryContentManager(new OMRSAuditLog(auditLogDestination,
+        localRepositoryContentManager = new OMRSRepositoryContentManager(localServerUserId,
+                                                                         new OMRSAuditLog(auditLogDestination,
                                                                                           OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER));
 
         /*

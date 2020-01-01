@@ -57,11 +57,11 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 { supported severities }
 ```
 
-The next command adds the **log4J audit log destination**.  This writes full log records to the
-log4J.
+The next command adds the **slf4j audit log destination**.  This writes full log records to the
+slf4j ecosystem.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/audit-log-destinations/log4j
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/audit-log-destinations/slf4j
 { supported severities }
 ```
 
