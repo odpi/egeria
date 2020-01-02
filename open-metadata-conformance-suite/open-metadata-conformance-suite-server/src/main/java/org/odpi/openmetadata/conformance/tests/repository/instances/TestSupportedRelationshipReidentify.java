@@ -78,6 +78,7 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param entityDefs      entities to test
      * @param relationshipDef type of valid entities
      */
     public TestSupportedRelationshipReidentify(RepositoryConformanceWorkPad workPad,
@@ -110,7 +111,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type matches the known type from the repository helper.
+         *
+         * The entity types used by the ends are not verified on this test - they are verified in the supported entity tests
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
@@ -125,6 +128,7 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                 testTypeName + assertionMsg0,
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
 
 
 

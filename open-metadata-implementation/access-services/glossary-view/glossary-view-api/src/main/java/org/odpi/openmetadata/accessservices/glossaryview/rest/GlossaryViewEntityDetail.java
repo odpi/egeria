@@ -35,6 +35,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "typeDefName")
 public class GlossaryViewEntityDetail{
 
+    private static final String QUALIFIED_NAME = "qualifiedName";
+
     private String typeDefName;
     private String createdBy;
     private String updatedBy;
@@ -96,6 +98,10 @@ public class GlossaryViewEntityDetail{
 
     public Map<String, String> allProperties() {
         return properties;
+    }
+
+    public String getQualifiedName(){
+        return properties.get(QUALIFIED_NAME);
     }
 
     public List<GlossaryViewClassification> getClassifications() {

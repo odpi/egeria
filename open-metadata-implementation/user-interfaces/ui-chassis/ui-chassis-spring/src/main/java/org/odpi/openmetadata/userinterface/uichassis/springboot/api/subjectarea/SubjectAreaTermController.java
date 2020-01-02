@@ -67,7 +67,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -99,7 +99,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
         String userId = getUser(request);
@@ -135,7 +135,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/")
+    @GetMapping( path = "/")
     public  SubjectAreaOMASAPIResponse findTerm(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -185,7 +185,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    @GetMapping( path = "/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getTermRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -241,7 +241,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateTerm(
                                                       @PathVariable String guid,
                                                       @RequestBody Term term,
@@ -297,7 +297,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -338,7 +338,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
         String serverName = subjectArea.getServerName();

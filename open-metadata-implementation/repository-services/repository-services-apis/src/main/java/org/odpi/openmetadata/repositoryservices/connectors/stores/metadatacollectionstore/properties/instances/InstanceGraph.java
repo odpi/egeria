@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InstanceGraph extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<EntityDetail> entities      = null;
     private List<Relationship> relationships = null;
 

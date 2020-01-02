@@ -6,6 +6,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static org.testng.Assert.assertFalse;
@@ -16,21 +17,21 @@ import static org.testng.Assert.assertTrue;
  */
 public class InstanceAuditHeaderTest
 {
-    private InstanceType           type                   = new InstanceType();
-    private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
-    private String                 metadataCollectionId   = "TestMetadataCollectionId";
-    private String                 metadataCollectionName = "TestMetadataCollectionName";
-    private String                 replicatedBy           = "TestReplicatedBy";
-    private String                 instanceLicense        = "TestInstanceLicense";
-    private String                 createdBy              = "TestAuthor";
-    private String                 updatedBy              = "TestEditor";
-    private Date                   createTime             = new Date(23);
-    private Date                   updateTime             = new Date(45);
-    private List<String>           maintainedBy           = new ArrayList<>();
-    private long                   version                = 30L;
-    private InstanceStatus         currentStatus          = InstanceStatus.UNKNOWN;
-    private InstanceStatus         statusOnDelete         = InstanceStatus.UNKNOWN;
-    private Map<String, Object>    mappingProperties      = new HashMap<>();
+    private InstanceType                type                   = new InstanceType();
+    private InstanceProvenanceType      instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
+    private String                      metadataCollectionId   = "TestMetadataCollectionId";
+    private String                      metadataCollectionName = "TestMetadataCollectionName";
+    private String                      replicatedBy           = "TestReplicatedBy";
+    private String                      instanceLicense        = "TestInstanceLicense";
+    private String                      createdBy              = "TestAuthor";
+    private String                      updatedBy              = "TestEditor";
+    private Date                        createTime             = new Date(23);
+    private Date                        updateTime             = new Date(45);
+    private List<String>                maintainedBy           = new ArrayList<>();
+    private long                        version                = 30L;
+    private InstanceStatus              currentStatus          = InstanceStatus.UNKNOWN;
+    private InstanceStatus              statusOnDelete         = InstanceStatus.UNKNOWN;
+    private Map<String, Serializable>   mappingProperties      = new HashMap<>();
 
 
     public InstanceAuditHeaderTest()

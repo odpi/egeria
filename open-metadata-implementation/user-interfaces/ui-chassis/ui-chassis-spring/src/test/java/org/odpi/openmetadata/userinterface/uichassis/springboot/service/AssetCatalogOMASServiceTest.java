@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
@@ -91,8 +92,9 @@ class AssetCatalogOMASServiceTest {
         List<AssetDescription> expectedDescriptionList = new ArrayList<>();
         AssetDescription expectedDescription = new AssetDescription();
         expectedDescription.setGuid(assetId);
-        expectedDescription.setTypeDefName(typeDef);
-        Map<String, Object> propertiesMap = new HashMap<>();
+        Type type = mockType(typeDef);
+        expectedDescription.setType(type);
+        Map<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("summary", "Short description of term First Name");
         propertiesMap.put("displayName", "First Name");
         expectedDescription.setProperties(propertiesMap);
@@ -109,24 +111,33 @@ class AssetCatalogOMASServiceTest {
 
         Element fromEntity = new Element();
         fromEntity.setGuid(assetId);
-        fromEntity.setTypeDefName(typeDef);
+        Type type = mockType(typeDef);
+        fromEntity.setType(type);
         expectedRelationship.setFromEntity(fromEntity);
 
         Element toEntity = new Element();
         expectedRelationship.setToEntity(toEntity);
         toEntity.setGuid(schemaId);
-        toEntity.setTypeDefName("ComplexSchemaType");
+        Type type1 = mockType("ComplexSchemaType");
+        toEntity.setType(type1);
 
         expectedRelationshipList.add(expectedRelationship);
         expectedResponse.setRelationships(expectedRelationshipList);
         return expectedResponse;
     }
 
+    private Type mockType(String complexSchemaType) {
+        Type type1 = new Type();
+        type1.setName(complexSchemaType);
+        return type1;
+    }
+
     private ClassificationsResponse mockClassificationsResponse() {
         ClassificationsResponse expectedResponse = new ClassificationsResponse();
         List<Classification> expectedClassificationList = new ArrayList<>();
         Classification expectedClassification = new Classification();
-        expectedClassification.setTypeDefName(CONFIDENTIALITY);
+        Type type = mockType(CONFIDENTIALITY);
+        expectedClassification.setType(type);
         expectedClassificationList.add(expectedClassification);
         expectedResponse.setClassifications(expectedClassificationList);
         return expectedResponse;
@@ -143,14 +154,14 @@ class AssetCatalogOMASServiceTest {
         assertFalse(resultList.isEmpty());
         Relationship relationship = resultList.get(0);
         assertEquals(relationship.getFromEntity().getGuid(), assetId);
-        assertEquals(relationship.getFromEntity().getTypeDefName(), typeDef);
+        assertEquals(relationship.getFromEntity().getType().getName(), typeDef);
         assertEquals(relationship.getToEntity().getGuid(), schemaId);
-        assertEquals(relationship.getToEntity().getTypeDefName(), COMPLEX_SCHEMA_TYPE);
+        assertEquals(relationship.getToEntity().getType().getName(), COMPLEX_SCHEMA_TYPE);
     }
 
     private void verifyClassificationResponse(List<Classification> resultList) {
         assertFalse(resultList.isEmpty());
         Classification classification = resultList.get(0);
-        assertEquals(classification.getTypeDefName(), CONFIDENTIALITY);
+        assertEquals(classification.getType().getName(), CONFIDENTIALITY);
     }
 }

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 
 import java.util.Objects;

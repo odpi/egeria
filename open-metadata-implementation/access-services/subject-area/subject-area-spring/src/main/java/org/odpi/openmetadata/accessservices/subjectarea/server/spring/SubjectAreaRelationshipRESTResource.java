@@ -45,7 +45,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/has-as")
+    @PostMapping( path = "/users/{userId}/relationships/has-as")
     public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship)
     {
         return restAPI.createTermHASARelationship(serverName, userId,termHASARelationship);
@@ -65,7 +65,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/has-as/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse getTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermHASARelationship(serverName, userId,guid);
     }
@@ -88,7 +88,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/has-as")
+    @PutMapping( path = "/users/{userId}/relationships/has-as")
     public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermHASARelationship(serverName, userId,termHASARelationship,isReplace);
     }
@@ -112,7 +112,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/has-as/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermHASARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -139,7 +139,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/has-as/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermHASARelationship(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
     {
         return restAPI.restoreTermHASARelationship(serverName, userId,guid);
@@ -161,7 +161,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/related-terms")
+    @PostMapping( path = "/users/{userId}/relationships/related-terms")
     public SubjectAreaOMASAPIResponse createRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationshipRelationship)
     {
         return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationshipRelationship);
@@ -181,7 +181,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse getRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getRelatedTerm(serverName, userId,guid);
     }
@@ -204,7 +204,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/related-terms")
+    @PutMapping( path = "/users/{userId}/relationships/related-terms")
     public SubjectAreaOMASAPIResponse updateRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateRelatedTerm(serverName, userId,relatedTermRelationship,isReplace);
     }
@@ -227,7 +227,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -254,7 +254,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/related-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreRelatedTerm(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
     {
         return restAPI.restoreRelatedTerm(serverName, userId,guid);
@@ -278,7 +278,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/synonyms")
+    @PostMapping( path = "/users/{userId}/relationships/synonyms")
     public SubjectAreaOMASAPIResponse createSynonym(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym)
     {
         return restAPI.createSynonym(serverName, userId,synonym);
@@ -298,7 +298,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse getSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getSynonymRelationship(serverName, userId,guid);
     }
@@ -321,7 +321,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/synonyms")
+    @PutMapping( path = "/users/{userId}/relationships/synonyms")
     public SubjectAreaOMASAPIResponse updateSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateSynonymRelationship(serverName, userId,synonym,isReplace);
     }
@@ -344,7 +344,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -369,7 +369,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/synonyms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse restoreSynonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreSynonym(serverName,userId,guid);
@@ -394,7 +394,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/antonyms")
+    @PostMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName,@PathVariable String userId, @RequestBody Antonym antonym)
     {
         return restAPI.createAntonym(serverName, userId,antonym);
@@ -414,7 +414,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse getAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getAntonymRelationship(serverName, userId,guid);
     }
@@ -437,7 +437,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/antonyms")
+    @PutMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse updateAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Antonym antonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateAntonymRelationship(serverName, userId,antonym,isReplace);
     }
@@ -460,7 +460,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -485,7 +485,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/antonyms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse restoreAntonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreAntonym(serverName,userId,guid);
@@ -509,7 +509,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/translations")
+    @PostMapping( path = "/users/{userId}/relationships/translations")
     public SubjectAreaOMASAPIResponse createTranslation(@PathVariable String serverName,@PathVariable String userId, @RequestBody Translation  translation)
     {
         return restAPI.createTranslation(serverName, userId,translation);
@@ -530,7 +530,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/translations/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse getTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTranslationRelationship(serverName, userId,guid);
     }
@@ -554,7 +554,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/translations")
+    @PutMapping( path = "/users/{userId}/relationships/translations")
     public SubjectAreaOMASAPIResponse updateTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Translation translation,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTranslationRelationship(serverName, userId,translation,isReplace);
     }
@@ -578,7 +578,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/translations/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -603,7 +603,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/translations/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse restoreTranslation( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTranslation(serverName,userId,guid);
@@ -627,7 +627,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/used-in-contexts")
+    @PostMapping( path = "/users/{userId}/relationships/used-in-contexts")
     public SubjectAreaOMASAPIResponse createusedInContext(@PathVariable String serverName,@PathVariable String userId, @RequestBody UsedInContext  usedInContext)
     {
         return restAPI.createUsedInContext(serverName, userId,usedInContext);
@@ -647,7 +647,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse getUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getUsedInContextRelationship(serverName, userId,guid);
     }
@@ -670,7 +670,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/used-in-contexts")
+    @PutMapping( path = "/users/{userId}/relationships/used-in-contexts")
     public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody UsedInContext usedInContext,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateUsedInContextRelationship(serverName, userId,usedInContext,isReplace);
     }
@@ -694,7 +694,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -719,7 +719,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse restoreUsedInContext( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreUsedInContext(serverName,userId,guid);
@@ -744,7 +744,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/preferred-terms")
+    @PostMapping( path = "/users/{userId}/relationships/preferred-terms")
     public SubjectAreaOMASAPIResponse createpreferredTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody PreferredTerm  preferredTerm)
     {
         return restAPI.createPreferredTerm(serverName, userId,preferredTerm);
@@ -765,7 +765,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse getPreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getPreferredTermRelationship(serverName, userId,guid);
     }
@@ -790,7 +790,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/preferred-terms")
+    @PutMapping( path = "/users/{userId}/relationships/preferred-terms")
     public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody PreferredTerm preferredTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updatePreferredTermRelationship(serverName, userId,preferredTerm,isReplace);
     }
@@ -814,7 +814,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -839,7 +839,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse restorePreferredTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restorePreferredTerm(serverName,userId,guid);
@@ -865,7 +865,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/valid-values")
+    @PostMapping( path = "/users/{userId}/relationships/valid-values")
     public SubjectAreaOMASAPIResponse createvalidValue(@PathVariable String serverName,@PathVariable String userId, @RequestBody ValidValue  validValue)
     {
         return restAPI.createValidValue(serverName, userId,validValue);
@@ -886,7 +886,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse getValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getValidValueRelationship(serverName, userId,guid);
     }
@@ -910,7 +910,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/valid-values")
+    @PutMapping( path = "/users/{userId}/relationships/valid-values")
     public SubjectAreaOMASAPIResponse updateValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ValidValue validValue,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateValidValueRelationship(serverName, userId,validValue,isReplace);
     }
@@ -935,7 +935,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -960,7 +960,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/valid-values/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse restoreValidValue( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreValidValue(serverName,userId,guid);
@@ -985,7 +985,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/replacement-terms")
+    @PostMapping( path = "/users/{userId}/relationships/replacement-terms")
     public SubjectAreaOMASAPIResponse createreplacementTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody ReplacementTerm  replacementTerm)
     {
         return restAPI.createReplacementTerm(serverName, userId,replacementTerm);
@@ -1006,7 +1006,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse getReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getReplacementTerm(serverName, userId,guid);
     }
@@ -1030,7 +1030,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/replacement-terms")
+    @PutMapping( path = "/users/{userId}/relationships/replacement-terms")
     public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ReplacementTerm replacementTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateReplacementTerm
                 (serverName, userId,replacementTerm,isReplace);
@@ -1055,7 +1055,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse deleteReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1080,7 +1080,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreReplacementTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreReplacementTerm(serverName,userId,guid);
@@ -1105,7 +1105,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/typed-bys")
+    @PostMapping( path = "/users/{userId}/relationships/typed-bys")
     public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermTYPEDBYRelationship  termTYPEDBYRelationship)
     {
         return restAPI.createTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship);
@@ -1126,7 +1126,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse getTYPEDBYRelationshipRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermTYPEDBYRelationship(serverName, userId,guid);
     }
@@ -1150,7 +1150,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/typed-bys")
+    @PutMapping( path = "/users/{userId}/relationships/typed-bys")
     public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermTYPEDBYRelationship termTYPEDBYRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship,isReplace);
     }
@@ -1174,7 +1174,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse deleteTypedByRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1199,7 +1199,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermTYPEDBYRelationship(serverName,userId,guid);
@@ -1224,7 +1224,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-as")
+    @PostMapping( path = "/users/{userId}/relationships/is-as")
     public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody ISARelationship  iSARelationship)
     {
         return restAPI.createISARelationship(serverName, userId,iSARelationship);
@@ -1245,7 +1245,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/is-as/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse getISARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getISARelationship(serverName, userId,guid);
     }
@@ -1269,7 +1269,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/is-as")
+    @PutMapping( path = "/users/{userId}/relationships/is-as")
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ISARelationship isa,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId,isa,isReplace);
     }
@@ -1292,7 +1292,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/is-as/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermISARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1317,7 +1317,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-as/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse restoreIsaRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreISARelationship(serverName,userId,guid);
@@ -1343,7 +1343,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
     public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermISATypeOFRelationship  termISATypeOFRelationship)
     {
         return restAPI.createTermISATypeOFRelationship(serverName, userId,termISATypeOFRelationship);
@@ -1364,7 +1364,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermISATypeOFRelationship(serverName, userId,guid);
     }
@@ -1388,7 +1388,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PutMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermISATypeOFRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId,isatypeof,isReplace);
     }
@@ -1413,7 +1413,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1442,7 +1442,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     
     
     
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermIsaTypeOfRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermISATypeOFRelationship(serverName,userId,guid);
@@ -1468,7 +1468,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations")
+    @PostMapping( path = "/users/{userId}/relationships/term-categorizations")
     public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
     {
         return  restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
@@ -1489,7 +1489,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermCategorizationRelationship(serverName, userId,guid);
     }
@@ -1513,7 +1513,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/term-categorizations")
+    @PutMapping( path = "/users/{userId}/relationships/term-categorizations")
     public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId,isatypeof,isReplace);
     }
@@ -1538,7 +1538,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1563,7 +1563,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermCategorizationRelationship(serverName,userId,guid);
@@ -1591,7 +1591,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor")
+    @PostMapping( path = "/users/{userId}/relationships/term-anchor")
     public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermAnchorRelationship  termAnchorRelationship)
     {
         return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
@@ -1612,7 +1612,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getTermAnchorRelationship(serverName, userId, guid);
 
@@ -1638,7 +1638,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteTermAnchorRelationship(serverName, userId, guid,isPurge);
     }
@@ -1659,7 +1659,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
@@ -1686,7 +1686,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor")
+    @PostMapping( path = "/users/{userId}/relationships/category-anchor")
     public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
     {
         return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
@@ -1707,7 +1707,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
     }
@@ -1731,7 +1731,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid,isPurge);
     }
@@ -1752,7 +1752,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreCategoryAnchorRelationship(serverName, userId,  guid);
@@ -1777,7 +1777,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes")
+    @PostMapping( path = "/users/{userId}/relationships/project-scopes")
     public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope)
     {
         return restAPI.createProjectScopeRelationship(serverName, userId,projectScope);
@@ -1797,7 +1797,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse getProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getProjectScopeRelationship(serverName, userId,guid);
     }
@@ -1820,7 +1820,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/project-scopes")
+    @PutMapping( path = "/users/{userId}/relationships/project-scopes")
     public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId,projectScope,isReplace);
     }
@@ -1843,7 +1843,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @DeleteMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -1868,7 +1868,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    @PostMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse restoreProjectScoperRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid) {
         return restAPI.restoreProjectScopeRelationship(serverName, userId, guid);
     }
@@ -1887,7 +1887,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/semantic-assignments/{guid}")
+    @GetMapping( path = "/users/{userId}/relationships/semantic-assignments/{guid}")
     public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId,guid);
     }

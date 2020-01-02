@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CertificationType extends GovernanceDefinition
 {
+    private static final long    serialVersionUID = 1L;
+
     private  String   details = null;
 
 

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc;
 
 
-public class JanusConnectorException extends RuntimeException {
+public class JanusConnectorException extends Exception {
     private String reportingClassName;
     private String reportingActionDescription;
     private String reportedErrorMessage;

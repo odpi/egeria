@@ -66,16 +66,13 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void createExternalDataEngine() throws InvalidParameterException, PropertyServerException,
-                                           UserNotAuthorizedException {
+    void createExternalDataEngine() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "createExternalDataEngine";
 
         when(repositoryHandler.createEntity(USER, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
-                methodName)).thenReturn(GUID);
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null, methodName)).thenReturn(GUID);
 
-        String response = registrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
-                QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE));
+        String response = registrationHandler.createExternalDataEngine(USER, getSoftwareServerCapability());
 
         assertEquals(GUID, response);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -98,24 +95,21 @@ class DataEngineRegistrationHandlerTest {
                 DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                registrationHandler.createExternalDataEngine(USER, new SoftwareServerCapability(
-                        QUALIFIED_NAME, NAME, DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE)));
+                registrationHandler.createExternalDataEngine(USER, getSoftwareServerCapability()));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
 
     @Test
-    void getExternalDataEngineByQualifiedName() throws UserNotAuthorizedException, PropertyServerException,
-                                                       InvalidParameterException {
+    void getExternalDataEngineByQualifiedName() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "getExternalDataEngineByQualifiedName";
 
         EntityDetail entityDetail = Mockito.mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
 
-        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME,
-                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, methodName)).thenReturn(entityDetail);
+        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME, DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                methodName)).thenReturn(entityDetail);
 
         String response = registrationHandler.getExternalDataEngineByQualifiedName(USER, QUALIFIED_NAME);
 
@@ -126,20 +120,18 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void getExternalDataEngineByQualifiedName_throwsUserNotAuthorizedException() throws
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException,
-                                                                                 InvocationTargetException,
-                                                                                 NoSuchMethodException,
-                                                                                 InstantiationException,
-                                                                                 IllegalAccessException {
+    void getExternalDataEngineByQualifiedName_throwsUserNotAuthorizedException() throws UserNotAuthorizedException,
+                                                                                        PropertyServerException,
+                                                                                        InvocationTargetException,
+                                                                                        NoSuchMethodException,
+                                                                                        InstantiationException,
+                                                                                        IllegalAccessException {
         String methodName = "getExternalDataEngineByQualifiedName";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME,
-                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, methodName)).thenThrow(mockedException);
+        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME, DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                methodName)).thenThrow(mockedException);
 
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -150,10 +142,24 @@ class DataEngineRegistrationHandlerTest {
 
     private void mockEntityTypeDef() {
         TypeDef entityTypeDef = mock(TypeDef.class);
-        when(repositoryHelper.getTypeDefByName(USER,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME)).thenReturn(entityTypeDef);
+        when(repositoryHelper.getTypeDefByName(USER, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME)).thenReturn(entityTypeDef);
 
         when(entityTypeDef.getName()).thenReturn(DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         when(entityTypeDef.getGUID()).thenReturn(DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID);
+    }
+
+    private SoftwareServerCapability getSoftwareServerCapability() {
+
+        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
+
+        softwareServerCapability.setQualifiedName(QUALIFIED_NAME);
+        softwareServerCapability.setDisplayName(NAME);
+        softwareServerCapability.setDescription(DESCRIPTION);
+        softwareServerCapability.setEngineType(TYPE);
+        softwareServerCapability.setEngineVersion(VERSION);
+        softwareServerCapability.setPatchLevel(PATCH_LEVEL);
+        softwareServerCapability.setSource(SOURCE);
+
+        return softwareServerCapability;
     }
 }

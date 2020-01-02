@@ -30,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ElementHeader extends PropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     /*
      * Common header for first class elements from a metadata repository
      */

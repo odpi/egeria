@@ -29,6 +29,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class OMRSAPIFindRequest extends OMRSAPIRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<InstanceStatus> limitResultsByStatus = null;
 
 

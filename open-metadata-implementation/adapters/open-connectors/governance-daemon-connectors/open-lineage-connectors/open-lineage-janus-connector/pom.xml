@@ -11,7 +11,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Open Lineage Janus Connector</name>
+    <description>
+        The Open Lineage Janus Connector allows the Open Lineage Services to connect to a Janusgraph database.
+    </description>
+
     <artifactId>open-lineage-janus-connector</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -43,15 +49,6 @@
             <artifactId>janusgraph-es</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
@@ -91,6 +88,17 @@
 
     <build>
         <plugins>
+            <!-- exclude slf4j-simple from classpath as logback pulled in by janusgraph-es -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <classpathDependencyExcludes>
+                        <classpathDependencyExclude>org.slf4j:slf4j-simple</classpathDependencyExclude>
+                    </classpathDependencyExcludes>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -105,8 +113,6 @@
                                 <!-- Runtime dependencies for janusgraph-->
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-codec:commons-codec:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>

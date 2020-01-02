@@ -6,56 +6,40 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
+public abstract class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
+
 
     /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
+     * {@inheritDoc}
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId,connectionProperties);
-    }
+    public abstract void initializeGraphDB() throws OpenLineageException;
 
     /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * {@inheritDoc}
      */
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-    }
-
     @Override
-    public void initializeGraphDB() throws OpenLineageException {
+    public abstract LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public LineageResponse lineage(GraphName graphName, Scope scope, View view, String guid) throws OpenLineageException {
-        return null;
-    }
+    public abstract void dumpMainGraph();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void dumpGraph(GraphName graphName) throws OpenLineageException {
+    public abstract String exportMainGraph();
 
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String exportGraph(GraphName graphName) throws OpenLineageException {
-        return null;
-    }
-
-    @Override
-    public Object getMainGraph() {
-        return null;
-    }
+    public abstract Object getMainGraph();
 }

@@ -5,7 +5,6 @@
  */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
 
 import java.util.Date;
@@ -42,9 +41,8 @@ public interface DataEngineInterface {
      * Persist the date and time at which changes were last successfully synchronized.
      *
      * @param time the time to record for the last synchronization
-     * @throws OCFRuntimeException if there is any problem persisting the date and time
      */
-    void setChangesLastSynced(Date time) throws OCFRuntimeException;
+    void setChangesLastSynced(Date time);
 
     /**
      * Retrieve a list of the changed schema types between the dates and times provided.

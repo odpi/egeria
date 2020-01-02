@@ -28,20 +28,6 @@ public class SchemaType implements Serializable {
     @JsonProperty("columns")
     private List<Attribute> attributeList;
 
-    public SchemaType() {
-    }
-
-    public SchemaType(String qualifiedName, String displayName, String author, String usage, String encodingStandard,
-                      String versionNumber, List<Attribute> attributeList) {
-        this.qualifiedName = qualifiedName;
-        this.displayName = displayName;
-        this.author = author;
-        this.usage = usage;
-        this.encodingStandard = encodingStandard;
-        this.versionNumber = versionNumber;
-        this.attributeList = attributeList;
-    }
-
     public String getDisplayName() {
         return displayName;
     }

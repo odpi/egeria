@@ -403,7 +403,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
     {
         if (registryStore != null)
         {
-            return registryStore.retrieveLocalRegistration();
+            return new MemberRegistration(registryStore.retrieveLocalRegistration());
         }
 
         return null;

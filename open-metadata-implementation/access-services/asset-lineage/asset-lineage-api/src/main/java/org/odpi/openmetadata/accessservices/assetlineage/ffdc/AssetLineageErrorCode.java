@@ -106,16 +106,8 @@ public enum AssetLineageErrorCode {
     }
 
 
-    public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
-
-        log.debug(String.format("<== AssetLineageErrorCode.getMessage(%s)", Arrays.toString(params)));
-
-
+    public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> AssetLineageErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
+        return mf.format(params);
     }
 }

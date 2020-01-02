@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
  */
 public class File extends DataStore
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

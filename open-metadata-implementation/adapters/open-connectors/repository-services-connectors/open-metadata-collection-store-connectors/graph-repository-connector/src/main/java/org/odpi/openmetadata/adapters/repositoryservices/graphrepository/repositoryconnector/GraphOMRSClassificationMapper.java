@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
@@ -25,6 +26,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -342,6 +344,35 @@ public class GraphOMRSClassificationMapper {
                 vp.remove();
         }
 
+        Map<String, Serializable> mappingProperties = classification.getMappingProperties();
+        if (mappingProperties != null && !mappingProperties.isEmpty()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString;
+            try {
+                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES, jsonString);
+
+            } catch (Throwable exc) {
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+        } else {
+            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES);
+            if (vp != null)
+                vp.remove();
+        }
+
     }
 
 
@@ -407,8 +438,7 @@ public class GraphOMRSClassificationMapper {
         try {
             String typeName = (String) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_TYPE_NAME);
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
-            TypeDefSummary typeDefSummary = new TypeDefSummary(TypeDefCategory.CLASSIFICATION_DEF, typeDef.getGUID(), typeDef.getName(), typeDef.getVersion(), typeDef.getVersionName());
-            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDefSummary);
+            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDef);
             classification.setType(instanceType);
 
         } catch (TypeErrorException e) {
@@ -470,7 +500,35 @@ public class GraphOMRSClassificationMapper {
 
         classification.setReplicatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY));
 
+
+        // mappingProperties
+        String mappingPropertiesString = (String) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES);
+        if (mappingPropertiesString != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
+                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                log.debug("{} vertex has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
+                classification.setMappingProperties(mappingPropertiesMap);
+
+            } catch (Throwable exc) {
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
         }
+
+
+    }
 
 
 }

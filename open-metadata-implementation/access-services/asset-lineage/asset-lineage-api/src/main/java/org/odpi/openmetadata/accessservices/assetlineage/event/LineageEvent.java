@@ -54,6 +54,11 @@ public class LineageEvent extends AssetLineageEventHeader {
         this.lineageEntity = lineageEntity;
     }
 
+
+    public LineageEntity getLineageEntity() {
+        return lineageEntity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

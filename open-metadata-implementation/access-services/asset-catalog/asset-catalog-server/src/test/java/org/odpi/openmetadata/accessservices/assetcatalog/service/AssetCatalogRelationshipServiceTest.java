@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInsta
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -80,7 +81,7 @@ public class AssetCatalogRelationshipServiceTest {
                 FIRST_GUID,
                 SECOND_GUID,
                 RELATIONSHIP_TYPE);
-        assertEquals(RELATIONSHIP_TYPE, relationshipBetweenEntities.getRelationship().getTypeDefName());
+        assertEquals(RELATIONSHIP_TYPE, relationshipBetweenEntities.getRelationship().getType().getName());
         assertEquals(response.getGuid(), relationshipBetweenEntities.getRelationship().getGuid());
         assertEquals(response.getFromEntity().getGuid(), relationshipBetweenEntities.getRelationship().getFromEntity().getGuid());
         assertEquals(response.getToEntity().getGuid(), relationshipBetweenEntities.getRelationship().getToEntity().getGuid());
@@ -88,7 +89,9 @@ public class AssetCatalogRelationshipServiceTest {
 
     private Relationship mockRelationshipResponse() {
         Relationship relationshipsResponse = new Relationship();
-        relationshipsResponse.setTypeDefName(RELATIONSHIP_TYPE);
+        Type type = new Type();
+        type.setName(RELATIONSHIP_TYPE);
+        relationshipsResponse.setType(type);
         relationshipsResponse.setGuid("d1213-dabcf-dafc");
         relationshipsResponse.setFromEntity(mockElement(FIRST_GUID));
         relationshipsResponse.setToEntity(mockElement(SECOND_GUID));

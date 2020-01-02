@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class AssetCatalogAdmin extends AccessServiceAdmin {
 
+    public static final String SUPPORTED_TYPES_FOR_SEARCH = "SupportedTypesForSearch";
     private OMRSAuditLog auditLog;
     private AssetCatalogServicesInstance instance;
     private String serverName;
@@ -58,7 +59,9 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
-            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName);
+            List<String> supportedTypesForSearch = getSupportedTypesForSearchOption(accessServiceConfigurationProperties);
+
+            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName, supportedTypesForSearch);
             this.serverName = instance.getServerName();
 
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
@@ -66,20 +69,21 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (OMAGConfigurationErrorException error) {
             throw error;
         } catch (Exception error) {
             auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 
@@ -104,5 +108,16 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
+    }
+
+    private List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfigurationProperties) {
+        List<String> supportedTypesForSearch = null;
+        if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
+            Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
+            if (supportedTypesProperty != null) {
+                supportedTypesForSearch = (List<String>) supportedTypesProperty;
+            }
+        }
+        return supportedTypesForSearch;
     }
 }

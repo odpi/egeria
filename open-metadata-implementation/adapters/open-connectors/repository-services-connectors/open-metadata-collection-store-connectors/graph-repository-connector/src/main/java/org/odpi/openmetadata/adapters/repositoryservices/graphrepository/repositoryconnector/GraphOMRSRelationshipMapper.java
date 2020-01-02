@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposi
 
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Property;
@@ -26,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -283,6 +285,42 @@ public class GraphOMRSRelationshipMapper {
         }
 
 
+        // mappingProperties property
+
+        Map<String, Serializable> mappingProperties = relationship.getMappingProperties();
+        if (mappingProperties != null && !mappingProperties.isEmpty()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString;
+            try {
+                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES, jsonString);
+
+            } catch (Throwable exc) {
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+        }
+        else {
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES);
+            if (ep != null)
+                ep.remove();
+        }
+
+
+
+
+
         // relationship type-specific properties
 
         InstanceProperties instanceProperties = relationship.getProperties();
@@ -376,8 +414,7 @@ public class GraphOMRSRelationshipMapper {
         String typeName = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
         try {
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
-            TypeDefSummary typeDefSummary = new TypeDefSummary(TypeDefCategory.RELATIONSHIP_DEF, typeName, typeDef.getName(), typeDef.getVersion(), typeDef.getVersionName());
-            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDefSummary);
+            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDef);
             relationship.setType(instanceType);
 
         } catch (TypeErrorException e) {
@@ -435,6 +472,33 @@ public class GraphOMRSRelationshipMapper {
         }
 
         relationship.setReplicatedBy((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY));
+
+
+        // mappingProperties
+        String mappingPropertiesString = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES);
+        if (mappingPropertiesString != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
+                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                log.debug("{} edge has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
+                relationship.setMappingProperties(mappingPropertiesMap);
+
+            } catch (Throwable exc) {
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
 
 
         // relationshipProperties

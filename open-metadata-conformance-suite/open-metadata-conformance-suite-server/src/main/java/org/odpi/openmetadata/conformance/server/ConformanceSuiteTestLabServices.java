@@ -183,6 +183,46 @@ public class ConformanceSuiteTestLabServices
 
 
     /**
+     * Request the status of a conformance workbench
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @param workbenchId which workbench?
+     * @return WorkbenchStatusResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    public WorkbenchStatusResponse getWorkbenchStatus(String   userId,
+                                                      String   serverName,
+                                                      String   workbenchId)
+    {
+        final String   methodName = "getWorkbenchStatus";
+
+        log.debug("Calling method: " + methodName);
+
+        WorkbenchStatusResponse response = new WorkbenchStatusResponse();
+
+        try
+        {
+            validateUserId(userId, methodName);
+            TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
+            response.setWorkbenchStatus(workPad.getWorkbenchStatus(workbenchId));
+        }
+        catch (PropertyServerException   error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (InvalidParameterException   error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+    /**
      * Throw an exception if the supplied userId is null
      *
      * @param userId  user name to validate

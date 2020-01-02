@@ -31,6 +31,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstancePropertyValue extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /*
      * Common type information that is this is augmented by the subclasses
      */

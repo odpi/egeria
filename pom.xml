@@ -121,30 +121,33 @@
         <!-- Platform encoding  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
         <junit.platform.version>1.5.2</junit.platform.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
-        <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
-        <mockito.version>3.1.0</mockito.version>
+        <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
+        <mockito.version>3.2.4</mockito.version>
         <testng.version>7.0.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.29</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.3.1</kafka.version>
+        <kafka.version>2.4.0</kafka.version>
         <janus.version>0.4.0</janus.version>
         <gremlin.version>3.4.1</gremlin.version>
-        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
-        <spring.version>5.2.1.RELEASE</spring.version>
-        <tomcat.version>9.0.27</tomcat.version>
+        <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring-security.version>5.2.1.RELEASE</spring-security.version>
+        <spring-data.version>2.2.3.RELEASE</spring-data.version>
+        <tomcat.version>9.0.29</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.4</commons-collections.version>
         <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
-        <h2-database.version>1.4.196</h2-database.version>
+        <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
@@ -158,13 +161,13 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
         <guava.version>23.0</guava.version>
-        <tink.version>1.3.0-rc1</tink.version>
-        <jsonld.version>0.12.5</jsonld.version>
+        <tink.version>1.3.0-rc2</tink.version>
+        <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.13</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.3.0</oss.version>
+        <oss.version>4.3.1</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
 
@@ -407,6 +410,13 @@
                 <artifactId>tomcat-embed-core</artifactId>
                 <scope>compile</scope>
                 <version>${tomcat.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>classmate</artifactId>
+                <scope>compile</scope>
+                <version>${classmate.version}</version>
             </dependency>
 
             <dependency>
@@ -711,6 +721,20 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>audit-log-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-slf4j-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-event-topic-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1832,13 +1856,13 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
@@ -1850,25 +1874,25 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * RepositoryHandler issues common calls to the open metadata repository to retrieve and store metadata.  It converts the
  * repository service exceptions into access service exceptions.

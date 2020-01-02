@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
@@ -21,9 +19,6 @@ import java.util.List;
  */
 public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
-    private static final Logger log = LoggerFactory.getLogger(FileBasedAuditLogStoreConnector.class);
-
-
     /**
      * Default constructor used by the connector provider.
      */
@@ -43,34 +38,29 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
     {
         final String   methodName = "storeLogRecord";
 
-        if (logRecord == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_LOG_RECORD;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+        super.validateLogRecord(logRecord, methodName);
 
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+        if (isSupportedSeverity(logRecord))
+        {
+            // todo add write to disk
         }
 
-        log.debug("AuditLogRecord: " + logRecord.toString());
-
-        return null;
+        return logRecord.getGUID();
     }
 
 
     /**
      * Retrieve a specific audit log record.
      *
-     * @param logRecordId  unique identifier for the log record
+     * @param logRecordId unique identifier for the log record
      * @return requested audit log record
-     * @throws InvalidParameterException indicates that the logRecordId parameter is invalid.
+     * @throws InvalidParameterException     indicates that the logRecordId parameter is invalid.
+     * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
-    public OMRSAuditLogRecord  getAuditLogRecord(String     logRecordId) throws InvalidParameterException
+    public OMRSAuditLogRecord getAuditLogRecord(String logRecordId) throws InvalidParameterException,
+                                                                           RepositoryErrorException
     {
+        final String methodName = "getAuditLogRecord";
 
         return null;
     }
@@ -80,43 +70,52 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * Retrieve a list of log records written in a specified time period.  The offset and maximumRecords
      * parameters support a paging
      *
-     * @param startDate  start of time period
-     * @param endDate  end of time period
-     * @param offset  offset of full collection to begin the return results
-     * @param maximumRecords  maximum number of log records to return
+     * @param startDate      start of time period
+     * @param endDate        end of time period
+     * @param offset         offset of full collection to begin the return results
+     * @param maximumRecords maximum number of log records to return
      * @return list of log records from the specified time period
-     * @throws InvalidParameterException indicates that the start and/or end date parameters are invalid.
-     * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
+     * @throws InvalidParameterException     indicates that the start and/or end date parameters are invalid.
+     * @throws PagingErrorException          indicates that the offset or the maximumRecords parameters are invalid.
+     * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
-    public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date    startDate,
-                                                                  Date    endDate,
-                                                                  int     offset,
-                                                                  int     maximumRecords) throws InvalidParameterException,
-                                                                                                 PagingErrorException
+    public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date startDate,
+                                                                  Date endDate,
+                                                                  int offset,
+                                                                  int maximumRecords) throws InvalidParameterException,
+                                                                                             PagingErrorException,
+                                                                                             RepositoryErrorException
     {
+        final String methodName = "getAuditLogRecordsByTimeStamp";
+
         return null;
     }
 
+
     /**
-     * Retrieve a list of log records of a specific severity.  The offset and maximumRecords
+     * Retrieve a list of log records that have specific severity.  The offset and maximumRecords
      * parameters support a paging model.
      *
-     * @param severity  the severity value of messages to return
-     * @param startDate  start of time period
-     * @param endDate  end of time period
-     * @param offset  offset of full collection to begin the return results
-     * @param maximumRecords  maximum number of log records to return
+     * @param severity       the severity value of messages to return
+     * @param startDate      start of time period
+     * @param endDate        end of time period
+     * @param offset         offset of full collection to begin the return results
+     * @param maximumRecords maximum number of log records to return
      * @return list of log records from the specified time period
-     * @throws InvalidParameterException indicates that the severity, start and/or end date parameters are invalid.
-     * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
+     * @throws InvalidParameterException     indicates that the severity, start and/or end date parameters are invalid.
+     * @throws PagingErrorException          indicates that the offset or the maximumRecords parameters are invalid.
+     * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
-    public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String   severity,
-                                                                 Date     startDate,
-                                                                 Date     endDate,
-                                                                 int      offset,
-                                                                 int      maximumRecords) throws InvalidParameterException,
-                                                                                                 PagingErrorException
+    public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String severity,
+                                                                 Date startDate,
+                                                                 Date endDate,
+                                                                 int offset,
+                                                                 int maximumRecords) throws InvalidParameterException,
+                                                                                            PagingErrorException,
+                                                                                            RepositoryErrorException
     {
+        final String methodName = "getAuditLogRecordsBySeverity";
+
         return null;
     }
 
@@ -133,16 +132,22 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @return list of log records from the specified time period
      * @throws InvalidParameterException indicates that the component, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
+     * @throws RepositoryErrorException indicates that the audit log store is not available or has an error.
      */
     public List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String component,
                                                                   Date   startDate,
                                                                   Date   endDate,
                                                                   int    offset,
                                                                   int    maximumRecords) throws InvalidParameterException,
-                                                                                                PagingErrorException
+                                                                                                PagingErrorException,
+                                                                                                RepositoryErrorException
     {
+        final String methodName = "getAuditLogRecordsByComponent";
+
         return null;
     }
+
+
 
 
     /**

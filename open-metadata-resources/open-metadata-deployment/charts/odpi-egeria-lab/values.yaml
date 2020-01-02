@@ -9,6 +9,7 @@ service:
     core: 30080
     datalake: 30081
     dev: 30082
+    factory: 30083
     ui: 30443
 
 # Defaults for the images (can be overridden here or individually, see comment below)

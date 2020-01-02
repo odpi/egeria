@@ -3,8 +3,10 @@
 
 # Logical OMAG Server
 
-A logical OMAG Server (sometimes referred to as just **OMAG server**)is a software server that
-runs inside the [OMAG server platform](omag-server-platform.md)
+An [OMAG Server](omag-server.md) is a software server that
+runs as a tenant inside the [OMAG server platform](omag-server-platform.md).
+This is why it is sometimes referred to as a "logical" server rather than a physical server
+that runs in its own process.
 
 
 

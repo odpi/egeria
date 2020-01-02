@@ -102,7 +102,7 @@ public class SubjectAreaAdmin extends AccessServiceAdmin
                         this.repositoryConnector.getRepositoryHelper(),
                         this.repositoryConnector.getRepositoryValidator(),
                         this.accessServiceConfig.getAccessServiceName());
-                this.omrsTopicConnector.registerListener(this.omrsTopicListener);
+                this.omrsTopicConnector.registerListener(this.omrsTopicListener, accessServiceConfig.getAccessServiceName());
             }
 
             this.auditLog = auditLog;
@@ -113,7 +113,7 @@ public class SubjectAreaAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
@@ -122,14 +122,15 @@ public class SubjectAreaAdmin extends AccessServiceAdmin
             }
         } catch (Throwable error)
         {
-            auditCode =SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditCode = SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 

@@ -39,7 +39,7 @@ public class GraphFactory extends IndexingFactory {
      * @param connectionProperties - POJO for the configuration used to create the connector.
      * @return JanusGraph instance with schema and indexes
      */
-    public JanusGraph openGraph(String graphDB,ConnectionProperties connectionProperties){
+    public JanusGraph openGraph(String graphDB,ConnectionProperties connectionProperties) throws JanusConnectorException {
 
         final String methodName = "open";
         JanusGraph janusGraph;
@@ -48,9 +48,8 @@ public class GraphFactory extends IndexingFactory {
         JanusGraphFactory.Builder config =janusFactoryBeans.getJanusFactory(graphDB,connectionProperties,graphType);
 
         try {
-
             janusGraph = config.open();
-            return initialize(janusGraph,graphType);
+            return initializeGraph(janusGraph,graphType);
         } catch (Exception e) {
             log.error("{} could not open graph store", e.getMessage());
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
@@ -63,33 +62,6 @@ public class GraphFactory extends IndexingFactory {
         }
     }
 
-    /**
-     * Initialize Janus Graph.
-     *
-     * @param janusGraph  - Janus Graph instance
-     * @param graphType - type of the graph to be initiated
-     * @return JanusGraph instance
-     */
-    private JanusGraph initialize(JanusGraph janusGraph,String graphType){
-        final String methodName = "initialize";
-        try {
-            log.info("Updating graph schema, if necessary");
-            initializeGraph(janusGraph,graphType);
-        }
-        catch (JanusConnectorException e) {
-            log.error("{} Caught exception during graph initialize operation", "open");
-
-            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-        return janusGraph;
-    }
 
     /**
      * Set up the schema for the Janus Graph instance
@@ -97,10 +69,10 @@ public class GraphFactory extends IndexingFactory {
      * @param janusGraph  - Janus Graph instance
      * @param graphType - type of the graph to be initiated
      */
-    private void initializeGraph(JanusGraph janusGraph, String graphType){
+    private JanusGraph initializeGraph(JanusGraph janusGraph, String graphType) throws JanusConnectorException {
 
         final String methodName = "initializeGraph";
-
+        log.info("Updating graph schema, if necessary");
         try {
             JanusGraphManagement management = janusGraph.openManagement();
 
@@ -124,9 +96,11 @@ public class GraphFactory extends IndexingFactory {
             management.commit();
 
             createIndexes(janusGraph,graphType);
+            return janusGraph;
         } catch (Exception e) {
+            log.error("{} Caught exception during graph initialize operation", "open");
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId();
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
                     methodName,
                     errorMessage,
@@ -187,6 +161,7 @@ public class GraphFactory extends IndexingFactory {
     private void createIndexesBuffer(JanusGraph janusGraph){
 
         createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_LABEL,false,janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,janusGraph, Edge.class);
         createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_RELATIONSHIP_GUID,false,janusGraph, Edge.class);
 

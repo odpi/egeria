@@ -158,8 +158,11 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
         /*
-         * Check that the relationship type matches the known type from the repository helper
+         * Check that the relationship type and end entity types match the known types from the repository helper.
+         *
+         * The entity types used by the ends are not verified on this test - they are verified in the supported entity tests
          */
+
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
         if (workPad != null) {
@@ -173,8 +176,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                 testTypeName + assertionMsg0,
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                 RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-
 
 
 

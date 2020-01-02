@@ -6,11 +6,13 @@ import org.odpi.openmetadata.conformance.rest.TestCaseListReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestCaseReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
 import org.odpi.openmetadata.conformance.rest.WorkbenchReportResponse;
+import org.odpi.openmetadata.conformance.rest.WorkbenchStatusResponse;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteTestLabServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * ConformanceSuiteResource provides the REST API for running the Open Metadata Conformance Suite.
@@ -32,7 +34,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/report/test-cases/{testCaseId}")
+    @GetMapping(path = "/report/test-cases/{testCaseId}")
     public TestCaseReportResponse getTestCaseReport(@PathVariable String   userId,
                                                     @PathVariable String   serverName,
                                                     @PathVariable String   testCaseId)
@@ -50,7 +52,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/report/test-cases/failed")
+    @GetMapping(path = "/report/test-cases/failed")
     public TestCaseListReportResponse getFailedTestCaseReport(@PathVariable String   userId,
                                                               @PathVariable String   serverName)
     {
@@ -68,7 +70,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/report/workbenches/{workbenchId}")
+    @GetMapping(path = "/report/workbenches/{workbenchId}")
     public WorkbenchReportResponse getWorkbenchReport(@PathVariable String   userId,
                                                       @PathVariable String   serverName,
                                                       @PathVariable String   workbenchId)
@@ -86,10 +88,29 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/report")
+    @GetMapping(path = "/report")
     public TestLabReportResponse getConformanceReport(@PathVariable String   userId,
                                                       @PathVariable String   serverName)
     {
         return restAPI.getConformanceReport(userId, serverName);
+    }
+
+
+    /**
+     * Interrogate a workbench to find out if it has completed (its synchronous tests)
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @param workbenchId   which workbench?
+     * @return TestLabReportResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @GetMapping(path = "/status/workbenches/{workbenchId}")
+    public WorkbenchStatusResponse getWorkbenchStatus(@PathVariable String   userId,
+                                                      @PathVariable String   serverName,
+                                                      @PathVariable String   workbenchId)
+    {
+        return restAPI.getWorkbenchStatus(userId, serverName, workbenchId);
     }
 }

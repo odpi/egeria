@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataSourceMeasurementAnnotation extends Annotation
 {
+    private static final long    serialVersionUID = 1L;
+
     private Map<String, String> dataSourceProperties = null;
 
 

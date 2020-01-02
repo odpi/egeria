@@ -9,24 +9,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,14 +49,9 @@ public class OpenLineageServiceTest {
     @InjectMocks
     private OpenLineageService openLineageService;
 
-    @Value("${open.lineage.graph.source}")
-    private GraphName graphName;
-
-
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(openLineageService, "graphName", GraphName.MAIN);
     }
 
     @BeforeAll
@@ -76,7 +64,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_SOURCE), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(View.COLUMN_VIEW), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -88,7 +76,7 @@ public class OpenLineageServiceTest {
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.END_TO_END), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(View.COLUMN_VIEW), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -101,7 +89,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.ULTIMATE_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(View.COLUMN_VIEW), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -113,7 +101,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Source and Destination")
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.SOURCE_AND_DESTINATION), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(View.COLUMN_VIEW), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -125,7 +113,7 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(GraphName.MAIN), eq(Scope.GLOSSARY), eq(View.COLUMN_VIEW), eq(guid))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(View.COLUMN_VIEW), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -135,7 +123,7 @@ public class OpenLineageServiceTest {
 
     private void checkResponse(Map<String, List> ultimateSource) {
         assertNotNull("Response is null", ultimateSource);
-        assertEquals("Response should contain onlu nodes and edges",2, ultimateSource.size());
+        assertEquals("Response should only contain nodes and edges",2, ultimateSource.size());
         assertTrue("Response should contain nodes", ultimateSource.containsKey("nodes"));
         assertTrue("Response should contain edges", ultimateSource.containsKey("edges"));
         List nodes = ultimateSource.get("nodes");

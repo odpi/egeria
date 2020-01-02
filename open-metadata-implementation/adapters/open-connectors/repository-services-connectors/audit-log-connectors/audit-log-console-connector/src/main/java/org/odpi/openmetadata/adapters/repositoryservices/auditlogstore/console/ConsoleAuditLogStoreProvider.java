@@ -10,9 +10,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.
  */
 public class ConsoleAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
 {
-    static final String  connectorTypeGUID = "4afac741-3dcc-4c60-a4ca-a6dede994e3f";
-    static final String  connectorTypeName = "Console Audit Log Store Connector";
-    static final String  connectorTypeDescription = "Connector supports logging of audit log messages to stdout.";
+    private static final String  connectorTypeGUID = "4afac741-3dcc-4c60-a4ca-a6dede994e3f";
+    private static final String  connectorTypeName = "Console Audit Log Store Connector";
+    private static final String  connectorTypeDescription = "Connector supports logging of audit log messages to stdout.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -20,7 +20,7 @@ public class ConsoleAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
      */
     public ConsoleAuditLogStoreProvider()
     {
-        Class    connectorClass = ConsoleAuditLogStoreConnector.class;
+        Class<?>    connectorClass = ConsoleAuditLogStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

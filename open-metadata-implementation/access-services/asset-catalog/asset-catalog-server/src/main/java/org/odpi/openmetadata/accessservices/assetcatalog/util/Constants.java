@@ -5,13 +5,17 @@ public final class Constants {
 
     public static final String ASSET_CATALOG_OMAS = "Asset Catalog OMAS";
     public static final String REFERENCEABLE = "Referenceable";
+    public static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String ASSET_GUID = "896d14c2-7522-4f6c-8519-757711943fe6";
     public static final String SCHEMA_ELEMENT_GUID = "718d4244-8559-49ed-ad5a-10e5c305a656";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String GLOSSARY_TERM_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
+    public static final String ASSET = "Asset";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
+    public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
+    public static final String NESTED_SCHEMA_ATTRIBUTE_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
     public static final String DEPLOYED_API = "DeployedAPI";
     public static final String IT_INFRASTRUCTURE = "ITInfrastructure";
     public static final String PROCESS = "Process";
@@ -85,6 +89,9 @@ public final class Constants {
     public static final String NAME = "name";
 
     public static final String THE_NORMAL_OPERATION_OF_THE_SERVICE = "No action is required.  This is part of the normal operation of the service.";
+
+    public static final String GUID_PARAMETER = "GUID";
+    public static final String SEARCH_PARAMETER = "searchParameter";
 
     private Constants() {
     }

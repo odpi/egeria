@@ -41,6 +41,7 @@ The steward's actions will impact how the new annotations are processed.
 * **[0635 Classification Discovery](0635-Classification-Discovery.md)**
 * **[0640 Quality Scores](0640-Quality-Scores.md)**
 * **[0650 Relationship Discovery](0650-Relationship-Discovery.md)**
+* **[0655 Asset Deduplication](0655-Asset-Deduplication.md)**
 * **[0660 Measurements](0660-Data-Source-Measurements.md)**
 * **[0690 Request for Action](0690-Request-for-Action.md)**
 

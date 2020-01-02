@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionDef extends AttributeTypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private CollectionDefCategory      collectionDefCategory = null;
     private int                        argumentCount         = 0;
     private List<PrimitiveDefCategory> argumentTypes         = null;
@@ -162,14 +164,7 @@ public class CollectionDef extends AttributeTypeDef
      */
     public void setArgumentTypes(List<PrimitiveDefCategory> argumentTypes)
     {
-        if (argumentTypes == null)
-        {
-            this.argumentTypes = null;
-        }
-        else
-        {
-            this.argumentTypes = new ArrayList<>(argumentTypes);
-        }
+        this.argumentTypes = argumentTypes;
     }
 
 

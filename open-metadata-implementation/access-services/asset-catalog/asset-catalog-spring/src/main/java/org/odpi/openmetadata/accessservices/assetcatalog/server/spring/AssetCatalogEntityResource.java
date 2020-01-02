@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +48,7 @@ public class AssetCatalogEntityResource {
     public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
                                                    @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                   @RequestParam(name = "assetType") @NotNull String assetType) {
+                                                   @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetDetailsByGUID(serverName, userId, assetGUID, assetType);
     }
 
@@ -64,7 +66,7 @@ public class AssetCatalogEntityResource {
     public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
                                                      @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                     @RequestParam(name = "assetType") @NotNull String assetType) {
+                                                     @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetUniverseByGUID(serverName, userId, assetGUID, assetType);
     }
 
@@ -85,10 +87,10 @@ public class AssetCatalogEntityResource {
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                       @RequestParam(name = "assetType") @NotNull String assetType,
-                                                       @RequestParam(name = "relationshipType") String relationshipType,
-                                                       @RequestParam(name = "from") @PositiveOrZero Integer from,
-                                                       @RequestParam(name = "pageSize") @PositiveOrZero Integer pageSize) {
+                                                       @RequestParam(name = "assetType", required = false) String assetType,
+                                                       @RequestParam(name = "relationshipType", required = false) String relationshipType,
+                                                       @RequestParam(name = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
+                                                       @RequestParam(name = "pageSize", required = false, defaultValue = "100") @PositiveOrZero Integer pageSize) {
         return assetService.getAssetRelationships(serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
     }
 
@@ -107,8 +109,8 @@ public class AssetCatalogEntityResource {
     public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                              @RequestParam(name = "assetType") @NotNull String assetType,
-                                                              @RequestParam(name = "classificationName") String classificationName) {
+                                                              @RequestParam(name = "assetType", required = false) String assetType,
+                                                              @RequestParam(name = "classificationName", required = false) String classificationName) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetGUID, assetType, classificationName);
     }
 
@@ -175,11 +177,10 @@ public class AssetCatalogEntityResource {
      * @param searchParameters constrains to make the assets's search results more precise
      * @return list of properties used to narrow the search
      */
-    @PostMapping(path = "/search/{searchCriteria}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchByType(@PathVariable("serverName") String serverName,
                                       @PathVariable("userId") String userId,
-                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
+                                      @RequestParam("searchCriteria") @NotBlank String searchCriteria,
                                       @RequestBody SearchParameters searchParameters) {
         return assetService.searchByType(serverName, userId, searchCriteria, searchParameters);
     }
@@ -200,7 +201,25 @@ public class AssetCatalogEntityResource {
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                          @PathVariable("userId") String userId,
                                          @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                         @RequestParam(name = "assetType") @NotNull String assetType) {
+                                         @RequestParam(name = "assetType", required = false) String assetType) {
         return assetService.buildContext(serverName, userId, assetGUID, assetType);
     }
+
+    /**
+     * Returns the list with supported types for search, including the sub-types supported
+     *
+     * @param serverName unique identifier for requested server
+     * @param userId     the unique identifier for the user
+     * @param type       the type
+     * @return list of types and sub-types supported for search
+     */
+    @GetMapping(path = "/supportedTypes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetCatalogSupportedTypes getSupportedTypes(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
+                                                        @RequestParam(name = "type", required = false) @Nullable String type) {
+        return assetService.getSupportedTypes(serverName, userId, type);
+    }
+
+
 }

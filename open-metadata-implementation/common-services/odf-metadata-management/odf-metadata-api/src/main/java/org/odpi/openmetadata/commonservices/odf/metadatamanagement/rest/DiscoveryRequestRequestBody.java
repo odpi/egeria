@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DiscoveryRequestRequestBody extends ODFOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     protected Map<String, String>    analysisParameters     = null;
     protected List<String>           annotationTypes        = null;
 

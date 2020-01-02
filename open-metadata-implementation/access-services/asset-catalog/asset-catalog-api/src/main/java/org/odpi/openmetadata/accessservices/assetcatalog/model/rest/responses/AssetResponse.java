@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
     private List<AssetElements> assets = new ArrayList<>();
 
     public List<AssetElements> getAssets() {

@@ -8,7 +8,9 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -21,7 +23,7 @@ public class UserInfoController {
     @Autowired
     private AuthService authService;
 
-    @RequestMapping( value ="/current", method = RequestMethod.GET)
+    @GetMapping( value ="/current")
     public User getUser(HttpServletRequest request) throws HttpClientErrorException{
         Authentication auth = authService.getAuthentication(request);
 

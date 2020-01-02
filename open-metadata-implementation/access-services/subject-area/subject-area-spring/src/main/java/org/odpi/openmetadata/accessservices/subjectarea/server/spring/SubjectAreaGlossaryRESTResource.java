@@ -53,7 +53,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *  ClassificationException              Error processing a classification
      *  StatusNotSupportedException          A status value is not supported
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries")
+    @PostMapping( path = "/users/{userId}/glossaries")
     public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,@PathVariable String userId, @RequestBody Glossary suppliedGlossary) {
         return restAPI.createGlossary(serverName, userId,suppliedGlossary);
     }
@@ -74,7 +74,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
+    @GetMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
             return restAPI.getGlossaryByGuid(serverName, userId,guid);
     }
@@ -100,7 +100,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries")
+    @GetMapping( path = "/users/{userId}/glossaries")
     public  SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -135,7 +135,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      */
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}/relationships")
+    @GetMapping( path = "/users/{userId}/glossaries/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -171,7 +171,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}")
+    @PutMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateGlossary(serverName, userId,guid,glossary,isReplace);
     }
@@ -205,7 +205,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/glossaries/{guid}")
+    @DeleteMapping( path = "/users/{userId}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
@@ -230,7 +230,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries/{guid}")
+    @PostMapping( path = "/users/{userId}/glossaries/{guid}")
     public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
     {
         return restAPI.restoreGlossary(serverName, userId,guid);

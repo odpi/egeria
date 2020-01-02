@@ -32,6 +32,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class AttributeTypeDef extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     protected long                     version         = 0L;
     protected String                   versionName     = null;
     protected AttributeTypeDefCategory category        = null;

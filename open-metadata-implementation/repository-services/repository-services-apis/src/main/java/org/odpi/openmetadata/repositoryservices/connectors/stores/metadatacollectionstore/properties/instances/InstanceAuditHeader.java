@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -87,6 +88,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstanceAuditHeader extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     /*
@@ -133,7 +136,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * instances stored with the open metadata equivalent.  These values should be maintained by the
      * master repository and stored by any repository that is saving the reference copy.
      */
-    private Map<String, Object>  mappingProperties = null;
+    private Map<String, Serializable>  mappingProperties = null;
 
     /**
      * Default Constructor sets the instance to nulls.
@@ -520,7 +523,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      *
      * @return property map
      */
-    public Map<String, Object> getMappingProperties()
+    public Map<String, Serializable> getMappingProperties()
     {
         if (mappingProperties == null)
         {
@@ -542,7 +545,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      *
      * @param mappingProperties property map
      */
-    public void setMappingProperties(Map<String, Object> mappingProperties)
+    public void setMappingProperties(Map<String, Serializable> mappingProperties)
     {
         this.mappingProperties = mappingProperties;
     }

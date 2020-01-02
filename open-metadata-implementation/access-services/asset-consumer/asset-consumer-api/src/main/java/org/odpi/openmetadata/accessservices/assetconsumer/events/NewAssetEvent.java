@@ -10,6 +10,8 @@ import java.util.Date;
  */
 public class NewAssetEvent extends AssetEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date   creationTime = null;
 
     /**

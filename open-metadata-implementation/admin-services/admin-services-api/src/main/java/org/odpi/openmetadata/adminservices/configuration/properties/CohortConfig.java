@@ -56,6 +56,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CohortConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                           cohortName                     = null;
     private Connection                       cohortRegistryConnection       = null;
     private Connection                       cohortOMRSTopicConnection      = null;

@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
@@ -149,4 +150,14 @@ public interface AssetCatalogInterface {
      * @throws InvalidParameterException if parameter validation fails
      */
     RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+
+    /**
+     * Returns the list with supported types for search, including the sub-types supported
+     *
+     * @param userId the unique identifier for the user
+     * @param type   the type
+     * @return list of types and sub-types supported for search
+     */
+
+    AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 }

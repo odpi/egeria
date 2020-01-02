@@ -57,6 +57,16 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-slf4j-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-event-topic-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>cohort-registry-file-store-connector</artifactId>
         </dependency>
 
@@ -104,6 +114,7 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>virtualization-services-api</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

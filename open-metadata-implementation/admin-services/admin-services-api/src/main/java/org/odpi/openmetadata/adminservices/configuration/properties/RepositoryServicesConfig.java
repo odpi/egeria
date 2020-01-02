@@ -50,6 +50,8 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RepositoryServicesConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<Connection>       auditLogConnections            = new ArrayList<>();
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();
     private LocalRepositoryConfig  localRepositoryConfig          = null;

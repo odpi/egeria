@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitiveDef extends AttributeTypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private  PrimitiveDefCategory   primitiveDefCategory = null;
 
     /**
@@ -110,25 +114,31 @@ public class PrimitiveDef extends AttributeTypeDef
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof PrimitiveDef))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (!super.equals(o))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        PrimitiveDef that = (PrimitiveDef) o;
-        return getPrimitiveDefCategory() == that.getPrimitiveDefCategory();
+        PrimitiveDef that = (PrimitiveDef) objectToCompare;
+        return primitiveDefCategory == that.primitiveDefCategory;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), primitiveDefCategory);
     }
 }

@@ -4,6 +4,7 @@
 pr: none
 
 trigger:
+  batch: true
   branches:
     include:
       - master

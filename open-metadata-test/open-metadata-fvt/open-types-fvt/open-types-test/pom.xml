@@ -13,6 +13,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>pom</packaging>
+
     <name>Open Types Test execution</name>
     <description>
         Run the Functional Verification Test (FVT) for open types.
@@ -29,26 +31,9 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-              <groupId>org.odpi.egeria</groupId>
-              <artifactId>repository-services-apis</artifactId>
-        </dependency>
-        <dependency>
-               <groupId>org.odpi.egeria</groupId>
-               <artifactId>open-metadata-types</artifactId>
-        </dependency>
-        <dependency>
-               <groupId>com.fasterxml.jackson.core</groupId>
-               <artifactId>jackson-annotations</artifactId>
-         </dependency>
-         <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
@@ -86,13 +71,14 @@
                         <executions>
                             <execution>
                                 <id>generate</id>
-                                <phase>compile</phase>
+                                <phase>test-compile</phase>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
                                     <target>
                                         <!-- Need to create ant property to pass from maven to ant task -->
+                                        <!-- generating code here -->
                                         <property name="antDirectory" value="${project.basedir}/../../../../"/>
                                         <echo message="Directory is: ${antDirectory}"/>
                                         <java classname="org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator" fork="true" failonerror="true" dir="${antDirectory}">
@@ -100,6 +86,7 @@
                                                 <path refid="maven.compile.classpath"/>
                                                 <path refid="maven.plugin.classpath"/>
                                             </classpath>
+                                            <sysproperty key="org.slf4j.simpleLogger.defaultLogLevel" value="INFO"/>
                                         </java>
                                     </target>
                                 </configuration>
@@ -119,6 +106,20 @@
                             </execution>
                         </executions>
                     </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>runopentypesfvt</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        </plugin>
 
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
@@ -146,7 +147,7 @@
                                     </goals>
                                     <configuration>
                                         <ignoredUnusedDeclaredDependencies combine.children="append">
-                                            <!-- Code generator is a hidden dependency via antrun, so need to declare here -->
+                                            <!-- Code generator is a hidden dependency via antrun - we need it for the build process, so need to declare here -->
                                             <ignoredUnusedDeclaredDependency>org.odpi.egeria:open-types-test-generator:*</ignoredUnusedDeclaredDependency>
                                         </ignoredUnusedDeclaredDependencies>
                                   </configuration>

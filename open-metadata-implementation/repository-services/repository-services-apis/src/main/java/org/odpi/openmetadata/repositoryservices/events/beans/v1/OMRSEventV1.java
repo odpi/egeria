@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class OMRSEventV1 extends OMRSEventBean
 {
+    private static final long    serialVersionUID = 1L;
+
     private       Date                       timestamp            = null;
     private       OMRSEventOriginator        originator           = null;
     private       OMRSEventCategory          eventCategory        = null;

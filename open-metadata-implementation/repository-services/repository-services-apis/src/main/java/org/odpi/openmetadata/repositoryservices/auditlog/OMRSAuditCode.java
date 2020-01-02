@@ -295,14 +295,14 @@ public enum OMRSAuditCode
 
     NULL_PROPERTIES_IN_ARCHIVE("OMRS-AUDIT-0052",
                         OMRSAuditLogRecordSeverity.ERROR,
-                        "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive because it is empty",
+                        "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive {0} because it is empty",
                         "The local server is skipping an open metadata archive because it is empty.",
                         "Review the list of archives for the server and determine which archive is in error. " +
                            "Request a new version of the archive or remove it from the server's archive list."),
 
     COMPLETED_ARCHIVE("OMRS-AUDIT-0053",
                        OMRSAuditLogRecordSeverity.INFO,
-                       "The Open Metadata Repository Services (OMRS) has loaded {0} types and {1} instances from open metadata archive {2}",
+                       "The Open Metadata Repository Services (OMRS) has processed {0} types and {1} instances from open metadata archive {2}",
                        "The local server has completed the processing of the open metadata archive.",
                        "No action is required.  This is part of the normal operation of the server."),
 
@@ -636,13 +636,14 @@ public enum OMRSAuditCode
 
     TYPE_UPDATED("OMRS-AUDIT-0303",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The local server has updated an existing type called {0} with a unique identifier of {1} to version number of {2} from {3}",
+                      "The local server has updated an existing type called {0} with a unique identifier of {1} to version number of {2} using " +
+                         "a patch from {3}",
                       "The local server will be able to manage metadata instances of this latest version of the type.",
                       "No action required.  This message is for information only."),
 
     TYPE_REMOVED("OMRS-AUDIT-0304",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The local server has removed an existing type called {0} with a unique identifier of {1} to version number of {2}",
+                      "The local server has removed an existing type called {0} with a unique identifier of {1}; requester is {2}",
                       "The local server will be no longer be able to manage metadata instances of this type.",
                       "No action required.  This message is for information only."),
 
@@ -659,6 +660,14 @@ public enum OMRSAuditCode
                      "A new type called {0} (guid {1}) is being maintained through the API of server {2}.  The method called by user {3} was {4}",
                      "The local server will support this type until the next restart of the server.  After that the instances of this type stored in the local repository will not be retrievable.",
                      "Using the API in this way is sufficient for development where the repository does not contain valuable metadata.  For production, all types should be defined and maintained through open metadata archives."),
+
+    REMOTE_TYPE_CONFLICT("OMRS-AUDIT-0307 ", OMRSAuditLogRecordSeverity.ACTION,
+                         "Conflicting type definitions for type {0} ({1}) have been detected in remote system {2} ({3}).  Other system involved has" +
+                                 " metadata collection {4} Error message is: {5}",
+                         "The open metadata cohort is not running with consistent types.",
+                         "Details of the conflicts and the steps necessary to repair the situation can be found in the audit log. " +
+                                 "Work to resolve the conflict as soon as possible since this will prevent exchange of " +
+                                 "instances for this type of metadata."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                       OMRSAuditLogRecordSeverity.ERROR,
@@ -790,9 +799,29 @@ public enum OMRSAuditCode
 
     UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9016",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        "Service {0} threw an unexpected exception {1} with message {2}; the stack trace was {4}",
-                        "The contents of the event were not accepted by the local repository.",
-                        "Review the exception and resolve the issue it documents.")
+                        "The topic listener for the {0} service caught an unexpected exception {1} with message {2}; the stack trace was {3}",
+                        "The contents of the event were not accepted by the topic listener.",
+                        "Review the exception and resolve the issue that it documents."),
+
+    UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9017",
+                       OMRSAuditLogRecordSeverity.EXCEPTION,
+                       "The topic listener for the {0} service threw an unexpected exception {1} with message {2}; the stack trace was {3}",
+                       "The contents of the event were not accepted by the topic listener.",
+                       "Review the exception and resolve the issue that it documents."),
+
+    UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING("OMRS-AUDIT-9018",
+                        OMRSAuditLogRecordSeverity.ERROR,
+                       "Exception {0} occurred when processing a type {1} from {2}.  The originator of the type was {3} " +
+                                                      "({4}).  The message in the exception was {5}",
+                        "The contents of the type were not accepted by the type definition processor.",
+                        "Review the exception and resolve the issue that it documents.  The new type information will not be" +
+                                                      " usable in this server"),
+
+    UNHANDLED_EXCEPTION_FROM_TYPE_PROCESSING("OMRS-AUDIT-9019",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The type definition event processor for the {0} service caught an unexpected exception {1} with message {2}",
+                     "The contents of the type were not accepted by the topic listener.",
+                      "Review the exception and resolve the issue that it documents.")
 
 
     ;

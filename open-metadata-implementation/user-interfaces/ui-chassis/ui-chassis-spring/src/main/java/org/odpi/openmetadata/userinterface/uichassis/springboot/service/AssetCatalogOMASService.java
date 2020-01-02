@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -139,4 +140,14 @@ public class AssetCatalogOMASService {
         }
     }
 
+
+    public List<Type> getSupportedTypes(String userId) throws PropertyServerException,
+                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        try {
+            return assetCatalog.getSupportedTypes(userId, null).getTypes();
+        } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            LOG.error("Error retrieving supported types'");
+            throw e;
+        }
+    }
 }

@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ComplexSchemaType extends SchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected  int attributeCount      = 0;
 
     /**

@@ -288,9 +288,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedEntitySharingPropertySearch testEntityPropertySharingSearch = new TestSupportedEntitySharingPropertySearch(workPad, entityDef);
                     entitySharingPropertySearchTestCases.add(testEntityPropertySharingSearch);
-
                 }
             }
+
 
             if (relationshipDefs != null) {
 
@@ -299,7 +299,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipTestCases.add(testRelationshipLifecycle);
 
-                    TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, relationshipDef);
+                    TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
 
                     TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
@@ -311,7 +311,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipPropertyAdvancedSearch testRelationshipPropertyAdvancedSearch = new TestSupportedRelationshipPropertyAdvancedSearch(workPad, entityDefs, relationshipDef);
                     relationshipPropertyAdvancedSearchTestCases.add(testRelationshipPropertyAdvancedSearch);
 
-                    TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, relationshipDef);
+                    TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, entityDefs, relationshipDef);
                     relationshipSharingPropertySearchTestCases.add(testRelationshipsharingPropertySearch);
 
                 }
@@ -507,6 +507,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
 
+
             /*
              * Retrieve the type definitions by external standard mappings
              */
@@ -607,6 +608,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             {
                 runTests();
             }
+
+            workPad.setWorkbenchComplete();
 
             auditCode = ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED;
             auditLog.logRecord(methodName,
