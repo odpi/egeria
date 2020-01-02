@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfile extends ActorHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              fullName             = null;
     private String              jobTitle             = null;
     private List<UserIdentity>  associatedUserIds    = null;

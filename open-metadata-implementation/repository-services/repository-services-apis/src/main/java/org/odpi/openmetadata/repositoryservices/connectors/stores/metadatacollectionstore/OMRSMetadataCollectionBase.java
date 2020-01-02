@@ -381,12 +381,14 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @return type definition
      * @throws InvalidParameterException a property is null or invalid
      * @throws PatchErrorException the type update is invalid
+     * @throws TypeDefNotKnownException the type is not known
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     protected TypeDef updateTypeDefParameterValidation(String       userId,
                                                        TypeDefPatch typeDefPatch,
                                                        String       methodName) throws InvalidParameterException,
                                                                                        PatchErrorException,
+                                                                                       TypeDefNotKnownException,
                                                                                        RepositoryErrorException
     {
         super.basicRequestValidation(userId, methodName);

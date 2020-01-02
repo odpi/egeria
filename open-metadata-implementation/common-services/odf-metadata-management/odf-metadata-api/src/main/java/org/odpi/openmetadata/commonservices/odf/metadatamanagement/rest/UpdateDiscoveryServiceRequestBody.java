@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              shortDescription     = null;
     private String              owner                = null;
     private OwnerType           ownerType            = null;

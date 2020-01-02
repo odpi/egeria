@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DiscoveryAnalysisReportResponse extends ODFOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     private DiscoveryAnalysisReport analysisReport = null;
 
     /**

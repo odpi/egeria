@@ -148,6 +148,7 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad         place for parameters and results
+     * @param entityDefs      entities to test
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipPropertyAdvancedSearch(RepositoryConformanceWorkPad workPad,
@@ -184,18 +185,18 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
 
     /**
-     * Default run method - throws Exception because this is a multi-phase testcase
+     * Default run method - throws Exception because this is a multi-phase test case
      *
      * @throws Exception something went wrong with the test.
      */
     protected void run() throws Exception
     {
-
-        throw new Exception("This is a multi--phase testcase; please invoke it with a phase parameter");
+        throw new Exception("This is a multi--phase test case; please invoke it with a phase parameter");
     }
 
+
     /**
-     * Method implemented by the actual test case. This overloads the default implementation in OpenMetadatatestCase
+     * Method implemented by the actual test case. This overloads the default implementation in OpenMetadataTestCase
      *
      * @throws Exception something went wrong with the test.
      */
@@ -209,7 +210,7 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
          *
          * It will then conduct a series of searches against the repository - some of which should retrieve relationships, others should not.
          *
-         * The searches in this testcase are all searches using match properties and all strings are treated as exact match.
+         * The searches in this test case are all searches using match properties and all strings are treated as exact match.
          * There are more details on each type of test in the relevant section below.
          *
          */

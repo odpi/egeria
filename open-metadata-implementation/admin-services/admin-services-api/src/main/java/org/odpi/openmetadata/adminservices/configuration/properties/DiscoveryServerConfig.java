@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DiscoveryServerConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /* Properties needed to call the access service REST APIs */
     private String        accessServiceRootURL     = null;
     private String        accessServiceServerName  = null;
@@ -149,7 +151,6 @@ public class DiscoveryServerConfig extends AdminServicesConfigHeader
      *
      * @param discoveryEngineNames list of qualified names
      */
-    @Deprecated
     public void setDiscoveryEngineNames(List<String> discoveryEngineNames)
     {
         this.discoveryEngineNames = discoveryEngineNames;

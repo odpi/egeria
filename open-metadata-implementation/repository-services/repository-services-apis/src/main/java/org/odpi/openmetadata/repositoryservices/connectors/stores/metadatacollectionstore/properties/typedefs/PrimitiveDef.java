@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitiveDef extends AttributeTypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private  PrimitiveDefCategory   primitiveDefCategory = null;
 
     /**

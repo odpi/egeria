@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.log4j;
+package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j;
 
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -14,16 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Log4JAuditLogStoreConnector provides a connector implementation for a log4J audit log destination.
+ * SLF4JAuditLogStoreConnector provides a connector implementation for a sls4j audit log destination.
  */
-public class Log4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
+public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
     private Map<String, Logger>  loggerMap = new HashMap<>();
 
     /**
      * Default constructor used by the connector provider.
      */
-    public Log4JAuditLogStoreConnector()
+    public SLF4JAuditLogStoreConnector()
     {
     }
 

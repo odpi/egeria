@@ -64,6 +64,8 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                   metadataCollectionId            = null;
     private String                   metadataCollectionName          = null;
     private Connection               localRepositoryLocalConnection  = null;

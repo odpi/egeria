@@ -15,12 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Audit Log Log4J Connector</name>
+    <name>Audit Log slf4J Connector</name>
     <description>
-        Provides a log4j audit log destination for the Open Metadata Repository Services (OMRS).
+        Provides a slf4j audit log destination for the Open Metadata Repository Services (OMRS).
     </description>
 
-    <artifactId>audit-log-log4j-connector</artifactId>
+    <artifactId>audit-log-slf4j-connector</artifactId>
 
     <dependencies>
         <dependency>

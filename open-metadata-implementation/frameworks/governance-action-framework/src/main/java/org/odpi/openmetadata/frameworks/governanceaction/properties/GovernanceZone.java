@@ -17,6 +17,7 @@ public class GovernanceZone extends Referenceable
     private String description = null;
     private String criteria = null;
 
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Default constructor

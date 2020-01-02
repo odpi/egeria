@@ -3,6 +3,10 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
-public class GovernanceProgramGraph
+import java.io.Serializable;
+
+public class GovernanceProgramGraph implements Serializable
 {
+    private static final long    serialVersionUID = 1L;
+
 }

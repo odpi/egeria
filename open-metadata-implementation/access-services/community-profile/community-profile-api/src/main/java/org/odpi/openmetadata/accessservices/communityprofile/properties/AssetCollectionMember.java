@@ -17,6 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetCollectionMember extends CollectionMemberHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              owner                = null;
     private OwnerType           ownerType            = null;
     private List<String>        zoneMembership       = null;

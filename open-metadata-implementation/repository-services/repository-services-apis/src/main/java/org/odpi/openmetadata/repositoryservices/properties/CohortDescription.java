@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CohortDescription extends OMRSProperty
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 cohortName = null;
     private CohortConnectionStatus connectionStatus = null;
     private Connection             topicConnection = null;

@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefLink extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     protected  String        guid               = null;
     protected  String        name               = null;
     protected  TypeDefStatus status             = null;

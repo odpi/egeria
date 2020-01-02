@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FavouriteCollectionOutboundEvent extends PersonalProfileOutboundEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     private String  userId = null;
     private String  memberGUID = null;
     private String  memberType = null;

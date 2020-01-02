@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class CollectionMemberHeader extends ReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date         dateAddedToCollection = null;
     private String       membershipRationale   = null;
     private WatchStatus  watchStatus           = null;

@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class FileSystem extends Asset
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              fileSystemType = null;
     private String              version = null;
     private String              patchLevel = null;

@@ -99,7 +99,7 @@ public class InMemoryRepositoryTest {
         Connector connector = connectorBroker.getConnector(connection);
         OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
-        localRepositoryContentManager = new OMRSRepositoryContentManager(auditLog);
+        localRepositoryContentManager = new OMRSRepositoryContentManager("userID", auditLog);
 
 
         OMRSRepositoryEventManager localRepositoryEventManager = new OMRSRepositoryEventManager("local repository outbound",

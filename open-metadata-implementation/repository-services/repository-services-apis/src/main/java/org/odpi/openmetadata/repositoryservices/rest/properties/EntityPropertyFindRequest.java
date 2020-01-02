@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 public class EntityPropertyFindRequest extends PropertyMatchFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<String> limitResultsByClassification = null;
 
 

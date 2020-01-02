@@ -62,11 +62,74 @@ public class OMAGServerOperationalServices
      */
 
     /**
+     * Activate the list of open metadata and governance servers using the stored configuration information.
+     * The code works through the list, starting each server in turn.  It stops if one of the servers fails to
+     * start and returns the error.  Otherwise it continues through the list, returning
+     *
+     * @param userId  user that is issuing the request
+     * @param serverNames  list of server names
+     * @return success message or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    public SuccessMessageResponse activateServerListWithStoredConfig(String       userId,
+                                                                     List<String> serverNames)
+    {
+        String                 startUpMessage = null;
+        SuccessMessageResponse response = new SuccessMessageResponse();
+
+        response.setRelatedHTTPCode(200);
+
+        if (serverNames != null)
+        {
+            for (String serverName : serverNames)
+            {
+                if (serverName != null)
+                {
+                    response = activateWithStoredConfig(userId, serverName.trim());
+
+                    if (response.getRelatedHTTPCode() == 200)
+                    {
+                        String serverStartUpMessage = "OMAG Server '" + serverName + "' successful start , with message: " +
+                                response.getSuccessMessage() + System.lineSeparator();
+                        if (startUpMessage == null)
+                        {
+                            startUpMessage = serverStartUpMessage;
+                        }
+                        else
+                        {
+                            startUpMessage += serverStartUpMessage;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            final String noAutoStartServers = "No OMAG servers listed in startup configuration";
+            startUpMessage = noAutoStartServers;
+        }
+
+        if (response.getRelatedHTTPCode() == 200)
+        {
+            response.setSuccessMessage(startUpMessage);
+        }
+
+        return response;
+    }
+
+
+    /**
      * Activate the open metadata and governance services using the stored configuration information.
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name
-     * @return void response or
+     * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
@@ -109,7 +172,7 @@ public class OMAGServerOperationalServices
      * @param userId  user that is issuing the request
      * @param configuration  properties used to initialize the services
      * @param serverName  local server name
-     * @return void response or
+     * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
@@ -793,7 +856,29 @@ public class OMAGServerOperationalServices
 
 
     /**
-     * Temporarily deactivate any open metadata and governance services.
+     * Temporarily deactivate the open metadata and governance servers in th supplied list.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverNames list of server names
+     */
+    public void deactivateTemporarilyServerList(String        userId,
+                                                List<String>  serverNames)
+    {
+        if (serverNames != null)
+        {
+            for (String serverName : serverNames)
+            {
+                if (serverName != null)
+                {
+                    deactivateTemporarily(userId, serverName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Temporarily deactivate any open metadata and governance services for the requested server.
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name

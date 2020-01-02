@@ -3,22 +3,29 @@
 
 # Release 1.3
 
-Release 1.3 focuses on the support for the detection of duplicate
-assets and linking them together.
+Release 1.3 focuses on the support for open metadata archives, and formal versioning of open metadata types.
+It includes much of the ground-work for
+supporting design lineage and the detection and management of duplicate assets but that function is officially
+released in [1.4](release-notes-1-4.md).
 
-Below are the highlights of the release:
+Below are the highlights of the 1.3 release:
 
-* The first governance server is released:
- 
-   * The [Stewardship Server](../open-metadata-implementation/governance-servers/stewardship-services) supports the scanning of assets and the notification when duplicate suspects are detected.  It can also orchestrate the linking of duplicate assets.
+* The [hands-on labs](../open-metadata-resources/open-metadata-labs) have been updated to provide
+  reusable Python functions for working with Egeria.
   
-  This server is supported by: 
-   * The [Stewardship Action OMAS](../open-metadata-implementation/access-services/stewardship-action) supports the asset scan API, the recording of exceptions and duplicate suspects and the linking of duplicate assets.
+* The management of open metadata types includes formal versioning and patching of types.
+  This makes it clearer where additions and updates are being made to the open metadata types.
+  See [open metadata types archive](../open-metadata-resources/open-metadata-archives/open-metadata-types).
+  
+* There are the following changes to the open metadata types:
+   * The [EmbeddedConnection](../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.md) has a new property called `position`.
+   * The [OpenDiscoveryAnalysisReport](../open-metadata-publication/website/open-metadata-types/0605-Open-Discovery-Analysis-Reports.md) has a new property called `discoveryRequestStep`.
+   * There is a new collection of [Annotations](../open-metadata-publication/website/open-metadata-types/0655-Asset-Deduplication.md) for recording suspected duplicates and divergent values in acknowledged duplicates.
+     This is to support the asset deduplication work scheduled for the next release.
 
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs) and
-  [samples](../open-metadata-resources/open-metadata-samples) demonstrating
-  the new archive and de-duplication features.
+* There are new [open metadata archive](../open-metadata-resources/open-metadata-archives) utilities for creating your own open metadata archives.
+  See the [open connector archives](../open-metadata-resources/open-metadata-archives/open-connector-archives) and
+  [design model archives](../open-metadata-resources/open-metadata-archives/design-model-archives).
 
 * The Conformance Suite Repository Workbench is now at Version 1.1, with the following enhancements:
 
@@ -28,7 +35,7 @@ Below are the highlights of the release:
 
    * New test verify the correct handling of mappingProperties in the InstanceAuditHeader.
 
-   * The tests for 'rehome' of a reference copy now use an instance mastered by a third (virtual) repository rather than the CTS Server's repository.
+   * The tests for 're-home' of a reference copy now use an instance mastered by a third (virtual) repository rather than the CTS Server's repository.
 
    * Type verification of relationship end types now cater for connectors that do not support all the supertypes of an entity type.
 

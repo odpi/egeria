@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.log4j.Log4JAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
@@ -216,13 +216,13 @@ public class ConnectorConfigurationFactory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the file based audit logger
      */
-    public Connection getLog4JAuditLogConnection(String       localServerName,
+    public Connection getSLF4JAuditLogConnection(String       localServerName,
                                                  List<String> supportedSeverities)
     {
         final String connectionGUID    = "3e3eaf36-bd15-4aa3-9c98-a5441a679de9";
-        final String connectionDescription = "OMRS Log4J based audit log destination connection.";
+        final String connectionDescription = "OMRS SLF4J based audit log destination connection.";
 
-        String connectionName = "AuditLogDestination.Log4J.Connection." + localServerName;
+        String connectionName = "AuditLogDestination.SLF4J.Connection." + localServerName;
 
         Connection connection = new Connection();
 
@@ -231,7 +231,7 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(getConnectorType(Log4JAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(SLF4JAuditLogStoreProvider.class.getName()));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 

@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                     typeGUID = null;
 
 

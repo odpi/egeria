@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContributionRecord extends CommonHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<Classification> classifications      = null;
     private String               qualifiedName        = null;
     private int                  karmaPoints          = 0;

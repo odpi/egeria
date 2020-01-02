@@ -28,6 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ReferenceableRequestBody extends OCFOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String               typeName             = null;
     protected List<Classification> classifications      = null;
     protected String               qualifiedName        = null;

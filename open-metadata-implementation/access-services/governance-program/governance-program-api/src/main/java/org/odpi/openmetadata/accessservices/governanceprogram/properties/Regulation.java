@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Regulation extends GovernanceDriver
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                   jurisdiction = null;
     private List<CertificationType>  certificationTypes = null;
 

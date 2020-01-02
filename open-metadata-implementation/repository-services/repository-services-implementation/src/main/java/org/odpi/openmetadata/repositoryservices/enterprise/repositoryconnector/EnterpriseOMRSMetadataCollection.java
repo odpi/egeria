@@ -2908,7 +2908,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName);
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
 
         /*
          * Locate entity

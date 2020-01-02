@@ -30,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class TypeDef extends TypeDefSummary
 {
+    private static final long    serialVersionUID = 1L;
+
     protected TypeDefLink                   superType                = null;
     protected String                        description              = null;
     protected String                        descriptionGUID          = null;

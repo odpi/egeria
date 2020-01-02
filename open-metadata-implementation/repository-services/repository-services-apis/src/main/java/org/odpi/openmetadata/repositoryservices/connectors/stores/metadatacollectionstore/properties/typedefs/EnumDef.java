@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EnumDef extends AttributeTypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<EnumElementDef> elementDefs    = null;
     private EnumElementDef       defaultValue   = null;
 

@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EventBusConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private static  String DEFAULT_TOPIC_ROOT = "egeria.omag";
 
     private String              connectorProvider       = null;

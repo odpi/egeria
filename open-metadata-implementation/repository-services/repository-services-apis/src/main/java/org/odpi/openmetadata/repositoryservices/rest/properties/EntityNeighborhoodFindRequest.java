@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class EntityNeighborhoodFindRequest extends OMRSAPIFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<String>    entityTypeGUIDs = null;
     private List<String>    limitResultsByClassification = null;
     private List<String>    relationshipTypeGUIDs = null;

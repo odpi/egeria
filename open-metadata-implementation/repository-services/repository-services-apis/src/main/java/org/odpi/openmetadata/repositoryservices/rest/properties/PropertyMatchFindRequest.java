@@ -28,6 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private InstanceProperties matchProperties      = null;
     private MatchCriteria      matchCriteria        = null;
 
