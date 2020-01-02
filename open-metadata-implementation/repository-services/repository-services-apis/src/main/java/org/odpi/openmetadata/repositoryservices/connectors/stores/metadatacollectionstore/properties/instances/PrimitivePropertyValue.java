@@ -11,7 +11,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -220,7 +219,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
 
         try
         {
-            Class    testJavaClass = Class.forName(primitiveDefCategory.getJavaClassName());
+            Class<?>    testJavaClass = Class.forName(primitiveDefCategory.getJavaClassName());
 
             if (!testJavaClass.isInstance(primitiveValue))
             {
@@ -283,7 +282,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                 {
                     String    castValue = (String)primitiveValue;
 
-                    return new Character(castValue.charAt(0));
+                    return castValue.charAt(0);
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT)
                 {
