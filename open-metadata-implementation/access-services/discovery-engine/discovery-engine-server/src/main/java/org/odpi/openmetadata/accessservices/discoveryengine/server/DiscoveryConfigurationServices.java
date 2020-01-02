@@ -886,7 +886,7 @@ public class DiscoveryConfigurationServices
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param requestBody containing:
      *                    discoveryServiceGUID - unique identifier of the discovery service;
-     *                    assetTypes - list of asset types that this discovery service is able to process.
+     *                    assetDiscoveryTypes - list of asset types that this discovery service is able to process.
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -903,7 +903,7 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         String       discoveryServiceGUID = null;
-        List<String> assetTypes           = null;
+        List<String> assetDiscoveryTypes           = null;
         VoidResponse response             = new VoidResponse();
         OMRSAuditLog auditLog             = null;
 
@@ -911,7 +911,7 @@ public class DiscoveryConfigurationServices
         if (requestBody != null)
         {
             discoveryServiceGUID = requestBody.getDiscoveryServiceGUID();
-            assetTypes = requestBody.getAssetTypes();
+            assetDiscoveryTypes = requestBody.getAssetDiscoveryTypes();
         }
 
         try
@@ -919,7 +919,7 @@ public class DiscoveryConfigurationServices
             DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, assetTypes);
+            handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, assetDiscoveryTypes);
         }
         catch (InvalidParameterException error)
         {

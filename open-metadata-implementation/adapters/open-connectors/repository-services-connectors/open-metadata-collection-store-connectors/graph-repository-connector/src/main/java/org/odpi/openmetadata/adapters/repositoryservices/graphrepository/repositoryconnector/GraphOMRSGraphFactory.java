@@ -415,7 +415,7 @@ public class GraphOMRSGraphFactory {
 
     // Note that this map is not a complete list of the graph indexes. It only contains mappings for the MIXED indexes.
 
-    public static final Map<String,MixedIndexMapping> corePropertyMixedIndexMappings = new HashMap<String,MixedIndexMapping>() {{
+    protected static final Map<String,MixedIndexMapping> corePropertyMixedIndexMappings = new HashMap<String,MixedIndexMapping>() {{
 
         put(PROPERTY_KEY_ENTITY_CREATED_BY,                        MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_UPDATED_BY,                        MixedIndexMapping.String);

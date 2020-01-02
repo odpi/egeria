@@ -26,7 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class FeedbackRequestBody extends OCFOMASAPIRequestBody
 {
-    private boolean    isPublic  = false;
+    private static final long    serialVersionUID = 1L;
+
+    // todo this default should be false - need to fix up the problem with passing boolean values over REST APIs
+    private boolean    isPublic  = true;
 
 
     /**

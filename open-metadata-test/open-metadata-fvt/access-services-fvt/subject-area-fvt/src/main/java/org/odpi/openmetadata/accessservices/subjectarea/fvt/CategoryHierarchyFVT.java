@@ -86,7 +86,7 @@ public class CategoryHierarchyFVT
         while (depth_counter < DEPTH)
         {
             depth_counter++;
-            Set<Category> childrenCategories = new HashSet();
+            Set<Category> childrenCategories = new HashSet<>();
             for (Category category : categories)
             {
                 FVTUtils.validateNode(category);
@@ -104,7 +104,7 @@ public class CategoryHierarchyFVT
      */
     private Set<Category> createTopCategories(String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
-        Set<Category> categories = new HashSet();
+        Set<Category> categories = new HashSet<>();
         for (int width_counter = 0; width_counter < WIDTH; width_counter++)
         {
             String categoryName = createName(0, width_counter);

@@ -191,6 +191,7 @@ public abstract class FeedbackHandlerBase extends AttachmentHandlerBase
         return null;
     }
 
+
     /**
      * Return the entities for the required elements attached to an anchor entity.
      *

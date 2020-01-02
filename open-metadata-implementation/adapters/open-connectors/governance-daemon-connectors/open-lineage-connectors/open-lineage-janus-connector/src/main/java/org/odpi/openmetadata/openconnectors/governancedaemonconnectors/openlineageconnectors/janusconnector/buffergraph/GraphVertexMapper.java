@@ -5,8 +5,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +25,7 @@ public class GraphVertexMapper {
         if (instanceProperties != null) {
 
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = "veprop"+entry.getKey();
-                //check if a properrty already exist foe example create time is already there and then it is failing
-//                if (entry.getValue().equals("createTime")){ continue;}
+                String key = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+entry.getKey();
                 vertex.property(key,entry.getValue());
             }
         }
@@ -39,45 +35,9 @@ public class GraphVertexMapper {
 
 
     public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex){
-        String methodName = "mapEntitySummaryToVertex";
 
-        // Some properties are mandatory. If any of these are null then throw exception
-        boolean missingAttribute = false;
-        String  missingAttributeName = null;
-
-        if (lineageEntity.getGuid() != null)
-            vertex.property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
-        else {
-            log.debug("{} missing attribute: guid", methodName);
-            missingAttribute = true;
-            missingAttributeName = "guid";
-        }
-
-        String instanceType = lineageEntity.getTypeDefName();
-        if (instanceType != null)                               // ** name mapping
-            vertex.property(PROPERTY_KEY_ENTITY_NAME, instanceType);
-        else {
-            log.debug("{} missing attribute: type name", methodName);
-            missingAttribute = true;
-            missingAttributeName = "type or typeDefName";
-        }
-
-
-        if (missingAttribute) {
-            log.error("{} entity is missing core attribute {}", methodName, missingAttributeName);
-            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.ENTITY_PROPERTIES_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(lineageEntity.getGuid(),
-                    methodName,
-                    this.getClass().getName());
-
-            throw new JanusConnectorException(
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-
+        vertex.property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
+        vertex.property(PROPERTY_KEY_LABEL, lineageEntity.getTypeDefName());
         vertex.property(PROPERTY_KEY_ENTITY_VERSION, lineageEntity.getVersion());
 
         if (lineageEntity.getCreatedBy() != null) {

@@ -26,6 +26,8 @@ public class APIOperation extends SchemaType
     protected  SchemaType  requestSchemaType  = null;
     protected  SchemaType  responseSchemaType = null;
 
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Default constructor used by subclasses
      */

@@ -37,19 +37,18 @@ public enum DataEngineErrorCode {
             "Correct the code in the caller to provide the correct port type."),
     PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-002",
             "The data engine event {0} could not be processed. Error: {1}",
-            "The system is unable to process the event.",
-            "Verify the topic configuration or the event schema."),
+            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
+            Constants.USER_ACTION_EVENT_EXCEPTION),
     PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
             "The data engine event {0} could not be parsed. Error: {1}",
-            "The system is unable to process the event.",
-            "Verify the topic configuration or the event schema."),
+            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
+            Constants.USER_ACTION_EVENT_EXCEPTION),
     DATA_ENGINE_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
             "Exception while processing the data engine event {0}",
-            "The system is unable to process the event.",
-            "Verify the topic configuration or the event schema.");
+            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
+            Constants.USER_ACTION_EVENT_EXCEPTION);
 
-
-    private int HTTPErrorCode;
+    private int httpErrorCode;
     private String errorMessageId;
     private String errorMessage;
     private String systemAction;
@@ -71,7 +70,7 @@ public enum DataEngineErrorCode {
      */
     DataEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction,
                         String newUserAction) {
-        this.HTTPErrorCode = newHTTPErrorCode;
+        this.httpErrorCode = newHTTPErrorCode;
         this.errorMessageId = newErrorMessageId;
         this.errorMessage = newErrorMessage;
         this.systemAction = newSystemAction;
@@ -82,6 +81,7 @@ public enum DataEngineErrorCode {
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
      * @param params - strings that plug into the placeholders in the errorMessage
+     *
      * @return errorMessage (formatted with supplied parameters)
      */
     public String getFormattedErrorMessage(String... params) {
@@ -94,8 +94,8 @@ public enum DataEngineErrorCode {
      *
      * @return int
      */
-    public int getHTTPErrorCode() {
-        return HTTPErrorCode;
+    public int getHttpErrorCode() {
+        return httpErrorCode;
     }
 
     /**
@@ -133,5 +133,9 @@ public enum DataEngineErrorCode {
     public String getUserAction() {
         return userAction;
     }
-}
+
+    private static class Constants {
+        static final String SYSTEM_ACTION_EVENT_EXCEPTION = "The system is unable to process the event.";
+        static final String USER_ACTION_EVENT_EXCEPTION = "Verify the topic configuration or the event schema.";
+    }}
 

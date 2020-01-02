@@ -193,8 +193,8 @@ public class ConformanceSuiteTestLabServices
      * UserNotAuthorizedException the supplied userId is not known.
      */
     public WorkbenchStatusResponse getWorkbenchStatus(String   userId,
-                                                    String   serverName,
-                                                    String   workbenchId)
+                                                      String   serverName,
+                                                      String   workbenchId)
     {
         final String   methodName = "getWorkbenchStatus";
 

@@ -17,14 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PortAlias extends Port {
     private String delegatesTo;
 
-    public PortAlias() {
-    }
-
-    public PortAlias(String displayName, String qualifiedName, PortType portType, String delegatesTo) {
-        super(displayName, qualifiedName, portType);
-        this.delegatesTo = delegatesTo;
-    }
-
     public String getDelegatesTo() {
         return delegatesTo;
     }

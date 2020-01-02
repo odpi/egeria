@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectCollectionMember extends CollectionMemberHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              status               = null;
     private Date                startDate            = null;
     private Date                plannedEndDate       = null;

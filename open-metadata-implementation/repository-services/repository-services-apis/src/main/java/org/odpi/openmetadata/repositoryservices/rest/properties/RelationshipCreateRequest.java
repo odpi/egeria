@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipCreateRequest extends OMRSAPIRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private String             relationshipTypeGUID   = null;
     private InstanceProperties initialProperties      = null;
     private String             entityOneGUID          = null;

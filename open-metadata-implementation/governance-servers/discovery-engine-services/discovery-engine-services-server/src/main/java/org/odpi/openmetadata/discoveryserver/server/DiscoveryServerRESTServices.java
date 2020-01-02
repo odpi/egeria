@@ -4,6 +4,7 @@ package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -36,7 +37,7 @@ public class DiscoveryServerRESTServices
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return unique id for the discovery request or
@@ -49,7 +50,7 @@ public class DiscoveryServerRESTServices
                                        String                      discoveryEngineGUID,
                                        String                      userId,
                                        String                      assetGUID,
-                                       String                      assetType,
+                                       String                      assetDiscoveryType,
                                        DiscoveryRequestRequestBody requestBody)
     {
         final String        methodName = "discoverAsset";
@@ -74,9 +75,79 @@ public class DiscoveryServerRESTServices
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setGUID(handler.discoverAsset(assetGUID,
-                                                       assetType,
+                                                       assetDiscoveryType,
                                                        requestBody.getAnalysisParameters(),
                                                        requestBody.getAnnotationTypes()));
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Request the execution of a discovery service to explore a specific asset.
+     *
+     * @param serverName name of the discovery server.
+     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId identifier of calling user
+     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param requestBody containing analysisParameters and annotationTypes
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public VoidResponse scanAllAssets(String                      serverName,
+                                      String                      discoveryEngineGUID,
+                                      String                      userId,
+                                      String                      assetDiscoveryType,
+                                      DiscoveryRequestRequestBody requestBody)
+    {
+        final String        methodName = "scanAllAssets";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineGUID,
+                                                                                       methodName);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+            else
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.scanAllAssets(assetDiscoveryType,
+                                      requestBody.getAnalysisParameters(),
+                                      requestBody.getAnnotationTypes());
             }
         }
         catch (InvalidParameterException error)

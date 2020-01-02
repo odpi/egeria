@@ -5,13 +5,14 @@ package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 
 import java.util.*;
 
 /**
  * OMRSArchiveHelper provides utility methods to help in the construction of open metadata archives.
  */
-public class OMRSArchiveHelper
+public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 {
     private OMRSArchiveBuilder     archiveBuilder;
     private String                 archiveGUID;
@@ -282,6 +283,8 @@ public class OMRSArchiveHelper
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.ACTIVE);
 
+        entityDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
+
         return entityDef;
     }
 
@@ -315,6 +318,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -350,6 +355,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -383,6 +390,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -418,6 +427,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -452,6 +463,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -485,6 +498,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -521,6 +536,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -555,6 +572,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -591,6 +610,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -625,6 +646,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -661,6 +684,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -696,6 +721,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -730,6 +757,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -767,6 +796,8 @@ public class OMRSArchiveHelper
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
 
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
         return attribute;
     }
 
@@ -802,6 +833,8 @@ public class OMRSArchiveHelper
         attribute.setUnique(false);
         attribute.setDefaultValue(null);
         attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
 
         return attribute;
     }
@@ -861,6 +894,8 @@ public class OMRSArchiveHelper
          * Use the supplied propagation rule.
          */
         relationshipDef.setPropagationRule(propagationRule);
+
+        relationshipDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
         return relationshipDef;
     }
@@ -954,6 +989,8 @@ public class OMRSArchiveHelper
         validEntityDefs.add(validEntityDef);
         classificationDef.setValidEntityDefs(validEntityDefs);
         classificationDef.setPropagatable(propagatable);
+
+        classificationDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
         return classificationDef;
     }
@@ -1254,125 +1291,6 @@ public class OMRSArchiveHelper
 
         instanceHeader.setGUID(guid);
         instanceHeader.setInstanceURL(null);
-    }
-
-
-    /**
-     * Add the supplied property to an instance properties object.  If the instance property object
-     * supplied is null, a new instance properties object is created.
-     *
-     * @param properties properties object to add property to, may be null.
-     * @param propertyName name of property
-     * @param propertyValue value of property
-     * @return instance properties object.
-     */
-    public InstanceProperties addStringPropertyToInstance(InstanceProperties properties,
-                                                          String             propertyName,
-                                                          String             propertyValue)
-    {
-        InstanceProperties  resultingProperties;
-
-        if (propertyValue != null)
-        {
-            if (properties == null)
-            {
-                resultingProperties = new InstanceProperties();
-            }
-            else
-            {
-                resultingProperties = properties;
-            }
-
-
-            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            primitivePropertyValue.setPrimitiveValue(propertyValue);
-            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
-
-            resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-            return resultingProperties;
-        }
-        else
-        {
-            return properties;
-        }
-    }
-
-
-    /**
-     * Add the supplied property to an instance properties object.  If the instance property object
-     * supplied is null, a new instance properties object is created.
-     *
-     * @param properties properties object to add property to, may be null.
-     * @param propertyName name of property
-     * @param propertyValue value of property
-     * @return instance properties object.
-     */
-    public InstanceProperties addIntPropertyToInstance(InstanceProperties properties,
-                                                       String             propertyName,
-                                                       int                propertyValue)
-    {
-        InstanceProperties  resultingProperties;
-
-        if (properties == null)
-        {
-            resultingProperties = new InstanceProperties();
-        }
-        else
-        {
-            resultingProperties = properties;
-        }
-
-        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
-        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
-        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
-
-        resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-        return resultingProperties;
-    }
-
-
-    /**
-     * Add the supplied property to an instance properties object.  If the instance property object
-     * supplied is null, a new instance properties object is created.
-     *
-     * @param properties properties object to add property to, may be null.
-     * @param propertyName name of property
-     * @param propertyValue value of property
-     * @return instance properties object.
-     */
-    public InstanceProperties addBooleanPropertyToInstance(InstanceProperties properties,
-                                                           String             propertyName,
-                                                           boolean            propertyValue)
-    {
-        InstanceProperties  resultingProperties;
-
-        if (properties == null)
-        {
-            resultingProperties = new InstanceProperties();
-        }
-        else
-        {
-            resultingProperties = properties;
-        }
-
-        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
-        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
-        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
-
-        resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-        return resultingProperties;
     }
 
 

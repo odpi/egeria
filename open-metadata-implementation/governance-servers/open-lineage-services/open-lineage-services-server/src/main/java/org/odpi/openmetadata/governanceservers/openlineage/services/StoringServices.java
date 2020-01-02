@@ -17,7 +17,7 @@ public class StoringServices {
 
     public StoringServices(BufferGraph graphStore) {
         this.bufferGraph = graphStore;
-//        this.jobConfiguration = new JobConfiguration(graphStore);
+        this.jobConfiguration = new JobConfiguration(graphStore);
 
     }
 
@@ -25,4 +25,11 @@ public class StoringServices {
         bufferGraph.addEntity(lineageEvent);
     }
 
+    public void updateEntity(LineageEvent lineageEvent){}
+
+    public void deleteEntity(LineageEvent lineageEvent){
+
+
+        bufferGraph.deleteEntity(lineageEvent.getLineageEntity().getGuid());
+    }
 }

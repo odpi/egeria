@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitivePropertyValue extends InstancePropertyValue
 {
+    private static final long    serialVersionUID = 1L;
+
     private  PrimitiveDefCategory   primitiveDefCategory = null;
     private  Object                 primitiveValue = null;
 

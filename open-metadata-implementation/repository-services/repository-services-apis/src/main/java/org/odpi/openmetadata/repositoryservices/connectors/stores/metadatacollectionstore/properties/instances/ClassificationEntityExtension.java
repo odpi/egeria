@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class ClassificationEntityExtension extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private Classification   classification = null;
     private EntityProxy      entityToClassify = null;
 

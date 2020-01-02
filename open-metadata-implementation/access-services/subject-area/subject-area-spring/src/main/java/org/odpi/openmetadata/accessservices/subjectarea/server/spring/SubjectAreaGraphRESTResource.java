@@ -61,7 +61,7 @@ public class SubjectAreaGraphRESTResource extends SubjectAreaRESTServicesInstanc
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/nodes/{guid}")
+    @GetMapping( path = "/users/{userId}/nodes/{guid}")
     public  SubjectAreaOMASAPIResponse getGraph(@PathVariable String serverName,
                                                 @PathVariable String userId,
                                                 @PathVariable String guid,

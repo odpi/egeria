@@ -74,7 +74,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
 
                 SecurityOfficerOMRSTopicListener omrsTopicListener = new SecurityOfficerOMRSTopicListener(accessServiceConfigurationProperties.getAccessServiceName(),
                         securityOfficerPublisher);
-                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener);
+                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener, accessServiceConfigurationProperties.getAccessServiceName());
             }
 
             auditCode = SecurityOfficerAuditCode.SERVICE_INITIALIZED;
@@ -82,18 +82,19 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (Exception error) {
             auditCode = SecurityOfficerAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfigurationProperties.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 

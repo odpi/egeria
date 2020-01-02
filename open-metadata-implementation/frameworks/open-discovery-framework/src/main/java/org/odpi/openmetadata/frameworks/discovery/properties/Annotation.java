@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Annotation extends ElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String           annotationType   = null;
     protected String           summary          = null;
     protected int              confidenceLevel  = 0;

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * ConfigDiscoveryEngineResource provides the API for configuring a discovery engine in an OMAG
- * server.
+ * ConfigDiscoveryEngineResource provides the API for configuring the discovery engine services.
+ * These services support the operation of one or more discovery engines in an OMAG server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-server")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-servers")
 public class ConfigDiscoveryEngineResource
 {
     private OMAGServerConfigDiscoveryServer adminAPI = new OMAGServerConfigDiscoveryServer();
@@ -29,11 +29,11 @@ public class ConfigDiscoveryEngineResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-root-url")
+    @PostMapping(path = "access-service-root-url")
 
     public VoidResponse setAccessServiceRootURL(@PathVariable String userId,
                                                 @PathVariable String serverName,
-                                                @RequestParam String accessServiceRootURL)
+                                                @RequestBody  String accessServiceRootURL)
     {
         return adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL);
     }
@@ -49,11 +49,11 @@ public class ConfigDiscoveryEngineResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-server-name")
+    @PostMapping(path = "access-service-server-name")
 
     public VoidResponse setAccessServiceServerName(@PathVariable String userId,
                                                    @PathVariable String serverName,
-                                                   @RequestParam String accessServiceServerName)
+                                                   @RequestBody  String accessServiceServerName)
     {
         return adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName);
     }
@@ -64,12 +64,12 @@ public class ConfigDiscoveryEngineResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param discoveryEngines  discoveryEngines for topic.
+     * @param discoveryEngines  discoveryEngines for server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "set-discovery-engines")
+    @PostMapping(path = "set-discovery-engines")
 
     public VoidResponse setDiscoveryEngines(@PathVariable String       userId,
                                             @PathVariable String       serverName,
@@ -86,7 +86,7 @@ public class ConfigDiscoveryEngineResource
      * @param serverName  local server name.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "")
+    @DeleteMapping(path = "")
 
     VoidResponse deleteService(@PathVariable String userId,
                                @PathVariable String serverName)

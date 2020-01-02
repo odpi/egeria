@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValuesRequestBody extends ReferenceableRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String displayName    = null;
     protected String description    = null;
     protected String usage          = null;

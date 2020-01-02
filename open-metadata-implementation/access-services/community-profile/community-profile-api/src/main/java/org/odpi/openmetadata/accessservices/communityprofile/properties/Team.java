@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class Team extends TeamSummary
 {
+    private static final long    serialVersionUID = 1L;
+
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;
 

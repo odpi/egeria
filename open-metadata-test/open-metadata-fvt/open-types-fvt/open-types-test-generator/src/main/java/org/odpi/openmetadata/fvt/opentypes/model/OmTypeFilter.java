@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class OmTypeFilter {
 
     private List<TypeDef> allTypeDefs = new ArrayList();
-    private List<AttributeTypeDef> allAttributeTypeDefs = new ArrayList();
+    private List<AttributeTypeDef> allAttributeTypeDefs = new ArrayList<>();
 
     private Map<String, EnumDef> allEnumTypedefs = new HashMap<String, EnumDef>();
     private Map<String, EntityDef> allEntityTypedefs = new HashMap<String, EntityDef>();

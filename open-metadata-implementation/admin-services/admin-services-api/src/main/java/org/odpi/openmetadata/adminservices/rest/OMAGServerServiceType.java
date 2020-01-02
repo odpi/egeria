@@ -2,10 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.rest;
 
+import java.io.Serializable;
+
 /**
  * OMAGServerServiceType lists the different types of services supported by the OMAG Server
  */
-public enum OMAGServerServiceType
+public enum OMAGServerServiceType implements Serializable
 {
     REPOSITORY_SERVICES  (0, "Repository Services", "The Open Metadata Repository Services (OMRS)."),
     ACCESS_SERVICES      (1, "Access Services",     "The Open Metadata Access Services (OMAS).");

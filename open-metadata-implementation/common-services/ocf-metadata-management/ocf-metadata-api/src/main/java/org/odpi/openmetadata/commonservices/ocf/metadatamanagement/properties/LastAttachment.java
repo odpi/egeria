@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LastAttachment extends ElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String anchorGUID      = null;
     private String anchorType      = null;
     private String attachmentGUID  = null;

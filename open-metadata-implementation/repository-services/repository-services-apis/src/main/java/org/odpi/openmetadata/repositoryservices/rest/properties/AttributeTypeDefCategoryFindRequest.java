@@ -18,6 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class AttributeTypeDefCategoryFindRequest extends OMRSAPIRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private AttributeTypeDefCategory category = null;
 
 

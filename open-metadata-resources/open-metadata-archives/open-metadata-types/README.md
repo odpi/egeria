@@ -12,6 +12,13 @@ The open metadata archive for these types is built by the `OpenMetadataTypesArch
 It uses the Open Metadata Repository Services (OMRS) archive building
 classes `OMRSArchiveBuilder` and `OMRSArchiveHelper` found in the `repository-services-archive-utilities` module.
 
+The types for each release are managed in separate classes.
+ * `OpenMetadataTypesArchive` - new candidate types for current release 
+ * `OpenMetadataTypesArchive1_3` - approved types added for 1.3 release
+ * `OpenMetadataTypesArchive1_2` - approved types added for releases before 1.3
+ 
+The approved types can only be changed through official patches.
+
 It is possible to add new types by creating a similar Java class to `OpenMetadataTypesArchive` that defines
 and maintains the additional types that you would like to define.
 

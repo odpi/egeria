@@ -18,6 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceZoneInAction extends GovernanceZoneDefinition
 {
+    private static final long    serialVersionUID = 1L;
+
     private int                         zoneMembershipCount = 0;
 
 

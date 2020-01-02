@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
@@ -58,6 +57,11 @@ public class InTopicListener implements OpenMetadataTopicListener {
             case TECHNICAL_ELEMENT_CONTEXT_EVENT:
                 storingServices.addEntity(event);
                 break;
+            case UPDATE_ENTITY_EVENT:
+                storingServices.updateEntity(event);
+                break;
+            case DELETE_ENTITY_EVENT:
+                storingServices.deleteEntity(event);
             default:
                 break;
         }

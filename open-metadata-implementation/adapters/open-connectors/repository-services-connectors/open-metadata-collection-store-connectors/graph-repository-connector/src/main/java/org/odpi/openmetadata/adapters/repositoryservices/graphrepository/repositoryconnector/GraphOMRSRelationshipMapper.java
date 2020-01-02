@@ -414,8 +414,7 @@ public class GraphOMRSRelationshipMapper {
         String typeName = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
         try {
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
-            TypeDefSummary typeDefSummary = new TypeDefSummary(TypeDefCategory.RELATIONSHIP_DEF, typeName, typeDef.getName(), typeDef.getVersion(), typeDef.getVersionName());
-            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDefSummary);
+            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDef);
             relationship.setType(instanceType);
 
         } catch (TypeErrorException e) {

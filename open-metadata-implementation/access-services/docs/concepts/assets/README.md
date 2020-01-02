@@ -23,7 +23,19 @@ information necessary for managing digital assets and the infrastructure that su
 Although it has a flexible model to allow
 the definition of asset to be expanded to include a broader range of physical assets.
 
-## Accessing Assets
+The information about an asset that is used to describe its characteristics and how it should be managed
+(that is, the Asset's metadata) it stored in a sub-graph of open metadata instances (entities and relationships)
+with the **Asset** entity
+([type definition](../../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md))
+at the root.  The Asset entity contains a small amount of information that merely captures the
+existence of the real asset.  Then other entities are linked to it to add more information.
+It is likely that this additional information is identified, captured and stored by different
+tools. The open metadata services gather this information together and distribute it to provide
+the most complete view of the asset's properties.
+
+More information on the types of attachments that can be added to an asset can be found [here](../attachments).
+
+## Accessing Asset Content
 
 Egeria provides an open framework for accessing the content of digital assets and the
 information about them.
@@ -31,8 +43,11 @@ It is called the [Open Connector Framework (OCF)](../../../../frameworks/open-co
 and it provides specialized connectors (clients) for accessing specific types of Asset
 and the information about them.
 
+The type of connector to use is specified in the [Connection](../../../../frameworks/open-connector-framework/docs/concepts/connection.md)
+entity that is linked to the Asset.
 
-## APIs and Events for managing Asset information
+
+## APIs and Events for managing Asset information (metadata)
 
 Egeria's Open Metadata Access Services (OMASs) provide the specialized services for
 managing Assets.  Each OMAS focuses on a particular part of the asset lifecycle or

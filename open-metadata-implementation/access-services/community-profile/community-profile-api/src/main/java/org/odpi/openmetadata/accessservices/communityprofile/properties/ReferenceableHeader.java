@@ -32,6 +32,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class ReferenceableHeader extends CommonHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<Classification> classifications = null;
     private String               qualifiedName   = null;
     private String               name            = null;

@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TagRequestBody extends FeedbackRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String tagName = null;
     private String tagDescription = null;
 

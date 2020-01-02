@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventHeader;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
@@ -138,7 +138,7 @@ public class AssetConsumerPublisher
      * @param event event to serialize
      * @return JSON payload (as String)
      */
-    private String getJSONPayload(AssetConsumerEventHeader    event)
+    private String getJSONPayload(AssetConsumerEvent event)
     {
         ObjectMapper objectMapper = new ObjectMapper();
         String       jsonString   = null;

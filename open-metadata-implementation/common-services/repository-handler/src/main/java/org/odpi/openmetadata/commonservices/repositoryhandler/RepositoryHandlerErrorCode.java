@@ -34,7 +34,7 @@ public enum RepositoryHandlerErrorCode
             "The system is unable to process the request.",
             "Correct the types and property names of the properties passed on the request."),
     USER_NOT_AUTHORIZED(400, "REPOSITORY-HANDLER-400-002 ",
-            "User {0} is not authorized to issue the {1} request for open metadata access service {3} on server {4}",
+            "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request.",
             "Verify the access rights of the user."),
     PROPERTY_SERVER_ERROR(400, "REPOSITORY-HANDLER-400-003 ",

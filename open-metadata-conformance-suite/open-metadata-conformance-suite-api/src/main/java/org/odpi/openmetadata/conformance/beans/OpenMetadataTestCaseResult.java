@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataTestCaseResult extends OpenMetadataTestCaseSummary
 {
+    private static final long     serialVersionUID = 1L;
+
     private String              successMessage       = null;
 
     private List<String>        successfulAssertions   = new ArrayList<>();

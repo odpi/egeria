@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class DataPlatformServicesConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
 
     /* Properties needed to call the access service REST APIs */
     private String      dataPlatformServerURL;

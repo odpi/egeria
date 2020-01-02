@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.List;
@@ -25,7 +24,7 @@ class RESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RES
     /**
      * Create a new RESTExceptionHandler.
      */
-    public RESTExceptionHandler()
+    RESTExceptionHandler()
     {
         super();
     }
@@ -39,9 +38,9 @@ class RESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RES
      * @param methodName - name of the method making the call.
      * @throws InvalidParameterException the guid is null
      */
-    public  void validateGovernanceDomain(GovernanceDomain governanceDomain,
-                                          String           nameParameter,
-                                          String           methodName) throws InvalidParameterException
+    void validateGovernanceDomain(GovernanceDomain governanceDomain,
+                                  String           nameParameter,
+                                  String           methodName) throws InvalidParameterException
     {
         if (governanceDomain == null)
         {
@@ -67,8 +66,9 @@ class RESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RES
      * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws EmployeeNumberNotUniqueException encoded exception from the server
      */
-    public  void detectAndThrowEmployeeNumberNotUniqueException(String                           methodName,
-                                                                GovernanceProgramOMASAPIResponse restResult) throws EmployeeNumberNotUniqueException
+    @SuppressWarnings("unchecked")
+    void detectAndThrowEmployeeNumberNotUniqueException(String                           methodName,
+                                                        GovernanceProgramOMASAPIResponse restResult) throws EmployeeNumberNotUniqueException
     {
         final String   exceptionClassName = EmployeeNumberNotUniqueException.class.getName();
 
@@ -105,8 +105,9 @@ class RESTExceptionHandler extends org.odpi.openmetadata.commonservices.ffdc.RES
      * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws AppointmentIdNotUniqueException encoded exception from the server
      */
-    public  void detectAndThrowAppointmentIdNotUniqueException(String                           methodName,
-                                                               GovernanceProgramOMASAPIResponse restResult) throws AppointmentIdNotUniqueException
+    @SuppressWarnings("unchecked")
+    void detectAndThrowAppointmentIdNotUniqueException(String                           methodName,
+                                                       GovernanceProgramOMASAPIResponse restResult) throws AppointmentIdNotUniqueException
     {
         final String   exceptionClassName = EmployeeNumberNotUniqueException.class.getName();
 

@@ -24,7 +24,7 @@ public abstract class DiscoveryEngine
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
      *
      * @return unique id for the discovery request.
      *
@@ -34,16 +34,16 @@ public abstract class DiscoveryEngine
      */
     public abstract String discoverAsset(String              userId,
                                          String              assetGUID,
-                                         String              assetType) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               DiscoveryEngineException;
+                                         String              assetDiscoveryType) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        DiscoveryEngineException;
 
     /**
      * Request the execution of a discovery service to explore a specific asset.
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      *
      * @return unique id for the discovery request.
@@ -54,7 +54,7 @@ public abstract class DiscoveryEngine
      */
     public abstract String discoverAsset(String              userId,
                                          String              assetGUID,
-                                         String              assetType,
+                                         String              assetDiscoveryType,
                                          Map<String, String> analysisParameters) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         DiscoveryEngineException;
@@ -65,7 +65,7 @@ public abstract class DiscoveryEngine
      *
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      * @param annotationTypes list of the types of annotations to produce (and no others)
      *
@@ -77,11 +77,32 @@ public abstract class DiscoveryEngine
      */
     public abstract String discoverAsset(String              userId,
                                          String              assetGUID,
-                                         String              assetType,
+                                         String              assetDiscoveryType,
                                          Map<String, String> analysisParameters,
                                          List<String>        annotationTypes) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      DiscoveryEngineException;
+
+
+    /**
+     * Explore each of the assets in the asset store.  A new instance of the discovery service is started for
+     * each retrieved asset.
+     *
+     * @param userId identifier of calling user
+     * @param assetDiscoveryType identifier of the type of analysis - this determines which discovery service to run.
+     * @param analysisParameters name value properties to control the analysis
+     * @param annotationTypes list of the types of annotations to produce (and no others)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public abstract void scanAllAssets(String              userId,
+                                       String              assetDiscoveryType,
+                                       Map<String, String> analysisParameters,
+                                       List<String>        annotationTypes) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   DiscoveryEngineException;
 
 
     /**

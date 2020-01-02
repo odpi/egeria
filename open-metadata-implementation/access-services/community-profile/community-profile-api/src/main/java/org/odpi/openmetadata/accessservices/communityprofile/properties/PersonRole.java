@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonRole extends PersonalRole
 {
+    private static final long    serialVersionUID = 1L;
+
     private boolean headCountLimitSet = false;
     private int     headCount         = 0;
     private int     appointmentCount  = 0;

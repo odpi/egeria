@@ -42,19 +42,19 @@ public class GlossaryViewAdmin extends AccessServiceAdmin
                     auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog);
+            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
             serverName = instance.getServerName();
 
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
+                    auditCode.getFormattedLogMessage(serverName), accessServiceConfig.toString(), auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
         } catch (Throwable error) {
             auditCode = GlossaryViewAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()), null,
-                    auditCode.getSystemAction(), auditCode.getUserAction());
+            auditLog.logException(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()), accessServiceConfig.toString(),
+                    auditCode.getSystemAction(), auditCode.getUserAction(), error);
         }
     }
 

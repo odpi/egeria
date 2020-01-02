@@ -461,7 +461,7 @@ public abstract class AccessServiceAdmin
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            omrsTopicConnector.registerListener(omrsTopicListener);
+            omrsTopicConnector.registerListener(omrsTopicListener, accessServiceName);
         }
         else
         {

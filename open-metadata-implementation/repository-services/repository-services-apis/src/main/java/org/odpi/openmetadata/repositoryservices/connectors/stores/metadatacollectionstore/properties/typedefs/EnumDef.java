@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EnumDef extends AttributeTypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<EnumElementDef> elementDefs    = null;
     private EnumElementDef       defaultValue   = null;
 
@@ -47,7 +49,11 @@ public class EnumDef extends AttributeTypeDef
 
         if (template != null)
         {
-            elementDefs = new ArrayList<>(template.getElementDefs());
+            if (template.getElementDefs() != null)
+            {
+                elementDefs = new ArrayList<>(template.getElementDefs());
+            }
+
             defaultValue = template.getDefaultValue();
         }
     }
@@ -72,6 +78,10 @@ public class EnumDef extends AttributeTypeDef
     public List<EnumElementDef> getElementDefs()
     {
         if (elementDefs == null)
+        {
+            return null;
+        }
+        else if (elementDefs.isEmpty())
         {
             return null;
         }

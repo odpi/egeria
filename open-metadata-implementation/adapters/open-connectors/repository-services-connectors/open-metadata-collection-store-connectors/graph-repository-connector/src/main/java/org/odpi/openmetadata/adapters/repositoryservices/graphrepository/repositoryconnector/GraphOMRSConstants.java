@@ -43,7 +43,7 @@ public class GraphOMRSConstants {
 
     // Map of core property short name to type as stored in graph (not how they appear in Instances)
 
-    public static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
+    protected static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID,                           "java.lang.String");
         put(PROPERTY_NAME_TYPE_NAME,                      "java.lang.String");
         put(PROPERTY_NAME_METADATACOLLECTION_ID,          "java.lang.String");
@@ -96,7 +96,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES      = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_MAPPING_PROPERTIES;
 
     // Map of names to property key names
-    public static final Map<String, String> corePropertiesEntity = new HashMap<String,String>() {{
+    protected static final Map<String, String> corePropertiesEntity = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID );
         put(PROPERTY_NAME_TYPE_NAME, PROPERTY_KEY_ENTITY_TYPE_NAME);
         put(PROPERTY_NAME_METADATACOLLECTION_ID, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID);
@@ -148,7 +148,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES          = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_MAPPING_PROPERTIES;
 
     // Map of names to property key names
-    public static final Map<String, String> corePropertiesRelationship = new HashMap<String,String>() {{
+    protected static final Map<String, String> corePropertiesRelationship = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID, PROPERTY_KEY_RELATIONSHIP_GUID);
         put(PROPERTY_NAME_TYPE_NAME, PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
         put(PROPERTY_NAME_METADATACOLLECTION_ID, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID);
@@ -199,7 +199,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES          = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_MAPPING_PROPERTIES;
 
     // Map of names to property key names
-    public static final Map<String, String> corePropertiesClassification = new HashMap<String,String>() {{
+    protected static final Map<String, String> corePropertiesClassification = new HashMap<String,String>() {{
         put(PROPERTY_NAME_TYPE_NAME, PROPERTY_KEY_CLASSIFICATION_TYPE_NAME);
         put(PROPERTY_NAME_METADATACOLLECTION_ID, PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_ID);
         put(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);

@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 /**
  * OMRSDynamicTypeMetadataCollectionBase provides a base class for an open metadata repository that
  * has a dynamic type system.  It begins with no types defined and builds up the knowledge of the types
- * as they are added through the API
+ * as they are added through the API.
  */
 public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectionBase
 {
@@ -245,36 +245,26 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
      * @throws PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
      *                               with the stored TypeDef.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDef updateTypeDef(String       userId,
                                  TypeDefPatch typeDefPatch) throws InvalidParameterException,
                                                                    RepositoryErrorException,
                                                                    TypeDefNotKnownException,
-                                                                   PatchErrorException,
-                                                                   UserNotAuthorizedException
+                                                                   PatchErrorException
     {
         final String  methodName           = "updateTypeDef";
-        final String  typeDefParameterName = "typeDefPatch";
 
         /*
-         * Validate parameters
+         * Validate parameters - this method returns the existing TypeDef if needed.
          */
-        super.updateTypeDefParameterValidation(userId, typeDefPatch, methodName);
+        TypeDef typeDef = super.updateTypeDefParameterValidation(userId, typeDefPatch, methodName);
 
         /*
-         * Perform operation
+         * Perform operation - this function will validate the patch (throwing exceptions if errors found
+         * and apply it to the existing typedef, returning the updated one.  If the real repository implementation
+         * needs to work with the patched TypeDef, it can use the result from applyPatch().
          */
-        TypeDef  existingTypeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefPatch.getTypeName());
-
-        if (existingTypeDef == null)
-        {
-            super.reportUnknownTypeGUID(typeDefPatch.getTypeDefGUID(),
-                                        typeDefParameterName,
-                                        methodName);
-        }
-
-        return repositoryHelper.applyPatch(repositoryName, existingTypeDef, typeDefPatch);
+        return repositoryHelper.applyPatch(repositoryName, typeDef, typeDefPatch);
     }
 
 

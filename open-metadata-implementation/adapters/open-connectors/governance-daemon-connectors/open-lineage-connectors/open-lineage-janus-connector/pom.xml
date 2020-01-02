@@ -11,7 +11,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Open Lineage Janus Connector</name>
+    <description>
+        The Open Lineage Janus Connector allows the Open Lineage Services to connect to a Janusgraph database.
+    </description>
+
     <artifactId>open-lineage-janus-connector</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

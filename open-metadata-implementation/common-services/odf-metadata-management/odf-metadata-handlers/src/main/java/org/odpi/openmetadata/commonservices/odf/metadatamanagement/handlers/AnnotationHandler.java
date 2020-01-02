@@ -81,7 +81,7 @@ public class AnnotationHandler
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;
@@ -117,7 +117,7 @@ public class AnnotationHandler
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;
@@ -156,7 +156,7 @@ public class AnnotationHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;

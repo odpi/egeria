@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstanceHeader extends InstanceAuditHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /*
      * Entities and relationships have unique identifiers.
      */

@@ -300,7 +300,8 @@ public class OMRSOperationalServices
          * used to manage the validation of TypeDefs and the creation of metadata instances.
          * It is loaded with any TypeDefs from the archives to seed its in-memory TypeDef cache.
          */
-        localRepositoryContentManager = new OMRSRepositoryContentManager(new OMRSAuditLog(auditLogDestination,
+        localRepositoryContentManager = new OMRSRepositoryContentManager(localServerUserId,
+                                                                         new OMRSAuditLog(auditLogDestination,
                                                                                           OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER));
 
         /*
@@ -748,10 +749,13 @@ public class OMRSOperationalServices
      * Add an open metadata archive to the local repository.
      *
      * @param openMetadataArchiveConnection connection to the archive
+     * @param archiveSource descriptive name of the archive source
      */
-    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection)
+    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection,
+                                       String        archiveSource)
     {
-        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection));
+        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection),
+                                              archiveSource);
     }
 
 
@@ -899,13 +903,14 @@ public class OMRSOperationalServices
                                 + errorCode.getFormattedErrorMessage(localServerName);
 
             OMRSAuditCode auditCode = OMRSAuditCode.BAD_AUDIT_LOG_DESTINATION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(methodName,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                                  null,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),

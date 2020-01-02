@@ -90,6 +90,13 @@ egeria-lineage-repositories/**
 egeria-graph-repository/**
 omas-graph-repository/**
 
+# Ignore archives
+CloudInformationModel.json
+CloudInformationModelGUIDMap.json
+DataStoreConnectorTypes.json
+DataStoreConnectorsGUIDMap.json
+OpenMetadataTypes.json
+
 
 # Ignore Subject Area OMAS older Generated output so it is not checked in.
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
