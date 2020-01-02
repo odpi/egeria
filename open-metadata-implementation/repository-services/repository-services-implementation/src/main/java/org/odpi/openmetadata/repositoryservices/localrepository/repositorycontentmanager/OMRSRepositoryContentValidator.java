@@ -279,7 +279,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validTypeDefId(String          sourceName,
                                   String          typeDefGUID,
                                   String          typeDefName,
-                                  long            typeDefVersion,
+                                  String          typeDefVersion,
                                   TypeDefCategory category)
     {
         final String  methodName = "validTypeDefId";
@@ -307,7 +307,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validAttributeTypeDefId(String                   sourceName,
                                            String                   attributeTypeDefGUID,
                                            String                   attributeTypeDefName,
-                                           long                     attributeTypeDefVersion,
+                                           String                   attributeTypeDefVersion,
                                            AttributeTypeDefCategory category)
     {
         final String  methodName = "validAttributeTypeDefId";

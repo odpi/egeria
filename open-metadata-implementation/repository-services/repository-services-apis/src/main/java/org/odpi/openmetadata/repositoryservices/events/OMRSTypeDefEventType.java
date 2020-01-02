@@ -48,7 +48,7 @@ public enum OMRSTypeDefEventType implements Serializable
     DELETED_ATTRIBUTE_TYPEDEF_EVENT       (5,  "DeletedAttributeTypeDef",      "An existing AttributeTypeDef has been deleted."),
     RE_IDENTIFIED_TYPEDEF_EVENT           (6,  "ReIdentifiedTypeDef",          "An existing TypeDef has changed either it guid or its name."),
     RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT (7,  "ReIdentifiedAttributeTypeDef", "An existing AttributeTypeDef has changed either it guid or its name."),
-    TYPEDEF_ERROR_EVENT                   (99, "InstanceErrorEvent",
+    TYPEDEF_ERROR_EVENT                   (99, "TypeDefErrorEvent",
                                                "An error has been detected in the exchange of TypeDefs between members of the cohort.");
 
     private static final long serialVersionUID = 1L;

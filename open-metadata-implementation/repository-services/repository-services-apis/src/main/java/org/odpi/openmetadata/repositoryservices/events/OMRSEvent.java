@@ -166,13 +166,39 @@ public abstract class OMRSEvent
 
 
     /**
+     * Outbound constructor used for TypeDef conflict events.
+     *
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param otherMetadataCollectionId identifier of the metadata collection that sent the type.
+     * @param otherTypeDefSummary description of conflicting TypeDef.
+     */
+    public OMRSEvent(OMRSEventCategory  eventCategory,
+                     OMRSEventErrorCode genericErrorCode,
+                     String             errorMessage,
+                     String             otherMetadataCollectionId,
+                     TypeDefSummary     otherTypeDefSummary)
+    {
+        this.eventDirection = OMRSEventDirection.OUTBOUND;
+        this.eventTimestamp = new Date();
+        this.eventCategory = eventCategory;
+
+        this.genericErrorCode = genericErrorCode;
+        this.errorMessage = errorMessage;
+        this.otherMetadataCollectionId = otherMetadataCollectionId;
+        this.otherTypeDefSummary = otherTypeDefSummary;
+    }
+
+
+    /**
      * Outbound constructor used for AttributeTypeDef conflict events.
      *
      * @param eventCategory category of event.
      * @param genericErrorCode code for the error
      * @param errorMessage detailed error message for remote audit log
      * @param targetMetadataCollectionId identifier of the metadata collection required to change TypeDef.
-     * @param targetAttributeTypeDef details of AttrbuteTypeDef to change.
+     * @param targetAttributeTypeDef details of AttributeTypeDef to change.
      * @param otherAttributeTypeDef description of conflicting AttributeTypeDef that will not change.
      */
     public OMRSEvent(OMRSEventCategory  eventCategory,
@@ -190,6 +216,32 @@ public abstract class OMRSEvent
         this.errorMessage = errorMessage;
         this.targetMetadataCollectionId = targetMetadataCollectionId;
         this.targetAttributeTypeDef = targetAttributeTypeDef;
+        this.otherAttributeTypeDef = otherAttributeTypeDef;
+    }
+
+
+    /**
+     * Outbound constructor used for AttributeTypeDef conflict events.
+     *
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param otherMetadataCollectionId identifier of the remote metadata collection.
+     * @param otherAttributeTypeDef description of conflicting AttributeTypeDef.
+     */
+    public OMRSEvent(OMRSEventCategory  eventCategory,
+                     OMRSEventErrorCode genericErrorCode,
+                     String             errorMessage,
+                     String             otherMetadataCollectionId,
+                     AttributeTypeDef   otherAttributeTypeDef)
+    {
+        this.eventDirection = OMRSEventDirection.OUTBOUND;
+        this.eventTimestamp = new Date();
+        this.eventCategory = eventCategory;
+
+        this.genericErrorCode = genericErrorCode;
+        this.errorMessage = errorMessage;
+        this.otherMetadataCollectionId = otherMetadataCollectionId;
         this.otherAttributeTypeDef = otherAttributeTypeDef;
     }
 
