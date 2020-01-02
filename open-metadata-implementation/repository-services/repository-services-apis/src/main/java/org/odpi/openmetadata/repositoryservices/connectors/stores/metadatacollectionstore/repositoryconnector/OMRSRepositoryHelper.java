@@ -265,6 +265,25 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return an entity with the header and type information filled out.  The caller only needs to classifications
+     * to complete the set up of the entity.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @return partially filled out entity needs classifications
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    EntitySummary getSkeletonEntitySummary(String                 sourceName,
+                                           String                 metadataCollectionId,
+                                           InstanceProvenanceType provenanceType,
+                                           String                 userName,
+                                           String                 typeName) throws TypeErrorException;
+
+
+    /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
      * and possibility origin information if it is propagated to complete the set up of the classification.
      *
