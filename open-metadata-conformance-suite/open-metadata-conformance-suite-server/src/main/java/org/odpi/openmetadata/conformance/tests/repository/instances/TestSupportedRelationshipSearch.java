@@ -279,7 +279,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
         switch (phase) {
 
             // TODO possibly rename CREATE to something like SEED or DISCOVER_OR_CREATE, GET_INSTANCES, etc
-            case CREATE:
+            case SEED:
                 this.seedInstances();
                 break;
             case EXECUTE:

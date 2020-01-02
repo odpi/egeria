@@ -326,7 +326,7 @@ public class TestSupportedRelationshipPropertySearch extends RepositoryConforman
 
         switch (phase) {
 
-            case CREATE:
+            case SEED:
                 this.createInstances(metadataCollection);
                 break;
             case EXECUTE:

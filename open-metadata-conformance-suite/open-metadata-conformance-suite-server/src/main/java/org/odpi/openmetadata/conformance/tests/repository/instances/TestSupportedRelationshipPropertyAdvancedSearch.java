@@ -290,7 +290,7 @@ public class TestSupportedRelationshipPropertyAdvancedSearch extends RepositoryC
 
         switch (phase) {
 
-            case CREATE:
+            case SEED:
                 this.createInstances(metadataCollection);
                 break;
             case EXECUTE:

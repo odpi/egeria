@@ -301,7 +301,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         switch (phase) {
 
-            case CREATE:
+            case SEED:
                 this.createInstances( metadataCollection );
                 break;
             case EXECUTE:
