@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaLink extends PropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected String              linkGUID             = null;
     protected String              linkType             = null;
     protected String              linkName             = null;

@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class TeamSummary extends ActorHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String       teamType = null;
     private String       superTeam = null;
     private List<String> subTeams = null;

@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitiveSchemaType extends SchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected  String     dataType = null;
     protected  String     defaultValue = null;
 

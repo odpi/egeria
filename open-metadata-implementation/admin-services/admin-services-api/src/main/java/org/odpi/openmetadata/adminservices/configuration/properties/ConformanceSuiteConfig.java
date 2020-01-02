@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConformanceSuiteConfig extends AdminServicesConfigHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private PlatformConformanceWorkbenchConfig   platformWorkbenchConfig   = null;
     private RepositoryConformanceWorkbenchConfig repositoryWorkbenchConfig = null;
 

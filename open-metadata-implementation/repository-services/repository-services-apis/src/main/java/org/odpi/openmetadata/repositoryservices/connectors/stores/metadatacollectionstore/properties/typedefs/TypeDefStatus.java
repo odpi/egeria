@@ -3,10 +3,12 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
+import java.io.Serializable;
+
 /**
  * TypeDefStatus is an enum that describes the status of a specific typeDef.
  */
-public enum TypeDefStatus
+public enum TypeDefStatus implements Serializable
 {
     ACTIVE_TYPEDEF              (1, "ActiveTypeDef",
                                    "TypeDef available and in use.  This is the default value equivalent to null"),
@@ -15,6 +17,7 @@ public enum TypeDefStatus
     DEPRECATED_TYPEDEF          (3,  "DeprecatedTypeDef",
                                    "This typeDef should not be used because it has been deprecated");
 
+    private static final long    serialVersionUID = 1L;
 
     private int     ordinal;
     private String  name;

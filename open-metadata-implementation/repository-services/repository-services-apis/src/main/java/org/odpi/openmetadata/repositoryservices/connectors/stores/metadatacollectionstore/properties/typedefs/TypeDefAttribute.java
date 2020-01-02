@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefAttribute extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String                             attributeName            = null;
     protected AttributeTypeDef                   attributeType            = null;
     protected TypeDefAttributeStatus             attributeStatus          = null;

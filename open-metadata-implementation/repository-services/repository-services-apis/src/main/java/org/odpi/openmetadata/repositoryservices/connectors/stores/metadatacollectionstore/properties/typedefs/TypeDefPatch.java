@@ -25,14 +25,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefPatch extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                        typeDefGUID              = null;
     private String                        typeDefName              = null;
     private long                          applyToVersion           = 0L;
     private long                          updateToVersion          = 0L;
     private String                        newVersionName           = null;
+    private String                        updatedBy                = null;
+    private Date                          updateTime               = null;
     private String                        description              = null;
     private String                        descriptionGUID          = null;
-    private List<TypeDefAttribute>        typeDefAttributes        = null;
+    private List<TypeDefAttribute>        propertyDefinitions      = null;
     private Map<String, String>           typeDefOptions           = null;
     private List<ExternalStandardMapping> externalStandardMappings = null;
     private List<InstanceStatus>          validInstanceStatusList  = null;
@@ -40,9 +44,6 @@ public class TypeDefPatch extends TypeDefElementHeader
     private List<TypeDefLink>             validEntityDefs          = null; // ClassificationDefs
     private RelationshipEndDef            endDef1                  = null; // RelationshipDefs
     private RelationshipEndDef            endDef2                  = null; // RelationshipDefs
-
-    private static final long serialVersionUID = 1L;
-
 
     /**
      * Default constructor relies on the initialization of variables in their declaration.
@@ -69,9 +70,11 @@ public class TypeDefPatch extends TypeDefElementHeader
             applyToVersion           = template.getApplyToVersion();
             updateToVersion          = template.getUpdateToVersion();
             newVersionName           = template.getNewVersionName();
+            updatedBy                = template.getUpdatedBy();
+            updateTime               = template.getUpdateTime();
             description              = template.getDescription();
             descriptionGUID          = template.getDescriptionGUID();
-            typeDefAttributes        = template.getTypeDefAttributes();
+            propertyDefinitions      = template.getPropertyDefinitions();
             typeDefOptions           = template.getTypeDefOptions();
             externalStandardMappings = template.getExternalStandardMappings();
             validInstanceStatusList  = template.getValidInstanceStatusList();
@@ -188,6 +191,50 @@ public class TypeDefPatch extends TypeDefElementHeader
 
 
     /**
+     * Return the user name of the person that last updated the target TypeDef.
+     *
+     * @return String name
+     */
+    public String getUpdatedBy()
+    {
+        return updatedBy;
+    }
+
+
+    /**
+     * Set up the user name of the person that last updated the target TypeDef.
+     *
+     * @param updatedBy String name
+     */
+    public void setUpdatedBy(String updatedBy)
+    {
+        this.updatedBy = updatedBy;
+    }
+
+
+    /**
+     * Return the date/time that the target TypeDef was last updated.
+     *
+     * @return Date
+     */
+    public Date getUpdateTime()
+    {
+        return updateTime;
+    }
+
+
+    /**
+     * Set up the date/time that the target TypeDef was last updated.
+     *
+     * @param updateTime Date
+     */
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
+
+    /**
      * Return the new description for the TypeDef.
      *
      * @return String description
@@ -236,13 +283,13 @@ public class TypeDefPatch extends TypeDefElementHeader
      *
      * @return list of TypeDefAttribute
      */
-    public List<TypeDefAttribute> getTypeDefAttributes()
+    public List<TypeDefAttribute> getPropertyDefinitions()
     {
-        if (typeDefAttributes == null)
+        if (propertyDefinitions == null)
         {
             return null;
         }
-        else if (typeDefAttributes.isEmpty())
+        else if (propertyDefinitions.isEmpty())
         {
             return null;
         }
@@ -250,7 +297,7 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             List<TypeDefAttribute>  clonedList = new ArrayList<>();
 
-            for (TypeDefAttribute  existingElement : typeDefAttributes)
+            for (TypeDefAttribute  existingElement : propertyDefinitions)
             {
                 clonedList.add(new TypeDefAttribute(existingElement));
             }
@@ -263,11 +310,11 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the list of typeDefAttributes that are either new or changing.
      *
-     * @param typeDefAttributes list of AttributeDefs
+     * @param propertyDefinitions list of AttributeDefs
      */
-    public void setTypeDefAttributes(List<TypeDefAttribute> typeDefAttributes)
+    public void setPropertyDefinitions(List<TypeDefAttribute> propertyDefinitions)
     {
-        this.typeDefAttributes = typeDefAttributes;
+        this.propertyDefinitions = propertyDefinitions;
     }
 
 
@@ -491,7 +538,7 @@ public class TypeDefPatch extends TypeDefElementHeader
                 ", newVersionName='" + newVersionName + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", typeDefAttributes=" + typeDefAttributes +
+                ", propertyDefinitions=" + propertyDefinitions +
                 ", typeDefOptions=" + typeDefOptions +
                 ", externalStandardMappings=" + externalStandardMappings +
                 ", validInstanceStatusList=" + validInstanceStatusList +
@@ -528,7 +575,7 @@ public class TypeDefPatch extends TypeDefElementHeader
                 Objects.equals(newVersionName, that.newVersionName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(descriptionGUID, that.descriptionGUID) &&
-                Objects.equals(typeDefAttributes, that.typeDefAttributes) &&
+                Objects.equals(propertyDefinitions, that.propertyDefinitions) &&
                 Objects.equals(typeDefOptions, that.typeDefOptions) &&
                 Objects.equals(externalStandardMappings, that.externalStandardMappings) &&
                 Objects.equals(validInstanceStatusList, that.validInstanceStatusList) &&

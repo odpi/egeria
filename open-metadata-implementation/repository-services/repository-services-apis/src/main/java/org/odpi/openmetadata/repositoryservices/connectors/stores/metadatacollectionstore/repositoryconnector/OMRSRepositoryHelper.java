@@ -214,15 +214,15 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * the type or version that either represents.
      *
      * @param sourceName       source of the TypeDef (used for logging)
+     * @param originalTypeDef typeDef to update
      * @param typeDefPatch     patch to apply
-     * @param originalTypeDef  typeDef to patch
      * @return updated TypeDef
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
      * @throws PatchErrorException        the patch is either badly formatted, or does not apply to the supplied TypeDef
-     * @throws InvalidParameterException  the TypeDefPatch is null.
      */
     TypeDef applyPatch(String       sourceName,
                        TypeDef      originalTypeDef,
-                       TypeDefPatch typeDefPatch) throws PatchErrorException, InvalidParameterException;
+                       TypeDefPatch typeDefPatch) throws InvalidParameterException, PatchErrorException;
 
 
     /**
@@ -262,6 +262,25 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                    InstanceProvenanceType provenanceType,
                                    String                 userName,
                                    String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to classifications
+     * to complete the set up of the entity.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @return partially filled out entity needs classifications
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    EntitySummary getSkeletonEntitySummary(String                 sourceName,
+                                           String                 metadataCollectionId,
+                                           InstanceProvenanceType provenanceType,
+                                           String                 userName,
+                                           String                 typeName) throws TypeErrorException;
 
 
     /**

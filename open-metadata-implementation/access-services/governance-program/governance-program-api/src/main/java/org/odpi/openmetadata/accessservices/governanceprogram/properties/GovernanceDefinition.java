@@ -48,6 +48,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                           documentId           = null; /* qualifiedName */
 
     private String                           summary              = null;

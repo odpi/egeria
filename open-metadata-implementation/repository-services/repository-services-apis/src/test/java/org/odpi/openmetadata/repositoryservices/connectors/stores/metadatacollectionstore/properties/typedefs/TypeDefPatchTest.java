@@ -89,7 +89,7 @@ public class TypeDefPatchTest
         testObject.setNewVersionName(newVersionName);
         testObject.setDescription(description);
         testObject.setDescriptionGUID(descriptionGUID);
-        testObject.setTypeDefAttributes(typeDefAttributes);
+        testObject.setPropertyDefinitions(typeDefAttributes);
         testObject.setTypeDefOptions(typeDefOptions);
         testObject.setExternalStandardMappings(externalStandardMappings);
         testObject.setInitialStatus(initialStatus);
@@ -117,7 +117,7 @@ public class TypeDefPatchTest
         assertEquals(testObject.getNewVersionName(), newVersionName);
         assertEquals(testObject.getDescription(), description);
         assertEquals(testObject.getDescriptionGUID(), descriptionGUID);
-        assertEquals(testObject.getTypeDefAttributes(), typeDefAttributes);
+        assertEquals(testObject.getPropertyDefinitions(), typeDefAttributes);
         assertEquals(testObject.getTypeDefOptions(), typeDefOptions);
         assertEquals(testObject.getExternalStandardMappings(), externalStandardMappings);
         assertEquals(testObject.getValidInstanceStatusList(), validInstanceStatusList);
@@ -142,7 +142,7 @@ public class TypeDefPatchTest
         assertNull(testObject.getNewVersionName());
         assertNull(testObject.getDescription());
         assertNull(testObject.getDescriptionGUID());
-        assertNull(testObject.getTypeDefAttributes());
+        assertNull(testObject.getPropertyDefinitions());
         assertNull(testObject.getTypeDefOptions());
         assertNull(testObject.getExternalStandardMappings());
         assertNull(testObject.getValidInstanceStatusList());
@@ -156,12 +156,12 @@ public class TypeDefPatchTest
         validateObject(new TypeDefPatch(anotherTestObject));
 
         anotherTestObject.setValidInstanceStatusList(new ArrayList<>());
-        anotherTestObject.setTypeDefAttributes(new ArrayList<>());
+        anotherTestObject.setPropertyDefinitions(new ArrayList<>());
         anotherTestObject.setExternalStandardMappings(new ArrayList<>());
         anotherTestObject.setTypeDefOptions(new HashMap<>());
 
         assertNull(anotherTestObject.getValidInstanceStatusList());
-        assertNull(anotherTestObject.getTypeDefAttributes());
+        assertNull(anotherTestObject.getPropertyDefinitions());
         assertNull(anotherTestObject.getExternalStandardMappings());
         assertNull(anotherTestObject.getTypeDefOptions());
     }

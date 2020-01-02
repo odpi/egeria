@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -676,7 +675,7 @@ public class OMAGServerAdminServices
 
 
     /**
-     * Set up the Log4J audit log destination for the server.
+     * Set up the SLF4J audit log destination for the server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -685,11 +684,11 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or null userId parameter.
      */
-    public VoidResponse addLog4JAuditLogDestination(String       userId,
+    public VoidResponse addSLF4JAuditLogDestination(String       userId,
                                                     String       serverName,
                                                     List<String> supportedSeverities)
     {
-        final String methodName = "addLog4JAuditLogDestination";
+        final String methodName = "addSLF4JAuditLogDestination";
 
         log.debug("Calling method: " + methodName);
 
@@ -702,7 +701,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getLog4JAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(serverName, supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {

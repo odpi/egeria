@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String guid          = null;
     private Date   effectiveDate = null;
 

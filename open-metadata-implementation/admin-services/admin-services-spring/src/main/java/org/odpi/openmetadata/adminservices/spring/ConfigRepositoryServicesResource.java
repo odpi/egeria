@@ -66,7 +66,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Add an audit log destination that creates log4j records.
+     * Add an audit log destination that creates slf4j records.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -75,12 +75,12 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @PostMapping(path = "/audit-log-destinations/log4j")
-    public VoidResponse addLog4JAuditLogDestination(@PathVariable String       userId,
+    @PostMapping(path = "/audit-log-destinations/slf4j")
+    public VoidResponse addSLF4JAuditLogDestination(@PathVariable String       userId,
                                                     @PathVariable String       serverName,
                                                     @RequestBody  List<String> supportedSeverities)
     {
-        return adminAPI.addLog4JAuditLogDestination(userId, serverName, supportedSeverities);
+        return adminAPI.addSLF4JAuditLogDestination(userId, serverName, supportedSeverities);
     }
 
 

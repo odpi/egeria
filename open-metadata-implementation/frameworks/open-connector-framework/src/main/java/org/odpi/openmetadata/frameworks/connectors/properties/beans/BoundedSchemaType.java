@@ -17,6 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BoundedSchemaType extends SchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected BoundedSchemaCategory boundedSchemaCategory = null;
     protected int                   maximumElements       = 0;
     protected SchemaType            elementType           = null;

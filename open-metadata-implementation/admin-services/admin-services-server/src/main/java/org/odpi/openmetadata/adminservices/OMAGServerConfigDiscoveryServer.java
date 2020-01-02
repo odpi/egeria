@@ -235,7 +235,7 @@ public class OMAGServerConfigDiscoveryServer
                 discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryServerConfig.setDiscoveryEngineGUIDs(discoveryEngineNames);
+            discoveryServerConfig.setDiscoveryEngineNames(discoveryEngineNames);
 
             serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 

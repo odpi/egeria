@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnnotation
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date   createTime = null;
     private Date   modifiedTime = null;
     private int    size = 0;

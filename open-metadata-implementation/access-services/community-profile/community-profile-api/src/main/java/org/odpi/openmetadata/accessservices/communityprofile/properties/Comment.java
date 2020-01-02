@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Comment extends CommentHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private CommentType         commentType          = null;
     private List<String>        answeredBy           = null;
     private List<String>        answers              = null;

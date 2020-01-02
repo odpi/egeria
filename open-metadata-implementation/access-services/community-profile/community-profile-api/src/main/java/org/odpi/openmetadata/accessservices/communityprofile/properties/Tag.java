@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Tag extends UserFeedbackHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String  name = null;
     private String  description = null;
     private boolean isPrivate = false;

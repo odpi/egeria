@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredDiscoveryService extends DiscoveryServiceProperties
 {
+    private static final long    serialVersionUID = 1L;
+
     protected List<String> assetDiscoveryTypes = null;
 
 

@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventErrorCode;
 
+import java.io.Serializable;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -22,8 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventV1ErrorSection extends OMRSEventV1
+public class OMRSEventV1ErrorSection implements Serializable
 {
+    private static final long    serialVersionUID = 1L;
+
     private OMRSEventErrorCode     errorCode                  = null;
     private String                 errorMessage               = null;
     private String                 targetMetadataCollectionId = null;

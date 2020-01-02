@@ -116,16 +116,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>design-model-spring</artifactId>
             <scope>runtime</scope>
         </dependency>

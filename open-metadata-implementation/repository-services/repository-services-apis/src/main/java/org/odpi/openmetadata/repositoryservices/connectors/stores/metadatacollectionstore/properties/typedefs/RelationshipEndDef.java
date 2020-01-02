@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipEndDef extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private TypeDefLink                entityType               = null;
     private String                     attributeName            = null;
     private String                     attributeDescription     = null;

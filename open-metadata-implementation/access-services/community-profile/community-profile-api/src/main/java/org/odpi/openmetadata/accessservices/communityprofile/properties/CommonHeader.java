@@ -33,6 +33,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class CommonHeader extends CommunityProfileElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String               guid                 = null;
 
 

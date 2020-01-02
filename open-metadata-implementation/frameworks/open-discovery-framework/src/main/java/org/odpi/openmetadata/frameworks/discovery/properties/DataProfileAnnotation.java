@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataProfileAnnotation extends DataFieldAnnotation
 {
+    private static final long    serialVersionUID = 1L;
+
     private int                  length            = 0;
     private String               inferredDataType  = null;
     private String               inferredFormat    = null;

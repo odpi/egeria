@@ -88,16 +88,26 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>buildarchive</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>java</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
-                            <mainClass>org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter</mainClass>
+                            <target>
+                                <!-- Need to create ant property to pass from maven to ant task -->
+                                <!-- generating code here -->
+                                <property name="antDirectory" value="${project.build.directory}"/>
+                                <java classname="org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter" dir="${antDirectory}" fork="true">
+                                    <classpath>
+                                        <path refid="maven.compile.classpath"/>
+                                        <path refid="maven.plugin.classpath"/>
+                                    </classpath>
+                                </java>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>

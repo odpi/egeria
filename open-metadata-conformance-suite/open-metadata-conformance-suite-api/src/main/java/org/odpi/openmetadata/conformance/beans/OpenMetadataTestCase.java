@@ -444,12 +444,12 @@ public abstract class OpenMetadataTestCase
     }
 
     /**
-     * Default inplementation - over-ridden by some test cases.
+     * Default implementation - over-ridden by some test cases.
      *
      * @throws Exception something went wrong with the test.
      */
-    protected void cleanup() throws Exception {
-        return;
+    protected void cleanup() throws Exception
+    {
     }
 
     /**
@@ -462,12 +462,13 @@ public abstract class OpenMetadataTestCase
     /**
      * Method implemented by the actual test case.
      *
+     * @param phase test phase
      * @throws Exception something went wrong with the test.
      */
     protected void run(TestPhase phase) throws Exception
     {
         /*
-         * Method is overloaded by any multi-phase testcase
+         * Method is overloaded by any multi-phase test case
          */
     }
 
