@@ -31,9 +31,16 @@ The minimum level required to build & run Egeria is Java 8.
   
  All automated builds are performed on Linux (Ubuntu) only using the Azul vm provided by Azure pipelines.
   
-  Most developers use MacOS, but Windows should work also.
+ Most developers use MacOS, but Windows should work also.
+
+ Also you must ensure JAVA_HOME is set, and pointing to a JDK. If this is not done, an error such as `Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:3.1.1:jar (attach-javadocs) on project open-connector-framework: MavenReportException: Error while generating Javadoc: Unable to find javadoc command: The environment variable JAVA_HOME is not correctly set.` will be seen as the javadoc maven plugin depends on this value to work correctly.
  
  Problems with any of these should be raised as issues.
+
+## Maven
+
+Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
+
 ## Build warnings
 
 Build output should be checked for any warnings ie '[WARNING]' and these should be eliminated. 
@@ -152,7 +159,17 @@ stages of the build.
 
 Our preferred Java test frameworks are [TestNG](http://testng.org) and [Mockito](http://mockito.org).
 
+## Using an IDE
 
+IDEs can make navigating the Egeria code easier. Each IDE can vary a lot. Many of our team use JetBrains IntelliJ.
+
+In the case of problems the first problem determination step is to check you can build Egeria normally at the command line ie `mvn clean install` from the source 
+root. That will prove at least java, maven are correct . 
+
+In addition, importantly, this also will retrieve additional dependencies which are not available in public
+repositories are retrieved, otherwise you may see an error like `Cannot resolve com.ibm.gaiandb:gaian` or `Cannot resolve org.apache.derby:derby`.
+
+We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' earlier on this page) or the build will fail running javadoc.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
