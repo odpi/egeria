@@ -1779,7 +1779,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             if (category.getOrdinal() != knownTypeDefCategory.getOrdinal())
             {
                 log.error("TypeDef category mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
-                                  + sourceName + " received version number is " + category.getDescription()
+                                  + sourceName + " received category is " + category.getDescription()
                                   + " and stored category is " + knownTypeDefCategory.getDescription());
 
                 return false;
@@ -1848,7 +1848,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     boolean validTypeDefId(String          sourceName,
                            String          typeDefGUID,
                            String          typeDefName,
-                           long            typeDefVersion,
+                           String          typeDefVersion,
                            TypeDefCategory typeDefCategory)
     {
         if (! validTypeDefId(sourceName, typeDefGUID, typeDefName, typeDefCategory))
@@ -1865,11 +1865,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return true;
         }
 
-        if (typeDef.getVersion() != typeDefVersion)
+        if (typeDef.getVersionName().equals(typeDefVersion))
         {
             log.error("Version mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
-                              + sourceName + " received version number is " + typeDefVersion
-                              + " and stored version is " + typeDef.getVersion());
+                              + sourceName + " received version  is " + typeDefVersion
+                              + " and stored version is " + typeDef.getVersionName());
 
             return false;
         }
@@ -1891,7 +1891,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     boolean validAttributeTypeDefId(String                   sourceName,
                                     String                   attributeTypeDefGUID,
                                     String                   attributeTypeDefName,
-                                    long                     attributeTypeDefVersion,
+                                    String                   attributeTypeDefVersion,
                                     AttributeTypeDefCategory category)
     {
         if (! validAttributeTypeDefId(sourceName, attributeTypeDefGUID, attributeTypeDefName, category))
@@ -1908,11 +1908,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return true;
         }
 
-        if (typeDef.getVersion() != attributeTypeDefVersion)
+        if (typeDef.getVersionName().equals(attributeTypeDefVersion))
         {
             log.error("Version mismatch for TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from "
                               + sourceName + " received version number is " + attributeTypeDefVersion
-                              + " and stored version is " + typeDef.getVersion());
+                              + " and stored version is " + typeDef.getVersionName());
 
             return false;
         }
@@ -1940,7 +1940,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         if (validTypeDefId(sourceName,
                            typeDef.getGUID(),
                            typeDef.getName(),
-                           typeDef.getVersion(),
+                           typeDef.getVersionName(),
                            typeDef.getCategory()))
         {
             log.debug("Good typeDef from " + sourceName);
@@ -2001,7 +2001,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             if (validTypeDefId(sourceName,
                                typeDefSummary.getGUID(),
                                typeDefSummary.getName(),
-                               typeDefSummary.getVersion(),
+                               typeDefSummary.getVersionName(),
                                typeDefSummary.getCategory()))
             {
                 return true;
@@ -2266,34 +2266,42 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (metadataCollection != null)
             {
+                TypeDef currentTypeDef = activeTypeDefNames.get(typeDef.getName());
+
                 /*
-                 * VerifyTypeDef returns true if the typeDef is known and matches the supplied definition.
-                 * It returns false if the type is supportable but has not yet been defined.
-                 * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
-                 * be dynamically defined by the local repository.
+                 * If we have already processed this type then the incoming event is an obsolete one.
                  */
-                if (! metadataCollection.verifyTypeDef(localServerUserId, typeDef))
+                if (currentTypeDef == null)
                 {
-                    metadataCollection.addTypeDef(sourceName, typeDef);
+                    /*
+                     * VerifyTypeDef returns true if the typeDef is known and matches the supplied definition.
+                     * It returns false if the type is supportable but has not yet been defined.
+                     * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
+                     * be dynamically defined by the local repository.
+                     */
+                    if (!metadataCollection.verifyTypeDef(localServerUserId, typeDef))
+                    {
+                        metadataCollection.addTypeDef(sourceName, typeDef);
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(typeDef.getName(),
-                                                                        typeDef.getGUID(),
-                                                                        Long.toString(typeDef.getVersion()),
-                                                                        sourceName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                        OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(typeDef.getName(),
+                                                                            typeDef.getGUID(),
+                                                                            Long.toString(typeDef.getVersion()),
+                                                                            sourceName),
+                                           null,
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
+
+                    /*
+                     * Either the repository already supports the type, or it has just added it.
+                     * Cache information about the type in the repository content manager's maps.
+                     */
+                    this.cacheTypeDef(sourceName, typeDef, true);
                 }
-
-                /*
-                 * Either the repository already supports the type, or it has just added it.
-                 * Cache information about the type in the repository content manager's maps.
-                 */
-                this.cacheTypeDef(sourceName, typeDef, true);
             }
             else
             {
@@ -2645,23 +2653,37 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (metadataCollection != null)
             {
-                TypeDef updatedTypeDef = metadataCollection.updateTypeDef(localServerUserId, typeDefPatch);
+                TypeDef currentTypeDef = activeTypeDefNames.get(typeDefPatch.getTypeDefName());
 
-                log.debug("Patch successfully applied:" + updatedTypeDef);
+                if (currentTypeDef != null)
+                {
+                    /*
+                     * The local repository supports the type
+                     */
+                    if (currentTypeDef.getVersion() == typeDefPatch.getApplyToVersion())
+                    {
+                        /*
+                         * The patch is relevant to the current level of the type
+                         */
+                        TypeDef updatedTypeDef = metadataCollection.updateTypeDef(localServerUserId, typeDefPatch);
 
-                OMRSAuditCode auditCode = OMRSAuditCode.TYPE_UPDATED;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(updatedTypeDef.getName(),
-                                                                    updatedTypeDef.getGUID(),
-                                                                    Long.toString(updatedTypeDef.getVersion()),
-                                                                    sourceName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                        log.debug("Patch successfully applied:" + updatedTypeDef);
 
-                this.cacheTypeDef(sourceName, updatedTypeDef, true);
+                        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_UPDATED;
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(updatedTypeDef.getName(),
+                                                                            updatedTypeDef.getGUID(),
+                                                                            Long.toString(updatedTypeDef.getVersion()),
+                                                                            sourceName),
+                                           null,
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+
+                        this.cacheTypeDef(sourceName, updatedTypeDef, true);
+                    }
+                }
             }
             else
             {
@@ -3088,10 +3110,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         final String actionDescription = "Received TypeDef Conflict Event";
 
         String additionalInformation = "Originator's type: ";
+        String typeName = "<null>";
+        String typeGUID = "<null>";
 
         if (originatorTypeDefSummary != null)
         {
             additionalInformation += originatorTypeDefSummary.toString();
+            typeName = originatorTypeDefSummary.getName();
+            typeGUID = originatorTypeDefSummary.getGUID();
         }
         else
         {
@@ -3113,8 +3139,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(originatorTypeDefSummary.getName(),
-                                                            originatorTypeDefSummary.getGUID(),
+                           auditCode.getFormattedLogMessage(typeName,
+                                                            typeGUID,
                                                             originatorServerName,
                                                             originatorMetadataCollectionId,
                                                             otherMetadataCollectionId,
