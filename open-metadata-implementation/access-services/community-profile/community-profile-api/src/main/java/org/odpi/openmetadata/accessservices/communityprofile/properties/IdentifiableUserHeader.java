@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class IdentifiableUserHeader extends CommonHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String          userId    = null;
 
 

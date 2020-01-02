@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefPatch extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                        typeDefGUID              = null;
     private String                        typeDefName              = null;
     private long                          applyToVersion           = 0L;
@@ -42,9 +44,6 @@ public class TypeDefPatch extends TypeDefElementHeader
     private List<TypeDefLink>             validEntityDefs          = null; // ClassificationDefs
     private RelationshipEndDef            endDef1                  = null; // RelationshipDefs
     private RelationshipEndDef            endDef2                  = null; // RelationshipDefs
-
-    private static final long serialVersionUID = 1L;
-
 
     /**
      * Default constructor relies on the initialization of variables in their declaration.

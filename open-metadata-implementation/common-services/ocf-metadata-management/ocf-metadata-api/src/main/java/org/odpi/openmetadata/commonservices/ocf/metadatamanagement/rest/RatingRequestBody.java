@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RatingRequestBody extends FeedbackRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private StarRating starRating = null;
     private String     review     = null;
 

@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContactMethod extends CommonHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private ContactMethodType    type = null;
     private String               service = null;
     private String               value = null;

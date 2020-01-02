@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalStandardMapping extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private   String standardName = null;
     private   String standardOrganization = null;
     private   String standardTypeName = null;

@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class ActorHeader extends ReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<ContactMethod>    contactDetails = null;
 
     /**

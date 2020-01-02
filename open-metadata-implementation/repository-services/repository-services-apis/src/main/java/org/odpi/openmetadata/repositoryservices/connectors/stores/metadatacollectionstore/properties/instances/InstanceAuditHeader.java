@@ -88,6 +88,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstanceAuditHeader extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     /*

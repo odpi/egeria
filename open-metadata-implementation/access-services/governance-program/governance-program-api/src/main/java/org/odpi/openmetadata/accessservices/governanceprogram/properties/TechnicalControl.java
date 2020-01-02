@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class TechnicalControl extends GovernanceControl
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default Constructor
      */

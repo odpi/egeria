@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class OMRSAPIPagedFindRequest extends OMRSAPIFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
     private int                  offset               = 0;

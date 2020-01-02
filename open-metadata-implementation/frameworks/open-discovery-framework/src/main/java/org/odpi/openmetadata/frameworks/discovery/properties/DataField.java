@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class DataField extends PropertyBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private int                       dataFieldPosition    = 0;
     private String                    dataFieldName        = null;
     private String                    dataFieldType        = null;

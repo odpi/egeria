@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermListResponse extends FFDCResponseBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<GlossaryTerm> meanings            = null;
     private int                startingFromElement = 0;
 
