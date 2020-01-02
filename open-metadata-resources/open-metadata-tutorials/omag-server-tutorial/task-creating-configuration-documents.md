@@ -40,8 +40,7 @@ against the OMAG server platform.
 
 There is also a postman collection located at:
 
-[https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/resources/omag-server-platform-tutorial.postman_collection.json](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/resources/omag-server-platform-tutorial.postman_collection.json)
-
+[https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/resources/omag-server-platform-tutorial.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/resources/omag-server-platform-tutorial.postman_collection.json)
 
 It can be downloaded and imported into postman to support this tutorial.
 (see **Import** button top left of the Postman user interface).

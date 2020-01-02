@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Review extends UserFeedbackHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private StarRating  stars = null;
     private String      review = null;
 

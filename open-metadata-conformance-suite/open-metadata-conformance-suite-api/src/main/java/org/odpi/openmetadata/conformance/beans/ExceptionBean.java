@@ -29,7 +29,6 @@ public class ExceptionBean implements Serializable
     private String              testCaseDescriptionURL = null;
     private Map<String, String> properties             = null;
 
-
     /**
      * Default constructor
      */

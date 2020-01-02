@@ -15,7 +15,7 @@ public class DataPlatformServiceResource {
 
     private OMAGServerDataPlatformService adminAPI = new OMAGServerDataPlatformService();
 
-    @PostMapping( path = "/data-platform-service/configuration")
+    @PostMapping(path = "/data-platform-service/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
                                                 @RequestBody DataPlatformServicesConfig dataPlatformServicesConfig)
@@ -23,7 +23,7 @@ public class DataPlatformServiceResource {
         return adminAPI.setDataPlatformServiceConfig(userId, serverName, dataPlatformServicesConfig);
     }
 
-    @PostMapping( path = "/data-platform-service")
+    @PostMapping(path = "/data-platform-service")
     public VoidResponse enableDataPlatformService(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {

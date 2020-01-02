@@ -11,6 +11,8 @@ import java.util.Objects;
  */
 public class SchemaImplementationQuery extends PropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected int             queryId            = 0;
     protected String          query              = null;
     protected String          queryType          = null;

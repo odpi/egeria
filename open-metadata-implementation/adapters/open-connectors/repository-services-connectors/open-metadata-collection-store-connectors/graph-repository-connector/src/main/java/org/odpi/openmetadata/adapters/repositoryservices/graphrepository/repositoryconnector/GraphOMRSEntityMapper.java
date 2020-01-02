@@ -632,8 +632,7 @@ public class GraphOMRSEntityMapper {
         try {
             String typeName = (String) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_TYPE_NAME);
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
-            TypeDefSummary typeDefSummary = new TypeDefSummary(TypeDefCategory.ENTITY_DEF, typeDef.getGUID(), typeDef.getName(), typeDef.getVersion(), typeDef.getVersionName());
-            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDefSummary);
+            InstanceType instanceType = repositoryHelper.getNewInstanceType(repositoryName, typeDef);
             entity.setType(instanceType);
 
         } catch (TypeErrorException e) {

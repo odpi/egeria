@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.designmodels.base;
 
-import org.odpi.openmetadata.archiveutilities.designmodels.base.ffdc.DesignModelArchiveErrorCode;
 import org.odpi.openmetadata.archiveutilities.designmodels.base.properties.ConceptModelDecoration;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -11,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,8 +72,6 @@ public class DesignModelArchiveBuilder
     private static final String UNIQUE_VALUES_PROPERTY   = "uniqueValues";
     private static final String ORDERED_VALUES_PROPERTY  = "orderedValues";
     private static final String NAVIGABLE_PROPERTY       = "navigable";
-
-
 
     private OMRSArchiveBuilder archiveBuilder;
     private OMRSArchiveHelper  archiveHelper;
@@ -162,20 +158,23 @@ public class DesignModelArchiveBuilder
                                  String   externalLink,
                                  String   scope)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
-        properties = archiveHelper.addStringPropertyToInstance(properties, LANGUAGE_PROPERTY, language);
-        properties = archiveHelper.addStringPropertyToInstance(properties, USAGE_PROPERTY, usage);
+        final String methodName = "addGlossary";
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, LANGUAGE_PROPERTY, language, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
 
         List<Classification> classifications = null;
 
         if (scope != null)
         {
             Classification  canonicalVocabClassification = archiveHelper.getClassification(CANONICAL_VOCABULARY_TYPE_NAME,
-                                                                                           archiveHelper.addStringPropertyToInstance(null,
+                                                                                           archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                                                                     null,
                                                                                                                                      SCOPE_PROPERTY,
-                                                                                                                                     scope),
+                                                                                                                                     scope,
+                                                                                                                                     methodName),
                                                                                            InstanceStatus.ACTIVE);
 
             classifications = new ArrayList<>();
@@ -193,10 +192,10 @@ public class DesignModelArchiveBuilder
         if (externalLink != null)
         {
             String externalLinkQualifiedName = qualifiedName + "_external_link";
-            properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, externalLinkQualifiedName);
-            properties = archiveHelper.addStringPropertyToInstance(properties, URL_PROPERTY, externalLink);
-            properties = archiveHelper.addStringPropertyToInstance(properties, ORGANIZATION_PROPERTY, originatorName);
-            properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_PROPERTY, versionName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, externalLinkQualifiedName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, URL_PROPERTY, externalLink, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ORGANIZATION_PROPERTY, originatorName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_PROPERTY, versionName, methodName);
 
             EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(EXTERNAL_GLOSSARY_LINK_TYPE_NAME,
                                                                              idToGUIDMap.getGUID(externalLinkQualifiedName),
@@ -238,18 +237,21 @@ public class DesignModelArchiveBuilder
                                  String   description,
                                  String   subjectArea)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
+        final String methodName = "addCategory";
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
 
         List<Classification> classifications = null;
 
         if (subjectArea != null)
         {
             Classification  subjectAreaClassification = archiveHelper.getClassification(SUBJECT_AREA_TYPE_NAME,
-                                                                                        archiveHelper.addStringPropertyToInstance(null,
+                                                                                        archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                                                                  null,
                                                                                                                                   NAME_PROPERTY,
-                                                                                                                                  subjectArea),
+                                                                                                                                  subjectArea,
+                                                                                                                                  methodName),
                                                                                         InstanceStatus.ACTIVE);
 
             classifications = new ArrayList<>();
@@ -295,9 +297,10 @@ public class DesignModelArchiveBuilder
                              String       displayName,
                              String       description)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
+        final String methodName = "addTerm";
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
 
         EntityDetail  termEntity = archiveHelper.getEntityDetail(GLOSSARY_TERM_TYPE_NAME,
                                                                  idToGUIDMap.getGUID(qualifiedName),
@@ -420,12 +423,13 @@ public class DesignModelArchiveBuilder
                                     String   versionNumber,
                                     String   author)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
-        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
-        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+        final String methodName = "addDesignModel";
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
 
         EntityDetail  modelEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_TYPE_NAME,
                                                                   idToGUIDMap.getGUID(qualifiedName),
@@ -461,12 +465,14 @@ public class DesignModelArchiveBuilder
                                          String   versionNumber,
                                          String   author)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
-        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
-        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+        final String methodName = "addDesignModelGroup";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
 
         EntityDetail  modelGroupEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_GROUP_TYPE_NAME,
                                                                        idToGUIDMap.getGUID(qualifiedName),
@@ -537,12 +543,14 @@ public class DesignModelArchiveBuilder
                                             String         versionNumber,
                                             String         author)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
-        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
-        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
-        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+        final String methodName = "addConceptModelElement";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
 
         EntityDetail  modelElementEntity = archiveHelper.getEntityDetail(typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName),
@@ -695,11 +703,13 @@ public class DesignModelArchiveBuilder
                                       boolean    uniqueValues,
                                       boolean    orderedValues)
     {
-        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(null, POSITION_PROPERTY, position);
-        properties = archiveHelper.addIntPropertyToInstance(properties, MIN_CARDINALITY_PROPERTY, minCardinality);
-        properties = archiveHelper.addIntPropertyToInstance(properties, MAX_CARDINALITY_PROPERTY, maxCardinality);
-        properties = archiveHelper.addBooleanPropertyToInstance(properties, UNIQUE_VALUES_PROPERTY, uniqueValues);
-        properties = archiveHelper.addBooleanPropertyToInstance(properties, ORDERED_VALUES_PROPERTY, orderedValues);
+        final String methodName = "addAttributeToBead";
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, POSITION_PROPERTY, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(attributeId));
@@ -723,13 +733,15 @@ public class DesignModelArchiveBuilder
                                  boolean                uniqueValues,
                                  boolean                orderedValues)
     {
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, ATTRIBUTE_NAME_PROPERTY, attributeName);
+        final String methodName = "addLinkToBead";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ATTRIBUTE_NAME_PROPERTY, attributeName, methodName);
         // properties = archiveHelper.addEnumPropertyToInstance(properties, DECORATION_PROPERTY, position);
-        properties = archiveHelper.addIntPropertyToInstance(properties, POSITION_PROPERTY, position);
-        properties = archiveHelper.addIntPropertyToInstance(properties, MIN_CARDINALITY_PROPERTY, minCardinality);
-        properties = archiveHelper.addIntPropertyToInstance(properties, MAX_CARDINALITY_PROPERTY, maxCardinality);
-        properties = archiveHelper.addBooleanPropertyToInstance(properties, UNIQUE_VALUES_PROPERTY, uniqueValues);
-        properties = archiveHelper.addBooleanPropertyToInstance(properties, ORDERED_VALUES_PROPERTY, orderedValues);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, POSITION_PROPERTY, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(linkId));
@@ -765,18 +777,6 @@ public class DesignModelArchiveBuilder
      */
     protected void logBadArchiveContent(String   methodName)
     {
-        /*
-         * This is a logic error since it means the creation of the archive builder threw an exception
-         * in the constructor and so this object should not be used.
-         */
-        DesignModelArchiveErrorCode errorCode    = DesignModelArchiveErrorCode.ARCHIVE_UNAVAILABLE;
-        String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+        archiveBuilder.logBadArchiveContent(methodName);
     }
 }

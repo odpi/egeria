@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogRecord
+public class OMRSAuditLogRecord implements Serializable
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                         guid                  = null;
     private Date                           timeStamp             = new Date();
     private OMRSAuditLogRecordOriginator   originator            = null;
@@ -32,6 +35,9 @@ public class OMRSAuditLogRecord
     private List<String>                   additionalInformation = null;
     private String                         systemAction          = null;
     private String                         userAction            = null;
+    private String                         exceptionClassName    = null;
+    private String                         exceptionMessage      = null;
+    private String                         exceptionStackTrace   = null;
 
 
     /**
@@ -39,6 +45,29 @@ public class OMRSAuditLogRecord
      */
     public OMRSAuditLogRecord()
     {
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public OMRSAuditLogRecord(OMRSAuditLogRecord template)
+    {
+        this.guid = template.getGUID();
+        this.timeStamp = template.getTimeStamp();
+        this.originator = template.getOriginator();
+        this.severity = template.getSeverity();
+        this.reportingComponent = template.getReportingComponent();
+        this.messageId = template.getMessageId();
+        this.messageText = template.getMessageText();
+        this.additionalInformation = template.getAdditionalInformation();
+        this.systemAction = template.getSystemAction();
+        this.userAction = template.getUserAction();
+        this.exceptionClassName = template.getExceptionClassName();
+        this.exceptionMessage = template.getExceptionMessage();
+        this.exceptionStackTrace = template.getExceptionStackTrace();
     }
 
 
@@ -294,6 +323,70 @@ public class OMRSAuditLogRecord
     }
 
 
+    /**
+     * Return the name of any exception linked to the audit log record.
+     *
+     * @return the class name
+     */
+    public String getExceptionClassName()
+    {
+        return exceptionClassName;
+    }
+
+
+    /**
+     * Set up the name of any exception linked to the audit log record.
+     *
+     * @param exceptionClassName string name
+     */
+    public void setExceptionClassName(String exceptionClassName)
+    {
+        this.exceptionClassName = exceptionClassName;
+    }
+
+    /**
+     * Return the name of the message associated with any exception linked to the audit log record.
+     *
+     * @return string message
+     */
+    public String getExceptionMessage()
+    {
+        return exceptionMessage;
+    }
+
+
+    /**
+     * Set up the name of the message associated with any exception linked to the audit log record.
+     *
+     * @param exceptionMessage string message
+     */
+    public void setExceptionMessage(String exceptionMessage)
+    {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+
+    /**
+     * Return the stack trace associated with any exception linked to the audit log record.
+     *
+     * @return string stack trace
+     */
+    public String getExceptionStackTrace()
+    {
+        return exceptionStackTrace;
+    }
+
+
+    /**
+     * Set up the stack trace associated with any exception linked to the audit log record.
+     *
+     * @param exceptionStackTrace string stack trace
+     */
+    public void setExceptionStackTrace(String exceptionStackTrace)
+    {
+        this.exceptionStackTrace = exceptionStackTrace;
+    }
+
 
     /**
      * Standard toString method.
@@ -314,7 +407,9 @@ public class OMRSAuditLogRecord
                 ", additionalInformation=" + additionalInformation +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
-                ", GUID='" + getGUID() + '\'' +
+                ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionMessage='" + exceptionMessage + '\'' +
+                ", exceptionStackTrace='" + exceptionStackTrace + '\'' +
                 '}';
     }
 
@@ -338,15 +433,18 @@ public class OMRSAuditLogRecord
         }
         OMRSAuditLogRecord that = (OMRSAuditLogRecord) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(getTimeStamp(), that.getTimeStamp()) &&
-                Objects.equals(getOriginator(), that.getOriginator()) &&
-                Objects.equals(getSeverity(), that.getSeverity()) &&
-                Objects.equals(getReportingComponent(), that.getReportingComponent()) &&
-                Objects.equals(getMessageId(), that.getMessageId()) &&
-                Objects.equals(getMessageText(), that.getMessageText()) &&
-                Objects.equals(getAdditionalInformation(), that.getAdditionalInformation()) &&
-                Objects.equals(getSystemAction(), that.getSystemAction()) &&
-                Objects.equals(getUserAction(), that.getUserAction());
+                Objects.equals(timeStamp, that.timeStamp) &&
+                Objects.equals(originator, that.originator) &&
+                Objects.equals(severity, that.severity) &&
+                Objects.equals(reportingComponent, that.reportingComponent) &&
+                Objects.equals(messageId, that.messageId) &&
+                Objects.equals(messageText, that.messageText) &&
+                Objects.equals(additionalInformation, that.additionalInformation) &&
+                Objects.equals(systemAction, that.systemAction) &&
+                Objects.equals(userAction, that.userAction) &&
+                Objects.equals(exceptionClassName, that.exceptionClassName) &&
+                Objects.equals(exceptionMessage, that.exceptionMessage) &&
+                Objects.equals(exceptionStackTrace, that.exceptionStackTrace);
     }
 
 
@@ -358,8 +456,7 @@ public class OMRSAuditLogRecord
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, getTimeStamp(), getOriginator(), getSeverity(), getReportingComponent(),
-                            getMessageId(),
-                            getMessageText(), getAdditionalInformation(), getSystemAction(), getUserAction());
+        return Objects.hash(guid, timeStamp, originator, severity, reportingComponent, messageId, messageText, additionalInformation, systemAction,
+                            userAction, exceptionClassName, exceptionMessage, exceptionStackTrace);
     }
 }

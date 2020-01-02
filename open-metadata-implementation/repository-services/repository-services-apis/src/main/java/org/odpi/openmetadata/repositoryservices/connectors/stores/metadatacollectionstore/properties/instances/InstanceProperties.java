@@ -62,6 +62,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InstanceProperties extends InstanceElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date                                effectiveFromTime = null;
     private Date                                effectiveToTime = null;
     private Map<String, InstancePropertyValue>  instanceProperties = new HashMap<>();

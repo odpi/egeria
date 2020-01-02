@@ -13,7 +13,7 @@ descriptive information about them and making it easier to find them.
 
 The attachments available are:
 
-* [Feedback](../feedback) - comments, likes reviews and star ratings.
+* [Feedback](../feedback) - comments, likes, reviews and star ratings.
 * [Tagging](tagging.md) - adding labels to resources.
 * [External Media](external-media-references.md) - external links to icons, images, audio and videos about the resource.
 * [External References](external-references.md) - external links to more information.

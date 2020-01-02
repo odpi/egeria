@@ -49,9 +49,8 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
-        AssetOwnerAuditCode      auditCode;
 
-        auditCode = AssetOwnerAuditCode.SERVICE_INITIALIZING;
+        AssetOwnerAuditCode      auditCode = AssetOwnerAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
@@ -60,10 +59,9 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
+        this.auditLog = auditLog;
         try
         {
-            this.auditLog = auditLog;
-
             List<String>           supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                                accessServiceConfig.getAccessServiceName(),
                                                                                auditLog);
@@ -80,13 +78,12 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                                                            repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-
             auditCode = AssetOwnerAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfig.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
@@ -97,13 +94,14 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
         catch (Throwable error)
         {
             auditCode = AssetOwnerAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

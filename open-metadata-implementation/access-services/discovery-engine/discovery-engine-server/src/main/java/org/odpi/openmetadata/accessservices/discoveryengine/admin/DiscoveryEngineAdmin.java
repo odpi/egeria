@@ -59,10 +59,10 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
+        this.auditLog = auditLog;
+
         try
         {
-            this.auditLog = auditLog;
-
             List<String>   supportedZones = super.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                         accessServiceConfig.getAccessServiceName(),
                                                                         auditLog);
@@ -85,7 +85,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfig.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
@@ -96,13 +96,14 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
         catch (Throwable error)
         {
             auditCode = DiscoveryEngineAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

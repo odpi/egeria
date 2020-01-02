@@ -21,10 +21,9 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
-
 * [Release 1.3 (December 2019)](release-notes-1-3.md)
-    * Metadata de-duplication identification and notification
     * Conformance test suite improvements
+    * Open Metadata Archives
 
 ## Older Releases
 
@@ -53,6 +52,7 @@ This way you can monitor and feedback on future items as they are developed.
 The draft release notes for our future planned releases are below:
 
 * [Release 1.4](release-notes-1-4.md) - Planned January 2020
+    * Metadata de-duplication identification and notification
     * Asset catalog search (with UI)
     * Design Lineage
     

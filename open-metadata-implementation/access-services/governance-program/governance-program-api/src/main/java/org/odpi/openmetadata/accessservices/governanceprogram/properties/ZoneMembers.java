@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 
-public class ZoneMembers implements Iterator<AssetSummary>
+public class ZoneMembers implements Iterator<AssetSummary>, Serializable
 {
+    private static final long    serialVersionUID = 1L;
 
     /**
      * The iterator can only be used once to step through the elements.  This method returns

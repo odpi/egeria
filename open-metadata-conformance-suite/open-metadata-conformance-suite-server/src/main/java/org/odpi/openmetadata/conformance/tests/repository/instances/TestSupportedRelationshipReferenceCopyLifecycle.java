@@ -111,6 +111,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param entityDefs      entities to test
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipReferenceCopyLifecycle(RepositoryConformanceWorkPad workPad,

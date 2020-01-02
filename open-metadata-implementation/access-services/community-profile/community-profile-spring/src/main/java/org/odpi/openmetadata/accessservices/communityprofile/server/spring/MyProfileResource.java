@@ -39,7 +39,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping( path = "/my-profile")
+    @GetMapping(path = "/my-profile")
 
     public PersonalProfileResponse getMyProfile(@PathVariable String serverName,
                                                 @PathVariable String userId)
@@ -59,7 +59,7 @@ public class MyProfileResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/my-profile")
+    @PostMapping(path = "/my-profile")
 
     public VoidResponse updateMyProfile(@PathVariable String               serverName,
                                         @PathVariable String               userId,
@@ -82,7 +82,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping( path = "/my-assets")
+    @GetMapping(path = "/my-assets")
 
     public AssetListResponse getMyAssets(@PathVariable String    serverName,
                                          @PathVariable String    userId,
@@ -106,7 +106,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem updating information in the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/my-assets/{assetGUID}")
+    @PostMapping(path = "/my-assets/{assetGUID}")
 
     public VoidResponse  addToMyAssets(@PathVariable String           serverName,
                                        @PathVariable String           userId,
@@ -131,7 +131,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem updating information in the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping( path = "/my-assets/{assetGUID}/delete")
+    @PostMapping(path = "/my-assets/{assetGUID}/delete")
 
     public VoidResponse  removeFromMyAssets(@PathVariable String           serverName,
                                             @PathVariable String           userId,

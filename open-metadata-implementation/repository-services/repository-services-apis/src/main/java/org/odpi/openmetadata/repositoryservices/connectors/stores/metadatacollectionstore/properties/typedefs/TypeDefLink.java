@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The TypeDefHolds holds basic identifying information used to link one TypeDef to another.  It is used in
+ * The TypeDefLink holds basic identifying information used to link one TypeDef to another.  It is used in
  * the definition of types, ie in the TypeDefs themselves.  Examples include linking a classification to an
  * entity, identifying super types and defining the entities at either end of a relationship.
  * <p>
@@ -27,9 +27,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefLink extends TypeDefElementHeader
 {
-    protected  String                   guid = null;
-    protected  String                   name = null;
+    private static final long    serialVersionUID = 1L;
 
+    protected  String        guid               = null;
+    protected  String        name               = null;
+    protected  TypeDefStatus status             = null;
+    protected  String        replacedByTypeGUID = null;
+    protected  String        replacedByTypeName = null;
 
     /**
      * Default constructor
@@ -42,12 +46,13 @@ public class TypeDefLink extends TypeDefElementHeader
 
     /**
      * Typical constructor is passed the unique identifier and name of the typedef being constructed.
+     * This constructor should only be used for new types.
      *
      * @param guid unique id for the TypeDef
      * @param name unique name for the TypeDef
      */
-    public TypeDefLink(String            guid,
-                       String            name)
+    TypeDefLink(String            guid,
+                String            name)
     {
         super();
 
@@ -67,8 +72,11 @@ public class TypeDefLink extends TypeDefElementHeader
 
         if (template != null)
         {
-            this.guid = template.getGUID();
-            this.name = template.getName();
+            this.guid               = template.getGUID();
+            this.name               = template.getName();
+            this.status             = template.getStatus();
+            this.replacedByTypeGUID = template.getReplacedByTypeGUID();
+            this.replacedByTypeName = template.getReplacedByTypeName();
         }
     }
 
@@ -120,6 +128,72 @@ public class TypeDefLink extends TypeDefElementHeader
 
 
     /**
+     * Return the status of this attribute.
+     *
+     * @return status (null means ACTIVE)
+     */
+    public TypeDefStatus getStatus()
+    {
+        return status;
+    }
+
+
+    /**
+     * Set up the status of this type.
+     *
+     * @param status status (null means ACTIVE)
+     */
+    public void setStatus(TypeDefStatus status)
+    {
+        this.status = status;
+    }
+
+
+    /**
+     * If the type has been replaced, this contains the GUID of the new type.
+     *
+     * @return new type GUID
+     */
+    public String getReplacedByTypeGUID()
+    {
+        return replacedByTypeGUID;
+    }
+
+
+    /**
+     * If the type has been replaced, this contains the GUID of the new type.
+     *
+     * @param replacedByTypeGUID new type GUID
+     */
+    public void setReplacedByTypeGUID(String replacedByTypeGUID)
+    {
+        this.replacedByTypeGUID = replacedByTypeGUID;
+    }
+
+
+    /**
+     * If the type has been renamed, this contains the name of the new type.
+     *
+     * @return new type name
+     */
+    public String getReplacedByTypeName()
+    {
+        return replacedByTypeName;
+    }
+
+
+    /**
+     * If the type has been renamed, this contains the name of the new type.
+     *
+     * @param replacedByTypeName new type name
+     */
+    public void setReplacedByTypeName(String replacedByTypeName)
+    {
+        this.replacedByTypeName = replacedByTypeName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -130,6 +204,9 @@ public class TypeDefLink extends TypeDefElementHeader
         return "TypeDefLink{" +
                 "guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
+                ", status=" + status +
+                ", replacedByTypeGUID='" + replacedByTypeGUID + '\'' +
+                ", replacedByTypeName='" + replacedByTypeName + '\'' +
                 '}';
     }
 
@@ -137,24 +214,28 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Validated that the GUID, name and version number of a TypeDef are equal.
      *
-     * @param object to test
+     * @param objectToCompare to test
      * @return boolean flag to say object is the same TypeDefSummary
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (object == null || getClass() != object.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        TypeDefLink that = (TypeDefLink) object;
+        TypeDefLink that = (TypeDefLink) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(name, that.name);
+                Objects.equals(name, that.name) &&
+                status == that.status &&
+                Objects.equals(replacedByTypeGUID, that.replacedByTypeGUID) &&
+                Objects.equals(replacedByTypeName, that.replacedByTypeName);
     }
+
 
     /**
      * Using the GUID as a hashcode. It should be unique if all connected metadata repositories are behaving properly.

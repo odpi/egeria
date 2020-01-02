@@ -162,7 +162,7 @@ public class OMAGServerConfigDiscoveryServer
                 discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryServerConfig.setAccessServiceRootURL(accessServiceServerName);
+            discoveryServerConfig.setAccessServiceServerName(accessServiceServerName);
 
             serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 
@@ -190,16 +190,16 @@ public class OMAGServerConfigDiscoveryServer
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param discoveryEngineGUIDs  discoveryEngineGUIDs describing which discovery engines fun in this server.
+     * @param discoveryEngineNames  list of discovery engine qualified names describing which discovery engines run in this server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
     public VoidResponse setDiscoveryEngines(String       userId,
                                             String       serverName,
-                                            List<String> discoveryEngineGUIDs)
+                                            List<String> discoveryEngineNames)
     {
-        final String methodName = "setAccessServiceServerName";
+        final String methodName = "setDiscoveryEngines";
 
         VoidResponse response = new VoidResponse();
 
@@ -217,13 +217,13 @@ public class OMAGServerConfigDiscoveryServer
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (discoveryEngineGUIDs == null)
+            if (discoveryEngineNames == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request discoveryEngineGUIDs.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request discoveryEngineNames.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request discoveryEngineGUIDs.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request discoveryEngineNames.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -235,7 +235,7 @@ public class OMAGServerConfigDiscoveryServer
                 discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryServerConfig.setDiscoveryEngineGUIDs(discoveryEngineGUIDs);
+            discoveryServerConfig.setDiscoveryEngineNames(discoveryEngineNames);
 
             serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 

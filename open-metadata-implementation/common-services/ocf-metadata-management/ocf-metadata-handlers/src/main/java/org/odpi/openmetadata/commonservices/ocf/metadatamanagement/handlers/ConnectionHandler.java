@@ -136,7 +136,7 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
                                                                                           anchorGUID,
@@ -144,7 +144,7 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                                           AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                           AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                           startingFrom,
-                                                                                          pageSize,
+                                                                                          queryPageSize,
                                                                                           methodName);
         if (relationships != null)
         {

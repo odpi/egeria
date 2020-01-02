@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CohortMembershipListResponse extends OMRSAPIPagedResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<MemberRegistration> cohortMembers = null;
 
 

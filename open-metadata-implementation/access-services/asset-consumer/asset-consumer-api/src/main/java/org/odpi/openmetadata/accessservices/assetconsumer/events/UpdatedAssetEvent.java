@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class UpdatedAssetEvent extends AssetEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date  updateTime    = null;
     private Asset originalAsset = null;
 

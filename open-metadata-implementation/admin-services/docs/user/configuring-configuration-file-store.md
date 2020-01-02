@@ -11,7 +11,7 @@ The file name is
 omag.server.{serverName}.config
 ```
 
-where serverName is the name of the logical OMAG server (cocoMDS1 for example).
+where serverName is the name of the OMAG server (cocoMDS1 for example).
 
 The management of the configuration documents on the disk is implemented by a connector.
 To change the connector used for the configuration

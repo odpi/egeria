@@ -727,6 +727,20 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-slf4j-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-event-topic-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>cohort-registry-file-store-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

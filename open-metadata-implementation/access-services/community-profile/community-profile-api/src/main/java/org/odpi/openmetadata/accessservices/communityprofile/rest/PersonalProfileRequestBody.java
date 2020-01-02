@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfileRequestBody extends MyProfileRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String profileUserId         = null;
     private String originatingSystemGUID = null;
 

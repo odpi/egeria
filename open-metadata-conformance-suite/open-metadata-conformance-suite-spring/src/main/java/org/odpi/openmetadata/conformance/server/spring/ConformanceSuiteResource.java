@@ -34,7 +34,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @GetMapping( path = "/report/test-cases/{testCaseId}")
+    @GetMapping(path = "/report/test-cases/{testCaseId}")
     public TestCaseReportResponse getTestCaseReport(@PathVariable String   userId,
                                                     @PathVariable String   serverName,
                                                     @PathVariable String   testCaseId)
@@ -52,7 +52,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @GetMapping( path = "/report/test-cases/failed")
+    @GetMapping(path = "/report/test-cases/failed")
     public TestCaseListReportResponse getFailedTestCaseReport(@PathVariable String   userId,
                                                               @PathVariable String   serverName)
     {
@@ -70,7 +70,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @GetMapping( path = "/report/workbenches/{workbenchId}")
+    @GetMapping(path = "/report/workbenches/{workbenchId}")
     public WorkbenchReportResponse getWorkbenchReport(@PathVariable String   userId,
                                                       @PathVariable String   serverName,
                                                       @PathVariable String   workbenchId)
@@ -88,7 +88,7 @@ public class ConformanceSuiteResource
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @GetMapping( path = "/report")
+    @GetMapping(path = "/report")
     public TestLabReportResponse getConformanceReport(@PathVariable String   userId,
                                                       @PathVariable String   serverName)
     {
@@ -101,11 +101,12 @@ public class ConformanceSuiteResource
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
+     * @param workbenchId   which workbench?
      * @return TestLabReportResponse or
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
-    @GetMapping( path = "/status/workbenches/{workbenchId}")
+    @GetMapping(path = "/status/workbenches/{workbenchId}")
     public WorkbenchStatusResponse getWorkbenchStatus(@PathVariable String   userId,
                                                       @PathVariable String   serverName,
                                                       @PathVariable String   workbenchId)

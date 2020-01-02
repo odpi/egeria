@@ -29,7 +29,7 @@ public class ConfigPropertiesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @PostMapping( path = "/server-type")
+    @PostMapping(path = "/server-type")
     public VoidResponse setServerType(@PathVariable String userId,
                                       @PathVariable String serverName,
                                       @RequestParam String typeName)
@@ -49,7 +49,7 @@ public class ConfigPropertiesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or organizationName parameter.
      */
-    @PostMapping( path = "/organization-name")
+    @PostMapping(path = "/organization-name")
     public VoidResponse setOrganizationName(@PathVariable String userId,
                                             @PathVariable String serverName,
                                             @RequestParam String name)
@@ -69,7 +69,7 @@ public class ConfigPropertiesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
-    @PostMapping( path = "/server-user-id")
+    @PostMapping(path = "/server-user-id")
     public VoidResponse setServerUserId(@PathVariable String userId,
                                         @PathVariable String serverName,
                                         @RequestParam String id)
@@ -89,7 +89,7 @@ public class ConfigPropertiesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
-    @PostMapping( path = "/server-user-password")
+    @PostMapping(path = "/server-user-password")
     public VoidResponse setServerPassword(@PathVariable String userId,
                                           @PathVariable String serverName,
                                           @RequestParam String password)
@@ -109,7 +109,7 @@ public class ConfigPropertiesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
      */
-    @PostMapping( path = "/max-page-size")
+    @PostMapping(path = "/max-page-size")
     public VoidResponse setMaxPageSize(@PathVariable String  userId,
                                        @PathVariable String  serverName,
                                        @RequestParam int     limit)

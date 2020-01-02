@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class RelatedEntitiesFindRequest extends OMRSAPIPagedFindRequest
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<String>              entityTypeGUIDs = null;
     private List<String>              limitResultsByClassification = null;
 

@@ -30,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class EntitySummary extends InstanceHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /*
      * Details of classifications.
      */

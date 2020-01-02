@@ -41,6 +41,7 @@ public class OMRSArchiveGUIDMap
     /**
      * Load up the saved GUIds into a new HashMap.
      */
+    @SuppressWarnings("unchecked")
     private void loadGUIDs()
     {
         File         idFile = new File(guidMapFileName);
@@ -60,6 +61,18 @@ public class OMRSArchiveGUIDMap
         }
 
         log.debug("Id to GUID Map contains: " + idToGUIDMap);
+    }
+
+
+    /**
+     * Fix the guid for a particular name.
+     *
+     * @param id identifier associated with the GUID
+     * @param guid fixed guid value
+     */
+    public  void setGUID(String  id, String  guid)
+    {
+        idToGUIDMap.put(id, guid);
     }
 
 

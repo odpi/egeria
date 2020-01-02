@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EntityDetail extends EntitySummary
 {
+    private static final long    serialVersionUID = 1L;
+
     private   InstanceProperties    entityProperties = null;
 
     /**

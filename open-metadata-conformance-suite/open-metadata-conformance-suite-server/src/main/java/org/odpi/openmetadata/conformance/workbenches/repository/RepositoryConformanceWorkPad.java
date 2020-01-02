@@ -465,13 +465,13 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 List<OpenMetadataConformanceRequirementResults> requirementResultsList = new ArrayList<>();
                 OpenMetadataConformanceRequirementResults       requirementResults;
 
-                for (RepositoryConformanceProfileRequirement requirement : requirements) {
-
+                for (RepositoryConformanceProfileRequirement requirement : requirements)
+                {
                     /*
                      * If (and only if) this requirement is relevant to the current profile, process it...
                      */
-                    if (requirement.getProfileId().equals(profile.getProfileId())) {
-
+                    if (requirement.getProfileId().equals(profile.getProfileId()))
+                    {
                         requirementResults = new OpenMetadataConformanceRequirementResults();
 
                         requirementResults.setId(requirement.getRequirementId());
@@ -481,9 +481,12 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
                         List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
 
-                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence) {
-                            if (testEvidenceItem != null) {
-                                if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue()) {
+                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence)
+                        {
+                            if (testEvidenceItem != null)
+                            {
+                                if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue())
+                                {
                                     requirementTestEvidence.add(testEvidenceItem);
                                 }
                             }
@@ -493,14 +496,16 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                         negativeTestEvidence = new ArrayList<>();
 
                         requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                                positiveTestEvidence,
-                                negativeTestEvidence));
+                                                                                      positiveTestEvidence,
+                                                                                      negativeTestEvidence));
 
-                        if (!positiveTestEvidence.isEmpty()) {
+                        if (!positiveTestEvidence.isEmpty())
+                        {
                             requirementResults.setPositiveTestEvidence(positiveTestEvidence);
                         }
 
-                        if (!negativeTestEvidence.isEmpty()) {
+                        if (!negativeTestEvidence.isEmpty())
+                        {
                             requirementResults.setNegativeTestEvidence(negativeTestEvidence);
                         }
 
@@ -527,41 +532,48 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * Add the specified subtype to the list for the named entity type
-     * @param entityTypeName
-     * @param subTypeName
+     * Add the specified subtype to the list for the named entity type.
+     *
+     * @param entityTypeName type name
+     * @param subTypeName sub type name
      */
-    public void addEntitySubType(String entityTypeName, String subTypeName) {
-
+     void addEntitySubType(String entityTypeName, String subTypeName)
+     {
         List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
-        if (subTypeList == null) {
+        if (subTypeList == null)
+        {
             List<String> newList = new ArrayList<>();
             newList.add(subTypeName);
             this.entitySubTypes.put(entityTypeName,newList);
         }
-        else {
+        else
+        {
             subTypeList.add(subTypeName);
         }
     }
 
     /**
-     * Return the list of subtypes of the named entity type
-     * @param entityTypeName
-     * @return
+     * Return the list of subtypes of the named entity type.
+     *
+     * @param entityTypeName entity name
+     * @return list of subtypes
      */
-    public List<String> getEntitySubTypes(String entityTypeName) {
-
+    public List<String> getEntitySubTypes(String entityTypeName)
+    {
         List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
         return subTypeList;
     }
 
-    /**
-     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified
-     * @param entityTypeName
-     * @param relationshipTypeName
-     */
-    public void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end) {
 
+    /**
+     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified.
+     *
+     * @param entityTypeName entity type name
+     * @param relationshipTypeName relationship type name
+     * @param end which relationship end
+     */
+    void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end)
+    {
         List<List<String>> bothEndLists = this.entityRelationshipTypes.get(entityTypeName);
         if (bothEndLists == null) {
             List<String> end1List = new ArrayList<>();
@@ -581,37 +593,41 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         }
     }
 
-    /**
-     * Return the list of endtypes for the named relationship type
-     * @param entityTypeName
-     * @return
-     */
-    public List<List<String>> getEntityRelationshipTypes(String entityTypeName) {
 
+    /**
+     * Return the list of end types for the named relationship type.
+     *
+     * @param entityTypeName requested type
+     * @return list of end types
+     */
+    public List<List<String>> getEntityRelationshipTypes(String entityTypeName)
+    {
         List<List<String>> relTypeLists = this.entityRelationshipTypes.get(entityTypeName);
         return relTypeLists;
     }
 
+
     /**
      * Return the set of supported entity type names
-     * @return
+     *
+     * @return list of type names
      */
-    public Set<String> getEntityTypeNames() {
-
-        Set<String> keySet = this.entityRelationshipTypes.keySet();
-        return keySet;
+    public Set<String> getEntityTypeNames()
+    {
+        return this.entityRelationshipTypes.keySet();
     }
 
 
 
     /**
      * Set the pair of end types as the list for the named relationship type
-     * @param relationshipTypeName
-     * @param end1TypeName
-     * @param end2TypeName
+     *
+     * @param relationshipTypeName name of type
+     * @param end1TypeName type for end 1
+     * @param end2TypeName type for end 2
      */
-    public void addRelationshipEndTypes(String relationshipTypeName, String end1TypeName, String end2TypeName) {
-
+    void addRelationshipEndTypes(String relationshipTypeName, String end1TypeName, String end2TypeName)
+    {
         List<String> endTypeList= new ArrayList<>();
         endTypeList.add(end1TypeName);
         endTypeList.add(end2TypeName);
@@ -619,39 +635,42 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
     }
 
-    /**
-     * Return the list of endtypes for the named relationship type
-     * @param relationshipTypeName
-     * @return
-     */
-    public List<String> getRelationshipEndTypes(String relationshipTypeName) {
 
+    /**
+     * Return the list of end types for the named relationship type
+     *
+     * @param relationshipTypeName relationship type
+     * @return list of end types
+     */
+    public List<String> getRelationshipEndTypes(String relationshipTypeName)
+    {
         List<String> endTypeList = this.relationshipEndTypes.get(relationshipTypeName);
         return endTypeList;
     }
 
+
     /**
      * Return the set of supported relationship type names
-     * @return
+     *
+     * @return list of relationship types
      */
-    public Set<String> getRelationshipTypeNames() {
-
+    public Set<String> getRelationshipTypeNames()
+    {
         Set<String> keySet = this.relationshipEndTypes.keySet();
         return keySet;
     }
 
 
-
-
     /**
-     * Remember the sets of instances for a given entity type. This is to support
-     * @param entityTypeName
-     * @param set_0
-     * @param set_1
-     * @param set_2
+     * Remember the sets of instances for a given entity type. This is to support search test cases
+     *
+     * @param entityTypeName name of entity
+     * @param set_0 set 0
+     * @param set_1 set 1
+     * @param set_2 set 3
      */
-    public void addEntityInstanceSets(String entityTypeName, List<EntityDetail> set_0, List<EntityDetail> set_1, List<EntityDetail> set_2) {
-
+    public void addEntityInstanceSets(String entityTypeName, List<EntityDetail> set_0, List<EntityDetail> set_1, List<EntityDetail> set_2)
+    {
         List<List<EntityDetail>> setsList = new ArrayList<>();
         setsList.add(set_0);
         setsList.add(set_1);
@@ -659,40 +678,46 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         this.entityInstances.put(entityTypeName,setsList);
     }
 
+
     /**
      * Retrieve entity instances for the given type for the given instance set
-     * @param entityTypeName
+     * @param entityTypeName entity type name
+     * @param setId which set
+     * @return list of entities
      */
-    public List<EntityDetail> getEntityInstanceSet(String entityTypeName, int setId) {
-
-        if (this.entityInstances.get(entityTypeName) != null) {
+    public List<EntityDetail> getEntityInstanceSet(String entityTypeName, int setId)
+    {
+        if (this.entityInstances.get(entityTypeName) != null)
+        {
             return this.entityInstances.get(entityTypeName).get(setId);
         }
         else
+        {
             return null;
+        }
     }
+
 
     /**
      * Clean up entity instances for the given type.
-     * @param entityTypeName
+     * @param entityTypeName name of entity type
      */
-    public void removeEntityInstanceSets(String entityTypeName) {
-
+    public void removeEntityInstanceSets(String entityTypeName)
+    {
         this.entityInstances.remove(entityTypeName);
-
     }
 
 
-
     /**
-     * Remember the sets of instances for a given relationship type. This is to support
-     * @param relationshipTypeName
-     * @param set_0
-     * @param set_1
-     * @param set_2
+     * Remember the sets of instances for a given relationship type. This is to support search tests.
+     *
+     * @param relationshipTypeName name of type
+     * @param set_0 set 0
+     * @param set_1 set 1
+     * @param set_2 set 2
      */
-    public void addRelationshipInstanceSets(String relationshipTypeName, List<Relationship> set_0, List<Relationship> set_1, List<Relationship> set_2) {
-
+    public void addRelationshipInstanceSets(String relationshipTypeName, List<Relationship> set_0, List<Relationship> set_1, List<Relationship> set_2)
+    {
         List<List<Relationship>> setsList = new ArrayList<>();
         setsList.add(set_0);
         setsList.add(set_1);
@@ -702,25 +727,32 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
     /**
      * Retrieve relationship instances for the given type for the given instance set
-     * @param relationshipTypeName
+     *
+     * @param relationshipTypeName relationship type name
+     * @param setId which set?
+     * @return list of relationships
      */
-    public List<Relationship> getRelationshipInstanceSet(String relationshipTypeName, int setId) {
-
-        if (this.relationshipInstances.get(relationshipTypeName) != null) {
+    public List<Relationship> getRelationshipInstanceSet(String relationshipTypeName, int setId)
+    {
+        if (this.relationshipInstances.get(relationshipTypeName) != null)
+        {
             return this.relationshipInstances.get(relationshipTypeName).get(setId);
         }
         else
+        {
             return null;
+        }
     }
+
 
     /**
      * Clean up relationship instances for the given type.
-     * @param relationshipTypeName
+     *
+     * @param relationshipTypeName relationship type name
      */
-    public void removeRelationshipInstanceSets(String relationshipTypeName) {
-
+    public void removeRelationshipInstanceSets(String relationshipTypeName)
+    {
         this.relationshipInstances.remove(relationshipTypeName);
-
     }
 
 

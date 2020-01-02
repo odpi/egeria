@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String  nextPageURL = null;
     protected int     offset      = 0;
     protected int     pageSize    = 0;

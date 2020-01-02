@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Community extends ReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              mission              = null;
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;

@@ -30,7 +30,7 @@ public class ConfigRepositoryServicesResource
      */
 
     /**
-     * Set up the default audit log for the server.
+     * Set up the default audit log for the server.  This adds the console audit log destination.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -38,11 +38,123 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @PostMapping( path = "/audit-log-destinations/default")
+    @PostMapping(path = "/audit-log-destinations/default")
     public VoidResponse setDefaultAuditLog(@PathVariable String userId,
                                            @PathVariable String serverName)
     {
         return adminAPI.setDefaultAuditLog(userId, serverName);
+    }
+
+
+    /**
+     * Set up the console audit log for the server.  This writes selected parts of the audit log record to stdout.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/console")
+    public VoidResponse addConsoleAuditLogDestination(@PathVariable String       userId,
+                                                      @PathVariable String       serverName,
+                                                      @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addConsoleAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that creates slf4j records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/slf4j")
+    public VoidResponse addSLF4JAuditLogDestination(@PathVariable String       userId,
+                                                    @PathVariable String       serverName,
+                                                    @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addSLF4JAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log records as JSON files in a shared directory.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/files")
+    public VoidResponse addFileAuditLogDestination(@PathVariable String       userId,
+                                                   @PathVariable String       serverName,
+                                                   @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addFileAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that sends each log record as an event on the supplied event topic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/event-topic")
+    public VoidResponse addEventTopicAuditLogDestination(@PathVariable String       userId,
+                                                         @PathVariable String       serverName,
+                                                         @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addEventTopicAuditLogDestination(userId, serverName, supportedSeverities);
+    }
+
+
+    /**
+     * Add an audit log destination that is defined by the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/connection")
+    public VoidResponse addAuditLogDestination(@PathVariable String     userId,
+                                               @PathVariable String     serverName,
+                                               @RequestBody  Connection connection)
+    {
+        return adminAPI.addAuditLogDestination(userId, serverName, connection);
+    }
+
+
+    /**
+     * Clears all audit log destinations for this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/none")
+    public VoidResponse clearAuditLogDestinations(@PathVariable String userId,
+                                                  @PathVariable String serverName)
+    {
+        return adminAPI.clearAuditLogDestinations(userId, serverName);
     }
 
 
@@ -56,7 +168,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or fileName parameter.
      */
-    @PostMapping( path = "/open-metadata-archives/file")
+    @PostMapping(path = "/open-metadata-archives/file")
     public VoidResponse addStartUpOpenMetadataArchiveFile(@PathVariable String userId,
                                                           @PathVariable String serverName,
                                                           @RequestBody  String fileName)
@@ -75,7 +187,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @DeleteMapping( path = "/local-repository")
+    @DeleteMapping(path = "/local-repository")
     public VoidResponse setNoRepositoryMode(@PathVariable String userId,
                                             @PathVariable String serverName)
     {
@@ -93,7 +205,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @PostMapping( path = "/local-repository/mode/in-memory-repository")
+    @PostMapping(path = "/local-repository/mode/in-memory-repository")
     public VoidResponse setInMemLocalRepository(@PathVariable String userId,
                                                 @PathVariable String serverName)
     {
@@ -111,7 +223,7 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @PostMapping( path = "/local-repository/mode/local-graph-repository")
+    @PostMapping(path = "/local-repository/mode/local-graph-repository")
     public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
                                                 @PathVariable                  String serverName)
     {
@@ -130,7 +242,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
-    @PostMapping( path = "/local-repository/mode/repository-proxy/connection")
+    @PostMapping(path = "/local-repository/mode/repository-proxy/connection")
     public VoidResponse setRepositoryProxyConnection(@PathVariable String     userId,
                                                      @PathVariable String     serverName,
                                                      @RequestBody  Connection connection)
@@ -151,7 +263,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
-    @PostMapping( path = "/local-repository/mode/repository-proxy/details")
+    @PostMapping(path = "/local-repository/mode/repository-proxy/details")
     public VoidResponse setRepositoryProxyConnection(@PathVariable                   String               userId,
                                                      @PathVariable                   String               serverName,
                                                      @RequestParam                   String               connectorProvider,
@@ -174,7 +286,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the local repository mode, or the event mapper has not been set
      */
-    @PostMapping( path = "/local-repository/event-mapper-connection")
+    @PostMapping(path = "/local-repository/event-mapper-connection")
     public VoidResponse setLocalRepositoryEventMapper(@PathVariable String     userId,
                                                       @PathVariable String     serverName,
                                                       @RequestBody  Connection connection)
@@ -198,7 +310,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
-    @PostMapping( path = "/local-repository/event-mapper-details")
+    @PostMapping(path = "/local-repository/event-mapper-details")
     public VoidResponse setLocalRepositoryEventMapper(@PathVariable                 String               userId,
                                                       @PathVariable                 String               serverName,
                                                       @RequestParam                 String               connectorProvider,
@@ -221,7 +333,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    @PostMapping( path = "/local-repository/metadata-collection-name/{name}")
+    @PostMapping(path = "/local-repository/metadata-collection-name/{name}")
 
     public VoidResponse setLocalMetadataCollectionName(@PathVariable  String               userId,
                                                        @PathVariable  String               serverName,
@@ -242,7 +354,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    @GetMapping( path = "/local-repository/metadata-collection-id")
+    @GetMapping(path = "/local-repository/metadata-collection-id")
 
     public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String               userId,
                                                      @PathVariable  String               serverName)
@@ -267,7 +379,7 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    @PostMapping( path = "/cohorts/{cohortName}")
+    @PostMapping(path = "/cohorts/{cohortName}")
     public VoidResponse enableCohortRegistration(@PathVariable                   String               userId,
                                                  @PathVariable                   String               serverName,
                                                  @PathVariable                   String               cohortName,
@@ -287,7 +399,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
-    @DeleteMapping( path = "/cohorts/{cohortName}")
+    @DeleteMapping(path = "/cohorts/{cohortName}")
     public VoidResponse disableCohortRegistration(@PathVariable String          userId,
                                                   @PathVariable String          serverName,
                                                   @PathVariable String          cohortName)
@@ -313,7 +425,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName.
      */
-    @PostMapping( path = "/audit-log-destinations")
+    @PostMapping(path = "/audit-log-destinations")
     public VoidResponse setAuditLogDestinations(@PathVariable String                userId,
                                                 @PathVariable String                serverName,
                                                 @RequestBody  List<Connection>      auditLogDestinations)
@@ -333,7 +445,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName.
      */
-    @PostMapping( path = "/open-metadata-archives")
+    @PostMapping(path = "/open-metadata-archives")
     public VoidResponse setOpenMetadataArchives(@PathVariable String           userId,
                                                 @PathVariable String           serverName,
                                                 @RequestBody  List<Connection> openMetadataArchives)
@@ -352,7 +464,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.
      */
-    @PostMapping( path = "/local-repository/configuration")
+    @PostMapping(path = "/local-repository/configuration")
     public VoidResponse setLocalRepositoryConfig(@PathVariable String                userId,
                                                  @PathVariable String                serverName,
                                                  @RequestBody LocalRepositoryConfig localRepositoryConfig)
@@ -373,7 +485,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or cohortConfig parameter.
      */
-    @PostMapping( path = "/cohorts/{cohortName}/configuration")
+    @PostMapping(path = "/cohorts/{cohortName}/configuration")
     public VoidResponse setCohortConfig(@PathVariable String       userId,
                                         @PathVariable String       serverName,
                                         @PathVariable String       cohortName,

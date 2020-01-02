@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.discoveryserver.server.spring;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class DiscoveryServerResource
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return unique id for the discovery request or
@@ -34,20 +35,51 @@ public class DiscoveryServerResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @PostMapping( path = "/asset-types/{assetType}/assets/{assetGUID}")
+    @PostMapping(path = "/asset-discovery-types/{assetDiscoveryType}/assets/{assetGUID}")
 
     public  GUIDResponse discoverAsset(@PathVariable String                       serverName,
                                        @PathVariable String                       discoveryEngineGUID,
                                        @PathVariable String                       userId,
                                        @PathVariable String                       assetGUID,
-                                       @PathVariable String                       assetType,
+                                       @PathVariable String                       assetDiscoveryType,
                                        @RequestBody  DiscoveryRequestRequestBody  requestBody)
     {
         return restAPI.discoverAsset(serverName,
                                      discoveryEngineGUID,
                                      userId,
                                      assetGUID,
-                                     assetType,
+                                     assetDiscoveryType,
+                                     requestBody);
+    }
+
+
+    /**
+     * Request the execution of a discovery service for each asset that is stored in the asset catalog.
+     *
+     * @param serverName name of the discovery server.
+     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId identifier of calling user
+     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param requestBody containing analysisParameters and annotationTypes
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    @PostMapping(path = "/asset-discovery-types/{assetDiscoveryType}/assets")
+
+    public VoidResponse scanAllAssets(@PathVariable String                       serverName,
+                                      @PathVariable String                       discoveryEngineGUID,
+                                      @PathVariable String                       userId,
+                                      @PathVariable String                       assetDiscoveryType,
+                                      @RequestBody  DiscoveryRequestRequestBody  requestBody)
+    {
+        return restAPI.scanAllAssets(serverName,
+                                     discoveryEngineGUID,
+                                     userId,
+                                     assetDiscoveryType,
                                      requestBody);
     }
 
@@ -64,7 +96,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryRequestGUID}")
 
     public DiscoveryAnalysisReportResponse getDiscoveryReport(@PathVariable String   serverName,
                                                               @PathVariable String   discoveryEngineGUID,
@@ -89,7 +121,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String   serverName,
                                                                 @PathVariable String   discoveryEngineGUID,
@@ -122,7 +154,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @GetMapping( path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations/{annotationGUID}/extended-annotations")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations/{annotationGUID}/extended-annotations")
 
     public AnnotationListResponse getExtendedAnnotations(@PathVariable String   serverName,
                                                          @PathVariable String   discoveryEngineGUID,
@@ -156,7 +188,7 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @GetMapping( path = "discovery-analysis-reports/{discoveryRequestGUID}//annotations/{annotationGUID}")
+    @GetMapping(path = "discovery-analysis-reports/{discoveryRequestGUID}//annotations/{annotationGUID}")
 
     public AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                             @PathVariable String   discoveryEngineGUID,

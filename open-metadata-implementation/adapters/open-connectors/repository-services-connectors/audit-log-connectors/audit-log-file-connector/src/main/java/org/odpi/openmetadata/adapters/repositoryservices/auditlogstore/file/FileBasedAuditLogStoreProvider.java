@@ -10,9 +10,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.
  */
 public class FileBasedAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
 {
-    static final String  connectorTypeGUID = "3afcc741-5dcc-4c60-a4ca-a6dede994e3f";
-    static final String  connectorTypeName = "File Based Audit Log Store Connector";
-    static final String  connectorTypeDescription = "Connector supports storing of audit log messages in a file.";
+    private static final String  connectorTypeGUID = "3afcc741-5dcc-4c60-a4ca-a6dede994e3f";
+    private static final String  connectorTypeName = "File Based Audit Log Store Connector";
+    private static final String  connectorTypeDescription = "Connector supports storing of audit log messages in a file.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -20,7 +20,7 @@ public class FileBasedAuditLogStoreProvider extends OMRSAuditLogStoreProviderBas
      */
     public FileBasedAuditLogStoreProvider()
     {
-        Class    connectorClass = FileBasedAuditLogStoreConnector.class;
+        Class<?>    connectorClass = FileBasedAuditLogStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

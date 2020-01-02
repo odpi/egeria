@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetRequestBody extends ReferenceableRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String       displayName      = null;
     protected String       description      = null;
     protected String       owner            = null;
