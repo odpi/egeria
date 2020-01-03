@@ -512,6 +512,24 @@ public interface OMRSRepositoryValidator
                          String  methodName) throws InvalidParameterException,
                                                     InvalidTypeDefException;
 
+    /**
+     * Validate that the supplied type is a valid active type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param typeParameterName  the name of the parameter that passed the type
+     * @param typeDefSummary  the type to test
+     * @param category  the expected category of the type
+     * @param methodName  the name of the method that supplied the type
+     * @throws InvalidParameterException  the type is null or contains invalid values
+     * @throws TypeErrorException  the type is not active
+     */
+    void validateActiveType(String          sourceName,
+                            String          typeParameterName,
+                            TypeDefSummary  typeDefSummary,
+                            TypeDefCategory category,
+                            String          methodName) throws TypeErrorException, InvalidParameterException;
+
+
 
     /**
      * Validate the content of a new TypeDef is known.
@@ -992,23 +1010,6 @@ public interface OMRSRepositoryValidator
     void validateInstanceType(String         sourceName,
                               InstanceHeader instance) throws RepositoryErrorException;
 
-
-    /**
-     * Validate that the supplied type is a valid active type.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param typeParameterName  the name of the parameter that passed the type
-     * @param typeDefSummary  the type to test
-     * @param category  the expected category of the type
-     * @param methodName  the name of the method that supplied the type
-     * @throws InvalidParameterException  the type is null or contains invalid values
-     * @throws TypeErrorException  the type is not active
-     */
-    void validateType(String          sourceName,
-                      String          typeParameterName,
-                      TypeDefSummary  typeDefSummary,
-                      TypeDefCategory category,
-                      String          methodName) throws TypeErrorException, InvalidParameterException;
 
 
     /**
