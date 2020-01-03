@@ -3,11 +3,18 @@
 
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 public class GraphConstants {
+
+    private GraphConstants(){}
+
+    private static final String JAVA_STRING = "java.lang.String";
 
     public static final String PROPERTY_KEY_PREFIX_ELEMENT = "vertex--";
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "edge--";
@@ -56,7 +63,6 @@ public class GraphConstants {
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
 
-
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_QUALIFIED_NAME;
@@ -80,70 +86,66 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_RELATIONSHIP_LABEL = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_LABEL;
 
+    private static final HashSet<String> returnedPropertiesWhiteList = new HashSet<>();
 
-    public static final HashSet<String> returnedPropertiesWhiteList = new HashSet<String>(){{
-        add(PROPERTY_KEY_ENTITY_GUID);
-        add(PROPERTY_KEY_DISPLAY_NAME);
-        add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
-        add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
-        add(PROPERTY_KEY_GLOSSARY_TERM);
-        add(PROPERTY_KEY_ENTITY_CREATED_BY);
-        add(PROPERTY_NAME_SCHEMA_DISPLAY_NAME);
-        add(PROPERTY_NAME_TABLE_DISPLAY_NAME);
-        add(PROPERTY_KEY_ENTITY_CREATE_TIME);
-        add(PROPERTY_KEY_ENTITY_UPDATED_BY);
-        add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
+    static{
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_GUID);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_GLOSSARY_TERM);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_CREATED_BY);
+        returnedPropertiesWhiteList.add(PROPERTY_NAME_SCHEMA_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_NAME_TABLE_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_CREATE_TIME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATED_BY);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
+    }
 
-    }};
+    public static final ImmutableSet<String> immutableReturnedPropertiesWhiteList = ImmutableSet.copyOf(returnedPropertiesWhiteList);
 
-    public static final Map<String, String> filterPrefixMap = new HashMap<String, String>() {
-        {
-            put(PROPERTY_KEY_ENTITY_NODE_ID, PROPERTY_NAME_NODE_ID);
-            put(PROPERTY_KEY_ENTITY_GUID, PROPERTY_NAME_GUID);
-            put(PROPERTY_KEY_NAME_QUALIFIED_NAME, PROPERTY_NAME_QUALIFIED_NAME);
-            put(PROPERTY_KEY_LABEL, PROPERTY_NAME_LABEL);
-            put(PROPERTY_KEY_PROXY, PROPERTY_NAME_PROXY);
-            put(PROPERTY_KEY_GLOSSARY_TERM, PROPERTY_NAME_GLOSSARY_TERM);
-            put(PROPERTY_KEY_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
-            put(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
+    private static final Map<String, String> filterPrefixMap = new HashMap<>();
 
-            put(PROPERTY_KEY_ENTITY_VERSION, PROPERTY_NAME_VERSION);
-            put(PROPERTY_KEY_ENTITY_CREATED_BY, PROPERTY_NAME_CREATED_BY);
-            put(PROPERTY_KEY_ENTITY_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
-            put(PROPERTY_KEY_ENTITY_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
-            put(PROPERTY_KEY_ENTITY_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
+    static{
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_NODE_ID, PROPERTY_NAME_NODE_ID);
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_GUID, PROPERTY_NAME_GUID);
+        filterPrefixMap.put(PROPERTY_KEY_NAME_QUALIFIED_NAME, PROPERTY_NAME_QUALIFIED_NAME);
+        filterPrefixMap.put(PROPERTY_KEY_LABEL, PROPERTY_NAME_LABEL);
+        filterPrefixMap.put(PROPERTY_KEY_PROXY, PROPERTY_NAME_PROXY);
+        filterPrefixMap.put(PROPERTY_KEY_GLOSSARY_TERM, PROPERTY_NAME_GLOSSARY_TERM);
+        filterPrefixMap.put(PROPERTY_KEY_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
+        filterPrefixMap.put(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME, PROPERTY_NAME_DISPLAY_NAME);
 
-            put(PROPERTY_KEY_RELATIONSHIP_GUID, PROPERTY_NAME_GUID);
-            put(PROPERTY_KEY_RELATIONSHIP_VERSION, PROPERTY_NAME_VERSION);
-            put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY, PROPERTY_NAME_CREATED_BY);
-            put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
-            put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
-            put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
-            put(PROPERTY_KEY_RELATIONSHIP_LABEL, PROPERTY_NAME_LABEL);
-        }};
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_VERSION, PROPERTY_NAME_VERSION);
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_CREATED_BY, PROPERTY_NAME_CREATED_BY);
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
+        filterPrefixMap.put(PROPERTY_KEY_ENTITY_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
 
-    // Map of names to property key names
-    public static final Map<String, String> corePropertiesRelationship = new HashMap<String, String>() {{
-        put(PROPERTY_NAME_GUID, PROPERTY_KEY_RELATIONSHIP_GUID);
-        put(PROPERTY_NAME_VERSION, PROPERTY_KEY_RELATIONSHIP_VERSION);
-        put(PROPERTY_NAME_CREATED_BY, PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
-        put(PROPERTY_NAME_CREATE_TIME, PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
-        put(PROPERTY_NAME_UPDATED_BY, PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
-        put(PROPERTY_NAME_UPDATE_TIME, PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
-        put(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_GUID, PROPERTY_NAME_GUID);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_VERSION, PROPERTY_NAME_VERSION);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY, PROPERTY_NAME_CREATED_BY);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME, PROPERTY_NAME_CREATE_TIME);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY, PROPERTY_NAME_UPDATED_BY);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME, PROPERTY_NAME_UPDATE_TIME);
+        filterPrefixMap.put(PROPERTY_KEY_RELATIONSHIP_LABEL, PROPERTY_NAME_LABEL);
+        }
 
-    }};
+    public static final ImmutableMap<String,String> immutableFilterPrefixMap = ImmutableMap.copyOf(filterPrefixMap);
 
-    public static final Map<String, String> corePropertyTypes = new HashMap<String, String>() {{
-        put(PROPERTY_NAME_GUID, "java.lang.String");
-        put(PROPERTY_NAME_VERSION, "java.lang.Long");
-        put(PROPERTY_NAME_CREATED_BY, "java.lang.String");
-        put(PROPERTY_NAME_CREATE_TIME, "java.lang.Date");
-        put(PROPERTY_NAME_UPDATED_BY, "java.lang.String");
-        put(PROPERTY_NAME_UPDATE_TIME, "java.lang.Date");
-        put(PROPERTY_NAME_LABEL, "java.lang.String");
-        put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
-    }};
+    private static final Map<String, String> corePropertyTypes = new HashMap<>();
 
+    static{
+        corePropertyTypes.put(PROPERTY_NAME_GUID,JAVA_STRING);
+        corePropertyTypes.put(PROPERTY_NAME_VERSION, "java.lang.Long");
+        corePropertyTypes.put(PROPERTY_NAME_CREATED_BY,JAVA_STRING);
+        corePropertyTypes.put(PROPERTY_NAME_CREATE_TIME, "java.lang.Date");
+        corePropertyTypes.put(PROPERTY_NAME_UPDATED_BY,JAVA_STRING);
+        corePropertyTypes.put(PROPERTY_NAME_UPDATE_TIME, "java.lang.Date");
+        corePropertyTypes.put(PROPERTY_NAME_LABEL,JAVA_STRING);
+        corePropertyTypes.put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
+    }
+
+    public static final ImmutableMap<String,String> immutableCorePropertyTypes = ImmutableMap.copyOf(corePropertyTypes);
 
 }
