@@ -169,9 +169,8 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
             return false;
         }
         else if ((existingTypeDef.getName().equals(typeDef.getName())) &&
-                (existingTypeDef.getVersion() == typeDef.getVersion()) &&
-                (existingTypeDef.getVersionName().equals(typeDef.getVersionName())) &&
-                (existingTypeDef.getCreateTime().equals(typeDef.getCreateTime())))
+                 (existingTypeDef.getGUID().equals(typeDef.getGUID())) &&
+                 (existingTypeDef.getVersionName().equals(typeDef.getVersionName())))
         {
             return true;
         }

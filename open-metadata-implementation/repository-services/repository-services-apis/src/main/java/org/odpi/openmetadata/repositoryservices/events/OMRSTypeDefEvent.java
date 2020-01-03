@@ -8,8 +8,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1TypeDefSection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * OMRSTypeDefEvent provides the wrapper for an event that relates to a type definition (TypeDef).
@@ -43,8 +41,6 @@ public class OMRSTypeDefEvent extends OMRSEvent
      */
     private OMRSTypeDefEventErrorCode   errorCode                  = OMRSTypeDefEventErrorCode.NOT_IN_USE;
 
-
-    private static final Logger log = LoggerFactory.getLogger(OMRSTypeDefEvent.class);
 
     /**
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
@@ -80,6 +76,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
 
                 case CONFLICTING_ATTRIBUTE_TYPEDEFS:
                     errorCode = OMRSTypeDefEventErrorCode.CONFLICTING_ATTRIBUTE_TYPEDEFS;
+                    break;
 
                 case TYPEDEF_PATCH_MISMATCH:
                     errorCode = OMRSTypeDefEventErrorCode.TYPEDEF_PATCH_MISMATCH;
@@ -202,23 +199,49 @@ public class OMRSTypeDefEvent extends OMRSEvent
      *
      * @param errorCode code enum indicating the cause of the error.
      * @param errorMessage descriptive message about the error.
-     * @param targetMetadataCollectionId identifier of the cohort member that issued the event in error.
-     * @param targetTypeDefSummary details of the TypeDef in the remote repository.
+     * @param originatorTypeDefSummary details of the TypeDef in the remote repository.
+     * @param otherMetadataCollectionId unique id of the remote repository.
      * @param otherTypeDefSummary details of the TypeDef in the local repository.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventErrorCode errorCode,
                             String                    errorMessage,
-                            String                    targetMetadataCollectionId,
-                            TypeDefSummary            targetTypeDefSummary,
+                            TypeDefSummary            originatorTypeDefSummary,
+                            String                    otherMetadataCollectionId,
                             TypeDefSummary            otherTypeDefSummary)
     {
         super(OMRSEventCategory.TYPEDEF,
               errorCode.getEncoding(),
               errorMessage,
-              targetMetadataCollectionId,
-              targetTypeDefSummary,
+              otherMetadataCollectionId,
               otherTypeDefSummary);
 
+        this.originalTypeDefSummary = originatorTypeDefSummary;
+        this.typeDefEventType = OMRSTypeDefEventType.TYPEDEF_ERROR_EVENT;
+    }
+
+
+    /**
+     * Outbound event constructor for conflicting attribute typedef errors.
+     *
+     * @param errorCode code enum indicating the cause of the error.
+     * @param errorMessage descriptive message about the error.
+     * @param originatorAttributeTypeDef details of the TypeDef in the local repository.
+     * @param otherMetadataCollectionId unique id of the remote repository.
+     * @param otherAttributeTypeDef details of the TypeDef in the remote repository.
+     */
+    public OMRSTypeDefEvent(OMRSTypeDefEventErrorCode errorCode,
+                            String                    errorMessage,
+                            AttributeTypeDef          originatorAttributeTypeDef,
+                            String                    otherMetadataCollectionId,
+                            AttributeTypeDef          otherAttributeTypeDef)
+    {
+        super(OMRSEventCategory.TYPEDEF,
+              errorCode.getEncoding(),
+              errorMessage,
+              otherMetadataCollectionId,
+              otherAttributeTypeDef);
+
+        this.originalAttributeTypeDef = originatorAttributeTypeDef;
         this.typeDefEventType = OMRSTypeDefEventType.TYPEDEF_ERROR_EVENT;
     }
 
@@ -243,7 +266,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
               errorMessage,
               targetMetadataCollectionId,
               targetAttributeTypeDef,
-              targetAttributeTypeDef);
+              otherAttributeTypeDef);
 
         this.typeDefEventType = OMRSTypeDefEventType.TYPEDEF_ERROR_EVENT;
     }

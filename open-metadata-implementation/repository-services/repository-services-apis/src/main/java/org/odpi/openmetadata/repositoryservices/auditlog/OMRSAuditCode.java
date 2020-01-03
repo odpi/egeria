@@ -810,7 +810,7 @@ public enum OMRSAuditCode
                        "Review the exception and resolve the issue that it documents."),
 
     UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING("OMRS-AUDIT-9018",
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        OMRSAuditLogRecordSeverity.ERROR,
                        "Exception {0} occurred when processing a type {1} from {2}.  The originator of the type was {3} " +
                                                       "({4}).  The message in the exception was {5}",
                         "The contents of the type were not accepted by the type definition processor.",
