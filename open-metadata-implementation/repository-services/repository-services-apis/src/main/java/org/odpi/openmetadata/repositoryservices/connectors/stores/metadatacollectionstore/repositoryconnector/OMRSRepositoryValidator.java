@@ -172,7 +172,7 @@ public interface OMRSRepositoryValidator
     boolean validTypeDefId(String          sourceName,
                            String          typeDefGUID,
                            String          typeDefName,
-                           long            typeDefVersion,
+                           String          typeDefVersion,
                            TypeDefCategory category);
 
 
@@ -189,7 +189,7 @@ public interface OMRSRepositoryValidator
     boolean validAttributeTypeDefId(String                   sourceName,
                                     String                   attributeTypeDefGUID,
                                     String                   attributeTypeDefName,
-                                    long                     attributeTypeDefVersion,
+                                    String                   attributeTypeDefVersion,
                                     AttributeTypeDefCategory category);
 
 

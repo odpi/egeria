@@ -1237,6 +1237,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
             return;
         }
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         super.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef, patch);
     }
 
@@ -1259,6 +1267,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
             return;
         }
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         super.validateUserForTypeDelete(userId, metadataCollectionName, typeDef);
     }
 
@@ -1279,6 +1295,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         if (metadataArchitects.contains(userId))
         {
             return;
+        }
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
         }
 
         super.validateUserForTypeDelete(userId, metadataCollectionName, attributeTypeDef);
@@ -1309,6 +1333,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
             return;
         }
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         super.validateUserForTypeReIdentify(userId, metadataCollectionName, originalTypeDef, newTypeDefGUID, newTypeDefName);
     }
 
@@ -1323,6 +1355,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeReIdentify(String           userId,
                                                String           metadataCollectionName,
                                                AttributeTypeDef originalAttributeTypeDef,
@@ -1332,6 +1365,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         if (metadataArchitects.contains(userId))
         {
             return;
+        }
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
         }
 
         super.validateUserForTypeReIdentify(userId,
