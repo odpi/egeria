@@ -1764,7 +1764,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return false;
         }
 
-        TypeDef          typeDef = knownTypeDefNames.get(typeDefName);
+        TypeDef typeDef = knownTypeDefNames.get(typeDefName);
 
         if (typeDef != null)
         {
@@ -1809,7 +1809,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return false;
         }
 
-        AttributeTypeDef          attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
+        AttributeTypeDef attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
 
         if (attributeTypeDef != null)
         {
@@ -1865,7 +1865,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return true;
         }
 
-        if (typeDef.getVersionName().equals(typeDefVersion))
+        if (! typeDef.getVersionName().equals(typeDefVersion))
         {
             log.error("Version mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
                               + sourceName + " received version  is " + typeDefVersion
@@ -1899,20 +1899,20 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return false;
         }
 
-        TypeDef   typeDef = knownTypeDefNames.get(attributeTypeDefName);
+        AttributeTypeDef attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
 
-        if (typeDef == null)
+        if (attributeTypeDef == null)
         {
             log.debug("Unknown TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from " + sourceName);
 
             return true;
         }
 
-        if (typeDef.getVersionName().equals(attributeTypeDefVersion))
+        if (! attributeTypeDef.getVersionName().equals(attributeTypeDefVersion))
         {
             log.error("Version mismatch for TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from "
                               + sourceName + " received version number is " + attributeTypeDefVersion
-                              + " and stored version is " + typeDef.getVersionName());
+                              + " and stored version is " + attributeTypeDef.getVersionName());
 
             return false;
         }
