@@ -105,6 +105,14 @@ logging:
 cts:
   enabled: false
 
+# Connectors information
+# - repo should be either 'snapshot' or 'release'
+#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.3-SNAPSHOT)
+#   - when 'release', version should be <version>  (eg. 1.3)
+connectors:
+  repo: snapshot
+  version: 1.3-SNAPSHOT
+
 imageDefaults:
   registry: docker.io
   namespace: odpi
