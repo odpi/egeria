@@ -7,11 +7,15 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType;
 
 import java.util.Date;
+
+import static org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType.UPDATED_TYPEDEF_EVENT;
 
 
 /**
@@ -71,6 +75,8 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
     private String            metadataCollectionId = null;
     private String            serverName = null;
 
+    private RepositoryConformanceWorkPad workPad;
+
 
 
     /**
@@ -88,6 +94,7 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
               RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_NOTIFICATIONS.getProfileId(),
               RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_NOTIFICATIONS.getRequirementId());
 
+        this.workPad = workPad;
         testCaseId = rootTestCaseId + "-" + eventIdentifier;
         super.updateTestId(rootTestCaseId, testCaseId, testCaseName);
 
@@ -250,7 +257,26 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
                                   defaultProfileId,
                                   defaultRequirementId);
 
-            typeDef          = event.getTypeDef();
+            // TODO - check this
+            if  (eventType == UPDATED_TYPEDEF_EVENT) {
+
+                TypeDefPatch typeDefPatch = event.getTypeDefPatch();
+                String orioginalTypeDefGUID = typeDefPatch.getTypeDefGUID();
+                OMRSRepositoryHelper repositoryHelper = null;
+                if (workPad != null) {
+                    cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+                    repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+                }
+                TypeDef originalTypeDef = repositoryHelper.getTypeDef(serverName, "typeDefGUID", orioginalTypeDefGUID, "TestValidTypeDefEvent::run");
+                TypeDef updatedTypeDef = repositoryHelper.applyPatch(serverName, originalTypeDef, typeDefPatch);
+
+                typeDef = updatedTypeDef;
+            }
+            else {
+
+                typeDef = event.getTypeDef();
+
+            }
             attributeTypeDef = event.getAttributeTypeDef();
 
             switch (eventType)
