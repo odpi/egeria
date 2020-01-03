@@ -5058,16 +5058,16 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
         this.manageInstanceParameterValidation(userId, instanceGUID, instanceParameterName, methodName);
 
-        repositoryValidator.validateType(repositoryName,
-                                         currentTypeDefParameterName,
-                                         currentTypeDefSummary,
-                                         expectedTypeDefCategory,
-                                         methodName);
-        repositoryValidator.validateType(repositoryName,
-                                         newTypeDefParameterName,
-                                         newTypeDefSummary,
-                                         expectedTypeDefCategory,
-                                         methodName);
+        repositoryValidator.validateActiveType(repositoryName,
+                                               currentTypeDefParameterName,
+                                               currentTypeDefSummary,
+                                               expectedTypeDefCategory,
+                                               methodName);
+        repositoryValidator.validateActiveType(repositoryName,
+                                               newTypeDefParameterName,
+                                               newTypeDefSummary,
+                                               expectedTypeDefCategory,
+                                               methodName);
     }
 
 
