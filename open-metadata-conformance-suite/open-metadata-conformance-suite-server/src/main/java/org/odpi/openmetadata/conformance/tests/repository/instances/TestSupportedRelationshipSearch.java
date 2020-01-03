@@ -48,60 +48,52 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private static final String testCaseId = "repository-relationship-property-search";
     private static final String testCaseName = "Repository relationship property search test case";
 
-    /* Assertions for multi set tests */
-
     private static final String assertion101     = testCaseId + "-101";
-    private static final String assertionMsg101  = " TODO .";
-
-    private static final String assertion102     = testCaseId + "-102";
-    private static final String assertionMsg102  = " TODO .";
-
-    private static final String assertion103     = testCaseId + "-103";
-    private static final String assertionMsg103  = " TODO .";
-
-    private static final String assertion104     = testCaseId + "-104";
-    private static final String assertionMsg104  = " TODO .";
-
-    private static final String assertion105     = testCaseId + "-105";
-    private static final String assertionMsg105  = " TODO .";
-
-    private static final String assertion106     = testCaseId + "-106";
-    private static final String assertionMsg106  = " TODO .";
-
-    private static final String assertion107     = testCaseId + "-107";
-    private static final String assertionMsg107  = " TODO .";
-
-    private static final String assertion108     = testCaseId + "-108";
-    private static final String assertionMsg108  = " TODO .";
-
-    private static final String assertion301     = testCaseId + "-301";
-    private static final String assertionMsg301  = " search criteria test returned valid number of relationships.";
-
-    private static final String assertion303     = testCaseId + "-303";
-    private static final String assertionMsg303  = " search criteria test returned valid relationships.";
-
-
-    private static final String assertion401     = testCaseId + "-401";
-    private static final String assertionMsg401  = " type filtering test returned valid number of relationships.";
-
-    private static final String assertion402     = testCaseId + "-402";
-    private static final String assertionMsg402  = " type filtering test returned valid relationships.";
-
-
-    private static final String assertion501     = testCaseId + "-501";
-    private static final String assertionMsg501  = " advanced search criteria test returned valid number of relationships.";
-
-    private static final String assertion502     = testCaseId + "-502";
-    private static final String assertionMsg502  = " advanced search criteria test returned valid relationships.";
-
-    private static final String assertion503     = testCaseId + "-503";
-    private static final String assertionMsg503  = " advanced match properties test returned valid number of relationships.";
-
-    private static final String assertion504     = testCaseId + "-504";
-    private static final String assertionMsg504  = " advanced match properties test returned valid relationships.";
+    private static final String assertionMsg101  = " relationship type matches the known type from the repository helper.";
 
     private static final String assertion1001    = testCaseId + "-1001";
-    private static final String assertionMsg1001 = " repository does not support entity type needed for relationship end.";
+    private static final String assertionMsg1001 = " repository does not support an entity type that can be used to test relationship type ";
+
+    private static final String assertion102     = testCaseId + "-102";
+    private static final String assertionMsg102  = "repository supports creation of instances of type ";
+
+    private static final String assertion104     = testCaseId + "-104";
+    private static final String assertionMsg104  = " repository property matchProperties search returned expected number of results for type ";
+
+    private static final String assertion105     = testCaseId + "-105";
+    private static final String assertionMsg105  = " repository property matchProperties search returned expected results for type ";
+
+    private static final String assertion107     = testCaseId + "-107";
+    private static final String assertionMsg107  = " repository property matchProperties search returned expected number of results for type ";
+
+    private static final String assertion108     = testCaseId + "-108";
+    private static final String assertionMsg108  = " repository property matchProperties search returned expected results for type ";
+
+    private static final String assertion301     = testCaseId + "-301";
+    private static final String assertionMsg301  = " repository property value search returned expected number of results for type ";
+
+    private static final String assertion303     = testCaseId + "-303";
+    private static final String assertionMsg303  = " repository property value search returned expected results for type ";
+
+    private static final String assertion401     = testCaseId + "-401";
+    private static final String assertionMsg401  = " repository property matchProperties search wth type filter returned expected number of relationships for type ";
+
+    private static final String assertion402     = testCaseId + "-402";
+    private static final String assertionMsg402  = " repository property matchProperties search wth type filter returned expected relationships for type ";
+
+    private static final String assertion501     = testCaseId + "-501";
+    private static final String assertionMsg501  = " repository property value search with general regex returned expected number of results for type ";
+
+    private static final String assertion502     = testCaseId + "-502";
+    private static final String assertionMsg502  = " repository property value search with general regex returned expected results for type ";
+
+    private static final String assertion503     = testCaseId + "-503";
+    private static final String assertionMsg503  = " repository property matchProperties search with general regex returned expected number of results for type ";
+
+    private static final String assertion504     = testCaseId + "-504";
+    private static final String assertionMsg504  = "repository property matchProperties search with general regex returned expected results for type ";
+
+
 
 
     private RepositoryConformanceWorkPad              workPad;
@@ -278,7 +270,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         switch (phase) {
 
-            // TODO possibly rename CREATE to something like SEED or DISCOVER_OR_CREATE, GET_INSTANCES, etc
             case SEED:
                 this.seedInstances();
                 break;
@@ -367,12 +358,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                     Relationship newRelationship = createRelationship(relationshipDef,
                                                                       super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount));
-
-                    //Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                    //                                         relationshipDef.getGUID(),
-                    //                                         super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount),
-                    //                                         null,
-                    //                                         null);
 
                     // Record the created instance for result prediction and verification
                     knownInstances.add(newRelationship);
@@ -549,7 +534,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
             assertCondition((false),
                             assertion1001,
-                            testTypeName + assertionMsg1001,
+                             assertionMsg1001 + testTypeName,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
         }
@@ -961,7 +946,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion104,
-                            testTypeName + "attribute" + attributeName + "match criteria" + matchCriteria + assertionMsg104,
+                            assertionMsg104 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1039,7 +1024,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion105,
-                                testTypeName + "attribute" + attributeName + "match criteria" + matchCriteria + assertionMsg105,
+                                assertionMsg105 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1151,16 +1136,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                                        pageSize);
 
 
-
-            ///*
-            // * It is reasonable to expect a non-null result - based on the way the search properties were constructed
-            // */
-            //assertCondition((result != null),
-            //                assertion106,
-            //                testTypeName + assertionMsg106,
-            //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-            //                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
             /*
              * Check that the expected number of relationships was returned. This has to consider the effect of the original
              * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
@@ -1195,7 +1170,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion107,
-                            testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria + assertionMsg107,
+                            assertionMsg107 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1287,7 +1262,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion108,
-                                testTypeName + assertionMsg108,
+                                assertionMsg108 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1470,7 +1445,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion301,
-                            testTypeName + " attribute " +attributeName+" match type "+matchType+ " " + assertionMsg301,
+                            assertionMsg301 + testTypeName + " match type "+matchType + " literalised value " + literalisedValue,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
@@ -1564,7 +1539,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion303,
-                                testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg303,
+                                assertionMsg303 + testTypeName + " match type "+matchType + " literalised value " + literalisedValue,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
             }
@@ -1883,7 +1858,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition((acceptable_result_size),
                                 assertion401,
-                                testTypeName + "attribute" + attributeName + assertionMsg401,
+                                assertionMsg401 + testTypeName + "attribute" + attributeName,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
@@ -1952,7 +1927,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                     assertCondition(matchingResult,
                                     assertion402,
-                                    testTypeName + "attribute" + attributeName  + assertionMsg402,
+                                    assertionMsg402 + testTypeName + "attribute" + attributeName,
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
                 }
@@ -1981,7 +1956,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             String stringValue = (String) (possibleValueIterator.next());
             String truncatedStringValue = null;
-            //String literalisedValue = null;
             String regexValue = null;
             int stringValueLength;
             int truncatedLength;
@@ -1990,7 +1964,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 case Exact:
                     /* EXACT MATCH */
-                    //literalisedValue = literaliseStringPropertyExact(stringValue);
                     regexValue = stringValue;
                     break;
                 case Prefix:
@@ -2001,7 +1974,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                     truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
                     truncatedStringValue = stringValue.substring(0, truncatedLength);
-                    //literalisedValue = literaliseStringPropertyStartsWith(truncatedStringValue);
                     regexValue = truncatedStringValue + ".*";
                     break;
                 case Suffix:
@@ -2012,7 +1984,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                     truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
                     truncatedStringValue = stringValue.substring(stringValueLength - truncatedLength, stringValueLength);
-                    //literalisedValue = literaliseStringPropertyEndsWith(truncatedStringValue);
                     regexValue = ".*" + truncatedStringValue;
                     break;
                 case Contains:
@@ -2025,7 +1996,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     int diff = stringValueLength - truncatedLength;
                     int halfDiff = diff / 2;
                     truncatedStringValue = stringValue.substring(halfDiff, stringValueLength - halfDiff);
-                    //literalisedValue = literaliseStringPropertyContains(truncatedStringValue);
                     regexValue = ".*" + truncatedStringValue + ".*";
                     break;
             }
@@ -2137,7 +2107,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion501,
-                            testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg501,
+                            assertionMsg501 + testTypeName + " match type " + matchType + " regex " + regexValue,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
@@ -2231,7 +2201,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion502,
-                                testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg502,
+                                assertionMsg502 + testTypeName + " match type " + matchType + " regex " + regexValue,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
             }
@@ -2285,7 +2255,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion503,
-                            testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg503,
+                            assertionMsg503 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
@@ -2379,7 +2349,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion504,
-                                testTypeName + " attribute " + attributeName + " match type " + matchType + " " + assertionMsg504,
+                                assertionMsg504 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }
