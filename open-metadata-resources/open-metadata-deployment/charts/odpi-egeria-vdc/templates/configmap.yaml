@@ -35,7 +35,7 @@ data:
   ATLAS_USER: {{ .Values.atlas.user }}
   ATLAS_PASS: {{ .Values.atlas.password }}
   ATLAS_KAFKA_ENDPOINT: {{ include "myapp.fullname" . }}-atlas-service:9027
-  ATLAS_CONNECTOR_URL: https://odpi.jfrog.io/odpi/egeria-{{ .Values.connectors.repo }}-local/org/odpi/egeria/egeria-connector-apache-atlas-package/{{ .Values.connectors.version }}/egeria-connector-apache-atlas-{{ .Values.connectors.version }}-jar-with-dependencies.jar
+  ATLAS_CONNECTOR_URL: https://odpi.jfrog.io/odpi/egeria-{{ .Values.connectors.repo }}-local/org/odpi/egeria/egeria-connector-apache-atlas-package/{{ .Values.connectors.version }}/egeria-connector-apache-atlas-package-{{ .Values.connectors.version }}-jar-with-dependencies.jar
   {{ end }}
 
   {{ if or .Values.postgresql.enabled .Values.ranger.enabled }}
