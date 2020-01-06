@@ -672,7 +672,7 @@ public enum OMRSErrorCode
             "There is an internal error in the Open Metadata Repository Services (OMRS) operation.",
             "Raise a Github issue to get this fixed."),
     BAD_TYPEDEF(500, "OMRS-CONTENT-MANAGER-500-001 ",
-            "The repository content manager has detected an unknown TypeDef from {0}.",
+            "The repository content manager method {0} has detected an unknown TypeDef {1} from {2} on behalf of method {3}.",
             "There is an internal error in the Open Metadata Repository Services (OMRS) operation.",
             "Raise a Github issue to get this fixed."),
     BAD_TYPEDEF_ATTRIBUTE_NAME(500, "OMRS-CONTENT-MANAGER-500-002 ",

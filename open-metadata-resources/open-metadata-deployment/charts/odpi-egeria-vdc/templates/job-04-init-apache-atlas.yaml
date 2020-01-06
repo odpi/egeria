@@ -131,8 +131,8 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.apache.atlas.repositoryconnector.ApacheAtlasOMRSRepositoryConnectorProvider
-                --data '{"apache.atlas.rest.url": "'"${ATLAS_ENDPOINT}"'", "apache.atlas.username": "'"${ATLAS_USER}"'", "apache.atlas.password": "'"${ATLAS_PASS}"'"}'
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/mode/repository-proxy/connection
+                --data '{"class":"Connection","connectorType":{"class":"ConnectorType","connectorProviderClassName":"org.odpi.egeria.connectors.apache.atlas.repositoryconnector.ApacheAtlasOMRSRepositoryConnectorProvider"},"endpoint":{"class":"Endpoint","address":"'"${ATLAS_HOST}:${ATLAS_PORT}"'","protocol":"http"},"userId":"'"${ATLAS_USER}"'","clearPassword":"'"${ATLAS_PASS}"'","configurationProperties":{"defaultZones":["default"]}}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/cohorts/${EGERIA_COHORT}
