@@ -68,7 +68,6 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-                conda install -y pandas
                 cd /opt/egeria/labs &&
                 git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
@@ -89,7 +88,11 @@ spec:
                   :{{ .Values.image.jupyter.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
-            - "start.sh"
+            - "/bin/bash"
+            - "-c"
+            - >
+                conda install -y pandas &&
+                start-notebook.sh
           args:
             - jupyter
             - lab
