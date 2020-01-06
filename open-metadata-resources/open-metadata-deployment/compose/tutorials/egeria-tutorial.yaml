@@ -61,7 +61,9 @@ services:
             - core
             - dev
             - datalake
+            - factory
         depends_on:
+            - kafka
             - core
             - dev
             - datalake
@@ -91,6 +93,7 @@ services:
         ports:
             - '18081:8080'
         links:
+            - kafka
             - zookeeper
         networks:
             - cocopharma
