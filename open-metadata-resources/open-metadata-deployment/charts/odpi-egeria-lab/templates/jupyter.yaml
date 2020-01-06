@@ -92,7 +92,7 @@ spec:
             - "-c"
             - >
                 conda install -y pandas &&
-                start-notebook.sh
+                start.sh jupyter lab --NotebookApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
           args:
             - jupyter
             - lab
