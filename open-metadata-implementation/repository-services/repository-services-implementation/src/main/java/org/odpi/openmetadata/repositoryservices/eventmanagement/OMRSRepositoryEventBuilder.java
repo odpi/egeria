@@ -326,8 +326,8 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
         OMRSTypeDefEvent typeDefEvent = new OMRSTypeDefEvent(OMRSTypeDefEventErrorCode.CONFLICTING_TYPEDEFS,
                                                              errorMessage,
-                                                             originatorMetadataCollectionId,
                                                              originatorTypeDefSummary,
+                                                             otherMetadataCollectionId,
                                                              conflictingTypeDefSummary);
 
         typeDefEvent.setEventOriginator(eventOriginator);
@@ -370,8 +370,8 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
         OMRSTypeDefEvent typeDefEvent = new OMRSTypeDefEvent(OMRSTypeDefEventErrorCode.CONFLICTING_ATTRIBUTE_TYPEDEFS,
                                                              errorMessage,
-                                                             originatorMetadataCollectionId,
                                                              originatorAttributeTypeDef,
+                                                             otherMetadataCollectionId,
                                                              conflictingAttributeTypeDef);
 
         typeDefEvent.setEventOriginator(eventOriginator);
