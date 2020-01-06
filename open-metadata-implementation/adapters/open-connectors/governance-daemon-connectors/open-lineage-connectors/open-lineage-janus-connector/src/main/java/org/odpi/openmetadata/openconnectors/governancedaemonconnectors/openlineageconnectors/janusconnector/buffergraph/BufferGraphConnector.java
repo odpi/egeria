@@ -10,8 +10,6 @@ import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
@@ -42,6 +40,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         try {
             this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
+            log.error("buffer Graph cannot be initialized, something went wrong. The error is {}", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -73,7 +72,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             guidList.stream().forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.debug(e.getMessage());
+            log.error("Something went wrong when tyrying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
             g.tx().rollback();
         }
 
@@ -89,12 +88,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPath.stream().forEach(columnIn ->
                     findOutputColumn(g, columnIn, process));
-//        inputPath.parallelStream().forEach(columnIn -> findOutputColumn(g,columnIn,process));
-
     }
 
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
-//        if(process.property("veguid").value().equals("08f2d481-79d2-48e3-ae02-6366cf8deede")) {
             List<Vertex> schemaElementVertex = g.V()
                     .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
                     .in("LineageMapping")
@@ -116,7 +112,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
                 }
 
-
 //                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
                     Iterator<Vertex> columnOut = null;
                     if (vertexToStart != null) {
@@ -126,9 +121,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
                     moveColumnProcessColumn(columnIn, columnOut, process);
                 }
-
-
-//        }
     }
 
     private void moveColumnProcessColumn(Vertex columnIn,Iterator<Vertex> columnOut,Vertex process){
@@ -167,7 +159,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
-                log.error("An exception occured", e);
+                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is {}", e);
             }
         });
     }
@@ -185,8 +177,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
-        final String methodName = "addVertex";
-
         Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
 
@@ -197,7 +187,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
         else {
             vertex = vertexIt.next();
-            log.debug("{} found existing vertex {}", methodName, vertex);
+            if (log.isDebugEnabled()) {
+                log.debug("found existing vertex {} when trying to add it in bufferGraph", vertex);
+            }
             g.tx().rollback();
         }
         return vertex;
@@ -291,7 +283,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             }
             return end;}
         catch (Exception e){
-            log.debug("Vertex does not exitst + {}",startingVertex.id());
+            if (log.isDebugEnabled()) {
+                log.debug("Vertex does not exist {}",startingVertex.id());
+            }
             return null;
         }
     }
