@@ -66,11 +66,10 @@ public class SubjectAreaProjectController extends SecureController
      */
     @PostMapping()
     public SubjectAreaOMASAPIResponse createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.createProject(serverName, userId,suppliedProject);
+            Project project = this.subjectAreaProject.createProject(userId, suppliedProject);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
@@ -97,11 +96,10 @@ public class SubjectAreaProjectController extends SecureController
      */
     @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getProject(@PathVariable String guid,HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.getProjectByGuid(serverName, userId,guid);
+            Project project = this.subjectAreaProject.getProjectByGuid(userId,guid);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
@@ -141,7 +139,6 @@ public class SubjectAreaProjectController extends SecureController
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -152,7 +149,7 @@ public class SubjectAreaProjectController extends SecureController
             if (pageSize == null) {
                pageSize = new Integer(0);
             }
-            List<Project> projects = this.subjectAreaProject.findProject(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Project> projects = this.subjectAreaProject.findProject(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
             ProjectsResponse projectsResponse = new ProjectsResponse();
             projectsResponse.setProjects(projects);
             response = projectsResponse;
@@ -193,12 +190,10 @@ public class SubjectAreaProjectController extends SecureController
                                                             HttpServletRequest request
     
     ) {
-
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
-            List<Line> lines = this.subjectAreaProject.getProjectRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Line> lines = this.subjectAreaProject.getProjectRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
@@ -238,7 +233,6 @@ public class SubjectAreaProjectController extends SecureController
                                                       @RequestBody Project project,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
                                                       HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
@@ -247,9 +241,9 @@ public class SubjectAreaProjectController extends SecureController
                 isReplace = false;
             }
             if (isReplace) {
-                updatedProject = this.subjectAreaProject.replaceProject(serverName, userId, guid, project);
+                updatedProject = this.subjectAreaProject.replaceProject(userId, guid, project);
             } else {
-                updatedProject = this.subjectAreaProject.updateProject(serverName, userId, guid, project);
+                updatedProject = this.subjectAreaProject.updateProject(userId, guid, project);
             }
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(updatedProject);
@@ -292,15 +286,14 @@ public class SubjectAreaProjectController extends SecureController
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
-                this.subjectAreaProject.purgeProject(serverName,userId,guid);
+                this.subjectAreaProject.purgeProject(userId,guid);
                 response = new VoidResponse();
             } else {
-                Project project = this.subjectAreaProject.deleteProject(serverName, userId,guid);
+                Project project = this.subjectAreaProject.deleteProject(userId,guid);
                 ProjectResponse projectResponse = new ProjectResponse();
                 projectResponse.setProject(project);
                 response = projectResponse;
@@ -330,11 +323,10 @@ public class SubjectAreaProjectController extends SecureController
     @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String guid, HttpServletRequest request)
     {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.restoreProject(serverName, userId,guid);
+            Project project = this.subjectAreaProject.restoreProject(userId,guid);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
