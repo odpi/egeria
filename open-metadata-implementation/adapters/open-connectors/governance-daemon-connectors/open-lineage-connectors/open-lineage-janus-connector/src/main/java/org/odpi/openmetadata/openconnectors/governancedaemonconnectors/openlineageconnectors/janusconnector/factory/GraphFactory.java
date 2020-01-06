@@ -51,7 +51,7 @@ public class GraphFactory extends IndexingFactory {
             janusGraph = config.open();
             return initializeGraph(janusGraph,graphType);
         } catch (Exception e) {
-            log.error("{} could not open graph store", e.getMessage());
+            log.error("{} could not open graph store with the specified configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
