@@ -38,7 +38,7 @@ open-metadata-implementation/access-services/security-officer/ @danielaotelea
 open-metadata-implementation/access-services/governance-program/ @mandy-chessell
 open-metadata-implementation/access-services/governance-engine/ @danielaotelea
 open-metadata-implementation/access-services/subject-area/ @davidradl
-open-metadata-implementation/access-services/asset-lineage/ @GuyAckermans @DimitriosMaimaris
+open-metadata-implementation/access-services/asset-lineage/ @DimitriosMaimaris
 open-metadata-implementation/governance-servers/open-lineage-services/ @GuyAckermans @DimitriosMaimaris @lcpopa
 open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/ @GuyAckermans @DimitriosMaimaris @lcpopa
 
