@@ -68,6 +68,7 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
+                conda install -y pandas
                 cd /opt/egeria/labs &&
                 git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
@@ -93,12 +94,15 @@ spec:
             - jupyter
             - lab
             - "--NotebookApp.token=''"
+            - "--NotebookApp.iopub_data_rate_limit=1.0e10"
           env:
             - name: corePlatformURL
               value: "http://{{ .Release.Name }}-core:8080"
             - name: dataLakePlatformURL
               value: "http://{{ .Release.Name }}-datalake:8080"
             - name: devPlatformURL
+              value: "http://{{ .Release.Name }}-dev:8080"
+            - name: ctsPlatformURL
               value: "http://{{ .Release.Name }}-dev:8080"
             - name: factoryPlatformURL
               value: "http://{{ .Release.Name }}-factory:8080"
