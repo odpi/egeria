@@ -49,9 +49,10 @@ services:
             - corePlatformURL=http://core:8080
             - dataLakePlatformURL=http://datalake:8080
             - devPlatformURL=http://dev:8080
+            - ctsPlatformURL=http://dev:8080
             - factoryPlatformURL=http://factory:8080
             - eventBusURLroot=kafka:9092
-        command: start.sh jupyter lab --LabApp.token=''
+        command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
         links:
@@ -60,7 +61,9 @@ services:
             - core
             - dev
             - datalake
+            - factory
         depends_on:
+            - kafka
             - core
             - dev
             - datalake
@@ -90,6 +93,7 @@ services:
         ports:
             - '18081:8080'
         links:
+            - kafka
             - zookeeper
         networks:
             - cocopharma
