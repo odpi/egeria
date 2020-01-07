@@ -153,6 +153,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              */
             List<TestSupportedEntityReferenceCopyLifecycle> entityReferenceCopyTestCases = new ArrayList<>();
             List<TestSupportedRelationshipReferenceCopyLifecycle> relationshipReferenceCopyTestCases = new ArrayList<>();
+            List<TestSupportedEntityProxyLifecycle> entityProxyTestCases = new ArrayList<>();
             List<TestSupportedReferenceCopyClassificationLifecycle> referenceCopyClassificationTestCases = new ArrayList<>();
 
             /*
@@ -300,8 +301,15 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     if (relationshipDef.getName().equals("SemanticAssignment")) {
 
-                        TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
-                        relationshipTestCases.add(testRelationshipLifecycle);
+                        if (false) {
+                            TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
+                            relationshipTestCases.add(testRelationshipLifecycle);
+
+                        }
+
+                        /* It might seem like entity proxy tests should be incarnated in the entity test loop above - but we want a relationship def to test that a proxy can be used */
+                        TestSupportedEntityProxyLifecycle testEntityProxyLifecycle = new TestSupportedEntityProxyLifecycle(workPad, entityDefs, relationshipDef);
+                        entityProxyTestCases.add(testEntityProxyLifecycle);
 
                         if (false) {
 
@@ -393,6 +401,15 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             for (TestSupportedReferenceCopyClassificationLifecycle testCase : referenceCopyClassificationTestCases) {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+
+            /*
+             * Validate all the entity proxies
+             */
+            for (TestSupportedEntityProxyLifecycle testCase : entityProxyTestCases) {
                 testCase.executeTest();
                 testCase.cleanTest();
             }

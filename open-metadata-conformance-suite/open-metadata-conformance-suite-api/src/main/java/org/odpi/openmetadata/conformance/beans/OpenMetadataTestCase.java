@@ -442,7 +442,7 @@ public abstract class OpenMetadataTestCase
     }
 
     /**
-     * Default inplementation - over-ridden by some test cases.
+     * Default implementation - over-ridden by some test cases.
      *
      * @throws Exception something went wrong with the test.
      */
