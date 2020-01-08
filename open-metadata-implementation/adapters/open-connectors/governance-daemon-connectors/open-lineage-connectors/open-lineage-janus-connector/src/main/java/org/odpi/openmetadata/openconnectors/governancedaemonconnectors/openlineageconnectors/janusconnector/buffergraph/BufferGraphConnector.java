@@ -79,15 +79,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     private void findInputColumns(GraphTraversalSource g,String guid){
+         List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation")
+                                       .has("PortImplementation", PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
+                                       .out("PortSchema").in("AttributeForSchema").out("LineageMapping").toList();
 
-        //TODO change Tabular column and Relational column with the supertupe SchemaElement when AssetLineage is ready
-        List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation")
-                .has("PortImplementation", PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY, "INPUT_PORT")
-                .out("PortSchema").in("AttributeForSchema").out("LineageMapping").toList();
-
-        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        inputPath.stream().forEach(columnIn ->
-                    findOutputColumn(g, columnIn, process));
+         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+         inputPath.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
     }
 
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
@@ -111,21 +108,19 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     }
 
                 }
+                 Vertex columnOut = null;
+                if (vertexToStart != null) {
+                    columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
 
-//                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value()).out("SchemaAttributeType").next();
-                    Iterator<Vertex> columnOut = null;
-                    if (vertexToStart != null) {
-                        columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
-
-                    }
-
-                    moveColumnProcessColumn(columnIn, columnOut, process);
                 }
+
+                moveColumnProcessColumn(columnIn, columnOut, process);
+            }
     }
 
-    private void moveColumnProcessColumn(Vertex columnIn,Iterator<Vertex> columnOut,Vertex process){
-        if (columnOut != null && columnOut.hasNext()) {
-            String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+    private void moveColumnProcessColumn(Vertex columnIn,Vertex columnOut,Vertex process){
+        if (columnOut != null) {
+            String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
                 MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
@@ -212,7 +207,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
         if (edgeIt.hasNext()) {
             g.tx().rollback();
-            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+//            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
             log.debug("{} found existing edge {}", methodName, edgeIt);
 
             return;
@@ -259,7 +254,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     }
 
-    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
+    private Vertex findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 
         try{
             Iterator<Vertex> end =  g.V(v.id())
@@ -281,7 +276,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
                 return findPathForOutputAsset(nextVertex, g,v);
             }
-            return end;}
+
+            return v;}
         catch (Exception e){
             if (log.isDebugEnabled()) {
                 log.debug("Vertex does not exist {}",startingVertex.id());

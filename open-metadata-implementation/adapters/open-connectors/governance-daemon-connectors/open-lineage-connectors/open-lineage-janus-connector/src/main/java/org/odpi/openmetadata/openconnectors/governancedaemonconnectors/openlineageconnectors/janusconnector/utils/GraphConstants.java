@@ -20,6 +20,7 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "edge--";
     public static final String PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY = "vertex--InstanceProp";
 
+    public static final String PROPERTY_NAME_PORT_TYPE = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+"portType";
     public static final String PROPERTY_NAME_NODE_ID = "nodeID";
     public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE = "condensedSource";
     public static final String PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION = "condensedDestination";
@@ -34,7 +35,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PROXY = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
     public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
-    public static final String PROPERTY_NAME_ALTERNATIVE_DISPLAY_NAME = "propdisplayName";
+    public static final String PROPERTY_NAME_ALTERNATIVE_DISPLAY_NAME = "InstancePropdisplayName";
     public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayname";

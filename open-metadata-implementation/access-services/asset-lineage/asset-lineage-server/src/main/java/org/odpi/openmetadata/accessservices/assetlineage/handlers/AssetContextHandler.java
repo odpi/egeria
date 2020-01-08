@@ -144,7 +144,6 @@ public class AssetContextHandler {
                     setAssetDetails(userId, schemaTypeEntity);
                 } else {
                         buildAssetContext(userId, tableTypeEntities.stream().findFirst().get());
-//                    }
                 }
             }
     }
@@ -249,11 +248,8 @@ public class AssetContextHandler {
     }
 
     private void addContextForSchemaAttributeType(String userId,EntityDetail entityDetail,String typeDefName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, SCHEMA_ATTRIBUTE_TYPE, typeDefName,true);
+        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, ASSET_SCHEMA_TYPE, typeDefName,true);
 
-//        for(EntityDetail schemaAttributeType: schemaAttributeTypes){
-//            buildGraphByRelationshipType(userId, schemaAttributeType, ATTRIBUTE_FOR_SCHEMA, typeDefName,true);
-//        }
         if (schemaAttributeTypes.isEmpty()){
             addColumns(userId,NESTED_SCHEMA_ATTRIBUTE,typeDefName,entityDetail);
         }
@@ -271,6 +267,6 @@ public class AssetContextHandler {
                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
         TypeDefGallery allTypes =  repositoryHandler.getMetadataCollection().getAllTypes(userId);
-        return allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE)).findAny().isPresent();
+        return allTypes.getTypeDefs().stream().anyMatch(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE));
     }
 }

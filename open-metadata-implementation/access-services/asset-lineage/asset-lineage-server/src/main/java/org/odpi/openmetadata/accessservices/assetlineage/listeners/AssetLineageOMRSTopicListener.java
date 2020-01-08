@@ -349,7 +349,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         } else {
             event.setAssetContext(assetContext.getNeighbors());
         }
-
+        
         event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
     }
