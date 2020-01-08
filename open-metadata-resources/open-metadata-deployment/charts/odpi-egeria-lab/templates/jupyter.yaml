@@ -88,17 +88,24 @@ spec:
                   :{{ .Values.image.jupyter.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
-            - "start.sh"
+            - "/bin/bash"
+            - "-c"
+            - >
+                conda install -y pandas &&
+                start.sh jupyter lab --NotebookApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
           args:
             - jupyter
             - lab
             - "--NotebookApp.token=''"
+            - "--NotebookApp.iopub_data_rate_limit=1.0e10"
           env:
             - name: corePlatformURL
               value: "http://{{ .Release.Name }}-core:8080"
             - name: dataLakePlatformURL
               value: "http://{{ .Release.Name }}-datalake:8080"
             - name: devPlatformURL
+              value: "http://{{ .Release.Name }}-dev:8080"
+            - name: ctsPlatformURL
               value: "http://{{ .Release.Name }}-dev:8080"
             - name: factoryPlatformURL
               value: "http://{{ .Release.Name }}-factory:8080"

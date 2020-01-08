@@ -69,11 +69,10 @@ public class SubjectAreaTermController  extends SecureController
      */
     @PostMapping()
     public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.createTerm(serverName, userId,suppliedTerm);
+            Term term = this.subjectAreaTerm.createTerm(userId,suppliedTerm);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
@@ -101,11 +100,10 @@ public class SubjectAreaTermController  extends SecureController
      */
     @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.getTermByGuid(serverName, userId,guid);
+            Term term = this.subjectAreaTerm.getTermByGuid(userId,guid);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
@@ -145,7 +143,6 @@ public class SubjectAreaTermController  extends SecureController
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -155,7 +152,7 @@ public class SubjectAreaTermController  extends SecureController
             if (pageSize==null) {
                 pageSize=0;
             }
-            List<Term> terms = this.subjectAreaTerm.findTerm(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Term> terms = this.subjectAreaTerm.findTerm(userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             TermsResponse termsResponse = new TermsResponse();
             termsResponse.setTerms(terms);
             response = termsResponse;
@@ -196,8 +193,6 @@ public class SubjectAreaTermController  extends SecureController
                                                             HttpServletRequest request
     
     ) {
-
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -207,7 +202,7 @@ public class SubjectAreaTermController  extends SecureController
             if (pageSize==null) {
                 pageSize=0;
             }
-            List<Line> lines = this.subjectAreaTerm.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Line> lines = this.subjectAreaTerm.getTermRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
@@ -247,7 +242,6 @@ public class SubjectAreaTermController  extends SecureController
                                                       @RequestBody Term term,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
                                                       HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
@@ -256,9 +250,9 @@ public class SubjectAreaTermController  extends SecureController
                 isReplace = false;
             }
             if (isReplace) {
-                updatedTerm = this.subjectAreaTerm.replaceTerm(serverName, userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.replaceTerm(userId, guid, term);
             } else {
-                updatedTerm = this.subjectAreaTerm.updateTerm(serverName, userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.updateTerm(userId, guid, term);
             }
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(updatedTerm);
@@ -303,15 +297,14 @@ public class SubjectAreaTermController  extends SecureController
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
-                this.subjectAreaTerm.purgeTerm(serverName,userId,guid);
+                this.subjectAreaTerm.purgeTerm(userId,guid);
                 response = new VoidResponse();
             } else {
-                Term term = this.subjectAreaTerm.deleteTerm(serverName, userId,guid);
+                Term term = this.subjectAreaTerm.deleteTerm(userId,guid);
                 TermResponse termResponse = new TermResponse();
                 termResponse.setTerm(term);
                 response = termResponse;
@@ -341,11 +334,10 @@ public class SubjectAreaTermController  extends SecureController
     @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.restoreTerm(serverName, userId,guid);
+            Term term = this.subjectAreaTerm.restoreTerm(userId,guid);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
