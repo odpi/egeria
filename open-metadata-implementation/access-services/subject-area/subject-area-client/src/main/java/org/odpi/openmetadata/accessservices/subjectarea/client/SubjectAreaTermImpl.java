@@ -45,7 +45,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
 
     /**
      * Create a Term
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param suppliedTerm Term to create
      * @return the created term.
@@ -61,7 +60,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Term createTerm(String serverName, String userId, Term suppliedTerm) throws
+    public Term createTerm(String userId, Term suppliedTerm) throws
                                                                                 MetadataServerUncontactableException,
                                                                                 InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -96,7 +95,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
 
     /**
      * Get a term by guid.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the term to get
      * @return the requested term.
@@ -111,7 +109,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Term getTermByGuid(String serverName, String userId, String guid) throws
+    public  Term getTermByGuid(String userId, String guid) throws
                                                                               MetadataServerUncontactableException,
                                                                               UserNotAuthorizedException,
                                                                               InvalidParameterException,
@@ -138,7 +136,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
     /**
      * Get Term relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
      * @param guid   guid of the term to get
@@ -160,7 +157,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public List<Line> getTermRelationships(String serverName, String userId, String guid,
+    public List<Line> getTermRelationships(String userId, String guid,
                                            Date asOfTime,
                                            int offset,
                                            int pageSize,
@@ -175,7 +172,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        List<Line> relationships = getRelationships(BASE_URL,serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -188,7 +185,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Status is not updated using this call
      * The GovernanceAction content if specified replaces what is on the server.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
@@ -202,7 +198,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Term replaceTerm(String serverName, String userId, String guid, Term suppliedTerm) throws
+    public Term replaceTerm(String userId, String guid, Term suppliedTerm) throws
                                                                                               UnexpectedResponseException,
                                                                                               UserNotAuthorizedException,
                                                                                               FunctionNotSupportedException,
@@ -213,7 +209,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
 
-        Term term = updateTerm(serverName,userId,guid,suppliedTerm,true);
+        Term term = updateTerm(userId,guid,suppliedTerm,true);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -228,7 +224,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
@@ -242,7 +237,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Term updateTerm(String serverName, String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
+    public Term updateTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     FunctionNotSupportedException,
                                                                                                     InvalidParameterException,
@@ -251,7 +246,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        Term term = updateTerm(serverName,userId,guid,suppliedTerm,false);
+        Term term = updateTerm(userId, guid, suppliedTerm, false);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -266,7 +261,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * A delete (also known as a soft delete) means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * 
      * @param userId userId under which the request is performed
      * @param guid guid of the term to be deleted.
      * @return the deleted term
@@ -282,7 +277,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Term deleteTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+    public Term deleteTerm(String userId,String guid) throws InvalidParameterException,
                                                                                 MetadataServerUncontactableException,
                                                                                 UserNotAuthorizedException,
                                                                                 FunctionNotSupportedException,
@@ -316,7 +311,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * A purge means that the term will not exist after the operation.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * 
      * @param userId userId under which the request is performed
      * @param guid guid of the term to be deleted.
      *
@@ -330,7 +325,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      */
 
-    public  void purgeTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+    public  void purgeTerm(String userId,String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
                                                                                 GUIDNotPurgedException,
@@ -363,7 +358,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * qualified names to mismatch the Term name.
      * The GovernanceAction content if specified replaces what is on the server.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * 
      * @param userId userId under which the request is performed
      * @param guid guid of the term to update
      * @param suppliedTerm Term to be updated
@@ -379,7 +374,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    private Term updateTerm(String serverName, String userId,String guid,Term suppliedTerm,boolean isReplace) throws
+    private Term updateTerm(String userId,String guid,Term suppliedTerm,boolean isReplace) throws
     UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
                                                                                                               FunctionNotSupportedException,
@@ -416,7 +411,6 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Restore a Term
      *
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the term to restore
      * @return the restored term
@@ -428,7 +422,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  Term restoreTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+    public  Term restoreTerm(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
@@ -455,90 +449,90 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         }
         return term;
     }
- /**
- * Find Term
- *
- * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
- * @param userId unique identifier for requesting user, under which the request is performed
- * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content).
- * @param asOfTime the Terms returned as they were at this time. null indicates at the current time.
- * @param offset  the starting element number for this set of results.  This is used when retrieving elements
- *                 beyond the first page of results. Zero means the results start from the first element.
- * @param pageSize the maximum number of elements that can be returned on this request.
- *                 0 means there is no limit to the page size
- * @param sequencingOrder the sequencing order for the results.
- * @param sequencingProperty the name of the property that should be used to sequence the results.
- * @return A list of Terms meeting the search Criteria
- *
- * Exceptions returned by the server
- * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
- * @throws InvalidParameterException one of the parameters is null or invalid.
- * @throws FunctionNotSupportedException   Function not supported
- *
- * Client library Exceptions
- * @throws MetadataServerUncontactableException Unable to contact the server
- * @throws UnexpectedResponseException an unexpected response was returned from the server
- */
-public List<Term> findTerm(String serverName, String userId,
-                           String searchCriteria,
-                           Date asOfTime,
-                           int offset,
-                           int pageSize,
-                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                           String sequencingProperty) throws
-        MetadataServerUncontactableException,
-        UserNotAuthorizedException,
-        InvalidParameterException,
-        FunctionNotSupportedException,
-        UnexpectedResponseException  {
 
-    final String methodName = "findTerm";
-    if (log.isDebugEnabled()) {
-        log.debug("==> Method: " + methodName + ",userId=" + userId);
-    }
-    InputValidator.validateUserIdNotNull(className, methodName, userId);
-    final String urlTemplate = this.omasServerURL + BASE_URL;
-    String url = String.format(urlTemplate, serverName, userId );
+    /**
+     * Find Term
+     *
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria     String expression matching Term property values (this does not include the GlossarySummary content).
+     * @param asOfTime           the Terms returned as they were at this time. null indicates at the current time.
+     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     *                           0 means there is no limit to the page size
+     * @param sequencingOrder    the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of Terms meeting the search Criteria
+     * <p>
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException        Function not supported
+     *                                              <p>
+     *                                              Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     */
+    public List<Term> findTerm(String userId,
+                               String searchCriteria,
+                               Date asOfTime,
+                               int offset,
+                               int pageSize,
+                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                               String sequencingProperty) throws
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException {
 
-    if (sequencingOrder==null) {
-        sequencingOrder = SequencingOrder.ANY;
-    }
-    StringBuffer queryStringSB = new StringBuffer();
-    QueryUtils.addCharacterToQuery(queryStringSB);
-    queryStringSB.append("sequencingOrder="+ sequencingOrder);
-    if (asOfTime != null) {
-        QueryUtils.addCharacterToQuery(queryStringSB);
-        queryStringSB.append("asOfTime="+ asOfTime);
-    }
-    if (searchCriteria != null) {
-        // encode the string
+        final String methodName = "findTerm";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+        final String urlTemplate = this.omasServerURL + BASE_URL;
+        String url = String.format(urlTemplate, serverName, userId);
 
-        encodeQueryProperty( "searchCriteria",searchCriteria,methodName, queryStringSB);
-    }
-    if (offset != 0) {
+        if (sequencingOrder == null) {
+            sequencingOrder = SequencingOrder.ANY;
+        }
+        StringBuffer queryStringSB = new StringBuffer();
         QueryUtils.addCharacterToQuery(queryStringSB);
-        queryStringSB.append("offset="+ offset);
+        queryStringSB.append("sequencingOrder=" + sequencingOrder);
+        if (asOfTime != null) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("asOfTime=" + asOfTime);
+        }
+        if (searchCriteria != null) {
+            // encode the string
+
+            encodeQueryProperty("searchCriteria", searchCriteria, methodName, queryStringSB);
+        }
+        if (offset != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("offset=" + offset);
+        }
+        if (pageSize != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("pageSize=" + pageSize);
+        }
+        if (sequencingProperty != null) {
+            // encode the string
+            encodeQueryProperty("sequencingProperty", sequencingProperty, methodName, queryStringSB);
+        }
+        if (queryStringSB.length() > 0) {
+            url = url + queryStringSB.toString();
+        }
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName, restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName, restResponse);
+        List<Term> terms = DetectUtils.detectAndReturnTerms(methodName, restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return terms;
     }
-    if (pageSize != 0) {
-        QueryUtils.addCharacterToQuery(queryStringSB);
-        queryStringSB.append("pageSize="+ pageSize);
-    }
-    if (sequencingProperty !=null) {
-        // encode the string
-        encodeQueryProperty("sequencingProperty",sequencingProperty, methodName, queryStringSB);
-    }
-    if (queryStringSB.length() >0) {
-        url = url + queryStringSB.toString();
-    }
-    SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-    DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-    DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-    DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-    List<Term> terms = DetectUtils.detectAndReturnTerms(methodName,restResponse);
-    if (log.isDebugEnabled()) {
-        log.debug("<== successful method : " + methodName + ",userId="+userId );
-    }
-    return terms;
-}
 
 }

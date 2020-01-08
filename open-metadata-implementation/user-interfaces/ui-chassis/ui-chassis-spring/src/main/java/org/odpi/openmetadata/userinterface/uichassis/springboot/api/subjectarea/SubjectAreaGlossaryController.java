@@ -72,11 +72,10 @@ public class SubjectAreaGlossaryController extends SecureController
      */
     @PostMapping()
     public SubjectAreaOMASAPIResponse createGlossary(@RequestBody Glossary suppliedGlossary, HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Glossary glossary = this.subjectAreaGlossary.createGlossary(serverName, userId,suppliedGlossary);
+            Glossary glossary = this.subjectAreaGlossary.createGlossary(userId, suppliedGlossary);
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
@@ -103,11 +102,10 @@ public class SubjectAreaGlossaryController extends SecureController
      */
     @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String guid,HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Glossary glossary = this.subjectAreaGlossary.getGlossaryByGuid(serverName, userId,guid);
+            Glossary glossary = this.subjectAreaGlossary.getGlossaryByGuid(userId,guid);
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
@@ -147,7 +145,6 @@ public class SubjectAreaGlossaryController extends SecureController
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -158,7 +155,7 @@ public class SubjectAreaGlossaryController extends SecureController
             if (pageSize == null) {
                pageSize = new Integer(0);
             }
-            List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(userId, searchCriteria, asOfTime, offset,pageSize, sequencingOrder, sequencingProperty);
             GlossariesResponse glossariesResponse = new GlossariesResponse();
             glossariesResponse.setGlossaries(glossaries);
             response = glossariesResponse;
@@ -199,12 +196,10 @@ public class SubjectAreaGlossaryController extends SecureController
                                                             HttpServletRequest request
     
     ) {
-
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
-            List<Line> lines = this.subjectAreaGlossary.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Line> lines = this.subjectAreaGlossary.getGlossaryRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
@@ -244,7 +239,6 @@ public class SubjectAreaGlossaryController extends SecureController
                                                       @RequestBody Glossary glossary,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
                                                       HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
@@ -253,9 +247,9 @@ public class SubjectAreaGlossaryController extends SecureController
                 isReplace = false;
             }
             if (isReplace) {
-                updatedGlossary = this.subjectAreaGlossary.replaceGlossary(serverName, userId, guid, glossary);
+                updatedGlossary = this.subjectAreaGlossary.replaceGlossary(userId, guid, glossary);
             } else {
-                updatedGlossary = this.subjectAreaGlossary.updateGlossary(serverName, userId, guid, glossary);
+                updatedGlossary = this.subjectAreaGlossary.updateGlossary(userId, guid, glossary);
             }
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(updatedGlossary);
@@ -300,15 +294,14 @@ public class SubjectAreaGlossaryController extends SecureController
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
-                this.subjectAreaGlossary.purgeGlossary(serverName,userId,guid);
+                this.subjectAreaGlossary.purgeGlossary(userId, guid);
                 response = new VoidResponse();
             } else {
-                Glossary glossary = this.subjectAreaGlossary.deleteGlossary(serverName, userId,guid);
+                Glossary glossary = this.subjectAreaGlossary.deleteGlossary(userId, guid);
                 GlossaryResponse glossaryResponse = new GlossaryResponse();
                 glossaryResponse.setGlossary(glossary);
                 response = glossaryResponse;
@@ -338,11 +331,10 @@ public class SubjectAreaGlossaryController extends SecureController
     @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String guid,HttpServletRequest request)
     {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Glossary glossary = this.subjectAreaGlossary.restoreGlossary(serverName, userId,guid);
+            Glossary glossary = this.subjectAreaGlossary.restoreGlossary(userId,guid);
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
