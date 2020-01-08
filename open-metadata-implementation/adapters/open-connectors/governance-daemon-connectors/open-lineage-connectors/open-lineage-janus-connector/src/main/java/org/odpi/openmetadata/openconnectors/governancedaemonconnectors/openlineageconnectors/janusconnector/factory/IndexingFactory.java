@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.temporal.ChronoUnit;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.corePropertyTypes;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableCorePropertyTypes;
 
 public class IndexingFactory {
 
@@ -64,7 +64,7 @@ public class IndexingFactory {
                              boolean unique,
                              Class type) {
 
-        String className = corePropertyTypes.get(propertyName);
+        String className = immutableCorePropertyTypes.get(propertyName);
 
         Class clazz;
         try {

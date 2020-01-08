@@ -143,7 +143,6 @@ public class OpenLineageServerOperationalServices {
          * Configuring the Graph connectors
          */
         final String actionDescription = "Get Open Lineage graph connector";
-        final String methodName = "OpenLineageServerOperationalServices.getGraphConnector";
         if (connection != null) {
             log.info("Found connection: {}", connection);
             try {
@@ -168,13 +167,15 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Start event bus";
         final String methodName = "OpenLineageServerOperationalServices.startEventBus";
         inTopicConnector = getTopicConnector(openLineageServerConfig.getInTopicConnection(), auditLog);
-        if (inTopicConnector == null)
-            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
-        else {
+        if (inTopicConnector != null){
             OpenMetadataTopicListener governanceEventListener = new InTopicListener(storingServices, auditLog);
             inTopicConnector.registerListener(governanceEventListener);
             startTopic(inTopicConnector);
             logAudit(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
+        }
+        else {
+            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
+
         }
     }
 
