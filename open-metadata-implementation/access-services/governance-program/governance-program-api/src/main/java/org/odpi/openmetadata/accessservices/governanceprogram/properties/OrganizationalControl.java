@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class OrganizationalControl extends GovernanceControl
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default Constructor
      */

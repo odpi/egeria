@@ -99,11 +99,19 @@ debug:
 
 # Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
 logging:
-  level: NONE
+  level: OFF
 
 # Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
 cts:
   enabled: false
+
+# Connectors information
+# - repo should be either 'snapshot' or 'release'
+#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.4-SNAPSHOT)
+#   - when 'release', version should be <version>  (eg. 1.3)
+connectors:
+  repo: snapshot
+  version: 1.4-SNAPSHOT
 
 imageDefaults:
   registry: docker.io

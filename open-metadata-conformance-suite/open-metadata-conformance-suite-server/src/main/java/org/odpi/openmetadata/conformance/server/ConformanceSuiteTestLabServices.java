@@ -187,13 +187,14 @@ public class ConformanceSuiteTestLabServices
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
+     * @param workbenchId which workbench?
      * @return WorkbenchStatusResponse or
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
      */
     public WorkbenchStatusResponse getWorkbenchStatus(String   userId,
-                                                    String   serverName,
-                                                    String   workbenchId)
+                                                      String   serverName,
+                                                      String   workbenchId)
     {
         final String   methodName = "getWorkbenchStatus";
 

@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EnumPropertyValue extends InstancePropertyValue
 {
+    private static final long    serialVersionUID = 1L;
+
     private int     ordinal = 99;
     private String  symbolicName = null;
     private String  description = null;

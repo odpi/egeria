@@ -156,7 +156,8 @@ class CloudInformationModelParser
      *
      * @param cimContentFile location of the model content
      */
-    void parseSingleFile(File   cimContentFile) throws IOException
+    @SuppressWarnings("unchecked")
+    private void parseSingleFile(File   cimContentFile) throws IOException
     {
         System.out.println("\nRetrieving model contents from: " + cimContentFile.getName());
 
@@ -244,7 +245,7 @@ class CloudInformationModelParser
      *
      * @param cimDirectoryName location of the model content
      */
-    void parseGitDirectory(String cimDirectoryName) throws IOException
+    private void parseGitDirectory(String cimDirectoryName) throws IOException
     {
         System.out.println("\nRetrieving model contents from: " + cimDirectoryName);
 
@@ -299,8 +300,8 @@ class CloudInformationModelParser
      * @param objectType type name to remove
      * @return technical name
      */
-    String getTechnicalName(String  sourceString,
-                            String  objectType)
+    private String getTechnicalName(String  sourceString,
+                                    String  objectType)
     {
         if (sourceString != null)
         {
@@ -434,6 +435,7 @@ class CloudInformationModelParser
      * @param propertyGroupDirectory location of the property group content
      * @throws IOException file/directory not found - probably a logic error
      */
+    @SuppressWarnings("unchecked")
     private void getPropertyGroupFromDirectory(File propertyGroupDirectory) throws IOException
     {
         if (propertyGroupDirectory.isDirectory())
@@ -460,6 +462,7 @@ class CloudInformationModelParser
      * @param conceptsJsonLD the property group content
      * @throws IOException file/directory not found - probably a logic error
      */
+    @SuppressWarnings("unchecked")
     private void getPropertyGroup(Map<String, Object> conceptsJsonLD) throws IOException
     {
         String  versionName = getStringValue(conceptsJsonLD.get(VERSION_TAG));
@@ -540,6 +543,7 @@ class CloudInformationModelParser
      * @param subjectAreaDirectory location of the subject area
      * @throws IOException file/directory not found - probably a logic error
      */
+    @SuppressWarnings("unchecked")
     private void getSubjectAreaFromFile(File subjectAreaDirectory) throws IOException
     {
         if (subjectAreaDirectory.isDirectory())
@@ -701,6 +705,7 @@ class CloudInformationModelParser
      *
      * @param propertyProperties JSON-LD structure with the content in it
      */
+    @SuppressWarnings("unchecked")
     private void getPropertiesForEntityGroup(Map<String, Object> propertyProperties)
     {
 
@@ -761,6 +766,7 @@ class CloudInformationModelParser
      *
      * @param schemaProperties JSON-LD structure with the content in it
      */
+    @SuppressWarnings("unchecked")
     private void getSchemaPropertiesForEntityGroup(Map<String, Object> schemaProperties)
     {
         try
@@ -822,6 +828,7 @@ class CloudInformationModelParser
      * @param entityGroupDirectory directory where the entity group is located.
      * @throws IOException file/directory not found - probably a logic error
      */
+    @SuppressWarnings("unchecked")
     private void getEntityGroupFromFile(SubjectArea  subjectArea,
                                         File         entityGroupDirectory) throws IOException
     {

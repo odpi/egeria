@@ -4,15 +4,18 @@ package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
@@ -71,6 +74,8 @@ public class ConnectorConfigurationFactory
 
         return connection;
     }
+
+
     /**
      * Returns the connection for the user interface server configuration file.
      *
@@ -92,21 +97,87 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for the file-based audit log.
-     * By default, the Audit log is stored in a directory called localServerName.auditlog.
+     * Return the connection for the default audit log.
+     * By default, the Audit log written to stdout.
      *
      * @param localServerName   name of the local server
-     * @return OCF Connection used to create the file based audit logger
+     * @return OCF Connection used to create the default audit logger
      */
-    public Connection getFileBasedAuditLogConnection(String localServerName)
+    public Connection getDefaultAuditLogConnection(String localServerName)
     {
-        final String endpointGUID      = "836efeae-ab34-4425-89f0-6adf2faa1f2e";
+        return getConsoleAuditLogConnection(localServerName, null);
+    }
+
+
+    /**
+     * Set up the supportedSeverities property in the audit log destination connection
+     *
+     * @param supportedSeverities list of supported severities
+     * @param auditLogDestination connection object
+     */
+    private void setSupportedAuditLogSeverities(List<String> supportedSeverities,
+                                                Connection   auditLogDestination)
+    {
+        if (supportedSeverities != null)
+        {
+            Map<String, Object> configurationProperties = new HashMap<>();
+
+            configurationProperties.put(OMRSAuditLogStoreProviderBase.supportedSeveritiesProperty, supportedSeverities);
+            auditLogDestination.setConfigurationProperties(configurationProperties);
+        }
+    }
+
+
+    /**
+     * Return the connection for the console audit log destination.
+     * This audit log destination writes to stdout.
+     *
+     * @param localServerName   name of the local server
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return OCF Connection used to create the stdout console audit logger
+     */
+    public Connection getConsoleAuditLogConnection(String       localServerName,
+                                                   List<String> supportedSeverities)
+    {
         final String connectionGUID    = "5390bf3e-6b38-4eda-b34a-de55ac4252a7";
 
-        final String endpointDescription = "OMRS default audit log endpoint.";
+        final String connectionDescription = "OMRS console audit log destination connection.";
+
+        String connectionName = "DefaultAuditLog.Connection." + localServerName;
+
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
+
+        setSupportedAuditLogSeverities(supportedSeverities, connection);
+
+        return connection;
+    }
+
+
+    /**
+     * Return the connection for the file-based audit log.
+     * By default, the File-based Audit log is stored in a directory called localServerName.auditlog.
+     *
+     * @param localServerName   name of the local server
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return OCF Connection used to create the file based audit logger
+     */
+    public Connection getFileBasedAuditLogConnection(String       localServerName,
+                                                     List<String> supportedSeverities)
+    {
+        final String endpointGUID      = "7e80da06-065f-484e-a1da-427619f6bd1a";
+        final String connectionGUID    = "3e3eaf36-bd15-4aa3-9c98-a5441a679de9";
+
+        final String endpointDescription = "OMRS file based audit log destination endpoint.";
 
         String endpointAddress = localServerName + ".auditlog";
-        String endpointName    = "DefaultAuditLog.Endpoint." + endpointAddress;
+        String endpointName    = "AuditLogDestination.File.Endpoint." + endpointAddress;
 
         Endpoint endpoint = new Endpoint();
 
@@ -117,9 +188,9 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(endpointAddress);
 
-        final String connectionDescription = "OMRS default audit log connection.";
+        final String connectionDescription = "OMRS file based audit log destination connection.";
 
-        String connectionName = "DefaultAuditLog.Connection." + localServerName;
+        String connectionName = "AuditLogDestination.File.Connection." + endpointAddress;
 
         Connection connection = new Connection();
 
@@ -131,40 +202,27 @@ public class ConnectorConfigurationFactory
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
 
+        setSupportedAuditLogSeverities(supportedSeverities, connection);
+
         return connection;
     }
 
 
-
     /**
-     * Return the connection for the default audit log.
-     * By default, the Audit log written to stdout.
+     * Return the connection for the file-based audit log.
+     * By default, the File-based Audit log is stored in a directory called localServerName.auditlog.
      *
      * @param localServerName   name of the local server
-     * @return OCF Connection used to create the stdout console audit logger
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return OCF Connection used to create the file based audit logger
      */
-    public Connection getDefaultAuditLogConnection(String localServerName)
+    public Connection getSLF4JAuditLogConnection(String       localServerName,
+                                                 List<String> supportedSeverities)
     {
-        final String endpointGUID      = "836efeae-ab34-4425-89f0-6adf2faa1f2e";
-        final String connectionGUID    = "5390bf3e-6b38-4eda-b34a-de55ac4252a7";
+        final String connectionGUID    = "3e3eaf36-bd15-4aa3-9c98-a5441a679de9";
+        final String connectionDescription = "OMRS SLF4J based audit log destination connection.";
 
-        final String endpointDescription = "OMRS default audit log endpoint.";
-
-        String endpointAddress = localServerName + ".auditlog";
-        String endpointName    = "DefaultAuditLog.Endpoint." + endpointAddress;
-
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setType(this.getEndpointType());
-        endpoint.setGUID(endpointGUID);
-        endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
-        endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(endpointAddress);
-
-        final String connectionDescription = "OMRS default audit log connection.";
-
-        String connectionName = "DefaultAuditLog.Connection." + localServerName;
+        String connectionName = "AuditLogDestination.SLF4J.Connection." + localServerName;
 
         Connection connection = new Connection();
 
@@ -173,8 +231,59 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(SLF4JAuditLogStoreProvider.class.getName()));
+
+        setSupportedAuditLogSeverities(supportedSeverities, connection);
+
+        return connection;
+    }
+
+
+    /**
+     * Return the connection for the event topic audit log.
+     * By default, the topic name is called openmetadata.repositoryservices.{localServerName}.auditlog.
+     *
+     * @param localServerName   name of the local server
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @param eventBusConnectorProviderClassName name of connector provider class that controls the type of connector used.
+     * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties - additional properties for the event bus connection
+     * @return List of EmbeddedConnection object
+     * @return OCF Connection used to create the event topic audit logger
+     */
+    public Connection getEventTopicAuditLogConnection(String              localServerName,
+                                                      List<String>        supportedSeverities,
+                                                      String              eventBusConnectorProviderClassName,
+                                                      String              topicURLRoot,
+                                                      String              serverId,
+                                                      Map<String, Object> eventBusConfigurationProperties)
+    {
+        final String connectionGUID    = "2ac9b527-7585-4a0f-a0d8-6e684b15be21";
+
+        String topicName = defaultTopicRootName + localServerName + ".auditlog";
+
+        final String connectionDescription = "OMRS event topic audit log destination connection.";
+
+        String connectionName = "AuditLogDestination.EventTopic.Connection." + topicName;
+
+        VirtualConnection connection = new VirtualConnection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setConnectorType(getConnectorType(EventTopicAuditLogStoreProvider.class.getName()));
+        connection.setEmbeddedConnections(getEmbeddedEventBusConnection(localServerName + " Audit Log Event Topic Destination",
+                                                                        null,
+                                                                        eventBusConnectorProviderClassName,
+                                                                        topicURLRoot,
+                                                                        topicName,
+                                                                        serverId,
+                                                                        eventBusConfigurationProperties));
+
+        setSupportedAuditLogSeverities(supportedSeverities, connection);
 
         return connection;
     }
@@ -394,11 +503,16 @@ public class ConnectorConfigurationFactory
      * @param url  location of the repository proxy
      * @param configurationProperties name value pairs for the connection
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection  getRepositoryProxyConnection(String              serverName,
                                                     String              connectorProviderClassName,
                                                     String              url,
-                                                    Map<String, Object> configurationProperties)
+                                                    Map<String, Object> configurationProperties) throws ClassNotFoundException,
+                                                                                                        InstantiationException,
+                                                                                                        IllegalAccessException
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -427,7 +541,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;
@@ -645,11 +759,16 @@ public class ConnectorConfigurationFactory
      * @param configurationProperties additional properties for event mapper
      * @param eventSource  name of the event source used by the event mapper
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection getRepositoryEventMapperConnection(String              serverName,
                                                          String              connectorProviderClassName,
                                                          Map<String, Object> configurationProperties,
-                                                         String              eventSource)
+                                                         String              eventSource) throws ClassNotFoundException,
+                                                                                                 InstantiationException,
+                                                                                                 IllegalAccessException
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -677,7 +796,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;
@@ -854,42 +973,74 @@ public class ConnectorConfigurationFactory
      * @param url  url for the Open Lineage Server
      * @param configurationProperties name value pairs for the connection
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection getOpenLineageServerConfiguration(String              serverName,
                                                         String              connectorProviderClassName,
                                                         String              url,
-                                                        Map<String, Object> configurationProperties)
+                                                        Map<String, Object> configurationProperties) throws ClassNotFoundException,
+                                                                                                            InstantiationException,
+                                                                                                            IllegalAccessException
     {
         final String endpointGUID          = UUID.randomUUID().toString();
-        final String connectionGUID           = UUID.randomUUID().toString();
+        final String connectionGUID        = UUID.randomUUID().toString();
 
-        final String endpointDescription      = "OpenLineage native endpoint.";
-        final String connectionDescription    = "Open Lineage native connection.";
+        final String endpointDescription   = "OpenLineage native endpoint.";
+        final String connectionDescription = "Open Lineage native connection.";
 
         String endpointName    = "OpenLineage.Endpoint." + serverName;
         String connectionName  = "OpenLineage.Connection." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
-        return getConnection(configurationProperties, endpoint, connectionName,
+        return getDynamicConnection(configurationProperties, endpoint, connectionName,
                 connectionGUID, connectionDescription, connectorProviderClassName);
     }
   
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
-     * can return their own connector type.  Otherwise it makes one up.
+     * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
+     * providers that are known at compile-time, not those that are only determined at runtime.
      *
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean
      */
-    private ConnectorType   getConnectorType(String   connectorProviderClassName)
+    private ConnectorType getConnectorType(String connectorProviderClassName)
+    {
+        ConnectorType  connectorType = null;
+        try
+        {
+            connectorType = getDynamicConnectorType(connectorProviderClassName);
+        }
+        catch (Exception classException)
+        {
+            log.error("Bad connectorProviderClassName: " + classException.getMessage());
+        }
+        return connectorType;
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider.  This is best used for connector providers that
+     * can return their own connector type.  Otherwise it makes one up.  This method is useful for connector providers
+     * that are defined at runtime rather than compile-time.
+     *
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     */
+    private ConnectorType getDynamicConnectorType(String connectorProviderClassName) throws ClassNotFoundException,
+                                                                                            InstantiationException,
+                                                                                            IllegalAccessException
     {
         ConnectorType  connectorType = null;
 
         if (connectorProviderClassName != null)
         {
-            try
-            {
                 Class      connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
@@ -908,17 +1059,10 @@ public class ConnectorConfigurationFactory
                     connectorType.setDescription("ConnectorType for " + connectorType.getDisplayName());
                     connectorType.setConnectorProviderClassName(connectorProviderClassName);
                 }
-            }
-            catch (Throwable classException)
-            {
-                log.error("Bad connectorProviderClassName: " + classException.getMessage());
-            }
         }
 
         return connectorType;
     }
-
-
 
 
     /**
@@ -1031,6 +1175,44 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(className));
+        connection.setConfigurationProperties(configurationProperties);
+
+        return connection;
+    }
+
+    /**
+     * Return the Connection build based on the given parameters, where the className is provided at runtime rather
+     * than compile-time.
+     *
+     * @param configurationProperties properties used to configure the underlying technology
+     * @param endpoint that contains the server url
+     * @param connectionName name of the connection
+     * @param connectionGUID connection identifier
+     * @param connectionDescription description for the connection
+     * @param className the name of the connectorType class
+     * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     */
+    private Connection getDynamicConnection(Map<String, Object> configurationProperties,
+                                            Endpoint            endpoint,
+                                            String              connectionName,
+                                            String              connectionGUID,
+                                            String              connectionDescription,
+                                            String              className) throws ClassNotFoundException,
+                                                                                  InstantiationException,
+                                                                                  IllegalAccessException
+    {
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setEndpoint(endpoint);
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setConnectorType(getDynamicConnectorType(className));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;

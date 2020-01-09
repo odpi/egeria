@@ -66,7 +66,7 @@ public class GovernanceEngineAdminTest {
         govadmin.initialize(ascfg, topcon, repcon, auditLog, serverUserName);
         // Check we recorded an audit log enty
         // Note anyString won't match nulls, so if that parm is allowed Use Mockito.<String>any() or similar
-        verify(auditLog, atLeast(2)).logRecord(anyString(), auditString.capture(),
+        verify(auditLog, atLeast(1)).logRecord(anyString(), auditString.capture(),
                 any(OMRSAuditLogRecordSeverity.class), anyString(), Mockito.any(),
                 anyString(), anyString());
 

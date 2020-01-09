@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
+import org.odpi.openmetadata.adminservices.auditlog.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -31,6 +32,7 @@ import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.Steward
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
@@ -52,17 +54,82 @@ public class OMAGServerOperationalServices
     private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+
+
     /*
      * =============================================================
      * Initialization and shutdown
      */
 
     /**
+     * Activate the list of open metadata and governance servers using the stored configuration information.
+     * The code works through the list, starting each server in turn.  It stops if one of the servers fails to
+     * start and returns the error.  Otherwise it continues through the list, returning
+     *
+     * @param userId  user that is issuing the request
+     * @param serverNames  list of server names
+     * @return success message or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    public SuccessMessageResponse activateServerListWithStoredConfig(String       userId,
+                                                                     List<String> serverNames)
+    {
+        String                 startUpMessage = null;
+        SuccessMessageResponse response = new SuccessMessageResponse();
+
+        response.setRelatedHTTPCode(200);
+
+        if (serverNames != null)
+        {
+            for (String serverName : serverNames)
+            {
+                if (serverName != null)
+                {
+                    response = activateWithStoredConfig(userId, serverName.trim());
+
+                    if (response.getRelatedHTTPCode() == 200)
+                    {
+                        String serverStartUpMessage = "OMAG Server '" + serverName + "' successful start , with message: " +
+                                response.getSuccessMessage() + System.lineSeparator();
+                        if (startUpMessage == null)
+                        {
+                            startUpMessage = serverStartUpMessage;
+                        }
+                        else
+                        {
+                            startUpMessage += serverStartUpMessage;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            final String noAutoStartServers = "No OMAG servers listed in startup configuration";
+            startUpMessage = noAutoStartServers;
+        }
+
+        if (response.getRelatedHTTPCode() == 200)
+        {
+            response.setSuccessMessage(startUpMessage);
+        }
+
+        return response;
+    }
+
+
+    /**
      * Activate the open metadata and governance services using the stored configuration information.
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name
-     * @return void response or
+     * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
@@ -105,7 +172,7 @@ public class OMAGServerOperationalServices
      * @param userId  user that is issuing the request
      * @param configuration  properties used to initialize the services
      * @param serverName  local server name
-     * @return void response or
+     * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
@@ -153,7 +220,7 @@ public class OMAGServerOperationalServices
             List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
             ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
             DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
-            OpenLineageServerConfig openLineageServerConfig = configuration.getOpenLineageServerConfig();
+            OpenLineageServerConfig   openLineageServerConfig     = configuration.getOpenLineageServerConfig();
             SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
             SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();
@@ -328,6 +395,10 @@ public class OMAGServerOperationalServices
 
                         if (accessServiceAdminClassName != null)
                         {
+                            OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
+                                                                                              accessServiceConfig.getAccessServiceName(),
+                                                                                              accessServiceConfig.getAccessServiceDescription(),
+                                                                                              accessServiceConfig.getAccessServiceWiki());
                             try
                             {
                                 AccessServiceAdmin accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
@@ -335,16 +406,39 @@ public class OMAGServerOperationalServices
                                 accessServiceAdmin.initialize(accessServiceConfig,
                                                               enterpriseTopicConnector,
                                                               operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
-                                                              operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
-                                                                                                        accessServiceConfig.getAccessServiceName(),
-                                                                                                        accessServiceConfig.getAccessServiceDescription(),
-                                                                                                        accessServiceConfig.getAccessServiceWiki()),
+                                                              auditLog,
                                                               configuration.getLocalServerUserId());
                                 operationalAccessServiceAdminList.add(accessServiceAdmin);
                                 activatedServiceList.add(accessServiceConfig.getAccessServiceName() + " OMAS");
                             }
+                            catch (OMAGConfigurationErrorException  error)
+                            {
+                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                                auditLog.logException(methodName,
+                                                      auditCode.getLogMessageId(),
+                                                      auditCode.getSeverity(),
+                                                      auditCode.getFormattedLogMessage(accessServiceConfig.getAccessServiceName(),
+                                                                                       error.getMessage()),
+                                                      accessServiceConfig.toString(),
+                                                      auditCode.getSystemAction(),
+                                                      auditCode.getUserAction(),
+                                                      error);
+                                throw error;
+                            }
                             catch (Throwable  error)
                             {
+                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                                auditLog.logException(methodName,
+                                                      auditCode.getLogMessageId(),
+                                                      auditCode.getSeverity(),
+                                                      auditCode.getFormattedLogMessage(error.getMessage(),
+                                                                                       accessServiceConfig.getAccessServiceName(),
+                                                                                       error.getMessage()),
+                                                      accessServiceConfig.toString(),
+                                                      auditCode.getSystemAction(),
+                                                      auditCode.getUserAction(),
+                                                      error);
+
                                 OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
                                 String        errorMessage = errorCode.getErrorMessageId()
                                                            + errorCode.getFormattedErrorMessage(serverName,
@@ -356,7 +450,8 @@ public class OMAGServerOperationalServices
                                                                           methodName,
                                                                           errorMessage,
                                                                           errorCode.getSystemAction(),
-                                                                          errorCode.getUserAction());
+                                                                          errorCode.getUserAction(),
+                                                                          error);
                             }
                         }
                         else
@@ -613,7 +708,8 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
             }
 
-            response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
+            String successMessage = new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString();
+            response.setSuccessMessage(successMessage);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -760,7 +856,29 @@ public class OMAGServerOperationalServices
 
 
     /**
-     * Temporarily deactivate any open metadata and governance services.
+     * Temporarily deactivate the open metadata and governance servers in th supplied list.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverNames list of server names
+     */
+    public void deactivateTemporarilyServerList(String        userId,
+                                                List<String>  serverNames)
+    {
+        if (serverNames != null)
+        {
+            for (String serverName : serverNames)
+            {
+                if (serverName != null)
+                {
+                    deactivateTemporarily(userId, serverName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Temporarily deactivate any open metadata and governance services for the requested server.
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name
@@ -954,7 +1072,7 @@ public class OMAGServerOperationalServices
             OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
-            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive);
+            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive, fileName);
         }
         catch (InvalidParameterException error)
         {

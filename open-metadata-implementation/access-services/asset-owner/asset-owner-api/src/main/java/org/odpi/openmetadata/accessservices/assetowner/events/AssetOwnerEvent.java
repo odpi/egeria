@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetOwnerEvent extends AssetOwnerEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private AssetOwnerEventType eventType     = null;
     private Asset               originalAsset = null;
     private Asset               asset         = null;

@@ -235,6 +235,7 @@ public class OMRSRepositoryRESTServices
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     @Deprecated
+    @SuppressWarnings("deprecated")
     public MetadataCollectionIdResponse getMetadataCollectionId(String serverName)
     {
         return this.getMetadataCollectionId(serverName, anonymousUserId);
@@ -1344,7 +1345,7 @@ public class OMRSRepositoryRESTServices
 
             response.setTypeDef(metadataCollection.updateTypeDef(userId, typeDefPatch));
 
-            this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeName(), typeDefPatch.getTypeDefGUID());
+            this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeDefName(), typeDefPatch.getTypeDefGUID());
         }
         catch (FunctionNotSupportedException error)
         {

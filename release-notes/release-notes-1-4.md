@@ -8,6 +8,20 @@ focusing on showing the ultimate source and destination of data flow.
 This involves the capture of knowledge of data movement, transformation and
 copying to it is possible to trace how data is flowing between the systems.
 
+* The first two governance servers are released:
+ 
+   * The [Discovery Server](../open-metadata-implementation/governance-servers/discovery-engine-services) supports the scanning of assets and the notification when duplicate suspects are detected.
+   * The [Stewardship Server](../open-metadata-implementation/governance-servers/stewardship-services) supports the assessment of duplicate suspects and orchestrates the linking of duplicate assets.
+  
+  These servers are supported by: 
+   * The [Discovery Engine OMAS](../open-metadata-implementation/access-services/discovery-engine) supports the detection, recording and notification of exceptions and duplicate suspects.
+   * The [Stewardship Action OMAS](../open-metadata-implementation/access-services/stewardship-action) supports the resolution of exceptions and duplicate suspects and the linking of duplicate assets.
+
+* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
+  [hands-on labs](../open-metadata-resources/open-metadata-labs) and
+  [samples](../open-metadata-resources/open-metadata-samples) demonstrating
+  the new archive and de-duplication features.
+
 * As part of the lineage support are new access services:
    * The [Asset Catalog OMAS](../open-metadata-implementation/access-services/asset-catalog) provides a catalog search API for Assets.
    * The [Asset Lineage OMAS](../open-metadata-implementation/access-services/asset-lineage) supports the notification of the availability of new lineage information.

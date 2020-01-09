@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 
@@ -20,7 +21,6 @@ public interface SubjectAreaGlossary
      *
      * Glossaries with the same name can be confusing. Best practise is to createGlossaries that have unique names.
      * This Create call does not police that glossary names are unique. So it is possible to create Glossaries with the same name as each other.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedGlossary Glossary to create
      * @return the created glossary.
@@ -37,10 +37,9 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-     Glossary createGlossary(String serverName, String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
+     Glossary createGlossary(String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get a glossary by guid.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to get
      * @return the requested glossary.
@@ -56,13 +55,11 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      Glossary getGlossaryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+      Glossary getGlossaryByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the glossary to get
      * @param guid   guid of the glossary to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
@@ -82,12 +79,12 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getGlossaryRelationships(String serverName, String userId, String guid,
-                                               Date asOfTime,
-                                               int offset,
-                                               int pageSize,
-                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                               String sequencingProperty) throws
+     List<Line> getGlossaryRelationships(String userId, String guid,
+                                         Date asOfTime,
+                                         int offset,
+                                         int pageSize,
+                                         SequencingOrder sequencingOrder,
+                                         String sequencingProperty) throws
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -96,7 +93,6 @@ public interface SubjectAreaGlossary
     /**
      * Find Glossary
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching glossary properties. If not specified then all glossaries are returned.
      * @param asOfTime Glossaries returned as they were at this time. null indicates at the current time.
@@ -117,13 +113,13 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    List<Glossary> findGlossary(String serverName, String userId,
-                            String searchCriteria,
-                            Date asOfTime,
-                            int offset,
-                            int pageSize,
-                            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                            String sequencingProperty) throws
+    List<Glossary> findGlossary(String userId,
+                                String searchCriteria,
+                                Date asOfTime,
+                                int offset,
+                                int pageSize,
+                                SequencingOrder sequencingOrder,
+                                String sequencingProperty) throws
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
             InvalidParameterException,
@@ -138,7 +134,6 @@ public interface SubjectAreaGlossary
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
@@ -152,7 +147,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Glossary replaceGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws
+     Glossary replaceGlossary(String userId, String guid, Glossary suppliedGlossary) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
@@ -167,7 +162,6 @@ public interface SubjectAreaGlossary
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
@@ -181,7 +175,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     Glossary updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
+     Glossary updateGlossary(String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     FunctionNotSupportedException,
@@ -195,7 +189,6 @@ public interface SubjectAreaGlossary
      * A delete (also known as a soft delete) means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to be deleted.
      * @return the deleted glossary
@@ -209,7 +202,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-     Glossary deleteGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+     Glossary deleteGlossary(String userId,String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnrecognizedGUIDException,
@@ -223,7 +216,6 @@ public interface SubjectAreaGlossary
      *
      * A purge means that the glossary will not exist after the operation.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to be deleted.
      *
@@ -238,7 +230,7 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      void purgeGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+      void purgeGlossary(String userId,String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
@@ -249,7 +241,6 @@ public interface SubjectAreaGlossary
      * Restore a Glossary
      *
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to restore
      * @return the restored glossary
@@ -261,7 +252,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-      Glossary restoreGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+      Glossary restoreGlossary(String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

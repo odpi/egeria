@@ -64,13 +64,12 @@ public class SubjectAreaProjectController extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.createProject(serverName, userId,suppliedProject);
+            Project project = this.subjectAreaProject.createProject(userId, suppliedProject);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
@@ -95,13 +94,12 @@ public class SubjectAreaProjectController extends SecureController
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getProject(@PathVariable String guid,HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.getProjectByGuid(serverName, userId,guid);
+            Project project = this.subjectAreaProject.getProjectByGuid(userId,guid);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
@@ -131,7 +129,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping()
     public  SubjectAreaOMASAPIResponse findProject(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -141,7 +139,6 @@ public class SubjectAreaProjectController extends SecureController
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -152,7 +149,7 @@ public class SubjectAreaProjectController extends SecureController
             if (pageSize == null) {
                pageSize = new Integer(0);
             }
-            List<Project> projects = this.subjectAreaProject.findProject(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Project> projects = this.subjectAreaProject.findProject(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
             ProjectsResponse projectsResponse = new ProjectsResponse();
             projectsResponse.setProjects(projects);
             response = projectsResponse;
@@ -182,7 +179,7 @@ public class SubjectAreaProjectController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    @GetMapping( path = "/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getProjectRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -193,12 +190,10 @@ public class SubjectAreaProjectController extends SecureController
                                                             HttpServletRequest request
     
     ) {
-
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
-            List<Line> lines = this.subjectAreaProject.getProjectRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Line> lines = this.subjectAreaProject.getProjectRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
@@ -232,13 +227,12 @@ public class SubjectAreaProjectController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateProject(
                                                       @PathVariable String guid,
                                                       @RequestBody Project project,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
                                                       HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
@@ -247,9 +241,9 @@ public class SubjectAreaProjectController extends SecureController
                 isReplace = false;
             }
             if (isReplace) {
-                updatedProject = this.subjectAreaProject.replaceProject(serverName, userId, guid, project);
+                updatedProject = this.subjectAreaProject.replaceProject(userId, guid, project);
             } else {
-                updatedProject = this.subjectAreaProject.updateProject(serverName, userId, guid, project);
+                updatedProject = this.subjectAreaProject.updateProject(userId, guid, project);
             }
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(updatedProject);
@@ -286,21 +280,20 @@ public class SubjectAreaProjectController extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
-                this.subjectAreaProject.purgeProject(serverName,userId,guid);
+                this.subjectAreaProject.purgeProject(userId,guid);
                 response = new VoidResponse();
             } else {
-                Project project = this.subjectAreaProject.deleteProject(serverName, userId,guid);
+                Project project = this.subjectAreaProject.deleteProject(userId,guid);
                 ProjectResponse projectResponse = new ProjectResponse();
                 projectResponse.setProject(project);
                 response = projectResponse;
@@ -327,14 +320,13 @@ public class SubjectAreaProjectController extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String guid, HttpServletRequest request)
     {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Project project = this.subjectAreaProject.restoreProject(serverName, userId,guid);
+            Project project = this.subjectAreaProject.restoreProject(userId,guid);
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;

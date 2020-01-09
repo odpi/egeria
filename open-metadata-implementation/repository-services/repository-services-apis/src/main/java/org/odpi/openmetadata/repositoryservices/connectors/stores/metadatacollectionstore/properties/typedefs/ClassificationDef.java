@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ClassificationDef extends TypeDef
 {
+    private static final long    serialVersionUID = 1L;
+
     private   List<TypeDefLink>     validEntityDefs = null;
     private   boolean               propagatable = false;
 
@@ -93,6 +95,10 @@ public class ClassificationDef extends TypeDef
     public List<TypeDefLink> getValidEntityDefs()
     {
         if (validEntityDefs == null)
+        {
+            return null;
+        }
+        else if (validEntityDefs.isEmpty())
         {
             return null;
         }

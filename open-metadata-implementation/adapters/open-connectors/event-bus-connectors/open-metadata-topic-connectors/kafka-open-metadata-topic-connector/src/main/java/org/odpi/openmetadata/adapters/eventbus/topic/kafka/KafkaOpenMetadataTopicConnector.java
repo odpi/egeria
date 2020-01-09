@@ -180,16 +180,24 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     }
 
 
-	private void copyProperties(Object propertiesObject, Properties target)
+    @SuppressWarnings("unchecked")
+    private void copyProperties(Object propertiesObject, Properties target)
     {
 		Map<String, Object> propertiesMap;
 		if (propertiesObject != null)
 		{
-		    propertiesMap = (Map<String, Object>)propertiesObject;
-		    for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
-		    {
-		        target.setProperty(entry.getKey(), (String) entry.getValue());
-		    }
+            try
+            {
+                propertiesMap = (Map<String, Object>) propertiesObject;
+                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+                {
+                    target.setProperty(entry.getKey(), (String) entry.getValue());
+                }
+            }
+		    catch (Throwable error)
+            {
+                // Problem with properties
+            }
 		}
 	}
 

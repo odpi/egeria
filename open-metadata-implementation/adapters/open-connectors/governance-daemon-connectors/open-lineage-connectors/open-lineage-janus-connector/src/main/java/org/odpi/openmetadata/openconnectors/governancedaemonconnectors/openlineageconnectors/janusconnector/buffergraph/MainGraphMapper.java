@@ -129,19 +129,17 @@ public class MainGraphMapper {
      * */
     private void addExtraProperties(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex,Vertex newVertex){
 
-//        Vertex tableAsset = bufferTraversal.V(originalVertex.id()).until(or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE))).repeat(bothE().inV().simplePath()).next();
         Iterator<Vertex> tableAsset = bufferG.V(originalVertex.id()).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel("RelationalTable"),hasLabel("DataFile"));
         Iterator<Vertex> schema = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(3).
                 or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE),hasLabel(FILE_FOLDER));
 
         //find a query for filefolder parent
-//        Vertex db = bufferTraversal.V(originalVertex.id()).until(or(hasLabel(DATABASE),hasLabel(FILE_FOLDER))).repeat(bothE().inV().simplePath()).next();
         if(tableAsset.hasNext()){
-            newVertex.property(PROPERTY_NAME_TABLE_DISPLAY_NAME,tableAsset.next().property("vepropdisplayName").value());
+            newVertex.property(PROPERTY_NAME_TABLE_DISPLAY_NAME,tableAsset.next().property("vertex--InstancePropdisplayName").value());
         }
 
         if(schema.hasNext()){
-            newVertex.property(PROPERTY_NAME_SCHEMA_DISPLAY_NAME,schema.next().property("vepropdisplayName").value());
+            newVertex.property(PROPERTY_NAME_SCHEMA_DISPLAY_NAME,schema.next().property("vertex--InstancePropdisplayName").value());
         }
 
 //        if(db != null){
@@ -165,7 +163,8 @@ public class MainGraphMapper {
                                                      .outV();
 
         if(glossaryTermBuffer.hasNext()) {
-            String guidGlossary = glossaryTermBuffer.next().property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+            Vertex glossaryBuffer = glossaryTermBuffer.next();
+            String guidGlossary = glossaryBuffer.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
 
            Vertex glossaryMain =   mainG.V().has(PROPERTY_KEY_ENTITY_GUID, guidGlossary).
                     fold().
@@ -175,6 +174,8 @@ public class MainGraphMapper {
                         V(glossaryMain.id()).
                         coalesce(__.outE(EDGE_LABEL_SEMANTIC).where(inV().as("v")),
                                 addE(EDGE_LABEL_SEMANTIC).from("v")).next();
+
+            copyVertexProperties(glossaryBuffer,glossaryMain);
         }
 
         //TODO copy glossaryterm

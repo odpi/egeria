@@ -4,7 +4,8 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineServices;
+import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.springframework.web.bind.annotation.*;
+
 
 /**
  * DiscoveryEngineResource provides the generic server-side interface for the Discovery Engine Open Metadata Access Service (OMAS).
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
 public class DiscoveryEngineResource
 {
-    private DiscoveryEngineServices restAPI = new DiscoveryEngineServices();
+    private DiscoveryEngineRESTServices restAPI = new DiscoveryEngineRESTServices();
 
 
     /**
@@ -29,6 +31,165 @@ public class DiscoveryEngineResource
      */
     public DiscoveryEngineResource()
     {
+    }
+
+
+    /**
+     * Return the next set of assets to process.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param startFrom starting point of the query
+     * @param pageSize maximum number of results to return
+     * @param requestBody null request body
+     * @return list of unique identifiers for located assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets")
+
+    public GUIDListResponse getAssets(@PathVariable String          serverName,
+                                      @PathVariable String          userId,
+                                      @RequestParam int             startFrom,
+                                      @RequestParam int             pageSize,
+                                      @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.getAssets(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return the assets with the same qualified name.  If all is well there should be only one
+     * returned.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param name the qualified name to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets/by-qualified-name")
+
+    public GUIDListResponse getAssetsByQualifiedName(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @RequestBody  String          name,
+                                                     @RequestParam int             startFrom,
+                                                     @RequestParam int             pageSize)
+    {
+        return restAPI.getAssetsByQualifiedName(serverName, userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of matching assets that have the supplied name as either the
+     * qualified name or display name.  This is an exact match retrieval.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param name name to query for
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets/by-name")
+
+    public GUIDListResponse  getAssetsByName(@PathVariable String          serverName,
+                                             @PathVariable String          userId,
+                                             @RequestBody  String          name,
+                                             @RequestParam int             startFrom,
+                                             @RequestParam int             pageSize)
+    {
+        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets/by-search-string")
+
+    public GUIDListResponse  findAssets(@PathVariable String          serverName,
+                                        @PathVariable String          userId,
+                                        @RequestBody  String          searchString,
+                                        @RequestParam int             startFrom,
+                                        @RequestParam int             pageSize)
+    {
+        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of assets that have the same endpoint address.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId calling user
+     * @param networkAddress address to query on
+     * @param startFrom place to start in query
+     * @param pageSize number of results to return
+     * @return list of unique identifiers for matching assets or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets/by-endpoint-address")
+
+    public  GUIDListResponse getAssetsByEndpoint(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @RequestBody  String          networkAddress,
+                                                 @RequestParam int             startFrom,
+                                                 @RequestParam int             pageSize)
+    {
+        return restAPI.getAssetsByEndpoint(serverName, userId, networkAddress, startFrom, pageSize);
+    }
+
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param serverName            name of server instance to route request to
+     * @param userId                userId of user making request.
+     * @param assetGUID             unique identifier for asset.
+     * @param discoveryService      unique name for discoveryService.
+     * @param message               message to log
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @PostMapping(path = "/assets/{assetGUID}/log-records/{discoveryService}")
+
+    public VoidResponse logAssetAuditMessage(@PathVariable String    serverName,
+                                             @PathVariable String    userId,
+                                             @PathVariable String    assetGUID,
+                                             @PathVariable String    discoveryService,
+                                             @RequestBody  String    message)
+    {
+        return restAPI.logAssetAuditMessage(serverName, userId, assetGUID, discoveryService, message);
     }
 
 
@@ -46,7 +207,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user is not authorized to access the asset and/or report or
      *  PropertyServerException there was a problem in the store whether the asset/report properties are kept.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/discovery-analysis-reports")
+    @PostMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
     public DiscoveryAnalysisReportResponse createDiscoveryAnalysisReport(@PathVariable String                             serverName,
                                                                          @PathVariable String                             userId,
@@ -71,7 +232,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/discovery-analysis-reports/{discoveryReportGUID}")
+    @PostMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}")
 
     public DiscoveryAnalysisReportResponse updateDiscoveryAnalysisReport(@PathVariable String                  serverName,
                                                                          @PathVariable String                  userId,
@@ -95,7 +256,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}")
 
     public DiscoveryAnalysisReportResponse getDiscoveryReport(@PathVariable String   serverName,
                                                               @PathVariable String   userId,
@@ -123,7 +284,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/annotations")
+    @GetMapping(path = "/assets/{assetGUID}/annotations")
 
     public AnnotationListResponse getAnnotationsForAssetByStatus(@PathVariable String            serverName,
                                                                  @PathVariable String            userId,
@@ -156,7 +317,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String   serverName,
                                                                 @PathVariable String   userId,
@@ -187,7 +348,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}/extended-annotations")
+    @GetMapping(path = "/annotations/{annotationGUID}/extended-annotations")
 
     public  AnnotationListResponse  getExtendedAnnotations(@PathVariable String   serverName,
                                                            @PathVariable String   userId,
@@ -217,7 +378,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}")
+    @GetMapping(path = "/annotations/{annotationGUID}")
 
     public  AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                              @PathVariable String   userId,
@@ -241,7 +402,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
+    @PostMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
     public  GUIDResponse  addAnnotationToDiscoveryReport(@PathVariable String     serverName,
                                                          @PathVariable String     userId,
@@ -269,7 +430,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/annotations/{anchorAnnotationGUID}/extended-annotations")
+    @PostMapping(path = "/annotations/{anchorAnnotationGUID}/extended-annotations")
 
     public  AnnotationResponse  addAnnotationToAnnotation(@PathVariable String     serverName,
                                                           @PathVariable String     userId,
@@ -298,7 +459,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating annotations in the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}")
+    @PostMapping(path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}")
 
     public VoidResponse  linkAnnotation(@PathVariable String          serverName,
                                         @PathVariable String          userId,
@@ -329,7 +490,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating annotations in the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}/delete")
+    @PostMapping(path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}/delete")
 
     public VoidResponse  unlinkAnnotation(@PathVariable String          serverName,
                                           @PathVariable String          userId,
@@ -359,7 +520,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/annotations/{annotationGUID}")
+    @PostMapping(path = "/annotations/{annotationGUID}")
 
     public AnnotationResponse updateAnnotation(@PathVariable String     serverName,
                                                @PathVariable String     userId,
@@ -387,7 +548,7 @@ public class DiscoveryEngineResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/annotations/{annotationGUID}/delete")
+    @PostMapping(path = "/annotations/{annotationGUID}/delete")
 
     public VoidResponse  deleteAnnotation(@PathVariable String          serverName,
                                           @PathVariable String          userId,

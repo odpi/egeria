@@ -35,8 +35,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,7 +75,7 @@ public class TypeExplorerController extends SecureController
      *   enterpriseOption is a string "true" or "false" indicating whether to include results from the cohorts to which the server belongs
      */
 
-    @RequestMapping(method = RequestMethod.POST, path = "/api/types/typeExplorer")
+    @PostMapping( path = "/api/types/typeExplorer")
     public TypeExplorerResponse typeExplorer(@RequestBody Map<String,String> body, HttpServletRequest request)
     {
 

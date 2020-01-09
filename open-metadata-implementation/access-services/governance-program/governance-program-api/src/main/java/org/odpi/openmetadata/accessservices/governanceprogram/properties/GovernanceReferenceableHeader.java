@@ -39,6 +39,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class GovernanceReferenceableHeader extends GovernanceHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<ExternalReference>    externalReferences   = null;
     private Map<String, String>        additionalProperties = null;
 

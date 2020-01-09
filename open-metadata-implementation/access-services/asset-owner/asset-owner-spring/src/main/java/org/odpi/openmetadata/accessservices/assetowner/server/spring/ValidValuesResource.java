@@ -53,7 +53,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/new-set")
+    @PostMapping(path = "/valid-values/new-set")
 
     public GUIDResponse createValidValueSet(@PathVariable String                 serverName,
                                             @PathVariable String                 userId,
@@ -76,7 +76,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/new-definition")
+    @PostMapping(path = "/valid-values/new-definition")
 
     public GUIDResponse  createValidValueDefinition(@PathVariable String                 serverName,
                                                     @PathVariable String                 userId,
@@ -102,7 +102,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/update")
+    @PostMapping(path = "/valid-values/{validValueGUID}/update")
 
     public VoidResponse    updateValidValue(@PathVariable String                 serverName,
                                             @PathVariable String                 userId,
@@ -127,7 +127,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/delete")
+    @PostMapping(path = "/valid-values/{validValueGUID}/delete")
 
     public VoidResponse    deleteValidValue(@PathVariable String   serverName,
                                             @PathVariable String   userId,
@@ -152,7 +152,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/sets/{setGUID}/members/{validValueGUID}")
+    @PostMapping(path = "/valid-values/sets/{setGUID}/members/{validValueGUID}")
 
     public VoidResponse    attachValidValueToSet(@PathVariable String          serverName,
                                                  @PathVariable String          userId,
@@ -178,7 +178,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/sets/{setGUID}/members/{validValueGUID}/delete")
+    @PostMapping(path = "/valid-values/sets/{setGUID}/members/{validValueGUID}/delete")
 
     public VoidResponse    detachValidValueFromSet(@PathVariable String          serverName,
                                                    @PathVariable String          userId,
@@ -205,7 +205,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/implementations/{assetGUID}")
+    @PostMapping(path = "/valid-values/{validValueGUID}/implementations/{assetGUID}")
 
     public VoidResponse  linkValidValueToImplementation(@PathVariable String          serverName,
                                                         @PathVariable String          userId,
@@ -231,7 +231,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/classify-as-reference-data")
+    @PostMapping(path = "/assets/{assetGUID}/classify-as-reference-data")
 
     public VoidResponse  classifyAssetAsReferenceData(@PathVariable String          serverName,
                                                       @PathVariable String          userId,
@@ -256,7 +256,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/implementations/{assetGUID}/delete")
+    @PostMapping(path = "/valid-values/{validValueGUID}/implementations/{assetGUID}/delete")
 
     public VoidResponse  unlinkValidValueFromImplementation(@PathVariable String          serverName,
                                                             @PathVariable String          userId,
@@ -282,7 +282,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/declassify-as-reference-data")
+    @PostMapping(path = "/assets/{assetGUID}/declassify-as-reference-data")
 
     public VoidResponse  declassifyAssetAsReferenceData(@PathVariable String          serverName,
                                                         @PathVariable String          userId,
@@ -309,7 +309,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}")
+    @PostMapping(path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}")
 
     public VoidResponse    assignValidValueToConsumer(@PathVariable String             serverName,
                                                       @PathVariable String             userId,
@@ -335,7 +335,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}/delete")
+    @PostMapping(path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}/delete")
 
     public VoidResponse unassignValidValueFromConsumer(@PathVariable String          serverName,
                                                        @PathVariable String          userId,
@@ -359,7 +359,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}")
+    @GetMapping(path = "/valid-values/{validValueGUID}")
 
     public ValidValueResponse getValidValueByGUID(@PathVariable String  serverName,
                                                   @PathVariable String  userId,
@@ -382,7 +382,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/by-name")
+    @PostMapping(path = "/valid-values/by-name")
 
     public ValidValuesResponse getValidValueByName(@PathVariable String  serverName,
                                                    @PathVariable String  userId,
@@ -407,7 +407,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/valid-values/by-search-string")
+    @PostMapping(path = "/valid-values/by-search-string")
 
     public ValidValuesResponse findValidValues(@PathVariable String  serverName,
                                                @PathVariable String  userId,
@@ -433,7 +433,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/sets/{validValueSetGUID}/members")
+    @GetMapping(path = "/valid-values/sets/{validValueSetGUID}/members")
 
     public ValidValuesResponse getValidValueSetMembers(@PathVariable String  serverName,
                                                        @PathVariable String  userId,
@@ -459,7 +459,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/set-membership")
+    @GetMapping(path = "/valid-values/{validValueGUID}/set-membership")
 
     public ValidValuesResponse getSetsForValidValue(@PathVariable String  serverName,
                                                     @PathVariable String  userId,
@@ -485,7 +485,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/consumers")
+    @GetMapping(path = "/valid-values/{validValueGUID}/consumers")
 
     public ValidValueConsumersResponse getValidValuesConsumers(@PathVariable String  serverName,
                                                                @PathVariable String  userId,
@@ -511,7 +511,7 @@ public class ValidValuesResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/valid-values/{validValueGUID}/implementations")
+    @GetMapping(path = "/valid-values/{validValueGUID}/implementations")
 
     public AssetsResponse getValidValuesImplementations(@PathVariable String  serverName,
                                                         @PathVariable String  userId,

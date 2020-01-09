@@ -25,7 +25,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Override the default maximum paging size.
+     * Override the default maximum paging size.  Zero means no paging limit.
      *
      * @param maxPagingSize new value
      */
@@ -307,15 +307,17 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied paging values don't make sense.
+     * Throw an exception if the supplied paging values don't make sense. If page size is zero it means return as much as there is.
+     * in which case this method sets the page size to the maximum value for this server.  If the server has its max page size set to zero
+     * then zero is used.
      *
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName  name of the method making the call.
-     *
+     * @return validated page size.
      * @throws InvalidParameterException the paging options are incorrect
      */
-    public void validatePaging(int    startFrom,
+    public int  validatePaging(int    startFrom,
                                int    pageSize,
                                String methodName) throws InvalidParameterException
     {
@@ -365,6 +367,15 @@ public class InvalidParameterHandler
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction(),
                                                 pageSizeParameterName);
+        }
+
+        if (pageSize == 0)
+        {
+            return maxPagingSize;
+        }
+        else
+        {
+            return pageSize;
         }
     }
 

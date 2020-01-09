@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetListResponse extends CommunityProfileOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<AssetCollectionMember> assets              = null;
     private int                         startingFromElement = 0;
     private int                         totalListSize       = 0;

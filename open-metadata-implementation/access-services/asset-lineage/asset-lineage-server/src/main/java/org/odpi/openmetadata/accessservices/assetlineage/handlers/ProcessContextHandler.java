@@ -103,8 +103,8 @@ public class ProcessContextHandler {
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 
-        List<EntityDetail> entitiesTillLastRelationship = getEntitiesLinkedWithProcessPort(userId, entityDetail);
-        if(!entitiesTillLastRelationship.isEmpty()){
+        boolean entitiesTillLastRelationshipExist = hasEntitiesLinkedWithProcessPort(userId, entityDetail);
+        if(entitiesTillLastRelationshipExist){
             return graph.getNeighbors();
         }
 
@@ -118,7 +118,7 @@ public class ProcessContextHandler {
                                         RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-    private List<EntityDetail> getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+    private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
                                                                                                                  PropertyServerException,
                                                                                                                  InvalidParameterException {
 
@@ -126,7 +126,7 @@ public class ProcessContextHandler {
         List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(), PROCESS_PORT, typeDefName);
 
         if (entityDetails.isEmpty()){
-            log.error("No relationships has been found for the entity with guid {}",entityDetail.getGUID());
+            log.error("No relationships Process Port has been found for the entity with guid {}",entityDetail.getGUID());
 
             throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
                                             this.getClass().getName(),
@@ -136,7 +136,7 @@ public class ProcessContextHandler {
                                             RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-       return getRelationshipBasedOnType(entityDetails, userId);
+       return hasRelationshipBasedOnType(entityDetails, userId);
 
     }
 
@@ -164,7 +164,7 @@ public class ProcessContextHandler {
         for (Relationship relationship : relationships) {
 
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) &&
-                    validator.getSuperTypes(startEntityType).contains(SCHEMA_ELEMENT)){
+                    startEntityType.equals(TABULAR_COLUMN)){
                 continue;
             }
             EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph,false);
@@ -180,68 +180,94 @@ public class ProcessContextHandler {
     /**
      * Creates the full context for a Process. There are two cases, a process can have a relationship to either
      * a Port Alias or to a Port Implementation. In case of Port Alias it should take the context until Port Implementation
-     * entities otherwise it should take the context up to TabularColumnType entities.
-     *  @param entityDetails      list of entities
+     * entities otherwise it should take the context down to TabularColumn entities.
+     * @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
-     * @return
+     * @return boolean true if relationships exist otherwise false.
      */
-    private List<EntityDetail> getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                                   PropertyServerException,
                                                                                                                   UserNotAuthorizedException {
-        List<EntityDetail> entities = new ArrayList<>();
+        boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
-            entities = endRelationship(entityDetails,userId);
+            relationshipsExist = hasEndRelationship(entityDetails,userId);
         }
 
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            entities = getTabularSchemaTypes(entityDetails,userId);
+            relationshipsExist = hasTabularSchemaTypes(entityDetails,userId);
         }
 
-        return entities;
+        return relationshipsExist;
     }
 
-
-    private List<EntityDetail> endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    /**
+     * Returns if the entities that are passed as an argument in the method have any relationships.
+     * @param entityDetails      list of entities
+     * @param userId             String - userId of user making request.
+     * @return boolean true if relationships exist otherwise false.
+     */
+    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                           processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                           entityDetail.getType().getTypeDefName());
+            result.addAll(getRelationshipsBetweenEntities(userId,
+                                                          entityDetail.getGUID(),
+                                                          immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                          entityDetail.getType().getTypeDefName()));
         }
-        return result;
+        return  !result.isEmpty();
     }
-    
-    private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+
+    /**
+     * Returns if there are any TabularSchemaTypes that are related to a Port Implementation Entity.
+     * @param entityDetails      list of entities
+     * @param userId             String - userId of user making request.
+     * @return boolean true if relationships exist otherwise false.
+     */
+    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
-            List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                                                                          processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                          entityDetail.getType().getTypeDefName());
-            Optional<EntityDetail> first = newListOfEntityDetails.stream().findFirst();
+            List<EntityDetail> tabularSchemaType = getRelationshipsBetweenEntities(userId,
+                                                                                   entityDetail.getGUID(),
+                                                                                   immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                   entityDetail.getType().getTypeDefName());
+            Optional<EntityDetail> first = tabularSchemaType.stream().findFirst();
             result.add(first.orElse(null));
         }
-        return getSchemaAttributes(result,userId);
+        return hasSchemaAttributes(result,userId);
     }
 
-    private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    /**
+     * Returns if the TabularColumns are part of a TabularSchemaType.
+     * @param entityDetails      list of entities
+     * @param userId             String - userId of user making request.
+     * @return boolean true if relationships exist otherwise false.
+     */
+    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
-            List<EntityDetail>     newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                                                                            processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                            entityDetail.getType().getTypeDefName());
+            List<EntityDetail>  newListOfEntityDetails = getRelationshipsBetweenEntities(userId,
+                                                                                         entityDetail.getGUID(),
+                                                                                         immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                         entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }
-        return endRelationship(result,userId);
+        return hasEndRelationship(result,userId);
     }
 
+    /**
+     * Check if the Type of the entity exists on Open Metadata Types.
+     * @param entityDetails      list of entities
+     * @param typeDefName        String - the type to be checked
+     * @return Boolean if type exists or not
+     */
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));
     }

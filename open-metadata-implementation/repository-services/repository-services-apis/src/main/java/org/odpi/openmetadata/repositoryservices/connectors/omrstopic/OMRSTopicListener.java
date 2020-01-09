@@ -22,7 +22,7 @@ public interface OMRSTopicListener
 
 
     /**
-     * Method to pass a Registry event received on topic.
+     * Method to pass a TypeDef event received on topic.
      *
      * @param event inbound event
      */
@@ -30,7 +30,7 @@ public interface OMRSTopicListener
 
 
     /**
-     * Method to pass a Registry event received on topic.
+     * Method to pass an Instance event received on topic.
      *
      * @param event inbound event
      */

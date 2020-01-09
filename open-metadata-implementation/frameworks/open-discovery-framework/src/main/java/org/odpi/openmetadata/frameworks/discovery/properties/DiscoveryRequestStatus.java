@@ -19,10 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DiscoveryRequestStatus implements Serializable
 {
-    WAITING         (0,  "Waiting",    "Discovery request is waiting to execute"),
-    IN_PROGRESS     (1,  "In Progress","Discovery request is executing"),
-    FAILED          (2,  "Failed",     "Discovery request has failed"),
-    COMPLETED       (3,  "Completed",  "Discovery request has completed successfully"),
+    WAITING         (0,  "Waiting",    "Discovery request is waiting to execute in the discovery engine"),
+    ACTIVATING      (1,  "Activating", "Discovery request is being initialized in the discovery engine"),
+    IN_PROGRESS     (2,  "In Progress","Discovery request is executing"),
+    FAILED          (3,  "Failed",     "Discovery request has failed"),
+    COMPLETED       (4,  "Completed",  "Discovery request has completed successfully"),
     UNKNOWN_STATUS  (99, "Unknown",    "Discovery request status is unknown");
 
     private static final long     serialVersionUID = 1L;

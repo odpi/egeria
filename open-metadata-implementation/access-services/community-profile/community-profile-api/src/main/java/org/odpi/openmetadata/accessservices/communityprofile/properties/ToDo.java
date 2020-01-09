@@ -9,6 +9,8 @@ import java.util.*;
  */
 public class ToDo extends ReferenceableHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private Date                creationTime         = null;
     private int                 priority             = 0;
     private Date                dueTime              = null;

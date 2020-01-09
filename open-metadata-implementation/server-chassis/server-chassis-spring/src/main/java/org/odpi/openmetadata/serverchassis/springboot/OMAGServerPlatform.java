@@ -5,7 +5,6 @@ package org.odpi.openmetadata.serverchassis.springboot;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
-import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformActiveServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.*;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,10 +26,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
@@ -52,7 +49,6 @@ public class OMAGServerPlatform
     private boolean triggeredRuntimeHalt = false;
     private String startupMessage = "";
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
-    OMAGServerPlatformActiveServices platformActiveServices = new OMAGServerPlatformActiveServices();
 
     private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
@@ -74,51 +70,71 @@ public class OMAGServerPlatform
     }
 
     /**
-     * starts the servers specified in the startup.server.list property
+     * Extract the list of servers to auto start along with the administration userId.
+     * The userId is in property "sysUser" and the list of server names are in property
+     * "startupServers".  If either are null then no servers are auto started.
      */
-    private void autoStartConfig() {
-        if (!sysUser.trim().isEmpty() && !startupServers.trim().isEmpty()) {
-            log.info("Startup detected for servers: {}", startupServers);
+    List<String>  getAutoStartList()
+    {
+        if (!startupServers.trim().isEmpty())
+        {
             String[] splits = startupServers.split(",");
             //remove eventual duplicates
-            HashSet<String> servers = new HashSet<>(Arrays.asList(splits));
+            HashSet<String> serverSet = new HashSet<>(Arrays.asList(splits));
 
-            for (String server : servers) {
-                SuccessMessageResponse response = operationalServices.activateWithStoredConfig(sysUser, server);
-                if (response.getRelatedHTTPCode() == 200) {
-                    startupMessage += "OMAG Server '" + server + "' SUCCESS start , with message: " +
-                            response.getSuccessMessage() + System.lineSeparator();
-                } else {
-                    startupMessage += "OMAG Server '" + server + "' ERROR while startup, with error message: " +
-                            response.getExceptionErrorMessage() + System.lineSeparator();
-                    StartupFailEvent customSpringEvent =
-                            new StartupFailEvent(this, "server " + server + " startup failed.");
-                    applicationEventPublisher.publishEvent(customSpringEvent);
-                    triggeredRuntimeHalt = true;
-                    break;
-                }
+            if (! serverSet.isEmpty())
+            {
+                return new ArrayList<>(serverSet);
             }
-
-        } else {
-            log.info("No OMAG server in startup configuration");
-            startupMessage = "No OMAG server in startup configuration";
         }
+
+        return null;
     }
 
     /**
-     *  Read all the active servers in the platform and call for temporary deactivate
+     * Starts the servers specified in the startup.server.list property
      */
-    private void temporaryDeactivateAllServers(){
-        List<String> activeServers = platformActiveServices.getActiveServerList(sysUser).getServerList();
-        if(activeServers != null){
-            activeServers.forEach(server -> {
-                log.info("Temporary deactivate the server '{}'",server);
-                operationalServices.deactivateTemporarily(sysUser , server);
-            });
+    private void autoStartConfig()
+    {
+        List<String>  servers = getAutoStartList();
+
+        if (servers != null)
+        {
+            log.info("Startup detected for servers: {}", startupServers);
+        }
+
+        SuccessMessageResponse response = operationalServices.activateServerListWithStoredConfig(sysUser.trim(), servers);
+
+        if (response.getRelatedHTTPCode() == 200)
+        {
+            startupMessage = response.getSuccessMessage();
+        }
+        else
+        {
+            startupMessage = response.getExceptionErrorMessage();
+
+            StartupFailEvent customSpringEvent = new StartupFailEvent(this, startupMessage);
+            applicationEventPublisher.publishEvent(customSpringEvent);
+            triggeredRuntimeHalt = true;
         }
     }
 
+
     /**
+     *  Deactivate all servers that were started automatically
+     */
+    private void temporaryDeactivateServers()
+    {
+        List<String>  servers = getAutoStartList();
+
+        log.info("Temporary deactivate the auto-started servers '{}'", servers.toString());
+
+        operationalServices.deactivateTemporarilyServerList(sysUser, getAutoStartList());
+    }
+
+
+    /**
+     * Enable swagger.
      *
      * @return Swagger documentation bean used to show API documentation
      */
@@ -133,31 +149,35 @@ public class OMAGServerPlatform
 
 
     @Component
-    public class ApplicationContextListener  {
+    public class ApplicationContextListener
+    {
 
         @EventListener
-        public void onApplicationEvent(ContextRefreshedEvent event) {
+        public void onApplicationEvent(ContextRefreshedEvent event)
+        {
             System.out.println();
             System.out.println(OMAGServerPlatform.this.startupMessage);
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
             }
-            System.out.println(new Date().toString() + " OMAG server platform ready for more configurations");
+            System.out.println(new Date().toString() + " OMAG server platform ready for more configuration");
         }
 
         @EventListener
-        public void onApplicationEvent(ContextClosedEvent event) {
-            System.out.println("Context closed received. Temporary deactivating servers");
-            temporaryDeactivateAllServers();
+        public void onApplicationEvent(ContextClosedEvent event)
+        {
+            System.out.println("Platform shutdown requested. Temporary deactivating any auto-started servers");
+            temporaryDeactivateServers();
         }
     }
 
     @Component
-    public class CustomSpringEventListener implements ApplicationListener<StartupFailEvent> {
+    public class CustomSpringEventListener implements ApplicationListener<StartupFailEvent>
+    {
         @Override
         public void onApplicationEvent(StartupFailEvent event) {
             log.info("Received startup fail event with message: {} " + event.getMessage());
-            temporaryDeactivateAllServers();
+            temporaryDeactivateServers();
         }
 
     }

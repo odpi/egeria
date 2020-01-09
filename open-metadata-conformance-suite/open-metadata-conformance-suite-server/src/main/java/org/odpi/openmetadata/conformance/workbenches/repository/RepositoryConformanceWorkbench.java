@@ -289,7 +289,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedEntitySharingPropertySearch testEntityPropertySharingSearch = new TestSupportedEntitySharingPropertySearch(workPad, entityDef);
                     entitySharingPropertySearchTestCases.add(testEntityPropertySharingSearch);
-
                 }
             }
 
@@ -317,7 +316,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipPropertyAdvancedSearch testRelationshipPropertyAdvancedSearch = new TestSupportedRelationshipPropertyAdvancedSearch(workPad, entityDefs, relationshipDef);
                     relationshipPropertyAdvancedSearchTestCases.add(testRelationshipPropertyAdvancedSearch);
 
-                    TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, relationshipDef);
+                    TestSupportedRelationshipSharingPropertySearch testRelationshipsharingPropertySearch = new TestSupportedRelationshipSharingPropertySearch(workPad, entityDefs, relationshipDef);
                     relationshipSharingPropertySearchTestCases.add(testRelationshipsharingPropertySearch);
 
 

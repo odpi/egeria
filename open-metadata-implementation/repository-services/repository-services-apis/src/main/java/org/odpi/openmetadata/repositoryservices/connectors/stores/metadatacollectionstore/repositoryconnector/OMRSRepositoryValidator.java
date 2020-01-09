@@ -172,7 +172,7 @@ public interface OMRSRepositoryValidator
     boolean validTypeDefId(String          sourceName,
                            String          typeDefGUID,
                            String          typeDefName,
-                           long            typeDefVersion,
+                           String          typeDefVersion,
                            TypeDefCategory category);
 
 
@@ -189,7 +189,7 @@ public interface OMRSRepositoryValidator
     boolean validAttributeTypeDefId(String                   sourceName,
                                     String                   attributeTypeDefGUID,
                                     String                   attributeTypeDefName,
-                                    long                     attributeTypeDefVersion,
+                                    String                   attributeTypeDefVersion,
                                     AttributeTypeDefCategory category);
 
 
@@ -324,9 +324,29 @@ public interface OMRSRepositoryValidator
                             String name,
                             String methodName) throws InvalidParameterException;
 
+    /**
+     * Validate that a TypeDef's identifiers are not null and return the type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName  name of the parameter that passed the guid.
+     * @param nameParameterName  name of the parameter that passed the name.
+     * @param guid  unique identifier for a type or an instance passed on the request
+     * @param name  name of TypeDef.
+     * @param methodName  method receiving the call
+     * @return retrieved type
+     * @throws InvalidParameterException  no guid provided
+     */
+    TypeDef getValidTypeDefFromIds(String sourceName,
+                                   String guidParameterName,
+                                   String nameParameterName,
+                                   String guid,
+                                   String name,
+                                   String methodName) throws InvalidParameterException;
+
+
 
     /**
-     * Validate that an AttributeTypeDef's identifiers are not null and are recognized.
+     * Validate that an AttributeTypeDef's identifiers are not null.
      *
      * @param sourceName  source of the request (used for logging)
      * @param guidParameterName  name of the parameter that passed the guid.
@@ -342,6 +362,28 @@ public interface OMRSRepositoryValidator
                                      String guid,
                                      String name,
                                      String methodName) throws InvalidParameterException;
+
+
+    /**
+     * Validate that an AttributeTypeDef's identifiers are not null and are recognized
+     * and return the type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName  name of the parameter that passed the guid.
+     * @param nameParameterName  name of the parameter that passed the name.
+     * @param guid  unique identifier for a type or an instance passed on the request
+     * @param name  name of TypeDef.
+     * @param methodName  method receiving the call
+     * @return retrieved type
+     * @throws InvalidParameterException  no guid, or name provided
+     */
+    AttributeTypeDef getValidAttributeTypeDefFromIds(String sourceName,
+                                                     String guidParameterName,
+                                                     String nameParameterName,
+                                                     String guid,
+                                                     String name,
+                                                     String methodName) throws InvalidParameterException;
+
 
 
     /**
@@ -382,13 +424,16 @@ public interface OMRSRepositoryValidator
      * @param sourceName  source of the request (used for logging)
      * @param patch  patch to test
      * @param methodName  calling method
+     * @return current value of the type
      * @throws InvalidParameterException  the patch is null
+     * @throws TypeDefNotKnownException the type is not known
      * @throws PatchErrorException  the patch is invalid
      */
-    void validateTypeDefPatch(String       sourceName,
-                              TypeDefPatch patch,
-                              String       methodName) throws InvalidParameterException,
-                                                              PatchErrorException;
+    TypeDef validateTypeDefPatch(String       sourceName,
+                                 TypeDefPatch patch,
+                                 String       methodName) throws InvalidParameterException,
+                                                                 TypeDefNotKnownException,
+                                                                 PatchErrorException;
 
 
     /**
@@ -466,6 +511,24 @@ public interface OMRSRepositoryValidator
                          TypeDef typeDef,
                          String  methodName) throws InvalidParameterException,
                                                     InvalidTypeDefException;
+
+    /**
+     * Validate that the supplied type is a valid active type.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param typeParameterName  the name of the parameter that passed the type
+     * @param typeDefSummary  the type to test
+     * @param category  the expected category of the type
+     * @param methodName  the name of the method that supplied the type
+     * @throws InvalidParameterException  the type is null or contains invalid values
+     * @throws TypeErrorException  the type is not active
+     */
+    void validateActiveType(String          sourceName,
+                            String          typeParameterName,
+                            TypeDefSummary  typeDefSummary,
+                            TypeDefCategory category,
+                            String          methodName) throws TypeErrorException, InvalidParameterException;
+
 
 
     /**
@@ -947,23 +1010,6 @@ public interface OMRSRepositoryValidator
     void validateInstanceType(String         sourceName,
                               InstanceHeader instance) throws RepositoryErrorException;
 
-
-    /**
-     * Validate that the supplied type is a valid active type.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param typeParameterName  the name of the parameter that passed the type
-     * @param typeDefSummary  the type to test
-     * @param category  the expected category of the type
-     * @param methodName  the name of the method that supplied the type
-     * @throws InvalidParameterException  the type is null or contains invalid values
-     * @throws TypeErrorException  the type is not active
-     */
-    void validateType(String          sourceName,
-                      String          typeParameterName,
-                      TypeDefSummary  typeDefSummary,
-                      TypeDefCategory category,
-                      String          methodName) throws TypeErrorException, InvalidParameterException;
 
 
     /**

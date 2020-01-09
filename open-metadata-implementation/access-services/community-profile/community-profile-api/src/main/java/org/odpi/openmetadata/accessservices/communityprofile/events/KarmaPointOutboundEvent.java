@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class KarmaPointOutboundEvent extends PersonalProfileOutboundEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     private String userId              = null;
     private long   pointsTotal         = 0;
     private long   plateau             = 0;

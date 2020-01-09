@@ -41,7 +41,7 @@ public enum OMRSAuditLogRecordSeverity
 {
     UNKNOWN   (0, "<Unknown>",   "Uninitialized Severity."),
     INFO      (1, "Information", "The server is providing information about its normal operation."),
-    EVENT     (2, "Event",       "An OMRSEvent was exchanged amongst members of the metadata repository cohort."),
+    EVENT     (2, "Event",       "An OMRSEvent was received from another member of the open metadata repository cohort."),
     DECISION  (3, "Decision",    "A decision has been made related to the interaction of the local metadata repository and the rest of the cohort."),
     ACTION    (4, "Action",      "Action is required by the administrator.  " +
                                  "At a minimum, the situation needs to be investigated and if necessary, corrective action taken."),

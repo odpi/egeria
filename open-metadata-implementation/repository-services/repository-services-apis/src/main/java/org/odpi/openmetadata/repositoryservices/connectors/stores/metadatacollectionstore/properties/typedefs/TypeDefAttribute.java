@@ -23,8 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefAttribute extends TypeDefElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     protected String                             attributeName            = null;
     protected AttributeTypeDef                   attributeType            = null;
+    protected TypeDefAttributeStatus             attributeStatus          = null;
+    protected String                             replacedByAttribute      = null;
     protected String                             attributeDescription     = null;
     protected String                             attributeDescriptionGUID = null;
     protected AttributeCardinality               cardinality              = AttributeCardinality.UNKNOWN;
@@ -58,6 +62,8 @@ public class TypeDefAttribute extends TypeDefElementHeader
         {
             attributeName = template.getAttributeName();
             attributeType = template.getAttributeType();
+            attributeStatus = template.getAttributeStatus();
+            replacedByAttribute = template.getReplacedByAttribute();
             attributeDescription = template.getAttributeDescription();
             attributeDescriptionGUID = template.getAttributeDescriptionGUID();
             cardinality = template.getAttributeCardinality();
@@ -107,6 +113,50 @@ public class TypeDefAttribute extends TypeDefElementHeader
      * @param attributeType AttributeTypeDef
      */
     public void setAttributeType(AttributeTypeDef attributeType) { this.attributeType = attributeType; }
+
+
+    /**
+     * Return the status of this attribute.
+     *
+     * @return status (null means ACTIVE)
+     */
+    public TypeDefAttributeStatus getAttributeStatus()
+    {
+        return attributeStatus;
+    }
+
+
+    /**
+     * Set up the status of this attribute.
+     *
+     * @param attributeStatus status (null means ACTIVE)
+     */
+    public void setAttributeStatus(TypeDefAttributeStatus attributeStatus)
+    {
+        this.attributeStatus = attributeStatus;
+    }
+
+
+    /**
+     * If the attribute has been renamed, this contains the name of the new attribute.
+     *
+     * @return new attribute name
+     */
+    public String getReplacedByAttribute()
+    {
+        return replacedByAttribute;
+    }
+
+
+    /**
+     * If the attribute has been renamed, this contains the name of the new attribute.
+     *
+     * @param replacedByAttribute new attribute name
+     */
+    public void setReplacedByAttribute(String replacedByAttribute)
+    {
+        this.replacedByAttribute = replacedByAttribute;
+    }
 
 
     /**
@@ -299,46 +349,51 @@ public class TypeDefAttribute extends TypeDefElementHeader
         return "TypeDefAttribute{" +
                 "attributeName='" + attributeName + '\'' +
                 ", attributeType=" + attributeType +
+                ", attributeStatus=" + attributeStatus +
+                ", replacedByAttribute='" + replacedByAttribute + '\'' +
+                ", attributeDescription='" + attributeDescription + '\'' +
+                ", attributeDescriptionGUID='" + attributeDescriptionGUID + '\'' +
                 ", cardinality=" + cardinality +
                 ", valuesMinCount=" + valuesMinCount +
                 ", valuesMaxCount=" + valuesMaxCount +
                 ", isIndexable=" + isIndexable +
                 ", isUnique=" + isUnique +
                 ", defaultValue='" + defaultValue + '\'' +
-                ", externalStandardMappings=" + externalStandardMappings +
-                '}';
+                ", externalStandardMappings=" + externalStandardMappings + '}';
     }
 
 
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof TypeDefAttribute))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        TypeDefAttribute that = (TypeDefAttribute) o;
-        return getValuesMinCount() == that.getValuesMinCount() &&
-                getValuesMaxCount() == that.getValuesMaxCount() &&
-                isIndexable() == that.isIndexable() &&
-                isUnique() == that.isUnique() &&
-                Objects.equals(getAttributeName(), that.getAttributeName()) &&
-                Objects.equals(getAttributeType(), that.getAttributeType()) &&
-                Objects.equals(getAttributeDescription(), that.getAttributeDescription()) &&
-                Objects.equals(getAttributeDescriptionGUID(), that.getAttributeDescriptionGUID()) &&
+        TypeDefAttribute that = (TypeDefAttribute) objectToCompare;
+        return valuesMinCount == that.valuesMinCount &&
+                valuesMaxCount == that.valuesMaxCount &&
+                isIndexable == that.isIndexable &&
+                isUnique == that.isUnique &&
+                Objects.equals(attributeName, that.attributeName) &&
+                Objects.equals(attributeType, that.attributeType) &&
+                attributeStatus == that.attributeStatus &&
+                Objects.equals(replacedByAttribute, that.replacedByAttribute) &&
+                Objects.equals(attributeDescription, that.attributeDescription) &&
+                Objects.equals(attributeDescriptionGUID, that.attributeDescriptionGUID) &&
                 cardinality == that.cardinality &&
-                Objects.equals(getDefaultValue(), that.getDefaultValue()) &&
-                Objects.equals(getExternalStandardMappings(), that.getExternalStandardMappings());
+                Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(externalStandardMappings, that.externalStandardMappings);
     }
 
 
@@ -350,17 +405,6 @@ public class TypeDefAttribute extends TypeDefElementHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getAttributeName(),
-                            getAttributeType(),
-                            getAttributeDescription(),
-                            getAttributeDescriptionGUID(),
-                            cardinality,
-                            getValuesMinCount(),
-                            getValuesMaxCount(),
-                            isIndexable(),
-                            isUnique(),
-                            getDefaultValue(),
-                            getExternalStandardMappings());
+        return Objects.hash(attributeName, attributeType, attributeStatus, replacedByAttribute, attributeDescription, attributeDescriptionGUID, cardinality, valuesMinCount, valuesMaxCount, isIndexable, isUnique, defaultValue, externalStandardMappings);
     }
 }

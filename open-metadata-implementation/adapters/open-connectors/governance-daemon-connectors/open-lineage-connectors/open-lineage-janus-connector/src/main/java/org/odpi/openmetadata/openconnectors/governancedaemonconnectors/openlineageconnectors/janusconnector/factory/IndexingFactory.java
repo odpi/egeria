@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.temporal.ChronoUnit;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.corePropertyTypes;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableCorePropertyTypes;
 
 public class IndexingFactory {
 
@@ -33,7 +33,7 @@ public class IndexingFactory {
                                                    JanusGraph graph,
                                                    Class type) {
         String indexName = "vertexIndexComposite" + propertyKeyName;
-        log.info("INDEX CREATE {}", indexName);
+        log.info("INDEX to be created {}", indexName);
         this.graph = graph;
         checkIndex(indexName,propertyName,propertyKeyName,unique,type);
     }
@@ -44,12 +44,11 @@ public class IndexingFactory {
                             boolean unique,
                             Class type){
 
-        final String methodName = "getIndex";
         JanusGraphManagement management = graph.openManagement();
 
         JanusGraphIndex existingIndex = management.getGraphIndex(indexName);
         if (existingIndex != null) {
-            log.info("{} index {} already exists", methodName, indexName);
+            log.info("{} index already exists", indexName);
             management.rollback();
             return;
         }
@@ -65,15 +64,14 @@ public class IndexingFactory {
                              boolean unique,
                              Class type) {
 
-        final String methodName = "createIndex";
-        String className = corePropertyTypes.get(propertyName);
+        String className = immutableCorePropertyTypes.get(propertyName);
 
         Class clazz;
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            log.error("{} class not found for property {}", methodName, propertyName);
-            log.error("{} NO INDEX CREATED for property {}", methodName, propertyName);
+            log.error("class not found for property {}", propertyName);
+            log.error("NO INDEX created for property {}", propertyName);
             return;
         }
 
@@ -81,11 +79,11 @@ public class IndexingFactory {
         boolean oldKey = false;
         PropertyKey existingPropertyKey = management.getPropertyKey(propertyKeyName);
         if (existingPropertyKey != null) {
-            log.debug("{} property key already exists for property {}", methodName, propertyKeyName);
+            log.debug("property key already exists for property {}", propertyKeyName);
             propertyKey = existingPropertyKey;
             oldKey = true;
         } else {
-            log.debug("{} make property key for property {}", methodName, propertyKeyName);
+            log.debug("make property key for property {}", propertyKeyName);
             propertyKey = management.makePropertyKey(propertyKeyName).dataType(clazz).make();
         }
 
@@ -116,10 +114,10 @@ public class IndexingFactory {
             return;
         }
 
-        enableIndex(management,indexName,oldKey,type);
+        enableIndex(management,indexName,oldKey);
     }
 
-    private void enableIndex(JanusGraphManagement management,String indexName,boolean oldKey,Class type){
+    private void enableIndex(JanusGraphManagement management,String indexName,boolean oldKey){
         final String methodName = "enableIndex";
 
         try {

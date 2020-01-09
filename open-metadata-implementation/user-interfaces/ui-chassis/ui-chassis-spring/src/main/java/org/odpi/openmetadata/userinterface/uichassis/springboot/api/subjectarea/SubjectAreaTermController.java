@@ -67,13 +67,12 @@ public class SubjectAreaTermController  extends SecureController
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.createTerm(serverName, userId,suppliedTerm);
+            Term term = this.subjectAreaTerm.createTerm(userId,suppliedTerm);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
@@ -99,13 +98,12 @@ public class SubjectAreaTermController  extends SecureController
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    @GetMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.getTermByGuid(serverName, userId,guid);
+            Term term = this.subjectAreaTerm.getTermByGuid(userId,guid);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
@@ -135,7 +133,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/")
+    @GetMapping( path = "/")
     public  SubjectAreaOMASAPIResponse findTerm(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -145,7 +143,6 @@ public class SubjectAreaTermController  extends SecureController
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -155,7 +152,7 @@ public class SubjectAreaTermController  extends SecureController
             if (pageSize==null) {
                 pageSize=0;
             }
-            List<Term> terms = this.subjectAreaTerm.findTerm(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Term> terms = this.subjectAreaTerm.findTerm(userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             TermsResponse termsResponse = new TermsResponse();
             termsResponse.setTerms(terms);
             response = termsResponse;
@@ -185,7 +182,7 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    @GetMapping( path = "/{guid}/relationships")
     public  SubjectAreaOMASAPIResponse getTermRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -196,8 +193,6 @@ public class SubjectAreaTermController  extends SecureController
                                                             HttpServletRequest request
     
     ) {
-
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
@@ -207,7 +202,7 @@ public class SubjectAreaTermController  extends SecureController
             if (pageSize==null) {
                 pageSize=0;
             }
-            List<Line> lines = this.subjectAreaTerm.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            List<Line> lines = this.subjectAreaTerm.getTermRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
@@ -241,13 +236,12 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    @PutMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse updateTerm(
                                                       @PathVariable String guid,
                                                       @RequestBody Term term,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
                                                       HttpServletRequest request) {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
@@ -256,9 +250,9 @@ public class SubjectAreaTermController  extends SecureController
                 isReplace = false;
             }
             if (isReplace) {
-                updatedTerm = this.subjectAreaTerm.replaceTerm(serverName, userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.replaceTerm(userId, guid, term);
             } else {
-                updatedTerm = this.subjectAreaTerm.updateTerm(serverName, userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.updateTerm(userId, guid, term);
             }
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(updatedTerm);
@@ -297,21 +291,20 @@ public class SubjectAreaTermController  extends SecureController
      * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    @DeleteMapping( path = "/{guid}")
     public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
-                this.subjectAreaTerm.purgeTerm(serverName,userId,guid);
+                this.subjectAreaTerm.purgeTerm(userId,guid);
                 response = new VoidResponse();
             } else {
-                Term term = this.subjectAreaTerm.deleteTerm(serverName, userId,guid);
+                Term term = this.subjectAreaTerm.deleteTerm(userId,guid);
                 TermResponse termResponse = new TermResponse();
                 termResponse.setTerm(term);
                 response = termResponse;
@@ -338,14 +331,13 @@ public class SubjectAreaTermController  extends SecureController
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    @PostMapping( path = "/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
-        String serverName = subjectArea.getServerName();
         String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
-            Term term = this.subjectAreaTerm.restoreTerm(serverName, userId,guid);
+            Term term = this.subjectAreaTerm.restoreTerm(userId,guid);
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;

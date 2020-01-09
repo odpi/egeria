@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -28,21 +25,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefPatch extends TypeDefElementHeader
 {
-    private TypeDefPatchAction                 action                   = null;
-    private String                             typeDefGUID              = null;
-    private String                             typeName                 = null;
-    private long                               applyToVersion           = 0L;
-    private long                               updateToVersion          = 0L;
-    private String                             newVersionName           = null;
-    private String                             description              = null;
-    private String                             descriptionGUID          = null;
-    private List<TypeDefAttribute>             typeDefAttributes        = null;
-    private Map<String, String>                typeDefOptions           = null;
-    private List<ExternalStandardMapping>      externalStandardMappings = null;
-    private List<InstanceStatus>               validInstanceStatusList  = null;
+    private static final long    serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-
+    private String                        typeDefGUID              = null;
+    private String                        typeDefName              = null;
+    private long                          applyToVersion           = 0L;
+    private long                          updateToVersion          = 0L;
+    private String                        newVersionName           = null;
+    private String                        updatedBy                = null;
+    private Date                          updateTime               = null;
+    private String                        description              = null;
+    private String                        descriptionGUID          = null;
+    private List<TypeDefAttribute>        propertyDefinitions      = null;
+    private Map<String, String>           typeDefOptions           = null;
+    private List<ExternalStandardMapping> externalStandardMappings = null;
+    private List<InstanceStatus>          validInstanceStatusList  = null;
+    private InstanceStatus                initialStatus            = null;
+    private List<TypeDefLink>             validEntityDefs          = null; // ClassificationDefs
+    private RelationshipEndDef            endDef1                  = null; // RelationshipDefs
+    private RelationshipEndDef            endDef2                  = null; // RelationshipDefs
 
     /**
      * Default constructor relies on the initialization of variables in their declaration.
@@ -53,45 +54,35 @@ public class TypeDefPatch extends TypeDefElementHeader
     }
 
 
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public TypeDefPatch(TypeDefPatch   template)
     {
         super(template);
 
         if (template != null)
         {
-            action = template.getAction();
-            typeDefGUID = template.getTypeDefGUID();
-            typeName = template.getTypeName();
-            applyToVersion = template.getApplyToVersion();
-            updateToVersion = template.getUpdateToVersion();
-            newVersionName = template.getNewVersionName();
-            description = template.getDescription();
-            descriptionGUID = template.getDescriptionGUID();
-            typeDefAttributes = template.getTypeDefAttributes();
-            typeDefOptions = template.getTypeDefOptions();
+            typeDefGUID              = template.getTypeDefGUID();
+            typeDefName              = template.getTypeDefName();
+            applyToVersion           = template.getApplyToVersion();
+            updateToVersion          = template.getUpdateToVersion();
+            newVersionName           = template.getNewVersionName();
+            updatedBy                = template.getUpdatedBy();
+            updateTime               = template.getUpdateTime();
+            description              = template.getDescription();
+            descriptionGUID          = template.getDescriptionGUID();
+            propertyDefinitions      = template.getPropertyDefinitions();
+            typeDefOptions           = template.getTypeDefOptions();
             externalStandardMappings = template.getExternalStandardMappings();
-            validInstanceStatusList = template.getValidInstanceStatusList();
+            validInstanceStatusList  = template.getValidInstanceStatusList();
+            initialStatus            = template.getInitialStatus();
+            validEntityDefs          = template.getValidEntityDefs();
+            endDef1                  = template.getEndDef1();
+            endDef2                  = template.getEndDef2();
         }
-    }
-
-
-    /**
-     * Return the type of action that this patch requires.
-     *
-     * @return TypeDefPatchAction enum
-     */
-    public TypeDefPatchAction getAction() {
-        return action;
-    }
-
-
-    /**
-     * Set up the type of action that this patch requires.
-     *
-     * @param action TypeDefPatchAction enum
-     */
-    public void setAction(TypeDefPatchAction action) {
-        this.action = action;
     }
 
 
@@ -122,18 +113,18 @@ public class TypeDefPatch extends TypeDefElementHeader
      *
      * @return String name
      */
-    public String getTypeName() {
-        return typeName;
+    public String getTypeDefName() {
+        return typeDefName;
     }
 
 
     /**
      * Set up the unique name for the affected TypeDef.
      *
-     * @param typeName String name
+     * @param typeDefName String name
      */
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setTypeDefName(String typeDefName) {
+        this.typeDefName = typeDefName;
     }
 
 
@@ -200,6 +191,50 @@ public class TypeDefPatch extends TypeDefElementHeader
 
 
     /**
+     * Return the user name of the person that last updated the target TypeDef.
+     *
+     * @return String name
+     */
+    public String getUpdatedBy()
+    {
+        return updatedBy;
+    }
+
+
+    /**
+     * Set up the user name of the person that last updated the target TypeDef.
+     *
+     * @param updatedBy String name
+     */
+    public void setUpdatedBy(String updatedBy)
+    {
+        this.updatedBy = updatedBy;
+    }
+
+
+    /**
+     * Return the date/time that the target TypeDef was last updated.
+     *
+     * @return Date
+     */
+    public Date getUpdateTime()
+    {
+        return updateTime;
+    }
+
+
+    /**
+     * Set up the date/time that the target TypeDef was last updated.
+     *
+     * @param updateTime Date
+     */
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
+
+    /**
      * Return the new description for the TypeDef.
      *
      * @return String description
@@ -248,13 +283,13 @@ public class TypeDefPatch extends TypeDefElementHeader
      *
      * @return list of TypeDefAttribute
      */
-    public List<TypeDefAttribute> getTypeDefAttributes()
+    public List<TypeDefAttribute> getPropertyDefinitions()
     {
-        if (typeDefAttributes == null)
+        if (propertyDefinitions == null)
         {
             return null;
         }
-        else if (typeDefAttributes.isEmpty())
+        else if (propertyDefinitions.isEmpty())
         {
             return null;
         }
@@ -262,7 +297,7 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             List<TypeDefAttribute>  clonedList = new ArrayList<>();
 
-            for (TypeDefAttribute  existingElement : typeDefAttributes)
+            for (TypeDefAttribute  existingElement : propertyDefinitions)
             {
                 clonedList.add(new TypeDefAttribute(existingElement));
             }
@@ -275,11 +310,11 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the list of typeDefAttributes that are either new or changing.
      *
-     * @param typeDefAttributes list of AttributeDefs
+     * @param propertyDefinitions list of AttributeDefs
      */
-    public void setTypeDefAttributes(List<TypeDefAttribute> typeDefAttributes)
+    public void setPropertyDefinitions(List<TypeDefAttribute> propertyDefinitions)
     {
-        this.typeDefAttributes = typeDefAttributes;
+        this.propertyDefinitions = propertyDefinitions;
     }
 
 
@@ -379,7 +414,8 @@ public class TypeDefPatch extends TypeDefElementHeader
 
 
     /**
-     * Set up the list of valid statuses for an instance of this TypeDef.
+     * Set up the new list of valid statuses for an instance of this TypeDef.
+     * This list must be more extensive that the existing list.
      *
      * @param validInstanceStatusList list of valid statuses
      */
@@ -387,6 +423,103 @@ public class TypeDefPatch extends TypeDefElementHeader
     {
         this.validInstanceStatusList = validInstanceStatusList;
     }
+
+
+    /**
+     * Return the initial status setting for an instance of this type.
+     *
+     * @return InstanceStatus enum
+     */
+    public InstanceStatus getInitialStatus()
+    {
+        return initialStatus;
+    }
+
+
+    /**
+     * Set up the initial status setting for an instance of this type.
+     *
+     * @param initialStatus InstanceStatus enum
+     */
+    public void setInitialStatus(InstanceStatus initialStatus)
+    {
+        this.initialStatus = initialStatus;
+    }
+
+
+    /**
+     * Return a list of EntityDef names this this ClassificationDef can be attached to.
+     *
+     * @return list of type def links
+     */
+    public List<TypeDefLink> getValidEntityDefs()
+    {
+        return validEntityDefs;
+    }
+
+
+    /**
+     * Set up a list of EntityDef names this this ClassificationDef can be attached to.
+     * This list must be the same or bigger than the previous version.
+     *
+     * @param validEntityDefs list of type def links
+     */
+    public void setValidEntityDefs(List<TypeDefLink> validEntityDefs)
+    {
+        this.validEntityDefs = validEntityDefs;
+    }
+
+
+    /**
+     * Return the details associated with the first end of the relationship.
+     *
+     * @return endDef1 RelationshipEndDef
+     */
+    public RelationshipEndDef getEndDef1()
+    {
+        if (endDef1 == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new RelationshipEndDef(endDef1);
+        }
+    }
+
+
+    /**
+     * Set up the details associated with the first end of the relationship.
+     *
+     * @param endDef1 RelationshipEndDef
+     */
+    public void setEndDef1(RelationshipEndDef endDef1) { this.endDef1 = endDef1; }
+
+
+    /**
+     * Return the details associated with the second end of the relationship.
+     *
+     * @return endDef2 RelationshipEndDef
+     */
+    public RelationshipEndDef getEndDef2()
+    {
+        if (endDef2 == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new RelationshipEndDef(endDef2);
+        }
+    }
+
+
+    /**
+     * Set up the details associated with the second end of the relationship.
+     *
+     * @param endDef2 RelationshipEndDef
+     */
+    public void setEndDef2(RelationshipEndDef endDef2) { this.endDef2 = endDef2; }
 
 
     /**
@@ -398,16 +531,21 @@ public class TypeDefPatch extends TypeDefElementHeader
     public String toString()
     {
         return "TypeDefPatch{" +
-                "typeName='" + typeName + '\'' +
-                ", action=" + action +
-                ", typeDefGUID='" + typeDefGUID + '\'' +
+                "typeDefGUID='" + typeDefGUID + '\'' +
+                ", typeDefName='" + typeDefName + '\'' +
                 ", applyToVersion=" + applyToVersion +
                 ", updateToVersion=" + updateToVersion +
                 ", newVersionName='" + newVersionName + '\'' +
-                ", typeDefAttributes=" + typeDefAttributes +
+                ", description='" + description + '\'' +
+                ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", propertyDefinitions=" + propertyDefinitions +
                 ", typeDefOptions=" + typeDefOptions +
                 ", externalStandardMappings=" + externalStandardMappings +
                 ", validInstanceStatusList=" + validInstanceStatusList +
+                ", initialStatus=" + initialStatus +
+                ", validEntityDefs=" + validEntityDefs +
+                ", endDef1=" + endDef1 +
+                ", endDef2=" + endDef2 +
                 '}';
     }
 
@@ -415,57 +553,38 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Validated that the GUID, name and version of a TypeDef are equal.
      *
-     * @param object to test
+     * @param objectToCompare to test
      * @return boolean flag to say object is the same TypeDefPatch
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (object == null || getClass() != object.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-
-        TypeDefPatch that = (TypeDefPatch) object;
-
-        if (applyToVersion != that.applyToVersion)
-        {
-            return false;
-        }
-        if (updateToVersion != that.updateToVersion)
-        {
-            return false;
-        }
-        if (action != that.action)
-        {
-            return false;
-        }
-        if (typeDefGUID != null ? !typeDefGUID.equals(that.typeDefGUID) : that.typeDefGUID != null)
-        {
-            return false;
-        }
-        if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null)
-        {
-            return false;
-        }
-        if (typeDefAttributes != null ? !typeDefAttributes.equals(that.typeDefAttributes) : that.typeDefAttributes != null)
-        {
-            return false;
-        }
-        if (typeDefOptions != null ? !typeDefOptions.equals(that.typeDefOptions) : that.typeDefOptions != null)
-        {
-            return false;
-        }
-        if (externalStandardMappings != null ? !externalStandardMappings.equals(that.externalStandardMappings) : that.externalStandardMappings != null)
-        {
-            return false;
-        }
-        return validInstanceStatusList != null ? validInstanceStatusList.equals(that.validInstanceStatusList) : that.validInstanceStatusList == null;
+        TypeDefPatch that = (TypeDefPatch) objectToCompare;
+        return applyToVersion == that.applyToVersion &&
+                updateToVersion == that.updateToVersion &&
+                Objects.equals(typeDefGUID, that.typeDefGUID) &&
+                Objects.equals(typeDefName, that.typeDefName) &&
+                Objects.equals(newVersionName, that.newVersionName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(descriptionGUID, that.descriptionGUID) &&
+                Objects.equals(propertyDefinitions, that.propertyDefinitions) &&
+                Objects.equals(typeDefOptions, that.typeDefOptions) &&
+                Objects.equals(externalStandardMappings, that.externalStandardMappings) &&
+                Objects.equals(validInstanceStatusList, that.validInstanceStatusList) &&
+                initialStatus == that.initialStatus &&
+                Objects.equals(validEntityDefs, that.validEntityDefs) &&
+                Objects.equals(endDef1, that.endDef1) &&
+                Objects.equals(endDef2, that.endDef2);
     }
+
 
     /**
      * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.

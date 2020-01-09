@@ -29,7 +29,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/configuration")
+    @GetMapping(path = "/configuration")
     public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                             @PathVariable String serverName)
     {
@@ -47,7 +47,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/configuration")
+    @PostMapping(path = "/configuration")
     public VoidResponse setOMAGServerConfig(@PathVariable String userId,
                                             @PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
@@ -67,7 +67,7 @@ public class ConfigResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/configuration/deploy")
+    @PostMapping(path = "/configuration/deploy")
     public VoidResponse deployOMAGServerConfig(@PathVariable String userId,
                                                @PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)

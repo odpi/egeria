@@ -1213,7 +1213,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                           String       originatorOrganizationName,
                                           EntityDetail entity)
     {
-        final String methodName = "processReHomedEntityEvent";
+        final String methodName = "processRefreshEntityEvent";
 
         updateReferenceEntity(sourceName,
                               methodName,

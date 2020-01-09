@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,6 +25,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>design-model-archives</module>
+        <module>open-connector-archives</module>
         <module>open-metadata-types</module>
     </modules>
 

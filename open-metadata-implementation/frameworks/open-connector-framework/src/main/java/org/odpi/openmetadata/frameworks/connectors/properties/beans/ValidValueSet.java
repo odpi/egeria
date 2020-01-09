@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValueSet extends ValidValue
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Constructor
      */

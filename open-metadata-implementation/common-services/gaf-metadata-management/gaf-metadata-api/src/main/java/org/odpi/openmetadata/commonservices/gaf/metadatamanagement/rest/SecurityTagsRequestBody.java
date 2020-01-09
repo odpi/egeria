@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityTagsRequestBody extends GAFOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<String>        securityLabels     = null;
     private Map<String, Object> securityProperties = null;
 

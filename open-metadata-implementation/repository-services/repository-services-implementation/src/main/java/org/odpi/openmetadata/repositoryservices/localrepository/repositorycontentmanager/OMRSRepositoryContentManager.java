@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -44,6 +45,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 {
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
     private String                          localServerName                = null;
+    private String                          localServerUserId;             /* initialized in the constructor */
     private OMRSRepositoryEventManager      outboundRepositoryEventManager = null;
     private String                          openTypesOriginGUID            = null;
     private Map<String, TypeDef>            knownTypeDefGUIDs              = new HashMap<>();
@@ -72,11 +74,15 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     /**
      * Default constructor
      *
-     * @param auditLog                  audit log for this component.
+     * @param localServerUserId userId to use when processing messages
+     * @param auditLog  audit log for this component.
      */
-    public OMRSRepositoryContentManager(OMRSAuditLog   auditLog)
+    public OMRSRepositoryContentManager(String         localServerUserId,
+                                        OMRSAuditLog   auditLog)
     {
         super("Local Repository Content (TypeDef) Manager");
+
+        this.localServerUserId = localServerUserId;
         this.auditLog = auditLog;
     }
 
@@ -140,23 +146,45 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      */
     private void cacheTypeDef(String  sourceName, TypeDef      newTypeDef, boolean isLocallySupported)
     {
-        if (this.validTypeDef(sourceName, newTypeDef))
+        knownTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
+        knownTypeDefNames.put(newTypeDef.getName(), newTypeDef);
+
+        if (isLocallySupported)
         {
-            knownTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
-            knownTypeDefNames.put(newTypeDef.getName(), newTypeDef);
+            activeTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
+            activeTypeDefNames.put(newTypeDef.getName(), newTypeDef);
 
-            if (isLocallySupported)
-            {
-                activeTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
-                activeTypeDefNames.put(newTypeDef.getName(), newTypeDef);
-
-                log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
-            }
-            else
-            {
-                log.debug("New Known Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
-            }
+            log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
         }
+        else
+        {
+            log.debug("New Known Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+        }
+    }
+
+    /**
+     * Remove a definition of a TypeDef.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteTypeDefGUID unique identifier for the type.
+     * @param obsoleteTypeDefName unique name for the type.
+     * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
+     */
+    private void uncacheTypeDef(String  sourceName,
+                                String  obsoleteTypeDefGUID,
+                                String  obsoleteTypeDefName,
+                                boolean isLocallySupported)
+    {
+        knownTypeDefGUIDs.remove(obsoleteTypeDefGUID);
+        knownTypeDefNames.remove(obsoleteTypeDefName);
+
+        if (isLocallySupported)
+        {
+            activeTypeDefGUIDs.remove(obsoleteTypeDefGUID);
+            activeTypeDefNames.remove(obsoleteTypeDefName);
+        }
+
+        log.debug("Removed Type " + obsoleteTypeDefName + " from " + sourceName);
     }
 
 
@@ -183,24 +211,21 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        AttributeTypeDef newAttributeTypeDef,
                                        boolean          isLocallySupported)
     {
-        if (this.validAttributeTypeDef(sourceName, newAttributeTypeDef))
+        knownAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
+        knownAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
+
+        if (isLocallySupported)
         {
-            knownAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
-            knownAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
+            activeAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
+            activeAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
 
-            if (isLocallySupported)
+            if (log.isDebugEnabled())
             {
-                activeAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
-                activeAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
-
-                if (log.isDebugEnabled())
-                {
-                    log.debug("New Active Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
-                }
-                else
-                {
-                    log.debug("New Known Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
-                }
+                log.debug("New Active Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
+            }
+            else
+            {
+                log.debug("New Known Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
             }
         }
     }
@@ -215,19 +240,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      */
     public void updateTypeDef(String  sourceName, TypeDef   typeDef)
     {
-        if (this.validTypeDef(sourceName, typeDef))
-        {
-            knownTypeDefGUIDs.put(typeDef.getGUID(), typeDef);
-            knownTypeDefNames.put(typeDef.getName(), typeDef);
-
-            if (localRepositoryConnector != null)
-            {
-                activeTypeDefGUIDs.put(typeDef.getGUID(), typeDef);
-                activeTypeDefNames.put(typeDef.getName(), typeDef);
-
-                log.debug("Updated Active Type " + typeDef.getName() + " from " + sourceName + ". Full TypeDef: " + typeDef);
-            }
-        }
+        this.cacheTypeDef(sourceName, typeDef,true);
     }
 
 
@@ -329,12 +342,15 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      *
      * @param sourceName source of the request (used for logging)
      * @param typeDef type definition to work with.
+     * @param methodName calling method
      * @return list of String property names
      * @throws TypeErrorException there is an issue with the TypeDef.
      */
-    private List<String>  getPropertyNames(String sourceName, TypeDef   typeDef) throws TypeErrorException
+    private List<String>  getPropertyNames(String    sourceName,
+                                           TypeDef   typeDef,
+                                           String    methodName) throws TypeErrorException
     {
-        final  String             methodName = "getPropertyNames";
+        final  String             thisMethodName = "getPropertyNames";
         List<String>              propertyNames = null;
 
         if (validTypeDef(sourceName, typeDef))
@@ -399,7 +415,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         {
             OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
             String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(sourceName);
+                                + errorCode.getFormattedErrorMessage(thisMethodName,
+                                                                     typeDef.getName(),
+                                                                     sourceName,
+                                                                     methodName);
 
             throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                          this.getClass().getName(),
@@ -515,9 +534,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param expectedTypeName name of the expected type
      * @return boolean if they match (a null in either results in false)
      */
-    public boolean  isTypeOf(String   sourceName,
-                             String   actualTypeName,
-                             String   expectedTypeName)
+    boolean  isTypeOf(String   sourceName,
+                      String   actualTypeName,
+                      String   expectedTypeName)
     {
         final String methodName = "isTypeOf";
 
@@ -666,7 +685,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                  * Extract the properties for this TypeDef.  These will be augmented with property names
                  * from the super type(s).
                  */
-                List<String>      propertyNames = this.getPropertyNames(sourceName, typeDef);
+                List<String>      propertyNames = this.getPropertyNames(sourceName, typeDef, methodName);
 
                 /*
                  * If propertyNames is null, it means this TypeDef has no attributes.  However the superType
@@ -697,7 +716,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
                         if (superTypeDef != null)
                         {
-                            List<String>      superTypePropertyNames = this.getPropertyNames(sourceName, superTypeDef);
+                            List<String>      superTypePropertyNames = this.getPropertyNames(sourceName, superTypeDef, methodName);
 
                             if (superTypePropertyNames != null)
                             {
@@ -879,9 +898,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                          * supertype can introduce.
                          */
                         Set<String> entityTypes = new HashSet<>();
-                        TypeDef typeDef = getTypeDefByName(thisMethodName,entityTypeName);
+                        TypeDef typeDef = getTypeDefByName(entityTypeName);
                         entityTypes.add(entityTypeName);
-                        while ( typeDef.getSuperType() !=null)
+
+                        while (typeDef.getSuperType() !=null)
                         {
                             TypeDefLink superTypeLink=typeDef.getSuperType();
                             String parentName= superTypeLink.getName();
@@ -964,27 +984,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Return the list of valid InstanceStatus states that instances of this type can handle.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param typeName name of the type
-     * @param methodName name of calling method.
-     * @return list of InstanceStatus enums
-     * @throws TypeErrorException the type name is not recognized.
-     */
-    public List<InstanceStatus> getValidStatusList(String  sourceName,
-                                                   String  typeName,
-                                                   String  methodName) throws TypeErrorException
-    {
-        final String thisMethodName = "validStatusList";
-
-        TypeDef   typeDef = this.getTypeDefFromCache(sourceName, typeName, thisMethodName, methodName);
-
-        return typeDef.getValidInstanceStatusList();
-    }
-
-
-    /**
      * Return the initial status value to use for an instance of the supplied type.
      *
      * @param sourceName source of the request (used for logging)
@@ -1036,7 +1035,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      *
      * @return TypeDef gallery
      */
-    public TypeDefGallery   getActiveTypeDefGallery()
+    TypeDefGallery   getActiveTypeDefGallery()
     {
         TypeDefGallery               typeDefGallery               = new TypeDefGallery();
 
@@ -1095,7 +1094,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      *
      * @return TypeDef gallery
      */
-    public TypeDefGallery   getKnownTypeDefGallery()
+    TypeDefGallery   getKnownTypeDefGallery()
     {
         TypeDefGallery               typeDefGallery               = new TypeDefGallery();
 
@@ -1154,12 +1153,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName source of the request (used for logging)
      * @param typeDefName unique name for the TypeDef
      * @return TypeDef object or null if TypeDef is not known.
      */
-    public TypeDef  getTypeDefByName (String    sourceName,
-                                      String    typeDefName)
+    TypeDef  getTypeDefByName(String    typeDefName)
     {
         return knownTypeDefNames.get(typeDefName);
     }
@@ -1170,12 +1167,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName source of the request (used for logging)
      * @param attributeTypeDefName unique name for the TypeDef
      * @return AttributeTypeDef object or null if AttributeTypeDef is not known.
      */
-    public AttributeTypeDef getAttributeTypeDefByName (String    sourceName,
-                                                       String    attributeTypeDefName)
+    AttributeTypeDef getAttributeTypeDefByName(String    attributeTypeDefName)
     {
         return knownAttributeTypeDefNames.get(attributeTypeDefName);
     }
@@ -1193,10 +1188,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
-    public TypeDef  getTypeDef (String    sourceName,
-                                String    guidParameterName,
-                                String    typeDefGUID,
-                                String    methodName) throws TypeErrorException
+    TypeDef  getTypeDef (String    sourceName,
+                         String    guidParameterName,
+                         String    typeDefGUID,
+                         String    methodName) throws TypeErrorException
     {
         final String thisMethodName = "getTypeDef";
 
@@ -1238,9 +1233,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
-    public AttributeTypeDef  getAttributeTypeDef (String    sourceName,
-                                                  String    attributeTypeDefGUID,
-                                                  String    methodName) throws TypeErrorException
+    AttributeTypeDef  getAttributeTypeDef (String    sourceName,
+                                           String    attributeTypeDefGUID,
+                                           String    methodName) throws TypeErrorException
     {
         final String thisMethodName = "getAttributeTypeDef";
 
@@ -1251,7 +1246,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             if (attributeTypeDef == null)
             {
                 OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName);
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(thisMethodName,
+                                                                                                         attributeTypeDefGUID,
+                                                                                                         sourceName,
+                                                                                                         methodName);
 
                 throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                              this.getClass().getName(),
@@ -1268,6 +1266,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         return null;
     }
 
+
     /**
      * Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
      * retrieving a type that should exist.  For example, retrieving the type of a metadata instance.
@@ -1281,12 +1280,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return TypeDef object or null if the
      * @throws TypeErrorException invalid type
      */
-    public TypeDef  getTypeDef (String    sourceName,
-                                String    guidParameterName,
-                                String    nameParameterName,
-                                String    typeDefGUID,
-                                String    typeDefName,
-                                String    methodName) throws TypeErrorException
+    TypeDef  getTypeDef (String    sourceName,
+                         String    guidParameterName,
+                         String    nameParameterName,
+                         String    typeDefGUID,
+                         String    typeDefName,
+                         String    methodName) throws TypeErrorException
     {
         if (validTypeId(sourceName, typeDefGUID, typeDefName))
         {
@@ -1294,8 +1293,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName);
+            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_TYPEDEF;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
+                                                                                                     typeDefName,
+                                                                                                     typeDefGUID,
+                                                                                                     methodName,
+                                                                                                     nameParameterName,
+                                                                                                     guidParameterName);
 
             throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                          this.getClass().getName(),
@@ -1319,11 +1323,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
-    public  AttributeTypeDef  getAttributeTypeDef (String    sourceName,
-                                                   String    attributeTypeDefGUID,
-                                                   String    attributeTypeDefName,
-                                                   String    methodName) throws TypeErrorException
+    AttributeTypeDef  getAttributeTypeDef (String    sourceName,
+                                           String    attributeTypeDefGUID,
+                                           String    attributeTypeDefName,
+                                           String    methodName) throws TypeErrorException
     {
+        final String thisMethodName = "getAttributeTypeDef";
+
         if (validTypeId(sourceName, attributeTypeDefGUID, attributeTypeDefName))
         {
             return knownAttributeTypeDefNames.get(attributeTypeDefName);
@@ -1331,7 +1337,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         else
         {
             OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(thisMethodName,
+                                                                                                     attributeTypeDefName,
+                                                                                                     sourceName,
+                                                                                                     methodName);
 
             throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                          this.getClass().getName(),
@@ -1351,15 +1360,16 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param methodName calling method.
      * @return list of property definitions.
      */
-    public List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
-                                                             TypeDef typeDef,
-                                                             String  methodName)
+    List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
+                                                      TypeDef typeDef,
+                                                      String  methodName)
     {
         final  String             thisMethodName = "getAllPropertiesForTypeDef";
 
         if (typeDef == null)
         {
             throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+            return null;
         }
 
         List<TypeDefAttribute>    propertiesDefinition = typeDef.getPropertiesDefinition();
@@ -1407,9 +1417,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param methodName name of calling method
      * @throws RepositoryErrorException a conflicting or invalid TypeDef has been returned
      */
-    public void   validateEnterpriseTypeDefs(String        sourceName,
-                                             List<TypeDef> typeDefs,
-                                             String        methodName) throws RepositoryErrorException
+    void   validateEnterpriseTypeDefs(String        sourceName,
+                                      List<TypeDef> typeDefs,
+                                      String        methodName) throws RepositoryErrorException
     {
         for (TypeDef typeDef : typeDefs)
         {
@@ -1448,9 +1458,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param methodName name of calling method
      * @throws RepositoryErrorException a conflicting or invalid AttributeTypeDef has been returned
      */
-    public void   validateEnterpriseAttributeTypeDefs(String                 sourceName,
-                                                      List<AttributeTypeDef> attributeTypeDefs,
-                                                      String                 methodName) throws RepositoryErrorException
+    void   validateEnterpriseAttributeTypeDefs(String                 sourceName,
+                                               List<AttributeTypeDef> attributeTypeDefs,
+                                               String                 methodName) throws RepositoryErrorException
     {
         for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
         {
@@ -1485,7 +1495,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName unique name of the type
      * @return boolean result
      */
-    public boolean isOpenType(String sourceName, String typeGUID, String typeName)
+    boolean isOpenType(String sourceName, String typeGUID, String typeName)
     {
         if (validTypeId(sourceName, typeGUID, typeName))
         {
@@ -1517,11 +1527,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     /**
      * Return boolean indicating whether the TypeDef is one of the standard open metadata types.
      *
-     * @param sourceName source of the request (used for logging)
      * @param typeGUID unique identifier of the type
      * @return boolean result
      */
-    public boolean isOpenTypeId(String  sourceName, String   typeGUID)
+    boolean isOpenTypeId(String   typeGUID)
     {
         if (typeGUID != null)
         {
@@ -1530,13 +1539,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             {
                 String originGUID = typeDef.getOrigin();
 
-                if (originGUID != null)
-                {
-                    if (originGUID.equals(openTypesOriginGUID))
-                    {
-                        return true;
-                    }
-                }
+                return openTypesOriginGUID.equals(originGUID);
             }
         }
 
@@ -1553,7 +1556,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName unique name of the type
      * @return boolean result
      */
-    public boolean isKnownType(String sourceName, String typeGUID, String typeName)
+    boolean isKnownType(String sourceName, String typeGUID, String typeName)
     {
         if (this.validTypeId(sourceName, typeGUID, typeName))
         {
@@ -1582,8 +1585,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            log.error("Invalid TypeDef  from " + sourceName + " so can not validate known type");
-
+            log.debug("Invalid TypeDef  from " + sourceName + " so can not validate known type");
             return false;
         }
     }
@@ -1593,11 +1595,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * Return boolean indicating whether the TypeDef/AttributeTypeDef is known, either as an open type, or one defined
      * by one or more of the members of the cohort.
      *
-     * @param sourceName source of the request (used for logging)
      * @param typeGUID unique identifier of the type
      * @return boolean result
      */
-    public boolean isKnownTypeId(String  sourceName, String   typeGUID)
+    boolean isKnownTypeId(String   typeGUID)
     {
         if (typeGUID != null)
         {
@@ -1606,10 +1607,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 return true;
             }
 
-            if (knownAttributeTypeDefGUIDs.get(typeGUID) != null)
-            {
-                return true;
-            }
+            return knownAttributeTypeDefGUIDs.get(typeGUID) != null;
         }
 
         return false;
@@ -1624,7 +1622,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName unique name of the type
      * @return boolean result
      */
-    public boolean isActiveType(String sourceName, String typeGUID, String typeName)
+    boolean isActiveType(String sourceName, String typeGUID, String typeName)
     {
         if (this.validTypeId(sourceName, typeGUID, typeName))
         {
@@ -1653,8 +1651,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            log.error("Invalid TypeDef  from " + sourceName + " so can not validate active type");
-
+            log.debug("Invalid TypeDef  from " + sourceName + " so can not validate active type");
             return false;
         }
     }
@@ -1663,11 +1660,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     /**
      * Return boolean indicating whether the TypeDef/AttributeTypeDef is in use in the local repository.
      *
-     * @param sourceName source of the request (used for logging)
      * @param typeGUID unique identifier of the type
      * @return boolean result
      */
-    public boolean isActiveTypeId(String  sourceName, String   typeGUID)
+    boolean isActiveTypeId(String   typeGUID)
     {
         if (typeGUID != null)
         {
@@ -1676,14 +1672,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 return true;
             }
 
-            if (activeAttributeTypeDefGUIDs.get(typeGUID) != null)
-            {
-                return true;
-            }
+            return activeAttributeTypeDefGUIDs.get(typeGUID) != null;
         }
 
         return false;
     }
+
 
     /**
      * Return boolean indicating whether the (Attribute)TypeDef identifiers are valid or not.
@@ -1693,17 +1687,16 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName unique name of the TypeDef
      * @return boolean result
      */
-    public boolean validTypeId(String sourceName,
-                               String typeGUID,
-                               String typeName)
+    boolean validTypeId(String sourceName,
+                        String typeGUID,
+                        String typeName)
     {
         if (typeName == null)
         {
             /*
              * A null TypeDef name is invalid
              */
-            log.error("Null TypeDef Name from " + sourceName);
-
+            logNullTypeName(sourceName, typeGUID);
             return false;
         }
 
@@ -1712,14 +1705,29 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             /*
              * A null guid is invalid
              */
-            log.error("Null TypeDef GUID from " + sourceName);
-
+            logNullTypeGUID(sourceName, typeName);
             return false;
         }
 
         TypeDef typeDef = knownTypeDefNames.get(typeName);
 
-        if (typeDef == null)
+        if (typeDef != null)
+        {
+            if (! typeGUID.equals(typeDef.getGUID()))
+            {
+                logTypeGUIDMismatch(sourceName,
+                                    typeGUID,
+                                    typeName,
+                                    typeDef.getGUID(),
+                                    typeDef.getName());
+
+                return false;
+            }
+
+            log.debug("Valid TypeDef of " + typeName + " from " + sourceName);
+            return true;
+        }
+        else
         {
             /*
              * This TypeDef is unknown so see if it is an AttributeTypeDef
@@ -1728,7 +1736,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (attributeTypeDef == null)
             {
-                log.debug("Unknown (Attribute)TypeDef from " + sourceName);
+                logUnknownType(sourceName, typeGUID, typeName);
+                return false;
             }
             else
             {
@@ -1737,29 +1746,177 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     /*
                      * The requested guid does not equal the stored one.
                      */
-                    log.error("GUID Mismatch in AttributeTypeDef " + typeName + " from " + sourceName + " received GUID is " + typeGUID + "; stored GUID is " + attributeTypeDef.getGUID());
+                    logTypeGUIDMismatch(sourceName,
+                                        typeGUID,
+                                        typeName,
+                                        attributeTypeDef.getGUID(),
+                                        attributeTypeDef.getName());
                     return false;
                 }
-
-                log.debug("Valid AttributeTypeDef from " + sourceName);
-                return true;
             }
 
-            log.debug("Valid AttributeTypeDef from " + sourceName);
+            log.debug("Valid AttributeTypeDef " + typeName + " from " + sourceName);
             return true;
         }
+    }
 
-        if (! typeGUID.equals(typeDef.getGUID()))
-        {
-            /*
-             * The requested guid does not equal the stored one.
-             */
-            log.error("GUID Mismatch in TypeDef " + typeName + " from " + sourceName + " received GUID is " + typeGUID + "; stored GUID is " + typeDef.getGUID());
 
-            return false;
-        }
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the request
+     * @param requestedTypeGUID  type GUID from the request
+     * @param requestedTypeName  type name from the request
+     */
+    private void logUnknownType(String sourceName,
+                                String requestedTypeGUID,
+                                String requestedTypeName)
+    {
+        final String  actionDescription = "validate type identifier";
 
-        return true;
+        OMRSAuditCode auditCode = OMRSAuditCode.UNKNOWN_TYPE;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName, requestedTypeName, requestedTypeGUID),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the request
+     * @param requestedTypeGUID  type GUID from the request
+     */
+    private void logNullTypeName(String sourceName,
+                                 String requestedTypeGUID)
+    {
+        final String  actionDescription = "validate type identifier";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_NAME;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName, requestedTypeGUID),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the request
+     * @param requestedTypeName  type name from the request
+     */
+    private void logNullTypeGUID(String sourceName,
+                                 String requestedTypeName)
+    {
+        final String  actionDescription = "validate type identifier";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_IDENTIFIER;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(requestedTypeName, sourceName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the request
+     * @param requestedTypeGUID  type GUID from the request
+     * @param requestedTypeName  type name from the request
+     * @param localTypeGUID type guid from the local cache
+     * @param localTypeName type name from the local cache
+     */
+    private void logTypeGUIDMismatch(String sourceName,
+                                     String requestedTypeGUID,
+                                     String requestedTypeName,
+                                     String localTypeGUID,
+                                     String localTypeName)
+    {
+        final String  actionDescription = "validate type identifier";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_IDENTIFIER_MISMATCH;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(localTypeName,
+                                                            localTypeGUID,
+                                                            requestedTypeName,
+                                                            requestedTypeGUID,
+                                                            sourceName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that an instance has a null type.
+     *
+     * @param sourceName source of the instance
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param category type category from the TypeDef
+     */
+    void logNullInstanceGUID(String          sourceName,
+                             String          typeDefGUID,
+                             String          typeDefName,
+                             TypeDefCategory category)
+    {
+        final String  actionDescription = "validate type identifiers and category";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_INSTANCE_ID;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName,
+                                                            typeDefName,
+                                                            typeDefGUID,
+                                                            category.getName()),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a request has passed a null instance.
+     *
+     * @param sourceName source of the instance
+     * @param methodName calling method
+     */
+    void logNullInstance(String          sourceName,
+                         String          methodName)
+    {
+        final String  actionDescription = "validate request parameters";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_INSTANCE_ID;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(methodName, sourceName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
 
@@ -1772,34 +1929,34 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param category category of TypeDef
      * @return boolean result
      */
-    public boolean validTypeDefId(String          sourceName,
-                                  String          typeDefGUID,
-                                  String          typeDefName,
-                                  TypeDefCategory category)
+    boolean validTypeDefId(String          sourceName,
+                           String          typeDefGUID,
+                           String          typeDefName,
+                           TypeDefCategory category)
     {
         if (! validTypeId(sourceName, typeDefGUID, typeDefName))
         {
+            /*
+             * Errors already logged
+             */
             return false;
         }
 
-        TypeDef          typeDef = knownTypeDefNames.get(typeDefName);
+        if (category == null)
+        {
+            logNullTypeCategory(sourceName, typeDefGUID, typeDefName);
+            return false;
+        }
+
+        TypeDef typeDef = knownTypeDefNames.get(typeDefName);
 
         if (typeDef != null)
         {
             TypeDefCategory knownTypeDefCategory = typeDef.getCategory();
 
-            if (knownTypeDefCategory == null)
-            {
-                log.error("Unknown TypeDef Category for " + typeDefName + " (GUID = " + typeDefGUID + ") from " + sourceName);
-                return false;
-            }
-
             if (category.getOrdinal() != knownTypeDefCategory.getOrdinal())
             {
-                log.error("TypeDef category mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
-                                  + sourceName + " received version number is " + category.getDescription()
-                                  + " and stored category is " + knownTypeDefCategory.getDescription());
-
+                logUnknownTypeCategory(sourceName, typeDefGUID, typeDefName, category.getName(), knownTypeDefCategory.getName());
                 return false;
             }
         }
@@ -1809,21 +1966,184 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the request
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     */
+    private void logNullTypeCategory(String          sourceName,
+                                     String          typeDefGUID,
+                                     String          typeDefName)
+    {
+        final String  actionDescription = "validate type identifiers and category";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_CATEGORY;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName,
+                                                            typeDefName,
+                                                            typeDefGUID),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the TypeDef
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param category category of TypeDef
+     * @param localTypeCategory type category from the local cache
+     */
+    private void logUnknownTypeCategory(String sourceName,
+                                        String typeDefGUID,
+                                        String typeDefName,
+                                        String category,
+                                        String localTypeCategory)
+    {
+        final String  actionDescription = "validate type identifiers and category";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.UNKNOWN_TYPE_CATEGORY;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName,
+                                                            typeDefName,
+                                                            typeDefGUID,
+                                                            category,
+                                                            localTypeCategory),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a mismatching type has been supplied to the server - it is probably from a new instance
+     * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
+     * resolved in order to replicate metadata of this type.
+     *
+     * @param sourceName source of the TypeDef
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param category category of TypeDef
+     * @param versionName version name from the request
+     * @param localVersionName type version from the local cache
+     */
+    private void logVersionMismatch(String sourceName,
+                                    String typeDefGUID,
+                                    String typeDefName,
+                                    String category,
+                                    String versionName,
+                                    String localVersionName)
+    {
+        final String  actionDescription = "validate type identifiers and category";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_VERSION_MISMATCH;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(sourceName,
+                                                            typeDefName,
+                                                            typeDefGUID,
+                                                            category,
+                                                            versionName,
+                                                            localVersionName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a request to process an instance includes a null metadata collection Id.
+     *
+     * @param sourceName source of the TypeDef
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param category category of TypeDef
+     * @param instanceGUID unique identifier of the instance
+     * @param methodName calling method
+     */
+    void logNullMetadataCollectionId(String sourceName,
+                                     String typeDefGUID,
+                                     String typeDefName,
+                                     String category,
+                                     String instanceGUID,
+                                     String methodName)
+    {
+        final String  actionDescription = "validate type identifiers and category";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_METADATA_COLLECTION_ID;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(methodName,
+                                                            sourceName,
+                                                            instanceGUID,
+                                                            typeDefName,
+                                                            typeDefGUID,
+                                                            category),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log that a null type has been supplied to the server.
+     *
+     * @param sourceName source of the Type Definition
+     * @param methodName calling method
+     */
+    void logNullType(String sourceName,
+                     String methodName)
+    {
+        final String  actionDescription = "validate type object";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(methodName, sourceName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
      * Return boolean indicating whether the AttributeTypeDef identifiers are from a single known type or not.
      *
-     * @param sourceName source of the request (used for logging)
+     * @param sourceName source of the request
      * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
      * @param attributeTypeDefName unique name of the AttributeTypeDef
      * @param category category for the AttributeTypeDef
      * @return boolean result
      */
-    public boolean validAttributeTypeDefId(String                   sourceName,
-                                           String                   attributeTypeDefGUID,
-                                           String                   attributeTypeDefName,
-                                           AttributeTypeDefCategory category)
+    boolean validAttributeTypeDefId(String                   sourceName,
+                                    String                   attributeTypeDefGUID,
+                                    String                   attributeTypeDefName,
+                                    AttributeTypeDefCategory category)
     {
         if (! validTypeId(sourceName, attributeTypeDefGUID, attributeTypeDefName))
         {
+            return false;
+        }
+
+        if (category == null)
+        {
+            logNullTypeCategory(sourceName, attributeTypeDefGUID, attributeTypeDefName);
             return false;
         }
 
@@ -1833,17 +2153,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         {
             AttributeTypeDefCategory knownAttributeTypeDefCategory = attributeTypeDef.getCategory();
 
-            if (knownAttributeTypeDefCategory == null)
-            {
-                log.error("Unknown AttributeTypeDef Category for " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from " + sourceName);
-                return false;
-            }
-
             if (category.getOrdinal() != knownAttributeTypeDefCategory.getOrdinal())
             {
-                log.error("TypeDef category mismatch for TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from "
-                                  + sourceName + " received version number is " + category.getDescription()
-                                  + " and stored category is " + knownAttributeTypeDefCategory.getDescription());
+                logUnknownTypeCategory(sourceName,
+                                       attributeTypeDefGUID,
+                                       attributeTypeDefName,
+                                       category.getName(),
+                                       knownAttributeTypeDefCategory.getName());
 
                 return false;
             }
@@ -1863,11 +2179,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeDefCategory category of the instance described by this TypeDef.
      * @return boolean result
      */
-    public boolean validTypeDefId(String          sourceName,
-                                  String          typeDefGUID,
-                                  String          typeDefName,
-                                  long            typeDefVersion,
-                                  TypeDefCategory typeDefCategory)
+    boolean validTypeDefId(String          sourceName,
+                           String          typeDefGUID,
+                           String          typeDefName,
+                           String          typeDefVersion,
+                           TypeDefCategory typeDefCategory)
     {
         if (! validTypeDefId(sourceName, typeDefGUID, typeDefName, typeDefCategory))
         {
@@ -1876,19 +2192,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         TypeDef   typeDef = knownTypeDefNames.get(typeDefName);
 
-        if (typeDef == null)
+        if (!typeDef.getVersionName().equals(typeDefVersion))
         {
-            log.debug("Unknown TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from " + sourceName);
-
-            return true;
-        }
-
-        if (typeDef.getVersion() != typeDefVersion)
-        {
-            log.error("Version mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
-                              + sourceName + " received version number is " + Long.toString(typeDefVersion)
-                              + " and stored version is " + Long.toString(typeDef.getVersion()));
-
+            logVersionMismatch(sourceName,
+                               typeDefGUID,
+                               typeDefName,
+                               typeDefCategory.getName(),
+                               typeDefVersion,
+                               typeDef.getVersionName());
             return false;
         }
 
@@ -1906,32 +2217,27 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param category category for the TypeDef
      * @return boolean result
      */
-    public boolean validAttributeTypeDefId(String                   sourceName,
-                                           String                   attributeTypeDefGUID,
-                                           String                   attributeTypeDefName,
-                                           long                     attributeTypeDefVersion,
-                                           AttributeTypeDefCategory category)
+    boolean validAttributeTypeDefId(String                   sourceName,
+                                    String                   attributeTypeDefGUID,
+                                    String                   attributeTypeDefName,
+                                    String                   attributeTypeDefVersion,
+                                    AttributeTypeDefCategory category)
     {
         if (! validAttributeTypeDefId(sourceName, attributeTypeDefGUID, attributeTypeDefName, category))
         {
             return false;
         }
 
-        TypeDef   typeDef = knownTypeDefNames.get(attributeTypeDefName);
+        AttributeTypeDef   attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
 
-        if (typeDef == null)
+        if (!attributeTypeDef.getVersionName().equals(attributeTypeDefVersion))
         {
-            log.debug("Unknown TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from " + sourceName);
-
-            return true;
-        }
-
-        if (typeDef.getVersion() != attributeTypeDefVersion)
-        {
-            log.error("Version mismatch for TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from "
-                              + sourceName + " received version number is " + Long.toString(attributeTypeDefVersion)
-                              + " and stored version is " + Long.toString(typeDef.getVersion()));
-
+            logVersionMismatch(sourceName,
+                               attributeTypeDefGUID,
+                               attributeTypeDefName,
+                               category.getName(),
+                               attributeTypeDefVersion,
+                               attributeTypeDef.getVersionName());
             return false;
         }
 
@@ -1946,29 +2252,22 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeDef TypeDef to test
      * @return boolean result
      */
-    public boolean validTypeDef(String         sourceName,
-                                TypeDef        typeDef)
+    boolean validTypeDef(String         sourceName,
+                         TypeDef        typeDef)
     {
+        final String methodName = "validTypeDef";
+
         if (typeDef == null)
         {
-            log.error("Null typeDef from " + sourceName);
+            logNullType(sourceName, methodName);
             return false;
         }
 
-        if (validTypeDefId(sourceName,
-                           typeDef.getGUID(),
-                           typeDef.getName(),
-                           typeDef.getVersion(),
-                           typeDef.getCategory()))
-        {
-            log.debug("Good typeDef from " + sourceName);
-            return true;
-        }
-        else
-        {
-            log.error("Bad typeDef from " + sourceName);
-            return false;
-        }
+        return validTypeDefId(sourceName,
+                              typeDef.getGUID(),
+                              typeDef.getName(),
+                              typeDef.getVersionName(),
+                              typeDef.getCategory());
     }
 
 
@@ -1979,28 +2278,22 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param attributeTypeDef TypeDef to test
      * @return boolean result
      */
-    public boolean validAttributeTypeDef(String           sourceName,
-                                         AttributeTypeDef attributeTypeDef)
+    boolean validAttributeTypeDef(String           sourceName,
+                                  AttributeTypeDef attributeTypeDef)
     {
+        final String methodName = "validAttributeTypeDef";
+
         if (attributeTypeDef == null)
         {
-            log.error("Null attributeTypeDef from " + sourceName);
+            logNullType(sourceName, methodName);
             return false;
         }
 
-        if (validAttributeTypeDefId(sourceName,
-                                    attributeTypeDef.getGUID(),
-                                    attributeTypeDef.getName(),
-                                    attributeTypeDef.getCategory()))
-        {
-            log.debug("Good attributeTypeDef from " + sourceName);
-            return true;
-        }
-        else
-        {
-            log.error("Bad attributeTypeDef from " + sourceName);
-            return false;
-        }
+        return validAttributeTypeDefId(sourceName,
+                                       attributeTypeDef.getGUID(),
+                                       attributeTypeDef.getName(),
+                                       attributeTypeDef.getCategory());
+
     }
 
 
@@ -2011,28 +2304,22 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeDefSummary TypeDefSummary to test.
      * @return boolean result.
      */
-    public boolean validTypeDefSummary(String                sourceName,
-                                       TypeDefSummary        typeDefSummary)
+    boolean validTypeDefSummary(String                sourceName,
+                                TypeDefSummary        typeDefSummary)
     {
-        if (typeDefSummary != null)
+        final String methodName = "validTypeDefSummary";
+
+        if (typeDefSummary == null)
         {
-            if (validTypeDefId(sourceName,
-                               typeDefSummary.getGUID(),
-                               typeDefSummary.getName(),
-                               typeDefSummary.getVersion(),
-                               typeDefSummary.getCategory()))
-            {
-                return true;
-            }
-            else
-            {
-                log.error("Bad typeDefSummary from " + sourceName);
-            }
+            logNullType(sourceName, methodName);
+            return false;
         }
 
-        log.error("Null typeDefSummary from " + sourceName);
-
-        return false;
+        return validTypeDefId(sourceName,
+                              typeDefSummary.getGUID(),
+                              typeDefSummary.getName(),
+                              typeDefSummary.getVersionName(),
+                              typeDefSummary.getCategory());
     }
 
 
@@ -2123,6 +2410,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                                   typeDefEventOriginator.getOrganizationName(),
                                                                   typeDefEvent.getOriginalAttributeTypeDef(),
                                                                   typeDefEvent.getAttributeTypeDef());
+                    break;
 
                 case TYPEDEF_ERROR_EVENT:
                     OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
@@ -2153,6 +2441,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                                           typeDefEvent.getOtherMetadataCollectionId(),
                                                                           typeDefEvent.getOtherAttributeTypeDef(),
                                                                           typeDefEvent.getErrorMessage());
+                                break;
 
                             case TYPEDEF_PATCH_MISMATCH:
                                 this.processTypeDefPatchMismatchEvent(cohortName,
@@ -2182,6 +2471,68 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     break;
             }
         }
+    }
+
+
+    /**
+     * Log an architected exception from processing new type information.
+     *
+     * @param error exception
+     * @param typeName name of type being processed
+     * @param actionDescription activity in progress when exception occurred
+     * @param sourceName source of the event
+     * @param originatorMetadataCollectionId originator's metadata collection Id
+     * @param originatorServerName originator's server name
+     * @param additionalInformation information about the object being processed
+     */
+    private void logTypeProcessingException(OMRSCheckedExceptionBase   error,
+                                            String                     typeName,
+                                            String                     actionDescription,
+                                            String                     sourceName,
+                                            String                     originatorMetadataCollectionId,
+                                            String                     originatorServerName,
+                                            String                     additionalInformation)
+    {
+        OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(error.getClass().getName(),
+                                                            typeName,
+                                                            sourceName,
+                                                            originatorServerName,
+                                                            originatorMetadataCollectionId,
+                                                            error.getErrorMessage()),
+                           additionalInformation,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Log an unexpected error from the typeDefProcessor.  This should not occur.
+     *
+     * @param error exception
+     * @param actionDescription activity in progress when this occurred
+     * @param sourceName source of the event
+     * @param additionalInformation object from event being processed
+     */
+    private void logUnexpectedException(Throwable   error,
+                                        String      actionDescription,
+                                        String      sourceName,
+                                        String      additionalInformation)
+    {
+        OMRSAuditCode auditCode = OMRSAuditCode.UNHANDLED_EXCEPTION_FROM_TYPE_PROCESSING;
+        auditLog.logException(actionDescription,
+                              auditCode.getLogMessageId(),
+                              auditCode.getSeverity(),
+                              auditCode.getFormattedLogMessage(sourceName,
+                                                               error.getClass().getName(),
+                                                               error.getMessage()),
+                              additionalInformation,
+                              auditCode.getSystemAction(),
+                              auditCode.getUserAction(),
+                              error);
     }
 
 
@@ -2220,34 +2571,42 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (metadataCollection != null)
             {
+                TypeDef currentTypeDef = activeTypeDefNames.get(typeDef.getName());
+
                 /*
-                 * VerifyTypeDef returns true if the typeDef is known and matches the supplied definition.
-                 * It returns false if the type is supportable but has not yet been defined.
-                 * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
-                 * be dynamically defined by the local repository.
+                 * If we have already processed this type then the incoming event is an obsolete one.
                  */
-                if (!metadataCollection.verifyTypeDef(sourceName, typeDef))
+                if (currentTypeDef == null)
                 {
-                    metadataCollection.addTypeDef(sourceName, typeDef);
+                    /*
+                     * VerifyTypeDef returns true if the typeDef is known and matches the supplied definition.
+                     * It returns false if the type is supportable but has not yet been defined.
+                     * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
+                     * be dynamically defined by the local repository.
+                     */
+                    if (!metadataCollection.verifyTypeDef(localServerUserId, typeDef))
+                    {
+                        metadataCollection.addTypeDef(sourceName, typeDef);
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(typeDef.getName(),
-                                                                        typeDef.getGUID(),
-                                                                        Long.toString(typeDef.getVersion()),
-                                                                        sourceName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                        OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(typeDef.getName(),
+                                                                            typeDef.getGUID(),
+                                                                            Long.toString(typeDef.getVersion()),
+                                                                            sourceName),
+                                           null,
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
+
+                    /*
+                     * Either the repository already supports the type, or it has just added it.
+                     * Cache information about the type in the repository content manager's maps.
+                     */
+                    this.cacheTypeDef(sourceName, typeDef, true);
                 }
-
-                /*
-                 * Either the repository already supports the type, or it has just added it.
-                 * Cache information about the type in the repository content manager's maps.
-                 */
-                this.cacheTypeDef(sourceName, typeDef, true);
             }
             else
             {
@@ -2287,15 +2646,42 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
              */
             this.cacheTypeDef(sourceName, typeDef, false);
 
+            logTypeProcessingException(error,
+                                       typeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDef.toString());
+
             log.error("TypeDef " + typeDef.getName() + " not added because repository is not available: " + typeDef);
+            log.error("RepositoryErrorException:", error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            logTypeProcessingException(error,
+                                       typeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDef.toString());
+
+            log.error("TypeDef " + typeDef.getName() + " not added because repository is not authorized: " + typeDef);
             log.error("RepositoryErrorException:", error);
         }
         catch (TypeDefConflictException error)
         {
-            // TODO log an error to say that the TypeDef conflicts with a TypeDef already stored.
-
             log.error("TypeDef not added because it conflicts with another TypeDef already in the repository: " + typeDef);
             log.error("TypeDefConflictException:", error);
+
+            logTypeProcessingException(error,
+                                       typeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDef.toString());
 
             outboundRepositoryEventManager.processTypeDefConflictEvent(sourceName,
                                                                        localRepositoryConnector.getMetadataCollectionId(),
@@ -2305,25 +2691,40 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                                        typeDef,
                                                                        originatorMetadataCollectionId,
                                                                        knownTypeDefNames.get(typeDef.getName()),
-                                                                       null);
+                                                                       error.getErrorMessage());
         }
         catch (InvalidTypeDefException error)
         {
-            // TODO log an error to say that the TypeDef contains bad values.
+            logTypeProcessingException(error,
+                                       typeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDef.toString());
 
             log.error("TypeDef not added because repository thinks it is invalid: " + typeDef);
             log.error("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
-            // TODO log an error to say that a logic error has occurred
+            logTypeProcessingException(error,
+                                       typeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDef.toString());
 
             log.error("TypeDef not added because repository has a logic error: " + typeDef);
             log.error("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
-            // TODO log an error to say that an unexpected error has occurred
+            logUnexpectedException(error,
+                                   actionDescription,
+                                   sourceName,
+                                   typeDef.toString());
 
             log.error("TypeDef not added because repository has an unexpected error: " + typeDef);
             log.error("Throwable: ", error);
@@ -2350,7 +2751,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                 String           originatorOrganizationName,
                                                 AttributeTypeDef attributeTypeDef)
     {
-        final String   actionDescription = "Process New TypeDef Event";
+        final String   actionDescription = "Process New AttributeTypeDef Event";
 
         OMRSMetadataCollection metadataCollection = null;
 
@@ -2369,13 +2770,15 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                  * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
                  * be dynamically defined by the local repository.
                  */
-                if (!metadataCollection.verifyAttributeTypeDef(sourceName, attributeTypeDef))
+                if (!metadataCollection.verifyAttributeTypeDef(localServerUserId, attributeTypeDef))
                 {
-                    metadataCollection.addAttributeTypeDef(sourceName, attributeTypeDef);
+                    metadataCollection.addAttributeTypeDef(localServerUserId, attributeTypeDef);
 
                     /*
                      * Update the active TypeDefs as this new TypeDef has been accepted by the local repository.
                      */
+                    this.cacheAttributeTypeDef(sourceName, attributeTypeDef, true);
+
                     activeAttributeTypeDefNames.put(attributeTypeDef.getName(), attributeTypeDef);
 
                     OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
@@ -2420,7 +2823,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                auditCode.getFormattedLogMessage(attributeTypeDef.getName(),
                                                                 attributeTypeDef.getGUID(),
                                                                 Long.toString(attributeTypeDef.getVersion())),
-                               null,
+                               attributeTypeDef.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
@@ -2435,12 +2838,39 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
              */
             this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
 
+            logTypeProcessingException(error,
+                                       attributeTypeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDef.toString());
+
             log.error("TypeDef " + attributeTypeDef.getName() + " not added because repository is not available: " + attributeTypeDef);
+            log.error("RepositoryErrorException:", error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            logTypeProcessingException(error,
+                                       attributeTypeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDef.toString());
+
+            log.error("TypeDef " + attributeTypeDef.getName() + " not added because repository is not authorized: " + attributeTypeDef);
             log.error("RepositoryErrorException:", error);
         }
         catch (TypeDefConflictException error)
         {
-            // TODO log an error to say that the TypeDef conflicts with a TypeDef already stored.
+            logTypeProcessingException(error,
+                                       attributeTypeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDef.toString());
 
             log.error("TypeDef not added because it conflicts with another TypeDef already in the repository: " + attributeTypeDef);
             log.error("TypeDefConflictException:", error);
@@ -2458,21 +2888,36 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         catch (InvalidTypeDefException error)
         {
-            // TODO log an error to say that the TypeDef contains bad values.
+            logTypeProcessingException(error,
+                                       attributeTypeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDef.toString());
 
             log.error("TypeDef not added because repository thinks it is invalid: " + attributeTypeDef);
             log.error("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
-            // TODO log an error to say that a logic error has occurred
+            logTypeProcessingException(error,
+                                       attributeTypeDef.getName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDef.toString());
 
             log.error("TypeDef not added because repository has a logic error: " + attributeTypeDef);
             log.error("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
-            // TODO log an error to say that an unexpected error has occurred
+            logUnexpectedException(error,
+                                   actionDescription,
+                                   sourceName,
+                                   attributeTypeDef.toString());
 
             log.error("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
             log.error("Throwable: ", error);
@@ -2499,31 +2944,120 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                            String       originatorOrganizationName,
                                            TypeDefPatch typeDefPatch)
     {
+        final String methodName = "processUpdatedTypeDefEvent";
+        final String actionDescription = "Process TypeDef Patch Event";
+
+        OMRSMetadataCollection metadataCollection = null;
+
         try
         {
-            OMRSMetadataCollection metadataCollection = localRepositoryConnector.getMetadataCollection();
+            if (localRepositoryConnector != null)
+            {
+                metadataCollection = localRepositoryConnector.getMetadataCollection();
+            }
 
             if (metadataCollection != null)
             {
-                TypeDef updatedTypeDef = metadataCollection.updateTypeDef(null, typeDefPatch);
+                TypeDef currentTypeDef = activeTypeDefNames.get(typeDefPatch.getTypeDefName());
 
-                log.debug("Patch successfully applied:" + updatedTypeDef);
+                if (currentTypeDef != null)
+                {
+                    /*
+                     * The local repository supports the type
+                     */
+                    if (currentTypeDef.getVersion() == typeDefPatch.getApplyToVersion())
+                    {
+                        /*
+                         * The patch is relevant to the current level of the type
+                         */
+                        TypeDef updatedTypeDef = metadataCollection.updateTypeDef(localServerUserId, typeDefPatch);
 
-                // TODO update needed to TypeDef Caches - whether there is a local repository or not
+                        log.debug("Patch successfully applied:" + updatedTypeDef);
+
+                        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_UPDATED;
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(updatedTypeDef.getName(),
+                                                                            updatedTypeDef.getGUID(),
+                                                                            Long.toString(updatedTypeDef.getVersion()),
+                                                                            sourceName),
+                                           null,
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+
+                        this.cacheTypeDef(sourceName, updatedTypeDef, true);
+                    }
+                }
+            }
+            else
+            {
+                TypeDef originalTypeDef = getTypeDefByName(typeDefPatch.getTypeDefName());
+
+                OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+
+                TypeDef updatedTypeDef = utilities.applyPatch(sourceName,
+                                                              originalTypeDef,
+                                                              typeDefPatch,
+                                                              methodName);
+
+                this.cacheTypeDef(sourceName, updatedTypeDef, false);
+            }
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefPatch.getTypeDefName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefPatch.toString());
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Patch not applied because repository does not support patching: " + typeDefPatch);
             }
         }
         catch (RepositoryErrorException  error)
         {
-            // TODO log an error to say that the repository is not available
+            logTypeProcessingException(error,
+                                       typeDefPatch.getTypeDefName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because repository is not available: " + typeDefPatch);
             }
         }
+        catch (UserNotAuthorizedException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefPatch.getTypeDefName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefPatch.toString());
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Patch not applied because repository is not authorized to make this change: " + typeDefPatch);
+            }
+        }
         catch (TypeDefNotKnownException  error)
         {
-            // TODO log an error to say that the TypeDef is not known
+            logTypeProcessingException(error,
+                                       typeDefPatch.getTypeDefName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
@@ -2533,7 +3067,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         catch (PatchErrorException error)
         {
-            // TODO log an error to say that the TypeDef patch is invalid
+            logTypeProcessingException(error,
+                                       typeDefPatch.getTypeDefName(),
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
@@ -2543,7 +3083,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         catch (Throwable error)
         {
-            // TODO log a generic error
+            logUnexpectedException(error, actionDescription, sourceName, typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
@@ -2576,7 +3116,102 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                            String      typeDefGUID,
                                            String      typeDefName)
     {
-        // TODO
+        final String actionDescription = "Process TypeDef Delete Event";
+
+        OMRSMetadataCollection metadataCollection = null;
+
+        try
+        {
+            if (localRepositoryConnector != null)
+            {
+                metadataCollection = localRepositoryConnector.getMetadataCollection();
+            }
+
+            if (metadataCollection != null)
+            {
+                metadataCollection.deleteTypeDef(localServerUserId, typeDefGUID, typeDefName);
+
+                log.debug("type def successfully deleted: " + typeDefGUID);
+
+                this.uncacheTypeDef(sourceName, typeDefGUID, typeDefName, true);
+            }
+            else
+            {
+                this.uncacheTypeDef(sourceName, typeDefGUID, typeDefName, false);
+
+            }
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefName + " (" + typeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("TypeDef not deleted because repository is not authorized to make these changes: " + typeDefName);
+            }
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefName + " (" + typeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("TypeDef not deleted because repository does not support it: " + typeDefName);
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefName + " (" + typeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("TypeDef not deleted because repository is not available: " + typeDefName);
+            }
+        }
+        catch (TypeDefNotKnownException  error)
+        {
+            logTypeProcessingException(error,
+                                       typeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       typeDefName + " (" + typeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Delete not applied because TypeDef does not exist: " + typeDefName);
+                log.debug("TypeDefNotKnownException: ", error);
+            }
+        }
+        catch (Throwable error)
+        {
+            logUnexpectedException(error, actionDescription, sourceName, typeDefName + " (" + typeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Type not deleted because of an error " + typeDefName);
+                log.debug("Throwable: ", error);
+            }
+        }
     }
 
 
@@ -2602,7 +3237,102 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                     String      attributeTypeDefGUID,
                                                     String      attributeTypeDefName)
     {
-        // TODO
+        final String actionDescription = "Process AttributeTypeDef Delete Event";
+
+        OMRSMetadataCollection metadataCollection = null;
+
+        try
+        {
+            if (localRepositoryConnector != null)
+            {
+                metadataCollection = localRepositoryConnector.getMetadataCollection();
+            }
+
+            if (metadataCollection != null)
+            {
+                metadataCollection.deleteTypeDef(localServerUserId, attributeTypeDefGUID, attributeTypeDefName);
+
+                log.debug("type def successfully deleted: " + attributeTypeDefGUID);
+
+                this.uncacheTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, true);
+            }
+            else
+            {
+                this.uncacheTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, false);
+
+            }
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            logTypeProcessingException(error,
+                                       attributeTypeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("AttributeTypeDef not deleted because repository is not authorized to make these changes: " + attributeTypeDefName);
+            }
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            logTypeProcessingException(error,
+                                       attributeTypeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("AttributeTypeDef not deleted because repository does not support delete: " + attributeTypeDefName);
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            logTypeProcessingException(error,
+                                       attributeTypeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("AttributeTypeDef not deleted because repository is not available: " + attributeTypeDefName);
+            }
+        }
+        catch (TypeDefNotKnownException  error)
+        {
+            logTypeProcessingException(error,
+                                       attributeTypeDefName,
+                                       actionDescription,
+                                       sourceName,
+                                       originatorMetadataCollectionId,
+                                       originatorServerName,
+                                       attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Delete not applied because TypeDef does not exist: " + attributeTypeDefName);
+                log.debug("TypeDefNotKnownException: ", error);
+            }
+        }
+        catch (Throwable error)
+        {
+            logUnexpectedException(error, actionDescription, sourceName, attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("Type not deleted because of an error " + attributeTypeDefName);
+                log.debug("Throwable: ", error);
+            }
+        }
     }
 
 
@@ -2682,7 +3412,47 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                             TypeDefSummary conflictingTypeDefSummary,
                                             String         errorMessage)
     {
-        // TODO
+        final String actionDescription = "Received TypeDef Conflict Event";
+
+        String additionalInformation = "Originator's type: ";
+        String typeName = "<null>";
+        String typeGUID = "<null>";
+
+        if (originatorTypeDefSummary != null)
+        {
+            additionalInformation += originatorTypeDefSummary.toString();
+            typeName = originatorTypeDefSummary.getName();
+            typeGUID = originatorTypeDefSummary.getGUID();
+        }
+        else
+        {
+            additionalInformation += "<null>";
+        }
+
+        additionalInformation += "; conflicting type: ";
+
+        if (conflictingTypeDefSummary != null)
+        {
+            additionalInformation += conflictingTypeDefSummary.toString();
+        }
+        else
+        {
+            additionalInformation += "<null>";
+        }
+
+        OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_TYPE_CONFLICT;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(typeName,
+                                                            typeGUID,
+                                                            originatorServerName,
+                                                            originatorMetadataCollectionId,
+                                                            otherMetadataCollectionId,
+                                                            errorMessage),
+                           additionalInformation,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
 
@@ -2711,7 +3481,47 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                      AttributeTypeDef conflictingAttributeTypeDef,
                                                      String           errorMessage)
     {
-        // TODO
+        final String actionDescription = "Received TypeDef Conflict Event";
+
+        String additionalInformation = "Originator's type: ";
+        String typeName = "<null>";
+        String typeGUID = "<null>";
+
+        if (originatorAttributeTypeDef != null)
+        {
+            additionalInformation += originatorAttributeTypeDef.toString();
+            typeName = originatorAttributeTypeDef.getName();
+            typeGUID = originatorAttributeTypeDef.getGUID();
+        }
+        else
+        {
+            additionalInformation += "<null>";
+        }
+
+        additionalInformation += "; conflicting type: ";
+
+        if (conflictingAttributeTypeDef != null)
+        {
+            additionalInformation += conflictingAttributeTypeDef.toString();
+        }
+        else
+        {
+            additionalInformation += "<null>";
+        }
+
+        OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_TYPE_CONFLICT;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(typeName,
+                                                            typeGUID,
+                                                            originatorServerName,
+                                                            originatorMetadataCollectionId,
+                                                            otherMetadataCollectionId,
+                                                            errorMessage),
+                           additionalInformation,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
 
@@ -2786,14 +3596,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return null;
         }
     }
-
-
-
-
-    /* ========================
-     * Private error handling
-     */
-
 
 
     /* ========================

@@ -93,10 +93,12 @@ public class OpenLineageServerOperationalServices {
 
         BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
         MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
+
         try {
+            bufferGraphConnector.initializeGraphDB();
             mainGraphConnector.initializeGraphDB();
         } catch (OpenLineageException e) {
-            logAudit(OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
+            logAudit(OpenLineageServerAuditCode.CANNOT_OPEN_GRAPH_DB, actionDescription);
             toOMAGConfigurationErrorException(e);
         }
         Object mainGraph = mainGraphConnector.getMainGraph();
@@ -130,12 +132,17 @@ public class OpenLineageServerOperationalServices {
 
     }
 
+    /**
+     * Use the connectorbroker to obtain a connector based on an connection object.
+     * @param connection the connection as provided by the user in the configure open lineage services postman call.
+     * @return The connector
+     * @throws OMAGConfigurationErrorException
+     */
     private OpenLineageGraph getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
         final String actionDescription = "Get Open Lineage graph connector";
-        final String methodName = "OpenLineageServerOperationalServices.getGraphConnector";
         if (connection != null) {
             log.info("Found connection: {}", connection);
             try {
@@ -151,17 +158,24 @@ public class OpenLineageServerOperationalServices {
     }
 
 
+    /**
+     *  Start the kafka connector to listen to the asset lineage OMAS out topic.
+     * @param storingServices
+     * @throws OMAGConfigurationErrorException
+     */
     private void startEventBus(StoringServices storingServices) throws OMAGConfigurationErrorException {
         final String actionDescription = "Start event bus";
         final String methodName = "OpenLineageServerOperationalServices.startEventBus";
         inTopicConnector = getTopicConnector(openLineageServerConfig.getInTopicConnection(), auditLog);
-        if (inTopicConnector == null)
-            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
-        else {
+        if (inTopicConnector != null){
             OpenMetadataTopicListener governanceEventListener = new InTopicListener(storingServices, auditLog);
             inTopicConnector.registerListener(governanceEventListener);
             startTopic(inTopicConnector);
             logAudit(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
+        }
+        else {
+            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
+
         }
     }
 
@@ -186,6 +200,11 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
+    /**
+     * Start the kafka topic
+     * @param topic the kafka topic object
+     * @throws OMAGConfigurationErrorException
+     */
     private void startTopic(OpenMetadataTopicConnector topic) throws OMAGConfigurationErrorException {
         final String actionDescription = "Start OpenMetadataTopicConnector topic connection";
         try {
@@ -224,6 +243,11 @@ public class OpenLineageServerOperationalServices {
     }
 
 
+    /**
+     *  Write to audit log
+     * @param auditCode Reference to the specific audit message
+     * @param actionDescription Describes what the user could do to prevent the error from occuring.
+     */
     private void logAudit(OpenLineageServerAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
@@ -234,6 +258,12 @@ public class OpenLineageServerOperationalServices {
                 auditCode.getUserAction());
     }
 
+    /**
+     * Throw an OMAGConfigurationErrorException using an OpenLineageServerErrorCode.
+     * @param errorCode Reference to the specific error type
+     * @param methodName The name of the calling method
+     * @throws OMAGConfigurationErrorException
+     */
     private void throwError(OpenLineageServerErrorCode errorCode, String methodName) throws OMAGConfigurationErrorException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
         throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
@@ -244,6 +274,11 @@ public class OpenLineageServerOperationalServices {
                 errorCode.getUserAction());
     }
 
+    /**
+     * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
+     * @param error The error to be mapped
+     * @throws OMAGConfigurationErrorException
+     */
     private void toOMAGConfigurationErrorException(OCFCheckedExceptionBase error) throws OMAGConfigurationErrorException {
         throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
                 error.getReportingClassName(),

@@ -40,6 +40,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Referenceable extends ElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected String              qualifiedName        = null;
     protected Map<String, String> additionalProperties = null;
     protected List<Meaning>       meanings             = null;

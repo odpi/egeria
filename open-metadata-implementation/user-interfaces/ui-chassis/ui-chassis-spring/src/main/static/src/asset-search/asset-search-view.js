@@ -51,7 +51,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <iron-icon icon="search"></iron-icon>
                 </vaadin-button>
              
-                <multiselect-combo-box id="combo" items="[[_getTypesNames(items)]]">
+                <multiselect-combo-box id="combo" items="[[items]]" item-label-path="name" ordered="false">
                 </multiselect-combo-box>
            </div>
         </form>
@@ -66,16 +66,16 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>
                     <vaadin-button theme="tertiary" on-tap="_showItemDetails">
-                        [[item.properties.displayName]][[item.properties.name]]
+                        [[item.properties.displayName]]
                     </vaadin-button>
                 </template>
             </vaadin-grid-column>
-            
+               
              <vaadin-grid-column width="6em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="type">Type</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="type.name">Type</vaadin-grid-sorter>
                 </template>
-                <template>[[item.type]]</template>
+                <template>[[item.type.name]]</template>
             </vaadin-grid-column>
             
             <vaadin-grid-column width="15em" resizable>
@@ -134,34 +134,30 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     _search() {
         this.$.searchForm.validate();
         console.log('searching: '+ this.q);
-        var guids = [];
-        var itemsMap = new Map(Object.entries(this.items))
+        var types = [];
 
         this.$.combo.selectedItems.forEach(function(item){
-            guids.push( itemsMap.get(item));
+            types.push( item.name);
         });
 
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + guids;
+        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
         this.$.tokenAjax._go();
     }
 
     _showItemDetails(e){
         // alert(e.model.item.properties.name + e.model.item.properties.displayName);
         var  properties = e.model.item.properties;
-        for(var key in properties) {
-            var value = properties[key];
-            console.log(key + ' is ' + value);
+
+        if (properties.displayName == null && properties.name != null) {
+                properties.displayName = properties.name;
         }
+
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
             detail: {page: "asset-lineage",
                      subview: "ultimateSource"
             }}));
-    }
-
-    _getTypesNames(allTypes){
-        return Object.keys(allTypes);
     }
 
     attached() {

@@ -61,10 +61,10 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
+        this.auditLog = auditLog;
+
         try
         {
-            this.auditLog = auditLog;
-
             List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                       accessServiceConfig.getAccessServiceName(),
                                                                       auditLog);
@@ -101,7 +101,7 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
                                auditCode.getFormattedLogMessage(serverName),
-                               null,
+                               accessServiceConfig.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
@@ -112,13 +112,14 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
         catch (Throwable error)
         {
             auditCode = ProjectManagementAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

@@ -23,8 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBody
 {
-    private String        discoveryServiceGUID = null;
-    private List<String>  assetTypes           = null;
+    private static final long    serialVersionUID = 1L;
+
+    private String       discoveryServiceGUID = null;
+    private List<String> assetDiscoveryTypes  = null;
 
     /**
      * Default constructor
@@ -47,7 +49,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
         if (template != null)
         {
             discoveryServiceGUID = template.getDiscoveryServiceGUID();
-            assetTypes = template.getAssetTypes();
+            assetDiscoveryTypes  = template.getAssetDiscoveryTypes();
         }
     }
 
@@ -79,19 +81,19 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
      *
      * @return list of asset type names
      */
-    public List<String> getAssetTypes()
+    public List<String> getAssetDiscoveryTypes()
     {
-        if (assetTypes == null)
+        if (assetDiscoveryTypes == null)
         {
             return null;
         }
-        else if (assetTypes.isEmpty())
+        else if (assetDiscoveryTypes.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(assetTypes);
+            return new ArrayList<>(assetDiscoveryTypes);
         }
     }
 
@@ -99,11 +101,11 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     /**
      * Set up the list of asset types that this discovery service supports.
      *
-     * @param assetTypes list of asset type names
+     * @param assetDiscoveryTypes list of asset type names
      */
-    public void setAssetTypes(List<String> assetTypes)
+    public void setAssetDiscoveryTypes(List<String> assetDiscoveryTypes)
     {
-        this.assetTypes = assetTypes;
+        this.assetDiscoveryTypes = assetDiscoveryTypes;
     }
 
 
@@ -117,7 +119,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     {
         return "DiscoveryServiceRegistrationRequestBody{" +
                 "discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
-                ", assetTypes=" + assetTypes +
+                ", assetDiscoveryTypes=" + assetDiscoveryTypes +
                 '}';
     }
 
@@ -141,7 +143,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
         }
         DiscoveryServiceRegistrationRequestBody that = (DiscoveryServiceRegistrationRequestBody) objectToCompare;
         return Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID()) &&
-                Objects.equals(getAssetTypes(), that.getAssetTypes());
+                Objects.equals(getAssetDiscoveryTypes(), that.getAssetDiscoveryTypes());
     }
 
 
@@ -154,6 +156,6 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDiscoveryServiceGUID(), getAssetTypes());
+        return Objects.hash(getDiscoveryServiceGUID(), getAssetDiscoveryTypes());
     }
 }

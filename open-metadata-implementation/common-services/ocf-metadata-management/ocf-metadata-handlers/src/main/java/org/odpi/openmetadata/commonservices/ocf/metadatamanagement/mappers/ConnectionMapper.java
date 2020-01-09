@@ -38,5 +38,6 @@ public class ConnectionMapper
     public static final String EMBEDDED_CONNECTION_TYPE_NAME             = "EmbeddedConnection";
     /* End1 = VirtualConnection; End 2 = Connection */
 
-    public static final String ARGUMENTS_PROPERTY_NAME                   = "arguments";                            /* from EmbeddedConnection relationship */
+    public static final String POSITION_PROPERTY_NAME                    = "position";              /* from EmbeddedConnection relationship */
+    public static final String ARGUMENTS_PROPERTY_NAME                   = "arguments";             /* from EmbeddedConnection relationship */
 }

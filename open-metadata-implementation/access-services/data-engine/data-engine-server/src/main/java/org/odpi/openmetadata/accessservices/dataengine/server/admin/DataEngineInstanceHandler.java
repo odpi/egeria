@@ -22,7 +22,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public DataEngineInstanceHandler() {
-        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName());
+        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName()+ " OMAS");
 
         DataEngineRegistration.registerAccessService();
     }
@@ -55,6 +55,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @param userId     calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of called operation
      *
      * @return handler for use by the requested instance
      *

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -17,7 +16,6 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -42,8 +40,6 @@ public class OpenLineageService {
     public static final String GLOSSARY_TERM = "glossaryTerm";
     private final OpenLineageClient openLineageClient;
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
-    @Value("${open.lineage.graph.source}")
-    private GraphName graphName;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
@@ -66,13 +62,9 @@ public class OpenLineageService {
     public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, view, guid, "", true);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
         return processResponse(response);
     }
@@ -87,13 +79,9 @@ public class OpenLineageService {
     public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+            response = openLineageClient.lineage(userId, Scope.END_TO_END, view, guid, "", true);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
         return processResponse(response);
     }
@@ -108,16 +96,12 @@ public class OpenLineageService {
     public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
-        return processResponse(response);
 
+        return processResponse(response);
     }
 
     /**
@@ -130,14 +114,11 @@ public class OpenLineageService {
     public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+            response = openLineageClient.lineage(userId, Scope.GLOSSARY, view, guid, "", true);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
+
         return processResponse(response);
     }
 
@@ -149,17 +130,13 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
     public Map<String, List> getSourceAndDestination(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response =
-                null;
+        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
+
         return processResponse(response);
     }
 

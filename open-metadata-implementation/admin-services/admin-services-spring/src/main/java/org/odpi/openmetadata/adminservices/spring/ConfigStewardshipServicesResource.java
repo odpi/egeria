@@ -27,7 +27,7 @@ public class ConfigStewardshipServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-root-url")
+    @PostMapping(path = "access-service-root-url")
 
     public VoidResponse setAccessServiceRootURL(@PathVariable String userId,
                                                 @PathVariable String serverName,
@@ -47,7 +47,7 @@ public class ConfigStewardshipServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "access-service-server-name")
+    @PostMapping(path = "access-service-server-name")
 
     public VoidResponse setAccessServiceServerName(@PathVariable String userId,
                                                    @PathVariable String serverName,
@@ -67,7 +67,7 @@ public class ConfigStewardshipServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "inbound-request-connection")
+    @PostMapping(path = "inbound-request-connection")
 
     public VoidResponse setInboundRequestConnection(@PathVariable String     userId,
                                                     @PathVariable String     serverName,
@@ -84,7 +84,7 @@ public class ConfigStewardshipServicesResource
      * @param serverName  local server name.
      * @return void response
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "")
+    @DeleteMapping(path = "")
 
     VoidResponse deleteService(@PathVariable String userId,
                                @PathVariable String serverName)

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -112,16 +112,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-spring</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-api</artifactId>
         </dependency>
 
         <dependency>

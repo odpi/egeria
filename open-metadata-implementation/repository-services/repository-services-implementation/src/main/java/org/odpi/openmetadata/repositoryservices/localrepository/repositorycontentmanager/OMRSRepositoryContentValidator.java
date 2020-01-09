@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -124,7 +125,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isActiveTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isActiveTypeId(typeGUID);
     }
 
 
@@ -159,7 +160,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isOpenTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isOpenTypeId(typeGUID);
     }
 
 
@@ -194,7 +195,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         validateRepositoryContentManager(methodName);
 
-        return repositoryContentManager.isKnownTypeId(sourceName, typeGUID);
+        return repositoryContentManager.isKnownTypeId(typeGUID);
     }
 
 
@@ -206,7 +207,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param typeName unique name of the TypeDef
      * @return boolean result
      */
-    public boolean validTypeId(String          sourceName,
+    public boolean validTypeId(String sourceName,
                                String typeGUID,
                                String typeName)
     {
@@ -278,7 +279,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validTypeDefId(String          sourceName,
                                   String          typeDefGUID,
                                   String          typeDefName,
-                                  long            typeDefVersion,
+                                  String          typeDefVersion,
                                   TypeDefCategory category)
     {
         final String  methodName = "validTypeDefId";
@@ -306,7 +307,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validAttributeTypeDefId(String                   sourceName,
                                            String                   attributeTypeDefGUID,
                                            String                   attributeTypeDefName,
-                                           long                     attributeTypeDefVersion,
+                                           String                   attributeTypeDefVersion,
                                            AttributeTypeDefCategory category)
     {
         final String  methodName = "validAttributeTypeDefId";
@@ -320,6 +321,43 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                                 category);
     }
 
+
+    /**
+     * Validate that the supplied type is a valid active type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeParameterName the name of the parameter that passed the type
+     * @param typeDefSummary the type to test
+     * @param category the expected category of the type
+     * @param methodName the name of the method that supplied the type
+     * @throws InvalidParameterException the type is null or contains invalid values
+     * @throws TypeErrorException the type is not active
+     */
+    public void validateActiveType(String           sourceName,
+                                   String           typeParameterName,
+                                   TypeDefSummary   typeDefSummary,
+                                   TypeDefCategory  category,
+                                   String           methodName) throws TypeErrorException, InvalidParameterException
+    {
+        if (! this.isActiveType(sourceName, typeDefSummary.getGUID(), typeDefSummary.getName()))
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefSummary.getName(),
+                                                                                                     typeDefSummary.getGUID(),
+                                                                                                     typeParameterName,
+                                                                                                     methodName,
+                                                                                                     sourceName);
+
+            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                                         this.getClass().getName(),
+                                         methodName,
+                                         errorMessage,
+                                         errorCode.getSystemAction(),
+                                         errorCode.getUserAction());
+        }
+
+        // todo check category
+    }
 
 
     /**
@@ -386,31 +424,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validEntity(String        sourceName,
                                EntitySummary entity)
     {
-        if (entity == null)
-        {
-            log.error("Null entity from " + sourceName);
-            return false;
-        }
+        final String methodName = "validEntity";
 
-        InstanceType instanceType = entity.getType();
-
-        if (instanceType == null)
-        {
-            log.error("Null instance type in entity from " + sourceName);
-            return false;
-        }
-
-        if (! validInstanceId(sourceName,
-                              instanceType.getTypeDefGUID(),
-                              instanceType.getTypeDefName(),
-                              instanceType.getTypeDefCategory(),
-                              entity.getGUID()))
-        {
-            log.error("Null entity guid from " + sourceName);
-            return false;
-        }
-
-        return true;
+        return validInstance(sourceName, entity, methodName, false);
     }
 
 
@@ -452,17 +468,37 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validRelationship(String       sourceName,
                                      Relationship relationship)
     {
-        if (relationship == null)
+        final String methodName = "validRelationship";
+
+        return validInstance(sourceName, relationship, methodName, false);
+    }
+
+
+    /**
+     * Test that the supplied instance is valid.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param instance instance to test
+     * @param methodName calling method
+     * @param fromStore is the entity from the store?
+     * @return boolean result
+     */
+    private boolean validInstance(String         sourceName,
+                                  InstanceHeader instance,
+                                  String         methodName,
+                                  boolean        fromStore)
+    {
+        if (instance == null)
         {
-            log.error("Null relationship from " + sourceName);
+            repositoryContentManager.logNullInstance(sourceName, methodName);
             return false;
         }
 
-        InstanceType instanceType = relationship.getType();
+        InstanceType instanceType = instance.getType();
 
         if (instanceType == null)
         {
-            log.error("Null instance type in relationship from " + sourceName);
+            repositoryContentManager.logNullType(sourceName, methodName);
             return false;
         }
 
@@ -470,18 +506,28 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                               instanceType.getTypeDefGUID(),
                               instanceType.getTypeDefName(),
                               instanceType.getTypeDefCategory(),
-                              relationship.getGUID()))
+                              instance.getGUID()))
         {
-            log.error("Null relationship guid from " + sourceName);
+            /*
+             * Error already logged
+             */
             return false;
         }
 
-        String          homeMetadataCollectionId = relationship.getMetadataCollectionId();
-
-        if (homeMetadataCollectionId == null)
+        if (! fromStore)
         {
-            log.error("Null home metadata collection id for relationship " + relationship.getGUID() + " from " + sourceName);
-            return false;
+            String homeMetadataCollectionId = instance.getMetadataCollectionId();
+
+            if (homeMetadataCollectionId == null)
+            {
+                repositoryContentManager.logNullMetadataCollectionId(sourceName,
+                                                                     instanceType.getTypeDefGUID(),
+                                                                     instanceType.getTypeDefName(),
+                                                                     instanceType.getTypeDefCategory().getName(),
+                                                                     instance.getGUID(),
+                                                                     methodName);
+                return false;
+            }
         }
 
         return true;
@@ -504,11 +550,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                    TypeDefCategory  category,
                                    String           instanceGUID)
     {
-        if (instanceGUID == null)
-        {
-            log.error("Null instance guid from " + sourceName);
-            return false;
-        }
 
         if (! validTypeDefId(sourceName,
                              typeDefGUID,
@@ -518,6 +559,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * Error messages already logged
              */
+            return false;
+        }
+
+        if (instanceGUID == null)
+        {
+            repositoryContentManager.logNullInstanceGUID(sourceName, typeDefGUID, typeDefName, category);
             return false;
         }
 
@@ -611,6 +658,45 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Validate that a TypeDef's identifiers are not null and return the type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param guidParameterName name of the parameter that passed the guid.
+     * @param nameParameterName name of the parameter that passed the name.
+     * @param guid unique identifier for a type or an instance passed on the request
+     * @param name name of TypeDef.
+     * @param methodName method receiving the call
+     * @return  typeDef
+     * @throws InvalidParameterException no guid provided
+     */
+    public  TypeDef getValidTypeDefFromIds(String sourceName,
+                                           String guidParameterName,
+                                           String nameParameterName,
+                                           String guid,
+                                           String name,
+                                           String methodName) throws InvalidParameterException
+    {
+        this.validateTypeDefIds(sourceName, guidParameterName, nameParameterName, guid, name, methodName);
+
+        try
+        {
+            return repositoryContentManager.getTypeDef(sourceName, guidParameterName, guid, methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            throw new InvalidParameterException(error.getReportedHTTPCode(),
+                                                error.getReportingClassName(),
+                                                error.getReportingActionDescription(),
+                                                error.getErrorMessage(),
+                                                error.getReportedSystemAction(),
+                                                error.getReportedUserAction(),
+                                                guidParameterName + " or " + nameParameterName,
+                                                error);
+        }
+    }
+
+
+    /**
      * Validate that an AttributeTypeDef's identifiers are not null and are recognized.
      *
      * @param sourceName source of the request (used for logging)
@@ -622,11 +708,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @throws InvalidParameterException no guid, or name provided
      */
     public  void validateAttributeTypeDefIds(String sourceName,
-                                             String guidParameterName,
-                                             String nameParameterName,
-                                             String guid,
-                                             String name,
-                                             String methodName) throws InvalidParameterException
+                                                         String guidParameterName,
+                                                         String nameParameterName,
+                                                         String guid,
+                                                         String name,
+                                                         String methodName) throws InvalidParameterException
     {
         if (guid == null)
         {
@@ -657,6 +743,45 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that an AttributeTypeDef's identifiers are not null and are recognized.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param guidParameterName name of the parameter that passed the guid.
+     * @param nameParameterName name of the parameter that passed the name.
+     * @param guid unique identifier for a type or an instance passed on the request
+     * @param name name of TypeDef.
+     * @param methodName method receiving the call
+     * @return retrieved type definition
+     * @throws InvalidParameterException no guid, or name provided
+     */
+    public  AttributeTypeDef getValidAttributeTypeDefFromIds(String sourceName,
+                                                             String guidParameterName,
+                                                             String nameParameterName,
+                                                             String guid,
+                                                             String name,
+                                                             String methodName) throws InvalidParameterException
+    {
+        this.validateAttributeTypeDefIds(sourceName, guidParameterName, nameParameterName, guid, name, methodName);
+
+        try
+        {
+            return repositoryContentManager.getAttributeTypeDef(sourceName, guidParameterName, guid, methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            throw new InvalidParameterException(error.getReportedHTTPCode(),
+                                                error.getReportingClassName(),
+                                                error.getReportingActionDescription(),
+                                                error.getErrorMessage(),
+                                                error.getReportedSystemAction(),
+                                                error.getReportedUserAction(),
+                                                guidParameterName + " or " + nameParameterName,
+                                                error);
         }
     }
 
@@ -734,31 +859,27 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Verify that a TypeDefPatch is not null.
+     * Verify that a TypeDefPatch is not null and is for a recognized type.
      *
      * @param sourceName source of the request (used for logging)
      * @param patch patch to test
      * @param methodName calling method
+     * @return current value of the type
      * @throws InvalidParameterException the patch is null
+     * @throws TypeDefNotKnownException the type is not known
      * @throws PatchErrorException the patch is invalid
      */
-    public void validateTypeDefPatch(String       sourceName,
-                                     TypeDefPatch patch,
-                                     String       methodName) throws InvalidParameterException, PatchErrorException
+    public TypeDef validateTypeDefPatch(String       sourceName,
+                                        TypeDefPatch patch,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        TypeDefNotKnownException,
+                                                                        PatchErrorException
     {
-        if (patch == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF_PATCH;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName);
+        OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
 
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
-        }
+        utilities.validateTypeDefPatch(sourceName, patch, methodName);
+
+        return repositoryContentManager.getTypeDefByName(patch.getTypeDefName());
     }
 
 
@@ -1058,8 +1179,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                  attributeTypeDef.getGUID(),
                                                  attributeTypeDef.getName()))
         {
-            // todo validate that the existing typeDef matches the new one.
-
             OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ALREADY_DEFINED;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(attributeTypeDef.getName(),
@@ -1093,6 +1212,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                             String  methodName) throws TypeErrorException,
                                                                        RepositoryErrorException
     {
+        final String thisMethodName = "validateTypeDefForInstance";
+
         if (typeDef == null)
         {
             OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF;
@@ -1127,9 +1248,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             OMRSErrorCode errorCode    = OMRSErrorCode.BAD_TYPEDEF;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(parameterName,
-                                                                            methodName,
-                                                                            sourceName);
+                                       + errorCode.getFormattedErrorMessage(thisMethodName,
+                                                                            typeDef.getName(),
+                                                                            sourceName,
+                                                                            methodName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -1560,7 +1682,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 errorCode.getUserAction());
         }
 
-        TypeDef typeDef = repositoryContentManager.getTypeDefByName(sourceName, classificationName);
+        TypeDef typeDef = repositoryContentManager.getTypeDefByName(classificationName);
 
         if (typeDef == null)
         {
@@ -1599,7 +1721,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         validateRepositoryContentManager(methodName);
 
-        TypeDef   classificationTypeDef = repositoryContentManager.getTypeDefByName(sourceName, classificationName);
+        TypeDef   classificationTypeDef = repositoryContentManager.getTypeDefByName(classificationName);
 
         if (classificationTypeDef != null)
         {
@@ -1703,8 +1825,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     this.validatePropertiesForType(sourceName,
                                                    parameterName,
-                                                   repositoryContentManager.getTypeDefByName(sourceName,
-                                                                                             classification.getName()),
+                                                   repositoryContentManager.getTypeDefByName(classification.getName()),
                                                    classification.getProperties(),
                                                    methodName);
                 }
@@ -2233,7 +2354,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                               errorCode.getUserAction());
         }
 
-        if (! validEntity(sourceName, entity))
+        if (! validInstance(sourceName, entity, methodName, true))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_ENTITY_FROM_STORE;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
@@ -2411,43 +2532,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             throwValidatorLogicError(sourceName, methodName, thisMethodName);
         }
-    }
-
-    /**
-     * Validate that the supplied type is a valid active type.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param typeParameterName the name of the parameter that passed the type
-     * @param typeDefSummary the type to test
-     * @param category the expected category of the type
-     * @param methodName the name of the method that supplied the type
-     * @throws InvalidParameterException the type is null or contains invalid values
-     * @throws TypeErrorException the type is not active
-     */
-    public void validateType(String           sourceName,
-                             String           typeParameterName,
-                             TypeDefSummary   typeDefSummary,
-                             TypeDefCategory  category,
-                             String           methodName) throws TypeErrorException, InvalidParameterException
-    {
-        if (! this.isActiveType(sourceName, typeDefSummary.getGUID(), typeDefSummary.getName()))
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefSummary.getName(),
-                                                                                                     typeDefSummary.getGUID(),
-                                                                                                     typeParameterName,
-                                                                                                     methodName,
-                                                                                                     sourceName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
-                                         this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
-        }
-
-        // todo check category
     }
 
 

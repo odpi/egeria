@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.samples.discoveryservices;
 
-import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;

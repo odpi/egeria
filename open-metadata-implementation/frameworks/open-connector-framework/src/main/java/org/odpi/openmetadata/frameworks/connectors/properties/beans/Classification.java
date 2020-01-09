@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Classification extends PropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected String              classificationName       = null;
     protected Map<String, Object> classificationProperties = null;
 

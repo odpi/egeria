@@ -262,7 +262,7 @@ public class OmrsBeanGenerator {
         BufferedReader reader = null;
         try {
             outputFileWriter = new FileWriter(fileName);
-            List<String> loopEntityLines = new ArrayList();
+            List<String> loopEntityLines = new ArrayList<>();
             reader = new BufferedReader(new FileReader(CLASSIFICATION_MAPPER_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
@@ -271,7 +271,7 @@ public class OmrsBeanGenerator {
             }
             reader.close();
 
-            Map<String, String> replacementMap = new HashMap();
+            Map<String, String> replacementMap = new HashMap<>();
             replacementMap.put("package", CLASSIFICATIONS + "." + classificationName);
             mapOMRSToOMAS("Classification", replacementMap, outputFileWriter, loopEntityLines, classificationName);
         } finally {
@@ -287,7 +287,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(CLASSIFICATION_FACTORY_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                List<String> loopLines = new ArrayList();
+                List<String> loopLines = new ArrayList<>();
 
                 if (line.contains("<$$$")) {
                     // read all the lines in the loop
@@ -405,7 +405,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(TOP_REFERENCE_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
                 replacementMap.put("package", ENTITIES + "." + entityName);
                 replacementMap.put("name", org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities.lowercase1stLetter(entityName));
                 replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(entityName));
@@ -459,7 +459,7 @@ public class OmrsBeanGenerator {
 
         try {
             outputFileWriter = new FileWriter(fileName);
-            List<String> loopEntityLines = new ArrayList();
+            List<String> loopEntityLines = new ArrayList<>();
             reader = new BufferedReader(new FileReader(ENTITY_MAPPER_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
@@ -467,7 +467,7 @@ public class OmrsBeanGenerator {
                 line = reader.readLine();
             }
             reader.close();
-            Map<String, String> replacementMap = new HashMap();
+            Map<String, String> replacementMap = new HashMap<>();
             replacementMap.put("package", ENTITIES + "." + entityName);
             mapOMRSToOMAS("Entity", replacementMap, outputFileWriter, loopEntityLines, entityName);
         } finally {
@@ -489,7 +489,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(templateName));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
                 writeOMRSBeansAccessorFile(replacementMap, outputFileWriter, reader, line);
                 line = reader.readLine();
             }
@@ -514,7 +514,7 @@ public class OmrsBeanGenerator {
     private void writeOMRSBeansAccessorFile(Map<String, String> replacementMap, FileWriter outputFileWriter, BufferedReader reader, String line) throws IOException {
         Set<String> allEntities = omrsBeanModel.getOmrsBeanEntityAttributeMap().keySet();
         List<String> loopEntityLines = new ArrayList();
-        List<String> loopRelationshipLines = new ArrayList();
+        List<String> loopRelationshipLines = new ArrayList<>();
         if (line.contains("<$$$")) {
             // read all the lines in the loop
             String loopline = reader.readLine();
@@ -621,7 +621,7 @@ public class OmrsBeanGenerator {
             if (newLine.contains("<$$Attr$$")) {
                 loopArtifactCounter++;
                 // we have attribute code that we need to repeat
-                List<String> loopAttrLines = new ArrayList();
+                List<String> loopAttrLines = new ArrayList<>();
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {
                     //stash the lines for the loop and spit them out for each entity
@@ -679,10 +679,10 @@ public class OmrsBeanGenerator {
                                         attrValue = String.valueOf(attributeNumber);
                                     } else if (uppercaseattributeType.equals("LONG")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
-                                        attrValue = String.valueOf(attributeNumber);
+                                        attrValue = String.valueOf(attributeNumber) +"L";
                                     } else if (uppercaseattributeType.equals("FLOAT")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Float");
-                                        attrValue = String.valueOf(attributeNumber);
+                                        attrValue = String.valueOf(attributeNumber) + "f";
                                     } else if (uppercaseattributeType.equals("BOOLEAN")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Boolean");
                                         attrValue = String.valueOf(true);
@@ -752,10 +752,10 @@ public class OmrsBeanGenerator {
                                     attrValue = String.valueOf(attributeNumber);
                                 } else if (uppercaseattributeType.equals("LONG")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
-                                    attrValue = String.valueOf(attributeNumber);
+                                    attrValue = String.valueOf(attributeNumber) +"L";
                                 } else if (uppercaseattributeType.equals("FLOAT")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Float");
-                                    attrValue = String.valueOf(attributeNumber);
+                                    attrValue = String.valueOf(attributeNumber) + "f";
                                 } else {
                                     attrValue = "";
                                 }
@@ -832,7 +832,7 @@ public class OmrsBeanGenerator {
                 // TODO Lists
                 // TODO Maps
             } else if (newLine.contains("<$$ref$$")) {
-                List<String> loopRefLines = new ArrayList();
+                List<String> loopRefLines = new ArrayList<>();
                 loopArtifactCounter++;
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {
@@ -864,7 +864,7 @@ public class OmrsBeanGenerator {
                     }
                 }
             } else if (newLine.contains("<$$refList$$")) {
-                List<String> loopRefLines = new ArrayList();
+                List<String> loopRefLines = new ArrayList<>();
                 loopArtifactCounter++;
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {
@@ -942,7 +942,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(CLASSIFICATION_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
 
                 replacementMap.put("uname", uClassificationName);
                 replacementMap.put("name",classificationName);
@@ -967,7 +967,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(RELATIONSHIP_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
                 List<OmrsBeanAttribute> attrList = omrsBeanModel.getOmrsBeanRelationshipAttributeMap().get(uRelationshipName);
                 replacementMap.put("uname", uRelationshipName);
                 replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(GeneratorUtilities.uppercase1stLetter(relationshipName))));
@@ -995,8 +995,8 @@ public class OmrsBeanGenerator {
             outputFileWriter = new FileWriter(fileName);
 
             String label = omrsBeanRelationship.label;
-            Map<String, String> replacementMap = new HashMap();
-            List<String> loopRelationshipLines = new ArrayList();
+            Map<String, String> replacementMap = new HashMap<>();
+            List<String> loopRelationshipLines = new ArrayList<>();
             reader = new BufferedReader(new FileReader(RELATIONSHIP_MAPPER_TEMPLATE));
 
             String line = reader.readLine();
@@ -1031,7 +1031,7 @@ public class OmrsBeanGenerator {
                 String line = reader.readLine();
                 while (line != null) {
                     List<OmrsBeanAttribute> attrList = omrsBeanReference.attrList;
-                    Map<String, String> replacementMap = new HashMap();
+                    Map<String, String> replacementMap = new HashMap<>();
                     replacementMap.put("uname", omrsBeanReference.uReferenceName);
                     replacementMap.put("mytype", omrsBeanReference.myType);
                     replacementMap.put("othertype", omrsBeanReference.relatedEndType);
@@ -1068,7 +1068,7 @@ public class OmrsBeanGenerator {
         if (line.contains("<$$$")) {
             // read all the lines in the loop
             String loopline = reader.readLine();
-            List<String> loopLines = new ArrayList();
+            List<String> loopLines = new ArrayList<>();
             while (loopline != null) {
                 //stash the lines for the loop and spit them out for each attribute
                 if (loopline.contains("$$$>")) {
@@ -1111,11 +1111,11 @@ public class OmrsBeanGenerator {
     }
 
     private void writeAttributesToFile(List<OmrsBeanAttribute> attrList, Map<String, String> replacementMap, FileWriter outputFileWriter, BufferedReader reader, String line) throws IOException {
-        List<String> loopPropertyLines = new ArrayList();
-        List<String> loopAttrLines = new ArrayList();
-        List<String> loopEnumLines = new ArrayList();
-        List<String> loopMapLines = new ArrayList();
-        List<String> loopRelationshipLines = new ArrayList();
+        List<String> loopPropertyLines = new ArrayList<>();
+        List<String> loopAttrLines = new ArrayList<>();
+        List<String> loopEnumLines = new ArrayList<>();
+        List<String> loopMapLines = new ArrayList<>();
+        List<String> loopRelationshipLines = new ArrayList<>();
 
         if (line.contains("<$$$")) {
             // read all the lines in the loop
@@ -1253,14 +1253,14 @@ public class OmrsBeanGenerator {
         }
     }
     private void writeTopReferenceAttributesToFile(List<OmrsBeanAttribute> allProperties, Map<String, String> replacementMap, FileWriter outputFileWriter, BufferedReader reader, String line) throws IOException {
-        List<String> loopPropertyLines = new ArrayList();
-        List<String> loopSetAttrLines = new ArrayList();
-        List<String> loopListAttrLines = new ArrayList();
-        List<String> loopSingleAttrLines = new ArrayList();
+        List<String> loopPropertyLines = new ArrayList<>();
+        List<String> loopSetAttrLines = new ArrayList<>();
+        List<String> loopListAttrLines = new ArrayList<>();
+        List<String> loopSingleAttrLines = new ArrayList<>();
 
-        List<OmrsBeanAttribute> setProperties = new ArrayList();
-        List<OmrsBeanAttribute> listProperties = new ArrayList();
-        List<OmrsBeanAttribute> singleProperties = new ArrayList();
+        List<OmrsBeanAttribute> setProperties = new ArrayList<>();
+        List<OmrsBeanAttribute> listProperties = new ArrayList<>();
+        List<OmrsBeanAttribute> singleProperties = new ArrayList<>();
 
         // split out the properties
         for (OmrsBeanAttribute property : allProperties) {

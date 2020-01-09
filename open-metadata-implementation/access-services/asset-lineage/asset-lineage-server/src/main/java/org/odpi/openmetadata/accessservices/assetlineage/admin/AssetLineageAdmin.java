@@ -106,20 +106,21 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    null,
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (OMAGConfigurationErrorException error) {
             throw error;
         } catch (Throwable error) {
             auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
+            auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    auditCode.getUserAction(),
+                    error);
         }
     }
 
