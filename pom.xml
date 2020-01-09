@@ -169,8 +169,7 @@
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.3.1</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
-        <sleepycat.version>18.3.12</sleepycat.version>
-
+        <elasticsearch-rest-client.version>6.8.6</elasticsearch-rest-client.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
@@ -486,7 +485,7 @@
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-client</artifactId>
-                <version>6.8.6</version>
+                <version>${elasticsearch-rest-client.version}</version>
             </dependency>
 
             
