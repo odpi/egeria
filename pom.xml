@@ -164,7 +164,7 @@
         <tink.version>1.3.0-rc3</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
-        <commons-codec.version>1.13</commons-codec.version>
+        <commons-codec.version>1.14</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.3.1</oss.version>
