@@ -126,7 +126,7 @@
         <!-- Versions of dependent libraries -->
         <junit.platform.version>1.5.2</junit.platform.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.2.4</mockito.version>
         <testng.version>7.0.0</testng.version>
