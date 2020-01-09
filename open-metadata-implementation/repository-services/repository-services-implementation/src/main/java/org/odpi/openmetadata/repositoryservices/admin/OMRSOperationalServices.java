@@ -1155,13 +1155,14 @@ public class OMRSOperationalServices
                                 + errorCode.getFormattedErrorMessage(connectionName);
 
             OMRSAuditCode auditCode = OMRSAuditCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(methodName,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                                  null,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
