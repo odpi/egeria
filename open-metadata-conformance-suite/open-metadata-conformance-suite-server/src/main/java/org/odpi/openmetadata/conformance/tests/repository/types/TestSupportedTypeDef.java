@@ -233,7 +233,7 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
                         super.defaultProfileId,
                         super.defaultRequirementId);
 
-        verifyCondition(typeDef.equals(resultObject),
+        verifyCondition(( (typeDef.getVersion() != resultObject.getVersion()) || typeDef.equals(resultObject) ),
                         assertion15,
                         testTypeName + assertionMsg15,
                         super.defaultProfileId,
@@ -250,7 +250,7 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
                         super.defaultProfileId,
                         super.defaultRequirementId);
 
-        verifyCondition(typeDef.equals(resultObject),
+        verifyCondition(( (typeDef.getVersion() != resultObject.getVersion()) || typeDef.equals(resultObject) ),
                         assertion17,
                         testTypeName + assertionMsg17,
                         super.defaultProfileId,
@@ -268,7 +268,23 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
                         super.defaultProfileId,
                         super.defaultRequirementId);
 
-        verifyCondition(((resultList != null) && (resultList.contains(typeDef))),
+        /*
+         * Look in the result list for a typedef with the same name, and verify that it matches if it claims to be at the same version.
+         */
+        TypeDef typeDefFromGallery = null;
+        if (resultList != null && !resultList.isEmpty())
+        {
+            String typeDefName = typeDef.getName();
+            for (TypeDef td : resultList)
+            {
+                if (td.getName().equals(typeDefName))
+                {
+                    typeDefFromGallery = td;
+                    break;
+                }
+            }
+        }
+        verifyCondition(((resultList != null) && (!resultList.isEmpty()) && (typeDefFromGallery!= null) && ( (typeDef.getVersion() != resultObject.getVersion()) || typeDef.equals(resultObject) )),
                         assertion19,
                         testTypeName + assertionMsg19,
                         super.defaultProfileId,

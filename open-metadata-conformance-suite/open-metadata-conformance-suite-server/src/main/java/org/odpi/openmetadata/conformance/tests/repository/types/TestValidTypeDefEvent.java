@@ -5,13 +5,19 @@ package org.odpi.openmetadata.conformance.tests.repository.types;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType;
 
 import java.util.Date;
+
+import static org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType.UPDATED_TYPEDEF_EVENT;
 
 
 /**
@@ -47,7 +53,8 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
     private static final  String assertionMsg11 = "AttributeTypeDef supplied for AttributeTypeDef event.";
     private static final  String assertion12    = rootTestCaseId + "-12";
     private static final  String assertionMsg12 = "TypeDef null for AttributeTypeDef event.";
-
+    private static final  String assertion13    = rootTestCaseId + "-13";
+    private static final  String assertionMsg13 = "TypeDefPatch supplied for update event.";
 
     private static final String eventTypePropertyName             = "Event type";
     private static final String eventTimestampPropertyName        = "Event time stamp";
@@ -250,13 +257,13 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
                                   defaultProfileId,
                                   defaultRequirementId);
 
-            typeDef          = event.getTypeDef();
+
+            typeDef = event.getTypeDef();
             attributeTypeDef = event.getAttributeTypeDef();
 
             switch (eventType)
             {
                 case NEW_TYPEDEF_EVENT:
-                case UPDATED_TYPEDEF_EVENT:
                 case DELETED_TYPEDEF_EVENT:
                 case RE_IDENTIFIED_TYPEDEF_EVENT:
                     verifyCondition((typeDef != null),
@@ -281,6 +288,29 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
                                               defaultProfileId,
                                               defaultRequirementId);
                     }
+                    break;
+
+                case UPDATED_TYPEDEF_EVENT:
+                    /*
+                     * If this is a type update event then it does not have the (new) TypeDef available,
+                     * so verify that the event contains the patch.
+                     */
+                    TypeDefPatch typeDefPatch = event.getTypeDefPatch();
+                    verifyCondition((typeDefPatch != null),
+                                    assertion13,
+                                    assertionMsg13,
+                                    defaultProfileId,
+                                    defaultRequirementId);
+                    verifyCondition((typeDef == null),
+                                    assertion9,
+                                    assertionMsg9,
+                                    defaultProfileId,
+                                    defaultRequirementId);
+                    verifyCondition((attributeTypeDef == null),
+                                    assertion10,
+                                    assertionMsg10,
+                                    defaultProfileId,
+                                    defaultRequirementId);
                     break;
 
                 case NEW_ATTRIBUTE_TYPEDEF_EVENT:
