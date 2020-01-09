@@ -475,8 +475,21 @@
                 <artifactId>janusgraph-es</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId> org.elasticsearch.client</groupId>
+                        <artifactId>elasticsearch-rest-client</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>6.8.6</version>
+            </dependency>
+
+            
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
@@ -1962,12 +1975,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
                 <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-              <groupId>com.sleepycat</groupId>
-              <artifactId>je</artifactId>
-              <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>

@@ -40,10 +40,12 @@ public final class Constants {
     public static final String TERM_CATEGORIZATION = "TermCategorization";
     public static final String PORT_DELEGATION = "PortDelegation";
     public static final String PROCESS_PORT = "ProcessPort";
+    public static final String PORT_IMPLEMENTATION = "PortImplementation";
     public static final String LINEAGE_MAPPING = "LineageMapping";
     public static final String SCHEMA_TYPE = "SchemaType";
     public static final String PORT_SCHEMA = "PortSchema";
     public static final String NESTED_FILE = "NestedFile";
+    public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
 
     //Instance Properties fields
     public static final String TYPE = "dataType";
