@@ -159,7 +159,7 @@
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
+        <lucene-analyzers-common.version>8.4.0</lucene-analyzers-common.version>
         <guava.version>23.0</guava.version>
         <tink.version>1.3.0-rc2</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
