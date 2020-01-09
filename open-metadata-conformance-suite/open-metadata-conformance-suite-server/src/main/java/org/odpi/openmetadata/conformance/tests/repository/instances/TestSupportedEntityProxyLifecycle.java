@@ -39,34 +39,29 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String testCaseId = "repository-entity-reference-copy-lifecycle";
     private static final String testCaseName = "Repository entity reference copy lifecycle test case";
 
-    // TODO - renumber
+    private static final String assertion1     = testCaseId + "-01";
+    private static final String assertionMsg1  = " repository does not support entity types required for ends of relationship of type ";
 
-    private static final String assertion101     = testCaseId + "-101";
-    private static final String assertionMsg101  = " repository does not support entity types required for ends of relationship of type ";
+    private static final String assertion2     = testCaseId + "-2";
+    private static final String assertionMsg2  = " repository does not support creation of entity proxies for type ";
 
-    private static final String assertion102     = testCaseId + "-102";
-    private static final String assertionMsg102  = " repository does not support creation of entity proxies for type ";
+    private static final String assertion3     = testCaseId + "-03";
+    private static final String assertionMsg3  = " repository supports retrieval of entity proxy as an EntitySummary for type ";
 
-    //private static final String assertion103     = testCaseId + "-103";
-    //private static final String assertionMsg103  = " repository does not support retrieval of entity instance of type ";
+    private static final String assertion4     = testCaseId + "-04";
+    private static final String assertionMsg4  = " repository disallows retrieval of entity proxy as an EntityDetail for type ";
 
-    private static final String assertion104     = testCaseId + "-104";
-    private static final String assertionMsg104  = " repository supports retrieval of entity proxy as an EntitySummary for type ";
+    private static final String assertion5     = testCaseId + "-05";
+    private static final String assertionMsg5  = " repository disallows isEntityKnown for entity proxy for type ";
 
-    private static final String assertion105     = testCaseId + "-105";
-    private static final String assertionMsg105  = " repository disallows retrieval of entity proxy as an EntityDetail for type ";
+    private static final String assertion6     = testCaseId + "-06";
+    private static final String assertionMsg6  = " repository does not support creation of relationship instance for type ";
 
-    private static final String assertion106     = testCaseId + "-106";
-    private static final String assertionMsg106  = " repository disallows isEntityKnown for entity proxy for type ";
+    private static final String assertion7     = testCaseId + "-07";
+    private static final String assertionMsg7  = " repository supports soft delete of relationship instance for type ";
 
-    private static final String assertion107     = testCaseId + "-107";
-    private static final String assertionMsg107  = " repository does not support creation of relationship instance for type ";
-
-    private static final String assertion108     = testCaseId + "-108";
-    private static final String assertionMsg108  = " repository supports soft delete of relationship instance for type ";
-
-    private static final String assertion109     = testCaseId + "-109";
-    private static final String assertionMsg109  = " repository supports delete of entity proxy of type ";
+    private static final String assertion8     = testCaseId + "-08";
+    private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
 
     /*
@@ -273,8 +268,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
              */
             assertCondition((false),
-                            assertion101,
-                            testTypeName + assertionMsg101,
+                            assertion1,
+                            testTypeName + assertionMsg1,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
         }
@@ -400,8 +395,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity1Proxy);
 
             assertCondition((true),
-                            assertion102,
-                            assertionMsg102 + end1TypeName,
+                            assertion2,
+                            assertionMsg2 + end1TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
@@ -412,8 +407,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             /*
              * Report that the TUT does not support the creation of proxies - and do not pursue the test any further
              */
-            super.addNotSupportedAssertion(assertion102,
-                                           assertionMsg102 + end1TypeName,
+            super.addNotSupportedAssertion(assertion2,
+                                           assertionMsg2 + end1TypeName,
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
@@ -525,8 +520,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity2Proxy);
 
             assertCondition((true),
-                            assertion102,
-                            assertionMsg102 + end1TypeName,
+                            assertion2,
+                            assertionMsg2 + end1TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
@@ -537,8 +532,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             /*
              * Report that the TUT does not support the creation of proxies - and do not pursue the test any further
              */
-            super.addNotSupportedAssertion(assertion102,
-                                           assertionMsg102 + end1TypeName,
+            super.addNotSupportedAssertion(assertion2,
+                                           assertionMsg2 + end1TypeName,
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
@@ -558,13 +553,10 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         EntitySummary retrievedEntity1Summary = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
 
         assertCondition((retrievedEntity1Summary != null),
-                        assertion104,
-                         assertionMsg104 + end1TypeName,
+                        assertion3,
+                         assertionMsg3 + end1TypeName,
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
-
-
-        // TODO fix up all the requirement/profile references !!!
 
 
         /*
@@ -575,8 +567,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             EntityDetail retrievedEntity1Detail = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entity1.getGUID());
 
             assertCondition((false),
-                            assertion105,
-                            assertionMsg105 + end1TypeName,
+                            assertion4,
+                            assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
         }
@@ -584,8 +576,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         {
 
             assertCondition((true),
-                            assertion105,
-                            assertionMsg105 + end1TypeName,
+                            assertion4,
+                            assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
         }
@@ -598,8 +590,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         EntityDetail retrievedEntity1Detail = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
 
         assertCondition((retrievedEntity1Detail == null),
-                        assertion106,
-                        assertionMsg106 + end1TypeName,
+                        assertion5,
+                        assertionMsg5 + end1TypeName,
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
 
@@ -625,8 +617,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                  null);
 
             assertCondition((true),
-                            assertion107,
-                            assertionMsg107 + testTypeName,
+                            assertion6,
+                            assertionMsg6 + testTypeName,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
@@ -640,8 +632,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * Report the inability to create instances.
              */
 
-            super.addNotSupportedAssertion(assertion107,
-                                           assertionMsg107 + testTypeName,
+            super.addNotSupportedAssertion(assertion6,
+                                           assertionMsg6 + testTypeName,
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
@@ -661,16 +653,16 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                                          newRelationship.getGUID());
 
                 assertCondition(true,
-                                assertion108,
-                                assertionMsg108 + testTypeName,
+                                assertion7,
+                                assertionMsg7 + testTypeName,
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
 
             } catch (FunctionNotSupportedException exception) {
 
-                super.addNotSupportedAssertion(assertion108,
-                                               assertionMsg108 + testTypeName,
+                super.addNotSupportedAssertion(assertion7,
+                                               assertionMsg7 + testTypeName,
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
@@ -759,8 +751,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
 
             assertCondition((false),
-                    assertion109,
-                    assertionMsg109 + end1TypeName,
+                    assertion8,
+                    assertionMsg8 + end1TypeName,
                     RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                     RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
@@ -768,8 +760,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         catch (EntityNotKnownException exception) {
 
             assertCondition((true),
-                    assertion109,
-                    assertionMsg109 + end1TypeName,
+                    assertion8,
+                    assertionMsg8 + end1TypeName,
                     RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                     RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
         }
