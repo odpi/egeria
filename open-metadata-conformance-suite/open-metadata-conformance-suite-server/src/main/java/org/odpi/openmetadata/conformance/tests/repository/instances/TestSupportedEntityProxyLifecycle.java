@@ -32,12 +32,12 @@ import java.util.UUID;
 
 
 /**
- * Test that all defined entities can be saved as reference copies, that the copies support all (and only) valid operations, and that the copies can be purged.
+ * Test that all defined entities can be stored and retrieved as proxies, that the proxies support all (and only) valid operations, and that they can be deleted/purged.
  */
 public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId = "repository-entity-reference-copy-lifecycle";
-    private static final String testCaseName = "Repository entity reference copy lifecycle test case";
+    private static final String testCaseId = "repository-entity-proxy-lifecycle";
+    private static final String testCaseName = "Repository entity proxy lifecycle test case";
 
     private static final String assertion1     = testCaseId + "-01";
     private static final String assertionMsg1  = " repository does not support entity types required for ends of relationship of type ";
@@ -63,6 +63,20 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertion8     = testCaseId + "-08";
     private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
+
+    // TODO - renumber assertions
+
+    private static final String assertion9     = testCaseId + "-09";
+    private static final String assertionMsg9  = " entity proxy status cannot be updated ";
+
+    private static final String assertion10     = testCaseId + "-10";
+    private static final String assertionMsg10  = " entity proxy properties cannot be updated ";
+
+    private static final String assertion11     = testCaseId + "-11";
+    private static final String assertionMsg11  = " entity proxy type cannot be updated ";
+
+    private static final String assertion12     = testCaseId + "-12";
+    private static final String assertionMsg12  = " entity proxy identity cannot be updated ";
 
     /*
      * This testcase:
@@ -596,15 +610,164 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
 
 
+        /*
+         * Verify that operations that should not be valid on a proxy are correctly disallowed.
+         * These tests are all performed on the E1 proxy.
+         *
+         * It SHOULD NOT be possible to perform any of the following operations.
+         */
+
+        /*
+         * If the entity def has any valid status values (including DELETED), attempt
+         * to modify the status of the entity proxy - this should fail
+         */
+
+        for (InstanceStatus validInstanceStatus : end1Type.getValidInstanceStatusList()) {
+
+            try {
+
+                EntityDetail updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), entity1.getGUID(), validInstanceStatus);
+
+                assertCondition((false),
+                                assertion9,
+                                testTypeName + assertionMsg9,
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+
+            }
+            catch (InvalidParameterException e) {
+                /*
+                 * We are not expecting the status update to work - it should have thrown an InvalidParameterException
+                 */
+
+                assertCondition((true),
+                                assertion9,
+                                testTypeName + assertionMsg9,
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+            }
+
+        }
+
+        /*
+         * Attempt to modify one or more property of the entity proxy. This is illegal so it should fail.
+         */
+
+
+        if ((entity1.getProperties() != null) &&
+                (entity1.getProperties().getInstanceProperties() != null) &&
+                (!entity1.getProperties().getInstanceProperties().isEmpty())) {
+            InstanceProperties minEntityProps = super.getMinPropertiesForInstance(workPad.getLocalServerUserId(), end1Type);
+
+            try {
+
+                EntityDetail minPropertiesEntity = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(), entity1.getGUID(), minEntityProps);
+
+                assertCondition((false),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+
+            }
+            catch (InvalidParameterException e) {
+                /*
+                 * We are not expecting the status update to work - it should have thrown an InvalidParameterException
+                 */
+
+                assertCondition((true),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+            }
+
+        }
+
+
+        /*
+         * Verify that it is not possible to re-type the entity proxy.
+         * This test is performed using the same type as the original - the repository should not get as far as
+         * even looking at the type or considering changing it. For simplicity of testcode this test therefore
+         * uses the original type.
+         * This test is performed against the TUT.
+         */
+
+        try {
+
+            EntityDetail reTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
+                                                                         entity1.getGUID(),
+                                                                         end1Type,
+                                                                         end1Type); // see comment above about using original type
+
+            assertCondition((false),
+                            assertion11,
+                            testTypeName + assertionMsg11,
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+
+        }
+        catch (InvalidParameterException e)
+        {
+
+            /*
+             * We are not expecting the type update to work - it should have thrown an InvalidParameterException
+             */
+
+            assertCondition((true),
+                            assertion11,
+                            testTypeName + assertionMsg11,
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+        }
+
+
+
+        /*
+         * Verify that it is not possible to re-identify the entity proxy.
+         * This test is performed using a different GUID to the original. The actual value should not be looked at
+         * by the repository - it should reject the re-identify attempt prior to that.
+         * This test is performed against the TUT.
+         */
+
+        try {
+
+            EntityDetail reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
+                                                                                  end1Type.getGUID(),
+                                                                                  end1Type.getName(),
+                                                                                  entity1.getGUID(),
+                                                                                  UUID.randomUUID().toString());
+
+
+            assertCondition((false),
+                            assertion12,
+                            testTypeName + assertionMsg12,
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+
+        }
+        catch (InvalidParameterException e)
+        {
+
+            /*
+             * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
+             */
+
+            assertCondition((true),
+                            assertion12,
+                            testTypeName + assertionMsg12,
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+        }
+
+
+
 
 
 
         /*
          * Create a relationship between the proxy and the local entity, entity2
          */
-
-
-
 
         Relationship newRelationship = null;
 
@@ -718,7 +881,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
 
         /*
-         * Test that the reference copy has been removed from the TUT repository
+         * Test that the entity proxy has been removed from the TUT repository
          */
 
         /*
@@ -743,8 +906,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         /*
          * By now we have given this enough retries that it is either gone or is deemed to have failed....make one or other assertion
-         * There is no specific CTS requirement for delete of a proxy - so reusing the STORE_ENTITY_PROXIES requirement, making deletion
-         * part of what a repository needs to support to be able to claim 'storage'.
          */
 
         try {
@@ -753,8 +914,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             assertCondition((false),
                     assertion8,
                     assertionMsg8 + end1TypeName,
-                    RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId());
 
         }
         catch (EntityNotKnownException exception) {
@@ -762,8 +923,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             assertCondition((true),
                     assertion8,
                     assertionMsg8 + end1TypeName,
-                    RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId());
         }
 
 
@@ -801,7 +962,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
 
 
-        super.setSuccessMessage("Reference copies of entities can be managed through their lifecycle");
+        super.setSuccessMessage("Entity proxies can be managed through their lifecycle");
 
 
     }
