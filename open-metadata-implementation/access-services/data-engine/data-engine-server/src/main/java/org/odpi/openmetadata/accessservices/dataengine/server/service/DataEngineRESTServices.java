@@ -713,7 +713,6 @@ public class DataEngineRESTServices {
                 if (updateSemantic == UpdateSemantic.REPLACE) {
                     deleteObsoletePorts(userId, serverName, portImplementationGUIDs, processGUID,
                             PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, response);
-
                     deleteObsoletePorts(userId, serverName, portAliasGUIDs, processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response);
                 }
             }

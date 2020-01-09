@@ -156,7 +156,7 @@ public class CategoryFVT
         CategorySummary parentCategory = new CategorySummary();
         parentCategory.setGuid(parentGuid);
         category.setParentCategory(parentCategory);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
+        Category newCategory = subjectAreaCategory.createCategory(this.userId, category);
         FVTUtils.validateNode(newCategory);
 
         System.out.println("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
@@ -169,7 +169,7 @@ public class CategoryFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
+        Category newCategory = subjectAreaCategory.createCategory(this.userId, category);
         FVTUtils.validateNode(newCategory);
         System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
@@ -182,7 +182,7 @@ public class CategoryFVT
     }
 
     private Category issueCreateCategory(Category category) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
-        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
+        Category newCategory = subjectAreaCategory.createCategory(this.userId, category);
         if (newCategory != null)
         {
             System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
@@ -203,7 +203,7 @@ public class CategoryFVT
 
     public Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category category = subjectAreaCategory.getCategoryByGuid(serverName,this.userId, guid);
+        Category category = subjectAreaCategory.getCategoryByGuid(this.userId, guid);
         FVTUtils.validateNode(category);
         System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
         return category;
@@ -211,7 +211,6 @@ public class CategoryFVT
     public List<Category> findCategories(String criteria) throws SubjectAreaCheckedExceptionBase
     {
         List<Category> categories = subjectAreaCategory.findCategory(
-                serverName,
                 this.userId,
                 criteria,
                 null,
@@ -223,7 +222,7 @@ public class CategoryFVT
     }
     public Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
     {
-        Category updatedCategory = subjectAreaCategory.updateCategory(serverName,this.userId, guid, category);
+        Category updatedCategory = subjectAreaCategory.updateCategory(this.userId, guid, category);
         FVTUtils.validateNode(updatedCategory);
         System.out.println("Updated Category name to " + updatedCategory.getName());
         return updatedCategory;
@@ -231,13 +230,13 @@ public class CategoryFVT
 
     public Category deleteCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category deletedCategory = subjectAreaCategory.deleteCategory(serverName,this.userId, guid);
+        Category deletedCategory = subjectAreaCategory.deleteCategory(this.userId, guid);
         System.out.println("Deleted Category name is " + deletedCategory.getName());
         return deletedCategory;
     }
     public Category restoreCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category restoredCategory = subjectAreaCategory.restoreCategory(serverName,this.userId, guid);
+        Category restoredCategory = subjectAreaCategory.restoreCategory(this.userId, guid);
         FVTUtils.validateNode(restoredCategory);
         System.out.println("restored Category name is " + restoredCategory.getName());
         return restoredCategory;
@@ -245,11 +244,11 @@ public class CategoryFVT
 
     public void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeCategory(serverName,this.userId, guid);
+        subjectAreaCategory.purgeCategory(this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public List<Line> getCategoryRelationships(Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaCategory.getCategoryRelationships(serverName,this.userId,
+        return subjectAreaCategory.getCategoryRelationships(this.userId,
                 category.getSystemAttributes().getGUID(),
                 null,
                 0,

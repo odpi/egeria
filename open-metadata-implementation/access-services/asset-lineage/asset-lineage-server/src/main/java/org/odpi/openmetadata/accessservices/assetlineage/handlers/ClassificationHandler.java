@@ -102,7 +102,7 @@ public class ClassificationHandler {
     }
 
         private boolean checkLineageClassificationTypes (EntityDetail entityDetail){
-            for (String classificationType : qualifiedLineageClassifications) {
+            for (String classificationType : immutableQualifiedLineageClassifications) {
                 if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType))) {
                     return true;
                 }
@@ -124,7 +124,7 @@ public class ClassificationHandler {
 
             if (classifiedEntity.getStatus() == InstanceStatus.ACTIVE) {
                 for (Classification classification : classifiedEntity.getClassifications()) {
-                    if (qualifiedLineageClassifications.contains(classification.getName())) {
+                    if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
 
                         LineageEntity lineageClassificationEntity = new LineageEntity();
                         lineageClassificationEntity.setGuid(classifiedEntity.getGUID());
