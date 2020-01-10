@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
 
 /**
  * OMAGServerConfigResource returns the current configuration document for the server.  If the
@@ -33,7 +34,7 @@ public class ConfigResource
     public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                             @PathVariable String serverName)
     {
-        return adminAPI.getStoredConfiguration(userId, serverName);
+        return createSpringResponse(adminAPI.getStoredConfiguration(userId, serverName));
     }
 
 
@@ -52,7 +53,7 @@ public class ConfigResource
                                             @PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
     {
-        return adminAPI.setOMAGServerConfig(userId, serverName, omagServerConfig);
+        return createSpringResponse(adminAPI.setOMAGServerConfig(userId, serverName, omagServerConfig));
     }
 
 
@@ -72,6 +73,6 @@ public class ConfigResource
                                                @PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)
     {
-        return adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatform);
+        return createSpringResponse(adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatform));
     }
 }

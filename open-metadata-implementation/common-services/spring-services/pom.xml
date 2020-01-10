@@ -6,38 +6,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>admin-services</artifactId>
+        <artifactId>common-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.4-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Administration Services with Spring</name>
+    <name>Repository Handler Services</name>
     <description>
-        The administration services with Spring module uses Spring to implement a RESTful service
-        for the administration services server.
+        Common services for managing OMAG Service instances running in hte OMAG Server Platform.
     </description>
 
-    <artifactId>admin-services-spring</artifactId>
+    <artifactId>spring-services</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
         </dependency>
 
         <dependency>
@@ -46,8 +33,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>spring-services</artifactId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
     </dependencies>

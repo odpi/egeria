@@ -31,6 +31,7 @@
         <module>ocf-metadata-management</module>
         <module>odf-metadata-management</module>
         <module>gaf-metadata-management</module>
+        <module>spring-services</module>
     </modules>
 
     <dependencies>

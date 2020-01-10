@@ -6,6 +6,8 @@ import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigPropertiesResource provides part of the server-side implementation of the administrative interface for
  * an Open Metadata and Governance (OMAG) Server.  In particular, this resource supports the configuration
@@ -34,7 +36,7 @@ public class ConfigPropertiesResource
                                       @PathVariable String serverName,
                                       @RequestParam String typeName)
     {
-        return adminAPI.setServerType(userId, serverName, typeName);
+        return createSpringResponse(adminAPI.setServerType(userId, serverName, typeName));
     }
 
 
@@ -54,7 +56,7 @@ public class ConfigPropertiesResource
                                             @PathVariable String serverName,
                                             @RequestParam String name)
     {
-        return adminAPI.setOrganizationName(userId, serverName, name);
+        return createSpringResponse(adminAPI.setOrganizationName(userId, serverName, name));
     }
 
 
@@ -74,7 +76,7 @@ public class ConfigPropertiesResource
                                         @PathVariable String serverName,
                                         @RequestParam String id)
     {
-        return adminAPI.setServerUserId(userId, serverName, id);
+        return createSpringResponse(adminAPI.setServerUserId(userId, serverName, id));
     }
 
 
@@ -94,7 +96,7 @@ public class ConfigPropertiesResource
                                           @PathVariable String serverName,
                                           @RequestParam String password)
     {
-        return adminAPI.setServerPassword(userId, serverName, password);
+        return createSpringResponse(adminAPI.setServerPassword(userId, serverName, password));
     }
 
 
@@ -114,6 +116,6 @@ public class ConfigPropertiesResource
                                        @PathVariable String  serverName,
                                        @RequestParam int     limit)
     {
-        return adminAPI.setMaxPageSize(userId, serverName, limit);
+        return createSpringResponse(adminAPI.setMaxPageSize(userId, serverName, limit));
     }
 }

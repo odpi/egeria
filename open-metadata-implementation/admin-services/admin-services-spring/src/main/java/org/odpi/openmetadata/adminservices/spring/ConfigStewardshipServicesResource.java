@@ -7,6 +7,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigStewardshipServicesResource provides the API for configuring the stewardship services in an OMAG
  * server.
@@ -33,7 +35,7 @@ public class ConfigStewardshipServicesResource
                                                 @PathVariable String serverName,
                                                 @RequestParam String accessServiceRootURL)
     {
-        return adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL);
+        return createSpringResponse(adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL));
     }
 
 
@@ -53,7 +55,7 @@ public class ConfigStewardshipServicesResource
                                                    @PathVariable String serverName,
                                                    @RequestParam String accessServiceServerName)
     {
-        return adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName);
+        return createSpringResponse(adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName));
     }
 
 
@@ -73,7 +75,7 @@ public class ConfigStewardshipServicesResource
                                                     @PathVariable String     serverName,
                                                     @RequestBody  Connection connection)
     {
-        return adminAPI.setInboundRequestConnection(userId, serverName, connection);
+        return createSpringResponse(adminAPI.setInboundRequestConnection(userId, serverName, connection));
     }
 
 
@@ -89,6 +91,6 @@ public class ConfigStewardshipServicesResource
     VoidResponse deleteService(@PathVariable String userId,
                                @PathVariable String serverName)
     {
-        return adminAPI.deleteService(userId, serverName);
+        return createSpringResponse(adminAPI.deleteService(userId, serverName));
     }
 }

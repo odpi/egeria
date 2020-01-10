@@ -8,6 +8,8 @@ import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigAccessServicesResource provides the configuration for setting up the Open Metadata
  * Conformance Suite services in an OMAG server.
@@ -36,7 +38,7 @@ public class ConfigConformanceSuiteServicesResource
                                                                   @PathVariable String serverName,
                                                                   @RequestBody RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
-        return adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, repositoryConformanceWorkbenchConfig);
+        return createSpringResponse(adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, repositoryConformanceWorkbenchConfig));
     }
 
 
@@ -58,7 +60,7 @@ public class ConfigConformanceSuiteServicesResource
                                                                 @PathVariable String         serverName,
                                                                 @RequestBody  URLRequestBody requestBody)
     {
-        return adminAPI.enablePlatformConformanceSuiteWorkbench(userId, serverName, requestBody);
+        return createSpringResponse(adminAPI.enablePlatformConformanceSuiteWorkbench(userId, serverName, requestBody));
     }
 
 
@@ -76,7 +78,7 @@ public class ConfigConformanceSuiteServicesResource
     public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    userId,
                                                                   @PathVariable String    serverName)
     {
-        return adminAPI.disableRepositoryConformanceSuiteServices(userId, serverName);
+        return createSpringResponse(adminAPI.disableRepositoryConformanceSuiteServices(userId, serverName));
     }
 
 
@@ -94,7 +96,7 @@ public class ConfigConformanceSuiteServicesResource
     public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    userId,
                                                                 @PathVariable String    serverName)
     {
-        return adminAPI.disablePlatformConformanceSuiteServices(userId, serverName);
+        return createSpringResponse(adminAPI.disablePlatformConformanceSuiteServices(userId, serverName));
     }
 
 
@@ -112,6 +114,6 @@ public class ConfigConformanceSuiteServicesResource
     public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    userId,
                                                               @PathVariable String    serverName)
     {
-        return adminAPI.disableAllConformanceSuiteWorkbenches(userId, serverName);
+        return createSpringResponse(adminAPI.disableAllConformanceSuiteWorkbenches(userId, serverName));
     }
 }

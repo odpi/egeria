@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * OperationalServicesResource provides the REST API for controlling the start up, management and
  * shutdown of services in the OMAG Server.
@@ -38,7 +40,7 @@ public class OperationalServicesResource
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
-        return operationalServices.activateWithStoredConfig(userId, serverName);
+        return createSpringResponse(operationalServices.activateWithStoredConfig(userId, serverName));
     }
 
 
@@ -59,7 +61,7 @@ public class OperationalServicesResource
                                                              @PathVariable String           serverName,
                                                              @RequestBody  OMAGServerConfig configuration)
     {
-        return operationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
+        return createSpringResponse(operationalServices.activateWithSuppliedConfig(userId, serverName, configuration));
     }
 
 
@@ -76,7 +78,7 @@ public class OperationalServicesResource
     public VoidResponse deactivateTemporarily(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.deactivateTemporarily(userId, serverName);
+        return createSpringResponse(operationalServices.deactivateTemporarily(userId, serverName));
     }
 
 
@@ -94,7 +96,7 @@ public class OperationalServicesResource
     public VoidResponse deactivatePermanently(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.deactivatePermanently(userId, serverName);
+        return createSpringResponse(operationalServices.deactivatePermanently(userId, serverName));
     }
 
 
@@ -118,7 +120,7 @@ public class OperationalServicesResource
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {
-        return operationalServices.getActiveConfiguration(userId, serverName);
+        return createSpringResponse(operationalServices.getActiveConfiguration(userId, serverName));
     }
 
 
@@ -138,6 +140,6 @@ public class OperationalServicesResource
                                                    @PathVariable String serverName,
                                                    @RequestBody  String fileName)
     {
-        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+        return createSpringResponse(operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName));
     }
 }

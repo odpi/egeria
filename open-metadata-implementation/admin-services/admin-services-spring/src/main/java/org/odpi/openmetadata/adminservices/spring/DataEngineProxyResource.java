@@ -7,6 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.DataEnginePr
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * DataEngineProxyResource provides the API for configuring a data engine proxy in an OMAG
  * server.
@@ -32,7 +34,7 @@ public class DataEngineProxyResource {
                                                  @PathVariable String                serverName,
                                                  @RequestBody  DataEngineProxyConfig dataEngineProxyConfig)
     {
-        return adminAPI.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig);
+        return createSpringResponse(adminAPI.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig));
     }
 
     /**
@@ -46,7 +48,7 @@ public class DataEngineProxyResource {
     public VoidResponse deleteDataEngineProxy(@PathVariable String userId, 
                                               @PathVariable String serverName)
     {
-        return adminAPI.deleteDataEngineProxy(userId, serverName);
+        return createSpringResponse(adminAPI.deleteDataEngineProxy(userId, serverName));
     }
 
 }

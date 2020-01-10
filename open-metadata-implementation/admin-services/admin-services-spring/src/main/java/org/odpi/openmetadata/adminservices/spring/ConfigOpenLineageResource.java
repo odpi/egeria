@@ -7,6 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageS
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigAccessServicesResource provides the configuration for setting up the Open Metadata Access
  * Services (OMASs).
@@ -31,7 +33,7 @@ public class ConfigOpenLineageResource
                                                 @PathVariable String serverName,
                                                 @RequestBody OpenLineageServerConfig openLineageServerConfig)
     {
-        return adminAPI.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
+        return createSpringResponse(adminAPI.setOpenLineageConfig(userId, serverName, openLineageServerConfig));
     }
 
 
@@ -39,6 +41,6 @@ public class ConfigOpenLineageResource
     public VoidResponse enableOpenLineageServices(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {
-        return adminAPI.enableOpenLineageService(userId, serverName);
+        return createSpringResponse(adminAPI.enableOpenLineageService(userId, serverName));
     }
 }

@@ -9,6 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigStoreResource provides the API to configure the destination that should be used to manage
  * configuration documents.  The default is to use a file for each configured OMAG server.
@@ -33,7 +35,7 @@ public class ConfigStoreResource
     public VoidResponse setConfigurationStoreConnection(@PathVariable String     userId,
                                                         @RequestBody  Connection connection)
     {
-        return adminStoreAPI.setConfigurationStoreConnection(userId, connection);
+        return createSpringResponse(adminStoreAPI.setConfigurationStoreConnection(userId, connection));
     }
 
 
@@ -48,7 +50,7 @@ public class ConfigStoreResource
 
     public ConnectionResponse getConfigurationStoreConnection(@PathVariable String       userId)
     {
-        return adminStoreAPI.getConfigurationStoreConnection(userId);
+        return createSpringResponse(adminStoreAPI.getConfigurationStoreConnection(userId));
     }
 
 
@@ -62,6 +64,6 @@ public class ConfigStoreResource
 
     public  VoidResponse clearConfigurationStoreConnection(@PathVariable String   userId)
     {
-        return adminStoreAPI.clearConfigurationStoreConnection(userId);
+        return createSpringResponse(adminStoreAPI.clearConfigurationStoreConnection(userId));
     }
 }

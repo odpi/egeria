@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigAccessServicesResource provides the configuration for setting up the Open Metadata Access
  * Services (OMASs).
@@ -35,7 +37,7 @@ public class ConfigAccessServicesResource
     public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String              userId,
                                                                       @PathVariable String              serverName)
     {
-        return adminAPI.getConfiguredAccessServices(userId, serverName);
+        return createSpringResponse(adminAPI.getConfiguredAccessServices(userId, serverName));
     }
 
 
@@ -58,7 +60,7 @@ public class ConfigAccessServicesResource
                                                @PathVariable                   String              serviceURLMarker,
                                                @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAccessService(userId, serverName, serviceURLMarker, accessServiceOptions);
+        return createSpringResponse(adminAPI.configureAccessService(userId, serverName, serviceURLMarker, accessServiceOptions));
     }
 
 
@@ -79,7 +81,7 @@ public class ConfigAccessServicesResource
                                              @PathVariable                  String              serverName,
                                              @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.enableAccessServices(userId, serverName, accessServiceOptions);
+        return createSpringResponse(adminAPI.enableAccessServices(userId, serverName, accessServiceOptions));
     }
 
 
@@ -97,7 +99,7 @@ public class ConfigAccessServicesResource
     public VoidResponse disableAccessServices(@PathVariable String          userId,
                                               @PathVariable String          serverName)
     {
-        return adminAPI.disableAccessServices(userId, serverName);
+        return createSpringResponse(adminAPI.disableAccessServices(userId, serverName));
     }
 
 
@@ -117,7 +119,7 @@ public class ConfigAccessServicesResource
                                                 @PathVariable String                    serverName,
                                                 @RequestBody  List<AccessServiceConfig> accessServicesConfig)
     {
-        return adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig);
+        return createSpringResponse(adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig));
     }
 
 
@@ -139,6 +141,6 @@ public class ConfigAccessServicesResource
                                                   @PathVariable String                 serverName,
                                                   @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)
     {
-        return adminAPI.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+        return createSpringResponse(adminAPI.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig));
     }
 }

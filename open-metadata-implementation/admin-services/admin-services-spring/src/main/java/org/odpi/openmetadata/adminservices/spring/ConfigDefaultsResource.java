@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigDefaultsResource sets properties in the configuration document that are used as
  * default values when configuring the subsystems in an OMAG Server.  If these values
@@ -41,7 +43,7 @@ public class ConfigDefaultsResource
                                          @PathVariable String serverName,
                                          @RequestParam String url)
     {
-        return adminAPI.setServerURLRoot(userId, serverName, url);
+        return createSpringResponse(adminAPI.setServerURLRoot(userId, serverName, url));
     }
 
 
@@ -70,6 +72,6 @@ public class ConfigDefaultsResource
                                     @RequestParam(required = false) String              topicURLRoot,
                                     @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
-        return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
+        return createSpringResponse(adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties));
     }
 }

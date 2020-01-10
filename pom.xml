@@ -1063,6 +1063,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>spring-services</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>gaf-metadata-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

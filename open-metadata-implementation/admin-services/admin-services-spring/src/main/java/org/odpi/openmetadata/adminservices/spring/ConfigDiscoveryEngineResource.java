@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigDiscoveryEngineResource provides the API for configuring the discovery engine services.
  * These services support the operation of one or more discovery engines in an OMAG server.
@@ -35,7 +37,7 @@ public class ConfigDiscoveryEngineResource
                                                 @PathVariable String serverName,
                                                 @RequestBody  String accessServiceRootURL)
     {
-        return adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL);
+        return createSpringResponse(adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL));
     }
 
 
@@ -55,7 +57,7 @@ public class ConfigDiscoveryEngineResource
                                                    @PathVariable String serverName,
                                                    @RequestBody  String accessServiceServerName)
     {
-        return adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName);
+        return createSpringResponse(adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName));
     }
 
 
@@ -75,7 +77,7 @@ public class ConfigDiscoveryEngineResource
                                             @PathVariable String       serverName,
                                             @RequestBody  List<String> discoveryEngines)
     {
-        return adminAPI.setDiscoveryEngines(userId, serverName, discoveryEngines);
+        return createSpringResponse(adminAPI.setDiscoveryEngines(userId, serverName, discoveryEngines));
     }
 
 
@@ -91,6 +93,6 @@ public class ConfigDiscoveryEngineResource
     VoidResponse deleteService(@PathVariable String userId,
                                @PathVariable String serverName)
     {
-        return adminAPI.deleteService(userId, serverName);
+        return createSpringResponse(adminAPI.deleteService(userId, serverName));
     }
 }

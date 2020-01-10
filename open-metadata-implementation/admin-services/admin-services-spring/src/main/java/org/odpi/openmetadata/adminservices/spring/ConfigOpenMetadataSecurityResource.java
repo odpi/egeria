@@ -10,6 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 /**
  * ConfigOpenMetadataSecurityResource provides the API to configure the security connector that validates
  * platform requests that do not reference an OMAG server.  These requests are used by the
@@ -34,7 +36,7 @@ public class ConfigOpenMetadataSecurityResource
     public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
                                                       @RequestBody  PlatformSecurityRequestBody requestBody)
     {
-        return adminSecurityAPI.setPlatformSecurityConnection(userId, requestBody);
+        return createSpringResponse(adminSecurityAPI.setPlatformSecurityConnection(userId, requestBody));
     }
 
 
@@ -49,7 +51,7 @@ public class ConfigOpenMetadataSecurityResource
 
     public ConnectionResponse getPlatformSecurityConnection(@PathVariable String       userId)
     {
-        return adminSecurityAPI.getPlatformSecurityConnection(userId);
+        return createSpringResponse(adminSecurityAPI.getPlatformSecurityConnection(userId));
     }
 
 
@@ -63,7 +65,7 @@ public class ConfigOpenMetadataSecurityResource
 
     public  VoidResponse clearPlatformSecurityConnection(@PathVariable String   userId)
     {
-        return adminSecurityAPI.clearPlatformSecurityConnection(userId);
+        return createSpringResponse(adminSecurityAPI.clearPlatformSecurityConnection(userId));
     }
 
 
@@ -81,7 +83,7 @@ public class ConfigOpenMetadataSecurityResource
                                                                  @PathVariable String       serverName,
                                                                  @RequestBody  Connection   connection)
     {
-          return adminSecurityAPI.setServerSecurityConnection(userId, serverName, connection);
+          return createSpringResponse(adminSecurityAPI.setServerSecurityConnection(userId, serverName, connection));
     }
 
 
@@ -97,7 +99,7 @@ public class ConfigOpenMetadataSecurityResource
     public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       userId,
                                                                        @PathVariable  String       serverName)
     {
-        return adminSecurityAPI.getServerSecurityConnection(userId, serverName);
+        return createSpringResponse(adminSecurityAPI.getServerSecurityConnection(userId, serverName));
     }
 
 
@@ -114,6 +116,6 @@ public class ConfigOpenMetadataSecurityResource
     public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   userId,
                                                                    @PathVariable  String   serverName)
     {
-        return adminSecurityAPI.clearServerSecurityConnection(userId, serverName);
+        return createSpringResponse(adminSecurityAPI.clearServerSecurityConnection(userId, serverName));
     }
 }

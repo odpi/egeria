@@ -7,6 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.Virtualizati
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class VirtualizationResource
@@ -27,14 +29,14 @@ public class VirtualizationResource
                                                 @PathVariable String               serverName,
                                                 @RequestBody  VirtualizationConfig virtualizationConfig)
     {
-        return adminAPI.setVirtualizerConfig(userId, serverName, virtualizationConfig);
+        return createSpringResponse(adminAPI.setVirtualizerConfig(userId, serverName, virtualizationConfig));
     }
 
     @PostMapping(path = "/virtualization-service")
     public VoidResponse enableVirtualizationService(@PathVariable String userId,
                                                     @PathVariable String serverName)
     {
-        return adminAPI.enableVirtualizationService(userId, serverName);
+        return createSpringResponse(adminAPI.enableVirtualizationService(userId, serverName));
     }
 
 }

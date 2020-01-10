@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import static org.odpi.openmetadata.commonservices.spring.SpringUtils.createSpringResponse;
+
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class SecurityOfficerResource {
@@ -34,13 +36,13 @@ public class SecurityOfficerResource {
                                                 @PathVariable String serverName,
                                                 @RequestBody  SecurityOfficerConfig securityOfficerConfig)
     {
-        return adminAPI.setSecurityOfficerConfig(userId, serverName, securityOfficerConfig);
+        return createSpringResponse(adminAPI.setSecurityOfficerConfig(userId, serverName, securityOfficerConfig));
     }
 
     @PostMapping(path = "/security-officer-service")
     public VoidResponse enableSecuritySyncService(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {
-        return adminAPI.enableSecurityOfficerService(userId, serverName);
+        return createSpringResponse(adminAPI.enableSecurityOfficerService(userId, serverName));
     }
 }
