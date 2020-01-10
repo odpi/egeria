@@ -9,24 +9,12 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
-import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
-import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
-import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.*;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
@@ -326,12 +314,12 @@ public class MainGraphConnectorHelper {
         Iterator originalProperties = originalVertex.properties();
         while (originalProperties.hasNext()) {
             Property originalProperty = (Property) originalProperties.next();
-            if (returnedPropertiesWhiteList.contains(originalProperty.key())) {
+            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
                 //If this property key is present in filterPrefixMap, remove the "ve" prefix. If it is not in this map,
                 //use the original value. This discrepancy between the whitelist and the filtermap can happen because
                 //at the moment the "ve" prefix is used inconsistently for the main graph properties.
-                if (filterPrefixMap.containsKey(originalProperty.key()))
-                    attributes.put(filterPrefixMap.get(originalProperty.key()), originalProperty.value().toString());
+                if (immutableFilterPrefixMap.containsKey(originalProperty.key()))
+                    attributes.put(immutableFilterPrefixMap.get(originalProperty.key()), originalProperty.value().toString());
                 else
                     attributes.put(originalProperty.key(), originalProperty.value().toString());
             }

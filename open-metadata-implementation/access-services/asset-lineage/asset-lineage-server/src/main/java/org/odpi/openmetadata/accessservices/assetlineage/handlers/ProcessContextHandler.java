@@ -211,9 +211,10 @@ public class ProcessContextHandler {
                                                                                                        UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result.addAll(getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                           processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                           entityDetail.getType().getTypeDefName()));
+            result.addAll(getRelationshipsBetweenEntities(userId,
+                                                          entityDetail.getGUID(),
+                                                          immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                          entityDetail.getType().getTypeDefName()));
         }
         return  !result.isEmpty();
     }
@@ -230,9 +231,10 @@ public class ProcessContextHandler {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
-            List<EntityDetail> tabularSchemaType = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                                                                                        processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                        entityDetail.getType().getTypeDefName());
+            List<EntityDetail> tabularSchemaType = getRelationshipsBetweenEntities(userId,
+                                                                                   entityDetail.getGUID(),
+                                                                                   immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                   entityDetail.getType().getTypeDefName());
             Optional<EntityDetail> first = tabularSchemaType.stream().findFirst();
             result.add(first.orElse(null));
         }
@@ -253,7 +255,7 @@ public class ProcessContextHandler {
 
             List<EntityDetail>  newListOfEntityDetails = getRelationshipsBetweenEntities(userId,
                                                                                          entityDetail.getGUID(),
-                                                                                         processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                         immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                                                                          entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }

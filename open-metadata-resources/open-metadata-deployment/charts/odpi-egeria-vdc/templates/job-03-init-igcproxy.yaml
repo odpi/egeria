@@ -150,8 +150,8 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
-                --data '{"ibm.igc.services.host": "'"${IBMIGC_HOST}"'", "ibm.igc.services.port": "'"${IBMIGC_PORT}"'", "ibm.igc.username": "'"${IBMIGC_USER}"'", "ibm.igc.password": "'"${IBMIGC_PASS}"'"}'
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/mode/repository-proxy/connection
+                --data '{"class":"Connection","connectorType":{"class":"ConnectorType","connectorProviderClassName":"org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider"},"endpoint":{"class":"Endpoint","address":"'"${IBMIGC_HOST}:${IBMIGC_PORT}"'","protocol":"https"},"userId":"'"${IBMIGC_USER}"'","clearPassword":"'"${IBMIGC_PASS}"'","configurationProperties":{"defaultZones":["default"]}}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/cohorts/${EGERIA_COHORT}

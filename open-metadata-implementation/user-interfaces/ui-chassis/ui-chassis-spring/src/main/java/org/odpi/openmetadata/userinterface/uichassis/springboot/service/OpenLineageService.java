@@ -16,7 +16,6 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -64,12 +63,8 @@ public class OpenLineageService {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
         return processResponse(response);
     }
@@ -85,12 +80,8 @@ public class OpenLineageService {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, Scope.END_TO_END, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
         return processResponse(response);
     }
@@ -106,15 +97,11 @@ public class OpenLineageService {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
-        return processResponse(response);
 
+        return processResponse(response);
     }
 
     /**
@@ -128,13 +115,10 @@ public class OpenLineageService {
         LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, Scope.GLOSSARY, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
+
         return processResponse(response);
     }
 
@@ -146,17 +130,13 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
     public Map<String, List> getSourceAndDestination(String userId, View view, String guid)  {
-        LineageVerticesAndEdges response =
-                null;
+        LineageVerticesAndEdges response = null;
         try {
             response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
-        } catch (InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (PropertyServerException e) {
-            e.printStackTrace();
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error(e.getErrorMessage(), e);
         }
+
         return processResponse(response);
     }
 

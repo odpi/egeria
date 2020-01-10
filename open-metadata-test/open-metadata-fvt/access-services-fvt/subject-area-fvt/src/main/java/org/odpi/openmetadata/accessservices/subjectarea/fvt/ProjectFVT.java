@@ -152,7 +152,7 @@ public class ProjectFVT
     }
 
     public Project issueCreateProject(Project project) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
-        Project newProject = subjectAreaProject.createProject(serverName,this.userId, project);
+        Project newProject = subjectAreaProject.createProject(this.userId, project);
         if (newProject != null)
         {
             System.out.println("Created Project " + newProject.getName() + " with guid " + newProject.getSystemAttributes().getGUID());
@@ -174,7 +174,6 @@ public class ProjectFVT
     public List<Project> findProjects(String criteria) throws SubjectAreaCheckedExceptionBase
     {
         List<Project> projects = subjectAreaProject.findProject(
-                serverName,
                 this.userId,
                 criteria,
                 null,
@@ -186,20 +185,20 @@ public class ProjectFVT
     }
 
     public  Project getProjectByGUID(String guid) throws SubjectAreaCheckedExceptionBase {
-        Project project = subjectAreaProject.getProjectByGuid(serverName, this.userId, guid);
+        Project project = subjectAreaProject.getProjectByGuid(this.userId, guid);
         FVTUtils.validateNode(project);
         System.out.println("Got Project " + project.getName() + " with guid " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
 
         return project;
     }
     public  List<Term> getProjectTerms(String guid) throws SubjectAreaCheckedExceptionBase {
-        List<Term> terms = subjectAreaProject.getProjectTerms(serverName, this.userId, guid,null);
+        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid,null);
         System.out.println("Got terms from project with guid " + guid);
         return terms;
     }
     public  Project updateProject(String guid, Project project) throws SubjectAreaCheckedExceptionBase
     {
-        Project updatedProject = subjectAreaProject.updateProject(serverName,this.userId, guid, project);
+        Project updatedProject = subjectAreaProject.updateProject(this.userId, guid, project);
         FVTUtils.validateNode(updatedProject);
         System.out.println("Updated Project name to " + updatedProject.getName());
         return updatedProject;
@@ -207,14 +206,14 @@ public class ProjectFVT
 
     public Project deleteProject(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Project deletedProject = subjectAreaProject.deleteProject(serverName,this.userId, guid);
+        Project deletedProject = subjectAreaProject.deleteProject(this.userId, guid);
         FVTUtils.validateNode(deletedProject);
         System.out.println("Deleted Project name is " + deletedProject.getName());
         return deletedProject;
     }
     public Project restoreProject(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Project restoredProject = subjectAreaProject.restoreProject(serverName,this.userId, guid);
+        Project restoredProject = subjectAreaProject.restoreProject(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
         System.out.println("Restored Project name is " + restoredProject.getName());
         return restoredProject;
@@ -222,11 +221,11 @@ public class ProjectFVT
 
     public  void purgeProject(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaProject.purgeProject(serverName,this.userId, guid);
+        subjectAreaProject.purgeProject(this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public List<Line> getProjectRelationships(Project project) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaProject.getProjectRelationships(serverName,this.userId,
+        return subjectAreaProject.getProjectRelationships(this.userId,
                 project.getSystemAttributes().getGUID(),
                 null,
                 0,

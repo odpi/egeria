@@ -102,19 +102,21 @@ spec:
 {{ end }}
 {{ end }}
       initContainers:
-# TODO: Eventually replace the temporary release retrieval below with a package-managed retrieval mechanism
         - name: init-connector
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           command:
             - "/bin/bash"
             - "-c"
             - >
                 cd /opt/egeria/connectors &&
-                wget https://odpi.jfrog.io/odpi/egeria-snapshot-local/org/odpi/egeria/egeria-connector-ibm-information-server-package/1.3-SNAPSHOT/egeria-connector-ibm-information-server-package-1.3-SNAPSHOT.jar
+                wget ${IBMIGC_CONNECTOR_URL}
           volumeMounts:
             - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume

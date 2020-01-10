@@ -648,10 +648,12 @@ public enum OMRSAuditCode
                       "No action required.  This message is for information only."),
 
     TYPE_IDENTIFIER_MISMATCH("OMRS-AUDIT-0305",
-                      OMRSAuditLogRecordSeverity.ERROR,
-                      "The local server has detected a conflict with an existing type called {0} with a unique identifier of {1}. This does not match the type name {2} and unique identifier {3} passed to it on a request",
-                      "The local server will be no longer be able to manage metadata instances of this type.",
-                      "This is a serious error since it may cause metadata to be corrupted.  " +
+                      OMRSAuditLogRecordSeverity.ACTION,
+                      "The local server has detected a conflict with an existing type called {0} with a unique identifier of {1}. This does not " +
+                                     "match the type name {2} and unique identifier {3} passed to it on a request from {4}",
+                      "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                      "This suggests that two types with the same name have been defined in the cohort. This is a serious error since it may cause " +
+                                     "metadata to be corrupted.  " +
                                      "First check the caller to ensure it is operating properly.  " +
                                      "Then investigate the source of the type and any other errors."),
 
@@ -668,6 +670,95 @@ public enum OMRSAuditCode
                          "Details of the conflicts and the steps necessary to repair the situation can be found in the audit log. " +
                                  "Work to resolve the conflict as soon as possible since this will prevent exchange of " +
                                  "instances for this type of metadata."),
+
+    NULL_TYPE_IDENTIFIER("OMRS-AUDIT-0308",
+                             OMRSAuditLogRecordSeverity.ACTION,
+                             "The local server has detected a type called {0} from {1} with a null unique identifier.",
+                             "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                             "This is a serious error since it may cause " +
+                                     "metadata to be corrupted.  " +
+                                     "First check the caller to ensure it is operating properly.  " +
+                                     "Then investigate the source of the type and any other errors."),
+
+    NULL_TYPE_NAME("OMRS-AUDIT-0309",
+                         OMRSAuditLogRecordSeverity.ACTION,
+                         "The local server has detected a type from {0} with a null unique name. The supplied unique identifier for the type is {1}.",
+                         "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                         "This suggests that two types with the same name have been defined in the cohort. This is a serious error since it may cause " +
+                                 "metadata to be corrupted.  " +
+                                 "First check the caller to ensure it is operating properly.  " +
+                                 "Then investigate the source of the type and any other errors."),
+
+    UNKNOWN_TYPE("OMRS-AUDIT-0310",
+                   OMRSAuditLogRecordSeverity.ACTION,
+                   "The local server has been asked to process a request from {0} containing an unrecognized type {1} ({2}).",
+                   "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                   "This suggests that two types with the same name have been defined in the cohort. This is a serious error since it may cause " +
+                           "metadata to be corrupted.  " +
+                           "First check the caller to ensure it is operating properly.  " +
+                           "Then investigate the source of the type and any other errors."),
+
+    NULL_TYPE_CATEGORY("OMRS-AUDIT-0311",
+                 OMRSAuditLogRecordSeverity.ACTION,
+                 "The local server has been asked to process a request from {0} containing a type {1} ({2}) with a null type category.",
+                 "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                 "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
+                         "First check the caller to ensure it is operating properly.  " +
+                         "Then investigate the source of the type and any other errors."),
+
+    UNKNOWN_TYPE_CATEGORY("OMRS-AUDIT-0312",
+                       OMRSAuditLogRecordSeverity.ACTION,
+                       "The local server has been asked to process a request from {0} containing a type {1} ({2}) with an unexpected type category " +
+                                  "of {3}.  The local type definition has a category of {4}.",
+                       "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                       "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
+                               "First check the caller to ensure it is operating properly.  " +
+                               "Then investigate the source of the type and any other errors."),
+
+    NULL_TYPE("OMRS-AUDIT-0313",
+                       OMRSAuditLogRecordSeverity.ACTION,
+                       "The local server method {0} has been asked to process a request from {1} that contains a null type.",
+                       "The immediate request fails. The local server will not be able to manage metadata instances with a null type from this " +
+                      "source.",
+                       "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
+                               "First check the caller to ensure it is operating properly.  " +
+                               "Then investigate the source of the type and any other errors."),
+
+    TYPE_VERSION_MISMATCH("OMRS-AUDIT-0314",
+              OMRSAuditLogRecordSeverity.ACTION,
+              "The local server has been asked to process a request from {0} containing a containing an instance with type {1} ({2}) of category " +
+                             "{3} but a version of {4}.  The locally supported version is {5}",
+              "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
+              "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
+                      "First check the caller to ensure it is operating properly.  " +
+                      "Then investigate the source of the type and any other errors."),
+
+    NULL_INSTANCE_ID("OMRS-AUDIT-0315",
+                     OMRSAuditLogRecordSeverity.ACTION,
+                     "The local server has been asked to process a request from {0} containing a containing an instance with type {1} " +
+                             "({2}) of category {3} but a null unique identifier (GUID).",
+                     "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
+                     "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
+                             "First check the caller to ensure it is operating properly.  " +
+                             "Then investigate the source of the type and any other errors."),
+
+    NULL_METADATA_COLLECTION_ID("OMRS-AUDIT-0316",
+                     OMRSAuditLogRecordSeverity.ACTION,
+                     "The local server method {0} has been asked to process a request from {1} containing an instance with unique " +
+                               "identifier {2} and type {3} ({4}) of category {5} but a null unique home metadata collection identifier (GUID).",
+                     "The immediate request fails. The local server will not be able to manage metadata instances with a null metadata " +
+                                        "collection GUID because it is not clear which repository has update rights..",
+                     "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
+                             "First check the caller to ensure it is operating properly.  " +
+                             "Then investigate the source of the type and any other errors."),
+
+    NULL_INSTANCE("OMRS-AUDIT-0317",
+                     OMRSAuditLogRecordSeverity.ACTION,
+                     "The local server method {0} has been asked to process a request from {1} containing a containing a null instance",
+                     "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
+                     "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
+                             "First check the caller to ensure it is operating properly.  " +
+                             "Then investigate the source of the type and any other errors."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                       OMRSAuditLogRecordSeverity.ERROR,

@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 
@@ -23,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "class")
 public class LineageEvent extends AssetLineageEventHeader {
 
     private Map<String, Set<GraphContext>> assetContext;
