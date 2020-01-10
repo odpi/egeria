@@ -104,7 +104,7 @@ public enum ConformanceSuiteAuditCode
 
     TEST_CASE_COMPLETED_SUCCESSFULLY("CONFORMANCE-SUITE-0014",
              OMRSAuditLogRecordSeverity.INFO,
-             "The Open Metadata Conformance Test Case {0} has complete with {1} successful assertions, {2} unsuccessful assertions, {3} unexpected exceptions and {4} discovered properties.  The message on completion was: {5}",
+             "The Open Metadata Conformance Test Case {0} has completed with {1} successful assertions, {2} unsuccessful assertions, {3} unexpected exceptions and {4} discovered properties.  The message on completion was: {5}",
              "The Open Metadata Conformance Test Case has completed running its tests. Retrieve the report to find out more details.",
              "No action is required.  This is part of the normal operation of the service."),
 
