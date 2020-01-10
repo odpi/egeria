@@ -109,7 +109,7 @@ The jar can now be found in the target directory of the open-lineage-janus-conne
 Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
 
 2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
-run the default call for setting the server URL, eventbus and the cohort.
+run the default calls for setting the server URL, eventbus and the cohort.
 
 3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
@@ -159,7 +159,7 @@ With the following body:
 4. Enable the Open Lineage Services by issuing the following HTTP request:
 
 ```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage
 ```
 
 5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
