@@ -442,6 +442,19 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}/tools</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${basedir}/src/main/resources/public</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
