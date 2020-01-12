@@ -97,10 +97,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             if (attributeTypeDefs != null) {
                 for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
                     TestSupportedAttributeTypeDef testAttributeTypeDef = new TestSupportedAttributeTypeDef(workPad,
-                            attributeTypeDef,
-                            null,
-                            RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                                                                                                           attributeTypeDef,
+                                                                                                           null,
+                                                                                                           RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
+                                                                                                           RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
                     attributeTypeDefTestCases.add(testAttributeTypeDef);
                 }
@@ -109,10 +109,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             if (typeDefs != null) {
                 for (TypeDef typeDef : typeDefs) {
                     TestSupportedTypeDef testTypeDef = new TestSupportedTypeDef(workPad,
-                            typeDef,
-                            null,
-                            RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                                                                                typeDef,
+                                                                                null,
+                                                                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
+                                                                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
                     typeDefTestCases.add(testTypeDef);
                 }
@@ -153,6 +153,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              */
             List<TestSupportedEntityReferenceCopyLifecycle> entityReferenceCopyTestCases = new ArrayList<>();
             List<TestSupportedRelationshipReferenceCopyLifecycle> relationshipReferenceCopyTestCases = new ArrayList<>();
+            List<TestSupportedEntityProxyLifecycle> entityProxyTestCases = new ArrayList<>();
             List<TestSupportedReferenceCopyClassificationLifecycle> referenceCopyClassificationTestCases = new ArrayList<>();
 
             /*
@@ -299,6 +300,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipTestCases.add(testRelationshipLifecycle);
 
+                    /* It might seem like entity proxy tests should be incarnated in the entity test loop above - but we want a relationship def to test that a proxy can be used */
+                    TestSupportedEntityProxyLifecycle testEntityProxyLifecycle = new TestSupportedEntityProxyLifecycle(workPad, entityDefs, relationshipDef);
+                    entityProxyTestCases.add(testEntityProxyLifecycle);
+
                     TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
 
@@ -380,6 +385,15 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             for (TestSupportedReferenceCopyClassificationLifecycle testCase : referenceCopyClassificationTestCases) {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+
+            /*
+             * Validate all the entity proxies
+             */
+            for (TestSupportedEntityProxyLifecycle testCase : entityProxyTestCases) {
                 testCase.executeTest();
                 testCase.cleanTest();
             }
