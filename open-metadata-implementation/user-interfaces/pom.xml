@@ -25,10 +25,21 @@
     <artifactId>user-interfaces</artifactId>
 
     <packaging>pom</packaging>
-    <modules>
-        <module>ui-admin-services</module>
-        <module>ui-chassis</module>
-    </modules>
 
+    <!-- UI is built as long as skipUI isn't set -->
+    <profiles>
+        <profile>
+            <id>ui</id>
+            <activation>
+                <property>
+                    <name>!skipUI</name>
+                </property>
+            </activation>
+            <modules>
+                <module>ui-admin-services</module>
+                <module>ui-chassis</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
