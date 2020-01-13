@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -422,6 +423,55 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
     }
 
+
+    /**
+     * Return only the unique properties for the properties defined in the TypeDef and all of its supertypes.
+     *
+     * @param userId calling user
+     * @param typeDef  the definition of the type
+     * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
+     */
+    protected InstanceProperties  getAllUniquePropertiesForInstance(String userId, TypeDef typeDef) throws Exception
+    {
+        InstanceProperties   properties = null;
+
+        // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
+        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
+
+        if (allTypeDefAttributes != null)
+        {
+            Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
+
+
+            for (TypeDefAttribute  typeDefAttribute : allTypeDefAttributes)
+            {
+                String                   attributeName = typeDefAttribute.getAttributeName();
+                AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
+                AttributeTypeDefCategory category = attributeType.getCategory();
+
+                if (typeDefAttribute.isUnique()) {
+                    switch (category) {
+                        case PRIMITIVE:
+                            PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                            propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                            break;
+                    }
+                }
+            }
+
+            if (! propertyMap.isEmpty())
+            {
+                properties = new InstanceProperties();
+                properties.setInstanceProperties(propertyMap);
+            }
+        }
+
+        return properties;
+
+    }
+
+
     /**
      * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes.
      *
@@ -582,6 +632,41 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         return metadataCollection.addEntity(userId, entityDef.getGUID(), properties, null, null );
     }
 
+    /**
+     * Adds an entity proxy of the requested type to the repository.
+     *
+     * @param userId userId for the new entity
+     * @param metadataCollection metadata connection to access the repository
+     * @param entityDef type of entity to create
+     * @return string - entity proxy's GUID
+     * @throws Exception error in create
+     */
+    public String addEntityProxyToRepository(String                   userId,
+                                             OMRSMetadataCollection   metadataCollection,
+                                             EntityDef                entityDef,
+                                             String                   homeMetadataCollectionId) throws Exception
+    {
+        /*
+         * Supply all unique properties for the instance, including those inherited from supertypes, since they may be mandatory.
+         */
+        InstanceProperties uniqueProperties = this.getAllUniquePropertiesForInstance(userId, entityDef);
+
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+
+        EntityProxy entityProxy =  repositoryHelper.getNewEntityProxy(cohortRepositoryConnector.getRepositoryName(),
+                                                                      homeMetadataCollectionId,
+                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                      userId,
+                                                                      entityDef.getName(),
+                                                                      uniqueProperties,
+                                                                      null);
+
+
+        metadataCollection.addEntityProxy(userId, entityProxy);
+
+        return entityProxy.getGUID();
+
+    }
 
 
 
