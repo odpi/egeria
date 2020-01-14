@@ -21,6 +21,7 @@
     </description>
 
     <artifactId>ui-chassis-spring</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <node.version>v12.14.1</node.version>
@@ -331,128 +332,133 @@
                 <polymer.build>es6-bundled</polymer.build>
             </properties>
         </profile>
-        <profile>
-            <id>user-interface</id>
-            <activation>
-                <!--
-                To skip UI (deactivate this profile) specify the skipUI system property
-                mvn clean install -DskipUI
-                -->
-                <property>
-                    <name>!skipUI</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>install node and npm</id>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                                <configuration>
-                                    <nodeVersion>${node.version}</nodeVersion>
-                                    <npmVersion>${npm.version}</npmVersion>
-                                    <workingDirectory>tools</workingDirectory>
-                                    <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
-                                    <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>install polymer-cli</id>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install polymer-cli --prefix .</arguments>
-                                    <workingDirectory>tools</workingDirectory>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>npm install</id>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install ../src/main/static --prefix .</arguments>
-                                    <workingDirectory>tools</workingDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <executions>
-                            <execution>
-                                <id>Polymer build</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${basedir}/tools/node/node</executable>
-                                    <arguments>
-                                        <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
-                                        <argument>build</argument>
-                                    </arguments>
-                                    <workingDirectory>${basedir}/src/main/static</workingDirectory>
-                                    <environmentVariables>
-                                        <NODE_OPTIONS>--max_old_space_size=4096</NODE_OPTIONS>
-                                    </environmentVariables>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-resources</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <overwrite>true</overwrite>
-                                    <outputDirectory>${basedir}/src/main/resources/public</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${basedir}/src/main/static/build/dev</directory>
-                                            <!--<directory>${basedir}/src/main/static/build/es6-bundled</directory>-->
-                                            <filtering>true</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
     </profiles>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                            <workingDirectory>tools</workingDirectory>
+                            <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
+                            <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install polymer-cli</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install polymer-cli --prefix .</arguments>
+                            <workingDirectory>tools</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install ../src/main/static --prefix .</arguments>
+                            <workingDirectory>tools</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>Polymer build</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/tools/node/node</executable>
+                            <arguments>
+                                <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
+                                <argument>build</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}/src/main/static</workingDirectory>
+                            <environmentVariables>
+                                <NODE_OPTIONS>--max_old_space_size=4096</NODE_OPTIONS>
+                            </environmentVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- Copies 'dev' output from polymer build into target/classes, from where the maven jar plugin
+                will build the jar to be deployed. Runs just before packaging -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources-from-dev</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                            <outputDirectory>${project.build.outputDirectory}/public</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/static/build/dev</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <!-- Ideally to cleanup for repeatability, but can take
+                        a while especially on slow networks. See isssue #2350, #2398  -->
+                        <!--fileset>
+                            <directory>${basedir}/tools</directory>
+                        </fileset-->
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/public</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/build</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
@@ -461,12 +467,10 @@
                         <exclude>**/tools/**</exclude>
                         <exclude>**/resources/public/**</exclude>
                         <exclude>**/resources/**</exclude>
-                        <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
                         <exclude>**/docs/**</exclude>
                         <exclude>**/build/**</exclude>
-                        <!--<exclude>**/src/*</exclude>-->
-                        <!--<exclude>**/*.json</exclude>-->
+
                         <exclude>**/banner.txt</exclude>
                         <exclude>tools/polymer*</exclude>
                         <exclude>**/.vscode*/**</exclude>
@@ -475,7 +479,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -485,7 +488,6 @@
                     </classpathDependencyExcludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -498,14 +500,21 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- Egeria ui admin needs to be in the component scan -->
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*
+                                </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>javax.xml.bind:*jaxb*</ignoredUnusedDeclaredDependency>
                                 <!-- springfox added for swagger UI -->
-                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui
+                                </ignoredUnusedDeclaredDependency>
                                 <!-- Spring enablement - false positives from dependency checker -->
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-data-jpa:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springframework.boot:spring-boot-starter-security:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springframework.boot:spring-boot-starter-data-jpa:*
+                                </ignoredUnusedDeclaredDependency>
                                 <!-- runtime database -->
                                 <ignoredUnusedDeclaredDependency>com.h2database:h2:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
@@ -515,5 +524,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
