@@ -24,9 +24,9 @@
     <packaging>jar</packaging>
 
     <properties>
-        <node.version>v10.12.0</node.version>
+        <node.version>v12.14.1</node.version>
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
-        <npm.version>6.4.1</npm.version>
+        <npm.version>6.13.4</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
     </properties>
 
@@ -395,6 +395,9 @@
                                 <argument>build</argument>
                             </arguments>
                             <workingDirectory>${basedir}/src/main/static</workingDirectory>
+                            <environmentVariables>
+                                <NODE_OPTIONS>--max_old_space_size=4096</NODE_OPTIONS>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                 </executions>
