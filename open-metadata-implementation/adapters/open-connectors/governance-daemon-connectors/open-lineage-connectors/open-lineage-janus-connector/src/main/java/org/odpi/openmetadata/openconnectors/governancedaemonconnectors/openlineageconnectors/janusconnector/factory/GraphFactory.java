@@ -79,12 +79,12 @@ public class GraphFactory extends IndexingFactory {
             Set<String> vertexLabels = new HashSet<>();
             Set<String> relationshipsLabels = new HashSet<>();
 
-            if (graphType.equals("buffer")){
+            if (graphType.equals("bufferGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
             }
 
-            if(graphType.equals("main")){
+            if(graphType.equals("mainGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsMainGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsMainGraph.class);
             }
@@ -98,7 +98,7 @@ public class GraphFactory extends IndexingFactory {
             createIndexes(janusGraph,graphType);
             return janusGraph;
         } catch (Exception e) {
-            log.error("{} Caught exception during graph initialize operation", "open");
+            log.error("{} failed  during graph initialize operation with error: {}", graphType,e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
@@ -144,11 +144,11 @@ public class GraphFactory extends IndexingFactory {
     }
 
     private void createIndexes(JanusGraph janusGraph,String graphType){
-        if (graphType.equals("buffer")) {
+        if (graphType.equals("bufferGraph")) {
             createIndexesBuffer(janusGraph);
         }
 
-        if (graphType.equals("main")) {
+        if (graphType.equals("mainGraph")) {
             createIndexesMainGraph(janusGraph);
         }
     }

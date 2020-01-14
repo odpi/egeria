@@ -54,7 +54,6 @@ public class MainGraphMapper {
             log.error("Something went wrong during the Janus transaction",e.getMessage());
             //TODO throw  exception
             bufferGraph.tx().rollback();
-
         }
     }
 
@@ -135,11 +134,11 @@ public class MainGraphMapper {
 
         //find a query for filefolder parent
         if(tableAsset.hasNext()){
-            newVertex.property(PROPERTY_NAME_TABLE_DISPLAY_NAME,tableAsset.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property("vertex--InstancePropdisplayName").value());
         }
 
         if(schema.hasNext()){
-            newVertex.property(PROPERTY_NAME_SCHEMA_DISPLAY_NAME,schema.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property("vertex--InstancePropdisplayName").value());
         }
 
 //        if(db != null){
@@ -196,7 +195,7 @@ public class MainGraphMapper {
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
         final String processName = process.value(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
 
-        if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
+        if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
         }
 
@@ -207,13 +206,14 @@ public class MainGraphMapper {
                     .property(PROPERTY_KEY_DISPLAY_NAME, processName)
                     .next();
 
-            columnInVertex.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, subProcess);
-            subProcess.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, columnOutVertex);
+            columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
+            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOutVertex);
+            columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,columnOutVertex);
 
             Iterator<Vertex> processTopLevel = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,process.property(PROPERTY_KEY_ENTITY_GUID).value());
             if(processTopLevel.hasNext()){
                 Vertex mainProcess  = processTopLevel.next();
-                subProcess.addEdge(EDGE_LABEL_SUBPROCESS_TO_PROCESS,mainProcess);
+                subProcess.addEdge(EDGE_LABEL_INCLUDED_IN,mainProcess);
                 mainG.tx().commit();
 
                 addTableNode(columnInVertex,columnOutVertex,mainProcess);
@@ -224,7 +224,7 @@ public class MainGraphMapper {
                 mainProcess.property(PROPERTY_KEY_ENTITY_NODE_ID, processGuid);
                 mainProcess.property(PROPERTY_KEY_ENTITY_GUID, processGuid);
                 mainProcess.property(PROPERTY_KEY_DISPLAY_NAME, processName);
-                subProcess.addEdge(EDGE_LABEL_SUBPROCESS_TO_PROCESS,mainProcess);
+                subProcess.addEdge(EDGE_LABEL_INCLUDED_IN,mainProcess);
 
                 mainG.tx().commit();
 
@@ -253,6 +253,12 @@ public class MainGraphMapper {
         addTableRelationships(bufferG,mainG,tableIn,process,columnInVertex);
         addTableRelationships(bufferG,mainG,tableOut,process,columnOutVertex);
 
+        //TODO check if exists first if it does do not add
+        String tablesEdgesGuid = tableIn.property(PROPERTY_KEY_ENTITY_GUID).value().toString().concat(tableOut.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
+
+        if (!mainG.V().property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid).hasNext()){
+            tableIn.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,tableOut).property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid);
+        }
         bufferG.tx().commit();
         mainG.tx().commit();
     }
@@ -283,9 +289,9 @@ public class MainGraphMapper {
     private void addTableRelationships(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex table,Vertex process,Vertex column){
 
         getGlossaryTerm(mainG,bufferG,table);
-        Iterator<Vertex> tableVertex = mainG.V(table.id()).outE(EDGE_LABEL_TABLE_AND_PROCESS).otherV();
+        Iterator<Vertex> tableVertex = mainG.V(table.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV();
         if(!tableVertex.hasNext()){
-            table.addEdge(EDGE_LABEL_TABLE_AND_PROCESS,process);
+            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
         }
 
         Iterator<Vertex> columnVertex = mainG.V(column.id()).outE(EDGE_LABEL_INCLUDED_IN).inV().has(PROPERTY_KEY_ENTITY_GUID, table.property(PROPERTY_KEY_ENTITY_GUID).value());

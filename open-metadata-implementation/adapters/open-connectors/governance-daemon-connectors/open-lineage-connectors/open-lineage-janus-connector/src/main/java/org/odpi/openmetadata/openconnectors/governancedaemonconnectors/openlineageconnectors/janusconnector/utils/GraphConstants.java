@@ -38,8 +38,8 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_ALTERNATIVE_DISPLAY_NAME = "InstancePropdisplayName";
     public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
-    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
-    public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayname";
+    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayNname";
+    public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayName";
     public static final String PROPERTY_NAME_FORMULA = "formula";
     public static final String PROPERTY_NAMEPROCESS_DESCRIPTION_URI = "descriptionURI";
     public static final String PROPERTY_NAME_PROCESS_TYPE = "processType";
@@ -63,6 +63,9 @@ public class GraphConstants {
     public static final String EDGE_LABEL_SUBPROCESS_TO_PROCESS = "subProcess";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
+    public static final String EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS = "DataFlowWithoutProcess";
+    public static final String EDGE_LABEL_DATAFLOW_WITH_PROCESS = "DataFlowWithProcess";
+
 
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
@@ -78,6 +81,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_ENTITY_CREATE_TIME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CREATE_TIME;
     public static final String PROPERTY_KEY_ENTITY_UPDATED_BY = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_UPDATED_BY;
     public static final String PROPERTY_KEY_ENTITY_UPDATE_TIME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_UPDATE_TIME;
+    public static final String PROPERTY_KEY_SCHEMA_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_TABLE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_TABLE_DISPLAY_NAME;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;
@@ -145,6 +150,8 @@ public class GraphConstants {
         corePropertyTypes.put(PROPERTY_NAME_UPDATE_TIME, "java.lang.Date");
         corePropertyTypes.put(PROPERTY_NAME_LABEL,JAVA_STRING);
         corePropertyTypes.put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
+        corePropertyTypes.put(PROPERTY_NAME_NODE_ID,JAVA_STRING);
+
     }
 
     public static final ImmutableMap<String,String> immutableCorePropertyTypes = ImmutableMap.copyOf(corePropertyTypes);
