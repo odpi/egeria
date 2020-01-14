@@ -49,12 +49,14 @@ public class AssetContextHandler {
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
+     * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
     public AssetContextHandler(String serviceName,
                                String serverName,
                                InvalidParameterHandler invalidParameterHandler,
                                OMRSRepositoryHelper repositoryHelper,
-                               RepositoryHandler repositoryHandler) {
+                               RepositoryHandler repositoryHandler,
+                               List<String> supportedZones) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;

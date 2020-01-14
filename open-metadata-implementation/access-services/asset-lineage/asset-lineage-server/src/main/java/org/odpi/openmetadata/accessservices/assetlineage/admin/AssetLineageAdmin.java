@@ -68,14 +68,14 @@ public class AssetLineageAdmin extends AccessServiceAdmin
         try {
             this.auditLog = auditLog;
 
-            //TODO add proper zones
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(),
                     auditLog);
 
             this.instance = new AssetLineageServicesInstance(repositoryConnector,
                     supportedZones,
-                    auditLog);
+                    auditLog,
+                    serverUserName);
             this.serverName = instance.getServerName();
 
 
