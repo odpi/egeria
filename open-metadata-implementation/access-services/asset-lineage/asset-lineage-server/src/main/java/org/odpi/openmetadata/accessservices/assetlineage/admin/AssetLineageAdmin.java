@@ -87,10 +87,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin
 
                 omrsTopicListener = new AssetLineageOMRSTopicListener(
                         accessServiceConfig.getAccessServiceOutTopic(),
-                        repositoryConnector.getRepositoryValidator(),
                         repositoryConnector.getRepositoryHelper(),
-                        accessServiceConfig.getAccessServiceName(),
-                        supportedZones,
                         auditLog,
                         serverUserName,
                         serverName);
