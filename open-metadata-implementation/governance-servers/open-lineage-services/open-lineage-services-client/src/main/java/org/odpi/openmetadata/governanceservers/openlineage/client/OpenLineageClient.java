@@ -8,7 +8,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 
@@ -44,13 +43,12 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
      */
     public LineageVerticesAndEdges lineage(String userId,
                                            Scope scope,
-                                           View view,
                                            String guid,
                                            String displayNameMustContain,
                                            boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.lineage";
-        LineageQueryParameters postBody = new LineageQueryParameters(scope, view, displayNameMustContain, includeProcesses);
+        LineageQueryParameters postBody = new LineageQueryParameters(scope, displayNameMustContain, includeProcesses);
 
         LineageResponse lineageResponse = callPostRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES, postBody, serverName, userId, guid);

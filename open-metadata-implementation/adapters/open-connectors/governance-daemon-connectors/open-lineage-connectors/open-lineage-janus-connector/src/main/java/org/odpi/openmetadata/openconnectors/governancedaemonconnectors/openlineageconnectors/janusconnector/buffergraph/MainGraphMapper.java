@@ -134,11 +134,11 @@ public class MainGraphMapper {
 
         //find a query for filefolder parent
         if(tableAsset.hasNext()){
-            newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
         if(schema.hasNext()){
-            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
 //        if(db != null){
@@ -193,7 +193,7 @@ public class MainGraphMapper {
         GraphTraversalSource mainG = mainGraph.traversal();
 
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
-        final String processName = process.value(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        final String processName = process.value(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
 
         if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
