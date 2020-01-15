@@ -38,11 +38,11 @@ class AssetLineageView extends PolymerElement {
     </vaadin-tabs>
     
     <div>
-        <vaadin-select id="viewsMenu" value="column-view" >
+        <vaadin-select id="processMenu" value="exclude-processes" >
           <template>
             <vaadin-list-box>
-              <vaadin-item value="column-view" selected="true">Column View</vaadin-item>
-              <vaadin-item value="table-view">Table View</vaadin-item>
+              <vaadin-item value="exclude-processes" selected="true">Exclude Processes</vaadin-item>
+              <vaadin-item value="include-processes">Include Processes</vaadin-item>
             </vaadin-list-box>
             </template>
         </vaadin-select>
@@ -57,7 +57,7 @@ class AssetLineageView extends PolymerElement {
     ready() {
         super.ready();
         this.$.useCases.addEventListener('selected-changed', () => this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
-        this.$.viewsMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
+        this.$.processMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
     }
 
     static get properties() {
@@ -123,69 +123,69 @@ class AssetLineageView extends PolymerElement {
         }
 
 
-      _ultimateSource(guid, view) {
-          if (view === null || view === undefined) {
-             view  = "column-view";
+      _ultimateSource(guid, processes) {
+          if (processes === null || processes === undefined) {
+             processes  = "exclude-processes";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?processes=' + processes;
           this.$.tokenAjax._go();
       }
 
 
-      _endToEndLineage(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _endToEndLineage(guid, processes){
+          if (processes === null || processes === undefined) {
+              processes  = "exclude-processes";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?processes=' + processes;
           this.$.tokenAjax._go();
       }
 
-      _ultimateDestination(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _ultimateDestination(guid, processes){
+          if (processes === null || processes === undefined) {
+              processes  = "exclude-processes";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?processes=' + processes;
           this.$.tokenAjax._go();
       }
 
-      _glossaryLineage(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _glossaryLineage(guid, processes){
+          if (processes === null || processes === undefined) {
+              processes  = "exclude-processes";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?processes=' + processes;
           this.$.tokenAjax._go();
       }
 
-      _sourceAndDestination(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _sourceAndDestination(guid, processes){
+          if (processes === null || processes === undefined) {
+              processes  = "exclude-processes";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?processes=' + processes;
           this.$.tokenAjax._go();
       }
 
-    _reload(usecase, view) {
+    _reload(usecase, processes) {
 
         switch (usecase) {
             case 'ultimateSource':
-                this._ultimateSource(this.guid, view);
+                this._ultimateSource(this.guid, processes);
                 break;
             case 'endToEnd':
-                this._endToEndLineage(this.guid, view);
+                this._endToEndLineage(this.guid, processes);
                 break;
             case 'ultimateDestination':
-                this._ultimateDestination(this.guid, view);
+                this._ultimateDestination(this.guid, processes);
                 break;
             case 'glossaryLineage':
-                this._glossaryLineage(this.guid, view);
+                this._glossaryLineage(this.guid, processes);
                 break;
             case 'sourceAndDestination':
-                this._sourceAndDestination(this.guid, view);
+                this._sourceAndDestination(this.guid, processes);
                 break;
         }
     }
