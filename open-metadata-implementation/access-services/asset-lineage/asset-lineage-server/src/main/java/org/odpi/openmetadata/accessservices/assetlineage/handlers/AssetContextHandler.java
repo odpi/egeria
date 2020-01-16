@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,12 +18,29 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.collections4.CollectionUtils;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.COMPLEX_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.CONNECTION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.CONNECTION_ENDPOINT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.CONNECTION_TO_ASSET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.DATABASE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.DATA_CONTENT_FOR_DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.DATA_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.FOLDER_HIERARCHY;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.NESTED_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.RELATIONAL_TABLE;
 
 /**
  * The Asset Context handler provides methods to build graph context for assets that has been created.
@@ -31,13 +49,13 @@ public class AssetContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AssetContextHandler.class);
 
+    private final String serviceName;
+    private final String serverName;
+    private final RepositoryHandler repositoryHandler;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final CommonHandler commonHandler;
+    private final List<String> supportedZones;
 
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
-    private CommonHandler commonHandler;
     private AssetContext graph;
 
     /**
@@ -49,33 +67,34 @@ public class AssetContextHandler {
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
+     * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
     public AssetContextHandler(String serviceName,
                                String serverName,
                                InvalidParameterHandler invalidParameterHandler,
                                OMRSRepositoryHelper repositoryHelper,
-                               RepositoryHandler repositoryHandler) {
+                               RepositoryHandler repositoryHandler,
+                               List<String> supportedZones) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
+        this.supportedZones = supportedZones;
     }
 
 
     /**
      * Gets asset context.
      *
-     * @param serverName the server name
      * @param userId     the user id
      * @param guid       the guid
      * @param type       the type
      * @return the asset context
      */
-    public AssetContext getAssetContext(String serverName, String userId, String guid, String type) {
+    public AssetContext getAssetContext(String userId, String guid, String type) {
 
-        String methodName = "getAssetContext";
+        final String methodName = "getAssetContext";
 
         graph = new AssetContext();
 
@@ -95,6 +114,14 @@ public class AssetContextHandler {
                                                 ENTITY_NOT_FOUND.getSystemAction(),
                                                 ENTITY_NOT_FOUND.getUserAction());
             }
+
+            invalidParameterHandler.validateAssetInSupportedZone(guid,
+                                                                 GUID_PARAMETER,
+                                                                 commonHandler.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                                                                 supportedZones,
+                                                                 ASSET_LINEAGE_OMAS,
+                                                                 methodName);
+
             buildAssetContext(userId, entityDetail.get());
             return graph;
 
