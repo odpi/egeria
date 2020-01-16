@@ -71,6 +71,9 @@
 * Raise issues for any changes required as usual
 * Note that approval is required for changes going into a release branch
 * PR builds are run as usual, however merge builds, sonar etc do not run
+* To backport changes from master, first wait until the PR is merged into master, then use `git cherrypick -s <commithash>` to apply to egeria-release-x.y, then push as usual. 
+* In some cases a merge commit will need to be made using `git cherrypick -s -m 1 <commithash>`
+* If code has diverged significantly a manual recode may be easiest
 
 #### 4. Update branch version
 * Aim to make this change when the code appears to be ready to ship apart from final tests in order to avoid version confusion
