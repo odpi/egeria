@@ -287,26 +287,33 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          */
 
 
-        /*
-         *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
-         */
+        try {
 
-        InstanceProperties emptyMatchProperties    = new InstanceProperties();
+            /*
+             *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
+             */
+
+            InstanceProperties emptyMatchProperties = new InstanceProperties();
 
 
-
-        knownInstances = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                              entityDef.getGUID(),
-                                                                              emptyMatchProperties,
-                                                                              MatchCriteria.ALL,
-                                                                              0,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              pageSize);
-
+            knownInstances = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                       entityDef.getGUID(),
+                                                                       emptyMatchProperties,
+                                                                       MatchCriteria.ALL,
+                                                                       0,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       pageSize);
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+            
+        }
 
         if (knownInstances == null) {
 
