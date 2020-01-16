@@ -62,6 +62,9 @@ public class CommonHandler {
 
         if (typeDefByName != null) {
             List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
+            if (activeTypeDefs == null) {
+                return response;
+            }
 
             Type type = converter.convertType(typeDefByName);
             List<Type> subTypes = getSubTypes(activeTypeDefs, type);
