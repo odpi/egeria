@@ -3,15 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
@@ -25,15 +25,22 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
-import static org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType.DELETED_ENTITY_EVENT;
+import static org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType.NEW_ENTITY_EVENT;
+import static org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType.UPDATED_ENTITY_EVENT;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -43,10 +50,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
-    private OMRSRepositoryValidator repositoryValidator;
-    private OMRSRepositoryHelper repositoryHelper;
-    private String componentName;
-    private List<String> supportedZones;
     private AssetLineagePublisher publisher;
     private String serverName;
     private String serverUserName;
@@ -58,27 +61,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * along with classes for testing and manipulating instances.
      *
      * @param assetLineageOutTopic connection to the out topic
-     * @param repositoryValidator  provides validation of metadata instance
      * @param repositoryHelper     helper object for building and querying TypeDefs and metadata instances
-     * @param componentName        name of component
-     * @param supportedZones       list of zones covered by this instance of the access service.
      * @param auditLog             log for errors and information messages
      * @param serverUserName       name of the user of the server instance
      * @param serverName           name of this server instance
      */
     public AssetLineageOMRSTopicListener(Connection assetLineageOutTopic,
-                                         OMRSRepositoryValidator repositoryValidator,
                                          OMRSRepositoryHelper repositoryHelper,
-                                         String componentName,
-                                         List<String> supportedZones,
                                          OMRSAuditLog auditLog,
                                          String serverUserName,
                                          String serverName) throws OMAGConfigurationErrorException {
 
-        this.repositoryValidator = repositoryValidator;
-        this.repositoryHelper = repositoryHelper;
-        this.componentName = componentName;
-        this.supportedZones = supportedZones;
         this.serverName = serverName;
         this.serverUserName = serverUserName;
         publisher = new AssetLineagePublisher(assetLineageOutTopic, auditLog);
@@ -338,7 +331,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContextHandler newAssetContextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverName, serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContext assetContext = newAssetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext,validator);
