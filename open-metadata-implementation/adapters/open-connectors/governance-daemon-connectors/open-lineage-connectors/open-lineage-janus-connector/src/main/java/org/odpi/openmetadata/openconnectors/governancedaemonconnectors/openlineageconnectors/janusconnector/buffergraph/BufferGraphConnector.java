@@ -34,6 +34,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
 
+
     public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
