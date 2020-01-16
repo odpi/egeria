@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,11 +16,24 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_ALIAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableProcessRelationshipsTypes;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -30,14 +42,15 @@ public class ProcessContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
-    private CommonHandler commonHandler;
+    private final String serviceName;
+    private final String serverName;
+    private final RepositoryHandler repositoryHandler;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final List<String> supportedZones;
+    private final CommonHandler commonHandler;
+
     private AssetContext graph;
-    private Validator validator;
+
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -47,19 +60,20 @@ public class ProcessContextHandler {
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
+     * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
     public ProcessContextHandler(String serviceName,
                                  String serverName,
                                  InvalidParameterHandler invalidParameterHandler,
                                  OMRSRepositoryHelper repositoryHelper,
-                                 RepositoryHandler repositoryHandler) {
+                                 RepositoryHandler repositoryHandler,
+                                 List<String> supportedZones) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
-        this.validator = new Validator(repositoryHelper);
+        this.supportedZones = supportedZones;
     }
 
     /**
@@ -70,6 +84,8 @@ public class ProcessContextHandler {
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, String processGuid) {
+
+        final String methodName = "getProcessContext";
 
         graph = new AssetContext();
 
@@ -86,6 +102,14 @@ public class ProcessContextHandler {
                                                  ENTITY_NOT_FOUND.getSystemAction(),
                                                  ENTITY_NOT_FOUND.getUserAction());
             }
+
+
+            invalidParameterHandler.validateAssetInSupportedZone(processGuid,
+                                                                 GUID_PARAMETER,
+                                                                 commonHandler.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                                                                 supportedZones,
+                                                                 ASSET_LINEAGE_OMAS,
+                                                                 methodName);
 
             return checkIfAllRelationshipsExist(userId,entityDetail.get());
 

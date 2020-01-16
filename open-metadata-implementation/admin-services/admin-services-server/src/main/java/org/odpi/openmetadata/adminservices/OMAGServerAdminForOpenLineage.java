@@ -22,24 +22,6 @@ public class OMAGServerAdminForOpenLineage {
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
-    public VoidResponse enableOpenLineageService(String userId, String serverName) {
-        final String methodName = "enableOpenLineageService";
-        VoidResponse response = new VoidResponse();
-
-        try {
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            OpenLineageServerConfig openLineageServerConfig = serverConfig.getOpenLineageServerConfig();
-            this.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
-        } catch (OMAGInvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (Throwable error) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
-        }
-
-        return response;
-    }
-
-
     public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageServerConfig openLineageServerConfig) {
         String methodName = "setOpenLineageConfig";
         VoidResponse response = new VoidResponse();
