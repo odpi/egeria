@@ -27,18 +27,12 @@ public class ConfigOpenLineageResource
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     @PostMapping(path = "/open-lineage/configuration")
-    public VoidResponse setAccessServicesConfig(@PathVariable String userId,
-                                                @PathVariable String serverName,
-                                                @RequestBody OpenLineageServerConfig openLineageServerConfig)
+    public VoidResponse setOpenLineageServicesConfig(@PathVariable String userId,
+                                                     @PathVariable String serverName,
+                                                     @RequestBody OpenLineageServerConfig openLineageServerConfig)
     {
         return adminAPI.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
     }
 
 
-    @PostMapping(path = "/open-lineage")
-    public VoidResponse enableOpenLineageServices(@PathVariable String userId,
-                                                  @PathVariable String serverName)
-    {
-        return adminAPI.enableOpenLineageService(userId, serverName);
-    }
 }
