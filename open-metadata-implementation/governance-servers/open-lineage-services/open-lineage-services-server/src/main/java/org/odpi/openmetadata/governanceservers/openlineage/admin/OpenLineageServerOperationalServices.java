@@ -268,8 +268,7 @@ public class OpenLineageServerOperationalServices {
      */
     public boolean shutdown() {
         String actionDescription = "Server shutting down";
-        OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN;
-        logToAudit(auditCode, actionDescription);
+        logToAudit(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
 
         try {
             inTopicConnector.disconnect();
@@ -281,9 +280,7 @@ public class OpenLineageServerOperationalServices {
             openLineageServerInstance.shutdown();
         }
 
-        auditCode = OpenLineageServerAuditCode.SERVER_SHUTDOWN;
-        actionDescription = "Server has shut down";
-        logToAudit(auditCode, actionDescription);
+        logToAudit(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
         return true;
     }
 }
