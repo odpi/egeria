@@ -44,9 +44,9 @@ public enum OpenLineageServerAuditCode {
             "The local administrator has requested shut down of this Open Lineage server and the operation has completed.",
             "No action is required.  This is part of the normal operation of the service."),
 
-    ERROR_INITIALIZING_CONNECTION("OPEN-LINEAGE-0006",
+    ERROR_REGISTRATING_WITH_AL_OUT_TOPIC("OPEN-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the Open Lineage Services  topic connection {0} for server instance {1}; error message was: {2}",
+            "The Open Lineage Services is unable to register a listener with the Asset Lineage OMAS Out topic {0} for serer instance {1}, error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
@@ -62,12 +62,6 @@ public enum OpenLineageServerAuditCode {
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION("OPEN-LINEAGE-0009",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the connection to topic {0} in the Open Lineage Services  instance for server {1} ",
-            "The connection to open lineage topic could not be initialized.",
-            "Review the exception and resolve the configuration. "),
-
     NO_CONFIG_DOC("OPEN-LINEAGE-0010",
             OMRSAuditLogRecordSeverity.ERROR,
             "Open Lineage {0} is not configured with a configuration document",
@@ -76,10 +70,10 @@ public enum OpenLineageServerAuditCode {
 
     CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-0011",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The lineage graph database could not be opened. ",
-            "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
+            "The Open Lineage server {0} is not able to open the graph database with the values provided in configuration {1}",
+            "The lineage graph database could not be opened.",
             "The system was unable to open the graph repository graph database " +
-                    "Please check that the graph database exists and is not in use by another process."),
+                    "Please check whether the graph database exists and is not in use by another process, and verify the OLS configuration"),
 
     PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-0012",
             OMRSAuditLogRecordSeverity.EXCEPTION,
