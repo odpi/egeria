@@ -301,7 +301,7 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting Open lineages Services In Topic Connector", e);
+            log.error("The Asset Lineage OMAS out topic connector could not be disconnected", e);
             return false;
         }
         if (openLineageServerInstance != null) {
