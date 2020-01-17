@@ -46,7 +46,7 @@ public enum OpenLineageServerAuditCode {
 
     ERROR_REGISTRATING_WITH_AL_OUT_TOPIC("OPEN-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Open Lineage Services is unable to register a listener with the Asset Lineage OMAS Out topic {0} for serer instance {1}, error message was: {2}",
+            "The Open Lineage Services is unable to register a listener with the Asset Lineage OMAS Out topic {0} for serer instance {1}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
