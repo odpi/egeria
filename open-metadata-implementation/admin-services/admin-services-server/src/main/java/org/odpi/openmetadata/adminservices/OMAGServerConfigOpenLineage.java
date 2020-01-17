@@ -89,7 +89,7 @@ public class OMAGServerConfigOpenLineage {
      * @param serverName  local server name.
      * @return void response
      */
-    public VoidResponse shutdown(String userId, String serverName)
+    public VoidResponse removeOpenLineageConfig(String userId, String serverName)
     {
         final String methodName = "shutdown";
 
