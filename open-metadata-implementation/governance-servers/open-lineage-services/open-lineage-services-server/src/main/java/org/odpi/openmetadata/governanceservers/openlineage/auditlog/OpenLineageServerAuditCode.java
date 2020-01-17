@@ -35,13 +35,13 @@ public enum OpenLineageServerAuditCode {
     SERVER_SHUTTING_DOWN("OPEN-LINEAGE-0004",
             OMRSAuditLogRecordSeverity.INFO,
             "The Open Lineage server {0} is shutting down",
-            "The local administrator has requested shut down of this discovery server.",
+            "The local administrator has requested shut down of this Open Lineage server.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVER_SHUTDOWN("OPEN-LINEAGE-0005",
             OMRSAuditLogRecordSeverity.INFO,
             "The Open Lineage server {0} has completed shutdown",
-            "The local administrator has requested shut down of this discovery server and the operation has completed.",
+            "The local administrator has requested shut down of this Open Lineage server and the operation has completed.",
             "No action is required.  This is part of the normal operation of the service."),
 
     ERROR_INITIALIZING_CONNECTION("OPEN-LINEAGE-0006",
