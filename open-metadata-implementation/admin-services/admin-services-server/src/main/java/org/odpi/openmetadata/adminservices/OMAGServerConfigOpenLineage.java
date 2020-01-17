@@ -26,7 +26,7 @@ public class OMAGServerConfigOpenLineage {
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
     /**
-     * Set up the root URL of the access service.
+     * Set the Open Lineage Config
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
