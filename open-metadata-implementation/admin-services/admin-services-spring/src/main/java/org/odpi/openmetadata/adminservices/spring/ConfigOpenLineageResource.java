@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.OMAGServerAdminForOpenLineage;
+import org.odpi.openmetadata.adminservices.OMAGServerConfigOpenLineage;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class ConfigOpenLineageResource
 {
-    private OMAGServerAdminForOpenLineage adminAPI = new OMAGServerAdminForOpenLineage();
+    private OMAGServerConfigOpenLineage adminAPI = new OMAGServerConfigOpenLineage();
 
 
     /**
@@ -32,6 +32,20 @@ public class ConfigOpenLineageResource
                                                      @RequestBody OpenLineageServerConfig openLineageServerConfig)
     {
         return adminAPI.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
+    }
+
+    /**
+     * Remove this service from the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     */
+    @PostMapping(path = "/open-lineage/shutdown")
+    public VoidResponse shutdown(@PathVariable String userId,
+                               @PathVariable String serverName)
+    {
+        return adminAPI.shutdown(userId, serverName);
     }
 
 
