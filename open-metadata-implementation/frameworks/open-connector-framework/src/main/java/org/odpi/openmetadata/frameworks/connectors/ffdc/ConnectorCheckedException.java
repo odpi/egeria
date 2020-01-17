@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 /**
  * ConnectorCheckedException provides a checked exception for reporting errors found when using OCF connectors.
  * Typically these errors are either configuration or operational errors that can be fixed by an administrator
@@ -16,7 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectorCheckedException extends OCFCheckedExceptionBase
 {
-    private static final Logger log = LoggerFactory.getLogger(ConnectorCheckedException.class);
 
     /**
      * This is the typical constructor used for creating a ConnectorCheckedException.
@@ -31,8 +26,6 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
     }
 
 
@@ -50,8 +43,6 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
     }
 
 
