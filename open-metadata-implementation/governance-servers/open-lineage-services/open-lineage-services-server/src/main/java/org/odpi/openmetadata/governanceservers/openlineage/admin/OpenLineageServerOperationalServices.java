@@ -97,6 +97,7 @@ public class OpenLineageServerOperationalServices {
             bufferGraphConnector.initializeGraphDB();
             mainGraphConnector.initializeGraphDB();
         } catch (OpenLineageException e) {
+            log.error("The graph database could not be initialized", e);
             auditCode = OpenLineageServerAuditCode.CANNOT_OPEN_GRAPH_DB;
             auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
@@ -119,13 +120,13 @@ public class OpenLineageServerOperationalServices {
         try {
             bufferGraphConnector.start();
         } catch (ConnectorCheckedException e) {
-            log.error("Could not start the buffer graph connector.");
+            log.error("Could not start the buffer graph connector.", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
         }
         try {
             mainGraphConnector.start();
         } catch (ConnectorCheckedException e) {
-            log.error("Could not start the main graph connector.");
+            log.error("Could not start the main graph connector.", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
         }
 
@@ -185,6 +186,7 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.start();
         } catch (ConnectorCheckedException e) {
+            log.error("The eventbus could not be started", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_REGISTRATING_WITH_AL_OUT_TOPIC, actionDescription);
         }
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
@@ -207,6 +209,7 @@ public class OpenLineageServerOperationalServices {
             topicConnector.setAuditLog(auditLog);
             return topicConnector;
         } catch (ConnectionCheckedException | ConnectorCheckedException e) {
+            log.error("The connector for the asset lineage OMAS out topic could not be obtained", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
             return null;
         }
@@ -298,7 +301,7 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting Open lineages Services In Topic Connector");
+            log.error("Error disconnecting Open lineages Services In Topic Connector", e);
             return false;
         }
         if (openLineageServerInstance != null) {
