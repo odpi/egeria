@@ -30,8 +30,10 @@ COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/maven-metadata.xml /opt/egeria/server-chassis.xml
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/maven-metadata.xml /opt/egeria/user-chassis-spring.xml
+ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/maven-metadata.xml /opt/egeria/lib/janus-connector-jar-with-dependencies.xml
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/server-chassis-spring-${version}.jar /opt/egeria/server-chassis-spring.jar
 ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/ui-chassis-spring-${version}.jar /opt/egeria/ui-chassis-spring.jar
+ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/open-lineage-janus-connector-${version}-jar-with-dependencies.jar /opt/egeria/lib/janus-connector-jar-with-dependencies.jar
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 8080 5005
