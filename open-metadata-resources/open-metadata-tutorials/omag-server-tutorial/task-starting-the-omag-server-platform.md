@@ -21,11 +21,11 @@ Check the version of Java you have with the command **java -version**
 and the **HotSpot** version for your operating system.
 You only need the JRE but select the JDK if you expect to also write some Java code.)
 
-Start the OMAG server platform as follows - the `-Dserver.port` parameter is optional, but is needed if you want multiple instances running
+Start the OMAG server platform as follows - the `-Dserver.port` option is needed if you want multiple instances running
 on different ports, as required by the tutorials.
 
 ```bash
-$ java -jar server-chassis-spring-1.4-SNAPSHOT.jar -Dserver.port=8080
+$ java -Dserver.port=8080 -jar server-chassis-spring-1.4-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.

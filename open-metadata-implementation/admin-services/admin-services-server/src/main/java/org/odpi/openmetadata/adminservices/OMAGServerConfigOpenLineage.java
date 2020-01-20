@@ -6,7 +6,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
@@ -14,32 +16,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class OMAGServerAdminForOpenLineage {
+public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
 
-    private static final String defaultALOutTopicName = "omas.open-metadata.access-services.AssetLineage.outTopic";
+    private static final String serviceName    = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
+    private static final String defaultALOutTopicName = "omas.omas.assetlineage.outTopic";
 
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
-    public VoidResponse enableOpenLineageService(String userId, String serverName) {
-        final String methodName = "enableOpenLineageService";
-        VoidResponse response = new VoidResponse();
-
-        try {
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            OpenLineageServerConfig openLineageServerConfig = serverConfig.getOpenLineageServerConfig();
-            this.setOpenLineageConfig(userId, serverName, openLineageServerConfig);
-        } catch (OMAGInvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (Throwable error) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
-        }
-
-        return response;
-    }
-
-
+    /**
+     * Set the Open Lineage Config
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param openLineageServerConfig  Config for the Open Lineage Services
+     * @return void response
+     **/
     public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageServerConfig openLineageServerConfig) {
         String methodName = "setOpenLineageConfig";
         VoidResponse response = new VoidResponse();
@@ -89,5 +82,54 @@ public class OMAGServerAdminForOpenLineage {
         return response;
     }
 
+    /**
+     * Remove this service from the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     */
+    public VoidResponse removeOpenLineageConfig(String userId, String serverName)
+    {
+        final String methodName = "shutdown";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setOpenLineageServerConfig(null);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        return response;
+    }
 
 }
