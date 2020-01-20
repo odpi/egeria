@@ -10,15 +10,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterE
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * SLF4JAuditLogStoreConnector provides a connector implementation for a sls4j audit log destination.
  */
 public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
-    private Map<String, Logger>  loggerMap = new HashMap<>();
 
     /**
      * Default constructor used by the connector provider.
@@ -42,14 +39,7 @@ public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
         super.validateLogRecord(logRecord, methodName);
 
         String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getReportingComponent().getComponentName();
-        Logger log = loggerMap.get(loggerName);
-
-        if (log == null)
-        {
-            log = LoggerFactory.getLogger(loggerName);
-
-            loggerMap.put(loggerName, log);
-        }
+        Logger log = LoggerFactory.getLogger(loggerName);
 
         if (super.isSupportedSeverity(logRecord))
         {
