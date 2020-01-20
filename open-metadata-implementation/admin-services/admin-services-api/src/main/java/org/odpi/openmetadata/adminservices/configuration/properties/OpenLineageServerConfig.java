@@ -255,17 +255,17 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
 
     @Override
     public String toString() {
-        return "OpenLineageConfig{" +
+        return "OpenLineageServerConfig{" +
                 "openLineageId=" + openLineageId +
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
-                ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
-                ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
                 ", bufferGraphConfig=" + bufferGraphConfig +
                 ", mainGraphConfig=" + mainGraphConfig +
+                ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
+                ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
                 '}';
     }
 
