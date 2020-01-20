@@ -44,8 +44,8 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
  */
 public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId = "repository-entity-property-search";
-    private static final String testCaseName = "Repository entity property search test case";
+    private static final String testCaseId     = "repository-entity-property-search";
+    private static final String testCaseName   = "Repository entity property search test case";
 
     private static final String assertion1     = testCaseId + "-01";
     private static final String assertionMsg1  = " entity type matches the known type from the repository helper.";
@@ -54,61 +54,60 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String assertionMsg2  = "repository supports creation of instances of type ";
 
     private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = " repository property matchProperties search returned expected number of results for type ";
+    private static final String assertionMsg3  = " findEntitiesByProperty returned expected number of results for type ";
 
     private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " repository property matchProperties search returned expected results for type ";
+    private static final String assertionMsg4  = " findEntitiesByProperty returned expected results for type ";
 
     private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " repository property matchProperties search returned expected number of results for type ";
+    private static final String assertionMsg5  = " findEntitiesByProperty returned expected number of results for type ";
 
     private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " repository property matchProperties search returned expected results for type ";
+    private static final String assertionMsg6  = " findEntitiesByProperty returned expected results for type ";
 
     private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " repository property value search returned expected number of results for type ";
+    private static final String assertionMsg7  = " findEntitiesByPropertyValue returned expected number of results for type ";
 
     private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " repository property value search returned expected results for type ";
+    private static final String assertionMsg8  = " findEntitiesByPropertyValue returned expected results for type ";
 
     private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " repository property matchProperties search wth type filter returned expected number of entities for type ";
+    private static final String assertionMsg9  = " findEntitiesByProperty wth type filter returned expected number of entities for type ";
 
     private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10 = " repository property matchProperties search wth type filter returned expected entities for type ";
+    private static final String assertionMsg10 = " findEntitiesByProperty wth type filter returned expected entities for type ";
 
     private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = " repository property value search with general regex returned expected number of results for type ";
+    private static final String assertionMsg11  = " findEntitiesByPropertyValue with general regex returned expected number of results for type ";
 
     private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = " repository property value search with general regex returned expected results for type ";
+    private static final String assertionMsg12  = " findEntitiesByPropertyValue with general regex returned expected results for type ";
 
     private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " repository property matchProperties search with general regex returned expected number of results for type ";
+    private static final String assertionMsg13  = " findEntitiesByProperty with general regex returned expected number of results for type ";
 
     private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = "repository property matchProperties search with general regex returned expected results for type ";
+    private static final String assertionMsg14  = "findEntitiesByProperty with general regex returned expected results for type ";
 
 
-    private RepositoryConformanceWorkPad workPad;
-    private String                       metadataCollectionId;
-    private OMRSMetadataCollection       metadataCollection;
-    private EntityDef                    entityDef;
-    private List<TypeDefAttribute>       attrList;
-    private String                       testTypeName;
+    private RepositoryConformanceWorkPad              workPad;
+    private String                                    metadataCollectionId;
+    private OMRSMetadataCollection                    metadataCollection;
+    private EntityDef                                 entityDef;
+    private List<TypeDefAttribute>                    attrList;
+    private String                                    testTypeName;
 
-    private List<EntityDetail>           knownInstances;
-    private List<String>                 knownInstancesGUIDs;
-    private List<EntityDetail>           createdInstances;
-    private boolean                      pageLimited;
+    private List<EntityDetail>                        knownInstances;
+    private List<String>                              knownInstancesGUIDs;
+    private List<EntityDetail>                        createdInstances;
+    private boolean                                   pageLimited;
+    private int                                       pageSize;
 
-    private List<String> uniqueAttributeNames;
-    private List<String> definedAttributeNames;
+    private List<String>                              uniqueAttributeNames;
+    private List<String>                              definedAttributeNames;
 
-    private Map<String, Map <Object, List<String>>>   propertyValueMap  ;
-    private Map<String,PrimitiveDefCategory>          propertyCatMap     ;
-
-    private int                pageSize               ;
+    private Map<String, Map <Object, List<String>>>   propertyValueMap;
+    private Map<String,PrimitiveDefCategory>          propertyCatMap;
 
 
 
@@ -125,26 +124,76 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
-        this.workPad               = workPad;
-        this.metadataCollectionId  = workPad.getTutMetadataCollectionId();
-        this.entityDef             = entityDef;
+        this.workPad = workPad;
+        this.metadataCollectionId = workPad.getTutMetadataCollectionId();
+        this.entityDef = entityDef;
 
-        this.testTypeName          = this.updateTestIdByType(entityDef.getName(), testCaseId, testCaseName);
+        this.testTypeName = this.updateTestIdByType(entityDef.getName(), testCaseId, testCaseName);
 
-        this.knownInstances        = null;
-        this.knownInstancesGUIDs   = null;
-        this.createdInstances      = null;
+        this.knownInstances = null;
+        this.knownInstancesGUIDs = null;
+        this.createdInstances = null;
 
-        this.pageLimited           = false;
+        this.pageLimited = false;
 
         this.uniqueAttributeNames = new ArrayList<>();
         this.definedAttributeNames = new ArrayList<>();
 
-        this.propertyValueMap   = new HashMap<>();
-        this.propertyCatMap     = new HashMap<>();
+        this.propertyValueMap = new HashMap<>();
+        this.propertyCatMap = new HashMap<>();
 
-        this.pageSize            = getMaxSearchResults();
+        this.pageSize = getMaxSearchResults();
 
+
+
+
+
+        /*
+         * Check that the entity type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
+        verifyCondition((entityDef.equals(knownEntityDef)),
+                        assertion1,
+                        testTypeName + assertionMsg1,
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+        /*
+         * Take a look at the attributes for the type being tested
+         */
+
+        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), entityDef);
+
+        if ( (this.attrList != null) && !(this.attrList.isEmpty()) ) {
+
+            /*
+             * If the TypeDef has NO attributes then it is not possible to perform a matchProperties or searchCriteria find on instances of that type.
+             * The MetadataCollection API does not accept null match properties and a searchCritera search on something with no values would be pointless.
+             */
+
+            /*
+             * The TypeDef has defined attributes. Create a List<String> of just the attribute names.
+             * Also identify any attributes that are defined as unique as they need to be created distinct, and
+             * may be used for search narrowing.
+             * This is only collated for primitives.
+             */
+            for (TypeDefAttribute typeDefAttribute : attrList) {
+                if (typeDefAttribute.getAttributeType().getCategory() == AttributeTypeDefCategory.PRIMITIVE) {
+                    definedAttributeNames.add(typeDefAttribute.getAttributeName());
+                    if (typeDefAttribute.isUnique()) {
+                        uniqueAttributeNames.add(typeDefAttribute.getAttributeName());
+                    }
+                }
+            }
+        }
     }
 
 
@@ -185,79 +234,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          *
          *
          * The following searches are performed:
-         *   Find By Instance (Match) Properties - with match property values using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for ENTITY_ADVANCED_SEARCH
-         *   Find By Property Value              - with searchCriteria using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for ENTITY_ADVANCED_SEARCH
+         *   Find By Instance (Match) Properties - with match property values using repo helper regexes for mandatory METADATA_SHARING profile
+         *                                       - with arbitrary regexes (not produced by the repo helper) for optional ENTITY_ADVANCED_SEARCH profile
+         *   Find By Property Value              - with searchCriteria using repo helper regexes for mandatory METADATA_SHARING profile
+         *                                       - with arbitrary regexes (not produced by the repo helper) for optional ENTITY_ADVANCED_SEARCH profile
          *
          *
          */
-
 
         this.metadataCollection = super.getMetadataCollection();
-
-
-        /*
-         * Check that the entity type matches the known type from the repository helper
-         */
-        OMRSRepositoryConnector cohortRepositoryConnector = null;
-        OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null) {
-            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        }
-
-        EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
-        verifyCondition((entityDef.equals(knownEntityDef)),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-
-        /*
-         * Take a look at the attributes for the type being tested
-         */
-
-        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), entityDef);
-
-        if (this.attrList == null || this.attrList.isEmpty()) {
-
-            /*
-             * If the TypeDef has NO attributes then it is not possible to perform a matchProperties or searchCriteria find on instances of that type.
-             * The MetadataCollection API does not accept null match properties and a searchCritera search on something with no values would be pointless.
-             */
-            return;
-
-        }
-
-        /*
-         *
-         * There are attributes for this type
-         *
-         * Construct a list of primitive TypeDefAttributes that are specified by the known Entity type
-         */
-
-
-
-        if (this.attrList != null && !(this.attrList.isEmpty())) {
-
-            /*
-             * The TypeDef has defined attributes. Create a List<String> of just the attribute names.
-             * Also identify any attributes that are defined as unique as they need to be created distinct, and
-             * may be used for search narrowing.
-             * This is only collated for primitives.
-             */
-            for (TypeDefAttribute typeDefAttribute : attrList) {
-                if (typeDefAttribute.getAttributeType().getCategory() == AttributeTypeDefCategory.PRIMITIVE) {
-                    definedAttributeNames.add(typeDefAttribute.getAttributeName());
-                    if (typeDefAttribute.isUnique()) {
-                        uniqueAttributeNames.add(typeDefAttribute.getAttributeName());
-                    }
-                }
-            }
-        }
-
 
         switch (phase) {
 
@@ -274,6 +259,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     }
 
 
+
+
     private void seedInstances() throws Exception
     {
 
@@ -287,14 +274,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          */
 
 
+
+
+        /*
+         *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
+         */
+
+        InstanceProperties emptyMatchProperties = new InstanceProperties();
+
         try {
-
-            /*
-             *  Use emptyMatchProperties and matchCriteria ALL   - this should return up to pageSize entities of the current type
-             */
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
 
             knownInstances = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                        entityDef.getGUID(),
@@ -312,8 +300,26 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
+
+            String methodName = "findEntitiesByProperty";
+            String operationDescription = "find entities of type " + entityDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeFilter"                    , entityDef.getGUID());
+            parameters.put("matchProperties"               , emptyMatchProperties.toString());
+            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+            parameters.put("fromEntityElement"             , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("limitResultsByClassification"  , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
             
         }
+
 
         if (knownInstances == null) {
 
@@ -332,6 +338,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
              */
+
+            InstanceProperties instProps = null;
 
             try {
 
@@ -354,11 +362,13 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 for (int instanceCount = 0 ; instanceCount < numInstancesToCreate ; instanceCount++ ) {
 
+                    instProps = super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount);
+
                     EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
-                                                             entityDef.getGUID(),
-                                                             super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount),
-                                                             null,
-                                                             null);
+                                                                          entityDef.getGUID(),
+                                                                          instProps,
+                                                                          null,
+                                                                          null);
 
                     // Record the created instance for result prediction and verification
                     knownInstances.add(newEntity);
@@ -402,6 +412,23 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
                 return;
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "addEntity";
+                String operationDescription = "add an entity of type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeGUID"                , entityDef.getGUID());
+                parameters.put("initialProperties"       , instProps!=null?instProps.toString():"null");
+                parameters.put("initialClasiifications"  , "null");
+                parameters.put("initialStatus"           , "null");
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
             }
 
         }
@@ -523,141 +550,151 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          * This test does not perform content validation of returned instances - these are tested in the lifecycle tests.
          */
 
-
-        if (!definedAttributeNames.isEmpty()) {
+        if (knownInstances != null && !knownInstances.isEmpty()) {
 
             /*
-             * Perform single property findEntitiesByProperty() tests - these take each attribute in turn and for each attribute,
-             * take one known value to search for instances using matchProperties containing the individual primitive property.
-             * The test is repeated for MatchCriteria ALL and NONE.
-             * This is only done for primitives.
+             * There are instances of the type being tested in the repository.
+             * If this is not the case, the test will drop through and report an UNKNOWN_STATUS.
              */
 
 
-            for (String attributeName : definedAttributeNames) {
+            if (!definedAttributeNames.isEmpty()) {
 
-                performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
-
-                performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.NONE);
-
-            }
-
-            /*
-             * Perform dual property findRelationshipsByProperty() tests -
-             *
-             * Dual property findRelationshipsByProperty() tests - these take a pair of attributes and using just one known value
-             * for each attribute, they exercise the different settings of MatchCriteria. They search for instances using a
-             * matchProperties object containing the pair of primitive properties. This tests matchCriteria ALL, ANY & NONE.
-             * Defined attributes only includes primitives.
-             */
+                /*
+                 * The type has at least one attribute that we can test against.
+                 * If this is not the case, the test will drop through and report an UNKNOWN_STATUS.
+                 *
+                 * Perform single property findEntitiesByProperty() tests - these take each attribute in turn and for each attribute,
+                 * take one known value to search for instances using matchProperties containing the individual primitive property.
+                 * The test is repeated for MatchCriteria ALL and NONE.
+                 * This is only done for primitives.
+                 */
 
 
-            /*
-             * Pick one pair of properties for dual property tests - if there are less than two properties skip this test
-             */
+                for (String attributeName : definedAttributeNames) {
 
-            List<String> attributePair = pickAttributePair();
-            if (attributePair != null && attributePair.size() == 2) {
+                    performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
 
-                String alphaAttributeName = attributePair.get(0);
-                String betaAttributeName = attributePair.get(1);
-
-                if (alphaAttributeName != null && betaAttributeName != null) {
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ANY);
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ALL);
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.NONE);
-
+                    performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.NONE);
 
                 }
-            }
+
+                /*
+                 * Perform dual property findRelationshipsByProperty() tests -
+                 *
+                 * Dual property findRelationshipsByProperty() tests - these take a pair of attributes and using just one known value
+                 * for each attribute, they exercise the different settings of MatchCriteria. They search for instances using a
+                 * matchProperties object containing the pair of primitive properties. This tests matchCriteria ALL, ANY & NONE.
+                 * Defined attributes only includes primitives.
+                 */
 
 
+                /*
+                 * Pick one pair of properties for dual property tests - if there are less than two properties skip this test
+                 */
 
-            /*
-             * Perform searchCriteria-based findByPropertyValue tests. One string attribute is selected and tested for each of its
-             * known values with all of EXACT, PREFIX, SUFFIX and CONTAINS matching. These are mandatory profile tests, so all string
-             * values are literalised using the repo helper methods.
-             */
+                List<String> attributePair = pickAttributePair();
+                if (attributePair != null && attributePair.size() == 2) {
 
-            /*
-             * Look for a suitable (string) attribute...
-             */
-            String stringAttributeName = null;
+                    String alphaAttributeName = attributePair.get(0);
+                    String betaAttributeName = attributePair.get(1);
 
-            for (String testAttributeName : definedAttributeNames) {
+                    if (alphaAttributeName != null && betaAttributeName != null) {
 
-                if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ANY);
 
-                    /*
-                     * This is a string attribute....
-                     */
-                    stringAttributeName = testAttributeName;
-                    break;
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ALL);
+
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.NONE);
+
+
+                    }
                 }
-            }
-
-            if (stringAttributeName != null) {
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Exact);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Prefix);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Suffix);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Contains);
-
-            }
 
 
-            /*
-             * Perform type filtering tests
-             */
-            for (String attributeName : definedAttributeNames) {
 
-                performTypeFilteringTests(attributeName);
+                /*
+                 * Perform searchCriteria-based findByPropertyValue tests. One string attribute is selected and tested for each of its
+                 * known values with all of EXACT, PREFIX, SUFFIX and CONTAINS matching. These are mandatory profile tests, so all string
+                 * values are literalised using the repo helper methods.
+                 */
 
-            }
+                /*
+                 * Look for a suitable (string) attribute...
+                 */
+                String stringAttributeName = null;
 
+                for (String testAttributeName : definedAttributeNames) {
 
-            /*
-             * Perform generalised regex tests - these are part of the ENTITY_ADVANCED_SEARCH profile
-             */
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
 
-            /*
-             * Look for a suitable (string) attribute...
-             */
-            stringAttributeName = null;
-
-            for (String testAttributeName : definedAttributeNames) {
-
-                if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
-
-                    /*
-                     * This is a string attribute....
-                     */
-                    stringAttributeName = testAttributeName;
-                    break;
+                        /*
+                         * This is a string attribute....
+                         */
+                        stringAttributeName = testAttributeName;
+                        break;
+                    }
                 }
+
+                if (stringAttributeName != null) {
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Exact);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Prefix);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Suffix);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Contains);
+
+                }
+
+
+                /*
+                 * Perform type filtering tests
+                 */
+                for (String attributeName : definedAttributeNames) {
+
+                    performTypeFilteringTests(attributeName);
+
+                }
+
+
+                /*
+                 * Perform generalised regex tests - these are part of the ENTITY_ADVANCED_SEARCH profile
+                 */
+
+                /*
+                 * Look for a suitable (string) attribute...
+                 */
+                stringAttributeName = null;
+
+                for (String testAttributeName : definedAttributeNames) {
+
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+
+                        /*
+                         * This is a string attribute....
+                         */
+                        stringAttributeName = testAttributeName;
+                        break;
+                    }
+                }
+
+                if (stringAttributeName != null) {
+
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Suffix);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Contains);
+                }
+
+
+                /*
+                 * Completion of searches - indicate success of testcase.
+                 */
+                super.setSuccessMessage("Entities can be searched by property and property value");
             }
-
-            if (stringAttributeName != null) {
-
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Suffix);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Contains);
-            }
-
         }
-
-
-        /*
-         * Completion of searches - indicate success of testcase.
-         */
-        super.setSuccessMessage("Entities can be searched by property and property value");
     }
 
 
@@ -769,18 +806,45 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                                  entityDef.getGUID(),
-                                                                                  matchProperties,
-                                                                                  matchCriteria,
-                                                                                  0,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  pageSize);
+            List<EntityDetail> result;
 
+            try {
+
+                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                   entityDef.getGUID(),
+                                                                   matchProperties,
+                                                                   matchCriteria,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   pageSize);
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findEntitiesByProperty";
+                String operationDescription = "find entities of type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , entityDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , matchCriteria.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
             /*
              * The approach to checking results match expectations is as follows:
@@ -859,7 +923,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             assertCondition((acceptable_result_size),
                             assertion3,
-                            assertionMsg3 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
+                            assertionMsg3 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria.getName(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
@@ -937,7 +1001,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertCondition(matchingResult,
                                 assertion4,
-                                assertionMsg4 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
+                                assertionMsg4 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria.getName(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1008,7 +1072,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              */
 
             List<String> entitiesWithAlphaValue = propertyValueMap.get(alphaAttributeName).get(alphaValue);
-            List<String> entitiesWithBetaValue  = propertyValueMap.get(betaAttributeName).get(betaValue);
+            List<String> entitiesWithBetaValue = propertyValueMap.get(betaAttributeName).get(betaValue);
             List<String> expectedGUIDs = null;
 
             switch (matchCriteria) {
@@ -1037,18 +1101,45 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                               entityDef.getGUID(),
-                                                               matchProperties,
-                                                               matchCriteria,
-                                                               0,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               pageSize);
+            List<EntityDetail> result;
 
+            try {
+
+                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                   entityDef.getGUID(),
+                                                                   matchProperties,
+                                                                   matchCriteria,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   pageSize);
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findEntitiesByProperty";
+                String operationDescription = "find entities of type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , entityDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , matchCriteria.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             /*
@@ -1085,7 +1176,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             assertCondition((acceptable_result_size),
                             assertion5,
-                            assertionMsg5 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria,
+                            assertionMsg5 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria.getName(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
@@ -1177,7 +1268,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertCondition(matchingResult,
                                 assertion6,
-                                assertionMsg6 + testTypeName + " attributes " + alphaAttributeName +","+ betaAttributeName + " match criteria " + matchCriteria,
+                                assertionMsg6 + testTypeName + " attributes " + alphaAttributeName +","+ betaAttributeName + " match criteria " + matchCriteria.getName(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1328,18 +1419,44 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Search....
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                    entityDef.getGUID(),
-                                                                    literalisedValue,
-                                                                    0,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    pageSize);
+            List<EntityDetail> result;
 
+            try {
 
+                result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                                                                        entityDef.getGUID(),
+                                                                        literalisedValue,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findEntitiesByPropertyValue";
+                String operationDescription = "find entities using repository helper regex for type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , entityDef.getGUID());
+                parameters.put("searchCriteria"                , literalisedValue);
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
             /*
              * We need to check that we got (at least) the expected number of results - which could include zero.
@@ -1361,7 +1478,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             assertCondition((acceptable_result_size),
                             assertion7,
-                            assertionMsg7 + testTypeName + " match type "+matchType + " literalised value " + literalisedValue,
+                            assertionMsg7 + testTypeName + " match type "+ matchType + " literalised value " + literalisedValue,
                             RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
@@ -1470,9 +1587,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
      * @param userId calling user
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
-     * @throws Exception problem manipulating types
      */
-    protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef) throws Exception
+    protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef)
     {
 
 
@@ -1696,18 +1812,44 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             /*
              * Perform the search without type filtering
              */
-            List<EntityDetail> result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                                  null,
-                                                                                  matchProperties,
-                                                                                  MatchCriteria.ALL,
-                                                                                  0,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  pageSize);
+            List<EntityDetail> result;
 
+            try {
+                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                   null,
+                                                                   matchProperties,
+                                                                   MatchCriteria.ALL,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   pageSize);
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findEntitiesByProperty";
+                String operationDescription = "find entities with no type filter ";
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , "null");
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             List<String> expectedGUIDs;
@@ -1749,17 +1891,46 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 /*
                  * Repeat the search being specific about type
                  */
-                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                   entityDef.getGUID(),
-                                                                   matchProperties,
-                                                                   MatchCriteria.ALL,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   pageSize);
+
+                try {
+
+
+                    result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                       entityDef.getGUID(),
+                                                                       matchProperties,
+                                                                       MatchCriteria.ALL,
+                                                                       0,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       pageSize);
+                }
+                catch(Exception exc) {
+                    /*
+                     * We are not expecting any exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "findEntitiesByProperty";
+                    String operationDescription = "find entities of type " + entityDef.getName();
+                    Map<String,String> parameters = new HashMap<>();
+                    parameters.put("typeFilter"                    , entityDef.getGUID());
+                    parameters.put("matchProperties"               , matchProperties.toString());
+                    parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                    parameters.put("fromEntityElement"             , Integer.toString(0));
+                    parameters.put("limitResultsByStatus"          , "null");
+                    parameters.put("limitResultsByClassification"  , "null");
+                    parameters.put("asOfTime"                      , "null");
+                    parameters.put("sequencingProperty"            , "null");
+                    parameters.put("sequencingOrder"               , "null");
+                    parameters.put("pageSize"                      , Integer.toString(pageSize));
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception( msg , exc );
+
+                }
+
 
                 /*
                  * We need to check that we got (at least) the expected number of results - which could include zero.
@@ -1781,9 +1952,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertCondition((acceptable_result_size),
                                 assertion9,
-                                assertionMsg9 + testTypeName + "attribute" + attributeName,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                assertionMsg9 + testTypeName + " attribute " + attributeName,
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
 
                 /*
@@ -1850,9 +2021,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                     assertCondition(matchingResult,
                                     assertion10,
-                                    assertionMsg10 + testTypeName + "attribute" + attributeName,
-                                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                    assertionMsg10 + testTypeName + " attribute " + attributeName,
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
                 }
             }
         }
@@ -1998,17 +2169,45 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * Test search using findEntitiesByPropertyValue
              */
 
-            List<EntityDetail> result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                       entityDef.getGUID(),
-                                                                                       regexValue,
-                                                                                       0,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       pageSize);
+            List<EntityDetail> result;
 
+            try {
+
+                result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
+                                                                        entityDef.getGUID(),
+                                                                        regexValue,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findEntitiesByPropertyValue";
+                String operationDescription = "find entities using general regex for type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , entityDef.getGUID());
+                parameters.put("searchCriteria"                , regexValue);
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             /*
@@ -2145,19 +2344,43 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             mppv.setPrimitiveValue(regexValue);
             matchProperties.setProperty(attributeName, mppv);
 
+            try {
 
-            result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                               entityDef.getGUID(),
-                                                               matchProperties,
-                                                               MatchCriteria.ALL,
-                                                               0,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               pageSize);
+                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                                   entityDef.getGUID(),
+                                                                   matchProperties,
+                                                                   MatchCriteria.ALL,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   pageSize);
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
 
+                String methodName = "findEntitiesByProperty";
+                String operationDescription = "find entities using general regex for type " + entityDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , entityDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("limitResultsByClassification"  , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             /*
@@ -2180,7 +2403,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             assertCondition((acceptable_result_size),
                             assertion13,
-                            assertionMsg13 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
+                            assertionMsg13 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
@@ -2274,7 +2497,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertCondition(matchingResult,
                                 assertion14,
-                                assertionMsg14 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
+                                assertionMsg14 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }

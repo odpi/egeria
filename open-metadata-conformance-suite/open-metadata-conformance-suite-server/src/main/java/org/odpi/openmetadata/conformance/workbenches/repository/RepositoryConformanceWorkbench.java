@@ -277,7 +277,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                         TestSupportedEntityRetype testEntityRetype = new TestSupportedEntityRetype(workPad, entityDef);
                         entityRetypeTestCases.add(testEntityRetype);
-
                     }
 
                     TestSupportedEntitySearch testEntitySearch = new TestSupportedEntitySearch(workPad, entityDef);
@@ -305,13 +304,11 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                         TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
                         relationshipReidentifyTestCases.add(testRelationshipReidentify);
+                        
+                        TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
+                        relationshipSearchTestCases.add(testRelationshipSearch);
 
                     }
-
-                    TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
-                    relationshipSearchTestCases.add(testRelationshipSearch);
-
-
                 }
             }
 

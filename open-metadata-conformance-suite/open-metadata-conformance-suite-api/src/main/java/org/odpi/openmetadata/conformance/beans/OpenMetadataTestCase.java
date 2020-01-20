@@ -378,7 +378,7 @@ public abstract class OpenMetadataTestCase
         }
         catch (Throwable   exception)
         {
-            String   assertionMessage = "test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName();
+            String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
             this.unsuccessfulAssertions.add(assertionMessage);
 
@@ -418,7 +418,7 @@ public abstract class OpenMetadataTestCase
         }
         catch (Throwable   exception)
         {
-            String   assertionMessage = "test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName();
+            String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
             this.unsuccessfulAssertions.add(assertionMessage);
 

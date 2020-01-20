@@ -45,14 +45,17 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
  */
 public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId = "repository-relationship-property-search";
-    private static final String testCaseName = "Repository relationship property search test case";
+    private static final String testCaseId     = "repository-relationship-property-search";
+    private static final String testCaseName   = "Repository relationship property search test case";
 
     private static final String assertion1     = testCaseId + "-01";
     private static final String assertionMsg1  = " relationship type matches the known type from the repository helper.";
 
     private static final String assertion2     = testCaseId + "-02";
     private static final String assertionMsg2  = " repository does not support an entity type that can be used to test relationship type ";
+
+    private static final String assertion101     = testCaseId + "-101";
+    private static final String assertionMsg101  = "repository supports searching for relationships of type ";
 
     private static final String assertion3     = testCaseId + "-03";
     private static final String assertionMsg3  = "repository supports creation of instances of type ";
@@ -107,7 +110,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private List<Relationship>                        knownInstances;
     private List<String>                              knownInstancesGUIDs;
     private List<Relationship>                        createdInstances;
+
+    private List<EntityDetail>                        createdEntityInstances;
+
     private boolean                                   pageLimited;
+    private int                                       pageSize;
 
     private List<String>                              uniqueAttributeNames;
     private List<String>                              definedAttributeNames;
@@ -115,7 +122,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private Map<String, Map <Object, List<String>>>   propertyValueMap;
     private Map<String,PrimitiveDefCategory>          propertyCatMap;
 
-    private int                                       pageSize;
+
 
 
 
@@ -123,6 +130,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param entityDefs the entity types supported by the repository under test
      * @param relationshipDef type of valid relationships
      */
     public TestSupportedRelationshipSearch(RepositoryConformanceWorkPad   workPad,
@@ -146,13 +154,65 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         this.pageLimited           = false;
 
-        this.uniqueAttributeNames = new ArrayList<>();
+        this.uniqueAttributeNames  = new ArrayList<>();
         this.definedAttributeNames = new ArrayList<>();
 
-        this.propertyValueMap   = new HashMap<>();
-        this.propertyCatMap     = new HashMap<>();
+        this.propertyValueMap      = new HashMap<>();
+        this.propertyCatMap        = new HashMap<>();
 
-        this.pageSize            = getMaxSearchResults();
+        this.pageSize              = getMaxSearchResults();
+
+
+
+
+        /*
+         * Check that the relationship type matches the known type from the repository helper
+         */
+        OMRSRepositoryConnector cohortRepositoryConnector = null;
+        OMRSRepositoryHelper repositoryHelper = null;
+        if (workPad != null) {
+            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+        }
+
+        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
+        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
+                        assertion1,
+                        testTypeName + assertionMsg1,
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+
+
+        /*
+         * Take a look at the attributes for the type being tested
+         */
+
+        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
+
+
+        if (this.attrList != null && !(this.attrList.isEmpty())) {
+
+            /*
+             * If the TypeDef has NO attributes then it is not possible to perform a matchProperties or searchCriteria find on instances of that type.
+             * The MetadataCollection API does not accept null match properties and a searchCritera search on something with no values would be pointless.
+             */
+
+            /*
+             * The TypeDef has defined attributes. Create a List<String> of just the attribute names.
+             * Also identify any attributes that are defined as unique as they need to be created distinct, and
+             * may be used for search narrowing.
+             * This is only collated for primitives.
+             */
+            for (TypeDefAttribute typeDefAttribute : attrList) {
+                if (typeDefAttribute.getAttributeType().getCategory() == AttributeTypeDefCategory.PRIMITIVE) {
+                    definedAttributeNames.add(typeDefAttribute.getAttributeName());
+                    if (typeDefAttribute.isUnique()) {
+                        uniqueAttributeNames.add(typeDefAttribute.getAttributeName());
+                    }
+                }
+            }
+        }
+
 
     }
 
@@ -194,79 +254,16 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
          *
          *
          * The following searches are performed:
-         *   Find By Instance (Match) Properties - with match property values using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for RELATIONSHIP_ADVANCED_SEARCH
+         *   Find By Instance (Match) Properties - with match property values using repo helper regexes for mandatory METADATA_SHARING profile
+         *                                       - with arbitrary regexes (not produced by repo helper) for optional RELATIONSHIP_ADVANCED_SEARCH profile
          *   Find By Property Value              - with searchCriteria using repo helper regexes for mandatory METADATA_SHARING profile and
-         *                                         arbitrary regexes for RELATIONSHIP_ADVANCED_SEARCH
+         *                                       - with arbitrary regexes (not produced by repo helper) for optional RELATIONSHIP_ADVANCED_SEARCH profile
          *
          *
          */
 
 
         this.metadataCollection = super.getMetadataCollection();
-
-
-        /*
-         * Check that the relationship type matches the known type from the repository helper
-         */
-        OMRSRepositoryConnector cohortRepositoryConnector = null;
-        OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null) {
-            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        }
-
-        RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
-        verifyCondition((relationshipDef.equals(knownRelationshipDef)),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-
-        /*
-         * Take a look at the attributes for the type being tested
-         */
-
-        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
-
-        if (this.attrList == null || this.attrList.isEmpty()) {
-
-            /*
-             * If the TypeDef has NO attributes then it is not possible to perform a matchProperties or searchCriteria find on instances of that type.
-             * The MetadataCollection API does not accept null match properties and a searchCritera search on something with no values would be pointless.
-             */
-            return;
-
-        }
-
-        /*
-         *
-         * There are attributes for this type
-         *
-         * Construct a list of primitive TypeDefAttributes that are specified by the known Relationship type
-         */
-
-
-
-        if (this.attrList != null && !(this.attrList.isEmpty())) {
-
-            /*
-             * The TypeDef has defined attributes. Create a List<String> of just the attribute names.
-             * Also identify any attributes that are defined as unique as they need to be created distinct, and
-             * may be used for search narrowing.
-             * This is only collated for primitives.
-             */
-            for (TypeDefAttribute typeDefAttribute : attrList) {
-                if (typeDefAttribute.getAttributeType().getCategory() == AttributeTypeDefCategory.PRIMITIVE) {
-                    definedAttributeNames.add(typeDefAttribute.getAttributeName());
-                    if (typeDefAttribute.isUnique()) {
-                        uniqueAttributeNames.add(typeDefAttribute.getAttributeName());
-                    }
-                }
-            }
-        }
-
 
         switch (phase) {
 
@@ -304,16 +301,58 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
 
 
-        knownInstances = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                        relationshipDef.getGUID(),
-                                                                        emptyMatchProperties,
-                                                                        MatchCriteria.ALL,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        pageSize);
+        try {
+            knownInstances = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                            relationshipDef.getGUID(),
+                                                                            emptyMatchProperties,
+                                                                            MatchCriteria.ALL,
+                                                                            0,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            pageSize);
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * If the repository does not support search for relationships, it's OK because it's an optional profile
+             * Report it as unsupported and back off.
+             */
+
+            super.addNotSupportedAssertion(assertion101,
+                                           assertionMsg101 + relationshipDef.getName(),
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+            return;
+
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "findRelationshipsByProperty";
+            String operationDescription = "find relationships of type " + relationshipDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeFilter"                    , relationshipDef.getGUID());
+            parameters.put("matchProperties"               , emptyMatchProperties.toString());
+            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+            parameters.put("fromEntityElement"             , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
+        }
+
+
 
 
         if (knownInstances == null) {
@@ -334,75 +373,61 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * We cannot be sure that the repository under test supports metadata maintenance, so need to try and back off.
              */
 
-            try {
 
-                knownInstances = new ArrayList<>();
-                createdInstances = new ArrayList<>();
-                /*
-                 * Create two pages worth of instances. Why two pages? Because it will allow us to test pagesize on searches.
-                 * The test verification will allow for the fact that a search may be pageLimited, in the same way that
-                 * the initial discovery search may have been page limited.
-                 */
+            knownInstances = new ArrayList<>();
+            createdInstances = new ArrayList<>();
 
-                int numInstancesToCreate = 2 * pageSize;
+            /*
+             * Create two pages worth of instances. Why two pages? Because it will allow us to test pagesize on searches.
+             * The test verification will allow for the fact that a search may be pageLimited, in the same way that
+             * the initial discovery search may have been page limited.
+             */
 
-                /*
-                 * For each instance, set all primitive properties.
-                 * Any unique properties must be set to distinct (unique) values. For this use the property name and instance count.
-                 * For other (non-unique) properties, set half of them to a common value, and the other half to unique values. This
-                 * can be achieved by testing if instance count is odd/even - odd => distinct; even => use common value.
-                 */
+            int numInstancesToCreate = 2 * pageSize;
 
-                for (int instanceCount = 0 ; instanceCount < numInstancesToCreate ; instanceCount++ ) {
+            /*
+             * For each instance, set all primitive properties.
+             * Any unique properties must be set to distinct (unique) values. For this use the property name and instance count.
+             * For other (non-unique) properties, set half of them to a common value, and the other half to unique values. This
+             * can be achieved by testing if instance count is odd/even - odd => distinct; even => use common value.
+             */
+
+            for (int instanceCount = 0; instanceCount < numInstancesToCreate; instanceCount++) {
 
 
-                    Relationship newRelationship = createRelationship(relationshipDef,
-                                                                      super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount));
+                Relationship newRelationship = createRelationship(relationshipDef,
+                                                                  super.generatePropertiesForInstance(workPad.getLocalServerUserId(),
+                                                                                                      attrList,
+                                                                                                      instanceCount));
 
-                    // Record the created instance for result prediction and verification
-                    knownInstances.add(newRelationship);
+                if (newRelationship != null) {
+                    /*
+                     * If createRelationship came back non-null then any created instances (two
+                     * entities and one relationship) will have been recorded for result prediction
+                     * and cleanup).
+                     *
+                     */
 
-                    // Record the created instance's GUID for later clean up.
-                    createdInstances.add(newRelationship);
+                    /*
+                     * We succeeded in creating instances - record the fact
+                     */
+                    assertCondition((true),
+                                    assertion3,
+                                    testTypeName + assertionMsg3,
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
+
+                } else {
+                    /*
+                     * If relationship returned was null, test case must fail. Any exception processing
+                     * has already been handled in createRelationship() - e.g FuncitonNotSupportedException.
+                     * Worse (unexpected) exceptions will have already been wrapped and thrown.
+                     * Test case can give up quietly.
+                     */
+                    return;
                 }
-
-                /*
-                 * We succeeded in creating instances - record the fact
-                 */
-                assertCondition((true),
-                                assertion3,
-                                testTypeName + assertionMsg3,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
-
             }
-            catch (FunctionNotSupportedException exception) {
-
-
-                /*
-                 * If the repository does not support metadata maintenance, then the test is not going to be interesting.
-                 * The workpad will not have recorded any instances and this absence of instance is checked in the remaining phases.
-                 * The EXECUTE phase will quietly give up if there are no recorded instances
-                 * The CLEAN phase will clean up any recorded instances (and do nothing if there are no instances).
-                 */
-
-                /*
-                 * If running against a read-only repository/connector that cannot add instances of the necessary type(s)
-                 * catch FunctionNotSupportedException and give up the test.
-                 *
-                 * Report the inability to create instances and give up on the testcase....
-                 */
-
-                super.addNotSupportedAssertion(assertion3,
-                                               assertionMsg3,
-                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
-
-
-                return;
-            }
-
         }
 
 
@@ -550,22 +575,116 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
         /*
          * Local variables for entity creation - entities need to be cleaned up when relationships are deleted.
          */
-        EntityDef end1Type;
+
         EntityDetail end1;
-        EntityDef    end2Type;
         EntityDetail end2;
 
+        InstanceProperties properties = null;
+        EntityDef entityType = null;
 
-        end1Type = entityDefs.get(end1TypeName);
-        end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+        try {
 
-        end2Type = entityDefs.get(end2TypeName);
-        end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+            /*
+             * Supply all properties for the instance, including those inherited from supertypes, since they may be mandatory.
+             * An alternative here would be to use getMinPropertiesForInstance, but providing all properties creates a logically
+             * complete entity
+             */
+
+            entityType = entityDefs.get(end1TypeName);
+            properties = this.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityType);
+            end1 = metadataCollection.addEntity(workPad.getLocalServerUserId(), entityType.getGUID(), properties, null, null );
+
+            // Record the created instance's GUID for later clean up.
+            createdEntityInstances.add(end1);
+
+            entityType = entityDefs.get(end2TypeName);
+            properties = this.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityType);
+            end2 = metadataCollection.addEntity(workPad.getLocalServerUserId(), entityType.getGUID(), properties, null, null );
+
+            // Record the created instance's GUID for later clean up.
+            createdEntityInstances.add(end2);
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * The repository does not support creation of entity instances; we need to report and fail the test
+             *
+             */
+
+            super.addNotSupportedAssertion(assertion2,
+                                           assertionMsg2,
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            return null;
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + (entityType!=null?entityType.getName():"null");
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeGUID"                , entityType!=null?entityType.getGUID():"null");
+            parameters.put("initialProperties"       , properties!=null?properties.toString():"null");
+            parameters.put("initialClasiifications"  , "null");
+            parameters.put("initialStatus"           , "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
+        }
+
+        Relationship retRelationship = null;
+
+        try {
+
+            retRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null);
+
+            // Record the relationship instance for future result prediction and verification.
+            knownInstances.add(retRelationship);
+            // Record the created instance's GUID for later clean up.
+            createdInstances.add(retRelationship);
+
+        }
+        catch (FunctionNotSupportedException exception) {
+
+            /*
+             * The repository does not support creation of entity instances; we need to report and fail the test
+             *
+             */
+
+            super.addNotSupportedAssertion(assertion2,
+                                           assertionMsg2,
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
 
-        Relationship retRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null);
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addRelationship";
+            String operationDescription = "add an entity of type " + relationshipDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeGUID"                , relationshipDef.getGUID());
+            parameters.put("end1 entityGUID"         , end1.getGUID());
+            parameters.put("end2 entityGUID"         , end2.getGUID());
+            parameters.put("initialProperties"       , instanceProps!=null?instanceProps.toString():"null");
+            parameters.put("initialStatus"           , "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
+        }
+
 
         return retRelationship;
+
 
     }
 
@@ -612,140 +731,150 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
          * This test does not perform content validation of returned instances - these are tested in the lifecycle tests.
          */
 
-
-        if (!definedAttributeNames.isEmpty()) {
+        if (knownInstances != null && !knownInstances.isEmpty()) {
 
             /*
-             * Perform single property findRelationshipsByProperty() tests - these take each attribute in turn and for each attribute,
-             * take one known value to search for instances using matchProperties containing the individual primitive property.
-             * The test is repeated for MatchCriteria ALL and NONE.
-             * This is only done for primitives.
+             * There are instances of the type being tested in the repository.
+             * If this is not the case, the test will drop through and report an UNKNOWN_STATUS.
              */
 
 
-            for (String attributeName : definedAttributeNames) {
+            if (!definedAttributeNames.isEmpty()) {
 
-                performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
+                /*
+                 * The type has at least one attribute that we can test against.
+                 * If this is not the case, the test will drop through and report an UNKNOWN_STATUS.
+                 *
+                 * Perform single property findRelationshipsByProperty() tests - these take each attribute in turn and for each attribute,
+                 * take one known value to search for instances using matchProperties containing the individual primitive property.
+                 * The test is repeated for MatchCriteria ALL and NONE.
+                 * This is only done for primitives.
+                 */
 
-                performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.NONE);
 
-            }
+                for (String attributeName : definedAttributeNames) {
 
-            /*
-             * Perform dual property findRelationshipsByProperty() tests -
-             *
-             * Dual property findRelationshipsByProperty() tests - these take a pair of attributes and using just one known value
-             * for each attribute, they exercise the different settings of MatchCriteria. They search for instances using a
-             * matchProperties object containing the pair of primitive properties. This tests matchCriteria ALL, ANY & NONE.
-             * Defined attributes only includes primitives.
-             */
+                    performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
 
-            /*
-             * Pick one pair of properties for dual property tests - if there are less than two properties skip this test
-             */
-
-            List<String> attributePair = pickAttributePair();
-            if (attributePair != null && attributePair.size() == 2) {
-
-                String alphaAttributeName = attributePair.get(0);
-                String betaAttributeName = attributePair.get(1);
-
-                if (alphaAttributeName != null && betaAttributeName != null) {
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ANY);
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ALL);
-
-                    performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.NONE);
-
+                    performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.NONE);
 
                 }
-            }
+
+                /*
+                 * Perform dual property findRelationshipsByProperty() tests -
+                 *
+                 * Dual property findRelationshipsByProperty() tests - these take a pair of attributes and using just one known value
+                 * for each attribute, they exercise the different settings of MatchCriteria. They search for instances using a
+                 * matchProperties object containing the pair of primitive properties. This tests matchCriteria ALL, ANY & NONE.
+                 * Defined attributes only includes primitives.
+                 */
+
+                /*
+                 * Pick one pair of properties for dual property tests - if there are less than two properties skip this test
+                 */
+
+                List<String> attributePair = pickAttributePair();
+                if (attributePair != null && attributePair.size() == 2) {
+
+                    String alphaAttributeName = attributePair.get(0);
+                    String betaAttributeName = attributePair.get(1);
+
+                    if (alphaAttributeName != null && betaAttributeName != null) {
+
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ANY);
+
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.ALL);
+
+                        performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, MatchCriteria.NONE);
 
 
-
-            /*
-             * Perform searchCriteria-based findByPropertyValue tests. One string attribute is selected and tested for each of its
-             * known values with all of EXACT, PREFIX, SUFFIX and CONTAINS matching. These are mandatory profile tests, so all string
-             * values are literalised using the repo helper methods.
-             */
-
-            /*
-             * Look for a suitable (string) attribute...
-             */
-            String stringAttributeName = null;
-
-            for (String testAttributeName : definedAttributeNames) {
-
-                if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
-
-                    /*
-                     * This is a string attribute....
-                     */
-                    stringAttributeName = testAttributeName;
-                    break;
+                    }
                 }
-            }
-
-            if (stringAttributeName != null) {
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Exact);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Prefix);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Suffix);
-
-                performSearchCriteriaTests(stringAttributeName, RegexMatchType.Contains);
-
-            }
 
 
-            /*
-             * Perform type filtering tests
-             */
-            for (String attributeName : definedAttributeNames) {
 
-                performTypeFilteringTests(attributeName);
+                /*
+                 * Perform searchCriteria-based findByPropertyValue tests. One string attribute is selected and tested for each of its
+                 * known values with all of EXACT, PREFIX, SUFFIX and CONTAINS matching. These are mandatory profile tests, so all string
+                 * values are literalised using the repo helper methods.
+                 */
 
-            }
+                /*
+                 * Look for a suitable (string) attribute...
+                 */
+                String stringAttributeName = null;
 
+                for (String testAttributeName : definedAttributeNames) {
 
-            /*
-             * Perform generalised regex tests - these are part of the RELATIONSHIP_ADVANCED_SEARCH profile
-             */
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
 
-            /*
-             * Look for a suitable (string) attribute...
-             */
-            stringAttributeName = null;
-
-            for (String testAttributeName : definedAttributeNames) {
-
-                if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
-
-                    /*
-                     * This is a string attribute....
-                     */
-                    stringAttributeName = testAttributeName;
-                    break;
+                        /*
+                         * This is a string attribute....
+                         */
+                        stringAttributeName = testAttributeName;
+                        break;
+                    }
                 }
+
+                if (stringAttributeName != null) {
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Exact);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Prefix);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Suffix);
+
+                    performSearchCriteriaTests(stringAttributeName, RegexMatchType.Contains);
+
+                }
+
+
+                /*
+                 * Perform type filtering tests
+                 */
+                for (String attributeName : definedAttributeNames) {
+
+                    performTypeFilteringTests(attributeName);
+
+                }
+
+
+                /*
+                 * Perform generalised regex tests - these are part of the RELATIONSHIP_ADVANCED_SEARCH profile
+                 */
+
+                /*
+                 * Look for a suitable (string) attribute...
+                 */
+                stringAttributeName = null;
+
+                for (String testAttributeName : definedAttributeNames) {
+
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+
+                        /*
+                         * This is a string attribute....
+                         */
+                        stringAttributeName = testAttributeName;
+                        break;
+                    }
+                }
+
+                if (stringAttributeName != null) {
+
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Suffix);
+                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Contains);
+                }
+
+                /*
+                 * Completion of searches - indicate success of testcase.
+                 */
+                super.setSuccessMessage("Relationships can be searched by property and property value");
+
             }
-
-            if (stringAttributeName != null) {
-
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Suffix);
-                performAdvancedSearchTests(stringAttributeName, RegexMatchType.Contains);
-            }
-
         }
-
-
-        /*
-         * Completion of searches - indicate success of testcase.
-         */
-        super.setSuccessMessage("Relationships can be searched by property and property value");
     }
 
 
@@ -856,18 +985,57 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             /*
              * Search....
              */
+            List<Relationship> result = null;
 
-            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                       relationshipDef.getGUID(),
-                                                                                       matchProperties,
-                                                                                       matchCriteria,
-                                                                                       0,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       pageSize);
+            try {
 
+                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        relationshipDef.getGUID(),
+                                                                        matchProperties,
+                                                                        matchCriteria,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByProperty";
+                String operationDescription = "find relationships of type " + relationshipDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , matchCriteria.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
             /*
              * The approach to checking results match expectations is as follows:
@@ -1124,17 +1292,57 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * Search....
              */
 
-            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                       relationshipDef.getGUID(),
-                                                                                       matchProperties,
-                                                                                       matchCriteria,
-                                                                                       0,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       pageSize);
+            List<Relationship> result = null;
 
+            try {
+                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        relationshipDef.getGUID(),
+                                                                        matchProperties,
+                                                                        matchCriteria,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByProperty";
+                String operationDescription = "find relationships of type " + relationshipDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , matchCriteria.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
             /*
              * Check that the expected number of relationships was returned. This has to consider the effect of the original
@@ -1413,15 +1621,54 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * Search....
              */
 
-            List<Relationship> result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                            relationshipDef.getGUID(),
-                                                                                            literalisedValue,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            pageSize);
+            List<Relationship> result = null;
+
+            try {
+                result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                    relationshipDef.getGUID(),
+                                                                    literalisedValue,
+                                                                    0,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    pageSize);
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByPropertyValue";
+                String operationDescription = "find relationships of type " + relationshipDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                parameters.put("searchCriteria"                , literalisedValue);
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
 
@@ -1554,9 +1801,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
      * @param userId calling user
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
-     * @throws Exception problem manipulating types
      */
-    protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef) throws Exception
+    protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef)
     {
 
 
@@ -1780,16 +2026,57 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             /*
              * Perform the search without type filtering
              */
-            List<Relationship> result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                                       null,
-                                                                                       matchProperties, MatchCriteria.ALL,
-                                                                                       0,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       pageSize);
+            List<Relationship> result = null;
 
+            try {
+                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        null,
+                                                                        matchProperties,
+                                                                        MatchCriteria.ALL,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByProperty";
+                String operationDescription = "find relationships with no type filter";
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , "null");
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             List<String> expectedGUIDs;
@@ -1827,16 +2114,58 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                 /*
                  * Repeat the search being specific about type
                  */
-                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                        relationshipDef.getGUID(),
-                                                                        matchProperties,
-                                                                        MatchCriteria.ALL,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        pageSize);
+
+                result = null;
+
+                try {
+                    result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                            relationshipDef.getGUID(),
+                                                                            matchProperties,
+                                                                            MatchCriteria.ALL,
+                                                                            0,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            pageSize);
+                }
+                catch (FunctionNotSupportedException exception) {
+
+                    /*
+                     * The repository does not support relationship searches; we need to report and stop
+                     *
+                     */
+
+                    super.addNotSupportedAssertion(assertion101,
+                                                   assertionMsg101,
+                                                   RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+
+
+                }
+                catch(Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "findRelationshipsByProperty";
+                    String operationDescription = "find relationships of type " + relationshipDef.getName();
+                    Map<String,String> parameters = new HashMap<>();
+                    parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                    parameters.put("matchProperties"               , matchProperties.toString());
+                    parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                    parameters.put("fromEntityElement"             , Integer.toString(0));
+                    parameters.put("limitResultsByStatus"          , "null");
+                    parameters.put("asOfTime"                      , "null");
+                    parameters.put("sequencingProperty"            , "null");
+                    parameters.put("sequencingOrder"               , "null");
+                    parameters.put("pageSize"                      , Integer.toString(pageSize));
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception( msg , exc );
+
+                }
+
 
                 /*
                  * We need to check that we got (at least) the expected number of results - which could include zero.
@@ -1858,9 +2187,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition((acceptable_result_size),
                                 assertion10,
-                                assertionMsg10 + testTypeName + "attribute" + attributeName,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                assertionMsg10 + testTypeName + " attribute " + attributeName,
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
                 /*
@@ -1927,9 +2256,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                     assertCondition(matchingResult,
                                     assertion11,
-                                    assertionMsg11 + testTypeName + "attribute" + attributeName,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
+                                    assertionMsg11 + testTypeName + " attribute " + attributeName,
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                 }
             }
         }
@@ -2075,16 +2404,54 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * Test search using findRelationshipsByPropertyValue
              */
 
-            List<Relationship> result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
-                                                                                            relationshipDef.getGUID(),
-                                                                                            regexValue,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            pageSize);
+            List<Relationship> result = null;
 
+            try {
+                result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
+                                                                    relationshipDef.getGUID(),
+                                                                    regexValue,
+                                                                    0,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    pageSize);
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByPropertyValue";
+                String operationDescription = "find relationships with general regex for type " + relationshipDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                parameters.put("searchCriteria"                , regexValue);
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
 
             /*
@@ -2222,18 +2589,58 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             matchProperties.setProperty(attributeName, mppv);
 
 
-            result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                                                                    relationshipDef.getGUID(),
-                                                                    matchProperties,
-                                                                    MatchCriteria.ALL,
-                                                                    0,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    pageSize);
+            result = null;
+
+            try {
+
+                result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                                                                        relationshipDef.getGUID(),
+                                                                        matchProperties,
+                                                                        MatchCriteria.ALL,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+
+            }
+            catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * The repository does not support relationship searches; we need to report and stop
+                 *
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101,
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
 
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationshipsByProperty";
+                String operationDescription = "find relationships of type " + relationshipDef.getName();
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("typeFilter"                    , relationshipDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
 
             /*
              * We need to check that we got (at least) the expected number of results - which could include zero.
@@ -2255,7 +2662,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             assertCondition((acceptable_result_size),
                             assertion14,
-                            assertionMsg14 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
+                            assertionMsg14 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
@@ -2349,7 +2756,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 assertCondition(matchingResult,
                                 assertion15,
-                                assertionMsg15 + testTypeName + " attribute " + attributeName + " match type " + matchType + " " + "regex " + regexValue,
+                                assertionMsg15 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }

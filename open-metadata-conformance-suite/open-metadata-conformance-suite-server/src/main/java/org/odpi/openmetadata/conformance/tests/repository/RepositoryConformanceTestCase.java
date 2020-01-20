@@ -668,9 +668,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param userId   the userId of the caller, needed for retrieving type definitions
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
-     * @throws Exception problem manipulating types
      */
-    protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception
+    protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef)
     {
 
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
@@ -773,6 +772,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param userId userId for the new entity
      * @param metadataCollection metadata connection to access the repository
      * @param entityDef type of entity to create
+     * @param homeMetadataCollectionId - metadataCollectionId of the repository that is master for instance
      * @return string - entity proxy's GUID
      * @throws Exception error in create
      */
@@ -804,6 +804,36 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     }
 
 
+    protected String buildExceptionMessage(String testName,
+                                           String methodName,
+                                           String operationDescription,
+                                           Map<String,String> parameters,
+                                           String originalExceptionClassName,
+                                           String originalExceptionMessage) {
 
+        StringBuilder msg = new StringBuilder();
+        msg.append("CTS test ").append(testName);
+        msg.append(" caught exception ").append(originalExceptionClassName);
+        msg.append(" from method ").append(methodName);
+        msg.append(" whilst trying to ").append(operationDescription);
+        msg.append(". ");
+        msg.append(" Exception message was : ").append(originalExceptionMessage);
+        msg.append(". ");
+        msg.append(" Method was invoked with parameters: ");
+        if (parameters != null) {
+            Set<String> keys = parameters.keySet();
+            Iterator<String> keyIter = keys.iterator();
+            if (keyIter.hasNext()) {
+                String key = keyIter.next();
+                msg.append(key).append(" : ").append(parameters.get(key));
+                while (keyIter.hasNext()) {
+                    msg.append(", ");
+                    key = keyIter.next();
+                    msg.append(key).append(" : ").append(parameters.get(key));
+                }
+            }
+        }
+        return msg.toString();
+    }
 
 }
