@@ -13,7 +13,8 @@ import org.apache.kafka.common.config.ConfigException;
  * that we can call the package private constructor. 
  * 
  */
-public class KafkaConfigurationWrapper
+public class
+KafkaConfigurationWrapper
 {
     ConsumerConfig config;
     

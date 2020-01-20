@@ -208,11 +208,11 @@ public class MainGraphMapper {
 
             columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
             subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOutVertex);
-            String columnToColumn = columnInVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString()
-                                    .concat(columnOutVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
-            if(!mainG.V().has(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn).hasNext()){
-                columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,columnOutVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn);
-            }
+//            String columnToColumn = columnInVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString()
+//                                    .concat(columnOutVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
+//            if(!mainG.V().has(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn).hasNext()){
+//                columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,columnOutVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn);
+//            }
 
             Iterator<Vertex> processTopLevel = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,process.property(PROPERTY_KEY_ENTITY_GUID).value());
             if(processTopLevel.hasNext()){
@@ -257,11 +257,11 @@ public class MainGraphMapper {
         addTableRelationships(bufferG,mainG,tableIn,process,columnInVertex);
         addTableRelationships(bufferG,mainG,tableOut,process,columnOutVertex);
 
-        String tablesEdgesGuid = tableIn.property(PROPERTY_KEY_ENTITY_GUID).value().toString().concat(tableOut.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
-
-        if (!mainG.V().property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid).hasNext()){
-            tableIn.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,tableOut).property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid);
-        }
+//        String tablesEdgesGuid = tableIn.property(PROPERTY_KEY_ENTITY_GUID).value().toString().concat(tableOut.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
+//
+//        if (!mainG.V().property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid).hasNext()){
+//            tableIn.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,tableOut).property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid);
+//        }
         bufferG.tx().commit();
         mainG.tx().commit();
     }
