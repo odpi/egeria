@@ -108,11 +108,10 @@ public enum OpenLineageServerErrorCode {
             "The system was unable to register the Maingraph database connector as  \"active\"" +
                     "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
-    ERROR_STARTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-002",
-            "Error retrieving inTopic Connector",
-            "IError retrieving inTopic Connector",
-            "The system was unable to obtain a connector for the eventbus. " +
-                    "Please verify the topic specifications in the configuration."),
+    ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-002",
+            "The Open Lineage Services server {0} was unable to obtain an in topic connector with the provided configuration {1}.",
+            "The in topic connector could not be obtained.",
+            "Review the topic name set by the Open Lineage Services configuration"),
 
     NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-001",
             "Error retrieving queried node",

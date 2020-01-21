@@ -26,8 +26,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.*;
-
 
 /**
  * OpenLineageOperationalServices is responsible for controlling the startup and shutdown of
@@ -152,14 +150,14 @@ public class OpenLineageServerOperationalServices {
             bufferGraphConnector.initializeGraphDB();
         } catch (OpenLineageException e) {
             log.error("The Buffergraph database connector could not be initialized", e);
-            throwError(ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR, actionDescription);
+            throwError(OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR, actionDescription);
         }
         actionDescription = "initiateMainGraphConnector";
         try {
             mainGraphConnector.initializeGraphDB();
         } catch (OpenLineageException e) {
             log.error("The Maingraph database connector could not be initialized", e);
-            throwError(ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, actionDescription);
+            throwError(OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, actionDescription);
         }
 
         Object mainGraph = mainGraphConnector.getMainGraph();
@@ -192,7 +190,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "startInTopicListener";
 
         if (inTopicConnector == null)
-            throwError(OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, actionDescription);
+            throwError(OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, actionDescription);
 
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
