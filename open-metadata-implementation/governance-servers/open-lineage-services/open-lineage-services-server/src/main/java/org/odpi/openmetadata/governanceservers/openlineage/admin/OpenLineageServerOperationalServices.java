@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -87,8 +88,8 @@ public class OpenLineageServerOperationalServices {
         Connection bufferGraphConnection = openLineageServerConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageServerConfig.getOpenLineageMainGraphConnection();
 
-        BufferGraph bufferGraphConnector = getBufferGraphConnector(bufferGraphConnection);
-        MainGraph mainGraphConnector = getMainGraphConnector(mainGraphConnection);
+        BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
+        MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection, OpenLineageServerAuditCode.ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR);
 
         initiateAndStartDBConnectors(bufferGraphConnector, mainGraphConnector);
 
@@ -106,47 +107,23 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Use the connectorbroker to obtain a Buffergraph connector.
+     * Use the ConnectorBroker to obtain a graph database connector.
      *
-     * @param bufferGraphConnection the Buffergraph connection as provided by the user in the configure open lineage services postman call.
-     * @return The Buffergraph connector
+     * @param connection the graph connection as provided by the user in the configure Open Lineage Services postman call.
+     * @param auditCode  The auditcode that should be used when the connector can not be obtained.
+     * @return The connector returned by the ConnectorBroker
      * @throws OMAGConfigurationErrorException
      */
-    private BufferGraph getBufferGraphConnector(Connection bufferGraphConnection) throws OMAGConfigurationErrorException {
-        /*
-         * Configuring the Graph connectors
-         */
-        final String actionDescription = "Get Buffergraph connector";
-        BufferGraph bufferGraph = null;
+    private Connector getGraphConnector(Connection connection, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
+        String actionDescription = "Obtaining graph database connector";
+        Connector connector = null;
         try {
-            bufferGraph = (BufferGraph) new ConnectorBroker().getConnector(bufferGraphConnection);
+            connector = new ConnectorBroker().getConnector(connection);
         } catch (ConnectionCheckedException | ConnectorCheckedException e) {
             log.error("Unable to initialize the graph connector.", e);
-            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         }
-        return bufferGraph;
-    }
-
-    /**
-     * Use the connectorbroker to obtain a Maingraph connector.
-     *
-     * @param mainGraphConnection the Buffergraph connection as provided by the user in the configure open lineage services postman call.
-     * @return The Maingraph connector
-     * @throws OMAGConfigurationErrorException
-     */
-    private MainGraph getMainGraphConnector(Connection mainGraphConnection) throws OMAGConfigurationErrorException {
-        /*
-         * Configuring the Graph connectors
-         */
-        final String actionDescription = "Get Maingraph connector";
-        MainGraph mainGraph = null;
-        try {
-            mainGraph = (MainGraph) new ConnectorBroker().getConnector(mainGraphConnection);
-        } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-            log.error("Unable to initialize the graph connector.", e);
-            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR, actionDescription);
-        }
-        return mainGraph;
+        return connector;
     }
 
     private void initiateAndStartDBConnectors(BufferGraph bufferGraphConnector, MainGraph mainGraphConnector) throws OMAGConfigurationErrorException {
