@@ -23,5 +23,5 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "automerge,!no-not-merge"
-          MERGE_RETRIES: "25"
-          MERGE_RETRY_SLEEP: 150000
+          MERGE_RETRIES: "300"
+          MERGE_RETRY_SLEEP: 60000
