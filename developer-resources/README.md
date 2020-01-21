@@ -6,6 +6,7 @@
 This module contains resources to help developers working on the Egeria project.
 
 * [Developer Guidelines](./Developer-Guidelines.md)
+* [Release Process](./Release-Process.md)
 * Technology summaries
   * [Spring and Spring Boot](Spring.md) - for building REST APIs
   * [Developer import Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
