@@ -124,8 +124,8 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.5.2</junit.platform.version>
-        <junit.jupiter.version>5.5.2</junit.jupiter.version>
+        <junit.platform.version>1.6.0</junit.platform.version>
+        <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.2.4</mockito.version>
@@ -138,7 +138,7 @@
         <kafka.version>2.4.0</kafka.version>
         <janus.version>0.4.0</janus.version>
         <gremlin.version>3.4.1</gremlin.version>
-        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring.version>5.2.3.RELEASE</spring.version>
         <spring-security.version>5.2.1.RELEASE</spring-security.version>
         <spring-data.version>2.2.4.RELEASE</spring-data.version>

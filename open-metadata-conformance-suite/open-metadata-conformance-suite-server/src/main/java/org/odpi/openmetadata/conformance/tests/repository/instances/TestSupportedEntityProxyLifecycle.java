@@ -63,9 +63,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertion8     = testCaseId + "-08";
     private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
-
-    // TODO - renumber assertions
-
     private static final String assertion9     = testCaseId + "-09";
     private static final String assertionMsg9  = " entity proxy status cannot be updated ";
 
