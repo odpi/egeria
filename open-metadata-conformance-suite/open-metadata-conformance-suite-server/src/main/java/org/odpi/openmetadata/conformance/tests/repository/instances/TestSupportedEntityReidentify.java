@@ -251,6 +251,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
             Map<String,String> parameters = new HashMap<>();
             parameters.put("typeGUID"                , entityDef.getGUID());
             parameters.put("entityGUID"              , newEntity.getGUID());
+            parameters.put("newEntityGUID"           , newGUID);
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );

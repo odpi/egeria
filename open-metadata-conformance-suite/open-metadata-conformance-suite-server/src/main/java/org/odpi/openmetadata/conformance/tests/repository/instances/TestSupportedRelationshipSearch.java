@@ -669,7 +669,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
 
             String methodName = "addRelationship";
-            String operationDescription = "add an entity of type " + relationshipDef.getName();
+            String operationDescription = "add a relationship of type " + relationshipDef.getName();
             Map<String,String> parameters = new HashMap<>();
             parameters.put("typeGUID"                , relationshipDef.getGUID());
             parameters.put("end1 entityGUID"         , end1.getGUID());
