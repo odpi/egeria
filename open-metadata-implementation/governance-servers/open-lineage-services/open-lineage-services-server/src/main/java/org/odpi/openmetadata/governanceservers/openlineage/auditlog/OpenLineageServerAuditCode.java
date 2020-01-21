@@ -56,7 +56,7 @@ public enum OpenLineageServerAuditCode {
 //            "The connector could not be initialized.",
 //            "Review the exception and resolve the configuration. "),
 //
-    ERROR_INITIALIZING_KAFKA_CONNECTOR("OPEN-LINEAGE-0008",
+    ERROR_INITIALIZING_TOPIC_CONNECTOR("OPEN-LINEAGE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Open Lineage Services connector {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",

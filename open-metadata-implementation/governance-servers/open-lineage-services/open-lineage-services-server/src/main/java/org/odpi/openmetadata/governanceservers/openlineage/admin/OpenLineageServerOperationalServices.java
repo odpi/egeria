@@ -228,7 +228,7 @@ public class OpenLineageServerOperationalServices {
             return topicConnector;
         } catch (ConnectionCheckedException | ConnectorCheckedException e) {
             log.error("The connector for the asset lineage OMAS out topic could not be obtained", e);
-            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_KAFKA_CONNECTOR, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTOR, actionDescription);
             return null;
         }
     }
