@@ -6,7 +6,6 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +105,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         EntityDetail newEntity;
 
+        InstanceProperties instProps = null;
+
         try {
 
 
@@ -115,9 +117,11 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
              * entity that is logically complete - versus an instance with just the locally-defined properties.
              */
 
+            instProps =  super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
-                                                     super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                     instProps,
                                                     null,
                                                     null);
 
@@ -144,6 +148,23 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + entityDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeGUID"                , entityDef.getGUID());
+            parameters.put("initialProperties"       , instProps!=null?instProps.toString():"null");
+            parameters.put("initialClasiifications"  , "null");
+            parameters.put("initialStatus"           , "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
         }
 
         assertCondition((newEntity != null),
@@ -220,6 +241,21 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reIdentifyEntity";
+            String operationDescription = "reidentify an entity of type " + entityDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeGUID"                , entityDef.getGUID());
+            parameters.put("entityGUID"              , newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
+        }
 
 
         /*
@@ -234,7 +270,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     testTypeName + assertionMsg5,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        } catch (EntityNotKnownException exception) {
+        }
+        catch (EntityNotKnownException exception) {
             assertCondition((true),
                     assertion5,
                     testTypeName + assertionMsg5,
