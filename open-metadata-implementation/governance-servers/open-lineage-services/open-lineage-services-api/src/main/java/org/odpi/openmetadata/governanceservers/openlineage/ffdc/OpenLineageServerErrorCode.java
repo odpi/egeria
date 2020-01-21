@@ -75,38 +75,32 @@ public enum OpenLineageServerErrorCode {
     OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(500, "OPEN-LINEAGE-SERVER-500-002",
             "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
             "The OpenLineageHandler has not been instantiated in the open lineage server.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of " +
-                    "the open lineage server. Once the cause is resolved, retry the open lineage request."),
+            "the open lineage server. Once the cause is resolved, retry the open lineage request."),
 
     CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVICES-001",
             "It is not possible to open the graph database at path {0} in the {1} method of {2} class.",
             "Graph could not be opened due to invalid configuration",
-            "The system was unable to open the graph repository graph database. " +
-                    "Please check that the graph database exists and is not in use by another process."),
+            "Please check that the graph database exists and is not in use by another process."),
 
     ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
             "The Open Lineage server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
             "The Buffergraph database connector could not be initialized",
-            "The system was unable to initialize the Buffergraph database connector. " +
-                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
     ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
             "The Open Lineage server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
             "The Maingraph database connector could not be initialized",
-            "The system was unable to initialize the Maingraph database connector. " +
-                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
     ERROR_STARTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
             "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\" with the values provided in configuration {1}",
             "The Buffergraph database connector could not be started",
-            "The system was unable to register the Buffergraph database connector as  \"active\"" +
-                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
     ERROR_STARTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
             "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" with the values provided in configuration {1}",
             "The Maingraph database connector could not be started",
-            "The system was unable to register the Maingraph database connector as  \"active\"" +
-                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+             "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-002",
             "The Open Lineage Services server {0} was unable to obtain an in topic connector with the provided configuration {1}.",
