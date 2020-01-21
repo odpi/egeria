@@ -16,7 +16,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGra
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
-import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
@@ -45,7 +45,6 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerInstance openLineageServerInstance = null;
     private OMRSAuditLog auditLog = null;
     private OpenMetadataTopicConnector inTopicConnector;
-
 
     /**
      * Constructor used at server startup.
@@ -78,6 +77,7 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Initialize Open lineage Services";
         this.openLineageServerConfig = openLineageServerConfig;
         this.auditLog = auditLog;
+        this.inTopicConnector = getInTopicConnector();
 
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
 
@@ -102,8 +102,27 @@ public class OpenLineageServerOperationalServices {
                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                 maxPageSize,
                 openLineageHandler);
-        startEventBus(storingServices);
+        startInTopicListener(storingServices);
 
+    }
+
+    /**
+     * Obtain a connector the Open Lineage Services in topic based on the connection properties included in the Open Lineage Services configuration.
+     *
+     * @return the connector created based on the topic connection properties
+     */
+    private OpenMetadataTopicConnector getInTopicConnector() throws
+            OMAGConfigurationErrorException {
+        final String actionDescription = "Obtain a connector the Open Lineage Services in topic";
+        OpenMetadataTopicConnector IntopicConnector = null;
+        try {
+            IntopicConnector = (OpenMetadataTopicConnector) new ConnectorBroker().getConnector(openLineageServerConfig.getInTopicConnection());
+            IntopicConnector.setAuditLog(auditLog);
+        } catch (ConnectionCheckedException | ConnectorCheckedException e) {
+            log.error("The connector for the Open Lineage Services in topic could not be obtained", e);
+            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, actionDescription);
+        }
+        return IntopicConnector;
     }
 
     /**
@@ -163,52 +182,29 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Start the kafka connector to listen to the asset lineage OMAS out topic.
+     * Start the Open Lineage Services in-topic listener.
      *
      * @param storingServices
      * @throws OMAGConfigurationErrorException
      */
-    private void startEventBus(StoringServices storingServices) throws OMAGConfigurationErrorException {
-        final String actionDescription = "Start event bus";
-        final String methodName = "startEventBus";
-        inTopicConnector = getTopicConnector(openLineageServerConfig.getInTopicConnection(), auditLog);
+    private void startInTopicListener(StoringServices storingServices) throws OMAGConfigurationErrorException {
+        final String actionDescription = "Start the Open Lineage Services in-topic listener";
+        final String methodName = "startInTopicListener";
 
         if (inTopicConnector == null)
-            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_REGISTRATING_WITH_AL_OUT_TOPIC, actionDescription);
+            throwError(OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, actionDescription);
 
-        OpenMetadataTopicListener governanceEventListener = new InTopicListener(storingServices, auditLog);
-        inTopicConnector.registerListener(governanceEventListener);
+        OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
+        inTopicConnector.registerListener(openLineageInTopicListener);
         try {
             inTopicConnector.start();
         } catch (ConnectorCheckedException e) {
-            log.error("The eventbus could not be started", e);
-            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_REGISTRATING_WITH_AL_OUT_TOPIC, actionDescription);
+            log.error("The Open Lineage Services in-topic listener could not be started", e);
+            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, actionDescription);
         }
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
     }
 
-
-    /**
-     * Returns the connector created from topic connection properties
-     *
-     * @param topicConnection properties of the topic connection
-     * @return the connector created based on the topic connection properties
-     */
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection, OMRSAuditLog auditLog) throws
-            OMAGConfigurationErrorException {
-        final String actionDescription = "Get Asset Lineage OMAS out topic connector";
-        try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
-            topicConnector.setAuditLog(auditLog);
-            return topicConnector;
-        } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-            log.error("The connector for the asset lineage OMAS out topic could not be obtained", e);
-            OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTOR, actionDescription);
-            return null;
-        }
-    }
 
     /**
      * Write to audit log
@@ -242,6 +238,7 @@ public class OpenLineageServerOperationalServices {
                 auditCode.getUserAction(),
                 e);
     }
+
 
     /**
      * Throw an OMAGConfigurationErrorException using an OpenLineageServerErrorCode.

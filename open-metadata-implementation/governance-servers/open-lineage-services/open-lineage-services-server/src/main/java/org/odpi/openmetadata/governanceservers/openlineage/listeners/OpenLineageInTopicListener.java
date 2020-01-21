@@ -11,14 +11,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InTopicListener implements OpenMetadataTopicListener {
+public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
-    private static final Logger log = LoggerFactory.getLogger(InTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenLineageInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
     private StoringServices storingServices;
 
-    public InTopicListener(StoringServices storingServices, OMRSAuditLog auditLog) {
+    public OpenLineageInTopicListener(StoringServices storingServices, OMRSAuditLog auditLog) {
         this.storingServices = storingServices;
         this.auditLog = auditLog;
     }
