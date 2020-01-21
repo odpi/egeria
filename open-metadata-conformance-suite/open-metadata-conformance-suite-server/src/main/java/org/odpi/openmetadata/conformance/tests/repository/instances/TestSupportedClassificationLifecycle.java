@@ -10,8 +10,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,9 +40,13 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     private static final String assertionMsg6 = " repository supports creation of instances ";
 
 
-    private EntityDef         testEntityDef;
-    private ClassificationDef classificationDef;
-    private String            testTypeName;
+    private EntityDef            testEntityDef;
+    private ClassificationDef    classificationDef;
+    private String               testTypeName;
+
+    private List<EntityDetail>   createdEntities = new ArrayList<>();
+
+
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
@@ -93,6 +99,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                     testTypeName + assertionMsg6,
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            createdEntities.add(testEntity);
         }
         catch (FunctionNotSupportedException exception) {
             /*
@@ -185,82 +193,49 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     }
 
 
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
-    protected void cleanup() throws Exception
+    public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        /*
-         * Find any entities of the given type def and delete them....
-         */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                    testEntityDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (entities == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdEntities != null && !createdEntities.isEmpty()) {
 
             /*
-             * Report how many entities were left behind at the end of the test run
+             * Instances were created - clean them up.
              */
 
-            resultSize = entities.size();
+            for (EntityDetail entity : createdEntities) {
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
-
-            for (EntityDetail entity : entities) {
-
-                /*
-                 * Try soft delete (ok if it fails) and purge.
-                 */
-
-                try {
-                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-
-                } catch (FunctionNotSupportedException exception) {
-                    /* OK - had to try soft; continue to purge */
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
                 }
 
+                // If entity is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-
-                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
-
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
             }
-        } while (resultSize >= pageSize);
-
+        }
     }
+
 }
