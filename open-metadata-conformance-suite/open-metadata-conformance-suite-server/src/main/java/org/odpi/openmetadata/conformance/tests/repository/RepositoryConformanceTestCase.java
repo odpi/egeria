@@ -8,7 +8,6 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+
 
 import java.util.*;
 
@@ -336,6 +335,98 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
 
     /**
+     * Create a primitive property value for the requested property.
+     *
+     * @param propertyName name of the property
+     * @param propertyType type of the property
+     * @param attrUnique whether this property value should be distinct (or common)
+     * @param instanceCount counter to be used in customisation of distinct values
+     * @return PrimitivePropertyValue object
+     */
+    private PrimitivePropertyValue getPrimitivePropertyValue(String        propertyName,
+                                                             PrimitiveDef  propertyType,
+                                                             boolean       attrUnique,
+                                                             int           instanceCount)
+    {
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+
+        propertyValue.setPrimitiveDefCategory(propertyType.getPrimitiveDefCategory());
+
+
+       boolean distinct = attrUnique || (instanceCount%2)!=0;
+
+        switch (propertyType.getPrimitiveDefCategory())
+        {
+            case OM_PRIMITIVE_TYPE_STRING:
+                if (distinct)
+                    propertyValue.setPrimitiveValue(propertyName + "." + instanceCount);
+                else
+                    propertyValue.setPrimitiveValue(propertyName);
+                break;
+            case OM_PRIMITIVE_TYPE_DATE:
+                Date date = new Date();                        // Date and Time now - these are always distinct
+                Long timestamp = date.getTime();
+                propertyValue.setPrimitiveValue(timestamp);    // Dates are stored as Long values
+                break;
+            case OM_PRIMITIVE_TYPE_INT:
+                if (distinct)
+                    propertyValue.setPrimitiveValue(42 + instanceCount);    // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue(42);
+                break;
+            case OM_PRIMITIVE_TYPE_BOOLEAN:
+                propertyValue.setPrimitiveValue(instanceCount%2==0);        // every other one is false
+                break;
+            case OM_PRIMITIVE_TYPE_SHORT:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((short)(3+ instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((short)3);
+                break;
+            case OM_PRIMITIVE_TYPE_BYTE:
+                propertyValue.setPrimitiveValue((byte)(1 + instanceCount));    // always distinct
+                break;
+            case OM_PRIMITIVE_TYPE_CHAR:
+                propertyValue.setPrimitiveValue((char)('o'));                  // never distinct
+                break;
+            case OM_PRIMITIVE_TYPE_LONG:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((long)(2452 + instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((long)(2452));
+                break;
+            case OM_PRIMITIVE_TYPE_FLOAT:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((float)(245332+instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((float)(245332));
+                break;
+            case OM_PRIMITIVE_TYPE_DOUBLE:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((double)(2459992+instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((double)(2459992));
+                break;
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((double)(245339992+instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((double)(245339992));
+                break;
+            case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                if (distinct)
+                    propertyValue.setPrimitiveValue((double)(245339992+instanceCount));  // instanceCount is never 0 for distinct cases
+                else
+                    propertyValue.setPrimitiveValue((double)(245339992));
+                break;
+            case OM_PRIMITIVE_TYPE_UNKNOWN:
+                break;
+        }
+
+        return propertyValue;
+    }
+
+    /**
      * Return instance properties for the properties defined in the TypeDef, but do not include properties from supertypes.
      *
      * @param typeDefAttributes  attributes defined for a specific type
@@ -408,6 +499,50 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                     case PRIMITIVE:
                         PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
                         propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                        break;
+                }
+            }
+
+            if (! propertyMap.isEmpty())
+            {
+                properties = new InstanceProperties();
+                properties.setInstanceProperties(propertyMap);
+            }
+        }
+
+        return properties;
+
+    }
+
+    /**
+     * Return generated instance properties specialised for search tests
+     *
+     * @param userId calling user
+     * @param allTypeDefAttributes list of all the TDAs for type
+     * @param instanceCount a generator parameter for customisation of individual instance properties
+     * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
+     */
+    protected InstanceProperties  generatePropertiesForInstance(String userId, List<TypeDefAttribute> allTypeDefAttributes, int instanceCount) throws Exception
+    {
+        InstanceProperties   properties = null;
+
+        if (allTypeDefAttributes != null)
+        {
+            Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
+
+            for (TypeDefAttribute  typeDefAttribute : allTypeDefAttributes)
+            {
+                String                   attributeName = typeDefAttribute.getAttributeName();
+                AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
+                AttributeTypeDefCategory category      = attributeType.getCategory();
+                boolean                  attrUnique    = typeDefAttribute.isUnique();
+
+                switch(category)
+                {
+                    case PRIMITIVE:
+                        PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
+                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, attrUnique, instanceCount));
                         break;
                 }
             }
@@ -533,9 +668,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param userId   the userId of the caller, needed for retrieving type definitions
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
-     * @throws Exception problem manipulating types
      */
-    protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception
+    protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef)
     {
 
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
@@ -638,6 +772,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param userId userId for the new entity
      * @param metadataCollection metadata connection to access the repository
      * @param entityDef type of entity to create
+     * @param homeMetadataCollectionId - metadataCollectionId of the repository that is master for instance
      * @return string - entity proxy's GUID
      * @throws Exception error in create
      */
@@ -669,6 +804,36 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     }
 
 
+    protected String buildExceptionMessage(String testName,
+                                           String methodName,
+                                           String operationDescription,
+                                           Map<String,String> parameters,
+                                           String originalExceptionClassName,
+                                           String originalExceptionMessage) {
 
+        StringBuilder msg = new StringBuilder();
+        msg.append("CTS test ").append(testName);
+        msg.append(" caught exception ").append(originalExceptionClassName);
+        msg.append(" from method ").append(methodName);
+        msg.append(" whilst trying to ").append(operationDescription);
+        msg.append(". ");
+        msg.append(" Exception message was : ").append(originalExceptionMessage);
+        msg.append(". ");
+        msg.append(" Method was invoked with parameters: ");
+        if (parameters != null) {
+            Set<String> keys = parameters.keySet();
+            Iterator<String> keyIter = keys.iterator();
+            if (keyIter.hasNext()) {
+                String key = keyIter.next();
+                msg.append(key).append(" : ").append(parameters.get(key));
+                while (keyIter.hasNext()) {
+                    msg.append(", ");
+                    key = keyIter.next();
+                    msg.append(key).append(" : ").append(parameters.get(key));
+                }
+            }
+        }
+        return msg.toString();
+    }
 
 }
