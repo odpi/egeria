@@ -16,7 +16,7 @@ public enum OpenLineageServerAuditCode {
     SERVER_INITIALIZING("OPEN-LINEAGE-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The Open Lineage Services  is initializing a new server instance",
-            "The local server has started up a new instance of the Open Lineage Services .",
+            "The local server has started up a new instance of the Open Lineage Services.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVER_INITIALIZED("OPEN-LINEAGE-0002",
@@ -50,21 +50,22 @@ public enum OpenLineageServerAuditCode {
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_GRAPH_CONNECTOR("OPEN-LINEAGE-0007",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the graph connector for Open Lineage Services for server {0}",
-            "The connector could not be initialized.",
-            "Review the exception and resolve the configuration. "),
-
-    ERROR_INITIALIZING_CONNECTOR("OPEN-LINEAGE-0008",
+//    ERROR_INITIALIZING_GRAPH_CONNECTOR("OPEN-LINEAGE-0007",
+//            OMRSAuditLogRecordSeverity.EXCEPTION,
+//            "Unable to initialize the graph connector for Open Lineage Services for server {0} with configuration {1}",
+//            "The connector could not be initialized.",
+//            "Review the exception and resolve the configuration. "),
+//
+    ERROR_INITIALIZING_KAFKA_CONNECTOR("OPEN-LINEAGE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Open Lineage Services connector {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
+
     NO_CONFIG_DOC("OPEN-LINEAGE-0010",
             OMRSAuditLogRecordSeverity.ERROR,
-            "Open Lineage {0} is not configured with a configuration document",
+            "Open Lineage Services{0} is not configured with a configuration document",
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the configuration document for this open lineage service."),
 
@@ -74,6 +75,49 @@ public enum OpenLineageServerAuditCode {
             "The lineage graph database could not be opened.",
             "The system was unable to open the graph repository graph database " +
                     "Please check whether the graph database exists and is not in use by another process, and verify the OLS configuration"),
+
+    ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to obtain a Buffergraph database connector with the values provided in configuration {1}",
+            "The Buffergraph database connector could not be obtained",
+            "The system was unable to obtain the Buffergraph database connector. " +
+                    "Please verify the Buffergraph connection object within the Open Lineage Services configuration"),
+
+    ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to obtain a Maingraph database connector with the values provided in configuration {1}",
+            "The Maingraph database connector could not be obtained",
+            "The system was unable to obtain the Maingraph database connector. " +
+                    "Please verify the Maingraph connection object within the Open Lineage Services configuration"),
+
+    ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
+            "The Buffergraph database connector could not be initialized",
+            "The system was unable to initialize the Buffergraph database connector. " +
+                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
+            "The Maingraph database connector could not be initialized",
+            "The system was unable to initialize the Maingraph database connector. " +
+                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_STARTING_BUFFER_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-001",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\" with the values provided in configuration {1}",
+            "The Buffergraph database connector could not be started",
+            "The system was unable to register the Buffergraph database connector as  \"active\"" +
+                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_STARTING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-001",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" with the values provided in configuration {1}",
+            "The Maingraph database connector could not be started",
+            "The system was unable to register the Maingraph database connector as  \"active\"" +
+                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
 
     PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-0012",
             OMRSAuditLogRecordSeverity.EXCEPTION,

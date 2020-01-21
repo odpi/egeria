@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.maingraph;
 
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public interface MainGraph extends OpenLineageGraph {
+public interface MainGraph{
 
     /**
      * Returns a lineage subgraph.
@@ -27,6 +28,11 @@ public interface MainGraph extends OpenLineageGraph {
      */
     //TODO Remove before pentest or production
     void dumpMainGraph() throws OpenLineageException;
+
+    /**
+     * Registers the connector as active
+     */
+    void start() throws ConnectorCheckedException;
 
     /**
      * Initialize the mainGraph database.

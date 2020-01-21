@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
-import java.util.Set;
-
-public interface BufferGraph extends OpenLineageGraph {
+public interface BufferGraph{
 
     /**
      * Stores
@@ -18,6 +15,11 @@ public interface BufferGraph extends OpenLineageGraph {
      * @param lineageEvent event
      */
     void addEntity(LineageEvent lineageEvent);
+
+    /**
+     * Registers the connector as active
+     */
+    void start() throws ConnectorCheckedException;
 
     void initializeGraphDB() throws OpenLineageException;
 

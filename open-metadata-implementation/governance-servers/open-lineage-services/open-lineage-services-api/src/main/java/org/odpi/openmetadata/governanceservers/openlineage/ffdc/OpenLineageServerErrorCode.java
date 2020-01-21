@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The ODF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- * ODF Discovery Services.  It is used in conjunction with all ODF Exceptions, both Checked and Runtime (unchecked).
+ * Open Lineage Services.  It is used in conjunction with all ODF Exceptions, both Checked and Runtime (unchecked).
  * <p>
  * The 5 fields in the enum are:
  * <ul>
@@ -83,6 +83,30 @@ public enum OpenLineageServerErrorCode {
             "Graph could not be opened due to invalid configuration",
             "The system was unable to open the graph repository graph database. " +
                     "Please check that the graph database exists and is not in use by another process."),
+
+    ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
+            "The Open Lineage server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
+            "The Buffergraph database connector could not be initialized",
+            "The system was unable to initialize the Buffergraph database connector. " +
+                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
+            "The Open Lineage server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
+            "The Maingraph database connector could not be initialized",
+            "The system was unable to initialize the Maingraph database connector. " +
+                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_STARTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
+            "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\" with the values provided in configuration {1}",
+            "The Buffergraph database connector could not be started",
+            "The system was unable to register the Buffergraph database connector as  \"active\"" +
+                    "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+
+    ERROR_STARTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-001",
+            "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" with the values provided in configuration {1}",
+            "The Maingraph database connector could not be started",
+            "The system was unable to register the Maingraph database connector as  \"active\"" +
+                    "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
     NO_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-002",
             "Error retrieving inTopic Connector",
