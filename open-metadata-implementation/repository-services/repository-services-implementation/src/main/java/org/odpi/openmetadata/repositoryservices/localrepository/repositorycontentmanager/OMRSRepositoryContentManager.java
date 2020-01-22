@@ -2192,8 +2192,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         TypeDef   typeDef = knownTypeDefNames.get(typeDefName);
 
-        if (!typeDef.getVersionName().equals(typeDefVersion))
+        if (typeDef == null)
         {
+            log.debug("Unknown TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from " + sourceName);
+
+            return true;
+        }
+
+        if (!typeDef.getVersionName().equals(typeDefVersion)) {
             logVersionMismatch(sourceName,
                                typeDefGUID,
                                typeDefName,
@@ -2230,6 +2236,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         AttributeTypeDef   attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
 
+        if (attributeTypeDef == null)
+        {
+            log.debug("Unknown TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from " + sourceName);
+
+            return true;
+
+        }
         if (!attributeTypeDef.getVersionName().equals(attributeTypeDefVersion))
         {
             logVersionMismatch(sourceName,

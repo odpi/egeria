@@ -63,9 +63,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertion8     = testCaseId + "-08";
     private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
-
-    // TODO - renumber assertions
-
     private static final String assertion9     = testCaseId + "-09";
     private static final String assertionMsg9  = " entity proxy status cannot be updated ";
 
@@ -77,6 +74,15 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
     private static final String assertion12     = testCaseId + "-12";
     private static final String assertionMsg12  = " entity proxy identity cannot be updated ";
+
+
+    private List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
+    private List<EntityProxy>              createdEntityProxiesTUT   = new ArrayList<>();  // these are all proxy instances
+    private List<Relationship>             createdRelationshipsTUT   = new ArrayList<>();  // these are all master instances
+
+
 
     /*
      * This testcase:
@@ -330,6 +336,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                null,
                                                                null);
 
+        createdEntitiesCTS.add(entity1);
+
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
          */
@@ -356,6 +364,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             remainingCount--;
 
         }
+
+        createdEntityRefCopiesTUT.add(entity1Ref);
 
         /*
          * This test needs to eliminate the reference copy - so that a proxy of E1 can be created at the TUT.
@@ -414,6 +424,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
+            createdEntityProxiesTUT.add(entity1Proxy);
+
         }
         catch (FunctionNotSupportedException excpetion)
         {
@@ -451,6 +463,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                  super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), end2Type),
                                                                 null,
                                                                 null);
+        createdEntitiesCTS.add(entity2);
 
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
@@ -479,7 +492,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         }
 
-
+        createdEntityRefCopiesTUT.add(entity2Ref);
 
         /*
          * This test needs to eliminate the reference copy - so that a proxy of E2 can be created at the TUT.
@@ -538,6 +551,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             assertionMsg2 + end1TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
+
+            createdEntityProxiesTUT.add(entity2Proxy);
 
         }
         catch (FunctionNotSupportedException excpetion)
@@ -738,6 +753,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                                   entity1.getGUID(),
                                                                                   UUID.randomUUID().toString());
 
+            if (reIdentifiedEntity != null)
+                createdEntitiesTUT.add(reIdentifiedEntity);
 
             assertCondition((false),
                             assertion12,
@@ -784,6 +801,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             assertionMsg6 + testTypeName,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+            createdRelationshipsTUT.add(newRelationship);
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -966,6 +985,162 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
 
     }
+
+
+    /**
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
+     *
+     * @throws Exception something went wrong but there is no particular action to take.
+     */
+    public void cleanup() throws Exception
+    {
+
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * For this testcase we created master instances at the CTS and TUT and ref copies and proxies at the TUT. Also
+         * we created relationships at the TUT - five lists to clean up but you cannot directly delete/purge the proxy - only by
+         * removing the master at the CTS.
+         *   createdEntitiesCTS
+         *   createdEntitiesTUT
+         *   createdEntityRefCopiesTUT
+         *   createdEntityProxiesTUT    x cannot be cleaned directly via API
+         *   createdRelationshipsTUT
+         */
+
+        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (Relationship relationship : createdRelationshipsTUT) {
+
+                try
+                {
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                                                          relationship.getType().getTypeDefGUID(),
+                                                          relationship.getType().getTypeDefName(),
+                                                          relationship.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (RelationshipNotKnownException exception)
+                {
+                    // Relationship already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If relationship is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                                                     relationship.getType().getTypeDefGUID(),
+                                                     relationship.getType().getTypeDefName(),
+                                                     relationship.getGUID());
+            }
+        }
+
+        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesCTS) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntityRefCopiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+    }
+
 
 
 }
