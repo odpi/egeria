@@ -84,7 +84,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param guid - The unique identifier of a Process
      */
     private void findInputColumns(GraphTraversalSource g,String guid) {
-//        if (guid.equals("c8028dce-7dd3-4f7b-91f2-fa1e0710037e")){
             List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
                     .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
                     .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
@@ -94,7 +93,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
-//    }
     }
 
     /**

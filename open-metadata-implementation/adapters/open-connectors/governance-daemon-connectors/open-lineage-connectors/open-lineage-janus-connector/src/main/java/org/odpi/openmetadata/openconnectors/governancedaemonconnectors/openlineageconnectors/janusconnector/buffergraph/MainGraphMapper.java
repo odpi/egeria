@@ -11,8 +11,8 @@ import org.janusgraph.core.JanusGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
@@ -50,7 +50,6 @@ public class MainGraphMapper {
             checkMainGraph(columnInVertex,columnOutVertex,process);
 
         }catch (Exception e){
-
             log.error("Something went wrong during the Janus transaction {}",e.getMessage());
             //TODO throw  exception
             bufferGraph.tx().rollback();
@@ -176,8 +175,6 @@ public class MainGraphMapper {
 
             copyVertexProperties(glossaryBuffer,glossaryMain);
         }
-
-        //TODO copy glossaryterm
     }
 
     /**
@@ -195,7 +192,7 @@ public class MainGraphMapper {
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
         final String processName = process.value(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
 
-        if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
+        if(mainG.V(columnInVertex.id()).bothE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
         }
 
@@ -208,11 +205,6 @@ public class MainGraphMapper {
 
             columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
             subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOutVertex);
-//            String columnToColumn = columnInVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString()
-//                                    .concat(columnOutVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
-//            if(!mainG.V().has(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn).hasNext()){
-//                columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,columnOutVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,columnToColumn);
-//            }
 
             Iterator<Vertex> processTopLevel = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,process.property(PROPERTY_KEY_ENTITY_GUID).value());
             if(processTopLevel.hasNext()){
@@ -257,11 +249,6 @@ public class MainGraphMapper {
         addTableRelationships(bufferG,mainG,tableIn,process,columnInVertex);
         addTableRelationships(bufferG,mainG,tableOut,process,columnOutVertex);
 
-//        String tablesEdgesGuid = tableIn.property(PROPERTY_KEY_ENTITY_GUID).value().toString().concat(tableOut.property(PROPERTY_KEY_ENTITY_GUID).value().toString());
-//
-//        if (!mainG.V().property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid).hasNext()){
-//            tableIn.addEdge(EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS,tableOut).property(PROPERTY_KEY_RELATIONSHIP_GUID,tablesEdgesGuid);
-//        }
         bufferG.tx().commit();
         mainG.tx().commit();
     }
@@ -269,7 +256,6 @@ public class MainGraphMapper {
     private Vertex getTable(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex asset){
         Iterator<Vertex> table = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value())
                 .emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
-
 
         if (!table.hasNext()){
             return null;
@@ -285,7 +271,7 @@ public class MainGraphMapper {
             copyVertexProperties(tableBuffer, newTable);
             return newTable;
         }
-//        getGlossaryTerm(mainG,bufferG,newTable);
+
         return tableVertex.next();
     }
 
@@ -300,9 +286,11 @@ public class MainGraphMapper {
         Iterator<Vertex> columnVertex = mainG.V(column.id()).outE(EDGE_LABEL_INCLUDED_IN).inV().has(PROPERTY_KEY_ENTITY_GUID, table.property(PROPERTY_KEY_ENTITY_GUID).value());
         if(!columnVertex.hasNext()) {
             column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
+//                    .property(PROPERTY_KEY_RELATIONSHIP_GUID,column.property(PROPERTY_KEY_ENTITY_GUID).value());
         }
-
     }
+
+
 }
 
 
