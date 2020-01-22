@@ -896,6 +896,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             String methodName = "reTypeEntity";
             String operationDescription = "retype an entity of type " + end1Type.getName();
             Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
             parameters.put("currentTypeDefSummary", end1Type.toString());
             parameters.put("newTypeDefSummary", end1Type.toString());
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
