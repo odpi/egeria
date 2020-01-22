@@ -38,11 +38,11 @@ class AssetLineageView extends PolymerElement {
     </vaadin-tabs>
     
     <div>
-        <vaadin-select id="viewsMenu" value="column-view" >
+        <vaadin-select id="processMenu" value="false" >
           <template>
             <vaadin-list-box>
-              <vaadin-item value="column-view" selected="true">Column View</vaadin-item>
-              <vaadin-item value="table-view">Table View</vaadin-item>
+              <vaadin-item value="false" selected="true">Exclude ETL Jobs</vaadin-item>
+              <vaadin-item value="true">Include ETL Jobs</vaadin-item>
             </vaadin-list-box>
             </template>
         </vaadin-select>
@@ -57,7 +57,7 @@ class AssetLineageView extends PolymerElement {
     ready() {
         super.ready();
         this.$.useCases.addEventListener('selected-changed', () => this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
-        this.$.viewsMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
+        this.$.processMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
     }
 
     static get properties() {
@@ -123,76 +123,76 @@ class AssetLineageView extends PolymerElement {
         }
 
 
-      _ultimateSource(guid, view) {
-          if (view === null || view === undefined) {
-             view  = "column-view";
+      _ultimateSource(guid, includeProcesses) {
+          if (includeProcesses === null || includeProcesses === undefined) {
+             includeProcesses  = "false";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
           this.$.tokenAjax._go();
       }
 
 
-      _endToEndLineage(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _endToEndLineage(guid, includeProcesses){
+          if (includeProcesses === null || includeProcesses === undefined) {
+              includeProcesses  = "false";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
           this.$.tokenAjax._go();
       }
 
-      _ultimateDestination(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _ultimateDestination(guid, includeProcesses){
+          if (includeProcesses === null || includeProcesses === undefined) {
+              includeProcesses  = "false";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
           this.$.tokenAjax._go();
       }
 
-      _glossaryLineage(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _glossaryLineage(guid, includeProcesses){
+          if (includeProcesses === null || includeProcesses === undefined) {
+              includeProcesses  = "false";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
           this.$.tokenAjax._go();
       }
 
-      _sourceAndDestination(guid, view){
-          if (view === null || view === undefined) {
-              view  = "column-view";
+      _sourceAndDestination(guid, includeProcesses){
+          if (includeProcesses === null || includeProcesses === undefined) {
+              includeProcesses  = "false";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
           this.$.tokenAjax._go();
       }
 
-    _reload(usecase, view) {
+    _reload(usecase, includeProcesses) {
 
         switch (usecase) {
             case 'ultimateSource':
-                this._ultimateSource(this.guid, view);
+                this._ultimateSource(this.guid, includeProcesses);
                 break;
             case 'endToEnd':
-                this._endToEndLineage(this.guid, view);
+                this._endToEndLineage(this.guid, includeProcesses);
                 break;
             case 'ultimateDestination':
-                this._ultimateDestination(this.guid, view);
+                this._ultimateDestination(this.guid, includeProcesses);
                 break;
             case 'glossaryLineage':
-                this._glossaryLineage(this.guid, view);
+                this._glossaryLineage(this.guid, includeProcesses);
                 break;
             case 'sourceAndDestination':
-                this._sourceAndDestination(this.guid, view);
+                this._sourceAndDestination(this.guid, includeProcesses);
                 break;
         }
     }
 
 
     _guidChanged() {
-        this._reload(this.usecase, this.$.viewsMenu.value);
+        this._reload(this.usecase, this.$.processMenu.value);
     }
 
     _useCaseChanged() {
@@ -205,7 +205,7 @@ class AssetLineageView extends PolymerElement {
          }
          window.location.href = newLocation;
          window.dispatchEvent(new CustomEvent('location-changed'));
-         this._reload(this.usecase, this.$.viewsMenu.value);
+         this._reload(this.usecase, this.$.processMenu.value);
     }
 
     _getUseCase(usecase){
