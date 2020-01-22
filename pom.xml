@@ -1970,6 +1970,12 @@
             </dependency>
 
             <dependency>
+              <groupId>com.sleepycat</groupId>
+              <artifactId>je</artifactId>
+              <version>${sleepycat.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.crypto.tink</groupId>
                 <artifactId>tink</artifactId>
                 <version>${tink.version}</version>
