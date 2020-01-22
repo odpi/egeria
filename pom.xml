@@ -169,7 +169,8 @@
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.4.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
-        <elasticsearch-rest-client.version>6.8.6</elasticsearch-rest-client.version>
+        <sleepycat.version>18.3.12</sleepycat.version>
+
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
@@ -473,21 +474,8 @@
                 <artifactId>janusgraph-es</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId> org.elasticsearch.client</groupId>
-                        <artifactId>elasticsearch-rest-client</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
-            <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-client</artifactId>
-                <version>${elasticsearch-rest-client.version}</version>
-            </dependency>
-
-            
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
@@ -1959,6 +1947,12 @@
                 <artifactId>spring-tx</artifactId>
                 <scope>compile</scope>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sleepycat</groupId>
+                <artifactId>je</artifactId>
+                <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>
