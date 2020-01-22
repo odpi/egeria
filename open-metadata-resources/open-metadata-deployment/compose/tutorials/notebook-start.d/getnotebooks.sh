@@ -4,15 +4,31 @@
 echo 'Adding additional python modules'
 conda install -y pandas
 echo 'Starting to load open metadata labs from github'
-sudo  apt-get -y update && sudo apt-get -y install git
-cd 
-rm -fr egeria
-git init . 
-git remote add origin https://github.com/odpi/egeria.git 
-git config core.sparsecheckout true 
-echo 'open-metadata-resources/open-metadata-labs/*' >> .git/info/sparse-checkout 
-git pull --depth=1 origin master 
-mv open-metadata-resources/open-metadata-labs/* . 
-rm -rf open-metadata-resources 
-rm -rf .git
-echo 'Egeria open metadata labs successfully installed from github'
+sudo apt update && sudo  apt -y install software-properties-common && \
+  add-apt-repository ppa:git-core/ppa  && sudo apt update && sudo apt -y install git
+
+# New implementation. 
+
+# Setup the sparse clone
+cd ${HOME}
+if [[ ! -d egeria ]]
+then
+  git clone --no-checkout https://github.com/odpi/egeria
+fi
+
+# These are safe to run repeatedly
+cd egeria
+git sparse-checkout init --cone
+git sparse-checkout set open-metadata-resources/open-metadata-labs
+
+# refresh
+git pull
+
+# Always go directly to the tutorials
+cd open-metadata-resources/open-metadata-labs
+
+echo '*****************************************************'
+echo '*                                                   *'
+echo '* Egeria open metadata labs notebooks ready for use *'
+echo '*                                                   *'
+echo '*****************************************************'
