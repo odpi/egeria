@@ -267,7 +267,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
         EntityDetail declassifiedEntity = null;
 
         try {
-            
+
             declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
                                                                                   testEntity.getGUID(),
                                                                                   classificationDef.getName());
