@@ -342,7 +342,6 @@
                 <version>${javax-validation.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -1951,6 +1950,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.sleepycat</groupId>
+                <artifactId>je</artifactId>
+                <version>${sleepycat.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.datastax.oss</groupId>
                 <artifactId>java-driver-core</artifactId>
                 <scope>compile</scope>
@@ -1962,12 +1967,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
                 <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-              <groupId>com.sleepycat</groupId>
-              <artifactId>je</artifactId>
-              <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>
