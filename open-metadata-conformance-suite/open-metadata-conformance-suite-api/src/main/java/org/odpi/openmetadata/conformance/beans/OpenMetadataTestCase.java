@@ -38,7 +38,7 @@ public abstract class OpenMetadataTestCase
      * Enumerated type for control of multi-phase tests
      */
     public static enum TestPhase {
-        CREATE,
+        SEED,
         EXECUTE,
         CLEAN
     }
@@ -378,7 +378,7 @@ public abstract class OpenMetadataTestCase
         }
         catch (Throwable   exception)
         {
-            String   assertionMessage = "test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName();
+            String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
             this.unsuccessfulAssertions.add(assertionMessage);
 
@@ -418,7 +418,7 @@ public abstract class OpenMetadataTestCase
         }
         catch (Throwable   exception)
         {
-            String   assertionMessage = "test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName();
+            String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
             this.unsuccessfulAssertions.add(assertionMessage);
 

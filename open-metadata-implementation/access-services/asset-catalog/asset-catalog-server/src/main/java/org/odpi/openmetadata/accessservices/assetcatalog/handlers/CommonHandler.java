@@ -61,14 +61,18 @@ public class CommonHandler {
         AssetConverter converter = new AssetConverter(repositoryHelper);
 
         if (typeDefByName != null) {
-            List<TypeDef> activeTypeDefs = repositoryHelper.getActiveTypeDefs();
+            if (repositoryHelper.getKnownTypeDefGallery() == null
+                    || CollectionUtils.isEmpty(repositoryHelper.getKnownTypeDefGallery().getTypeDefs())) {
+                return response;
+            }
+            List<TypeDef> typeDefs = repositoryHelper.getKnownTypeDefGallery().getTypeDefs();
 
             Type type = converter.convertType(typeDefByName);
-            List<Type> subTypes = getSubTypes(activeTypeDefs, type);
+            List<Type> subTypes = getSubTypes(typeDefs, type);
             response.add(type);
             response.addAll(subTypes);
 
-            collectSubTypes(subTypes, activeTypeDefs, response);
+            collectSubTypes(subTypes, typeDefs, response);
         }
 
         return response;

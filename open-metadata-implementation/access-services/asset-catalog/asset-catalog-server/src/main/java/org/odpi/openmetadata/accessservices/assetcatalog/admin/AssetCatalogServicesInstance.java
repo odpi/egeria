@@ -35,7 +35,7 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
                                  List<String> supportedZones, OMRSAuditLog auditLog,
                                  String localServerUserId, List<String> supportedTypesForSearch) throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException {
 
-        super(description.getAccessServiceName() + " OMAS ", repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
+        super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
