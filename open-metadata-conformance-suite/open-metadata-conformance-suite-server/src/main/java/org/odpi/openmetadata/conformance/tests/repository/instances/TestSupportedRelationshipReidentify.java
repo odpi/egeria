@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
@@ -67,11 +68,15 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
 
 
-    private RepositoryConformanceWorkPad workPad;
-    private String            metadataCollectionId;
-    private RelationshipDef   relationshipDef;
+    private RepositoryConformanceWorkPad  workPad;
+    private String                        metadataCollectionId;
+    private RelationshipDef               relationshipDef;
     private Map<String, EntityDef>        entityDefs;
-    private String            testTypeName;
+    private String                        testTypeName;
+
+
+    private List<EntityDetail>            createdEntitiesTUT       = new ArrayList<>();
+    private List<Relationship>            createdRelationshipsTUT  = new ArrayList<>();
 
 
     /**
@@ -217,8 +222,10 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
              */
             EntityDef end1Type = entityDefs.get(end1TypeName);
             entityOne = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+            createdEntitiesTUT.add(entityOne);
             EntityDef end2Type = entityDefs.get(end2TypeName);
             entityTwo = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+            createdEntitiesTUT.add(entityTwo);
 
             /*
              * Generate property values for all the type's defined properties, including inherited properties
@@ -234,12 +241,13 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                                                                  entityTwo.getGUID(),
                                                                 null);
 
-
             assertCondition((true),
                     assertion8,
                     testTypeName + assertionMsg8,
                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
+            createdRelationshipsTUT.add(newRelationship);
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -310,6 +318,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                     testTypeName + assertionMsg9,
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                     RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
+            createdRelationshipsTUT.add(reIdentifiedRelationship);
 
             verifyCondition((reIdentifiedRelationship.getGUID().equals(newGUID)),
                     assertion3,
@@ -454,120 +464,86 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
 
 
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
     public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        /*
-         * Find any relationships of the given type def and delete them....
-         */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<Relationship> relationships = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
-                    relationshipDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (relationships == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
 
             /*
-             * Report how many relationships were left behind at the end of the test run
+             * Instances were created - clean them up.
              */
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + relationships.size() + " relationships found");
+            for (Relationship relationship : createdRelationshipsTUT) {
 
-            for (Relationship relationship : relationships) {
-
-
-                /*
-                 * Local variables for end2
-                 */
-                EntityProxy end1;
-                EntityProxy end2;
-
-
-                end1 = relationship.getEntityOneProxy();
-                end2 = relationship.getEntityTwoProxy();
-
-
-                try {
-
-                    /*
-                     * Delete the relationship and then both end entities.
-                     * Deleting either entity first would delete the relationship, but
-                     * this sequence is a little more orderly.
-                     */
-
+                try
+                {
                     metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
-                            relationship.getType().getTypeDefGUID(),
-                            relationship.getType().getTypeDefName(),
-                            relationship.getGUID());
-
-
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            end1.getType().getTypeDefGUID(),
-                            end1.getType().getTypeDefName(),
-                            end1.getGUID());
-
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            end2.getType().getTypeDefGUID(),
-                            end2.getType().getTypeDefName(),
-                            end2.getGUID());
-
-
-                } catch (FunctionNotSupportedException exception) {
+                                                          relationship.getType().getTypeDefGUID(),
+                                                          relationship.getType().getTypeDefName(),
+                                                          relationship.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
                     // NO OP - can proceed to purge
                 }
+                catch (RelationshipNotKnownException exception)
+                {
+                    // Relationship already cleaned up - nothing more to do here.
+                    continue;
+                }
 
+                // If relationship is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
-                        relationship.getType().getTypeDefGUID(),
-                        relationship.getType().getTypeDefName(),
-                        relationship.getGUID());
-
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        end1.getType().getTypeDefGUID(),
-                        end1.getType().getTypeDefName(),
-                        end1.getGUID());
-
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        end2.getType().getTypeDefGUID(),
-                        end2.getType().getTypeDefName(),
-                        end2.getGUID());
-
-
-                System.out.println("Relationship wth GUID " + relationship.getGUID() + " removed");
+                                                     relationship.getType().getTypeDefGUID(),
+                                                     relationship.getType().getTypeDefName(),
+                                                     relationship.getGUID());
             }
+        }
 
-        } while (resultSize >= pageSize);
 
+
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
     }
+
 
 
     /**

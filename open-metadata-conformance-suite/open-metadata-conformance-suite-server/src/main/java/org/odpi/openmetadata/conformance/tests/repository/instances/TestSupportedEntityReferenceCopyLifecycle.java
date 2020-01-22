@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private EntityDef                      entityDef;
     private String                         testTypeName;
     private OMRSMetadataCollection         localMetadataCollection;
+
+    private List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
 
 
     /*
@@ -223,6 +228,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                                                 null,
                                                                 null);
 
+        createdEntitiesCTS.add(newEntity);
+
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
          */
@@ -267,6 +274,9 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                     testTypeName + assertionMsg1,
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                     RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            createdEntityRefCopiesTUT.add(refEntity);
 
 
         } else {
@@ -460,6 +470,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                                                                   entityDef.getName(),
                                                                                   newEntity.getGUID(),
                                                                                   UUID.randomUUID().toString());
+
+
+            if (reIdentifiedEntity!=null)
+                createdEntityRefCopiesTUT.add(reIdentifiedEntity);
 
 
             assertCondition((false),
@@ -703,6 +717,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
+            createdEntitiesTUT.add(entityWithMappingProperties);
+
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -801,6 +817,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
+            createdEntityRefCopiesTUT.add(remoteEntityWithMappingProperties);
+
 
             EntityDetail retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
 
@@ -863,6 +881,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                            testTypeName + assertionMsg18,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+            createdEntitiesTUT.add(newMasterEntity);
 
             /*
              * Verify that the new master instance can be retrieved
@@ -958,82 +978,120 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
     }
 
+
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
     public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Find any entities of the given type def and delete them....
+         * For this testcase we created master instances at the CTS and TUT and ref copies at the TUT - three lists to clean up
          */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                    entityDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (entities == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
 
             /*
-             * Report how many entities were left behind at the end of the test run
+             * Instances were created - clean them up.
              */
 
-            resultSize = entities.size();
+            for (EntityDetail entity : createdEntitiesCTS) {
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
-
-            for (EntityDetail entity : entities) {
-
-                /*
-                 * Try soft delete (ok if it fails) and purge.
-                 */
-
-                try {
-                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-
-                } catch (FunctionNotSupportedException exception) {
-                    /* OK - had to try soft; continue to purge */
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
                 }
 
+                // If entity is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-
-                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
-
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
             }
-        } while (resultSize >= pageSize);
+        }
 
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntityRefCopiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
     }
+
+
 }

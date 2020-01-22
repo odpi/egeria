@@ -789,7 +789,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOpenLineageOperationalServices() != null)
         {
-             instance.getOpenLineageOperationalServices().disconnect(permanentDeactivation);
+             instance.getOpenLineageOperationalServices().shutdown();
         }
 
         /*

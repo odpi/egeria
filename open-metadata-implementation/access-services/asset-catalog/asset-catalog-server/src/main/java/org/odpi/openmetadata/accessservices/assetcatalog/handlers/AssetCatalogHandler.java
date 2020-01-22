@@ -1312,7 +1312,12 @@ public class AssetCatalogHandler {
     }
 
     private Optional<TypeDef> isComplexSchemaType(String typeDefName) {
-        List<TypeDef> allTypes = repositoryHelper.getActiveTypeDefs();
+        if (repositoryHelper.getKnownTypeDefGallery() == null
+                || CollectionUtils.isEmpty(repositoryHelper.getKnownTypeDefGallery().getTypeDefs())) {
+            return Optional.empty();
+        }
+
+        List<TypeDef> allTypes = repositoryHelper.getKnownTypeDefGallery().getTypeDefs();
         return allTypes.stream().filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE)).findAny();
     }
 
