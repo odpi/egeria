@@ -202,109 +202,133 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             for (int level = 0; level < 4; level++) {
 
+                InstanceGraph instGraph = null;
+
                 try {
-                    InstanceGraph instGraph = metadataCollection.getEntityNeighborhood(workPad.getLocalServerUserId(),
-                            entityGUID,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            level);
 
-                    assertCondition((true),
-                            assertion14,
-                            testTypeName + assertionMsg14,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
-
-                    /*
-                     * Formulate the expected result
-                     */
-
-
-                    /* Add the current entity and then navigate each of its edges recursively amalgamating what you discover down that edge */
-                    List<String> expectedEntityGUIDs = new ArrayList<>();
-                    List<String> expectedRelationshipGUIDs = new ArrayList<>();
-
-                    List<List<String>> subgraph = this.exploreFromEntity(entityGUID, null, level);
-                    expectedEntityGUIDs.addAll(subgraph.get(0));
-                    expectedRelationshipGUIDs.addAll(subgraph.get(1));
-
-
-                    assertCondition((instGraph != null),
-                            assertion1,
-                            testTypeName + assertionMsg1,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
-
-                    /* Check entities */
-
-                    /* Always expect to get at least one entity - the root of the query */
-                    assertCondition((instGraph.getEntities() != null && !(instGraph.getEntities().isEmpty()) && instGraph.getEntities().size() == expectedEntityGUIDs.size()),
-                            assertion2,
-                            testTypeName + assertionMsg2,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
-                    List<String> returnedEntityGUIDs = new ArrayList<>();
-                    if (instGraph.getEntities() != null) {
-                        for (EntityDetail entity : instGraph.getEntities()) {
-                            if (entity != null) {
-                                returnedEntityGUIDs.add(entity.getGUID());
-                            }
-                        }
-                    }
-                    assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                            assertion3,
-                            testTypeName + assertionMsg3,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
-
-                    /* Check relationships */
-
-                    /* Don't always expect to get at least one relationship */
-                    if (expectedRelationshipGUIDs.isEmpty()) {
-
-                        assertCondition((instGraph.getRelationships() == null),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-                    } else {
-
-                        assertCondition((instGraph.getRelationships().size() == expectedRelationshipGUIDs.size()),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
-
-                        List<String> returnedRelationshipGUIDs = new ArrayList<>();
-                        if (instGraph.getRelationships() != null) {
-                            for (Relationship relationship : instGraph.getRelationships()) {
-                                if (relationship != null) {
-                                    returnedRelationshipGUIDs.add(relationship.getGUID());
-                                }
-                            }
-                        }
-                        assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
-                                assertion5,
-                                testTypeName + assertionMsg5,
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-                    }
+                    instGraph = metadataCollection.getEntityNeighborhood(workPad.getLocalServerUserId(),
+                                                                                       entityGUID,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       level);
 
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion14,
-                            assertionMsg14,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                                   assertionMsg14,
+                                                   RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
+                    return;
+
+                } catch (Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "getEntityNeighborhood";
+                    String operationDescription = "get the neighborhood of an entity with GUID " + entityGUID;
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("entityTypeGUIDs", "null");
+                    parameters.put("relationshipTypeGUIDs", "null");
+                    parameters.put("limitResultsByStatus", "null");
+                    parameters.put("limitResultsByClassification", "null");
+                    parameters.put("asOfTime", "null");
+                    parameters.put("level", Integer.toString(level));
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
+
+                }
+
+
+                assertCondition((true),
+                                assertion14,
+                                testTypeName + assertionMsg14,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+
+                /*
+                 * Formulate the expected result
+                 */
+
+
+                /* Add the current entity and then navigate each of its edges recursively amalgamating what you discover down that edge */
+                List<String> expectedEntityGUIDs = new ArrayList<>();
+                List<String> expectedRelationshipGUIDs = new ArrayList<>();
+
+                List<List<String>> subgraph = this.exploreFromEntity(entityGUID, null, level);
+                expectedEntityGUIDs.addAll(subgraph.get(0));
+                expectedRelationshipGUIDs.addAll(subgraph.get(1));
+
+
+                assertCondition((instGraph != null),
+                                assertion1,
+                                testTypeName + assertionMsg1,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+
+                /* Check entities */
+
+                /* Always expect to get at least one entity - the root of the query */
+                assertCondition((instGraph.getEntities() != null && !(instGraph.getEntities().isEmpty()) && instGraph.getEntities().size() == expectedEntityGUIDs.size()),
+                                assertion2,
+                                testTypeName + assertionMsg2,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+                List<String> returnedEntityGUIDs = new ArrayList<>();
+                if (instGraph.getEntities() != null) {
+                    for (EntityDetail entity : instGraph.getEntities()) {
+                        if (entity != null) {
+                            returnedEntityGUIDs.add(entity.getGUID());
+                        }
+                    }
+                }
+                assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
+                                assertion3,
+                                testTypeName + assertionMsg3,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+
+                /* Check relationships */
+
+                /* Don't always expect to get at least one relationship */
+                if (expectedRelationshipGUIDs.isEmpty()) {
+
+                    assertCondition((instGraph.getRelationships() == null),
+                                    assertion4,
+                                    testTypeName + assertionMsg4,
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                } else {
+
+                    assertCondition((instGraph.getRelationships().size() == expectedRelationshipGUIDs.size()),
+                                    assertion4,
+                                    testTypeName + assertionMsg4,
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+
+
+                    List<String> returnedRelationshipGUIDs = new ArrayList<>();
+                    if (instGraph.getRelationships() != null) {
+                        for (Relationship relationship : instGraph.getRelationships()) {
+                            if (relationship != null) {
+                                returnedRelationshipGUIDs.add(relationship.getGUID());
+                            }
+                        }
+                    }
+                    assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
+                                    assertion5,
+                                    testTypeName + assertionMsg5,
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                 }
             }
         }
@@ -324,74 +348,100 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             String entityGUID = entityGUIDIterator.next();
 
+            List<EntityDetail> relatedEntities = null;
+
             try {
-                List<EntityDetail> relatedEntities = metadataCollection.getRelatedEntities(workPad.getLocalServerUserId(),
-                        entityGUID,
-                        null,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        0);
 
-
-                assertCondition((true),
-                        assertion15,
-                        testTypeName + assertionMsg15,
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
-
-
-
-                /*
-                 * Formulate the expected result
-                 */
-
-
-                /* Add the current entity and then navigate each of its edges recursively amalgamating what you discover down that edge */
-                List<String> expectedEntityGUIDs = new ArrayList<>();
-                //List<String> expectedRelationshipGUIDs = new ArrayList<>();
-
-                List<List<String>> subgraph = this.exploreFromEntity(entityGUID, null, -1);
-                expectedEntityGUIDs.addAll(subgraph.get(0));
-                //expectedRelationshipGUIDs.addAll(subgraph.get(1));
-
-
-
-                /* Check entities */
-
-                /* Always expect to get at least one entity - the root of the query */
-                assertCondition((relatedEntities != null && !(relatedEntities.isEmpty()) && relatedEntities.size() == expectedEntityGUIDs.size()),
-                        assertion6,
-                        testTypeName + assertionMsg6,
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
-
-                List<String> returnedEntityGUIDs = new ArrayList<>();
-                if (relatedEntities != null) {
-                    for (EntityDetail entity : relatedEntities) {
-                        if (entity != null) {
-                            returnedEntityGUIDs.add(entity.getGUID());
-                        }
-                    }
-                }
-                assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                        assertion7,
-                        testTypeName + assertionMsg7,
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
-
+                relatedEntities = metadataCollection.getRelatedEntities(workPad.getLocalServerUserId(),
+                                                                        entityGUID,
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0);
 
             } catch (FunctionNotSupportedException exception) {
 
                 super.addNotSupportedAssertion(assertion15,
-                        assertionMsg15,
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                                               assertionMsg15,
+                                               RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+                return;
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getRelatedEntities";
+                String operationDescription = "get the entities related to an entity with GUID " + entityGUID;
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityTypeGUIDs", "null");
+                parameters.put("fromEntityElement", Integer.toString(0));
+                parameters.put("limitResultsByStatus", "null");
+                parameters.put("limitResultsByClassification", "null");
+                parameters.put("asOfTime", "null");
+                parameters.put("sequencingProperty", "null");
+                parameters.put("sequencingOrder", "null");
+                parameters.put("pageSize", Integer.toString(0));
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
 
             }
+
+
+            assertCondition((true),
+                            assertion15,
+                            testTypeName + assertionMsg15,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+
+
+            /*
+             * Formulate the expected result
+             */
+
+
+            /* Add the current entity and then navigate each of its edges recursively amalgamating what you discover down that edge */
+            List<String> expectedEntityGUIDs = new ArrayList<>();
+            //List<String> expectedRelationshipGUIDs = new ArrayList<>();
+
+            List<List<String>> subgraph = this.exploreFromEntity(entityGUID, null, -1);
+            expectedEntityGUIDs.addAll(subgraph.get(0));
+            //expectedRelationshipGUIDs.addAll(subgraph.get(1));
+
+
+
+            /* Check entities */
+
+            /* Always expect to get at least one entity - the root of the query */
+            assertCondition((relatedEntities != null && !(relatedEntities.isEmpty()) && relatedEntities.size() == expectedEntityGUIDs.size()),
+                            assertion6,
+                            testTypeName + assertionMsg6,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+            List<String> returnedEntityGUIDs = new ArrayList<>();
+            if (relatedEntities != null) {
+                for (EntityDetail entity : relatedEntities) {
+                    if (entity != null) {
+                        returnedEntityGUIDs.add(entity.getGUID());
+                    }
+                }
+            }
+            assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
+                            assertion7,
+                            testTypeName + assertionMsg7,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+
 
         }
 
@@ -455,7 +505,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                  * Calculate the expected result
                  */
 
-                List<String> expectedEntityGUIDs       = new ArrayList<>();
+                List<String> expectedEntityGUIDs = new ArrayList<>();
                 List<String> expectedRelationshipGUIDs = new ArrayList<>();
 
                 if (entityBGUID.equals(entityAGUID)) {
@@ -464,8 +514,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                      */
                     expectedEntityGUIDs.add(entityAGUID);
 
-                }
-                else {
+                } else {
 
                     /*
                      * For the pair of entities A & B find all paths through the test graph (if any exist)
@@ -497,98 +546,117 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 }
 
 
+                InstanceGraph instanceGraph = null;
+
                 try {
-                    InstanceGraph instanceGraph = metadataCollection.getLinkingEntities(workPad.getLocalServerUserId(),
-                            entityAGUID,
-                            entityBGUID,
-                            null,
-                            null);
 
-
-                    assertCondition((true),
-                            assertion16,
-                            testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
-
-
-                    /* Check results */
-                    List<EntityDetail> returnedEntities = instanceGraph.getEntities();
-                    List<Relationship> returnedRelationships = instanceGraph.getRelationships();
-
-
-
-                    /*
-                     * We expect to get back the following entities:
-                     * In the trivial case where start == finish, expect to get the one entity and no relationships
-                     * In the non-trivial case where start!=finish and there are no paths expect to get no entities (or relationships)
-                     * In the non-trivial case where start!=finish and there are paths expect to get entities and relationships.
-                     */
-
-
-                    /* Check entities */
-
-                    assertCondition( ((!expectedEntityGUIDs.isEmpty() && returnedEntities != null
-                                        && !(returnedEntities.isEmpty())
-                                        && returnedEntities.size() == expectedEntityGUIDs.size())
-                                     || expectedEntityGUIDs.isEmpty() && returnedEntities == null),
-                            assertion8,
-                            testTypeName + assertionMsg8,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
-
-                    /* Extract the GUIDs so they are easier to check */
-
-                    List<String> returnedEntityGUIDs = new ArrayList<>();
-                    if (returnedEntities != null) {
-                        for (EntityDetail entity : returnedEntities) {
-                            if (entity != null) {
-                                returnedEntityGUIDs.add(entity.getGUID());
-                            }
-                        }
-                    }
-                    assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                            assertion9,
-                            testTypeName + assertionMsg9,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
-
-                    /* Check relationships */
-
-                    assertCondition( ((!expectedRelationshipGUIDs.isEmpty() && returnedRelationships != null
-                                        && !(returnedRelationships.isEmpty())
-                                        && returnedRelationships.size() == expectedRelationshipGUIDs.size())
-                                     || expectedRelationshipGUIDs.isEmpty() && returnedRelationships == null),
-                            assertion10,
-                            testTypeName + assertionMsg10,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
-
-                    /* Extract the GUIDs so they are easier to check */
-
-                    List<String> returnedRelationshipGUIDs = new ArrayList<>();
-                    if (returnedRelationships != null) {
-                        for (Relationship relationship : returnedRelationships) {
-                            if (relationship != null) {
-                                returnedRelationshipGUIDs.add(relationship.getGUID());
-                            }
-                        }
-                    }
-                    assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
-                            assertion11,
-                            testTypeName + assertionMsg11,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
-
+                    instanceGraph = metadataCollection.getLinkingEntities(workPad.getLocalServerUserId(),
+                                                                          entityAGUID,
+                                                                          entityBGUID,
+                                                                          null,
+                                                                          null);
 
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion16,
-                            assertionMsg16,
-                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                                                   assertionMsg16,
+                                                   RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+
+                    return;
+
+                } catch (Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "getLinkingEntities";
+                    String operationDescription = "get the entities that connect an entity with GUID " + entityAGUID + " to an entity witrh GUID " + entityBGUID;
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("limitResultsByStatus", "null");
+                    parameters.put("asOfTime", "null");
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
 
                 }
+
+
+                assertCondition((true),
+                                assertion16,
+                                testTypeName + assertionMsg16,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+
+
+                /* Check results */
+                List<EntityDetail> returnedEntities = instanceGraph.getEntities();
+                List<Relationship> returnedRelationships = instanceGraph.getRelationships();
+
+
+
+                /*
+                 * We expect to get back the following entities:
+                 * In the trivial case where start == finish, expect to get the one entity and no relationships
+                 * In the non-trivial case where start!=finish and there are no paths expect to get no entities (or relationships)
+                 * In the non-trivial case where start!=finish and there are paths expect to get entities and relationships.
+                 */
+
+
+                /* Check entities */
+
+                assertCondition(((!expectedEntityGUIDs.isEmpty() && returnedEntities != null
+                                        && !(returnedEntities.isEmpty())
+                                        && returnedEntities.size() == expectedEntityGUIDs.size())
+                                        || expectedEntityGUIDs.isEmpty() && returnedEntities == null),
+                                assertion8,
+                                testTypeName + assertionMsg8,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+
+                /* Extract the GUIDs so they are easier to check */
+
+                List<String> returnedEntityGUIDs = new ArrayList<>();
+                if (returnedEntities != null) {
+                    for (EntityDetail entity : returnedEntities) {
+                        if (entity != null) {
+                            returnedEntityGUIDs.add(entity.getGUID());
+                        }
+                    }
+                }
+                assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
+                                assertion9,
+                                testTypeName + assertionMsg9,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+
+                /* Check relationships */
+
+                assertCondition(((!expectedRelationshipGUIDs.isEmpty() && returnedRelationships != null
+                                        && !(returnedRelationships.isEmpty())
+                                        && returnedRelationships.size() == expectedRelationshipGUIDs.size())
+                                        || expectedRelationshipGUIDs.isEmpty() && returnedRelationships == null),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+
+                /* Extract the GUIDs so they are easier to check */
+
+                List<String> returnedRelationshipGUIDs = new ArrayList<>();
+                if (returnedRelationships != null) {
+                    for (Relationship relationship : returnedRelationships) {
+                        if (relationship != null) {
+                            returnedRelationshipGUIDs.add(relationship.getGUID());
+                        }
+                    }
+                }
+                assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
+                                assertion11,
+                                testTypeName + assertionMsg11,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+
 
             }
         }
