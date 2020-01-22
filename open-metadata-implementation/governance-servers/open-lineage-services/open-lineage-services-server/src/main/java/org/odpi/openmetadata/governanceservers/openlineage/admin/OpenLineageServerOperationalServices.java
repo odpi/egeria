@@ -125,7 +125,7 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Call the initialize() and start() method for all applicable connectors used by the Open Lineage Services
+     * Call the initialize() and start() method for all applicable connectors used by the Open Lineage Services.
      *
      * @throws OMAGConfigurationErrorException
      */
@@ -150,6 +150,15 @@ public class OpenLineageServerOperationalServices {
         startIntopicConnector();
     }
 
+    /**
+     * Initialize the passed OpenLineageGraphConnector.
+     *
+     * @param connector         The connector that is to be initialized.
+     * @param actionDescription The action taking place in this method, used in error reporting
+     * @param errorCode         The potential error that could occur, in a format intended for web users.
+     * @param auditCode         The potential error that could occur, in a format intended for system administrators.
+     * @throws OMAGConfigurationErrorException
+     */
     private void initializeGraphConnector(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
         final String methodName = "initializeGraphConnectors";
         try {
@@ -160,6 +169,14 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
+    /**
+     * Start the passed OpenLineageGraphConnector.
+     *
+     * @param connector         The connector that is to be started.
+     * @param actionDescription The action taking place in this method, used in error reporting.
+     * @param auditCode         The potential error that could occur, in a format intended for system administrators.
+     * @throws OMAGConfigurationErrorException
+     */
     private void startGraphConnector(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
         try {
             connector.start();
@@ -169,6 +186,11 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
+    /**
+     * Start the Open Lineage Services in-topic connector
+     *
+     * @throws OMAGConfigurationErrorException
+     */
     private void startIntopicConnector() throws OMAGConfigurationErrorException {
         String actionDescription = "Start the Open Lineage Services in-topic listener";
         inTopicConnector.setAuditLog(auditLog);
@@ -186,10 +208,10 @@ public class OpenLineageServerOperationalServices {
 
 
     /**
-     * Write to audit log
+     * Write a non-exception record to the audit log.
      *
-     * @param auditCode         Reference to the specific audit message
-     * @param actionDescription Describes what the user could do to prevent the error from occuring.
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription Describes what the user could do to prevent the error from occurring.
      */
     private void logRecordToAudit(OpenLineageServerAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
@@ -202,10 +224,11 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Write an exception to the audit log
+     * Write an exception to the audit log.
      *
-     * @param auditCode         Reference to the specific audit message
-     * @param actionDescription Describes what the user could do to prevent the error from occuring.
+     * @param auditCode         Reference to the specific audit message.
+     * @param actionDescription Describes what the user could do to prevent the error from occurring.
+     * @param e                 The exception object that was thrown.
      */
     private void logExceptionToAudit(OpenLineageServerAuditCode auditCode, String actionDescription, Exception e) {
         auditLog.logException(actionDescription,
@@ -222,10 +245,10 @@ public class OpenLineageServerOperationalServices {
     /**
      * Throw an OMAGConfigurationErrorException using an OpenLineageServerErrorCode.
      *
-     * @param errorCode         Reference to the specific error type
-     * @param methodName        The name of the calling method
-     * @param auditCode
-     * @param actionDescription
+     * @param errorCode         Details about the exception that occurred, in a format intended for web users.
+     * @param methodName        The name of the calling method.
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the error occurred.
      * @throws OMAGConfigurationErrorException
      */
     private void throwError(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
@@ -243,18 +266,19 @@ public class OpenLineageServerOperationalServices {
 
     /**
      * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
-     *
-     * @param error The error to be mapped
+     * @param exception         The exception object that was thrown
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the exception occurred.
      * @throws OMAGConfigurationErrorException
      */
     private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase
-                                                                     error, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
-        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
-                error.getReportingClassName(),
-                error.getReportingActionDescription(),
-                error.getErrorMessage(),
-                error.getReportedSystemAction(),
-                error.getReportedUserAction());
+                                                                     exception, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(exception.getReportedHTTPCode(),
+                exception.getReportingClassName(),
+                exception.getReportingActionDescription(),
+                exception.getErrorMessage(),
+                exception.getReportedSystemAction(),
+                exception.getReportedUserAction());
         logExceptionToAudit(auditCode, actionDescription, e);
         throw e;
     }
