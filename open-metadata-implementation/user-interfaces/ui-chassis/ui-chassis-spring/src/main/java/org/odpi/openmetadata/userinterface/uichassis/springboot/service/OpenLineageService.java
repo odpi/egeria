@@ -158,7 +158,6 @@ public class OpenLineageService {
                 .map(e -> {
                     Edge newEdge = new Edge(e.getSourceNodeID(),
                             e.getDestinationNodeID());
-                    newEdge.setLabel(e.getEdgeType());
                     return newEdge;
                 })
                 .collect(Collectors.toList());
