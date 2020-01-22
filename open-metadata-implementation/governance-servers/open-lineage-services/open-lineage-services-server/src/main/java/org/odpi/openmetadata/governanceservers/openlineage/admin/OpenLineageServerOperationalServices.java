@@ -79,11 +79,10 @@ public class OpenLineageServerOperationalServices {
         this.openLineageServerConfig = openLineageServerConfig;
         this.auditLog = auditLog;
 
-        logRecordToAudit(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
 
-        if (openLineageServerConfig == null) {
+        if (openLineageServerConfig == null)
             throwError(OpenLineageServerErrorCode.NO_CONFIG_DOC, methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
-        }
 
         Connection bufferGraphConnection = openLineageServerConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageServerConfig.getOpenLineageMainGraphConnection();
@@ -102,6 +101,8 @@ public class OpenLineageServerOperationalServices {
                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                 maxPageSize,
                 openLineageHandler);
+
+        logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
     /**
@@ -118,7 +119,6 @@ public class OpenLineageServerOperationalServices {
         try {
             connector = new ConnectorBroker().getConnector(connection);
         } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-            log.error("Unable to initialize the graph connector.", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         }
         return connector;
@@ -164,7 +164,6 @@ public class OpenLineageServerOperationalServices {
         try {
             connector.initializeGraphDB();
         } catch (OpenLineageException e) {
-            log.error(auditCode.getSystemAction(), e);
             throwError(errorCode, methodName, auditCode, actionDescription);
         }
     }
@@ -181,7 +180,6 @@ public class OpenLineageServerOperationalServices {
         try {
             connector.start();
         } catch (ConnectorCheckedException e) {
-            log.error(auditCode.getSystemAction(), e);
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         }
     }
@@ -200,10 +198,9 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.start();
         } catch (ConnectorCheckedException e) {
-            log.error("The Open Lineage Services in-topic listener could not be started", e);
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, actionDescription);
         }
-        logRecordToAudit(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
     }
 
 
@@ -213,7 +210,7 @@ public class OpenLineageServerOperationalServices {
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription Describes what the user could do to prevent the error from occurring.
      */
-    private void logRecordToAudit(OpenLineageServerAuditCode auditCode, String actionDescription) {
+    private void logRecord(OpenLineageServerAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
@@ -221,6 +218,7 @@ public class OpenLineageServerOperationalServices {
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
+        log.info(auditCode.getSystemAction());
     }
 
     /**
@@ -230,7 +228,7 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription Describes what the user could do to prevent the error from occurring.
      * @param e                 The exception object that was thrown.
      */
-    private void logExceptionToAudit(OpenLineageServerAuditCode auditCode, String actionDescription, Exception e) {
+    private void logException(OpenLineageServerAuditCode auditCode, String actionDescription, Exception e) {
         auditLog.logException(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
@@ -239,6 +237,7 @@ public class OpenLineageServerOperationalServices {
                 auditCode.getSystemAction(),
                 auditCode.getUserAction(),
                 e);
+        log.error(auditCode.getSystemAction(), e);
     }
 
 
@@ -260,12 +259,13 @@ public class OpenLineageServerOperationalServices {
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
-        logExceptionToAudit(auditCode, actionDescription, e);
+        logException(auditCode, actionDescription, e);
         throw e;
     }
 
     /**
      * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
+     *
      * @param exception         The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
@@ -279,7 +279,7 @@ public class OpenLineageServerOperationalServices {
                 exception.getErrorMessage(),
                 exception.getReportedSystemAction(),
                 exception.getReportedUserAction());
-        logExceptionToAudit(auditCode, actionDescription, e);
+        logException(auditCode, actionDescription, e);
         throw e;
     }
 
@@ -290,8 +290,7 @@ public class OpenLineageServerOperationalServices {
      */
     public boolean shutdown() {
         String actionDescription = "Shutting down the open lineage Services server";
-        logRecordToAudit(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
-
+        logRecord(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
         try {
             this.inTopicConnector.disconnect();
             this.bufferGraphConnector.disconnect();
@@ -303,7 +302,7 @@ public class OpenLineageServerOperationalServices {
         if (openLineageServerInstance != null)
             openLineageServerInstance.shutdown();
 
-        logRecordToAudit(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
         return true;
     }
 }
