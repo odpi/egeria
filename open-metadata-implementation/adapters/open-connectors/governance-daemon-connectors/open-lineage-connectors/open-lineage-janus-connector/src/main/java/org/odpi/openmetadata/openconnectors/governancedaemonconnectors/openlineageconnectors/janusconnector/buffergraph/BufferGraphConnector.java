@@ -34,6 +34,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
 
+
     public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
@@ -82,12 +83,15 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param g - Graph traversal object
      * @param guid - The unique identifier of a Process
      */
-    private void findInputColumns(GraphTraversalSource g,String guid){
-         List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
-                                       .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
-                                       .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING).toList();
+    private void findInputColumns(GraphTraversalSource g,String guid) {
+            List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
+                    .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
+                    .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
+                    .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
+                                    .has(PROPERTY_KEY_LABEL,DATA_FILE),
+                            __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
 
-         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
     }
 

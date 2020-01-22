@@ -342,7 +342,6 @@
                 <version>${javax-validation.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -1948,6 +1947,12 @@
                 <artifactId>spring-tx</artifactId>
                 <scope>compile</scope>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sleepycat</groupId>
+                <artifactId>je</artifactId>
+                <version>${sleepycat.version}</version>
             </dependency>
 
             <dependency>
