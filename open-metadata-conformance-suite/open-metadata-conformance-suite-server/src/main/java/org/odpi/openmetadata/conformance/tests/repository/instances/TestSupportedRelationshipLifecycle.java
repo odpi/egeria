@@ -755,6 +755,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             throw new Exception(msg, exc);
 
         }
+
         assertCondition(true,
                         assertion30,
                         testTypeName + assertionMsg30,

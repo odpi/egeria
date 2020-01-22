@@ -673,7 +673,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             Map<String, String> parameters = new HashMap<>();
             parameters.put("entityGUID", refEntity.getGUID());
             parameters.put("typeDefGUID", entityDef.getGUID());
-            parameters.put("typeDefGNameUID", entityDef.getName());
+            parameters.put("typeDefName", entityDef.getName());
             parameters.put("homeMetadataCollectionId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
@@ -1165,7 +1165,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              */
 
             String methodName = "reHomeEntity";
-            String operationDescription = "retype an entity of type " + entityDef.getName();
+            String operationDescription = "rehome an entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("entityGUID", remoteEntityGUID);
             parameters.put("typeDefGUID", entityDef.getGUID());
