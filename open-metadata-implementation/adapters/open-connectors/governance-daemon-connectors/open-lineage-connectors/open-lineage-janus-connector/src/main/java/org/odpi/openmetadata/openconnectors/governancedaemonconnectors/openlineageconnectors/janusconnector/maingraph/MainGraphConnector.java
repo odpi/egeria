@@ -57,7 +57,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * {@inheritDoc}
      */
-    public LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "MainGraphConnector.lineage";
 
         GraphTraversalSource g = mainGraph.traversal();
@@ -72,7 +72,12 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        String edgeLabel = helper.getEdgeLabel(view);
+        String edgeLabel;
+        if(includeProcesses)
+            edgeLabel = EDGE_LABEL_DATAFLOW_WITH_PROCESS;
+        else
+            edgeLabel = EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
+
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
         switch (scope) {
@@ -92,8 +97,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                 lineageVerticesAndEdges = helper.glossary(guid);
                 break;
         }
-        if (!includeProcesses)
-            helper.filterOutProcesses(lineageVerticesAndEdges);
         if (!displayNameMustContain.isEmpty())
             helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
         return new LineageResponse(lineageVerticesAndEdges);

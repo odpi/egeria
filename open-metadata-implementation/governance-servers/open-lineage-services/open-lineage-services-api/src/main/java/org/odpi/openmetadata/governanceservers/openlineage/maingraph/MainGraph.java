@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public interface MainGraph extends OpenLineageGraphConnector {
@@ -16,13 +15,12 @@ public interface MainGraph extends OpenLineageGraphConnector {
      * Returns a lineage subgraph.
      *
      * @param scope                  The specific lineage query.
-     * @param view                   The view queried by the user.
      * @param guid                   The guid of the node of which the lineage is queried from.
      * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
      * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
+    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.

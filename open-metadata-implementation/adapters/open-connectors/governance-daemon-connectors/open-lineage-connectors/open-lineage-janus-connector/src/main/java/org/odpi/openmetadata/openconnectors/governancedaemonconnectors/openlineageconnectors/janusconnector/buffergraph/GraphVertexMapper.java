@@ -25,7 +25,7 @@ public class GraphVertexMapper {
         if (instanceProperties != null) {
 
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+entry.getKey();
+                String key = PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY +entry.getKey();
                 vertex.property(key,entry.getValue());
             }
         }
