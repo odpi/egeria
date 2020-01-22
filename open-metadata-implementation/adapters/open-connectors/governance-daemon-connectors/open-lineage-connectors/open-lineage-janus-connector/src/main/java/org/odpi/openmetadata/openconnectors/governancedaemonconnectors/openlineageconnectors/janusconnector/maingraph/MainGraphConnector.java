@@ -8,6 +8,7 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
@@ -125,7 +126,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return out.toString();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -133,4 +133,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return mainGraph;
     }
 
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        mainGraph.close();
+        super.disconnect();
+    }
 }

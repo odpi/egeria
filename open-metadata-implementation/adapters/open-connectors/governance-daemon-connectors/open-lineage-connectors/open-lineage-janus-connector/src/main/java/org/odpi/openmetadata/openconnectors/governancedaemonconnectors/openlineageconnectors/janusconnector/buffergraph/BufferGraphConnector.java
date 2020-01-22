@@ -10,6 +10,7 @@ import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
@@ -300,5 +301,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
+    }
+
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        this.bufferGraph.close();
+        this.mainGraph.close();
+        super.disconnect();
     }
 }

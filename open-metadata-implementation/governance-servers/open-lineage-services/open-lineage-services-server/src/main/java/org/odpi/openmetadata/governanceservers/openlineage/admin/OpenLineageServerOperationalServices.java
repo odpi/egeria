@@ -276,9 +276,8 @@ public class OpenLineageServerOperationalServices {
             log.error("An Open Lineage Services connector could not be disconnected", e);
             return false;
         }
-        if (openLineageServerInstance != null) {
+        if (openLineageServerInstance != null)
             openLineageServerInstance.shutdown();
-        }
 
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
         return true;
