@@ -10,7 +10,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
@@ -39,7 +38,6 @@ public class OpenLineageService {
     public static final String NODES_LABEL = "nodes";
     public static final String GLOSSARY_TERM = "glossaryTerm";
     private final OpenLineageClient openLineageClient;
-    private com.fasterxml.jackson.databind.ObjectMapper mapper;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
@@ -49,20 +47,18 @@ public class OpenLineageService {
     @Autowired
     public OpenLineageService(OpenLineageClient openLineageClient) {
         this.openLineageClient = openLineageClient;
-        mapper = new com.fasterxml.jackson.databind.ObjectMapper();
     }
 
     /**
      *
      * @param userId id of the user triggering the request
-     * @param view level of granularity, eg down to column or table level
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, List> getUltimateSource(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateSource(String userId, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", true);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -72,14 +68,13 @@ public class OpenLineageService {
     /**
      *
      * @param userId id of the user triggering the request
-     * @param view level of granularity, eg down to column or table level
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, List> getEndToEndLineage(String userId, View view, String guid)  {
+    public Map<String, List> getEndToEndLineage(String userId, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.END_TO_END, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", true);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -89,14 +84,13 @@ public class OpenLineageService {
     /**
      *
      * @param userId id of the user triggering the request
-     * @param view level of granularity, eg down to column or table level
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, List> getUltimateDestination(String userId, View view, String guid)  {
+    public Map<String, List> getUltimateDestination(String userId, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "", true);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -107,14 +101,13 @@ public class OpenLineageService {
     /**
      *
      * @param userId id of the user triggering the request
-     * @param view level of granularity, eg down to column or table level
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, List> getGlossaryLineage(String userId, View view, String guid)  {
+    public Map<String, List> getGlossaryLineage(String userId, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.GLOSSARY, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", true);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -125,14 +118,13 @@ public class OpenLineageService {
     /**
      *
      * @param userId id of the user triggering the request
-     * @param view level of granularity, eg down to column or table level
      * @param guid unique identifier if the asset
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, List> getSourceAndDestination(String userId, View view, String guid)  {
+    public Map<String, List> getSourceAndDestination(String userId, String guid)  {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, view, guid, "", true);
+            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "", true);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -186,15 +178,15 @@ public class OpenLineageService {
     private Node createNode(LineageVertex currentNode) {
         String displayName = currentNode.getDisplayName();
         String glossaryTerm = "";
-        if(!CollectionUtils.isEmpty(currentNode.getAttributes()) ){
-            glossaryTerm = currentNode.getAttributes().get(GLOSSARY_TERM);
+        if(!CollectionUtils.isEmpty(currentNode.getProperties()) ){
+            glossaryTerm = currentNode.getProperties().get(GLOSSARY_TERM);
         }
         if(!StringUtils.isEmpty(glossaryTerm)){
             displayName = displayName + "\n" + glossaryTerm;
         }
         Node node = new Node(currentNode.getNodeID(), displayName);
         node.setGroup(currentNode.getDisplayName());
-        node.setProperties(currentNode.getAttributes());
+        node.setProperties(currentNode.getProperties());
         return node;
     }
 

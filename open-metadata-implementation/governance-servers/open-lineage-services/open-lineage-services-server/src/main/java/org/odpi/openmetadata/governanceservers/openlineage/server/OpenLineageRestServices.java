@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 import org.slf4j.Logger;
@@ -56,14 +55,14 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public LineageResponse lineage(String serverName, String userId, Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            response = openLineageHandler.lineage(scope, view, guid, displayNameMustContain, includeProcesses);
+            response = openLineageHandler.lineage(scope, guid, displayNameMustContain, includeProcesses);
         } catch (InvalidParameterException error) {
             openLineageExceptionHandler.captureInvalidParameterException(response, error);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error) {
