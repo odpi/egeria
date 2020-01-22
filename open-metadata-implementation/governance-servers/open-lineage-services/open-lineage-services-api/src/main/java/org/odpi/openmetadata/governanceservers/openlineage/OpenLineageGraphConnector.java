@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
 public interface OpenLineageGraphConnector {
 
@@ -19,5 +20,11 @@ public interface OpenLineageGraphConnector {
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     void disconnect() throws ConnectorCheckedException;
+
+    /**
+     * Initialize the connectors
+     * @throws OpenLineageException
+     */
+    void initializeGraphDB() throws OpenLineageException;
 
 }

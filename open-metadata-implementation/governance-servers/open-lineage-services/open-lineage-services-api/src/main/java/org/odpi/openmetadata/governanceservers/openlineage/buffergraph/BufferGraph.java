@@ -17,9 +17,6 @@ public interface BufferGraph extends OpenLineageGraphConnector {
      */
     void addEntity(LineageEvent lineageEvent);
 
-
-    void initializeGraphDB() throws OpenLineageException;
-
     /**
      * Updates a vertex in the Graph
      *

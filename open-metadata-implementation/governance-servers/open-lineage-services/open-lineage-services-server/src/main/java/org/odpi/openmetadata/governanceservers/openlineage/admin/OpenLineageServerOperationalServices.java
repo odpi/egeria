@@ -94,9 +94,7 @@ public class OpenLineageServerOperationalServices {
         this.inTopicConnector = (OpenMetadataTopicConnector) getGraphConnector(inTopicConnection, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initiateAndStartConnectors();
-
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(mainGraphConnector);
-
 
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
@@ -104,7 +102,6 @@ public class OpenLineageServerOperationalServices {
                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                 maxPageSize,
                 openLineageHandler);
-
     }
 
     /**
@@ -128,29 +125,39 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Call the initialize() and start() method for the provided connectors
+     * Call the initialize() and start() method for all applicable connectors used by the Open Lineage Services
      *
      * @throws OMAGConfigurationErrorException
      */
     private void initiateAndStartConnectors() throws OMAGConfigurationErrorException {
-        initiateConnectors();
+        initializeGraphConnector(
+                bufferGraphConnector,
+                "initiateBufferGraphConnector",
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR);
 
-        if (inTopicConnector == null)
-            throwError(OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, actionDescription);
+        initializeGraphConnector(
+                mainGraphConnector,
+                "initiateMainGraphConnector",
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR);
 
-        inTopicConnector.setAuditLog(auditLog);
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
-        String actionDescription = "startBufferGraphConnector";
-        OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR;
-        startGraphConnector( bufferGraphConnector, actionDescription, auditCode);
-
-        actionDescription = "startMainGraphConnector";
-        auditCode = OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR;
-        startGraphConnector(mainGraphConnector, actionDescription, auditCode);
-
+        startGraphConnector(bufferGraphConnector, "startBufferGraphConnector", OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR);
+        startGraphConnector(mainGraphConnector, "startMainGraphConnector", OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR);
         startIntopicConnector();
+    }
+
+    private void initializeGraphConnector(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
+        final String methodName = "initializeGraphConnectors";
+        try {
+            connector.initializeGraphDB();
+        } catch (OpenLineageException e) {
+            log.error(auditCode.getSystemAction(), e);
+            throwError(errorCode, methodName, auditCode, actionDescription);
+        }
     }
 
     private void startGraphConnector(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
@@ -163,8 +170,8 @@ public class OpenLineageServerOperationalServices {
     }
 
     private void startIntopicConnector() throws OMAGConfigurationErrorException {
-        String actionDescription;
-        actionDescription = "Start the Open Lineage Services in-topic listener";
+        String actionDescription = "Start the Open Lineage Services in-topic listener";
+        inTopicConnector.setAuditLog(auditLog);
         StoringServices storingServices = new StoringServices(bufferGraphConnector);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
@@ -177,23 +184,6 @@ public class OpenLineageServerOperationalServices {
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
     }
 
-    private void initiateConnectors() throws OMAGConfigurationErrorException {
-        final String methodName = "initiateAndStartDBConnections";
-        String actionDescription = "initiateBufferGraphConnector";
-        try {
-            bufferGraphConnector.initializeGraphDB();
-        } catch (OpenLineageException e) {
-            log.error("The Buffergraph database connector could not be initialized", e);
-            throwError(OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR, actionDescription);
-        }
-        actionDescription = "initiateMainGraphConnector";
-        try {
-            mainGraphConnector.initializeGraphDB();
-        } catch (OpenLineageException e) {
-            log.error("The Maingraph database connector could not be initialized", e);
-            throwError(OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR, actionDescription);
-        }
-    }
 
     /**
      * Write to audit log
@@ -275,7 +265,7 @@ public class OpenLineageServerOperationalServices {
      * @return boolean indicated whether the disconnect was successful.
      */
     public boolean shutdown() {
-        String actionDescription = "Server shutting down";
+        String actionDescription = "Shutting down the open lineage Services server";
         logRecordToAudit(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
 
         try {
