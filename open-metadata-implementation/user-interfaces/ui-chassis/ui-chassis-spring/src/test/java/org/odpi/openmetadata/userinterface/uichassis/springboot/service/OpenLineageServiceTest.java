@@ -67,7 +67,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, guid);
+        Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
         checkResponse(ultimateSource);
     }
 
@@ -79,7 +79,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, guid);
+        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -92,7 +92,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, guid);
+        Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -104,7 +104,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, guid);
+        Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -116,7 +116,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid);
+        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 

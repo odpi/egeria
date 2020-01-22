@@ -99,8 +99,8 @@ public class GraphConstants {
         returnedPropertiesWhiteList.add(PROPERTY_KEY_NAME_QUALIFIED_NAME);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_GLOSSARY_TERM);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_CREATED_BY);
-        returnedPropertiesWhiteList.add(PROPERTY_NAME_SCHEMA_DISPLAY_NAME);
-        returnedPropertiesWhiteList.add(PROPERTY_NAME_TABLE_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_SCHEMA_DISPLAY_NAME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_TABLE_DISPLAY_NAME);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_CREATE_TIME);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATED_BY);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
