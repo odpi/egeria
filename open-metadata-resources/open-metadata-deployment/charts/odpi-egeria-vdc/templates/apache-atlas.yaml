@@ -66,6 +66,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: atlas-service
     spec:
+      # Fix the hostname to what the image requires of itself
+      hostname: atlas
       volumes:
         - name: egeria-connector-volume
           emptyDir: {}
