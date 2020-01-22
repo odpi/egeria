@@ -27,7 +27,7 @@ public class LineageVertex {
     private String nodeType;
     private String displayName;
     private String guid;
-    private Map<String, String> attributes;
+    private Map<String, String> properties;
 
     public LineageVertex(){}
 
@@ -60,12 +60,12 @@ public class LineageVertex {
         return displayName;
     }
 
-    public Map<String, String> getAttributes() {
-        return attributes;
+    public Map<String, String> getProperties() {
+        return properties;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
     }
 
     @Override
@@ -77,11 +77,11 @@ public class LineageVertex {
                 nodeType.equals(that.nodeType) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(guid, that.guid) &&
-                Objects.equals(attributes, that.attributes);
+                Objects.equals(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeID, nodeType, displayName, guid, attributes);
+        return Objects.hash(nodeID, nodeType, displayName, guid, properties);
     }
 }
