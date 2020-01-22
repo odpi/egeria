@@ -249,8 +249,41 @@ public class MainGraphMapper {
         addTableRelationships(bufferG,mainG,tableIn,process,columnInVertex);
         addTableRelationships(bufferG,mainG,tableOut,process,columnOutVertex);
 
+        addColumns(bufferG,mainG,tableOut);
+
         bufferG.tx().commit();
         mainG.tx().commit();
+    }
+
+    /**
+     * Add all the columns related to a table. This is needed  due to lack of Lineage Mappings
+     * between input schema element and its output.
+     *
+     * @param bufferG  - Traversal source for buffer Graph
+     * @param mainG - Traversal source for main Graph
+     * @param tableOut - table to add the columns
+     * */
+    private void addColumns(GraphTraversalSource bufferG, GraphTraversalSource mainG, Vertex tableOut) {
+        List<Vertex> columns = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,tableOut.property(PROPERTY_KEY_ENTITY_GUID).value()).inE(NESTED_SCHEMA_ATTRIBUTE).otherV().toList();
+        List<String> guidList = columns.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+        for(String guid: guidList) {
+
+            Iterator<Vertex> columntest = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid);
+            if (!columntest.hasNext()) {
+                Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+                Vertex originalVertex = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+                copyVertexProperties(originalVertex, newColumn);
+                addExtraProperties(mainG, bufferG, originalVertex, newColumn);
+
+                Iterator<Vertex> columnVertex = mainG.V(newColumn.id()).bothE(EDGE_LABEL_INCLUDED_IN).otherV()
+                        .has(PROPERTY_KEY_ENTITY_NODE_ID, tableOut.property(PROPERTY_KEY_ENTITY_GUID).value());
+                if (!columnVertex.hasNext()) {
+                    newColumn.addEdge(EDGE_LABEL_INCLUDED_IN, tableOut);
+                }
+            }
+        }
+
+
     }
 
     private Vertex getTable(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex asset){
@@ -286,7 +319,6 @@ public class MainGraphMapper {
         Iterator<Vertex> columnVertex = mainG.V(column.id()).outE(EDGE_LABEL_INCLUDED_IN).inV().has(PROPERTY_KEY_ENTITY_GUID, table.property(PROPERTY_KEY_ENTITY_GUID).value());
         if(!columnVertex.hasNext()) {
             column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
-//                    .property(PROPERTY_KEY_RELATIONSHIP_GUID,column.property(PROPERTY_KEY_ENTITY_GUID).value());
         }
     }
 
