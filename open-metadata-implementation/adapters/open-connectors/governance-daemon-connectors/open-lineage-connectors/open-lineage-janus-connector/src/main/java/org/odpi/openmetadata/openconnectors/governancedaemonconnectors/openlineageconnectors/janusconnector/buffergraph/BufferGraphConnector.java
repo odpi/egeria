@@ -346,7 +346,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     @Override
     public void disconnect() throws ConnectorCheckedException {
         this.bufferGraph.close();
-        this.mainGraph.close();
         super.disconnect();
     }
 }

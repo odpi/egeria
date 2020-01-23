@@ -42,7 +42,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("main Graph cannot be initialized, something went wrong. The error is {}", error);
+            log.error("The Main graph could be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -64,6 +64,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         } catch (NoSuchElementException e) {
+            log.debug("Requested element was not found", e);
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
             throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
