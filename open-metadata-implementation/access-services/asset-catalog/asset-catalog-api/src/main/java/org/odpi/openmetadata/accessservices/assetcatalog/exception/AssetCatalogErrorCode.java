@@ -33,27 +33,27 @@ public enum AssetCatalogErrorCode {
     ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
             "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighbourhood for the given asset.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
+            "Check that the unique identifier for the asset is correct."),
 
     NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-012 ",
             "There is no assets available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
+            "Check that the unique identifier for the asset is correct."),
 
     NO_RELATIONSHIPS_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-013 ",
             "There is no relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
+            "Check that the unique identifier for the asset is correct."),
 
     LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
             "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve the linking relationship.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
+            "Check that the unique identifiers of the assets are correct."),
 
     LINKING_ASSETS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-016 ",
             "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve linking assets.",
-            Constants.UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT),
+            "Check that the unique identifiers of the assets are correct."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
@@ -99,6 +99,4 @@ public enum AssetCatalogErrorCode {
         return userAction;
     }
 
-    private static class Constants {
-        static final String UNIQUE_IDENTIFIER_FOR_THE_ASSET_IS_CORRECT = "Check that the unique identifier for the asset is correct.";
-    }}
+}

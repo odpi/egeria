@@ -11,8 +11,8 @@ import org.janusgraph.core.JanusGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
@@ -50,11 +50,9 @@ public class MainGraphMapper {
             checkMainGraph(columnInVertex,columnOutVertex,process);
 
         }catch (Exception e){
-
-            log.error("Something went wrong during the Janus transaction",e.getMessage());
+            log.error("Something went wrong during the Janus transaction {}",e.getMessage());
             //TODO throw  exception
             bufferGraph.tx().rollback();
-
         }
     }
 
@@ -135,11 +133,11 @@ public class MainGraphMapper {
 
         //find a query for filefolder parent
         if(tableAsset.hasNext()){
-            newVertex.property(PROPERTY_NAME_TABLE_DISPLAY_NAME,tableAsset.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
         if(schema.hasNext()){
-            newVertex.property(PROPERTY_NAME_SCHEMA_DISPLAY_NAME,schema.next().property("vertex--InstancePropdisplayName").value());
+            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
 //        if(db != null){
@@ -177,8 +175,6 @@ public class MainGraphMapper {
 
             copyVertexProperties(glossaryBuffer,glossaryMain);
         }
-
-        //TODO copy glossaryterm
     }
 
     /**
@@ -194,9 +190,9 @@ public class MainGraphMapper {
         GraphTraversalSource mainG = mainGraph.traversal();
 
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
-        final String processName = process.value(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME);
+        final String processName = process.value(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
 
-        if(mainG.V(columnInVertex.id()).outE(EDGE_LABEL_COLUMN_AND_PROCESS).inV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
+        if(mainG.V(columnInVertex.id()).bothE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV().has(PROPERTY_KEY_ENTITY_GUID,processGuid).hasNext()){
             return;
         }
 
@@ -207,13 +203,13 @@ public class MainGraphMapper {
                     .property(PROPERTY_KEY_DISPLAY_NAME, processName)
                     .next();
 
-            columnInVertex.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, subProcess);
-            subProcess.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, columnOutVertex);
+            columnInVertex.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
+            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOutVertex);
 
             Iterator<Vertex> processTopLevel = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,process.property(PROPERTY_KEY_ENTITY_GUID).value());
             if(processTopLevel.hasNext()){
                 Vertex mainProcess  = processTopLevel.next();
-                subProcess.addEdge(EDGE_LABEL_SUBPROCESS_TO_PROCESS,mainProcess);
+                subProcess.addEdge(EDGE_LABEL_INCLUDED_IN,mainProcess);
                 mainG.tx().commit();
 
                 addTableNode(columnInVertex,columnOutVertex,mainProcess);
@@ -224,7 +220,7 @@ public class MainGraphMapper {
                 mainProcess.property(PROPERTY_KEY_ENTITY_NODE_ID, processGuid);
                 mainProcess.property(PROPERTY_KEY_ENTITY_GUID, processGuid);
                 mainProcess.property(PROPERTY_KEY_DISPLAY_NAME, processName);
-                subProcess.addEdge(EDGE_LABEL_SUBPROCESS_TO_PROCESS,mainProcess);
+                subProcess.addEdge(EDGE_LABEL_INCLUDED_IN,mainProcess);
 
                 mainG.tx().commit();
 
@@ -253,14 +249,46 @@ public class MainGraphMapper {
         addTableRelationships(bufferG,mainG,tableIn,process,columnInVertex);
         addTableRelationships(bufferG,mainG,tableOut,process,columnOutVertex);
 
+        addColumns(bufferG,mainG,tableOut);
+
         bufferG.tx().commit();
         mainG.tx().commit();
+    }
+
+    /**
+     * Add all the columns related to a table. This is needed  due to lack of Lineage Mappings
+     * between input schema element and its output.
+     *
+     * @param bufferG  - Traversal source for buffer Graph
+     * @param mainG - Traversal source for main Graph
+     * @param tableOut - table to add the columns
+     * */
+    private void addColumns(GraphTraversalSource bufferG, GraphTraversalSource mainG, Vertex tableOut) {
+        List<Vertex> columns = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,tableOut.property(PROPERTY_KEY_ENTITY_GUID).value()).inE(NESTED_SCHEMA_ATTRIBUTE).otherV().toList();
+        List<String> guidList = columns.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+        for(String guid: guidList) {
+
+            Iterator<Vertex> columntest = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid);
+            if (!columntest.hasNext()) {
+                Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+                Vertex originalVertex = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+                copyVertexProperties(originalVertex, newColumn);
+                addExtraProperties(mainG, bufferG, originalVertex, newColumn);
+
+                Iterator<Vertex> columnVertex = mainG.V(newColumn.id()).bothE(EDGE_LABEL_INCLUDED_IN).otherV()
+                        .has(PROPERTY_KEY_ENTITY_NODE_ID, tableOut.property(PROPERTY_KEY_ENTITY_GUID).value());
+                if (!columnVertex.hasNext()) {
+                    newColumn.addEdge(EDGE_LABEL_INCLUDED_IN, tableOut);
+                }
+            }
+        }
+
+
     }
 
     private Vertex getTable(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex asset){
         Iterator<Vertex> table = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value())
                 .emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
-
 
         if (!table.hasNext()){
             return null;
@@ -276,24 +304,25 @@ public class MainGraphMapper {
             copyVertexProperties(tableBuffer, newTable);
             return newTable;
         }
-//        getGlossaryTerm(mainG,bufferG,newTable);
+
         return tableVertex.next();
     }
 
     private void addTableRelationships(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex table,Vertex process,Vertex column){
 
         getGlossaryTerm(mainG,bufferG,table);
-        Iterator<Vertex> tableVertex = mainG.V(table.id()).outE(EDGE_LABEL_TABLE_AND_PROCESS).otherV();
+        Iterator<Vertex> tableVertex = mainG.V(table.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV();
         if(!tableVertex.hasNext()){
-            table.addEdge(EDGE_LABEL_TABLE_AND_PROCESS,process);
+            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
         }
 
         Iterator<Vertex> columnVertex = mainG.V(column.id()).outE(EDGE_LABEL_INCLUDED_IN).inV().has(PROPERTY_KEY_ENTITY_GUID, table.property(PROPERTY_KEY_ENTITY_GUID).value());
         if(!columnVertex.hasNext()) {
             column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
         }
-
     }
+
+
 }
 
 
