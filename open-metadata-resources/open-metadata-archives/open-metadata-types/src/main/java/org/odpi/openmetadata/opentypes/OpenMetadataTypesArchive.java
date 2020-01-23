@@ -11,7 +11,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -139,7 +141,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        // Add method calls here
+        this.update0501SchemaElements();
     }
 
 
@@ -148,6 +150,47 @@ public class OpenMetadataTypesArchive
      * Below are place holders for types to be introduced in future releases.
      * ========================================================================
      */
+
+    private void update0501SchemaElements()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
+    }
+
+    /**
+     * 0501 SchemaElement 'anchorGUID' property should refer to an Asset when available, updated description
+     */
+    private TypeDefPatch updateSchemaElementEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaElement";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name = "anchorGUID";
+        final String attribute1Description = "Optional identification of the referenceable that this schema element is a part of; should refer to an Asset when possible.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
