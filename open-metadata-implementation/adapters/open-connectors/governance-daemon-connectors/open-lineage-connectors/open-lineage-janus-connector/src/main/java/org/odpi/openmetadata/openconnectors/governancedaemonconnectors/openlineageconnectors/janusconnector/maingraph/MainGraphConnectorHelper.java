@@ -264,8 +264,9 @@ public class MainGraphConnectorHelper {
             Property originalProperty = (Property) originalProperties.next();
             if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
                 String newPropertyKey = originalProperty.key().
-                        replace(PROPERTY_KEY_PREFIX_ELEMENT, "").
-                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "");
+                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
+                        replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
+
                 String newPropertyValue = originalProperty.value().toString();
                 newNodeProperties.put(newPropertyKey, newPropertyValue);
             }

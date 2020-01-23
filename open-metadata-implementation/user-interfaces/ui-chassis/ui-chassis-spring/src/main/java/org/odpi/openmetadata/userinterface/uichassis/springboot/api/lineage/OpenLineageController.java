@@ -38,10 +38,10 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate sources of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
-    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid){
+    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getUltimateSource(userId, guid);
+        exportedGraph = openLineageService.getUltimateSource(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -52,10 +52,10 @@ public class OpenLineageController {
      */
     @GetMapping( value = "/entities/{guid}/end2end")
     @ResponseBody
-    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid){
+    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getEndToEndLineage(userId, guid);
+        exportedGraph = openLineageService.getEndToEndLineage(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -65,10 +65,10 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
-    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid){
+    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getUltimateDestination(userId, guid);
+        exportedGraph = openLineageService.getUltimateDestination(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -79,10 +79,10 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
     @GetMapping( value = "/entities/{guid}/glossary-lineage")
-    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid){
+    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getGlossaryLineage(userId, guid);
+        exportedGraph = openLineageService.getGlossaryLineage(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -92,10 +92,10 @@ public class OpenLineageController {
      * @return map of nodes and edges describing the ultimate source and destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/source-and-destination")
-    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid){
+    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getSourceAndDestination(userId, guid);
+        exportedGraph = openLineageService.getSourceAndDestination(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
