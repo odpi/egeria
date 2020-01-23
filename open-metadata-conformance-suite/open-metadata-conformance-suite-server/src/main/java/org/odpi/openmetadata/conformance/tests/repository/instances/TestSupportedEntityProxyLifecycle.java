@@ -359,7 +359,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             Integer remainingCount = this.pollCount;
             while (entity1Ref == null && remainingCount > 0) {
 
-                entity1Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), end1Type.getGUID());
+                entity1Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
 

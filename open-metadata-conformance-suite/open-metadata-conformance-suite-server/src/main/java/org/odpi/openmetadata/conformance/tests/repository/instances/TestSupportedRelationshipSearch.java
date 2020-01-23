@@ -376,6 +376,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             knownInstances = new ArrayList<>();
             createdInstances = new ArrayList<>();
+            createdEntityInstances = new ArrayList<>();
 
             /*
              * Create two pages worth of instances. Why two pages? Because it will allow us to test pagesize on searches.
