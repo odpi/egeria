@@ -90,7 +90,7 @@ public class OMAGServerConfigOpenLineage {
         throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 "setOpenLineageConfig",
-                errorCode.getFormattedErrorMessage(serverName, missingProperty),
+                errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, missingProperty),
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
     }
