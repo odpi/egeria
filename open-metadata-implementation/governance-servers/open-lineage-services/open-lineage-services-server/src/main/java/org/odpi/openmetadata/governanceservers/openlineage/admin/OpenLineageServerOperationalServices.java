@@ -92,7 +92,7 @@ public class OpenLineageServerOperationalServices {
         this.mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection, OpenLineageServerAuditCode.ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR);
         this.inTopicConnector = (OpenMetadataTopicConnector) getGraphConnector(inTopicConnection, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
-        initiateAndStartConnectors();
+        initializeAndStartConnectors();
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(mainGraphConnector);
 
         this.openLineageServerInstance = new
@@ -129,16 +129,16 @@ public class OpenLineageServerOperationalServices {
      *
      * @throws OMAGConfigurationErrorException
      */
-    private void initiateAndStartConnectors() throws OMAGConfigurationErrorException {
+    private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
         initializeGraphConnector(
                 bufferGraphConnector,
-                "initiateBufferGraphConnector",
+                "initializeBufferGraphConnector",
                 OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR);
 
         initializeGraphConnector(
                 mainGraphConnector,
-                "initiateMainGraphConnector",
+                "initializeMainGraphConnector",
                 OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR);
 
