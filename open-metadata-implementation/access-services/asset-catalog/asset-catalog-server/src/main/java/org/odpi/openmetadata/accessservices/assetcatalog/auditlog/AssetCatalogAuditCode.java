@@ -23,13 +23,13 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.T
  */
 public enum AssetCatalogAuditCode {
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Catalog OMAS has completed initialization of a new instance.",
             THE_NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Catalog OMAS.",
             THE_NORMAL_OPERATION_OF_THE_SERVICE),
@@ -41,7 +41,7 @@ public enum AssetCatalogAuditCode {
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
             THE_NORMAL_OPERATION_OF_THE_SERVICE);
