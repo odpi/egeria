@@ -28,7 +28,7 @@
         <module>discovery-engine-services</module>
         <module>open-lineage-services</module>
         <module>security-sync-services</module>
-        <module>stewardship-services</module>
+        <module>stewardship-engine-services</module>
         <module>virtualization-services</module>
         <module>security-officer-services</module>
         <module>data-engine-proxy-services</module>
