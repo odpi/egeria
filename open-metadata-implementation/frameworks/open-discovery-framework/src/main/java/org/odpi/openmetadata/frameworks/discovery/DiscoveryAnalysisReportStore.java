@@ -11,10 +11,11 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestSta
 import java.util.Date;
 
 /**
- * DiscoveryReport is a collection of annotations tied to the execution of one or more discovery services.
+ * DiscoveryAnalysisReportStore provides a client to the open metadata repository that manages the content
+ * of the discovery analysis report.
  * It is part of the DiscoveryAnnotationStore.
  */
-public abstract class DiscoveryReport
+public abstract class DiscoveryAnalysisReportStore
 {
     protected String                     userId                 = null;
     protected String                     discoveryReportGUID    = null;
@@ -31,7 +32,7 @@ public abstract class DiscoveryReport
     /**
      * Default constructor
      */
-    protected DiscoveryReport()
+    protected DiscoveryAnalysisReportStore()
     {
     }
 
