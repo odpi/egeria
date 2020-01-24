@@ -42,7 +42,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("The Main graph could be initialized due to an error", error);
+            log.error("The Main graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
