@@ -157,7 +157,8 @@ public enum OMAGAdminErrorCode
             "Correct the configuration and restart the service."),
 
     BAD_TOPIC_CONNECTOR(400, "OMAG-ADMIN-400-025 ",
-            "Method {0} called on behalf of the {1} Open Metadata Access Service (OMAS) detected a {2} exception when creating an open metadata topic connector.  The error message was {3}",
+            "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  The error " +
+                    "message was {3}",
             "The access service has not been passed valid configuration.",
             "Correct the configuration and restart the service."),
 
@@ -181,16 +182,36 @@ public enum OMAGAdminErrorCode
             "The system is unable to initialize this view service.",
             "If the view service should be initialized then set up the appropriate admin services class name and restart the server instance."),
 
+    INCOMPATIBLE_SUBSYSTEMS(400, "OMAG-ADMIN-400-030 ",
+            "The configuration document for server {0} includes configuration for a {1} but also has configuration for the {2} subsystem which " +
+                    "is not a compatible combination",
+            "The server fails to initialize and an exception is returned to the caller.",
+            "Reconfigure the server to include a compatible combination of subsystems."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",
             "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
 
     UNEXPECTED_PLATFORM_EXCEPTION(500, "OMAG-ADMIN-500-002 ",
-            "Method {1} returned an unexpected exception of {1} with message {2}",
+            "Method {0} returned an unexpected exception of {1} with message {2}",
             "The system is unable to configure the OMAG server.",
-            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue.")
-            ;
+            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an " +
+                                          "issue."),
+    BAD_TOPIC_CONNECTOR_PROVIDER(500, "OMAG-ADMIN-500-003 ",
+            "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
+                                         "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
+            "This is an internal error.  The access service is not using a valid connector provider.",
+            "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+
+    UNEXPECTED_INITIALIZATION_EXCEPTION(500, "OMAG-ADMIN-500-004 ",
+            "The {0} service detected an unexpected {1} exception with message {2} during initialization",
+            "The system is unable to start the service in the OMAG server.",
+            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  " +
+                                                "If you are stuck, raise an issue."),
+
+
+    ;
 
     private int    httpErrorCode;
     private String errorMessageId;
