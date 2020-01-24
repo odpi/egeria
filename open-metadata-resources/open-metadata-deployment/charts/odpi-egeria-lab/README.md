@@ -15,14 +15,18 @@ and repeatably:
 
 In order to use the labs, you'll first need to have the following installed:
 
-- Kubernetes
-- Helm
+- Kubernetes 1.15 or above
+- Helm 3.0 or above
+
+The minimum tested configurations for Kubernetes are
+ - Cloud/remote service - 3 nodes, 2GB ram per node
+ - Local docker for mac/windows - 1 node, 6Gb ram dedicated to docker
 
 You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
 or a public cloud service that provides Kubernetes 
 
-In order to eliminate some challenges with security/permissions in helm2 it's recommended to install
-helm3 from https://github.com/helm/helm/releases before starting and to ensure the 'helm' executable is in your PATH. The
+If you need to install helm3, please obtain from https://github.com/helm/helm/releases before starting and 
+ensure the 'helm' executable is in your PATH. The
 instructions and examples that follow assume use of this version
 
 If you can't meet these requirements, or would like to start with a simpler approach,
