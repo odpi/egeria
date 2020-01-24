@@ -2,78 +2,87 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.OMAGServerConfigStewardshipServices;
+import org.odpi.openmetadata.adminservices.OMAGServerConfigStewardshipEngineServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ConfigStewardshipServicesResource provides the API for configuring the stewardship services in an OMAG
- * server.
+ * server called the stewardship server.
+ *
+ * The stewardship engine services are a client to the Stewardship Action Open Metadata Access Services (OMAS).
+ * The configuration needs to provide the server name and platform URL root where the metadata server running
+ * this service is located.
+ *
+ * They also need a list of the stewardship engines to run.  The definitions of these stewardship engines
+ * are stored in the metadata server and are retrieved when the stewardship server starts.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/stewardship-services")
-public class ConfigStewardshipServicesResource
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/stewardship-engine-services")
+public class ConfigStewardshipEngineServicesResource
 {
-    private OMAGServerConfigStewardshipServices adminAPI = new OMAGServerConfigStewardshipServices();
+    private OMAGServerConfigStewardshipEngineServices adminAPI = new OMAGServerConfigStewardshipEngineServices();
 
     /**
-     * Set up the root URL of the access service.
+     * Set up the name and platform URL root for the metadata server supporting this stewardship server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param accessServiceRootURL  URL root for the access service.
+     * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @PostMapping(path = "access-service-root-url")
+    @PostMapping(path = "/access-service")
 
-    public VoidResponse setAccessServiceRootURL(@PathVariable String userId,
-                                                @PathVariable String serverName,
-                                                @RequestParam String accessServiceRootURL)
+    public VoidResponse setAccessServiceLocation(@PathVariable String                    userId,
+                                                 @PathVariable String                    serverName,
+                                                 @RequestBody  AccessServiceClientConfig clientConfig)
     {
-        return adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL);
+        return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
     }
 
 
     /**
-     * Set up the server name of the access service.
+     * Set up the list of stewardship engines that are to run in the stewardship service.
+     * The definition of these stewardship engines
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param accessServiceServerName  server name for the access service.
+     * @param stewardshipEngines  stewardship engines for server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @PostMapping(path = "access-service-server-name")
+    @PostMapping(path = "/stewardship-engines")
 
-    public VoidResponse setAccessServiceServerName(@PathVariable String userId,
-                                                   @PathVariable String serverName,
-                                                   @RequestParam String accessServiceServerName)
+    public VoidResponse setStewardshipEngines(@PathVariable String       userId,
+                                              @PathVariable String       serverName,
+                                              @RequestBody  List<String> stewardshipEngines)
     {
-        return adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName);
+        return adminAPI.setStewardshipEngines(userId, serverName, stewardshipEngines);
     }
 
 
     /**
-     * Set up the server name of the access service.
+     * Add this service to the server configuration in one call.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connection  connection for topic.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * @param servicesConfig full configuration for the service.
+     * @return void response
      */
-    @PostMapping(path = "inbound-request-connection")
+    @PostMapping(path = "")
 
-    public VoidResponse setInboundRequestConnection(@PathVariable String     userId,
-                                                    @PathVariable String     serverName,
-                                                    @RequestBody  Connection connection)
+    VoidResponse addService(@PathVariable String                          userId,
+                            @PathVariable String                          serverName,
+                            @RequestBody  StewardshipEngineServicesConfig servicesConfig)
     {
-        return adminAPI.setInboundRequestConnection(userId, serverName, connection);
+        return adminAPI.addService(userId, serverName, servicesConfig);
     }
 
 

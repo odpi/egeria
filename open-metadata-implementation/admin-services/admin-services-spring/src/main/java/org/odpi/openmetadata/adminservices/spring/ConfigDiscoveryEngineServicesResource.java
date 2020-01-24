@@ -2,65 +2,54 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryServer;
+import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryEngineServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * ConfigDiscoveryEngineResource provides the API for configuring the discovery engine services.
- * These services support the operation of one or more discovery engines in an OMAG server.
+ * OMAGServerConfigDiscoveryEngineServices provides the API for configuring the discovery engine services.
+ * These services support the operation of one or more discovery engines in an OMAG server called the Discovery Server.
+ *
+ * The discovery engine services are a client to the Discovery Engine Open Metadata Access Services (OMAS).
+ * The configuration needs to provide the server name and platform URL root where the metadata server running
+ * this service is located.
+ *
+ * They also need a list of the discovery engines to run.  The definitions of these discovery engines
+ * are stored in the metadata server and are retrieved when the discovery server starts.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-engine-services")
-public class ConfigDiscoveryEngineResource
+public class ConfigDiscoveryEngineServicesResource
 {
-    private OMAGServerConfigDiscoveryServer adminAPI = new OMAGServerConfigDiscoveryServer();
+    private OMAGServerConfigDiscoveryEngineServices adminAPI = new OMAGServerConfigDiscoveryEngineServices();
 
     /**
-     * Set up the root URL of the OMAG Server Platform where the metadata repository for
-     * the discovery engines is located.
+     * Set up the name and platform URL root for the metadata server supporting this discovery server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param accessServiceRootURL  URL root for the access service.
+     * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @PostMapping(path = "/access-service-root-url")
+    @PostMapping(path = "/access-service")
 
-    public VoidResponse setAccessServiceRootURL(@PathVariable String userId,
-                                                @PathVariable String serverName,
-                                                @RequestBody  String accessServiceRootURL)
+    public VoidResponse setAccessServiceLocation(@PathVariable String                    userId,
+                                                 @PathVariable String                    serverName,
+                                                 @RequestBody  AccessServiceClientConfig clientConfig)
     {
-        return adminAPI.setAccessServiceRootURL(userId, serverName, accessServiceRootURL);
-    }
-
-
-    /**
-     * Set up the server name of the Discovery Engine OMAS.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param accessServiceServerName  server name for the access service.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
-     */
-    @PostMapping(path = "/access-service-server-name")
-
-    public VoidResponse setAccessServiceServerName(@PathVariable String userId,
-                                                   @PathVariable String serverName,
-                                                   @RequestBody  String accessServiceServerName)
-    {
-        return adminAPI.setAccessServiceServerName(userId, serverName, accessServiceServerName);
+        return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
     }
 
 
     /**
      * Set up the list of discovery engines that are to run in the discovery service.
+     * The definition of these discovery engines
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -76,6 +65,24 @@ public class ConfigDiscoveryEngineResource
                                             @RequestBody  List<String> discoveryEngines)
     {
         return adminAPI.setDiscoveryEngines(userId, serverName, discoveryEngines);
+    }
+
+
+    /**
+     * Add this service to the server configuration in one call.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param servicesConfig full configuration for the service.
+     * @return void response
+     */
+    @PostMapping(path = "")
+
+    VoidResponse addService(@PathVariable String                         userId,
+                            @PathVariable String                         serverName,
+                            @RequestBody  DiscoveryEngineServicesConfig  servicesConfig)
+    {
+        return adminAPI.addService(userId, serverName, servicesConfig);
     }
 
 
