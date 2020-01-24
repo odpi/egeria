@@ -45,7 +45,7 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                             int                     maxPageSize,
                                             int                     karmaPointPlateau) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName() + " OMAS",
+        super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               auditLog,
               localServerUserId,
