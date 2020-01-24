@@ -25,74 +25,108 @@ import java.util.Arrays;
 public enum OMRSAuditCode
 {
     OMRS_INITIALIZING("OMRS-AUDIT-0001",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "The Open Metadata Repository Services (OMRS) is initializing",
-                      "The local server has started up the OMRS.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                      OMRSAuditLogRecordSeverity.STARTUP,
+                      "The Open Metadata Repository Services (OMRS) is initializing the subsystems to support a metadata server",
+                      "The local server has started up the OMRS subsystems for a metadata server.  The choices of subsystem to start, and their " +
+                              "configuration is specified in the repository services section of this server's configuration document.",
+                      "No action is required if this server is intended to support a metadata repository.  This metadata repository may be " +
+                              "an integral part of this server, or may be a remote server that this server is providing open metadata proxy " +
+                              "services to.  The conformance test server also uses a local metadata repository to drive particular types of " +
+                              "workload to the server it is testing."),
 
     ENTERPRISE_ACCESS_INITIALIZING("OMRS-AUDIT-0002",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "Enterprise access through the Enterprise Repository Services is initializing",
                       "The local server has started the enterprise access support provided by the " +
-                                           "enterprise repository services.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                                           "enterprise repository services.  This supports federated queries to all members of all " +
+                                           "open metadata repository cohorts that this server is a member of",
+                      "No action is required if the server is supporting Open Metadata Access Services (OMASs)," +
+                                           "providing metadata services for open connectors or hosting the " +
+                                           "conformance test suite.  If this feature is not required, it can be disabled the " +
+                                           "next time the server starts by removing the enterprise repository services " +
+                                           "configuration from this server's configuration document."),
 
     LOCAL_REPOSITORY_INITIALIZING("OMRS-AUDIT-0003",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "The local repository is initializing with metadata collection named {0} with an id of {1}",
-                      "The local server has started to initialize the local repository.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                      OMRSAuditLogRecordSeverity.STARTUP,
+                      "The local repository is initializing the metadata collection named {0} with an id of {1}",
+                      "The local server has started to initialize the local repository subsystem.  " +
+                                          "This subsystem supports a metadata repository that supports the open metadata " +
+                                          "repository interfaces through the OMRSRepositoryConnector.  The physical repository may " +
+                                          "support these interfaces natively, or have a connector that supports these interfaces " +
+                                          "and translates between the open metadata interfaces and the real repository's interfaces.",
+                      "No action is required if this server is to support a local repository.  If this feature is not " +
+                                          "required then it can be disabled by removing the local repository services configuration " +
+                                          "from this server's configuration document."),
 
     METADATA_HIGHWAY_INITIALIZING("OMRS-AUDIT-0004",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "Connecting to the metadata highway",
                       "The local server has started to initialize the communication with the open metadata " +
-                                          "repository cohorts.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                                          "repository cohorts.  The cohorts enable peer-to-peer metadata exchange between " +
+                                          "metadata servers.",
+                      "No action is required if this server is intended to connect to one or more other metadata servers " +
+                                          "through open metadata.  If this feature is not required then it can be disabled by " +
+                                          "removing the list of cohorts from the repository services configuration in the this server's " +
+                                          "configuration document.   If however, the server has successfully connected to the cohort(s), " +
+                                          "it should be shutdown with the permanent option.  This will tell the other members of the " +
+                                          "cohort(s) that this server is leaving so that they can tidy up their cohort registry.  " +
+                                          "Then remove the cohort list from the configuration document."),
 
     COHORT_INITIALIZING("OMRS-AUDIT-0005",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "Connecting to cohort {0}",
+                      OMRSAuditLogRecordSeverity.STARTUP,
+                      "Connecting to open metadata repository cohort {0}",
                       "The local server has started to initialize the communication with the named " +
-                                "open metadata repository cohort.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                                "open metadata repository cohort.  This will allow it to exchange metadata with all of the other " +
+                                "members of this cohort.",
+                      "No action is required if connecting to this cohort is the expected behavior of this server.  " +
+                                "If this server is not meant to connect to this cohort then it should be shutdown with the permanent " +
+                                "option - this will tell the other members of the cohort that this server is permanently " +
+                                "leaving the cohort.  Then remove the cohort configuration from the cohort " +
+                                "list in the repository services configuration section of this server's configuration " +
+                                "document and restart the server.  The registry store for this server can then be deleted."),
 
     COHORT_CONFIG_ERROR("OMRS-AUDIT-0006",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
-                      "Configuration error detected while connecting to cohort {0}, error message was: {1}",
+                      "Configuration error detected while connecting to cohort {0}, exception {1} was caught with error message: {2}",
                       "The local server has started to initialize the communication with the named " +
                                 "open metadata repository cohort and a configuration error was detected.",
                       "Review the exception and resolve the issue it documents. " +
                                 "Then disconnect and reconnect this server to the cohort."),
 
     OMRS_INITIALIZED("OMRS-AUDIT-0007",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The Open Metadata Repository Services (OMRS) has initialized",
                       "The local server has completed the initialization of the OMRS.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                      "Verify that the correct subsystems have been started and there are no unexpected errors."),
 
     COHORT_DISCONNECTING("OMRS-AUDIT-0008",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "Disconnecting from cohort {0}",
                       "The local server has started to shutdown the communication with the named " +
-                                 "open metadata repository cohort.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                                 "open metadata repository cohort.  Other members will stop sending metadata requests to this server.",
+                      "No action is required if the server is shutting down, or there has been a deliberate " +
+                                 "action to temporarily remove the server from the cohort.  If this is unexpected then look for " +
+                                 "reasons why the server is disconnecting - it may be an operator action or failure in the " +
+                                 "cohort."),
 
     COHORT_PERMANENTLY_DISCONNECTING("OMRS-AUDIT-0009",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "Unregistering from cohort {0}",
                       "The local server has started to unregister from all future communication with the named " +
                                  "open metadata repository cohort.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                      "No action is required if the server is shutting down, or there has been a deliberate " +
+                                             "action to permanently remove the server from the cohort.  If this is unexpected " +
+                                             "then look for reasons why the server is disconnecting - it may be an operator action or failure in the " +
+                                             "cohort."),
 
     OMRS_DISCONNECTING("OMRS-AUDIT-0010",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The Open Metadata Repository Services (OMRS) is disconnecting the open metadata repositories",
                       "The local server has begun the shutdown of the OMRS.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_DISCONNECTED("OMRS-AUDIT-0011",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The Open Metadata Repository Services (OMRS) has disconnected from the open metadata repositories",
                       "The local server has completed the disconnection of the OMRS.",
                       "No action is required.  This is part of the normal operation of the server."),
@@ -121,13 +155,13 @@ public enum OMRSAuditCode
                       "Review previous error messages to determine the precise error. Correct the cause and restart the server. "),
 
     OPEN_METADATA_TOPIC_LISTENER_START("OMRS-AUDIT-0015",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The listener thread for an OMRS Topic Connector for topic {0} has started",
                       "The listener thread will process inbound events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN("OMRS-AUDIT-0016",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The listener thread for the OMRS Topic Connector for topic {0} has shutdown",
                       "The listener thread has stopped processing inbound events",
                       "No action is required.  This is part of the normal operation of the server."),
@@ -148,19 +182,19 @@ public enum OMRSAuditCode
                        "Verify the start up configuration to ensure there is an event bus configured."),
 
     OMRS_TOPIC_LISTENER_REGISTERED("OMRS-AUDIT-0019",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       OMRSAuditLogRecordSeverity.STARTUP,
                        "The OMRS Topic Connector {0} has registered with an event bus connector connected to topic {1}",
                        "The OMRS Topic Connector is able to receive or send events",
                        "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_TOPIC_LISTENER_STARTED("OMRS-AUDIT-0020",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       OMRSAuditLogRecordSeverity.STARTUP,
                        "The OMRS Topic Connector {0} is ready to send and receive events",
                        "The OMRS Topic Connector is able to receive or send events",
                        "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_TOPIC_LISTENER_DISCONNECTED("OMRS-AUDIT-0021",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The OMRS Topic Connector {0} has disconnected the event bus connectors",
                       "The OMRS Topic Connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
@@ -172,50 +206,50 @@ public enum OMRSAuditCode
                       "Verify the start up configuration to ensure there is an event bus configured."),
 
     EVENT_MAPPER_LISTENER_REGISTERED("OMRS-AUDIT-0023",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The local repository's event mapper connector {0} has registered with an event bus connector connected to topic {1}",
                       "The event mapper connector is able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     EVENT_MAPPER_LISTENER_STARTED("OMRS-AUDIT-0024",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The local repository's event mapper connector {0} is ready to send and receive events",
                       "The event mapper connector is able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     EVENT_MAPPER_LISTENER_DISCONNECTED("OMRS-AUDIT-0025",
-                      OMRSAuditLogRecordSeverity.ERROR,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The local repository's event mapper connector {0} has disconnected the event bus connectors",
                       "The event mapper connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_LISTENER_INITIALIZING("OMRS-AUDIT-0026",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "Initializing listener for cohort {0}",
                       "The local server has initialized a listener to receive inbound events from the named " +
                                 "open metadata repository cohort.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
-                               OMRSAuditLogRecordSeverity.INFO,
+                               OMRSAuditLogRecordSeverity.STARTUP,
                                "The {0} event manager is initializing",
                                "The event manager is ready for internal OMRS event consumers to register with it.",
                                "No action is required.  This is part of the normal operation of the server."),
 
     REGISTERING_EVENT_PROCESSOR("OMRS-AUDIT-0030",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "Registering the {0} event consumer with the {1} event manager",
                       "A consumer of events has been registered with the event manager.  This consumer will distribute events to its associated components.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     STARTING_EVENT_MANAGER("OMRS-AUDIT-0031",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} event manager is starting with {1} type definition event consumer(s) and {2} instance event consumer(s)",
                       "The event manager is fully initialized and beginning to distribute events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     DRAINING_TYPEDEF_EVENT_BUFFER("OMRS-AUDIT-0032",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} event manager is sending out the {1} type definition events that were generated and buffered during server initialization",
                       "The event manager is fully initialized and distributing buffered events that describe type definitions",
                       "No action is required.  This is part of the normal operation of the server."),
@@ -257,28 +291,29 @@ public enum OMRSAuditCode
                               "Correct the configuration to ensure that the cohort's topic connection is valid."),
 
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "An enterprise OMRS connector has been created for the {0} Open Metadata Access Service (OMAS)",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     STARTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0041",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The enterprise OMRS connector for the {0} Open Metadata Access Service (OMAS) has started",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     DISCONNECTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0042",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                       "The enterprise OMRS Connector for the {0} Open Metadata Access Service (OMAS) has shutdown",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     ENTERPRISE_CONNECTOR_FAILED("OMRS-AUDIT-0043",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "The create of an enterprise OMRS Connector for the {0} Open Metadata Access Service (OMAS) failed with this error message: {1}",
-                      "The connector will support access to the connected open metadata repositories.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The create of an enterprise OMRS Connector for the {0} Open Metadata Access Service (OMAS) failed with exception {1} and " +
+                                        "error message: {2}",
+                      "The connector will not be able to support access to the connected open metadata repository.",
+                      "Review the message to discovery why the connector failed to start."),
 
     PROCESSING_ARCHIVE("OMRS-AUDIT-0050",
                        OMRSAuditLogRecordSeverity.INFO,
@@ -333,6 +368,11 @@ public enum OMRSAuditCode
                                       "part of its routine to permanently disconnect with the open metadata repository cohort.",
                               "No action is required.  This is part of the normal operation of the server."),
 
+    OMRS_AUDIT_LOG_READY("OMRS-AUDIT-0064",
+                         OMRSAuditLogRecordSeverity.STARTUP,
+                         "The Open Metadata Repository Services (OMRS) has initialized the audit log for {0} called {1}",
+                         "The local server has started up the logging destinations defined in the configuration document.",
+                         "Validate that all of the logging destinations are working."),
 
     EVENT_PARSING_ERROR("OMRS-AUDIT-0100",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -663,7 +703,8 @@ public enum OMRSAuditCode
                      "The local server will support this type until the next restart of the server.  After that the instances of this type stored in the local repository will not be retrievable.",
                      "Using the API in this way is sufficient for development where the repository does not contain valuable metadata.  For production, all types should be defined and maintained through open metadata archives."),
 
-    REMOTE_TYPE_CONFLICT("OMRS-AUDIT-0307 ", OMRSAuditLogRecordSeverity.ACTION,
+    REMOTE_TYPE_CONFLICT("OMRS-AUDIT-0307 ",
+                         OMRSAuditLogRecordSeverity.ACTION,
                          "Conflicting type definitions for type {0} ({1}) have been detected in remote system {2} ({3}).  Other system involved has" +
                                  " metadata collection {4} Error message is: {5}",
                          "The open metadata cohort is not running with consistent types.",
