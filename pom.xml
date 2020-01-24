@@ -19,7 +19,7 @@
     <artifactId>egeria</artifactId>
     <version>1.3-SNAPSHOT</version>
 
-    <url>https://odpi.github.io/egeria</url>
+    <url>https://egeria.odpi.org</url>
 
     <!-- The Apache license is used for code and the creative commons license is used for documentation -->
 
@@ -572,12 +572,14 @@
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>ui-admin-services</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>ui-admin-services-api</artifactId>
@@ -1014,6 +1016,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1050,6 +1059,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-service-connectors</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1665,6 +1681,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1673,13 +1717,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>janus-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
