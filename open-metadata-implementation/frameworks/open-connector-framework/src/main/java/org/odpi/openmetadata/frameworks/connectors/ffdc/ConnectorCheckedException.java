@@ -58,10 +58,12 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated message
      * @param template   object to copy
      */
-    public ConnectorCheckedException(ConnectorCheckedException template)
+    public ConnectorCheckedException(String                    errorMessage,
+                                     ConnectorCheckedException template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 }
