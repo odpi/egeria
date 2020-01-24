@@ -25,46 +25,35 @@ import java.util.Arrays;
 public enum AssetOwnerAuditCode
 {
     SERVICE_INITIALIZING("OMAS-ASSET-OWNER-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Owner Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Asset Owner OMAS.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "The local server has started up a new instance of the Asset Owner OMAS.  This service " +
+                                 "enables tools to capture information about assets, build a catalog and set up " +
+                                 "information about how these assets should be governed.",
+             "No action is required if this service is expected to be started in this server.  If " +
+                                 "this service is not required then it can be removed from the access service " +
+                                 "list in the configuration document for this server.  It will then not be started " +
+                                 "the next time the server starts up."),
 
     SERVICE_INITIALIZED("OMAS-ASSET-OWNER-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Owner Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "Verify that this service has initialized successfully and has the correct set of supported zones " +
+                                "and default zones defined.  Investigate any reported errors.  Also ensure that the" +
+                                "enterprise repository services and the OCF metadata management services are initialized."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-OWNER-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Asset Owner Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Asset Owner OMAS instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "No action is required is this shutdown was intended."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-OWNER-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
+             OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Asset Owner Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-    ALL_ZONES("OMAS-ASSET-OWNER-0006",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Owner Open Metadata Access Service (OMAS) is supporting all governance zones",
-             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                      "This means it is providing access to all Assets irrespective of the zone(s) they are located in.",
-             "No action is required.  This is part of the normal operation of the service."),
-    SUPPORTED_ZONES("OMAS-ASSET-OWNER-0007",
-              OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Owner Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
-             "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                      "This means it is only providing access to the Assets from these zone(s).",
-             "No action is required.  This is part of the normal operation of the service."),
-    BAD_CONFIG("OMAS-ASSET-OWNER-0008",
-             OMRSAuditLogRecordSeverity.ERROR,
-             "The Asset Owner Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
-             "The access service has not been passed valid configuration.",
-             "Correct the configuration and restart the service.")
-
+             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
     ;
 
     private String                     logMessageId;
