@@ -74,13 +74,13 @@ public enum OpenLineageServerAuditCode {
             "The Maingraph database connector could not be obtained",
             "Please verify the Maingraph connection object within the Open Lineage Services configuration"),
 
-    ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0011",
+    ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB("OPEN-LINEAGE-SERVICES-0011",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Open Lineage Services server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
             "The Buffergraph database connector could not be initialized",
             "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
-    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0012",
+    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB("OPEN-LINEAGE-SERVICES-0012",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Open Lineage Services server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
             "The Maingraph database connector could not be initialized",

@@ -130,17 +130,17 @@ public class OpenLineageServerOperationalServices {
      * @throws OMAGConfigurationErrorException
      */
     private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
-        initializeGraphConnector(
+        initializeGraphConnectorDB(
                 bufferGraphConnector,
                 "initializeBufferGraphConnector",
-                OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR);
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB);
 
-        initializeGraphConnector(
+        initializeGraphConnectorDB(
                 mainGraphConnector,
                 "initializeMainGraphConnector",
-                OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR);
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB);
 
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
@@ -159,7 +159,7 @@ public class OpenLineageServerOperationalServices {
      * @param auditCode         The potential error that could occur, in a format intended for system administrators.
      * @throws OMAGConfigurationErrorException
      */
-    private void initializeGraphConnector(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
+    private void initializeGraphConnectorDB(OpenLineageGraphConnector connector, String actionDescription, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
         final String methodName = "initializeGraphConnectors";
         try {
             connector.initializeGraphDB();

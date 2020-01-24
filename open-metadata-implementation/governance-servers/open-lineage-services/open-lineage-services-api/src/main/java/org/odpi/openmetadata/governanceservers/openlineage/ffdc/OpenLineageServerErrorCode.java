@@ -71,12 +71,12 @@ public enum OpenLineageServerErrorCode {
             "Graph could not be opened due to invalid configuration",
             "Please check that the graph database exists and is not in use by another process."),
 
-    ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-007",
+    ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-007",
             "The Open Lineage server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
             "The Buffergraph database connector could not be initialized",
             "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
-    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-008",
+    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-008",
             "The Open Lineage server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
             "The Maingraph database connector could not be initialized",
             "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
