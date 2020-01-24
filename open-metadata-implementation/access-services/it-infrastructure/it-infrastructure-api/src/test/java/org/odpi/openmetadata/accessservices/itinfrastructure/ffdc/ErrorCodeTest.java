@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "IT-INFRASTRUCTURE";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("IT-INFRASTRUCTURE"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,21 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(ITInfrastructureErrorCode.SERVICE_NOT_INITIALIZED);
+        for (ITInfrastructureErrorCode errorCode : ITInfrastructureErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 
