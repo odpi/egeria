@@ -10,7 +10,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 
 /**
- * The OMAGCommonAuditCode is used to define the message content for the OMRS Audit Log.
+ * The RepositoryHandlerAuditCode is used to define the message content for the OMRS Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -48,10 +48,10 @@ public enum RepositoryHandlerAuditCode
 
 
     /**
-     * The constructor for AssetConsumerAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
+     * The constructor for RepositoryHandlerAuditCode expects to be passed one of the enumeration rows defined in
+     * RepositoryHandlerAuditCode above.   For example:
      *
-     *     AssetConsumerAuditCode   auditCode = AssetConsumerAuditCode.SERVER_NOT_AVAILABLE;
+     *     RepositoryHandlerAuditCode   auditCode = RepositoryHandlerAuditCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -106,7 +106,7 @@ public enum RepositoryHandlerAuditCode
     {
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("<== OMAGCommonAuditCode.getMessage(%s)", Arrays.toString(params)));
+            log.debug(String.format("<== RepositoryHandlerAuditCode.getMessage(%s)", Arrays.toString(params)));
         }
 
         MessageFormat mf = new MessageFormat(logMessage);
@@ -114,7 +114,7 @@ public enum RepositoryHandlerAuditCode
 
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("==> OMAGCommonAuditCode.getMessage(%s): %s", Arrays.toString(params), result));
+            log.debug(String.format("==> RepositoryHandlerAuditCode.getMessage(%s): %s", Arrays.toString(params), result));
         }
 
         return result;
@@ -142,5 +142,23 @@ public enum RepositoryHandlerAuditCode
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "RepositoryHandlerAuditCode{" +
+                "logMessageId='" + logMessageId + '\'' +
+                ", severity=" + severity +
+                ", logMessage='" + logMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }
