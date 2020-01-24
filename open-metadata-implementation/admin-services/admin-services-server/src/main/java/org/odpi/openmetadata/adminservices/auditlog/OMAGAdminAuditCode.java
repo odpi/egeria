@@ -49,10 +49,10 @@ public enum OMAGAdminAuditCode
 
 
     /**
-     * The constructor for AssetConsumerAuditCode expects to be passed one of the enumeration rows defined in
+     * The constructor for OMAGAdminAuditCode expects to be passed one of the enumeration rows defined in
      * AssetConsumerAuditCode above.   For example:
      *
-     *     AssetConsumerAuditCode   auditCode = AssetConsumerAuditCode.SERVER_NOT_AVAILABLE;
+     *     OMAGAdminAuditCode   auditCode = OMAGAdminAuditCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 4 parameters shown below.
      *
