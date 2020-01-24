@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -9,7 +10,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.Governance
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,31 +20,34 @@ import java.util.List;
 /**
  * OMAGServerConfigStewardshipServices supports the configuration requests for the stewardship services.
  */
-public class OMAGServerConfigStewardshipServices
+public class OMAGServerConfigStewardshipEngineServices
 {
     private static final String serviceName    = GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName();
     private static final String accessService  = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceName();
-    
+
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerConfigStewardshipEngineServices.class);
+
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
-
     /**
-     * Set up the root URL of the access service.
+     * Set up the name and platform URL root for the metadata server supporting this stewardship server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param accessServiceRootURL  URL root for the access service.
+     * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    public VoidResponse setAccessServiceRootURL(String userId,
-                                                String serverName,
-                                                String accessServiceRootURL)
+    public VoidResponse setAccessServiceLocation(String                    userId,
+                                                 String                    serverName,
+                                                 AccessServiceClientConfig clientConfig)
     {
-        final String methodName = "setAccessServiceRootURL";
+        final String methodName = "setAccessServiceLocation";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -50,7 +55,18 @@ public class OMAGServerConfigStewardshipServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+
+            String accessServiceRootURL    = null;
+            String accessServiceServerName = null;
+
+            if (clientConfig != null)
+            {
+                accessServiceRootURL = clientConfig.getAccessServiceRootURL();
+                accessServiceServerName = clientConfig.getAccessServiceServerName();
+            }
+
             errorHandler.validateAccessServiceRootURL(accessServiceRootURL, accessService, serverName, serviceName);
+            errorHandler.validateAccessServiceServerName(accessServiceServerName, accessService, serverName, serviceName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -59,11 +75,6 @@ public class OMAGServerConfigStewardshipServices
             if (configAuditTrail == null)
             {
                 configAuditTrail = new ArrayList<>();
-            }
-
-            if ("".equals(accessServiceRootURL))
-            {
-                accessServiceRootURL = null;
             }
 
             if (accessServiceRootURL == null)
@@ -76,94 +87,16 @@ public class OMAGServerConfigStewardshipServices
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
-            
+
             StewardshipEngineServicesConfig stewardshipEngineServicesConfig = serverConfig.getStewardshipEngineServicesConfig();
-            
+
             if (stewardshipEngineServicesConfig == null)
             {
                 stewardshipEngineServicesConfig = new StewardshipEngineServicesConfig();
             }
-            
+
             stewardshipEngineServicesConfig.setAccessServiceRootURL(accessServiceRootURL);
-            
-            serverConfig.setStewardshipEngineServicesConfig(stewardshipEngineServicesConfig);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
-        }
-        catch (OMAGInvalidParameterException error)
-        {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Throwable  error)
-        {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
-        }
-
-        return response;
-    }
-
-
-    /**
-     * Set up the server name of the access service.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param accessServiceServerName  server name for the access service.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
-     */
-    public VoidResponse setAccessServiceServerName(String userId, 
-                                                   String serverName, 
-                                                   String accessServiceServerName)
-    {
-        final String methodName = "setAccessServiceServerName";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateAccessServiceServerName(accessServiceServerName, accessService, serverName, serviceName);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            List<String> configAuditTrail = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if ("".equals(accessServiceServerName))
-            {
-                accessServiceServerName = null;
-            }
-
-            if (accessServiceServerName == null)
-            {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service server name.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service server name " + accessServiceServerName + ".");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-
-            StewardshipEngineServicesConfig stewardshipEngineServicesConfig = serverConfig.getStewardshipEngineServicesConfig();
-
-            if (stewardshipEngineServicesConfig == null)
-            {
-                stewardshipEngineServicesConfig = new StewardshipEngineServicesConfig();
-            }
-
-            stewardshipEngineServicesConfig.setAccessServiceRootURL(accessServiceServerName);
+            stewardshipEngineServicesConfig.setAccessServiceServerName(accessServiceServerName);
 
             serverConfig.setStewardshipEngineServicesConfig(stewardshipEngineServicesConfig);
 
@@ -182,24 +115,29 @@ public class OMAGServerConfigStewardshipServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
+
     /**
-     * Set up the server name of the access service.
+     * Set up the list of stewardship engines that will run in this stewardship server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connection  connection for topic.
+     * @param stewardshipEngineNames  list of stewardship engine qualified names describing which stewardship engines run in this server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    public VoidResponse setInboundRequestConnection(String     userId, 
-                                                    String     serverName, 
-                                                    Connection connection)
+    public VoidResponse setStewardshipEngines(String       userId,
+                                            String       serverName,
+                                            List<String> stewardshipEngineNames)
     {
-        final String methodName = "setAccessServiceServerName";
+        final String methodName = "setStewardshipEngines";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -217,13 +155,15 @@ public class OMAGServerConfigStewardshipServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (connection == null)
+            if (stewardshipEngineNames == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request connection.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request " +
+                                             "stewardshipEngineNames.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request connection.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request " +
+                                             "stewardshipEngineNames.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -235,7 +175,7 @@ public class OMAGServerConfigStewardshipServices
                 stewardshipEngineServicesConfig = new StewardshipEngineServicesConfig();
             }
 
-            stewardshipEngineServicesConfig.setInboundRequestConnection(connection);
+            stewardshipEngineServicesConfig.setStewardshipEngineNames(stewardshipEngineNames);
 
             serverConfig.setStewardshipEngineServicesConfig(stewardshipEngineServicesConfig);
 
@@ -253,6 +193,40 @@ public class OMAGServerConfigStewardshipServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add this service to the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param servicesConfig full configuration for the service.
+     * @return void response
+     */
+    public VoidResponse addService(String userId, String serverName, StewardshipEngineServicesConfig servicesConfig)
+    {
+        final String methodName = "addService";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            this.setAccessServiceLocation(userId, serverName, servicesConfig);
+            this.setStewardshipEngines(userId, serverName, servicesConfig.getStewardshipEngineNames());
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -268,6 +242,8 @@ public class OMAGServerConfigStewardshipServices
     public VoidResponse deleteService(String userId, String serverName)
     {
         final String methodName = "deleteService";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -304,6 +280,8 @@ public class OMAGServerConfigStewardshipServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }

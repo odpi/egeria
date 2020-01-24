@@ -80,35 +80,6 @@ class OMAGServerErrorHandler
 
 
     /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param configServerName serverName passed in config (should match request name)
-     * @param methodName  method being called
-     * @throws OMAGConfigurationErrorException incompatible server names
-     */
-    void validateConfigServerName(String serverName,
-                                  String configServerName,
-                                  String methodName) throws OMAGConfigurationErrorException
-    {
-        if (! serverName.equals(configServerName))
-        {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
-
-        }
-    }
-
-
-    /**
      * Make sure the event bus properties are set before allowing configuration that is dependent on it to
      * be set.
      *
@@ -192,7 +163,7 @@ class OMAGServerErrorHandler
                                       String  serverName,
                                       String  serverService) throws OMAGInvalidParameterException
     {
-        if (accessServiceRootURL == null)
+        if ((accessServiceRootURL == null) || ("".equals(accessServiceRootURL)))
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
@@ -221,7 +192,7 @@ class OMAGServerErrorHandler
                                          String  serverName,
                                          String  serverService) throws OMAGInvalidParameterException
     {
-        if (accessServiceServerName == null)
+        if ((accessServiceServerName == null) || ("".equals(accessServiceServerName)))
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
