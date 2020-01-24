@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.discoveryserver.handlers;
+package org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
-import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineStatus;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The DiscoveryEngineHandler is responsible for running discovery services on demand.  It is initialized
@@ -27,39 +27,159 @@ public class DiscoveryEngineHandler
     private String                       serverUserId;             /* Initialized in constructor */
     private OMRSAuditLog                 auditLog;                 /* Initialized in constructor */
     private DiscoveryEngineClient        discoveryEngineClient;    /* Initialized in constructor */
+    private DiscoveryConfigurationClient configurationClient;      /* Initialized in constructor */
     private int                          maxPageSize;              /* Initialized in constructor */
 
-    private String                    discoveryEngineGUID;         /* Initialized in constructor */
-    private DiscoveryEngineProperties discoveryEngineProperties;   /* Initialized in constructor */
+    private String                    discoveryEngineName;         /* Initialized in constructor */
+    private String                    discoveryEngineGUID         = null;
+    private DiscoveryEngineProperties discoveryEngineProperties   = null;
+    private DiscoveryServiceCacheMap  discoveryServiceLookupTable = new DiscoveryServiceCacheMap();
 
-    private Map<String, DiscoveryServiceCache>  discoveryServiceLookupTable = new HashMap<>();
 
     /**
      * Create a client-side object for calling a discovery engine.
      *
-     * @param discoveryEngineGUID the unique identifier of the discovery engine.
+     * @param discoveryEngineName the unique identifier of the discovery engine.
      * @param serverName the name of the discovery server where the discovery engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param discoveryEngineClient REST client for direct REST Calls
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user id not allowed to access configuration
-     * @throws PropertyServerException problem in configuration server
      */
-    public DiscoveryEngineHandler(String                       discoveryEngineGUID,
+    public DiscoveryEngineHandler(String                       discoveryEngineName,
                                   String                       serverName,
                                   String                       serverUserId,
                                   DiscoveryConfigurationClient configurationClient,
                                   DiscoveryEngineClient        discoveryEngineClient,
                                   OMRSAuditLog                 auditLog,
-                                  int                          maxPageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                  int                          maxPageSize)
     {
-        this.discoveryEngineGUID       = discoveryEngineGUID;
-        this.discoveryEngineProperties = configurationClient.getDiscoveryEngineByGUID(serverUserId, discoveryEngineGUID);
+        this.discoveryEngineName = discoveryEngineName;
+        this.serverName = serverName;
+        this.serverUserId = serverUserId;
+        this.configurationClient = configurationClient;
+        this.discoveryEngineClient = discoveryEngineClient;
+        this.auditLog = auditLog;
+        this.maxPageSize = maxPageSize;
+    }
+
+
+    /**
+     * Return the discovery Engine name - used for error logging.
+     *
+     * @return discovery engine name
+     */
+    String getDiscoveryEngineName()
+    {
+        return discoveryEngineName;
+    }
+
+
+    /**
+     * Return a summary of the discovery engine
+     *
+     * @return discovery engine summary
+     */
+    public DiscoveryEngineSummary getSummary()
+    {
+        DiscoveryEngineSummary mySummary = new DiscoveryEngineSummary();
+
+        mySummary.setDiscoveryEngineName(discoveryEngineName);
+        mySummary.setDiscoveryEngineGUID(discoveryEngineGUID);
+
+        if (discoveryEngineProperties != null)
+        {
+            mySummary.setDiscoveryEngineDescription(discoveryEngineProperties.getDescription());
+        }
+
+        mySummary.setDiscoveryRequestTypes(discoveryServiceLookupTable.getDiscoveryRequestTypes());
+
+        mySummary.setDiscoveryEngineStatus(DiscoveryEngineStatus.ASSIGNED);
+        if (discoveryEngineGUID != null)
+        {
+            mySummary.setDiscoveryEngineStatus(DiscoveryEngineStatus.CONFIGURING);
+        }
+        if (discoveryServiceLookupTable.getDiscoveryRequestTypes() != null)
+        {
+            mySummary.setDiscoveryEngineStatus(DiscoveryEngineStatus.RUNNING);
+        }
+
+        return mySummary;
+    }
+
+    /**
+     * Request that the discovery engine refresh its configuration by calling the metadata server.
+     * This request ensures that the latest configuration is in use.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
+     */
+    public void refreshConfig() throws InvalidParameterException,
+                                       UserNotAuthorizedException,
+                                       PropertyServerException
+    {
+        final String methodName = "refreshConfig";
+
+        /*
+         * Begin by extracting the properties for the discovery engine from the metadata server.
+         * This method throws exceptions if there is a problem retrieving the discovery engine properties.
+         */
+        this.discoveryEngineProperties = configurationClient.getDiscoveryEngineByName(serverUserId, discoveryEngineName);
+
+        if (discoveryEngineProperties == null)
+        {
+            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG;
+            String                           errorMessage = errorCode.getErrorMessageId()
+                                                          + errorCode.getFormattedErrorMessage(discoveryEngineName,
+                                                                                               configurationClient.getConfigurationServerName(),
+                                                                                               serverName);
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+        else
+        {
+            this.discoveryEngineGUID = discoveryEngineProperties.getGUID();
+            refreshAllServiceConfig();
+        }
+    }
+
+
+    /**
+     * Request that the discovery engine refreshes its configuration for all discovery services
+     * by calling the metadata server. This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
+     */
+    private void refreshAllServiceConfig() throws InvalidParameterException,
+                                                  UserNotAuthorizedException,
+                                                  PropertyServerException
+    {
+        /*
+         * Clear the lookup table - this will cause temporary failures in discovery requests if services were already
+         * configured.
+         */
+        final String actionDescription = "Retrieve all discovery service configuration";
+
+        DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.CLEARING_ALL_DISCOVERY_SERVICE_CONFIG;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(discoveryEngineName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
+        discoveryServiceLookupTable.clear();
 
         int      startingFrom = 0;
         boolean  moreToReceive = true;
@@ -75,24 +195,7 @@ public class DiscoveryEngineHandler
             {
                 for (String registeredDiscoveryServiceGUID : registeredDiscoveryServices)
                 {
-                    if (registeredDiscoveryServiceGUID != null)
-                    {
-                        RegisteredDiscoveryService discoveryService = configurationClient.getRegisteredDiscoveryService(serverUserId,
-                                                                                                                        discoveryEngineGUID,
-                                                                                                                        registeredDiscoveryServiceGUID);
-
-                        if (discoveryService != null)
-                        {
-                            if (discoveryService.getDiscoveryRequestTypes() != null)
-                            {
-                                for (String assetDiscoveryType : discoveryService.getDiscoveryRequestTypes())
-                                {
-                                    DiscoveryServiceCache discoveryServiceCache = new DiscoveryServiceCache(discoveryService);
-                                    discoveryServiceLookupTable.put(assetDiscoveryType, discoveryServiceCache);
-                                }
-                            }
-                        }
-                    }
+                    refreshServiceConfig(registeredDiscoveryServiceGUID);
                 }
 
                 if (registeredDiscoveryServices.size() < maxPageSize)
@@ -110,11 +213,51 @@ public class DiscoveryEngineHandler
             }
         }
 
-        this.serverName = serverName;
-        this.serverUserId = serverUserId;
-        this.auditLog = auditLog;
-        this.maxPageSize = maxPageSize;
-        this.discoveryEngineClient = discoveryEngineClient;
+        auditCode = DiscoveryEngineServicesAuditCode.FINISHED_ALL_DISCOVERY_SERVICE_CONFIG;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(discoveryEngineName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Request that the discovery engine refreshes its configuration for a single discovery service
+     * by calling the metadata server. This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param registeredDiscoveryServiceGUID unique identifier of the SupportedDiscoveryService relationship
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
+     */
+    public void refreshServiceConfig(String   registeredDiscoveryServiceGUID) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        if (registeredDiscoveryServiceGUID != null)
+        {
+            RegisteredDiscoveryService discoveryService = configurationClient.getRegisteredDiscoveryService(serverUserId,
+                                                                                                            discoveryEngineGUID,
+                                                                                                            registeredDiscoveryServiceGUID);
+
+            if (discoveryService != null)
+            {
+                if (discoveryService.getDiscoveryRequestTypes() != null)
+                {
+                    for (String discoveryRequestType : discoveryService.getDiscoveryRequestTypes())
+                    {
+                        DiscoveryServiceCache discoveryServiceCache = new DiscoveryServiceCache(serverName,
+                                                                                                discoveryEngineName,
+                                                                                                discoveryService);
+                        discoveryServiceLookupTable.put(discoveryRequestType, discoveryServiceCache);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -122,7 +265,7 @@ public class DiscoveryEngineHandler
      * Request the execution of a discovery service to explore a specific asset.
      *
      * @param assetGUID identifier of the asset to analyze.
-     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param discoveryRequestType identifier of the type of discovery request to run - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      * @param annotationTypes list of the types of annotations to produce (and no others)
      *
@@ -131,19 +274,25 @@ public class DiscoveryEngineHandler
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the discovery engine.
+     * @throws DiscoveryEngineException there is a problem with the set up of the discovery engine.
      */
     public  String discoverAsset(String              assetGUID,
-                                 String              assetDiscoveryType,
+                                 String              discoveryRequestType,
                                  Map<String, String> analysisParameters,
                                  List<String>        annotationTypes) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                                             PropertyServerException,
+                                                                             DiscoveryEngineException
     {
-        DiscoveryServiceCache   discoveryServiceCache = discoveryServiceLookupTable.get(assetDiscoveryType);
+        final String methodName = "discoverAsset";
+
+        validateDiscoveryEngineInitialized(methodName);
+
+        DiscoveryServiceCache   discoveryServiceCache = discoveryServiceLookupTable.get(discoveryRequestType);
 
         if (discoveryServiceCache != null)
         {
-            return runDiscoveryService(assetGUID, assetDiscoveryType, analysisParameters, annotationTypes, discoveryServiceCache);
+            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, discoveryServiceCache);
         }
 
         return null;
@@ -151,23 +300,30 @@ public class DiscoveryEngineHandler
 
 
     /**
-     * Request the execution of a discovery service for each asset that is found.
+     * Request the execution of a discovery service for each asset that is found (limited by the supported zones of the
+     * Discovery Engine OMAS).
      *
-     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param discoveryRequestType identifier of the type of discovery to run - this determines which discovery service to run.
      * @param analysisParameters name value properties to control the analysis
      * @param annotationTypes list of the types of annotations to produce (and no others)
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem detected by the discovery engine.
+     * @throws PropertyServerException there was a problem with connecting to the metadata server
+     * @throws DiscoveryEngineException there is a problem with the set up of the discovery engine.
      */
-    public  void scanAllAssets(String              assetDiscoveryType,
+    public  void scanAllAssets(String              discoveryRequestType,
                                Map<String, String> analysisParameters,
                                List<String>        annotationTypes) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                                           PropertyServerException,
+                                                                           DiscoveryEngineException
     {
-        DiscoveryServiceCache   discoveryServiceCache = discoveryServiceLookupTable.get(assetDiscoveryType);
+        final String methodName = "scanAllAssets";
+
+        validateDiscoveryEngineInitialized(methodName);
+
+        DiscoveryServiceCache   discoveryServiceCache = discoveryServiceLookupTable.get(discoveryRequestType);
 
         if (discoveryServiceCache != null)
         {
@@ -184,7 +340,11 @@ public class DiscoveryEngineHandler
                     {
                         if (assetGUID != null)
                         {
-                            runDiscoveryService(assetGUID, assetDiscoveryType, analysisParameters, annotationTypes, discoveryServiceCache);
+                            runDiscoveryService(assetGUID,
+                                                discoveryRequestType,
+                                                analysisParameters,
+                                                annotationTypes,
+                                                discoveryServiceCache);
                         }
                     }
 
@@ -210,8 +370,8 @@ public class DiscoveryEngineHandler
      * Run an instance of a discovery service in its own thread.
      *
      * @param assetGUID unique identifier of the asset to analyse
-     * @param assetDiscoveryType type of discovery
-     * @param analysisParameters parameters for the discovery
+     * @param discoveryRequestType type of discovery
+     * @param suppliedAnalysisParameters parameters for the discovery
      * @param annotationTypes types of annotations that can be returned
      * @param discoveryServiceCache factory for discovery services.
      *
@@ -222,21 +382,27 @@ public class DiscoveryEngineHandler
      * @throws PropertyServerException there was a problem detected by the discovery engine.
      */
     private String runDiscoveryService(String                assetGUID,
-                                       String                assetDiscoveryType,
-                                       Map<String, String>   analysisParameters,
+                                       String                discoveryRequestType,
+                                       Map<String, String>   suppliedAnalysisParameters,
                                        List<String>          annotationTypes,
                                        DiscoveryServiceCache discoveryServiceCache) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        Date   creationTime = new Date();
+        Date                creationTime = new Date();
+        Map<String, String> analysisParameters = suppliedAnalysisParameters;
 
-        String reportQualifiedName = "DiscoveryAnalysisReport:" + assetDiscoveryType + ":" + assetGUID + ":" + creationTime.toString();
+        if (analysisParameters == null)
+        {
+            analysisParameters = discoveryServiceCache.getDefaultAnalysisParameters();
+        }
+
+        String reportQualifiedName = "DiscoveryAnalysisReport:" + discoveryRequestType + ":" + assetGUID + ":" + creationTime.toString();
         String reportDisplayName   = "Discovery Analysis Report for " + assetGUID;
-        String reportDescription   = "This is the " + assetDiscoveryType + " discovery analysis report for asset " + assetGUID + " generated at " +
+        String reportDescription   = "This is the " + discoveryRequestType + " discovery analysis report for asset " + assetGUID + " generated at " +
                 creationTime.toString() +
                 " by the " + discoveryServiceCache.getDiscoveryServiceName() + " discovery service running on discovery engine " +
-                discoveryEngineProperties.getDisplayName() + " (" + discoveryEngineGUID + ").";
+                discoveryEngineProperties.getDisplayName() + " (" + discoveryEngineName + ").";
 
         DiscoveryAnalysisReportClient discoveryAnalysisReportClient = new DiscoveryAnalysisReportClient(serverUserId,
                                                                                                         DiscoveryRequestStatus.WAITING,
@@ -271,7 +437,7 @@ public class DiscoveryEngineHandler
                                                                  assetCatalogStore);
 
         DiscoveryServiceHandler discoveryServiceHandler = new DiscoveryServiceHandler(discoveryEngineProperties,
-                                                                                      assetDiscoveryType,
+                                                                                      discoveryRequestType,
                                                                                       discoveryServiceCache.getDiscoveryServiceName(),
                                                                                       discoveryServiceCache.getNextDiscoveryService(),
                                                                                       discoveryContext,
@@ -292,20 +458,13 @@ public class DiscoveryEngineHandler
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
     public DiscoveryAnalysisReport getDiscoveryReport(String   discoveryRequestGUID) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
-                                                                                            DiscoveryEngineException
+                                                                                            PropertyServerException
     {
-        try
-        {
-            return discoveryEngineClient.getDiscoveryAnalysisReport(serverUserId, discoveryRequestGUID);
-        }
-        catch (PropertyServerException  error)
-        {
-            throw new DiscoveryEngineException(error);
-        }
+        return discoveryEngineClient.getDiscoveryAnalysisReport(serverUserId, discoveryRequestGUID);
     }
 
 
@@ -320,25 +479,18 @@ public class DiscoveryEngineHandler
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
     public  List<Annotation> getDiscoveryReportAnnotations(String   discoveryRequestGUID,
                                                            int      startingFrom,
                                                            int      maximumResults) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
-                                                                                           DiscoveryEngineException
+                                                                                           PropertyServerException
     {
-        try
-        {
-            return discoveryEngineClient.getDiscoveryReportAnnotations(serverUserId,
-                                                                       discoveryRequestGUID,
-                                                                       startingFrom,
-                                                                       maximumResults);
-        }
-        catch (PropertyServerException  error)
-        {
-            throw new DiscoveryEngineException(error);
-        }
+        return discoveryEngineClient.getDiscoveryReportAnnotations(serverUserId,
+                                                                   discoveryRequestGUID,
+                                                                   startingFrom,
+                                                                   maximumResults);
     }
 
 
@@ -354,27 +506,20 @@ public class DiscoveryEngineHandler
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
     public  List<Annotation>  getExtendedAnnotations(String   discoveryRequestGUID,
                                                      String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
-                                                                                     DiscoveryEngineException
+                                                                                     PropertyServerException
     {
-        try
-        {
-            return discoveryEngineClient.getExtendedAnnotations(serverUserId,
+        return discoveryEngineClient.getExtendedAnnotations(serverUserId,
                                                                 discoveryRequestGUID,
                                                                 annotationGUID,
                                                                 startingFrom,
                                                                 maximumResults);
-        }
-        catch (PropertyServerException  error)
-        {
-            throw new DiscoveryEngineException(error);
-        }
     }
 
 
@@ -389,21 +534,14 @@ public class DiscoveryEngineHandler
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
     public  Annotation        getAnnotation(String   discoveryRequestGUID,
                                             String   annotationGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
-                                                                            DiscoveryEngineException
+                                                                            PropertyServerException
     {
-        try
-        {
-            return discoveryEngineClient.getAnnotation(serverUserId, discoveryRequestGUID, annotationGUID);
-        }
-        catch (PropertyServerException  error)
-        {
-            throw new DiscoveryEngineException(error);
-        }
+        return discoveryEngineClient.getAnnotation(serverUserId, discoveryRequestGUID, annotationGUID);
     }
 
 
@@ -412,18 +550,104 @@ public class DiscoveryEngineHandler
      */
     public void terminate()
     {
-        final String             actionDescription = "terminate";
-        DiscoveryServerAuditCode auditCode;
+        final String                     actionDescription = "terminate";
+        DiscoveryEngineServicesAuditCode auditCode;
 
-        auditCode = DiscoveryServerAuditCode.ENGINE_SHUTDOWN;
+        auditCode = DiscoveryEngineServicesAuditCode.ENGINE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineGUID, serverName),
+                           auditCode.getFormattedLogMessage(discoveryEngineName, serverName),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+
+        discoveryEngineProperties = null;
+        discoveryServiceLookupTable.clear();
     }
+
+
+    /**
+     * Validate that the discovery engine is initialized.  This is signified by the setting of the discovery engine properties.
+     *
+     * @param methodName calling method
+     * @throws DiscoveryEngineException discovery engine is not initialized
+     */
+    private void validateDiscoveryEngineInitialized(String methodName) throws DiscoveryEngineException
+    {
+        if (discoveryEngineProperties == null)
+        {
+            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.DISCOVERY_ENGINE_NOT_INITIALIZED;
+            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
+                                                                                                                               discoveryEngineName);
+
+            throw new DiscoveryEngineException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * DiscoveryServiceCacheMap maintains the map of discovery request types to discovery services.
+     * It is synchronized because the map is being rebuilt periodically.
+     */
+    static private class  DiscoveryServiceCacheMap
+    {
+        private volatile Map<String, DiscoveryServiceCache>  discoveryServiceLookupTable = new HashMap<>();
+
+        /**
+         * Remove all discovery services from the hash map
+         */
+        synchronized void clear()
+        {
+            discoveryServiceLookupTable = new HashMap<>();
+        }
+
+        /**
+         * Add a new discovery service to the map.
+         *
+         * @param discoveryRequestType discovery request type
+         * @param discoveryServiceCache mapped discovery service
+         */
+        synchronized void put(String                discoveryRequestType,
+                              DiscoveryServiceCache discoveryServiceCache)
+        {
+            discoveryServiceLookupTable.put(discoveryRequestType, discoveryServiceCache);
+        }
+
+
+        /**
+         * Retrieve the discovery service for the requested type.
+         *
+         * @param discoveryRequestType discovery request type.
+         * @return discovery service
+         */
+        synchronized DiscoveryServiceCache get(String discoveryRequestType)
+        {
+            return discoveryServiceLookupTable.get(discoveryRequestType);
+        }
+
+
+        /**
+         * Return the list of discovery request types registered with a discovery service.
+         *
+         * @return list of discovery request types.
+         */
+        synchronized List<String>  getDiscoveryRequestTypes()
+        {
+            if (discoveryServiceLookupTable.isEmpty())
+            {
+                return null;
+            }
+
+            return new ArrayList<>(discoveryServiceLookupTable.keySet());
+        }
+    }
+
 
 
     /**
@@ -433,22 +657,47 @@ public class DiscoveryEngineHandler
     {
         private DiscoveryService            nextDiscoveryService;
         private DiscoveryServiceProperties  properties;
+        private Map<String, String>         defaultAnalysisParameters;
 
 
         /**
          * Sets up the cache
          *
+         * @param discoveryServerName name of this server.
+         * @param discoveryEngineName name of this engine.
          * @param properties registered properties of the discovery services
          * @throws InvalidParameterException there is a problem with the connection used to create the
-         * discovery service instance
-         * @throws InvalidParameterException bad connection
-         * @throws PropertyServerException problem with the discovery service connector
+         * discovery service instance or the discovery service properties are null
+         * @throws PropertyServerException problem with the discovery service connector or related config
          */
-        DiscoveryServiceCache(DiscoveryServiceProperties  properties) throws InvalidParameterException,
+        DiscoveryServiceCache(String                      discoveryServerName,
+                              String                      discoveryEngineName,
+                              RegisteredDiscoveryService  properties) throws InvalidParameterException,
                                                                              PropertyServerException
         {
-            this.properties = properties;
-            getNextDiscoveryService(); /* validate that the connection works */
+            final String methodName = "DiscoveryServiceCache constructor";
+
+            if (properties != null)
+            {
+                this.properties                = properties;
+                this.defaultAnalysisParameters = properties.getDefaultAnalysisParameters();
+
+                getNextDiscoveryService(); /* validate that the connection works */
+            }
+            else
+            {
+                DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NULL_DISCOVERY_SERVICE;
+                String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                                                   discoveryEngineName,
+                                                                                                                                   discoveryServerName);
+
+                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
         }
 
 
@@ -475,6 +724,17 @@ public class DiscoveryEngineHandler
 
 
         /**
+         * Return the analysis parameters to use if none supplied from the caller - these can be null too.
+         *
+         * @return map of string property name to string property value
+         */
+        Map<String, String> getDefaultAnalysisParameters()
+        {
+            return defaultAnalysisParameters;
+        }
+
+
+        /**
          * Return a discovery service connector instance using the registered properties for the discovery service.
          *
          * @return connector
@@ -494,7 +754,7 @@ public class DiscoveryEngineHandler
             }
             catch (ConnectionCheckedException  error)
             {
-                throw new InvalidParameterException(error, properties.getQualifiedName() + "DiscoveryService Connection");
+                throw new InvalidParameterException(error.getErrorMessage(), error, properties.getQualifiedName() + "DiscoveryService Connection");
             }
             catch (ConnectorCheckedException error)
             {

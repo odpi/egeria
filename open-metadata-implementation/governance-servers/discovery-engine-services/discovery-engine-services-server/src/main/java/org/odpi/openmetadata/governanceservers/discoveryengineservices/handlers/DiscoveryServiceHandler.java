@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.discoveryserver.handlers;
+package org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers;
 
-import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
@@ -59,9 +59,9 @@ public class DiscoveryServiceHandler implements Runnable
     @Override
     public void run()
     {
-        DiscoveryServerAuditCode auditCode;
-        Date                     startTime;
-        Date                     endTime;
+        DiscoveryEngineServicesAuditCode auditCode;
+        Date                             startTime;
+        Date                             endTime;
 
         final String actionDescription = "Analyse an Asset";
 
@@ -73,7 +73,7 @@ public class DiscoveryServiceHandler implements Runnable
 
             discoveryReportGUID = discoveryReport.getDiscoveryReportGUID();
 
-            auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_STARTING;
+            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_STARTING;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -97,7 +97,7 @@ public class DiscoveryServiceHandler implements Runnable
             discoveryService.start();
             endTime = new Date();
 
-            auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_COMPLETE;
+            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_COMPLETE;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -115,7 +115,7 @@ public class DiscoveryServiceHandler implements Runnable
         }
         catch (Throwable  error)
         {
-            auditCode = DiscoveryServerAuditCode.DISCOVERY_SERVICE_FAILED;
+            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_FAILED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -138,7 +138,7 @@ public class DiscoveryServiceHandler implements Runnable
             }
             catch (Throwable statusError)
             {
-                auditCode = DiscoveryServerAuditCode.EXC_ON_ERROR_STATUS_UPDATE;
+                auditCode = DiscoveryEngineServicesAuditCode.EXC_ON_ERROR_STATUS_UPDATE;
                 auditLog.logException(actionDescription,
                                       auditCode.getLogMessageId(),
                                       auditCode.getSeverity(),

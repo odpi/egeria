@@ -2,12 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventInterface;
+import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventListener;
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientConnector;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
@@ -25,7 +31,7 @@ import java.util.Map;
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private ODFRESTClient restClient;               /* Initialized in constructor */
+    private ODFRESTClient                          restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "discovery-engine";
 

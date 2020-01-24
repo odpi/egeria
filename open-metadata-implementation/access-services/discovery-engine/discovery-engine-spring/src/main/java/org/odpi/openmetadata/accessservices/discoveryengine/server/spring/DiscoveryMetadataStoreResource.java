@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * DiscoveryEngineResource provides the generic server-side interface for the Discovery Engine Open Metadata Access Service (OMAS).
- * There are other resources that provide specialized methods for specific types of Asset.
+ * DiscoveryMetadataStoreResource provides the generic server-side interface for the Discovery Engine
+ * Open Metadata Access Service (OMAS).
+ * This provides the support for the AssetCatalogStore, AssetStore and AnnotationsStore defined in the ODF.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
-public class DiscoveryEngineResource
+public class DiscoveryMetadataStoreResource
 {
     private DiscoveryEngineRESTServices restAPI = new DiscoveryEngineRESTServices();
 
@@ -29,7 +30,7 @@ public class DiscoveryEngineResource
     /**
      * Default constructor
      */
-    public DiscoveryEngineResource()
+    public DiscoveryMetadataStoreResource()
     {
     }
 

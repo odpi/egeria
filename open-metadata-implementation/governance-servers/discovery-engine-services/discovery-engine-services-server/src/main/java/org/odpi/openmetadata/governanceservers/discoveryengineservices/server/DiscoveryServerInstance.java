@@ -1,13 +1,16 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.discoveryserver.server;
+package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstance;
-import org.odpi.openmetadata.discoveryserver.ffdc.DiscoveryServerErrorCode;
-import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,27 +48,56 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
         this.discoveryEngineInstances = discoveryEngineInstances;
     }
 
+    /**
+     * Return the discovery engine instance requested on an discovery engine services request.
+     *
+     * @return list of discovery engine summaries.
+     */
+    synchronized List<DiscoveryEngineSummary> getDiscoveryEngineStatuses()
+    {
+        List<DiscoveryEngineSummary> results = new ArrayList<>();
 
+        if (discoveryEngineInstances != null)
+        {
+            for (DiscoveryEngineHandler  discoveryEngineHandler : discoveryEngineInstances.values())
+            {
+                if (discoveryEngineHandler != null)
+                {
+                    results.add(discoveryEngineHandler.getSummary());
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+
+    }
 
     /**
      * Return the discovery engine instance requested on an discovery engine services request.
      *
-     * @param discoveryEngineGUID unique identifier of the discovery engine
+     * @param discoveryEngineName unique name of the discovery engine
      * @return discovery engine instance.
-     * @throws InvalidParameterException the discovery engine guid is not recognized
+     * @throws InvalidParameterException the discovery engine name is not recognized
      */
-    synchronized DiscoveryEngineHandler getDiscoveryEngine(String   discoveryEngineGUID) throws InvalidParameterException
+    synchronized DiscoveryEngineHandler getDiscoveryEngine(String   discoveryEngineName) throws InvalidParameterException
     {
         final String  methodName        = "getDiscoveryEngine";
-        final String  guidParameterName = "discoveryEngineGUID";
+        final String  guidParameterName = "discoveryEngineName";
 
-        DiscoveryEngineHandler instance = discoveryEngineInstances.get(discoveryEngineGUID);
+        DiscoveryEngineHandler instance = discoveryEngineInstances.get(discoveryEngineName);
 
         if (instance == null)
         {
-            DiscoveryServerErrorCode errorCode    = DiscoveryServerErrorCode.UNKNOWN_DISCOVERY_ENGINE;
+            DiscoveryEngineServicesErrorCode errorCode = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE;
             String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                                       discoveryEngineGUID);
+                                                                                                                       discoveryEngineName);
 
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                                 this.getClass().getName(),

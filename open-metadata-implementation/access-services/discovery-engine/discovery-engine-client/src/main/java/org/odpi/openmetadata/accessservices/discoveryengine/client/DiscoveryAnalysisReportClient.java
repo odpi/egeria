@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.client;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryReport;
+import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
@@ -16,22 +16,22 @@ import java.util.Map;
  * DiscoveryReportClient is the client interface for managing the values in a Discovery Analysis Report using the Discovery Engine OMAS
  * services.
  */
-public class DiscoveryReportClient extends DiscoveryReport
+public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
 {
     private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
-    public DiscoveryReportClient(String                 userId,
-                                 DiscoveryRequestStatus discoveryRequestStatus,
-                                 String                 assetGUID,
-                                 Map<String, String>    analysisParameters,
-                                 String                 reportQualifiedName,
-                                 String                 reportDisplayName,
-                                 String                 reportDescription,
-                                 String                 discoveryEngineGUID,
-                                 String                 discoveryServiceGUID,
-                                 DiscoveryEngineClient  discoveryEngineClient) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public DiscoveryAnalysisReportClient(String                 userId,
+                                         DiscoveryRequestStatus discoveryRequestStatus,
+                                         String                 assetGUID,
+                                         Map<String, String>    analysisParameters,
+                                         String                 reportQualifiedName,
+                                         String                 reportDisplayName,
+                                         String                 reportDescription,
+                                         String                 discoveryEngineGUID,
+                                         String                 discoveryServiceGUID,
+                                         DiscoveryEngineClient  discoveryEngineClient) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         super.userId                  = userId;
         super.discoveryRequestStatus  = discoveryRequestStatus;

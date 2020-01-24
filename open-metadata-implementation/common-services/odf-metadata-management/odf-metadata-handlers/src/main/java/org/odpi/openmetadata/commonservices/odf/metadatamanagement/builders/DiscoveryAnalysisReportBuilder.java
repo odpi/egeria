@@ -61,11 +61,11 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     public DiscoveryAnalysisReportBuilder(String               qualifiedName,
-                        String               displayName,
-                        String               description,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
+                                          String               displayName,
+                                          String               description,
+                                          OMRSRepositoryHelper repositoryHelper,
+                                          String               serviceName,
+                                          String               serverName)
     {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 

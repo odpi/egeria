@@ -1,17 +1,20 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.discoveryserver.server;
+package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
+import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.DiscoveryEngineStatusResponse;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -26,60 +29,47 @@ public class DiscoveryServerRESTServices
 {
     private static DiscoveryServerInstanceHandler instanceHandler = new DiscoveryServerInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DiscoveryServerRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
-    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(DiscoveryServerRESTServices.class),
+                                                                      instanceHandler.getServiceName());
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
-     * Request the execution of a discovery service to explore a specific asset.
+     * Request that the discovery engine refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * discovery server is initializing.  This request just ensures that the latest configuration
+     * is in use.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
-     * @param assetGUID identifier of the asset to analyze.
-     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
-     * @param requestBody containing analysisParameters and annotationTypes
      *
-     * @return unique id for the discovery request or
+     * @return void or
      *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  GUIDResponse discoverAsset(String                      serverName,
-                                       String                      discoveryEngineGUID,
-                                       String                      userId,
-                                       String                      assetGUID,
-                                       String                      assetDiscoveryType,
-                                       DiscoveryRequestRequestBody requestBody)
+    public  VoidResponse refreshConfig(String                       serverName,
+                                       String                       discoveryEngineName,
+                                       String                       userId)
     {
-        final String        methodName = "discoverAsset";
+        final String        methodName = "refreshConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse response = new GUIDResponse();
+        VoidResponse response = new VoidResponse();
         OMRSAuditLog auditLog = null;
 
         try
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
-            if (requestBody == null)
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-            else
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.discoverAsset(assetGUID,
-                                                       assetDiscoveryType,
-                                                       requestBody.getAnalysisParameters(),
-                                                       requestBody.getAnnotationTypes()));
-            }
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            handler.refreshConfig();
         }
         catch (InvalidParameterException error)
         {
@@ -105,12 +95,139 @@ public class DiscoveryServerRESTServices
 
 
     /**
+     * Return a summary of each of the discovery engines' status.
+     *
+     * @param serverName discovery server name
+     * @param userId calling user
+     * @return list of statuses - on for each assigned discovery engines or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     */
+    public DiscoveryEngineStatusResponse getDiscoveryEngineStatuses(String   serverName,
+                                                                    String   userId)
+    {
+        final String methodName = "getDiscoveryEngineStatuses";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DiscoveryEngineStatusResponse response = new DiscoveryEngineStatusResponse();
+        OMRSAuditLog                  auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setDiscoveryEngineSummaries(instanceHandler.getDiscoveryEngineStatuses(userId,
+                                                                                       serverName,
+                                                                                       methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
      * Request the execution of a discovery service to explore a specific asset.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
-     * @param assetDiscoveryType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param assetGUID identifier of the asset to analyze.
+     * @param discoveryRequestType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param requestBody containing analysisParameters and annotationTypes
+     *
+     * @return unique id for the discovery request or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public  GUIDResponse discoverAsset(String                      serverName,
+                                       String                      discoveryEngineName,
+                                       String                      userId,
+                                       String                      assetGUID,
+                                       String                      discoveryRequestType,
+                                       DiscoveryRequestRequestBody requestBody)
+    {
+        final String        methodName = "discoverAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineName,
+                                                                                       methodName);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+            else
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.discoverAsset(assetGUID,
+                                                       discoveryRequestType,
+                                                       requestBody.getAnalysisParameters(),
+                                                       requestBody.getAnnotationTypes()));
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (DiscoveryEngineException error)
+        {
+            this.captureDiscoveryEngineException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Request the execution of a discovery service to explore a specific asset.
+     *
+     * @param serverName name of the discovery server.
+     * @param discoveryEngineName unique name of the discovery engine.
+     * @param userId identifier of calling user
+     * @param discoveryRequestType identifier of the type of asset to analyze - this determines which discovery service to run.
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return void or
@@ -120,9 +237,9 @@ public class DiscoveryServerRESTServices
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public VoidResponse scanAllAssets(String                      serverName,
-                                      String                      discoveryEngineGUID,
+                                      String                      discoveryEngineName,
                                       String                      userId,
-                                      String                      assetDiscoveryType,
+                                      String                      discoveryRequestType,
                                       DiscoveryRequestRequestBody requestBody)
     {
         final String  methodName = "scanAllAssets";
@@ -136,7 +253,7 @@ public class DiscoveryServerRESTServices
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
             if (requestBody == null)
@@ -146,7 +263,7 @@ public class DiscoveryServerRESTServices
             else
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.scanAllAssets(assetDiscoveryType,
+                handler.scanAllAssets(discoveryRequestType,
                                       requestBody.getAnalysisParameters(),
                                       requestBody.getAnnotationTypes());
             }
@@ -158,6 +275,10 @@ public class DiscoveryServerRESTServices
         catch (PropertyServerException error)
         {
             restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (DiscoveryEngineException error)
+        {
+            this.captureDiscoveryEngineException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -178,7 +299,7 @@ public class DiscoveryServerRESTServices
      * Request the discovery report for a discovery request that has completed.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      *
@@ -187,7 +308,7 @@ public class DiscoveryServerRESTServices
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public DiscoveryAnalysisReportResponse getDiscoveryAnalysisReport(String   serverName,
-                                                                      String   discoveryEngineGUID,
+                                                                      String   discoveryEngineName,
                                                                       String   userId,
                                                                       String   discoveryRequestGUID)
     {
@@ -202,7 +323,7 @@ public class DiscoveryServerRESTServices
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -235,7 +356,7 @@ public class DiscoveryServerRESTServices
      * Return the annotations linked direction to the report.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      * @param startingFrom initial position in the stored list.
@@ -246,7 +367,7 @@ public class DiscoveryServerRESTServices
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public AnnotationListResponse getDiscoveryReportAnnotations(String   serverName,
-                                                                String   discoveryEngineGUID,
+                                                                String   discoveryEngineName,
                                                                 String   userId,
                                                                 String   discoveryRequestGUID,
                                                                 int      startingFrom,
@@ -263,7 +384,7 @@ public class DiscoveryServerRESTServices
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -296,7 +417,7 @@ public class DiscoveryServerRESTServices
      * Return any annotations attached to this annotation.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
@@ -308,7 +429,7 @@ public class DiscoveryServerRESTServices
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public AnnotationListResponse getExtendedAnnotations(String   serverName,
-                                                         String   discoveryEngineGUID,
+                                                         String   discoveryEngineName,
                                                          String   userId,
                                                          String   discoveryRequestGUID,
                                                          String   annotationGUID,
@@ -326,7 +447,7 @@ public class DiscoveryServerRESTServices
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -360,7 +481,7 @@ public class DiscoveryServerRESTServices
      * for an annotation.
      *
      * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
@@ -370,7 +491,7 @@ public class DiscoveryServerRESTServices
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public AnnotationResponse getAnnotation(String   serverName,
-                                            String   discoveryEngineGUID,
+                                            String   discoveryEngineName,
                                             String   userId,
                                             String   discoveryRequestGUID,
                                             String   annotationGUID)
@@ -386,7 +507,7 @@ public class DiscoveryServerRESTServices
         {
             DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
                                                                                        serverName,
-                                                                                       discoveryEngineGUID,
+                                                                                       discoveryEngineName,
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -412,5 +533,22 @@ public class DiscoveryServerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureDiscoveryEngineException(FFDCResponseBase         response,
+                                                 DiscoveryEngineException error)
+    {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(PropertyServerException.class.getName());
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
     }
 }

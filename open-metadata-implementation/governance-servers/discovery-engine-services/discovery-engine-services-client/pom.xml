@@ -14,9 +14,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Discovery Engine Client</name>
+    <name>Discovery Engine Services Client</name>
     <description>
-        Provides a Java client for the discovery engine.
+        Provides a Java client for the discovery engine services (heart of the discovery server).
     </description>
 
     <artifactId>discovery-engine-services-client</artifactId>
@@ -46,6 +46,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-services-api</artifactId>
         </dependency>
 
     </dependencies>
