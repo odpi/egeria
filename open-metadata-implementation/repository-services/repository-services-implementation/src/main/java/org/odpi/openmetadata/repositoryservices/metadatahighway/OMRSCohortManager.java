@@ -265,13 +265,16 @@ public class OMRSCohortManager
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
             OMRSAuditCode auditCode = OMRSAuditCode.COHORT_CONFIG_ERROR;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(cohortName, error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(cohortName,
+                                                                   error.getClass().getName(),
+                                                                   error.getMessage()),
+                                  null,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
 
         log.debug(actionDescription + " COMPLETE");
