@@ -15,18 +15,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Stewardship Services</name>
+    <name>Stewardship Engine Services</name>
     <description>
-        The stewardship services manage the triage and remediation if issues raised in Request for Action annotations.
+        The stewardship engine services manage the triage and remediation if issues raised in Request for Action annotations.
     </description>
 
-    <artifactId>stewardship-services</artifactId>
+    <artifactId>stewardship-engine-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>stewardship-services-api</module>
-        <module>stewardship-services-client</module>
-        <module>stewardship-services-server</module>
-        <module>stewardship-services-spring</module>
+        <module>stewardship-engine-services-api</module>
+        <module>stewardship-engine-services-client</module>
+        <module>stewardship-engine-services-server</module>
+        <module>stewardship-engine-services-spring</module>
     </modules>
 
     <dependencies>

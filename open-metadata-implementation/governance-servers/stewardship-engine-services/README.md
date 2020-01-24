@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Stewardship Services
+# Stewardship Engine Services
 
-The stewardship services are responsible for the resolution of the
+The stewardship engine services are responsible for the resolution of the
 **Request for Action** annotations made by the
 discovery services or other activity on the Assets.
 

@@ -7,19 +7,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>stewardship-services</artifactId>
+        <artifactId>stewardship-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Stewardship Services Client</name>
+    <name>Stewardship Engine Services Client</name>
     <description>
-        Provides a Java client for the stewardship services.
+        Provides a Java client for the stewardship engine services.
     </description>
 
-    <artifactId>stewardship-services-client</artifactId>
+    <artifactId>stewardship-engine-services-client</artifactId>
 
     <dependencies>
 

@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>stewardship-services</artifactId>
+        <artifactId>stewardship-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.3-SNAPSHOT</version>
     </parent>
@@ -16,12 +16,12 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <name>Stewardship Services API</name>
+    <name>Stewardship Engine Services API</name>
     <description>
         Provides the definitions that make up the APIs used by external components for the triage
         of Request For Action annotations and their remediation.
     </description>
 
-    <artifactId>stewardship-services-api</artifactId>
+    <artifactId>stewardship-engine-services-api</artifactId>
     
 </project>

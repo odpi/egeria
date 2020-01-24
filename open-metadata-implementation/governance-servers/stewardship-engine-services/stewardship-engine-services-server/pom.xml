@@ -8,19 +8,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>stewardship-services</artifactId>
+        <artifactId>stewardship-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Stewardship Services Server-side</name>
+    <name>Stewardship Engine Services Server-side</name>
     <description>
-        Server side implementation of the stewardship services.
+        Server side implementation of the stewardship engine services.
     </description>
 
-    <artifactId>stewardship-services-server</artifactId>
+    <artifactId>stewardship-engine-services-server</artifactId>
 
     <dependencies>
 

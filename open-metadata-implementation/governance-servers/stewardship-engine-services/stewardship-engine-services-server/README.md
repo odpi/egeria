@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Stewardship Services Server
+# Stewardship Engine Services Server
 
-The stewardship services server module contains the server-side
+The stewardship engine services server module contains the server-side
 implementation of the stewardship services.
 
 

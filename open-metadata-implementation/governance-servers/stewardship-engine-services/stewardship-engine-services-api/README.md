@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Stewardship Services API
+# Stewardship Engine Services API
 
-The stewardship services API provides the property structures and
+The stewardship engine services API provides the property structures and
 REST structures used to process Request for Action annotations.
 
 

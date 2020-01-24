@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Stewardship Services Client
+# Stewardship Engine Services Client
 
-The stewardship services client module contains the client
+The stewardship engine services client module contains the client
 implementation of the calls to the stewardship services
 that control the triage of Request for Action annotations
 that ultimately lead to them being closed, or a remediation

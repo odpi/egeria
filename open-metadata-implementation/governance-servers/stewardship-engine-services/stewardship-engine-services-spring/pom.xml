@@ -8,20 +8,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>stewardship-services</artifactId>
+        <artifactId>stewardship-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Stewardship Services with Spring</name>
+    <name>Stewardship Engine Services with Spring</name>
     <description>
-        The stewardship services with Spring module uses Spring to implement a RESTful service
+        The stewardship engine services with Spring module uses Spring to implement a RESTful service
         for the stewardship services server.
     </description>
 
-    <artifactId>stewardship-services-spring</artifactId>
+    <artifactId>stewardship-engine-services-spring</artifactId>
 
     <dependencies>
     </dependencies>
