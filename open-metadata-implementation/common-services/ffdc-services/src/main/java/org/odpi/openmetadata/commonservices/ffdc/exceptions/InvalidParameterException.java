@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public class InvalidParameterException extends org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *
