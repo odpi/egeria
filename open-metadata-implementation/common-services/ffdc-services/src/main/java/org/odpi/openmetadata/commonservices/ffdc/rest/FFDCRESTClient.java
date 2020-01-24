@@ -165,6 +165,35 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return VoidResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public VoidResponse callVoidGetRESTCall(String    methodName,
+                                            String    urlTemplate,
+                                            Object... params) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        VoidResponse restResult =  this.callGetRESTCall(methodName,
+                                                         VoidResponse.class,
+                                                         urlTemplate,
+                                                         params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params  a list of parameters that are slotted into the url template.
      *
