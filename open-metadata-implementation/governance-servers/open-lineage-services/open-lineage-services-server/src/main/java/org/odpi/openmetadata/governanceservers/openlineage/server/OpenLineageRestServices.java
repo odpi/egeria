@@ -57,8 +57,8 @@ public class OpenLineageRestServices {
 
     public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
-        final String debugMessage = "Open Lineage Services: An exception occurred during a lineage HTTP request";
         final String methodName = "OpenLineageRestServices.lineage";
+        final String debugMessage = "Open Lineage Services: An exception occurred during a lineage HTTP request";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
