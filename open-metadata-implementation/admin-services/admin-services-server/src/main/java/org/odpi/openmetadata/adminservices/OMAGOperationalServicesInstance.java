@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
-import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
@@ -26,19 +26,19 @@ import java.util.List;
 
 public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
-    private OMAGServerConfig                    operationalConfiguration            = null;
-    private OMRSOperationalServices             operationalRepositoryServices       = null;
-    private OCFMetadataOperationalServices      operationalOCFMetadataServices      = null;
-    private List<AccessServiceAdmin>            operationalAccessServiceAdminList   = new ArrayList<>();
-    private ConformanceSuiteOperationalServices operationalConformanceSuiteServices = null;
-    private DiscoveryServerOperationalServices  operationalDiscoveryServer          = null;
+    private OMAGServerConfig                     operationalConfiguration            = null;
+    private OMRSOperationalServices              operationalRepositoryServices       = null;
+    private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
+    private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
+    private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
+    private DiscoveryServerOperationalServices   operationalDiscoveryServer          = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
-    private StewardshipOperationalServices      operationalStewardshipServices      = null;
-    private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
-    private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
-    private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
-    private DataEngineProxyOperationalServices  operationalDataEngineProxyServices  = null;
-    private DataPlatformOperationalServices     operationalDataPlatformServices     = null;
+    private StewardshipOperationalServices       operationalStewardshipServices      = null;
+    private SecuritySyncOperationalServices      operationalSecuritySyncServices     = null;
+    private SecurityOfficerOperationalServices   operationalSecurityOfficerService   = null;
+    private VirtualizationOperationalServices    operationalVirtualizationServices   = null;
+    private DataEngineProxyOperationalServices   operationalDataEngineProxyServices  = null;
+    private DataPlatformOperationalServices      operationalDataPlatformServices     = null;
 
 
     /**
@@ -59,6 +59,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param serverName name of the new server
      * @param serviceName name of the new service instance
+     * @param maxPageSize maximum number of results that can be returned
      */
     public OMAGOperationalServicesInstance(String   serverName,
                                            String   serviceName,
