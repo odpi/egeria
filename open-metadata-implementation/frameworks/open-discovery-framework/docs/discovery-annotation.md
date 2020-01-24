@@ -22,7 +22,7 @@ The main entity type is called
 It is extended by
 [DataFieldAnnotation](../../../../open-metadata-publication/website/open-metadata-types/0617-Data-Field-Analysis.md)
 to distinguish annotations that refer, primarily to a data field.
-
+Other more specialist annotations extend these two basic annotation types.
 
 
 
