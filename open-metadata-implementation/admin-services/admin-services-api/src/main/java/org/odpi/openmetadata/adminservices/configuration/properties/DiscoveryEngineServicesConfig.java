@@ -14,13 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DiscoveryServerConfig provides the properties to configure a discovery server.  The discovery service
+ * DiscoveryEngineServicesConfig provides the properties to configure a discovery server.  The discovery service
  * runs one of more discovery engines.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryServerConfig extends AccessServiceClientConfig
+public class DiscoveryEngineServicesConfig extends AccessServiceClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
     /**
      * Default constructor
      */
-    public DiscoveryServerConfig()
+    public DiscoveryEngineServicesConfig()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
      *
      * @param template object to copy
      */
-    public DiscoveryServerConfig(DiscoveryServerConfig template)
+    public DiscoveryEngineServicesConfig(DiscoveryEngineServicesConfig template)
     {
         super(template);
 
@@ -53,7 +53,7 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
 
 
     /**
-     * Return the list of unique names (qualifiedName) for the discovery engines that will run in this discover server.
+     * Return the list of unique names (qualifiedName) for the discovery engines that will run in this server.
      *
      * @return list of qualified names
      */
@@ -64,8 +64,7 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
 
 
     /**
-     * Set up the list of unique names (qualifiedName) for the discovery engines that will run in this discovery
-     * server.
+     * Set up the list of unique names (qualifiedName) for the discovery engines that will run in this server.
      *
      * @param discoveryEngineNames list of qualified names
      */
@@ -109,9 +108,8 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
         {
             return false;
         }
-        DiscoveryServerConfig that = (DiscoveryServerConfig) objectToCompare;
-        return Objects.equals(discoveryEngineGUIDs, that.discoveryEngineGUIDs) &&
-                Objects.equals(discoveryEngineNames, that.discoveryEngineNames);
+        DiscoveryEngineServicesConfig that = (DiscoveryEngineServicesConfig) objectToCompare;
+        return Objects.equals(discoveryEngineNames, that.discoveryEngineNames);
     }
 
     /**
@@ -122,6 +120,6 @@ public class DiscoveryServerConfig extends AccessServiceClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), discoveryEngineGUIDs, discoveryEngineNames);
+        return Objects.hash(super.hashCode(), discoveryEngineNames);
     }
 }

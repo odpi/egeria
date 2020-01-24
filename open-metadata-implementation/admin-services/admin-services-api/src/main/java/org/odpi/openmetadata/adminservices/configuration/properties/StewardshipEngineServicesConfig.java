@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StewardshipServicesConfig extends AccessServiceClientConfig
+public class StewardshipEngineServicesConfig extends AccessServiceClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
     /**
      * Default constructor
      */
-    public StewardshipServicesConfig()
+    public StewardshipEngineServicesConfig()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
      *
      * @param template object to copy
      */
-    public StewardshipServicesConfig(StewardshipServicesConfig template)
+    public StewardshipEngineServicesConfig(StewardshipEngineServicesConfig template)
     {
         super(template);
 
@@ -53,7 +53,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
 
 
     /**
-     * Return the list of unique names (qualifiedName) for the discovery engines that will run in this discover server.
+     * Return the list of unique names (qualifiedName) for the stewardship engines that will run in this server.
      *
      * @return list of qualified names
      */
@@ -64,8 +64,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
 
 
     /**
-     * Set up the list of unique names (qualifiedName) for the discovery engines that will run in this discovery
-     * server.
+     * Set up the list of unique names (qualifiedName) for the stewardship engines that will run in this server.
      *
      * @param stewardshipEngineNames list of qualified names
      */
@@ -83,7 +82,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
     @Override
     public String toString()
     {
-        return "StewardshipServicesConfig{" +
+        return super.toString() + "StewardshipServicesConfig{" +
                 "stewardshipEngineNames=" + stewardshipEngineNames +
                 '}';
     }
@@ -110,7 +109,7 @@ public class StewardshipServicesConfig extends AccessServiceClientConfig
         {
             return false;
         }
-        StewardshipServicesConfig that = (StewardshipServicesConfig) objectToCompare;
+        StewardshipEngineServicesConfig that = (StewardshipEngineServicesConfig) objectToCompare;
         return Objects.equals(stewardshipEngineNames, that.getStewardshipEngineNames());
     }
 
