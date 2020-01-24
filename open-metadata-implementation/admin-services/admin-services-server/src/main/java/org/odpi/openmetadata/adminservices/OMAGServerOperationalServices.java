@@ -5,11 +5,9 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.auditlog.OMAGAdminAuditCode;
+import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -22,7 +20,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstan
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
-import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -111,8 +109,7 @@ public class OMAGServerOperationalServices
         }
         else
         {
-            final String noAutoStartServers = "No OMAG servers listed in startup configuration";
-            startUpMessage = noAutoStartServers;
+            startUpMessage = "No OMAG servers listed in startup configuration";
         }
 
         if (response.getRelatedHTTPCode() == 200)
@@ -196,85 +193,17 @@ public class OMAGServerOperationalServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             /*
-             * Validate there is a configuration document supplied.
+             * Validate the content of the configuration document.
              */
-            if (configuration == null)
-            {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            ServerTypeClassifier serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
+            ServerTypeClassification serverTypeClassification = serverTypeClassifier.getServerType();
 
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
-            }
 
             int maxPageSize = configuration.getMaxPageSize();
 
             /*
-             * Next verify that there are services configured.
+             * Save the configuration document to the config store.
              */
-            RepositoryServicesConfig  repositoryServicesConfig    = configuration.getRepositoryServicesConfig();
-            List<AccessServiceConfig> accessServiceConfigList     = configuration.getAccessServicesConfig();
-            ConformanceSuiteConfig    conformanceSuiteConfig      = configuration.getConformanceSuiteConfig();
-            DiscoveryServerConfig     discoveryServerConfig       = configuration.getDiscoveryServerConfig();
-            OpenLineageServerConfig   openLineageServerConfig     = configuration.getOpenLineageServerConfig();
-            SecuritySyncConfig        securitySyncConfig          = configuration.getSecuritySyncConfig();
-            SecurityOfficerConfig     securityOfficerConfig       = configuration.getSecurityOfficerConfig();
-            StewardshipServicesConfig stewardshipServicesConfig   = configuration.getStewardshipServicesConfig();
-            VirtualizationConfig      virtualizationConfig        = configuration.getVirtualizationConfig();
-            DataEngineProxyConfig     dataEngineProxyConfig       = configuration.getDataEngineProxyConfig();
-            DataPlatformServicesConfig dataPlatformServicesConfig = configuration.getDataPlatformServicesConfig();
-
-            if ((repositoryServicesConfig == null) &&
-                    (accessServiceConfigList == null) &&
-                    (conformanceSuiteConfig == null) &&
-                    (discoveryServerConfig == null) &&
-                    (openLineageServerConfig == null) &&
-                    (securitySyncConfig == null) &&
-                    (securityOfficerConfig == null) &&
-                    (stewardshipServicesConfig == null) &&
-                    (virtualizationConfig == null) &&
-                    (dataEngineProxyConfig == null) &&
-                    (dataPlatformServicesConfig == null))
-            {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
-            }
-
-            /*
-             * All servers need the repository services
-             */
-            if (repositoryServicesConfig == null)
-            {
-                /*
-                 * To get here, then another service is configured but not the repository services.
-                 */
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_REPOSITORY_CONFIG;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
-            }
-
-            /*
-             * Validate the server name from the configuration document matches the server name passed in the request
-             * and if all is well, save the configuration document to the config store and the server instance.
-             */
-            errorHandler.validateConfigServerName(serverName, configuration.getLocalServerName(), methodName);
             configStore.saveServerConfig(serverName, methodName, configuration);
 
             /*
@@ -316,22 +245,29 @@ public class OMAGServerOperationalServices
                                                                         configuration.getLocalServerURL(),
                                                                         configuration.getMaxPageSize());
             activatedServiceList.add(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName());
+            operationalRepositoryServices.initializeAuditLog(configuration.getRepositoryServicesConfig(),
+                                                             serverTypeClassification.getServerTypeName());
 
             /*
-             * Save the instance of the OMRS and then initialize it.  The initialization will optionally set up the
+             * Save the instance of the OMRS and then initialize it.  OMRS has 2 modes of initialization.
+             * Firstly for a basic server such as a governance server, just the audit log is initialized.
+             * For a metadata server and conformance test server, initialization will optionally set up the
              * connector to the local repository, initialize the enterprise repository services (used by
              * the access services) and connect to the server's cohorts.   It is controlled by the settings in the
              * repository services configuration document.  The OMRS instance is saved since it needs to be called for
              * shutdown.
              */
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
-            operationalRepositoryServices.initialize(repositoryServicesConfig);
+            if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
+                (ServerTypeClassification.REPOSITORY_PROXY.equals(serverTypeClassification)) ||
+                (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification)))
+            {
+                operationalRepositoryServices.initializeMetadataServer(configuration.getRepositoryServicesConfig());
 
-
-            /*
-             * Set up the server instance - ensure it is active and the security has been set up correctly.
-             */
-            OpenMetadataServerSecurityVerifier securityVerifier =
+                /*
+                 * Set up the server instance - ensure it is active and the security has been set up correctly.
+                 */
+                OpenMetadataServerSecurityVerifier securityVerifier =
                         platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
                                                                   serverName,
                                                                   operationalRepositoryServices.getAuditLog(CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
@@ -340,372 +276,293 @@ public class OMAGServerOperationalServices
                                                                                                             CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
                                                                   configuration.getServerSecurityConnection());
 
-            /*
-             * Pass the resulting security verify to the repository services.  It will be set up in the local
-             * repository (if there is a local repository in this server).
-             */
-            operationalRepositoryServices.setSecurityVerifier(securityVerifier);
+                /*
+                 * Pass the resulting security verify to the repository services.  It will be set up in the local
+                 * repository (if there is a local repository in this server).
+                 */
+                operationalRepositoryServices.setSecurityVerifier(securityVerifier);
 
-            /*
-             * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
-             * if the enterprise repository services are enabled.
-             */
-            OMRSRepositoryConnector enterpriseRepositoryConnector =   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+                /*
+                 * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
+                 * if the enterprise repository services are enabled.
+                 */
+                OMRSRepositoryConnector enterpriseRepositoryConnector = operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
 
-            if (enterpriseRepositoryConnector != null)
-            {
-                OCFMetadataOperationalServices operationalOCFMetadataServices;
-
-                operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                    enterpriseRepositoryConnector,
-                                                                                    operationalRepositoryServices.getAuditLog(
-                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()),
-                                                                                    configuration.getLocalServerUserId(),
-                                                                                    maxPageSize);
-
-                instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
-                activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
-            }
-
-
-            /*
-             * Now initialize the configured open metadata access services.  Each access service has an Admin object
-             * that controls its start up and shutdown.  The configuration service just needs to create the
-             * appropriate admin object (specified in the configuration) and initialize it with its own configuration
-             * document.  The admin object then does the rest.  The admin objects are stored in the instance since
-             * they also need to be called for shutdown.
-             */
-            OMRSTopicConnector        enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
-
-
-            List<AccessServiceAdmin>        operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
-            if (accessServiceConfigList != null)
-            {
-                for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
+                if (enterpriseRepositoryConnector != null)
                 {
-                    /*
-                     * Connected Asset OMAS has been removed but may be present in some configuration documents.
-                     */
-                    if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode()))
+                    OCFMetadataOperationalServices operationalOCFMetadataServices;
+
+                    operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                        enterpriseRepositoryConnector,
+                                                                                        operationalRepositoryServices.getAuditLog(
+                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                        configuration.getLocalServerUserId(),
+                                                                                        maxPageSize);
+
+                    instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
+                    activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+                }
+
+                /*
+                 * Now initialize the configured open metadata access services.  Each access service has an Admin object
+                 * that controls its start up and shutdown.  The configuration service just needs to create the
+                 * appropriate admin object (specified in the configuration) and initialize it with its own configuration
+                 * document.  The admin object then does the rest.  The admin objects are stored in the instance since
+                 * they also need to be called for shutdown.
+                 */
+                OMRSTopicConnector        enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
+
+                initializeAccessServices(instance,
+                                         configuration.getAccessServicesConfig(),
+                                         operationalRepositoryServices,
+                                         enterpriseTopicConnector,
+                                         configuration.getLocalServerUserId(),
+                                         serverName,
+                                         activatedServiceList);
+
+                /*
+                 * Initialize the Open Metadata Conformance Suite Services.  This runs the Open Metadata TestLabs that are
+                 * part of the ODPi Egeria Conformance Program.
+                 */
+                if (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification))
+                {
+                    ConformanceSuiteOperationalServices
+                            operationalConformanceSuiteServices = new ConformanceSuiteOperationalServices(configuration.getLocalServerName(),
+                                                                                                          configuration.getLocalServerUserId(),
+                                                                                                          configuration.getLocalServerPassword(),
+                                                                                                          configuration.getMaxPageSize());
+                    instance.setOperationalConformanceSuiteServices(operationalConformanceSuiteServices);
+                    operationalConformanceSuiteServices.initialize(configuration.getConformanceSuiteConfig(),
+                                                                   enterpriseTopicConnector,
+                                                                   operationalRepositoryServices.getEnterpriseConnectorManager(),
+                                                                   operationalRepositoryServices.getAuditLog(
+                                                                           GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
+                                                                           GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
+                                                                           GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
+                                                                           GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                }
+
+                /*
+                 * The enterprise topic passes OMRS Events from the cohort to the listening access services.
+                 * During the access services start up, they registered listeners with the enterprise topic.
+                 * Starting the enterprise topic will start the flow of events to the registered access services.
+                 */
+                if (enterpriseTopicConnector != null)
+                {
+                    try
                     {
-                        String    accessServiceAdminClassName = accessServiceConfig.getAccessServiceAdminClass();
+                        enterpriseTopicConnector.start();
+                    }
+                    catch (Throwable  error)
+                    {
+                        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.ENTERPRISE_TOPIC_START_FAILED;
+                        String        errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
 
-                        if (accessServiceAdminClassName != null)
-                        {
-                            OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
-                                                                                              accessServiceConfig.getAccessServiceName(),
-                                                                                              accessServiceConfig.getAccessServiceDescription(),
-                                                                                              accessServiceConfig.getAccessServiceWiki());
-                            try
-                            {
-                                AccessServiceAdmin accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
-
-                                accessServiceAdmin.initialize(accessServiceConfig,
-                                                              enterpriseTopicConnector,
-                                                              operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
-                                                              auditLog,
-                                                              configuration.getLocalServerUserId());
-                                operationalAccessServiceAdminList.add(accessServiceAdmin);
-                                activatedServiceList.add(accessServiceConfig.getAccessServiceName() + " OMAS");
-                            }
-                            catch (OMAGConfigurationErrorException  error)
-                            {
-                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
-                                auditLog.logException(methodName,
-                                                      auditCode.getLogMessageId(),
-                                                      auditCode.getSeverity(),
-                                                      auditCode.getFormattedLogMessage(accessServiceConfig.getAccessServiceName(),
-                                                                                       error.getMessage()),
-                                                      accessServiceConfig.toString(),
-                                                      auditCode.getSystemAction(),
-                                                      auditCode.getUserAction(),
-                                                      error);
-                                throw error;
-                            }
-                            catch (Throwable  error)
-                            {
-                                OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
-                                auditLog.logException(methodName,
-                                                      auditCode.getLogMessageId(),
-                                                      auditCode.getSeverity(),
-                                                      auditCode.getFormattedLogMessage(error.getMessage(),
-                                                                                       accessServiceConfig.getAccessServiceName(),
-                                                                                       error.getMessage()),
-                                                      accessServiceConfig.toString(),
-                                                      auditCode.getSystemAction(),
-                                                      auditCode.getUserAction(),
-                                                      error);
-
-                                OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
-                                String        errorMessage = errorCode.getErrorMessageId()
-                                                           + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                accessServiceAdminClassName,
-                                                                                                accessServiceConfig.getAccessServiceName());
-
-                                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                                          this.getClass().getName(),
-                                                                          methodName,
-                                                                          errorMessage,
-                                                                          errorCode.getSystemAction(),
-                                                                          errorCode.getUserAction(),
-                                                                          error);
-                            }
-                        }
-                        else
-                        {
-                            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS;
-                            String        errorMessage = errorCode.getErrorMessageId()
-                                                       + errorCode.getFormattedErrorMessage(serverName,
-                                                                                            accessServiceConfig.getAccessServiceName());
-
-                            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                                      this.getClass().getName(),
-                                                                      methodName,
-                                                                      errorMessage,
-                                                                      errorCode.getSystemAction(),
-                                                                      errorCode.getUserAction());
-                        }
+                        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                                  this.getClass().getName(),
+                                                                  methodName,
+                                                                  errorMessage,
+                                                                  errorCode.getSystemAction(),
+                                                                  errorCode.getUserAction());
                     }
                 }
             }
-
-
-            /*
-             * Save the list of running access services to the instance and then add the instance to the instance map.
-             * The instance information can then be retrieved for shutdown or other management requests.
-             */
-            instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
-
-            /*
-             * Initialize the Open Metadata Conformance Suite Services.  This runs the Open Metadata TestLabs that are
-             * part of the ODPi Egeria Conformance Program.
-             */
-            if (conformanceSuiteConfig != null)
+            else /* governance servers */
             {
-                ConformanceSuiteOperationalServices
-                        operationalConformanceSuiteServices = new ConformanceSuiteOperationalServices(configuration.getLocalServerName(),
-                                                                                                      configuration.getLocalServerUserId(),
-                                                                                                      configuration.getLocalServerPassword(),
-                                                                                                      configuration.getMaxPageSize());
-                instance.setOperationalConformanceSuiteServices(operationalConformanceSuiteServices);
-                operationalConformanceSuiteServices.initialize(conformanceSuiteConfig,
-                                                               enterpriseTopicConnector,
-                                                               operationalRepositoryServices.getEnterpriseConnectorManager(),
-                                                               operationalRepositoryServices.getAuditLog(
-                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
-                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
-                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
-            }
-
-            /*
-             * The enterprise topic passes OMRS Events from the cohort to the listening access services.
-             * During the access services start up, they registered listeners with the enterprise topic.
-             * Starting the enterprise topic will start the flow of events to the registered access services.
-             */
-            if (enterpriseTopicConnector != null)
-            {
-                try
-                {
-                    enterpriseTopicConnector.start();
-                }
-                catch (Throwable  error)
-                {
-                    OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.ENTERPRISE_TOPIC_START_FAILED;
-                    String        errorMessage = errorCode.getErrorMessageId()
-                                               + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                              this.getClass().getName(),
-                                                              methodName,
-                                                              errorMessage,
-                                                              errorCode.getSystemAction(),
-                                                              errorCode.getUserAction());
-                }
-            }
-
-            /*
-             * Now start the Governance Servers.
-             */
-
-            /*
-             * Initialize the Discovery Engine Services.  This is a governance server for running automated metadata discovery.
-             */
-            if (discoveryServerConfig != null)
-            {
-                DiscoveryServerOperationalServices
-                        operationalDiscoveryServer = new DiscoveryServerOperationalServices(configuration.getLocalServerName(),
-                                                                                            configuration.getLocalServerUserId(),
-                                                                                            configuration.getLocalServerPassword(),
-                                                                                            configuration.getMaxPageSize());
-                instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
-                operationalDiscoveryServer.initialize(discoveryServerConfig,
-                                                      operationalRepositoryServices.getAuditLog(
-                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
-                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceDescription(),
-                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Open Lineage Services.  This is a governance server for the storing and querying of asset lineage.
-             */
-            if (openLineageServerConfig != null)
-            {
-                OpenLineageServerOperationalServices
-                        operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerName(),
-                        configuration.getLocalServerUserId(),
-                        configuration.getLocalServerPassword(),
-                        configuration.getMaxPageSize());
-                instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
-                operationalOpenLineageServer.initialize(openLineageServerConfig,
-                        operationalRepositoryServices.getAuditLog(
-                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Security Sync Services.  This is a governance server for maintaining the configuration
-             * in security oriented governance engines.
-             */
-            if (securitySyncConfig != null)
-            {
-                SecuritySyncOperationalServices operationalSecuritySync = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
-                                                                                                              configuration.getLocalServerType(),
-                                                                                                              configuration.getOrganizationName(),
-                                                                                                              configuration.getLocalServerUserId(),
-                                                                                                              configuration.getLocalServerURL(),
-                                                                                                              configuration.getMaxPageSize());
-                instance.setOperationalSecuritySyncServices(operationalSecuritySync);
-                operationalSecuritySync.initialize(securitySyncConfig,
-                                                   operationalRepositoryServices.getAuditLog(
-                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceCode(),
-                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceDescription(),
-                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Security Officer Services.  This is a governance server for maintaining the configuration
-             * in security officer engines.
-             */
-            if (securityOfficerConfig != null)
-            {
-                SecurityOfficerOperationalServices operationalSecurityOfficer = new SecurityOfficerOperationalServices(configuration.getLocalServerName(),
-                                                                                                              configuration.getLocalServerType(),
-                                                                                                              configuration.getOrganizationName(),
-                                                                                                              configuration.getLocalServerUserId(),
-                                                                                                              configuration.getLocalServerURL(),
-                                                                                                              configuration.getMaxPageSize());
-                instance.setOperationalSecurityOfficerService(operationalSecurityOfficer);
-                operationalSecurityOfficer.initialize(securityOfficerConfig,
-                                                      operationalRepositoryServices.getAuditLog(
-                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
-                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
-                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Virtualization Services.
-             */
-            if (virtualizationConfig != null)
-            {
-                VirtualizationOperationalServices operationalVirtualizationServices = new VirtualizationOperationalServices(configuration.getLocalServerName(),
-                                                                                                                            configuration.getLocalServerType(),
-                                                                                                                            configuration.getOrganizationName(),
-                                                                                                                            configuration.getLocalServerUserId(),
-                                                                                                                            configuration.getLocalServerURL());
-
-                instance.setOperationalVirtualizationServices(operationalVirtualizationServices);
-                operationalVirtualizationServices.initialize(virtualizationConfig,
-                                                             operationalRepositoryServices.getAuditLog(
-                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
-                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
-                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
-
-                activatedServiceList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Data Engine Proxy Services.
-             */
-            if (dataEngineProxyConfig != null)
-            {
-                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(
-                        configuration.getLocalServerName(),
-                        configuration.getLocalServerUserId(),
-                        configuration.getLocalServerPassword());
-
-                instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
-                operationalDataEngineProxyServices.initialize(
-                        dataEngineProxyConfig,
-                        operationalRepositoryServices.getAuditLog(
-                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
-                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
-                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki())
-                );
-
-                activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
-            }
-
-            /*
-             * Initialize the Stewardship Services.  This is a governance daemon for running automated stewardship actions.
-             */
-            if (stewardshipServicesConfig != null)
-            {
-                StewardshipOperationalServices
-                        operationalStewardshipServices = new StewardshipOperationalServices(configuration.getLocalServerName(),
-                                                                                            configuration.getLocalServerUserId(),
-                                                                                            configuration.getMaxPageSize());
-                instance.setOperationalStewardshipServices(operationalStewardshipServices);
-                operationalStewardshipServices.initialize(stewardshipServicesConfig,
+                /*
+                 * Set up the server instance - ensure it is active and the security has been set up correctly.
+                 */
+                platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
+                                                          serverName,
                                                           operationalRepositoryServices.getAuditLog(
-                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceCode(),
-                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceDescription(),
-                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceWiki()));
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
+                                                          configuration.getServerSecurityConnection());
 
-                activatedServiceList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName());
-            }
+                /*
+                 * Initialize the Data Platform Services.
+                 */
+                if (ServerTypeClassification.DATA_PLATFORM_SERVER.equals(serverTypeClassification))
+                {
+                    DataPlatformOperationalServices dataPlatformOperationalServices
+                            = new DataPlatformOperationalServices(configuration.getLocalServerName(),
+                                                                  configuration.getLocalServerUserId(),
+                                                                  configuration.getLocalServerType(),
+                                                                  configuration.getLocalServerURL());
 
-            /*
-             * Initialize the Data Platform Services.
-             */
-            if (dataPlatformServicesConfig != null)
-            {
-                DataPlatformOperationalServices dataPlatformOperationalServices = new DataPlatformOperationalServices(
-                        configuration.getLocalServerName(),
-                        configuration.getLocalServerUserId(),
-                        configuration.getLocalServerType(),
-                        configuration.getLocalServerURL());
+                    instance.setOperationalDataPlatformServices(dataPlatformOperationalServices);
+                    dataPlatformOperationalServices.initialize(configuration.getDataPlatformServicesConfig(),
+                                                               operationalRepositoryServices.getAuditLog(
+                                                                       GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceCode(),
+                                                                       GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
+                                                                       GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceDescription(),
+                                                                       GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceWiki()));
 
-                instance.setOperationalDataPlatformServices(dataPlatformOperationalServices);
-                dataPlatformOperationalServices.initialize(dataPlatformServicesConfig,
-                        operationalRepositoryServices.getAuditLog(
-                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceCode(),
-                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceDescription(),
-                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceWiki()));
+                    activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
+                }
 
-                activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
+                /*
+                 * Initialize the Data Engine Proxy Services.
+                 */
+                else if (ServerTypeClassification.DATA_ENGINE_PROXY.equals(serverTypeClassification))
+                {
+                    DataEngineProxyOperationalServices operationalDataEngineProxyServices
+                            = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                                                                     configuration.getLocalServerUserId(),
+                                                                     configuration.getLocalServerPassword());
+
+                    instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
+                    operationalDataEngineProxyServices.initialize(configuration.getDataEngineProxyConfig(),
+                                                                  operationalRepositoryServices.getAuditLog(
+                                                                          GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
+                                                                          GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                                                                          GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
+                                                                          GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Discovery Engine Services.  This is a governance server for running automated metadata discovery.
+                 */
+                else if (ServerTypeClassification.DISCOVERY_SERVER.equals(serverTypeClassification))
+                {
+                    DiscoveryServerOperationalServices operationalDiscoveryServer
+                            = new DiscoveryServerOperationalServices(configuration.getLocalServerName(),
+                                                                     configuration.getLocalServerUserId(),
+                                                                     configuration.getLocalServerPassword(),
+                                                                     configuration.getMaxPageSize());
+
+                    instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
+                    operationalDiscoveryServer.initialize(configuration.getDiscoveryEngineServicesConfig(),
+                                                          operationalRepositoryServices.getAuditLog(
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceDescription(),
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Open Lineage Services.  This is a governance server for the storing and querying of asset lineage.
+                 */
+                else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
+                {
+                    OpenLineageServerOperationalServices
+                            operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerName(),
+                                                                                                    configuration.getLocalServerUserId(),
+                                                                                                    configuration.getLocalServerPassword(),
+                                                                                                    configuration.getMaxPageSize());
+                    instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
+                    operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
+                                                            operationalRepositoryServices.getAuditLog(
+                                                                    GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
+                                                                    GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                                    GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
+                                                                    GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Security Officer Services.  This is a governance server for maintaining the configuration
+                 * in security officer engines.
+                 */
+                else if (ServerTypeClassification.SECURITY_OFFICER_SERVER.equals(serverTypeClassification))
+                {
+                    SecurityOfficerOperationalServices operationalSecurityOfficer = new SecurityOfficerOperationalServices(configuration.getLocalServerName(),
+                                                                                                                           configuration.getLocalServerType(),
+                                                                                                                           configuration.getOrganizationName(),
+                                                                                                                           configuration.getLocalServerUserId(),
+                                                                                                                           configuration.getLocalServerURL(),
+                                                                                                                           configuration.getMaxPageSize());
+                    instance.setOperationalSecurityOfficerService(operationalSecurityOfficer);
+                    operationalSecurityOfficer.initialize(configuration.getSecurityOfficerConfig(),
+                                                          operationalRepositoryServices.getAuditLog(
+                                                                  GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
+                                                                  GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
+                                                                  GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Security Sync Services.  This is a governance server for maintaining the configuration
+                 * in security oriented governance engines.
+                 */
+                else if (ServerTypeClassification.SECURITY_SYNC_SERVER.equals(serverTypeClassification))
+                {
+                    SecuritySyncOperationalServices operationalSecuritySync
+                            = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
+                                                                  configuration.getLocalServerType(),
+                                                                  configuration.getOrganizationName(),
+                                                                  configuration.getLocalServerUserId(),
+                                                                  configuration.getLocalServerURL(),
+                                                                  configuration.getMaxPageSize());
+
+                    instance.setOperationalSecuritySyncServices(operationalSecuritySync);
+                    operationalSecuritySync.initialize(configuration.getSecuritySyncConfig(),
+                                                       operationalRepositoryServices.getAuditLog(
+                                                               GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceCode(),
+                                                               GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
+                                                               GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceDescription(),
+                                                               GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Stewardship Engine Services.  This is a governance daemon for running automated stewardship actions.
+                 */
+                else if (ServerTypeClassification.STEWARDSHIP_SERVER.equals(serverTypeClassification))
+                {
+                    StewardshipOperationalServices
+                            operationalStewardshipServices = new StewardshipOperationalServices(configuration.getLocalServerName(),
+                                                                                                configuration.getLocalServerUserId(),
+                                                                                                configuration.getMaxPageSize());
+                    instance.setOperationalStewardshipServices(operationalStewardshipServices);
+                    operationalStewardshipServices.initialize(configuration.getStewardshipEngineServicesConfig(),
+                                                              operationalRepositoryServices.getAuditLog(
+                                                                      GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceCode(),
+                                                                      GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
+                                                                      GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceDescription(),
+                                                                      GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName());
+                }
+
+                /*
+                 * Initialize the Virtualization Services.
+                 */
+                else if (ServerTypeClassification.VIRTUALIZER_SERVER.equals(serverTypeClassification))
+                {
+                    VirtualizationOperationalServices operationalVirtualizationServices
+                            = new VirtualizationOperationalServices(configuration.getLocalServerName(),
+                                                                    configuration.getLocalServerType(),
+                                                                    configuration.getOrganizationName(),
+                                                                    configuration.getLocalServerUserId(),
+                                                                    configuration.getLocalServerURL());
+
+                    instance.setOperationalVirtualizationServices(operationalVirtualizationServices);
+                    operationalVirtualizationServices.initialize(configuration.getVirtualizationConfig(),
+                                                                 operationalRepositoryServices.getAuditLog(
+                                                                         GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
+                                                                         GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                                                         GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
+                                                                         GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
+
+                    activatedServiceList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName());
+                }
             }
 
             String successMessage = new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString();
@@ -733,6 +590,127 @@ public class OMAGServerOperationalServices
         }
 
         return response;
+    }
+
+
+    /**
+     * Start up the access services.
+     *
+     * @param instance server instance
+     * @param accessServiceConfigList configured access services
+     * @param operationalRepositoryServices repository services
+     * @param enterpriseTopicConnector events from the cohort
+     * @param localServerUserId servers userId
+     * @param serverName server name
+     * @param activatedServiceList list of services (subsystems) running in the server
+     * @throws OMAGConfigurationErrorException problem with the configuration
+     */
+    private void initializeAccessServices(OMAGOperationalServicesInstance instance,
+                                          List<AccessServiceConfig>       accessServiceConfigList,
+                                          OMRSOperationalServices         operationalRepositoryServices,
+                                          OMRSTopicConnector              enterpriseTopicConnector,
+                                          String                          localServerUserId,
+                                          String                          serverName,
+                                          List<String>                    activatedServiceList) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "initializeAccessServices";
+
+        List<AccessServiceAdmin>        operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
+        if (accessServiceConfigList != null)
+        {
+            for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
+            {
+                /*
+                 * Connected Asset OMAS has been removed but may be present in some configuration documents.
+                 */
+                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode()))
+                {
+                    String    accessServiceAdminClassName = accessServiceConfig.getAccessServiceAdminClass();
+
+                    if (accessServiceAdminClassName != null)
+                    {
+                        OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
+                                                                                          accessServiceConfig.getAccessServiceName(),
+                                                                                          accessServiceConfig.getAccessServiceDescription(),
+                                                                                          accessServiceConfig.getAccessServiceWiki());
+                        try
+                        {
+                            AccessServiceAdmin accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
+
+                            accessServiceAdmin.initialize(accessServiceConfig,
+                                                          enterpriseTopicConnector,
+                                                          operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
+                                                          auditLog,
+                                                          localServerUserId);
+                            operationalAccessServiceAdminList.add(accessServiceAdmin);
+                            activatedServiceList.add(accessServiceConfig.getAccessServiceName() + " OMAS");
+                        }
+                        catch (OMAGConfigurationErrorException  error)
+                        {
+                            OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                            auditLog.logException(methodName,
+                                                  auditCode.getLogMessageId(),
+                                                  auditCode.getSeverity(),
+                                                  auditCode.getFormattedLogMessage(accessServiceConfig.getAccessServiceName(),
+                                                                                   error.getMessage()),
+                                                  accessServiceConfig.toString(),
+                                                  auditCode.getSystemAction(),
+                                                  auditCode.getUserAction(),
+                                                  error);
+                            throw error;
+                        }
+                        catch (Throwable  error)
+                        {
+                            OMAGAdminAuditCode  auditCode = OMAGAdminAuditCode.SERVICE_INSTANCE_FAILURE;
+                            auditLog.logException(methodName,
+                                                  auditCode.getLogMessageId(),
+                                                  auditCode.getSeverity(),
+                                                  auditCode.getFormattedLogMessage(error.getMessage(),
+                                                                                   accessServiceConfig.getAccessServiceName(),
+                                                                                   error.getMessage()),
+                                                  accessServiceConfig.toString(),
+                                                  auditCode.getSystemAction(),
+                                                  auditCode.getUserAction(),
+                                                  error);
+
+                            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
+                            String        errorMessage = errorCode.getErrorMessageId()
+                                                       + errorCode.getFormattedErrorMessage(serverName,
+                                                                                            accessServiceAdminClassName,
+                                                                                            accessServiceConfig.getAccessServiceName());
+
+                            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                                      this.getClass().getName(),
+                                                                      methodName,
+                                                                      errorMessage,
+                                                                      errorCode.getSystemAction(),
+                                                                      errorCode.getUserAction(),
+                                                                      error);
+                        }
+                    }
+                    else
+                    {
+                        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS;
+                        String        errorMessage = errorCode.getErrorMessageId()
+                                                   + errorCode.getFormattedErrorMessage(serverName,
+                                                                                        accessServiceConfig.getAccessServiceName());
+
+                        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                                  this.getClass().getName(),
+                                                                  methodName,
+                                                                  errorMessage,
+                                                                  errorCode.getSystemAction(),
+                                                                  errorCode.getUserAction());
+                    }
+                }
+            }
+        }
+
+        /*
+         * Save the list of running access services to the instance and then add the instance to the instance map.
+         * The instance information can then be retrieved for shutdown or other management requests.
+         */
+        instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
     }
 
 
