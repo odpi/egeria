@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@a4b03eff945989d41c623c2784d6602560b91e5b"
+        with:
+          args: "--trace"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "automerge,!no-not-merge"
