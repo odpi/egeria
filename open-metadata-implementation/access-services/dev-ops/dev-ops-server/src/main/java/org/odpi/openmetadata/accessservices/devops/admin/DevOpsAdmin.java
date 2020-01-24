@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.devops.listener.DevOpsOMRSTopicListe
 import org.odpi.openmetadata.accessservices.devops.server.DevOpsServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -119,6 +120,10 @@ public class DevOpsAdmin extends AccessServiceAdmin
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.DEVOPS_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 
