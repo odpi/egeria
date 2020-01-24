@@ -1266,6 +1266,201 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             createdRelationshipRefCopiesTUT.add(remoteRelationshipWithMappingProperties);
 
+
+            Relationship retrievedReferenceCopyWithMappingProperties = null;
+
+            try {
+
+                retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getRelationship";
+                String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipGUID", remoteRelationshipGUID);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteRelationshipWithMappingProperties)),
+                            assertion16,
+                            assertionMsg16 + relationshipDef.getName(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            //---------------------------------------------
+
+            /*
+             * Continuing with the tests based on a locally synthesized relationship used as a reference copy, emulating
+             * adoption of an instance from a virtual or defunct remote repository....
+             *
+             *
+             * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
+             * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
+             * This should not be performed on a reference copy of a relationship whose master is on the CTS server - the
+             * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
+             * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
+             * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
+             * test. Therefore the rehome is performed on the locally synthesized instance used above for the
+             * mappingProperties test.
+             */
+
+
+
+            /*
+             * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
+             */
+            Relationship newMasterRelationship = null;
+            try {
+                newMasterRelationship = metadataCollection.reHomeRelationship(workPad.getLocalServerUserId(),
+                                                                              remoteRelationshipGUID,
+                                                                              relationshipDef.getGUID(),
+                                                                              relationshipDef.getName(),
+                                                                              ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
+                                                                              metadataCollectionId,
+                                                                              repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+
+
+                assertCondition((true),
+                                assertion17,
+                                testTypeName + assertionMsg17,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+                createdRelationshipsTUT.add(newMasterRelationship);
+
+
+            } catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
+                 */
+
+                super.addNotSupportedAssertion(assertion17,
+                                               assertionMsg17,
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "reHomeRelationship";
+                String operationDescription = "rehome a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteRelationshipGUID);
+                parameters.put("typeDefGUID", relationshipDef.getGUID());
+                parameters.put("typeDefName", relationshipDef.getName());
+                parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+                parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
+                parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            /*
+             * Verify that the new master instance can be retrieved
+             */
+
+            try {
+
+                retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getRelationship";
+                String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipGUID", remoteRelationshipGUID);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            assertCondition((retrievedReferenceCopyWithMappingProperties != null),
+                            assertion18,
+                            assertionMsg18 + relationshipDef.getName(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+            /*
+             * Verify that the new master instance has the local metadataCollectionId
+             */
+            String instanceHome = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
+            assertCondition((instanceHome.equals(metadataCollectionId)),
+                            assertion19,
+                            assertionMsg19 + relationshipDef.getName(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+
+
+            /*
+             * Now clean up.
+             *
+             * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
+             * If the rehome did not work then we have a local reference copy to purge.
+             * In both cases the operation is performed at the TUT.
+             */
+
+            if (newMasterRelationship != null) {
+
+                /*
+                 * The rehome operation worked - perform a soft delete (optional) followed by a purge.
+                 */
+                try {
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                                                          newMasterRelationship.getType().getTypeDefGUID(),
+                                                          newMasterRelationship.getType().getTypeDefName(),
+                                                          newMasterRelationship.getGUID());
+                }
+                catch (FunctionNotSupportedException exception) {
+
+                    /*
+                     * This is OK - we can NO OP and just proceed to purgeEntity
+                     */
+                }
+                metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
+                                                                  newMasterRelationship.getGUID(),
+                                                                  newMasterRelationship.getType().getTypeDefGUID(),
+                                                                  newMasterRelationship.getType().getTypeDefName(),
+                                                                  newMasterRelationship.getMetadataCollectionId());
+            }
+            else {
+                /*
+                 * The rehome operation did not work - the TUT is still holding a reference copy
+                 */
+
+                /*
+                 * Purge the reference copy.
+                 */
+
+                metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
+                                                                  remoteRelationshipWithMappingProperties.getGUID(),
+                                                                  remoteRelationshipWithMappingProperties.getType().getTypeDefGUID(),
+                                                                  remoteRelationshipWithMappingProperties.getType().getTypeDefName(),
+                                                                  remoteRelationshipWithMappingProperties.getMetadataCollectionId());
+
+
+            }
+
+
+
         } catch (FunctionNotSupportedException e) {
 
             super.addNotSupportedAssertion(assertion15,
@@ -1289,197 +1484,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         }
 
 
-        Relationship retrievedReferenceCopyWithMappingProperties = null;
 
-        try {
-
-            retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
-
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getRelationship";
-            String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", remoteRelationshipGUID);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteRelationshipWithMappingProperties)),
-                        assertion16,
-                        assertionMsg16 + relationshipDef.getName(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-        //---------------------------------------------
-
-        /*
-         * Continuing with the tests based on a locally synthesized relationship used as a reference copy, emulating
-         * adoption of an instance from a virtual or defunct remote repository....
-         *
-         *
-         * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
-         * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
-         * This should not be performed on a reference copy of a relationship whose master is on the CTS server - the
-         * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
-         * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
-         * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
-         * test. Therefore the rehome is performed on the locally synthesized instance used above for the
-         * mappingProperties test.
-         */
-
-
-
-        /*
-         * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
-         */
-        Relationship newMasterRelationship = null;
-        try {
-            newMasterRelationship = metadataCollection.reHomeRelationship(workPad.getLocalServerUserId(),
-                                                                          remoteRelationshipGUID,
-                                                                          relationshipDef.getGUID(),
-                                                                          relationshipDef.getName(),
-                                                                          ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
-                                                                          metadataCollectionId,
-                                                                          repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-
-
-            assertCondition((true),
-                            assertion17,
-                            testTypeName + assertionMsg17,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-            createdRelationshipsTUT.add(newMasterRelationship);
-
-
-        } catch (FunctionNotSupportedException exception) {
-
-            /*
-             * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
-             */
-
-            super.addNotSupportedAssertion(assertion17,
-                                           assertionMsg17,
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "reHomeRelationship";
-            String operationDescription = "rehome a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteRelationshipGUID);
-            parameters.put("typeDefGUID", relationshipDef.getGUID());
-            parameters.put("typeDefName", relationshipDef.getName());
-            parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
-            parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
-            parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        /*
-         * Verify that the new master instance can be retrieved
-         */
-
-        try {
-
-            retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getRelationship";
-            String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", remoteRelationshipGUID);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition((retrievedReferenceCopyWithMappingProperties != null),
-                        assertion18,
-                        assertionMsg18 + relationshipDef.getName(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-        /*
-         * Verify that the new master instance has the local metadataCollectionId
-         */
-        String instanceHome = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
-        assertCondition((instanceHome.equals(metadataCollectionId)),
-                        assertion19,
-                        assertionMsg19 + relationshipDef.getName(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-
-
-        /*
-         * Now clean up.
-         *
-         * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
-         * If the rehome did not work then we have a local reference copy to purge.
-         * In both cases the operation is performed at the TUT.
-         */
-
-        if (newMasterRelationship != null) {
-
-            /*
-             * The rehome operation worked - perform a soft delete (optional) followed by a purge.
-             */
-            try {
-                metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
-                        newMasterRelationship.getType().getTypeDefGUID(),
-                        newMasterRelationship.getType().getTypeDefName(),
-                        newMasterRelationship.getGUID());
-            }
-            catch (FunctionNotSupportedException exception) {
-
-                /*
-                 * This is OK - we can NO OP and just proceed to purgeEntity
-                 */
-            }
-            metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
-                    newMasterRelationship.getGUID(),
-                    newMasterRelationship.getType().getTypeDefGUID(),
-                    newMasterRelationship.getType().getTypeDefName(),
-                    newMasterRelationship.getMetadataCollectionId());
-        }
-        else {
-            /*
-             * The rehome operation did not work - the TUT is still holding a reference copy
-             */
-
-            /*
-             * Purge the reference copy.
-             */
-
-            metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
-                    remoteRelationshipWithMappingProperties.getGUID(),
-                    remoteRelationshipWithMappingProperties.getType().getTypeDefGUID(),
-                    remoteRelationshipWithMappingProperties.getType().getTypeDefName(),
-                    remoteRelationshipWithMappingProperties.getMetadataCollectionId());
-
-
-        }
         /*
          * And finally clean up the entities - these are nown to be locally master (by the TUT) as they
          * were never subject to a rehome operation. Soft delete (optional) then purge.

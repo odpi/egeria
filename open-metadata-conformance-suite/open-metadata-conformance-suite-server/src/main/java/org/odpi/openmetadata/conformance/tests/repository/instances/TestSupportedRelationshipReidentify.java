@@ -297,6 +297,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
+            /* Give up on the rest of the testcase */
+            return;
+
 
         } catch (Exception exc) {
             /*
@@ -393,12 +396,17 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                             testTypeName + assertionMsg4 + nextVersion,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
         } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion9,
                                            assertionMsg9,
                                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
+            /* Give up on the rest of the testcase */
+            return;
+
         }
         catch (Exception exc) {
             /*

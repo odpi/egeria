@@ -916,6 +916,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -1046,6 +1047,200 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
             createdEntityRefCopiesTUT.add(remoteEntityWithMappingProperties);
 
+
+
+            EntityDetail retrievedReferenceCopyWithMappingProperties = null;
+
+            try {
+
+                retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getEntityDetail";
+                String operationDescription = "retrieve an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntityGUID);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+
+            assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteEntityWithMappingProperties)),
+                            assertion17,
+                            assertionMsg17 + entityDef.getName(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+
+
+
+            /*
+             * Continuing with the tests based on a locally synthesized entity used as a reference copy, emulating
+             * adoption of an instance from a virtual or defunct remote repository....
+             *
+             *
+             * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
+             * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
+             * This should not be performed on a reference copy of an entity whose master is on the CTS server - the
+             * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
+             * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
+             * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
+             * test. Therefore the rehome is performed on the locally synthesized instance used above for the
+             * mappingProperties test.
+             */
+
+
+
+            /*
+             * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
+             */
+            EntityDetail newMasterEntity = null;
+
+            try {
+
+                newMasterEntity = metadataCollection.reHomeEntity(workPad.getLocalServerUserId(),
+                                                                  remoteEntityGUID,
+                                                                  entityDef.getGUID(),
+                                                                  entityDef.getName(),
+                                                                  ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
+                                                                  metadataCollectionId,
+                                                                  repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+
+                assertCondition((true),
+                                assertion18,
+                                testTypeName + assertionMsg18,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+                createdEntitiesTUT.add(newMasterEntity);
+
+                /*
+                 * Verify that the new master instance can be retrieved
+                 */
+
+                try {
+
+                    retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+                } catch (Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "getEntityDetail";
+                    String operationDescription = "retrieve an entity of type " + entityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("entityGUID", remoteEntityGUID);
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
+
+                }
+
+                assertCondition((retrievedReferenceCopyWithMappingProperties != null),
+                                assertion19,
+                                assertionMsg19 + entityDef.getName(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+                /*
+                 * Verify that the new master instance has the local metadataCollectionId
+                 */
+                String instanceHome = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
+                assertCondition((instanceHome.equals(metadataCollectionId)),
+                                assertion20,
+                                assertionMsg20 + entityDef.getName(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+
+
+                /*
+                 * Now clean up.
+                 * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
+                 * If the rehome did not work then we have a local reference copy to purge.
+                 * In both cases the operation is performed at the TUT.
+                 */
+
+                if (newMasterEntity != null) {
+
+                    /*
+                     * The rehome operation worked - perform a soft delete (optional) followed by a purge.
+                     */
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                        remoteEntityWithMappingProperties.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+
+                        /*
+                         * This is OK - we can NO OP and just proceed to purgeEntity
+                         */
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                                   remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                   remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                   remoteEntityWithMappingProperties.getGUID());
+                } else {
+                    /*
+                     * The rehome operation did not work - the TUT is still holding a reference copy
+                     */
+
+                    /*
+                     * Purge the reference copy.
+                     */
+
+                    metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
+                                                                remoteEntityWithMappingProperties.getGUID(),
+                                                                remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                                remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                                remoteEntityWithMappingProperties.getMetadataCollectionId());
+
+                }
+
+
+            } catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
+                 */
+
+                super.addNotSupportedAssertion(assertion18,
+                                               assertionMsg18,
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "reHomeEntity";
+                String operationDescription = "rehome an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntityGUID);
+                parameters.put("typeDefGUID", entityDef.getGUID());
+                parameters.put("typeDefName", entityDef.getName());
+                parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+                parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
+                parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+
         }
         catch (FunctionNotSupportedException e) {
 
@@ -1070,207 +1265,6 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
         }
 
-
-
-
-
-        EntityDetail retrievedReferenceCopyWithMappingProperties = null;
-
-        try {
-
-            retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getEntityDetail";
-            String operationDescription = "retrieve an entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntityGUID);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-
-        assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteEntityWithMappingProperties)),
-                        assertion17,
-                        assertionMsg17 + entityDef.getName(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-
-
-
-
-        /*
-         * Continuing with the tests based on a locally synthesized entity used as a reference copy, emulating
-         * adoption of an instance from a virtual or defunct remote repository....
-         *
-         *
-         * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
-         * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
-         * This should not be performed on a reference copy of an entity whose master is on the CTS server - the
-         * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
-         * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
-         * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
-         * test. Therefore the rehome is performed on the locally synthesized instance used above for the
-         * mappingProperties test.
-         */
-
-
-
-        /*
-         * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
-         */
-        EntityDetail newMasterEntity = null;
-
-        try {
-
-            newMasterEntity = metadataCollection.reHomeEntity(workPad.getLocalServerUserId(),
-                                                              remoteEntityGUID,
-                                                              entityDef.getGUID(),
-                                                              entityDef.getName(),
-                                                              ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
-                                                              metadataCollectionId,
-                                                              repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-
-            assertCondition((true),
-                            assertion18,
-                            testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-            createdEntitiesTUT.add(newMasterEntity);
-
-        } catch (FunctionNotSupportedException exception) {
-
-            /*
-             * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
-             */
-
-            super.addNotSupportedAssertion(assertion18,
-                                           assertionMsg18,
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "reHomeEntity";
-            String operationDescription = "rehome an entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntityGUID);
-            parameters.put("typeDefGUID", entityDef.getGUID());
-            parameters.put("typeDefName", entityDef.getName());
-            parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
-            parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
-            parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-
-
-        /*
-         * Verify that the new master instance can be retrieved
-         */
-
-        try {
-
-            retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
-
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getEntityDetail";
-            String operationDescription = "retrieve an entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntityGUID);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition((retrievedReferenceCopyWithMappingProperties != null),
-                        assertion19,
-                        assertionMsg19 + entityDef.getName(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-        /*
-         * Verify that the new master instance has the local metadataCollectionId
-         */
-        String instanceHome = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
-        assertCondition((instanceHome.equals(metadataCollectionId)),
-                        assertion20,
-                        assertionMsg20 + entityDef.getName(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-
-
-
-
-
-
-
-        /*
-         * Now clean up.
-         * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
-         * If the rehome did not work then we have a local reference copy to purge.
-         * In both cases the operation is performed at the TUT.
-         */
-
-        if (newMasterEntity != null) {
-
-            /*
-             * The rehome operation worked - perform a soft delete (optional) followed by a purge.
-             */
-            try {
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                                                remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                                remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                                remoteEntityWithMappingProperties.getGUID());
-            } catch (FunctionNotSupportedException exception) {
-
-                /*
-                 * This is OK - we can NO OP and just proceed to purgeEntity
-                 */
-            }
-
-            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                                           remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                           remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                           remoteEntityWithMappingProperties.getGUID());
-        } else {
-            /*
-             * The rehome operation did not work - the TUT is still holding a reference copy
-             */
-
-            /*
-             * Purge the reference copy.
-             */
-
-            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
-                                                        remoteEntityWithMappingProperties.getGUID(),
-                                                        remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                                        remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                                        remoteEntityWithMappingProperties.getMetadataCollectionId());
-
-        }
 
 
         super.setSuccessMessage("Reference copies of entities can be managed through their lifecycle");

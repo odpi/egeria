@@ -507,6 +507,28 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                 undoneEntity = metadataCollection.undoEntityUpdate(workPad.getLocalServerUserId(), newEntity.getGUID());
 
 
+                assertCondition(true,
+                                assertion29,
+                                testTypeName + assertionMsg29,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
+
+                assertCondition(((undoneEntity != null) && (undoneEntity.getProperties() != null)),
+                                assertion19,
+                                testTypeName + assertionMsg19,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
+                assertCondition(((undoneEntity != null) && (undoneEntity.getVersion() >= nextVersion)),
+                                assertion20,
+                                testTypeName + assertionMsg20 + nextVersion,
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
+
+                nextVersion = undoneEntity.getVersion() + 1;
+
+
             } catch (FunctionNotSupportedException exception) {
 
                 super.addNotSupportedAssertion(assertion29,
@@ -529,27 +551,6 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                 throw new Exception(msg, exc);
 
             }
-            assertCondition(true,
-                            assertion29,
-                            testTypeName + assertionMsg29,
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
-
-
-            assertCondition(((undoneEntity != null) && (undoneEntity.getProperties() != null)),
-                            assertion19,
-                            testTypeName + assertionMsg19,
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
-
-            assertCondition(((undoneEntity != null) && (undoneEntity.getVersion() >= nextVersion)),
-                            assertion20,
-                            testTypeName + assertionMsg20 + nextVersion,
-                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
-                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
-
-            nextVersion = undoneEntity.getVersion() + 1;
-
 
         }
 
@@ -596,6 +597,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                                             newEntity.getType().getTypeDefName(),
                                                             newEntity.getGUID());
 
+            assertCondition(true,
+                            assertion30,
+                            testTypeName + assertionMsg30,
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+            assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
+                            assertion21,
+                            testTypeName + assertionMsg21 + nextVersion,
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
+
+
         } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion30,
@@ -620,17 +634,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
 
 
-        assertCondition(true,
-                        assertion30,
-                        testTypeName + assertionMsg30,
-                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
-        assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
-                        assertion21,
-                        testTypeName + assertionMsg21 + nextVersion,
-                        RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
 
 
         try {
@@ -751,6 +755,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                            assertionMsg30,
                                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+            /* OK to continue - soft delete is optional */
+
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.

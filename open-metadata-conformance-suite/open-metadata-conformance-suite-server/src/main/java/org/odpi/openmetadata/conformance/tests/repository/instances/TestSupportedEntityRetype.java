@@ -6,7 +6,6 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -276,6 +275,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
+                    /* Give up the rest of the testcase */
                     return;
 
                 } catch (Exception exc) {

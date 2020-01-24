@@ -6,7 +6,6 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -146,6 +145,7 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -276,6 +276,198 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             createdEntityRefCopiesTUT.add(remoteEntity);
 
+
+            EntityDetail retrievedReferenceCopy = null;
+
+            try {
+
+                retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getEntityDetail";
+                String operationDescription = "retrieve an entity of type " + testEntityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntityGUID);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            assertCondition((retrievedReferenceCopy.getClassifications() == null),
+                            assertion1,
+                            assertionMsg1 + testEntityDef.getName(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            EntityDetail classifiedEntity = null;
+
+            try {
+
+
+                classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
+                                                                     remoteEntity.getGUID(),
+                                                                     classificationDef.getName(),
+                                                                     null);
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "classifyEntity";
+                String operationDescription = "classify an entity of type " + testEntityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntity.getGUID());
+                parameters.put("classificationName", classificationDef.getName());
+                parameters.put("classificationProperties", "null");
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            assertCondition((classifiedEntity != null),
+                            assertion2,
+                            testEntityDef.getName() + assertionMsg2,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+            Classification initialClassification = null;
+
+            List<Classification> classifications = classifiedEntity.getClassifications();
+
+            if ((classifications != null) && (classifications.size() == 1)) {
+                initialClassification = classifications.get(0);
+            }
+
+            assertCondition(((initialClassification != null) &&
+                                    (classificationDef.getName().equals(initialClassification.getName()) &&
+                                            (initialClassification.getProperties() == null))),
+                            assertion3,
+                            testTypeName + assertionMsg3 + testEntityDef.getName(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            InstanceProperties classificationProperties = this.getPropertiesForInstance(classificationDef.getPropertiesDefinition());
+            if (classificationProperties != null) {
+
+                EntityDetail reclassifiedEntity =  null;
+
+                try {
+
+
+                    reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
+                                                                                       remoteEntity.getGUID(),
+                                                                                       classificationDef.getName(),
+                                                                                       classificationProperties);
+
+                }
+                catch (Exception exc) {
+                    /*
+                     * We are not expecting any exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "updateEntityClassification";
+                    String operationDescription = "update the classification of an entity of type " + testEntityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("entityGUID", remoteEntity.getGUID());
+                    parameters.put("classificationName", classificationDef.getName());
+                    parameters.put("classificationProperties", classificationProperties.toString());
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
+
+                }
+
+                Classification updatedClassification = null;
+                classifications = reclassifiedEntity.getClassifications();
+
+                if ((classifications != null) && (classifications.size() == 1)) {
+                    updatedClassification = classifications.get(0);
+                }
+
+                assertCondition(((updatedClassification != null) &&
+                                        (classificationDef.getName().equals(initialClassification.getName()) &&
+                                                (updatedClassification.getProperties() != null))),
+                                assertion4,
+                                testTypeName + assertionMsg4 + testEntityDef.getName(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+            }
+
+
+            EntityDetail declassifiedEntity = null;
+
+            try {
+
+                declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
+                                                                         remoteEntity.getGUID(),
+                                                                         classificationDef.getName());
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "declassifyEntity";
+                String operationDescription = "declassify an entity of type " + testEntityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntity.getGUID());
+                parameters.put("classificationName", classificationDef.getName());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            assertCondition(((declassifiedEntity != null) && (declassifiedEntity.getClassifications() == null)),
+                            assertion5,
+                            testTypeName + assertionMsg5 + testEntityDef.getName(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+
+            /*
+             * Purge the reference copy - this is just to clean up rather than part of the test.
+             */
+
+
+            try {
+                metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
+                                                            remoteEntity.getGUID(),
+                                                            remoteEntity.getType().getTypeDefGUID(),
+                                                            remoteEntity.getType().getTypeDefName(),
+                                                            remoteEntity.getMetadataCollectionId());
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "purgeEntityReferenceCopy";
+                String operationDescription = "purge a reference copy of an entity of type " + testEntityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntity.getGUID());
+                parameters.put("typeDefGUID", remoteEntity.getType().getTypeDefGUID());
+                parameters.put("typeDefName", remoteEntity.getType().getTypeDefName());
+                parameters.put("homeMetadataCollectionId", remoteEntity.getMetadataCollectionId());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
         }
         catch (FunctionNotSupportedException e) {
 
@@ -296,198 +488,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             String operationDescription = "save a reference copy of an entity of type " + testEntityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("entity", remoteEntity.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-
-        EntityDetail retrievedReferenceCopy = null;
-
-        try {
-
-            retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getEntityDetail";
-            String operationDescription = "retrieve an entity of type " + testEntityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntityGUID);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition((retrievedReferenceCopy.getClassifications() == null),
-                        assertion1,
-                        assertionMsg1 + testEntityDef.getName(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-        EntityDetail classifiedEntity = null;
-
-        try {
-
-
-            classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
-                                                                              remoteEntity.getGUID(),
-                                                                              classificationDef.getName(),
-                                                                              null);
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "classifyEntity";
-            String operationDescription = "classify an entity of type " + testEntityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntity.getGUID());
-            parameters.put("classificationName", classificationDef.getName());
-            parameters.put("classificationProperties", "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition((classifiedEntity != null),
-                        assertion2,
-                        testEntityDef.getName() + assertionMsg2,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-        Classification initialClassification = null;
-
-        List<Classification> classifications = classifiedEntity.getClassifications();
-
-        if ((classifications != null) && (classifications.size() == 1)) {
-            initialClassification = classifications.get(0);
-        }
-
-        assertCondition(((initialClassification != null) &&
-                                (classificationDef.getName().equals(initialClassification.getName()) &&
-                                        (initialClassification.getProperties() == null))),
-                        assertion3,
-                        testTypeName + assertionMsg3 + testEntityDef.getName(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-        InstanceProperties classificationProperties = this.getPropertiesForInstance(classificationDef.getPropertiesDefinition());
-        if (classificationProperties != null) {
-
-            EntityDetail reclassifiedEntity =  null;
-
-            try {
-
-
-                reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
-                                                                                                remoteEntity.getGUID(),
-                                                                                                classificationDef.getName(),
-                                                                                                classificationProperties);
-
-            }
-            catch (Exception exc) {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-
-                String methodName = "updateEntityClassification";
-                String operationDescription = "update the classification of an entity of type " + testEntityDef.getName();
-                Map<String, String> parameters = new HashMap<>();
-                parameters.put("entityGUID", remoteEntity.getGUID());
-                parameters.put("classificationName", classificationDef.getName());
-                parameters.put("classificationProperties", classificationProperties.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-
-            }
-
-            Classification updatedClassification = null;
-            classifications = reclassifiedEntity.getClassifications();
-
-            if ((classifications != null) && (classifications.size() == 1)) {
-                updatedClassification = classifications.get(0);
-            }
-
-            assertCondition(((updatedClassification != null) &&
-                                    (classificationDef.getName().equals(initialClassification.getName()) &&
-                                            (updatedClassification.getProperties() != null))),
-                            assertion4,
-                            testTypeName + assertionMsg4 + testEntityDef.getName(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-        }
-
-
-        EntityDetail declassifiedEntity = null;
-
-        try {
-
-            declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
-                                                                                  remoteEntity.getGUID(),
-                                                                                  classificationDef.getName());
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "declassifyEntity";
-            String operationDescription = "declassify an entity of type " + testEntityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntity.getGUID());
-            parameters.put("classificationName", classificationDef.getName());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        assertCondition(((declassifiedEntity != null) && (declassifiedEntity.getClassifications() == null)),
-                        assertion5,
-                        testTypeName + assertionMsg5 + testEntityDef.getName(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-
-        /*
-         * Purge the reference copy - this is just to clean up rather than part of the test.
-         */
-
-
-        try {
-            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
-                                                        remoteEntity.getGUID(),
-                                                        remoteEntity.getType().getTypeDefGUID(),
-                                                        remoteEntity.getType().getTypeDefName(),
-                                                        remoteEntity.getMetadataCollectionId());
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "purgeEntityReferenceCopy";
-            String operationDescription = "purge a reference copy of an entity of type " + testEntityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", remoteEntity.getGUID());
-            parameters.put("typeDefGUID", remoteEntity.getType().getTypeDefGUID());
-            parameters.put("typeDefName", remoteEntity.getType().getTypeDefName());
-            parameters.put("homeMetadataCollectionId", remoteEntity.getMetadataCollectionId());
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);

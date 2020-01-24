@@ -637,6 +637,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
             return;
+
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -1006,6 +1007,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
+            /* Worth carrying on with whatever else in the test we can achieve - so don't return here */
+
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -1050,6 +1053,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                assertionMsg7 + testTypeName,
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+                /* Soft delete is optional so carry on */
+
             } catch (Exception exc) {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.

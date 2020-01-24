@@ -325,6 +325,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         InstanceProperties relationshipInstanceProperties = null;
 
         try {
+
             newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                  relationshipDef.getGUID(),
                                                                  super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
@@ -339,6 +340,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
             createdRelationships.add(newRelationship);
+
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -355,6 +357,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
             return;
+
+
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -641,6 +645,28 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 undoneRelationship = metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
 
+                assertCondition(true,
+                                assertion29,
+                                testTypeName + assertionMsg29,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
+
+                assertCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
+                                assertion17,
+                                testTypeName + assertionMsg17,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+
+                assertCondition(((undoneRelationship != null) && (undoneRelationship.getVersion() >= nextVersion)),
+                                assertion18,
+                                testTypeName + assertionMsg18 + nextVersion,
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
+
+                nextVersion = undoneRelationship.getVersion() + 1;
+
+
             } catch (FunctionNotSupportedException exception) {
 
                 super.addNotSupportedAssertion(assertion29,
@@ -662,28 +688,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                 throw new Exception(msg, exc);
 
             }
-
-            assertCondition(true,
-                            assertion29,
-                            testTypeName + assertionMsg29,
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
-
-
-            assertCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
-                            assertion17,
-                            testTypeName + assertionMsg17,
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
-
-            assertCondition(((undoneRelationship != null) && (undoneRelationship.getVersion() >= nextVersion)),
-                            assertion18,
-                            testTypeName + assertionMsg18 + nextVersion,
-                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
-                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
-
-            nextVersion = undoneRelationship.getVersion() + 1;
-
 
         }
 
@@ -731,6 +735,120 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                                                         newRelationship.getType().getTypeDefName(),
                                                                         newRelationship.getGUID());
 
+            assertCondition(true,
+                            assertion30,
+                            testTypeName + assertionMsg30,
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+            verifyCondition(((deletedRelationship != null) && (deletedRelationship.getVersion() >= nextVersion)),
+                            assertion19,
+                            testTypeName + assertionMsg19 + nextVersion,
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
+
+            nextVersion = deletedRelationship.getVersion() + 1;
+
+            try {
+
+                metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+
+                verifyCondition((false),
+                                assertion20,
+                                testTypeName + assertionMsg20,
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+            } catch (RelationshipNotKnownException exception) {
+
+                verifyCondition((true),
+                                assertion20,
+                                testTypeName + assertionMsg20,
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getRelationship";
+                String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipGUID", newRelationship.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            /*
+             * Performing the restore should advance the version number again
+             */
+            nextVersion = deletedRelationship.getVersion() + 1;
+
+            Relationship restoredRelationship = null;
+
+            try {
+
+                restoredRelationship = metadataCollection.restoreRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "restoreRelationship";
+                String operationDescription = "restore a soft-deleted relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipGUID", newRelationship.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
+            verifyCondition((restoredRelationship != null),
+                            assertion21,
+                            testTypeName + assertionMsg21,
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+
+            verifyCondition((restoredRelationship.getVersion() >= nextVersion),
+                            assertion22,
+                            testTypeName + assertionMsg22 + nextVersion,
+                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
+
+
+            /*
+             * Verify that relationship can be retrieved following restore
+             */
+
+            try {
+
+                verifyCondition((restoredRelationship.equals(metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), restoredRelationship.getGUID()))),
+                                assertion23,
+                                testTypeName + assertionMsg23,
+                                RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "isRelationshipKnown";
+                String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipGUID", restoredRelationship.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -756,118 +874,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         }
 
-        assertCondition(true,
-                        assertion30,
-                        testTypeName + assertionMsg30,
-                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
-
-        verifyCondition(((deletedRelationship != null) && (deletedRelationship.getVersion() >= nextVersion)),
-                        assertion19,
-                        testTypeName + assertionMsg19 + nextVersion,
-                        RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
-
-        nextVersion = deletedRelationship.getVersion() + 1;
 
 
-        try {
-
-            metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
-
-            verifyCondition((false),
-                            assertion20,
-                            testTypeName + assertionMsg20,
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
-
-        } catch (RelationshipNotKnownException exception) {
-            verifyCondition((true),
-                            assertion20,
-                            testTypeName + assertionMsg20,
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "getRelationship";
-            String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", newRelationship.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        /*
-         * Performing the restore should advance the version number again
-         */
-        nextVersion = deletedRelationship.getVersion() + 1;
-
-        Relationship restoredRelationship = null;
-
-        try {
-
-            restoredRelationship = metadataCollection.restoreRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
-
-        } catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "restoreRelationship";
-            String operationDescription = "restore a soft-deleted relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", newRelationship.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
-
-        verifyCondition((restoredRelationship != null),
-                        assertion21,
-                        testTypeName + assertionMsg21,
-                        RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
-
-        verifyCondition((restoredRelationship.getVersion() >= nextVersion),
-                        assertion22,
-                        testTypeName + assertionMsg22 + nextVersion,
-                        RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
 
 
-        /*
-         * Verify that relationship can be retrieved following restore
-         */
-
-        try {
-
-            verifyCondition((restoredRelationship.equals(metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), restoredRelationship.getGUID()))),
-                            assertion23,
-                            testTypeName + assertionMsg23,
-                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
-
-        }
-        catch (Exception exc) {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "isRelationshipKnown";
-            String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", restoredRelationship.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-
-        }
 
         /*
          * Now get rid of the relationship - this time for real
