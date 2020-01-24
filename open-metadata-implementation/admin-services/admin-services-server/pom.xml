@@ -96,11 +96,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>security-sync-services-server</artifactId>
         </dependency>
 
@@ -126,6 +121,11 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-services-server</artifactId>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>stewardship-engine-services-server</artifactId>
         </dependency>
 
     </dependencies>
