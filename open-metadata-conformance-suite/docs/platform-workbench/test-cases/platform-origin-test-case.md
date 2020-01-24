@@ -32,7 +32,7 @@ open metadata services are activated.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "platform-origin",
       "testCaseName" : "Platform origin test case",
-      "testCaseDescriptionURL" : "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/platform-workbench/platfrom-origin-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/platform-workbench/platfrom-origin-test-case.md",
       "assertionMessage" : "Platform origin descriptor successfully retrieved",
       "successfulAssertions" : [ "Origin descriptor retrieved from platform." ],
       "unsuccessfulAssertions" : [ ],
