@@ -2323,7 +2323,7 @@
                         <exclude>**/.classpath</exclude>
                         <exclude>**/.project</exclude>
                         <exclude>**/.settings/**</exclude>
-                        <exclude>egeria-graph-repositories/**</exclude>
+                        <exclude>*-graph-repositories/**</exclude>
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
