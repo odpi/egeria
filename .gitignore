@@ -87,8 +87,7 @@ keystore_*/**
 egeria-lineage-repositories/**
 
 # Ignore local graph repo
-egeria-graph-repository/**
-omas-graph-repository/**
+*-graph-repository/**
 
 # Ignore archives
 CloudInformationModel.json
