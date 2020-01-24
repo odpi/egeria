@@ -57,6 +57,7 @@ public class OpenLineageRestServices {
 
     public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
+        final String debugMessage = "Open Lineage Services: An exception occurred during a lineage HTTP request";
         final String methodName = "OpenLineageRestServices.lineage";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
@@ -65,16 +66,16 @@ public class OpenLineageRestServices {
             response = openLineageHandler.lineage(scope, guid, displayNameMustContain, includeProcesses);
         } catch (InvalidParameterException e) {
             openLineageExceptionHandler.captureInvalidParameterException(response, e);
-            log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
+            log.debug(debugMessage, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             openLineageExceptionHandler.capturePropertyServerException(response, e);
-            log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
+            log.debug(debugMessage, e);
         } catch (UserNotAuthorizedException e) {
             openLineageExceptionHandler.captureUserNotAuthorizedException(response, e);
-            log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
+            log.debug(debugMessage, e);
         } catch (OpenLineageException e) {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
-            log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
+            log.debug(debugMessage, e);
         }catch (Throwable e) {
             openLineageExceptionHandler.captureThrowable(response, e, methodName);
             log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
