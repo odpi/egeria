@@ -21,6 +21,8 @@ import java.util.Objects;
  */
 public abstract class OCFCheckedExceptionBase extends Exception
 {
+    private static final long    serialVersionUID = 1L;
+
     private static final Logger log = LoggerFactory.getLogger(OCFCheckedExceptionBase.class);
 
     /*

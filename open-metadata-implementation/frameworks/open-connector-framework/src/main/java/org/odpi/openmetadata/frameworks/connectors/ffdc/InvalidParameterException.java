@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 public class InvalidParameterException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private   String  parameterName;
 
     /**
