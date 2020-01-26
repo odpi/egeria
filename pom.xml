@@ -137,6 +137,9 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.4.0</kafka.version>
         <janus.version>0.4.0</janus.version>
+        <snappy.version>1.1.7.2</snappy.version>
+        <antlr.version>3.5.2</antlr.version>
+        <joda.version>2.10.1</joda.version>
         <gremlin.version>3.4.1</gremlin.version>
         <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring.version>5.2.3.RELEASE</spring.version>
@@ -486,6 +489,24 @@
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
                 <version>${janus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.xerial.snappy</groupId>
+                <artifactId>snappy-java</artifactId>
+                <version>${snappy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr-runtime</artifactId>
+                <version>${antlr.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
             </dependency>
 
             <dependency>
