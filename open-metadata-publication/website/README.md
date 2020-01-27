@@ -17,7 +17,7 @@ discovery and access services to automate the collection, management and
 use of metadata across an enterprise.  
 
 The result is an enterprise catalog of
-data resources that are transparently assessed, governed and consumed 
+data and IT resources that are transparently assessed, governed and consumed 
 through many types of tools and technologies in order to
 deliver maximum value to the enterprise.
 

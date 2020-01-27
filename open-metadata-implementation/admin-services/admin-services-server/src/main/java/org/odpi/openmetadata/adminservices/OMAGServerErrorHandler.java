@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 /**
  * OMAGServerErrorHandler provides common error handling routines for the admin services
  */
-class OMAGServerErrorHandler
+public class OMAGServerErrorHandler
 {
     /**
      * Default constructor
@@ -117,6 +117,16 @@ class OMAGServerErrorHandler
     }
 
 
+    /**
+     * Check that a requested access service is registered with this server before allowing the access service to be configured
+     * into the configuration document
+     *
+     * @param registration registration record for the access service.
+     * @param serviceURLMarker string used in URL for this access service
+     * @param serverName name of the server being configured
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException resulting exception if the access service is not supported.
+     */
     void validateAccessServiceIsRegistered(AccessServiceRegistration registration,
                                            String                    serviceURLMarker,
                                            String                    serverName,

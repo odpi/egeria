@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineP
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
@@ -39,20 +40,8 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private VirtualizationOperationalServices    operationalVirtualizationServices   = null;
     private DataEngineProxyOperationalServices   operationalDataEngineProxyServices  = null;
     private DataPlatformOperationalServices      operationalDataPlatformServices     = null;
+    private OMRSAuditLog                         auditLog                            = null;
 
-
-    /**
-     * Obsolete constructor
-     *
-     * @param serverName name of the new server
-     * @param serviceName name of the new service instance
-     */
-    @Deprecated
-    public OMAGOperationalServicesInstance(String   serverName,
-                                           String   serviceName)
-    {
-        super(serverName, serviceName);
-    }
 
     /**
      * Default constructor
@@ -267,7 +256,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return SecurityOfficerOperationalServices object
      */
-    public SecurityOfficerOperationalServices getOperationalSecurityOfficerService()
+    SecurityOfficerOperationalServices getOperationalSecurityOfficerService()
     {
         return operationalSecurityOfficerService;
     }
@@ -277,7 +266,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param operationalSecurityOfficerService SecurityOfficerOperationalServices object
      */
-    public void setOperationalSecurityOfficerService(SecurityOfficerOperationalServices operationalSecurityOfficerService)
+    void setOperationalSecurityOfficerService(SecurityOfficerOperationalServices operationalSecurityOfficerService)
     {
         this.operationalSecurityOfficerService = operationalSecurityOfficerService;
     }
@@ -324,6 +313,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
     }
 
+
     /**
      * Return the running instance of Data Platform Service
      *
@@ -333,12 +323,36 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         return operationalDataPlatformServices;
     }
 
+
     /**
      * Set up the running instance of Data Platform Service
      *
      * @param operationalDataPlatformServices DataPlatformOperationalServices
      */
-    void setOperationalDataPlatformServices(DataPlatformOperationalServices operationalDataPlatformServices) {
+    void setOperationalDataPlatformServices(DataPlatformOperationalServices operationalDataPlatformServices)
+    {
         this.operationalDataPlatformServices = operationalDataPlatformServices;
+    }
+
+
+    /**
+     * Retrieve the operational admin services' audit log.
+     *
+     * @return logging destination
+     */
+    public OMRSAuditLog getAuditLog()
+    {
+        return auditLog;
+    }
+
+
+    /**
+     * Set up the operational admin services' audit log.
+     *
+     * @param auditLog logging destination
+     */
+    public void setAuditLog(OMRSAuditLog auditLog)
+    {
+        this.auditLog = auditLog;
     }
 }

@@ -51,18 +51,7 @@ public class ServerTypeClassifier
 
         ServerTypeClassification serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
 
-        if (configurationDocument == null)
-        {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
-        }
+        this.validateConfigurationDocumentNotNull(serverName, configurationDocument, methodName);
 
         RepositoryServicesConfig        repositoryServicesConfig        = configurationDocument.getRepositoryServicesConfig();
         List<AccessServiceConfig>       accessServiceConfigList         = configurationDocument.getAccessServicesConfig();
@@ -99,7 +88,7 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
-        validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
+        this.validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
 
         /*
          * All servers need the repository services
@@ -623,6 +612,33 @@ public class ServerTypeClassifier
 
 
     /**
+     * Checks that a configuration document has been supplied at server start up.
+     *
+     * @param serverName requested server
+     * @param configurationDocument supplied document
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     */
+    private void validateConfigurationDocumentNotNull(String            serverName,
+                                                      OMAGServerConfig  configurationDocument,
+                                                      String            methodName) throws  OMAGInvalidParameterException
+    {
+        if (configurationDocument == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Check that the server configuration does not include a subsystem that it should not have.
      *
      * @param serverName name of the server that the configuration belongs to
@@ -663,9 +679,9 @@ public class ServerTypeClassifier
      * @param methodName  method being called
      * @throws OMAGConfigurationErrorException incompatible server names
      */
-    void validateConfigServerName(String serverName,
-                                  String configServerName,
-                                  String methodName) throws OMAGConfigurationErrorException
+    private void validateConfigServerName(String serverName,
+                                          String configServerName,
+                                          String methodName) throws OMAGConfigurationErrorException
     {
         if (! serverName.equals(configServerName))
         {

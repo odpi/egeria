@@ -31,10 +31,10 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param runtimeException returned error.
      */
-    public void captureRuntimeException(String           serverName,
-                                        String           methodName,
-                                        FFDCResponseBase response,
-                                        Throwable        runtimeException)
+    public void capturePlatformRuntimeException(String           serverName,
+                                                String           methodName,
+                                                FFDCResponseBase response,
+                                                Throwable        runtimeException)
     {
         OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
         String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
@@ -53,7 +53,6 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
     }
 
 
-
     /**
      * Set the exception information into the response.
      *
@@ -61,9 +60,9 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param runtimeException returned error.
      */
-    public void captureRuntimeException(String           methodName,
-                                        FFDCResponseBase response,
-                                        Throwable        runtimeException)
+    public void capturePlatformRuntimeException(String           methodName,
+                                                FFDCResponseBase response,
+                                                Throwable        runtimeException)
     {
         OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_PLATFORM_EXCEPTION;
         String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,

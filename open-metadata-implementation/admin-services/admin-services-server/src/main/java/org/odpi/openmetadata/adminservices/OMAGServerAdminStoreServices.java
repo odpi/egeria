@@ -16,7 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
-import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +72,7 @@ public class OMAGServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -109,7 +108,7 @@ public class OMAGServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -144,7 +143,7 @@ public class OMAGServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -200,7 +199,10 @@ public class OMAGServerAdminStoreServices
         {
             OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_CONFIG_FILE;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(serverName, methodName, error.getMessage());
+                                       + errorCode.getFormattedErrorMessage(serverName,
+                                                                            methodName,
+                                                                            error.getClass().getName(),
+                                                                            error.getMessage());
 
             throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
                                                     this.getClass().getName(),

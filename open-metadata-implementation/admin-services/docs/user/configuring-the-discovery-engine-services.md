@@ -45,7 +45,7 @@ OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://loca
     
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server/set-discovery-engines
-{ list of unique identifiers (guids) for the discovery engines }
+{ list of unique names (qualified names) for the discovery engines }
 ```
 
 
@@ -54,7 +54,7 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 The following command removes the configuration for the discovery engine services from an
 OMAG server's configuration document.  This may be used if the discovery engine services have been
 added in error.  In this example, the discovery engine services are removed from
-OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://localhost:8080`
+OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://localhost:8080`.
 
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server
