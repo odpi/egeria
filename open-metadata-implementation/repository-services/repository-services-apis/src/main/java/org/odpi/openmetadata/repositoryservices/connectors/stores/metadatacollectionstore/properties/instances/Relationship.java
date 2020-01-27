@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Relationship extends InstanceHeader implements PropertyContainer, DifferenceCalculator
+public class Relationship extends InstanceHeader
 {
     private static final long    serialVersionUID = 1L;
 
@@ -131,7 +130,6 @@ public class Relationship extends InstanceHeader implements PropertyContainer, D
      *
      * @return InstanceProperties
      */
-    @Override
     public InstanceProperties  getProperties()
     {
         if (relationshipProperties == null)
@@ -154,7 +152,6 @@ public class Relationship extends InstanceHeader implements PropertyContainer, D
      *
      * @param newProperties InstanceProperties object
      */
-    @Override
     public void setProperties(InstanceProperties  newProperties)
     {
         relationshipProperties = newProperties;
@@ -282,25 +279,4 @@ public class Relationship extends InstanceHeader implements PropertyContainer, D
     {
         return Objects.hash(super.hashCode(), relationshipProperties, getEntityOneProxy(), getEntityTwoProxy());
     }
-
-    /**
-     * Calculate the differences between this Relationship and the other provided.
-     *
-     * @param other the other instance to compare against
-     * @return InstanceDifferences
-     */
-    @JsonIgnore
-    @Override
-    public <T extends InstanceAuditHeader> InstanceDifferences differences(T other)
-    {
-        InstanceDifferences differences = super.differences(other);
-        if (!this.equals(other) && other instanceof Relationship) {
-            Relationship that = (Relationship) other;
-            differences.check("EntityOneProxy", getEntityOneProxy(), that.getEntityOneProxy());
-            differences.check("EntityTwoProxy", getEntityTwoProxy(), that.getEntityTwoProxy());
-            differences.checkInstanceProperties(getProperties(), that.getProperties());
-        }
-        return differences;
-    }
-
 }

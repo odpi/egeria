@@ -795,4 +795,46 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @see #getEndsWithRegex(String)
      */
     String getUnqualifiedLiteralString(String searchString);
+
+
+    /**
+     * Calculate the differences between the two provided Relationship objects.
+     *
+     * @param left one of the Relationship objects to compare
+     * @param right the other Relationship object to compare
+     * @return RelationshipDifferences
+     */
+    RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right);
+
+
+    /**
+     * Calculate the differences between the two provided EntityDetail objects.
+     *
+     * @param left one of the EntityDetail objects to compare
+     * @param right the other EntityDetail object to compare
+     * @return EntityDetailDifferences
+     */
+    EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right);
+
+
+    /**
+     * Calculate the differences between the two provided EntityProxy objects.
+     *
+     * @param left one of the EntityProxy objects to compare
+     * @param right the other EntityProxy object to compare
+     * @return EntityProxyDifferences
+     */
+    EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right);
+
+
+    /**
+     * Calculate the differences between the two provided EntitySummary objects.
+     *
+     * @param left one of the EntitySummary objects to compare
+     * @param right the other EntitySummary object to compare
+     * @return EntitySummaryDifferences
+     */
+    EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right);
+
+
 }

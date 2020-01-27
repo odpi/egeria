@@ -27,6 +27,8 @@ public abstract class Differences
     protected Map<String, Object> onlyOnLeft;
     protected Map<String, Object> onlyOnRight;
 
+    public enum SidePresent { LEFT_ONLY, RIGHT_ONLY, NEITHER, BOTH }
+
     /**
      * Construct a new set of differences.
      */
@@ -175,6 +177,25 @@ public abstract class Differences
         {
             // Otherwise they are both non-null, and they are not equal
             addDiffering(name, new ValuePair(left, right));
+        }
+    }
+
+    /**
+     * Add the provided name as only existing on one side.
+     *
+     * @param side the side on which the value exists
+     * @param name the name of the thing that points to the value
+     * @param value the value
+     */
+    public void addOnlyOnOneSide(SidePresent side, String name, Object value)
+    {
+        if (side.equals(SidePresent.LEFT_ONLY))
+        {
+            onlyOnLeft.put(name, value);
+        }
+        else if (side.equals(SidePresent.RIGHT_ONLY))
+        {
+            onlyOnRight.put(name, value);
         }
     }
 

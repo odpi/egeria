@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Classification extends InstanceAuditHeader implements PropertyContainer
+public class Classification extends InstanceAuditHeader
 {
     private static final long    serialVersionUID = 1L;
 
@@ -168,7 +168,6 @@ public class Classification extends InstanceAuditHeader implements PropertyConta
      *
      * @return properties for the classification
      */
-    @Override
     public InstanceProperties getProperties()
     {
         if (classificationProperties == null)
@@ -187,7 +186,6 @@ public class Classification extends InstanceAuditHeader implements PropertyConta
      *
      * @param classificationProperties properties object
      */
-    @Override
     public void setProperties(InstanceProperties classificationProperties)
     {
         this.classificationProperties = classificationProperties;

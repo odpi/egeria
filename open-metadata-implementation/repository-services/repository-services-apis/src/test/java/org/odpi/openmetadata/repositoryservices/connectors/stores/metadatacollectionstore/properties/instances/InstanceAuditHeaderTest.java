@@ -199,45 +199,4 @@ public class InstanceAuditHeaderTest
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
 
-    /**
-     * Test that differences are properly calculated
-     */
-    @Test public void testDifferences()
-    {
-
-        InstanceAuditHeader testObject = getTestObject();
-        InstanceAuditHeader anotherObject = getTestObject();
-
-        InstanceDifferences differences = testObject.differences(anotherObject);
-        assertNotNull(differences);
-        assertFalse(differences.hasDifferences());
-
-        String otherAuthor = "DifferentAuthor";
-        anotherObject.setCreatedBy(otherAuthor);
-        differences = testObject.differences(anotherObject);
-        assertTrue(differences.hasDifferences());
-        Set<String> differentProperties = differences.getNames();
-        assertNotNull(differentProperties);
-        assertEquals(differentProperties.size(), 1);
-        String differingPropertyName = "CreatedBy";
-        assertTrue(differentProperties.contains(differingPropertyName));
-        assertEquals(differences.getLeftValue(differingPropertyName), createdBy);
-        assertEquals(differences.getRightValue(differingPropertyName), otherAuthor);
-
-        String otherCollection = "DifferentCollection";
-        testObject.setMetadataCollectionId(otherCollection);
-        differences = testObject.differences(anotherObject);
-        assertTrue(differences.hasDifferences());
-        differentProperties = differences.getNames();
-        assertNotNull(differentProperties);
-        assertEquals(differentProperties.size(), 2);
-        assertTrue(differentProperties.contains(differingPropertyName));
-        assertTrue(differentProperties.contains("MetadataCollectionId"));
-        assertEquals(differences.getLeftValue(differingPropertyName), createdBy);
-        assertEquals(differences.getRightValue(differingPropertyName), otherAuthor);
-        assertEquals(differences.getLeftValue("MetadataCollectionId"), otherCollection);
-        assertEquals(differences.getRightValue("MetadataCollectionId"), metadataCollectionId);
-
-    }
-
 }

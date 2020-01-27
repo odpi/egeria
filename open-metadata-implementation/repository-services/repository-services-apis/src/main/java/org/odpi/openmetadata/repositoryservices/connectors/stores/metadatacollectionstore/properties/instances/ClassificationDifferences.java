@@ -32,25 +32,14 @@ public class ClassificationDifferences extends Differences
     }
 
     /**
-     * Returns true if the two have any differences (are not equal), otherwise false.
+     * Determine if there is a difference in classifications between the provided EntitySummary objects, and capture
+     * each of the differences and similarities.  Note that this will check for differences between the classifications
+     * irrespective of their ordering in each list, as this is presumably the desired behavior.
      *
-     * @return boolean
+     * @param left the first instance to compare
+     * @param right the second instance to compare
      */
-    @Override
-    public boolean hasDifferences()
-    {
-        return super.hasDifferences();
-    }
-
-    /**
-     * Determine if there is a difference between the provided lists of classifications, and capture each of the
-     * differences and similarities.  Note that this will check for differences between the classifications irrespective
-     * of their ordering in each list, as this is presumably the desired behavior.
-     *
-     * @param left the classifications from the first instance
-     * @param right the classifications from the second instance
-     */
-    public void check(List<Classification> left, List<Classification> right)
+    public void check(EntitySummary left, EntitySummary right)
     {
         if (left == null && right == null)
         {
@@ -58,29 +47,31 @@ public class ClassificationDifferences extends Differences
         }
         else if (left == null)
         {
-            setOnlyOnOne(onlyOnRight, right);
+            setOnlyOnOne(onlyOnRight, right.getClassifications());
         }
         else if (right == null)
         {
-            setOnlyOnOne(onlyOnLeft, left);
+            setOnlyOnOne(onlyOnLeft, left.getClassifications());
         }
         else
         {
-            if (left.isEmpty() && right.isEmpty())
+            List<Classification> leftList = left.getClassifications();
+            List<Classification> rightList = right.getClassifications();
+            if (leftList.isEmpty() && rightList.isEmpty())
             {
                 // Do nothing...
             }
-            else if (left.isEmpty())
+            else if (leftList.isEmpty())
             {
-                setOnlyOnOne(onlyOnRight, right);
+                setOnlyOnOne(onlyOnRight, rightList);
             }
-            else if (right.isEmpty())
+            else if (rightList.isEmpty())
             {
-                setOnlyOnOne(onlyOnLeft, left);
+                setOnlyOnOne(onlyOnLeft, leftList);
             }
             else
             {
-                calculateUnorderedDifferences(left, right);
+                calculateUnorderedDifferences(leftList, rightList);
             }
         }
     }

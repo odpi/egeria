@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityDetail extends EntitySummary implements PropertyContainer
+public class EntityDetail extends EntitySummary
 {
     private static final long    serialVersionUID = 1L;
 
@@ -55,7 +54,6 @@ public class EntityDetail extends EntitySummary implements PropertyContainer
      *
      * @return InstanceProperties
      */
-    @Override
     public InstanceProperties  getProperties()
     {
         if (entityProperties == null)
@@ -78,7 +76,6 @@ public class EntityDetail extends EntitySummary implements PropertyContainer
      *
      * @param newProperties InstanceProperties object
      */
-    @Override
     public void setProperties(InstanceProperties  newProperties)
     {
         entityProperties = newProperties;
@@ -151,24 +148,4 @@ public class EntityDetail extends EntitySummary implements PropertyContainer
     {
         return Objects.hash(super.hashCode(), entityProperties);
     }
-
-
-    /**
-     * Calculate the differences between this Relationship and the other provided.
-     *
-     * @param other the other instance to compare against
-     * @return InstanceDifferences
-     */
-    @JsonIgnore
-    @Override
-    public <T extends InstanceAuditHeader> InstanceDifferences differences(T other)
-    {
-        InstanceDifferences differences = super.differences(other);
-        if (!this.equals(other) && other instanceof EntityDetail) {
-            EntityDetail that = (EntityDetail) other;
-            differences.checkInstanceProperties(getProperties(), that.getProperties());
-        }
-        return differences;
-    }
-
 }

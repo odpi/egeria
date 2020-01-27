@@ -184,31 +184,4 @@ public class InstanceHeaderTest
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
 
-    /**
-     * Test that differences are properly calculated
-     */
-    @Test public void testDifferences()
-    {
-
-        InstanceHeader testObject = getTestObject();
-        InstanceHeader anotherObject = getTestObject();
-
-        InstanceDifferences differences = testObject.differences(anotherObject);
-        assertNotNull(differences);
-        assertFalse(differences.hasDifferences());
-
-        String otherURL = "OtherURL";
-        anotherObject.setInstanceURL(otherURL);
-        differences = testObject.differences(anotherObject);
-        assertTrue(differences.hasDifferences());
-        Set<String> differentProperties = differences.getNames();
-        assertNotNull(differentProperties);
-        assertEquals(differentProperties.size(), 1);
-        String differingPropertyName = "InstanceURL";
-        assertTrue(differentProperties.contains(differingPropertyName));
-        assertEquals(differences.getLeftValue(differingPropertyName), instanceURL);
-        assertEquals(differences.getRightValue(differingPropertyName), otherURL);
-
-    }
-
 }

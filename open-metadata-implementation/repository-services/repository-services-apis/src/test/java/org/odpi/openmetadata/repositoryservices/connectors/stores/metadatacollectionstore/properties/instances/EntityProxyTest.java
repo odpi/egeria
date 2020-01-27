@@ -297,44 +297,4 @@ public class EntityProxyTest
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
 
-    /**
-     * Test that differences are properly calculated
-     */
-    @Test public void testDifferences()
-    {
-
-        EntityProxy testObject = getTestObject();
-        EntityProxy anotherObject = getTestObject();
-
-        InstanceDifferences differences = testObject.differences(anotherObject);
-        assertNotNull(differences);
-        assertFalse(differences.hasDifferences());
-
-        // Change a unique property and ensure that shows as a difference
-        InstanceProperties ip = new InstanceProperties();
-        InstancePropertyValue ipv = new InstancePropertyValueMock();
-        ipv.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
-        ipv.setTypeName("TestPropertyType");
-        ipv.setTypeGUID("TestPropertyGUID");
-        Map<String, InstancePropertyValue> properties = new HashMap<>();
-        properties.put("propertyName", ipv);
-        ip.setInstanceProperties(properties);
-        anotherObject.setUniqueProperties(ip);
-
-        differences = testObject.differences(anotherObject);
-        assertTrue(differences.hasDifferences());
-        assertTrue(differences.hasInstancePropertiesDifferences());
-        assertFalse(differences.hasClassificationDifferences()); // no classifications on a proxy so this should always be false
-        InstancePropertiesDifferences ipd = differences.getInstancePropertiesDifferences();
-        assertNotNull(ipd);
-        assertTrue(ipd.isDifferent("propertyName"));
-        Set<String> differingInstanceProperties = ipd.getNames();
-        assertNotNull(differingInstanceProperties);
-        assertEquals(differingInstanceProperties.size(), 1);
-        assertTrue(differingInstanceProperties.contains("propertyName"));
-        assertEquals(ipd.getLeftValue("propertyName"), new PrimitivePropertyValue());
-        assertEquals(ipd.getRightValue("propertyName"), ipv);
-
-    }
-
 }
