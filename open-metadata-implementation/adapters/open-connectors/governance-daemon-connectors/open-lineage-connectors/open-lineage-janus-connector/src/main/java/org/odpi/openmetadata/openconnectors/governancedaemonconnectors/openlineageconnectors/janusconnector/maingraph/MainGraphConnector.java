@@ -8,6 +8,7 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
@@ -41,7 +42,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("main Graph cannot be initialized, something went wrong. The error is {}", error);
+            log.error("The Main graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -63,6 +64,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         try {
             g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
         } catch (NoSuchElementException e) {
+            log.debug("Requested element was not found", e);
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
             throw new OpenLineageException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -128,7 +130,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return out.toString();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -136,4 +137,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
         return mainGraph;
     }
 
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        mainGraph.close();
+        super.disconnect();
+    }
 }
