@@ -6,10 +6,12 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * EntitySummaryTest provides test of EntitySummary
@@ -230,5 +232,4 @@ public class EntitySummaryTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
-
 }

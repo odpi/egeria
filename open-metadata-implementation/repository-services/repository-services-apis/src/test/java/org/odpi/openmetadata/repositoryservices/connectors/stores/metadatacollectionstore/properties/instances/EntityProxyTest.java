@@ -8,7 +8,8 @@ import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * EntityProxyTest provides test of EntityProxy
@@ -296,5 +297,4 @@ public class EntityProxyTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
-
 }

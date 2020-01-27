@@ -9,7 +9,8 @@ import org.testng.annotations.Test;
 import java.io.Serializable;
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * InstanceAuditHeaderTest provides test of InstanceAuditHeader
@@ -198,5 +199,4 @@ public class InstanceAuditHeaderTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
-
 }

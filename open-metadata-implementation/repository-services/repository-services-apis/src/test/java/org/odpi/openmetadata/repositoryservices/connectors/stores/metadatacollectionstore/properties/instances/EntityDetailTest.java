@@ -8,7 +8,8 @@ import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * EntityDetailTest provides test of EntityDetail
@@ -291,5 +292,4 @@ public class EntityDetailTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
-
 }

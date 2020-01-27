@@ -7,10 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.util.Date;
-import java.util.Set;
 
-import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * InstanceHeaderTest provides test of InstanceHeader
@@ -183,5 +182,4 @@ public class InstanceHeaderTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
-
 }
