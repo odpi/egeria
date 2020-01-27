@@ -8,8 +8,7 @@ import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * EntityDetailTest provides test of EntityDetail
@@ -292,4 +291,49 @@ public class EntityDetailTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
+
+    /**
+     * Test that differences are properly calculated
+     */
+    @Test public void testDifferences()
+    {
+
+        EntityDetail testObject = getTestObject();
+        EntityDetail anotherObject = getTestObject();
+
+        InstanceDifferences differences = testObject.differences(anotherObject);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change an instance property and ensure that shows as a difference
+        InstanceProperties ip = new InstanceProperties();
+        InstancePropertyValue ipv = new InstancePropertyValueMock();
+        ipv.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
+        ipv.setTypeName("TestPropertyType");
+        ipv.setTypeGUID("TestPropertyGUID");
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+        properties.put("testPropertyName", ipv);
+        ip.setInstanceProperties(properties);
+        anotherObject.setProperties(ip);
+
+        differences = testObject.differences(anotherObject);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasInstancePropertiesDifferences());
+        assertFalse(differences.hasClassificationDifferences());
+        InstancePropertiesDifferences ipd = differences.getInstancePropertiesDifferences();
+        assertNotNull(ipd);
+        assertTrue(ipd.isDifferent("testPropertyName"));
+        Set<String> differingInstanceProperties = ipd.getNames();
+        assertNotNull(differingInstanceProperties);
+        assertEquals(differingInstanceProperties.size(), 2);
+        assertTrue(differingInstanceProperties.contains("testPropertyName"));
+        assertNull(ipd.getLeftValue("testPropertyName"));
+        assertEquals(ipd.getRightValue("testPropertyName"), ipv);
+        assertEquals(ipd.getLeftValue("propertyName"), entityProperties.getPropertyValue("propertyName"));
+        assertNull(ipd.getRightValue("propertyName"));
+
+        // (Classification changes are tested in EntitySummaryTest)
+
+    }
+
 }

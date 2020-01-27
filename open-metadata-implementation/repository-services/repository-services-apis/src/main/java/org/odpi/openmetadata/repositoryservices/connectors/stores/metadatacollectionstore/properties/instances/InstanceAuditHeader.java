@@ -86,7 +86,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = Classification.class, name = "Classification"),
         @JsonSubTypes.Type(value = InstanceHeader.class, name = "InstanceHeader")
 })
-public abstract class InstanceAuditHeader extends InstanceElementHeader
+public abstract class InstanceAuditHeader extends InstanceElementHeader implements DifferenceCalculator
 {
     private static final long    serialVersionUID = 1L;
 
@@ -629,4 +629,35 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                             getInstanceLicense(), getCreatedBy(), getUpdatedBy(), getCreateTime(), getMaintainedBy(), getUpdateTime(),
                             getVersion(), getStatus(), getStatusOnDelete(), getMappingProperties());
     }
+
+    /**
+     * Calculate the differences between this InstanceAuditHeader and the other provided.
+     *
+     * @param other the other instance to compare against
+     * @return InstanceDifferences
+     */
+    @JsonIgnore
+    @Override
+    public <T extends InstanceAuditHeader> InstanceDifferences differences(T other)
+    {
+        InstanceDifferences differences = new InstanceDifferences();
+        if (!this.equals(other)) {
+            differences.check("Version", getVersion(), other.getVersion());
+            differences.check("Type", getType(), other.getType());
+            differences.check("InstanceProvenanceType", getInstanceProvenanceType(), other.getInstanceProvenanceType());
+            differences.check("MetadataCollectionId", getMetadataCollectionId(), other.getMetadataCollectionId());
+            differences.check("ReplicatedBy", getReplicatedBy(), other.getReplicatedBy());
+            differences.check("InstanceLicense", getInstanceLicense(), other.getInstanceLicense());
+            differences.check("CreatedBy", getCreatedBy(), other.getCreatedBy());
+            differences.check("UpdatedBy", getUpdatedBy(), other.getUpdatedBy());
+            differences.check("MaintainedBy", getMaintainedBy(), other.getMaintainedBy());
+            differences.check("CreateTime", getCreateTime(), other.getCreateTime());
+            differences.check("UpdateTime", getUpdateTime(), other.getUpdateTime());
+            differences.check("Status", getStatus(), other.getStatus());
+            differences.check("StatusOnDelete", getStatusOnDelete(), other.getStatusOnDelete());
+            differences.check("MappingProperties", getMappingProperties(), other.getMappingProperties());
+        }
+        return differences;
+    }
+
 }

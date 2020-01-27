@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -158,4 +159,24 @@ public class EntityProxy extends EntitySummary
     {
         return Objects.hash(super.hashCode(), getUniqueProperties());
     }
+
+
+    /**
+     * Calculate the differences between this Relationship and the other provided.
+     *
+     * @param other the other instance to compare against
+     * @return InstanceDifferences
+     */
+    @JsonIgnore
+    @Override
+    public <T extends InstanceAuditHeader> InstanceDifferences differences(T other)
+    {
+        InstanceDifferences differences = super.differences(other);
+        if (!this.equals(other) && other instanceof EntityProxy) {
+            EntityProxy that = (EntityProxy) other;
+            differences.checkInstanceProperties(getUniqueProperties(), that.getUniqueProperties());
+        }
+        return differences;
+    }
+
 }

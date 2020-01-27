@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = EntitySummary.class, name = "EntitySummary"),
         @JsonSubTypes.Type(value = Relationship.class, name = "Relationship")
 })
-public abstract class InstanceHeader extends InstanceAuditHeader
+public abstract class InstanceHeader extends InstanceAuditHeader implements DifferenceCalculator
 {
     private static final long    serialVersionUID = 1L;
 
@@ -167,4 +167,24 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     {
         return Objects.hash(super.hashCode(), guid, getInstanceURL());
     }
+
+    /**
+     * Calculate the differences between this InstanceHeader and the other provided.
+     *
+     * @param other the other instance to compare against
+     * @return InstanceDifferences
+     */
+    @JsonIgnore
+    @Override
+    public <T extends InstanceAuditHeader> InstanceDifferences differences(T other)
+    {
+        InstanceDifferences differences = super.differences(other);
+        if (!this.equals(other) && other instanceof InstanceHeader) {
+            InstanceHeader that = (InstanceHeader) other;
+            differences.check("GUID", getGUID(), that.getGUID());
+            differences.check("InstanceURL", getInstanceURL(), that.getInstanceURL());
+        }
+        return differences;
+    }
+
 }

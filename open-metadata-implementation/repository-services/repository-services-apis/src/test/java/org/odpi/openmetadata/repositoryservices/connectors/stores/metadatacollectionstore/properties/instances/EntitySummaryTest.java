@@ -6,12 +6,10 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  * EntitySummaryTest provides test of EntitySummary
@@ -232,4 +230,82 @@ public class EntitySummaryTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
+
+    /**
+     * Test that differences are properly calculated
+     */
+    @Test public void testDifferences()
+    {
+
+        EntitySummary testObject = getTestObject();
+        EntitySummary anotherObject = getTestObject();
+
+        InstanceDifferences differences = testObject.differences(anotherObject);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change an instance property and ensure that shows as a difference
+        InstanceProperties ip = new InstanceProperties();
+        InstancePropertyValue ipv = new InstancePropertyValueMock();
+        ipv.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
+        ipv.setTypeName("TestPropertyType");
+        ipv.setTypeGUID("TestPropertyGUID");
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+        properties.put("testPropertyName", ipv);
+        ip.setInstanceProperties(properties);
+
+        // Change just a property within the classification and ensure that flags differences
+        Classification update = new Classification();
+        update.setName("TestClassification");
+        update.setProperties(ip);
+        List<Classification> list = new ArrayList<>();
+        list.add(update);
+        anotherObject.setClassifications(list);
+        differences = testObject.differences(anotherObject);
+        assertTrue(differences.hasDifferences());
+        assertFalse(differences.hasInstancePropertiesDifferences()); // no instance properties on a summary, so this should always be false
+        assertTrue(differences.hasClassificationDifferences());
+        ClassificationDifferences cd = differences.getClassificationDifferences();
+        assertNotNull(cd);
+        assertTrue(cd.isDifferent("TestClassification"));
+        Set<String> differingClassifications = cd.getNames();
+        assertNotNull(differingClassifications);
+        assertEquals(differingClassifications.size(), 1);
+        assertTrue(differingClassifications.contains("TestClassification"));
+
+        // Calculate the instance properties differences within the classification to show their difference
+        InstancePropertiesDifferences ipd = new InstancePropertiesDifferences();
+        ipd.check(
+                ((Classification)cd.getLeftValue("TestClassification")).getProperties(),
+                ((Classification)cd.getRightValue("TestClassification")).getProperties()
+        );
+        assertTrue(ipd.hasDifferences());
+        assertTrue(ipd.isDifferent("testPropertyName"));
+        assertTrue(ipd.getOnlyOnRight().containsKey("testPropertyName"));
+
+        // Change the classifications list and ensure that shows as a difference
+        List<Classification> classifications = new ArrayList<>();
+        Classification confidentiality = new Classification();
+        confidentiality.setName("Confidentiality");
+        classifications.add(confidentiality);
+        anotherObject.setClassifications(classifications);
+        differences = testObject.differences(anotherObject);
+        assertTrue(differences.hasDifferences());
+        assertFalse(differences.hasInstancePropertiesDifferences());
+        assertTrue(differences.hasClassificationDifferences());
+        cd = differences.getClassificationDifferences();
+        assertNotNull(cd);
+        assertTrue(cd.isDifferent("Confidentiality"));
+        differingClassifications = cd.getNames();
+        assertNotNull(differingClassifications);
+        assertEquals(differingClassifications.size(), 2);
+        assertTrue(differingClassifications.contains("Confidentiality"));
+        assertNull(cd.getLeftValue("Confidentiality"));
+        assertEquals(cd.getRightValue("Confidentiality"), confidentiality);
+        Map<String, Object> onlyOnRight = cd.getOnlyOnRight();
+        assertTrue(onlyOnRight.containsKey("Confidentiality"));
+        assertEquals(onlyOnRight.get("Confidentiality"), confidentiality);
+
+    }
+
 }
