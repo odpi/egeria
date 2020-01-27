@@ -10,6 +10,7 @@ import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
@@ -41,7 +42,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         try {
             this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("buffer Graph cannot be initialized, something went wrong. The error is {}", error);
+            log.error("The Buffer graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -340,5 +341,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
+    }
+
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        this.bufferGraph.close();
+        super.disconnect();
     }
 }
