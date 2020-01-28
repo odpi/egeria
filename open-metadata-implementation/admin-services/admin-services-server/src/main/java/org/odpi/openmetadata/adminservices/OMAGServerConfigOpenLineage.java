@@ -76,10 +76,10 @@ public class OMAGServerConfigOpenLineage {
 
             configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
             serverConfig.setAuditTrail(configAuditTrail);
-        } catch (OMAGInvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (Throwable error) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        } catch (OMAGInvalidParameterException e) {
+            exceptionHandler.captureInvalidParameterException(response, e);
+        } catch (Throwable e) {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, e);
         }
 
         return response;
