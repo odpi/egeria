@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -43,13 +42,9 @@ public class OMAGServerConfigOpenLineage {
         try {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-
-            if (openLineageServerConfig.getInTopicName() == null)
-                throwMissingPropertyException(serverName, "inTopicName");
-            if (openLineageServerConfig.getOpenLineageBufferGraphConnection() == null)
-                throwMissingPropertyException(serverName, "bufferGraphConnection");
-            if (openLineageServerConfig.getOpenLineageMainGraphConnection() == null)
-                throwMissingPropertyException(serverName, "mainGraphConnection");
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageBufferGraphConnection(), "bufferGraphConnection", serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageMainGraphConnection(), "mainGraphConnection", serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
@@ -84,16 +79,7 @@ public class OMAGServerConfigOpenLineage {
         return response;
     }
 
-    private void throwMissingPropertyException(String serverName, String missingProperty) throws OMAGInvalidParameterException {
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY;
 
-        throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                "setOpenLineageConfig",
-                errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, missingProperty),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
 
     /**
      * Remove this service from the server configuration.

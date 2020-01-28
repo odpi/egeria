@@ -367,4 +367,17 @@ class OMAGServerErrorHandler
                                                     errorCode.getUserAction());
         }
     }
+
+    void validatePropertyNotNull(Object property, String propertyName, String serverName, String methodName) throws OMAGInvalidParameterException {
+      if(property != null)
+          return;
+        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY;
+
+        throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, propertyName),
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
 }
