@@ -55,7 +55,7 @@ public class OMAGServerConfigOpenLineage {
                 openLineageServerConfig.setInTopicConnection(
                         connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,
                                 eventBusConfig.getConnectorProvider(),
-                                eventBusConfig.getTopicURLRoot() + ".server",
+                                eventBusConfig.getTopicURLRoot(),
                                 openLineageServerConfig.getInTopicName(),
                                 UUID.randomUUID().toString(),
                                 eventBusConfig.getConfigurationProperties())
