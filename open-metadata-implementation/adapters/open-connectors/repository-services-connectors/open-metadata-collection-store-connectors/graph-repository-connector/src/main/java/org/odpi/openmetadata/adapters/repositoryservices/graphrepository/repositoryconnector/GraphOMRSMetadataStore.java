@@ -861,39 +861,18 @@ class GraphOMRSMetadataStore {
 
         if (vertexIt.hasNext()) {
 
-            vertex = vertexIt.next();
-            log.debug("{} found existing vertex {}", methodName, vertex);
-
             /*
-             * Check the metadataCollectionId matches the metadataCollectionId of the
-             * passed entity. It does not matter if it is the local metadataCollectionId
-             * or not - the entity will be reused in either case.
+             * There is a vertex for the entity.
+             * It could be the master, a ref copy or a proxy. In any of these cases
+             * it will be reused.
+             * There is no point performing validation checks on type, home metadataCollection, etc
+             * because there could be pending events that this repository has not seen yet. Any
+             * updates to the entity will be handled via entity instance events.
              */
-            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
 
-            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex for end1 {}", methodName, vertex);
 
-                /*
-                 *  Error condition
-                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
-                 *
-                 */
-
-                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
-                g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
         }
         else {
             // Entity does not exist, create proxy
@@ -906,39 +885,17 @@ class GraphOMRSMetadataStore {
 
         if (vertexIt.hasNext()) {
 
-            vertex = vertexIt.next();
-            log.debug("{} found existing vertex {}", methodName, vertex);
-
             /*
-             * Check the metadataCollectionId matches the metadataCollectionId of the
-             * passed entity. It does not matter if it is the local metadataCollectionId
-             * or not - the entity will be reused in either case.
+             * There is a vertex for the entity.
+             * It could be the master, a ref copy or a proxy. In any of these cases
+             * it will be reused.
+             * There is no point performing validation checks on type, home metadataCollection, etc
+             * because there could be pending events that this repository has not seen yet. Any
+             * updates to the entity will be handled via entity instance events.
              */
-            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
 
-            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
-
-                /*
-                 *  Error condition
-                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
-                 *
-                 */
-
-                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
-                g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex for end2 {}", methodName, vertex);
         }
         else {
             // Entity does not exist, create proxy
