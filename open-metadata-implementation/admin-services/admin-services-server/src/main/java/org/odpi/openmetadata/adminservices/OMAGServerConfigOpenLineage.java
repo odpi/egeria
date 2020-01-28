@@ -20,7 +20,7 @@ public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
 
     private static final String serviceName = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
-    private static final String defaultALOutTopicName = "omas.omas.assetlineage.outTopic";
+    private static final String defaultInTopicName = "inTopic";
 
 
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
@@ -53,7 +53,7 @@ public class OMAGServerConfigOpenLineage {
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
                 openLineageServerConfig.setInTopicConnection(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,
+                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot(),
                                 openLineageServerConfig.getInTopicName(),
