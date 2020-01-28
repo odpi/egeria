@@ -44,15 +44,12 @@ public class OMAGServerConfigOpenLineage {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            if (openLineageServerConfig.getInTopicName() == null) {
+            if (openLineageServerConfig.getInTopicName() == null)
                 throwMissingPropertyException(serverName, "inTopicName");
-            }
-            if (openLineageServerConfig.getOpenLineageBufferGraphConnection() == null) {
+            if (openLineageServerConfig.getOpenLineageBufferGraphConnection() == null)
                 throwMissingPropertyException(serverName, "bufferGraphConnection");
-            }
-            if (openLineageServerConfig.getOpenLineageMainGraphConnection() == null) {
+            if (openLineageServerConfig.getOpenLineageMainGraphConnection() == null)
                 throwMissingPropertyException(serverName, "mainGraphConnection");
-            }
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
