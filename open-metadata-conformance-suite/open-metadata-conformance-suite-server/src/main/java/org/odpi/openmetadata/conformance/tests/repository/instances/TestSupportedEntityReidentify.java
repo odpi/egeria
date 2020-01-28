@@ -6,7 +6,6 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,55 +25,52 @@ import java.util.UUID;
 /**
  * Test that all defined entities can be created, reidentified and deleted
  */
-public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
-{
+public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase {
     private static final String testCaseId = "repository-entity-reidentify";
     private static final String testCaseName = "Repository entity reidentify test case";
 
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " new entity created.";
+    private static final String assertion1 = testCaseId + "-01";
+    private static final String assertionMsg1 = " new entity created.";
 
-    private static final String assertion2     = testCaseId + "-02";
-    private static final String assertionMsg2  = " new entity retrieved.";
+    private static final String assertion2 = testCaseId + "-02";
+    private static final String assertionMsg2 = " new entity retrieved.";
 
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = " entity is reidentified.";
+    private static final String assertion3 = testCaseId + "-03";
+    private static final String assertionMsg3 = " entity is reidentified.";
 
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " entity with new identity version number is ";
+    private static final String assertion4 = testCaseId + "-04";
+    private static final String assertionMsg4 = " entity with new identity version number is ";
 
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " entity no longer retrievable by previous GUID.";
+    private static final String assertion5 = testCaseId + "-05";
+    private static final String assertionMsg5 = " entity no longer retrievable by previous GUID.";
 
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " entity retrievable by new GUID.";
-
-
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " repository supports creation of instances.";
-
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " repository supports reidentify of instances.";
+    private static final String assertion6 = testCaseId + "-06";
+    private static final String assertionMsg6 = " entity retrievable by new GUID.";
 
 
+    private static final String assertion7 = testCaseId + "-07";
+    private static final String assertionMsg7 = " repository supports creation of instances.";
+
+    private static final String assertion8 = testCaseId + "-08";
+    private static final String assertionMsg8 = " repository supports reidentify of instances.";
 
 
-    private String            metadataCollectionId;
-    private EntityDef         entityDef;
-    private String            testTypeName;
+    private String metadataCollectionId;
+    private EntityDef entityDef;
+    private String testTypeName;
 
 
-    private List<EntityDetail>  createdEntitiesTUT = new ArrayList<>();
+    private List<EntityDetail> createdEntitiesTUT = new ArrayList<>();
 
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
      *
-     * @param workPad place for parameters and results
+     * @param workPad   place for parameters and results
      * @param entityDef type of valid entities
      */
     public TestSupportedEntityReidentify(RepositoryConformanceWorkPad workPad,
-                                         EntityDef               entityDef)
+                                         EntityDef entityDef)
     {
         super(workPad,
               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
@@ -105,6 +102,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         EntityDetail newEntity;
 
+        InstanceProperties instProps = null;
+
         try {
 
 
@@ -115,22 +114,23 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
              * entity that is logically complete - versus an instance with just the locally-defined properties.
              */
 
+            instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
-                                                     super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                    null,
-                                                    null);
+                                                     instProps,
+                                                     null,
+                                                     null);
 
             assertCondition((true),
-                    assertion7,
-                    testTypeName + assertionMsg7,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            assertion7,
+                            testTypeName + assertionMsg7,
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             createdEntitiesTUT.add(newEntity);
 
-        }
-        catch (FunctionNotSupportedException exception) {
+        } catch (FunctionNotSupportedException exception) {
             /*
              * If running against a read-only repository/connector that cannot add
              * entities or relationships catch FunctionNotSupportedException and give up the test.
@@ -139,18 +139,34 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
              */
 
             super.addNotSupportedAssertion(assertion7,
-                    assertionMsg7,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                           assertionMsg7,
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", entityDef.getGUID());
+            parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
+            parameters.put("initialClasiifications", "null");
+            parameters.put("initialStatus", "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
         assertCondition((newEntity != null),
-                assertion1,
-                testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        assertion1,
+                        testTypeName + assertionMsg1,
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -163,10 +179,10 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                assertion2,
-                testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        assertion2,
+                        testTypeName + assertionMsg2,
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
@@ -187,40 +203,58 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
 
             reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
-                    entityDef.getGUID(),
-                    entityDef.getName(),
-                    newEntity.getGUID(),
-                    newGUID);
+                                                                     entityDef.getGUID(),
+                                                                     entityDef.getName(),
+                                                                     newEntity.getGUID(),
+                                                                     newGUID);
 
-            assertCondition(true,
-                    assertion8,
-                    testTypeName + assertionMsg8,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-
-            createdEntitiesTUT.add(reIdentifiedEntity);
-
-            verifyCondition((reIdentifiedEntity.getGUID().equals(newGUID)),
-                    assertion3,
-                    testTypeName + assertionMsg3,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-
-
-            assertCondition((reIdentifiedEntity.getVersion() >= nextVersion),
-                    assertion4,
-                    testTypeName + assertionMsg4 + nextVersion,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-        }
-        catch (FunctionNotSupportedException exception) {
+        } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion8,
-                    assertionMsg8,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                                           assertionMsg8,
+                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
+            /* Give up the testcase */
+            return;
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reIdentifyEntity";
+            String operationDescription = "reidentify an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", entityDef.getGUID());
+            parameters.put("entityGUID", newEntity.getGUID());
+            parameters.put("newEntityGUID", newGUID);
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
+        assertCondition(true,
+                        assertion8,
+                        testTypeName + assertionMsg8,
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
+        createdEntitiesTUT.add(reIdentifiedEntity);
+
+        verifyCondition((reIdentifiedEntity.getGUID().equals(newGUID)),
+                        assertion3,
+                        testTypeName + assertionMsg3,
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
+
+        assertCondition((reIdentifiedEntity.getVersion() >= nextVersion),
+                        assertion4,
+                        testTypeName + assertionMsg4 + nextVersion,
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
         /*
          * Validate that the entity can no longer be retrieved under its original GUID.
@@ -230,16 +264,17 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
-                    assertion5,
-                    testTypeName + assertionMsg5,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            assertion5,
+                            testTypeName + assertionMsg5,
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+
         } catch (EntityNotKnownException exception) {
             assertCondition((true),
-                    assertion5,
-                    testTypeName + assertionMsg5,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            assertion5,
+                            testTypeName + assertionMsg5,
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }
 
 
@@ -249,19 +284,18 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         try {
             assertCondition((reIdentifiedEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newGUID))),
-                    assertion6,
-                    testTypeName + assertionMsg6,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            assertion6,
+                            testTypeName + assertionMsg6,
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        }
-        catch (EntityNotKnownException exception) {
+        } catch (EntityNotKnownException exception) {
 
             assertCondition((false),
-                    assertion6,
-                    testTypeName + assertionMsg6,
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            assertion6,
+                            testTypeName + assertionMsg6,
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
         }
 
 
@@ -279,11 +313,10 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         try {
 
             EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                    newEntity.getType().getTypeDefGUID(),
-                    newEntity.getType().getTypeDefName(),
-                    newGUID);
-        }
-        catch (FunctionNotSupportedException exception) {
+                                                                         newEntity.getType().getTypeDefGUID(),
+                                                                         newEntity.getType().getTypeDefName(),
+                                                                         newGUID);
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -291,12 +324,13 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                newEntity.getType().getTypeDefGUID(),
-                newEntity.getType().getTypeDefName(),
-                newGUID);
+                                       newEntity.getType().getTypeDefGUID(),
+                                       newEntity.getType().getTypeDefName(),
+                                       newGUID);
 
 
         super.setSuccessMessage("Entities can be reidentified");
+
     }
 
 

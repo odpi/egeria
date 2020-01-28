@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
@@ -88,6 +87,12 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
     private static final String assertion14     = testCaseId + "-14";
     private static final String assertionMsg14  = "findEntitiesByProperty with general regex returned expected results for type ";
+
+    private static final String assertion101    = testCaseId + "-101";
+    private static final String assertionMsg101 = "findEntitiesByPropertyValue supports general regular expressions: ";
+
+    private static final String assertion102    = testCaseId + "-102";
+    private static final String assertionMsg102 = "findEntitiesByProperty supports general regular expressions: ";
 
 
     private RepositoryConformanceWorkPad              workPad;
@@ -2185,6 +2190,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                         pageSize);
 
             }
+            catch (FunctionNotSupportedException exc) {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(assertion101,
+                                               assertionMsg101 + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+
+                return;
+
+            }
             catch(Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -2357,6 +2377,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+            }
+            catch (FunctionNotSupportedException exc) {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(assertion102,
+                                               assertionMsg102 + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+
+                return;
+
             }
             catch(Exception exc) {
                 /*
