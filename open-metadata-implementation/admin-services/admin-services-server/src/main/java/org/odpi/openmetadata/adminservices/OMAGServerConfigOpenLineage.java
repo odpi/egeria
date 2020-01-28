@@ -70,9 +70,8 @@ public class OMAGServerConfigOpenLineage {
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
                 configAuditTrail = new ArrayList<>();
-            }
 
             configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
             serverConfig.setAuditTrail(configAuditTrail);
@@ -116,9 +115,8 @@ public class OMAGServerConfigOpenLineage {
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
                 configAuditTrail = new ArrayList<>();
-            }
 
             configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
 
