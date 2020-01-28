@@ -18,7 +18,7 @@ class DataPrivacyInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     DataPrivacyInstanceHandler()
     {
-        super(AccessServiceDescription.DATA_PRIVACY_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DATA_PRIVACY_OMAS.getAccessServiceFullName());
 
         DataPrivacyRegistration.registerAccessService();
     }

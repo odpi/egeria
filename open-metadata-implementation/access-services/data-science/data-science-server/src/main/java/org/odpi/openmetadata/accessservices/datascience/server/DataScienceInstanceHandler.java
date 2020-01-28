@@ -18,7 +18,7 @@ class DataScienceInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     DataScienceInstanceHandler()
     {
-        super(AccessServiceDescription.DATA_SCIENCE_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DATA_SCIENCE_OMAS.getAccessServiceFullName());
 
         DataScienceRegistration.registerAccessService();
     }
