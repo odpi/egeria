@@ -87,23 +87,33 @@
          </dependency>
 
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.xerial.snappy</groupId>
-            <artifactId>snappy-java</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
         </dependency>
 
     </dependencies>
@@ -125,11 +135,13 @@
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cassandra:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>commons-codec:commons-codec:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>joda-time:joda-time:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.codehaus.jackson:jackson-mapper-asl:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.codehaus.jackson:jackson-core-asl:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:jar:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.xerial.snappy:snappy-java:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -137,4 +149,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

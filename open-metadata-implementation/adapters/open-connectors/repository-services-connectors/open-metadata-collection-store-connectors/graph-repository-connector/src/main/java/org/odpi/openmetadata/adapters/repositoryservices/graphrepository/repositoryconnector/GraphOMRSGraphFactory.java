@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -113,7 +114,7 @@ public class GraphOMRSGraphFactory {
         // you will need to configure the component-scan otherwise Spring boot tries to autoconfigure a
         // REST client which fails (on HttpHost).
 
-        if(storageProperties == null || storageProperties.isEmpty()){
+        if(MapUtils.isEmpty(storageProperties)){
             storageProperties = getBerkleyStorageProperties();
         }
         JanusGraphFactory.Builder build = JanusGraphFactory.build();
