@@ -181,6 +181,11 @@ public enum OMAGAdminErrorCode
             "The system is unable to initialize this view service.",
             "If the view service should be initialized then set up the appropriate admin services class name and restart the server instance."),
 
+    MISSING_CONFIGURATION_PROPERTY(400, "OMAG-ADMIN-400-030 ",
+            "The OMAG server {0} could not be started because no value for property {1} was set in the provided server configuration.",
+            "The system is unable to initialize the server.",
+            "Include the property in the provided server configuration."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",
