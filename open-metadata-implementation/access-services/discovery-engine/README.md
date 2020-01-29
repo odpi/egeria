@@ -37,13 +37,13 @@ categories.
 Figure 1 shows how these capabilities work together.
 
 ![Figure 1](docs/open-discovery-operation.png)
-**Figure 1:** Open Discovery Operation
+> **Figure 1:** Interfaces of the Discovery Engine OMAS
 
 The configuration of the discovery engines and the discovery services
 that they support are managed in the metadata server through
 the Discovery Engine OMAS.
 
-The Discovery Server is typically
+The [Discovery Server](../../admin-services/docs/concepts/discovery-server.md) is typically
 located close to the data assets to minimize the network traffic
 resulting from the analysis.  Where the data assets are
 distributed in multiple locations, it is possible to
@@ -63,25 +63,30 @@ the assets at its location.
 
 When the discovery server starts, it calls the Discovery
 Engine OMAS to retrieve the configuration for each of its
-discovery engines [Figure 1 - [1]](docs/open-discovery-operation.png).
+discovery engines (see Figure 1, number 1).
 It also connects to the Discovery Engine
 OMAS's out topic to receive any updates on this configuration
 while it is running.
 
-Within the discovery engine's configuration are the list
-of discovery types it supports that are in turn each linked to the
+Within the discovery engine's configuration are the list of 
+[discovery request types](../../frameworks/open-discovery-framework/docs/discovery-request-type.md) it supports that are in turn each linked to the
 discovery service that should run when one of these discovery
 types is requested to be run against a specific asset.
+This is shown in figure 2.
 
-On such a request, the discovery engine creates an instance
-of the discovery service and gives it access to a **discovery context**.
+![Figure 2](docs/discovery-engine-configuration.png)
+> **Figure 2:** Discovery Engine Configuration
+
+When a discovery request is made, the discovery engine creates an instance
+of the discovery service and gives it access to a
+[discovery context](../../frameworks/open-discovery-framework/docs/discovery-context.md).
 The discovery context provides access to existing metadata known about the Asset, a connector
 to access the data stored in the asset and a store to
 record the new metadata it has discovered about the asset.
 Behind the scenes, the discovery context is calling
 the Discovery Engine OMAS to both retrieve metadata
-about the Asset and its connector [Figure 1 - [2]](docs/open-discovery-operation.png),
-and to store the new metadata [Figure 1 - [3]](docs/open-discovery-operation.png).
+about the Asset and its connector (see Figure 1, number 2],
+and to store the new metadata (Figure 1, number 3).
 
 The [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework)
 provides more information about the discovery engines and
@@ -89,7 +94,7 @@ discovery services along with the metadata APIs.
 
 In Egeria, both the metadata server where the Discovery Engine OMAS runs
 and the discovery server are types of [OMAG Servers](../../../open-metadata-publication/website/omag-server/omag-server.md).
-Mode information on the operation of the discovery server
+More information on the operation of the discovery server
 can be found under the [Discovery Engine Services](../../governance-servers/discovery-engine-services).
 These services belong to the specialist subsystem of the discovery server.
 
@@ -108,7 +113,7 @@ interfaces for the Discovery Engine OMAS, this module only needs to provide the
 interfaces associated with the out topic.
 
 * [discovery-engine-connectors](discovery-engine-connectors) supports the 
-connector implementations for the out topic.
+connector implementations for the out topic - both client side and server side.
 
 * [discovery-engine-server](discovery-engine-server) supports in implementation of the metadata interfaces
 defined by the Open Discovery Framework (ODF) and its related event management.
