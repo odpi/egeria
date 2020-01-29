@@ -39,7 +39,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum OpenLineageServerErrorCode {
 
     NO_CONFIG_DOC(400, "OPEN-LINEAGE-SERVER-400-001 ",
-            "Open Lineage server {0} does not have a configuration document",
+            "Open Lineage server {0} does not have a configuration document.",
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
@@ -53,41 +53,41 @@ public enum OpenLineageServerErrorCode {
 
     CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVER-400-006 ",
             "It is not possible to open the graph database at path {0} in the {1} method of {2} class.",
-            "Graph could not be opened due to invalid configuration",
+            "Graph could not be opened due to invalid configuration.",
             "Please check that the graph database exists and is not in use by another process."),
 
     ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-007 ",
-            "The Open Lineage server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}",
-            "The Buffergraph database connector could not be initialized",
-            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "The Open Lineage server {0} is not able to initialize the Buffergraph database connector.",
+            "The Buffergraph database connector could not be initialized.",
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
     ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-008 ",
-            "The Open Lineage server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}",
-            "The Maingraph database connector could not be initialized",
-            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "The Open Lineage server {0} is not able to initialize the Maingraph database connector.",
+            "The Maingraph database connector could not be initialized.",
+            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
     ERROR_STARTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-009 ",
-            "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\" with the values provided in configuration {1}",
-            "The Buffergraph database connector could not be started",
-            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\".",
+            "The Buffergraph database connector could not be started.",
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
     ERROR_STARTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-010 ",
-            "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" with the values provided in configuration {1}",
-            "The Maingraph database connector could not be started",
-            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
+            "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" .",
+            "The Maingraph database connector could not be started.",
+            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-011 ",
-            "The Open Lineage Services server {0} was unable to obtain an in topic connector with the provided configuration {1}.",
+            "The Open Lineage Services server {0} was unable to obtain an in topic connector.",
             "The in topic connector could not be obtained.",
-            "Review the topic name set by the Open Lineage Services configuration"),
+            "Review the topic name set by the Open Lineage Services configuration."),
 
     NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
-            "Error retrieving queried node",
+            "Error retrieving queried node.",
             "The queried node was not found in the lineage graph.",
-            "Please verify the queried GUID"),
+            "Please verify the queried GUID."),
 
     GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001 ",
-            "The graph database could not be initialized for open metadata repository {0}",
+            "The graph database could not be initialized for open metadata repository {0}.",
             "The system was unable to initialize.",
             "Please raise a github issue."),
 

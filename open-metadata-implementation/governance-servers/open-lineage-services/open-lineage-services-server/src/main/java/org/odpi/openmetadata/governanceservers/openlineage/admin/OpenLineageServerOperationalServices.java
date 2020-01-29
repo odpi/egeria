@@ -107,8 +107,6 @@ public class OpenLineageServerOperationalServices {
     }
 
     private void initializeOLS(OpenLineageServerConfig openLineageServerConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        if(true)
-            throw new NullPointerException();
         final String methodName = "initializeOLS";
         final String actionDescription = "Initialize Open lineage Services";
         this.openLineageServerConfig = openLineageServerConfig;
