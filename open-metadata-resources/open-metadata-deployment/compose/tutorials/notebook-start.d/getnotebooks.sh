@@ -27,6 +27,14 @@ git pull
 # Always go directly to the tutorials
 cd open-metadata-resources/open-metadata-labs
 
+# Fix permissions if running as root - Should be done by notebook image 
+if [[ `id -u` == "0" ]]
+then
+  home_owner=`stat --format=%U ${HOME}`
+  home_group=`stat --format=%G ${HOME}`
+  chown -R ${home_owner}:${home_group} ${HOME}
+fi
+
 echo '*****************************************************'
 echo '*                                                   *'
 echo '* Egeria open metadata labs notebooks ready for use *'

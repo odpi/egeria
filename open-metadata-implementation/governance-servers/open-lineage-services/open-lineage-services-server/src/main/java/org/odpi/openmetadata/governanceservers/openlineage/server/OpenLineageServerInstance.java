@@ -18,8 +18,9 @@ public class OpenLineageServerInstance extends OMAGServerServiceInstance {
 
     /**
      * Constructor where REST Services used.
-     *  @param serverName  name of this server
-     * @param serviceName name of this service
+     *
+     * @param serverName         name of this server
+     * @param serviceName        name of this service
      * @param openLineageHandler
      */
     public OpenLineageServerInstance(String serverName,
@@ -37,7 +38,7 @@ public class OpenLineageServerInstance extends OMAGServerServiceInstance {
      * @return OpenLineageHandler.
      */
     OpenLineageHandler getOpenLineageHandler() throws OpenLineageException {
-        final String  methodName        = "getOpenLineageHandler";
+        final String methodName = "getOpenLineageHandler";
         if (this.openLineageHandler == null) {
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
