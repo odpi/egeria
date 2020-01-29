@@ -16,11 +16,9 @@ public class GraphVertexMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphVertexMapper.class);
 
-
     public void mapEntityToVertex(LineageEntity lineageEntity, Vertex vertex){
 
         mapEntitySummaryToVertex(lineageEntity, vertex);
-
         Map<String,String> instanceProperties = lineageEntity.getProperties();
         if (instanceProperties != null) {
 
@@ -29,10 +27,7 @@ public class GraphVertexMapper {
                 vertex.property(key,entry.getValue());
             }
         }
-
     }
-
-
 
     public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex){
 

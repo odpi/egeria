@@ -23,7 +23,6 @@ public class InTopicListener implements OpenMetadataTopicListener {
         this.auditLog = auditLog;
     }
 
-
     /**
      * @param eventAsString contains all the information needed to build asset lineage like connection details, database
      *                      name, schema name, table name, derived columns details
@@ -62,6 +61,7 @@ public class InTopicListener implements OpenMetadataTopicListener {
                 break;
             case DELETE_ENTITY_EVENT:
                 storingServices.deleteEntity(event);
+                break;
             default:
                 break;
         }
