@@ -90,14 +90,14 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /*
      * Values in use by this server.
      */
-    private String                    localServerId             = UUID.randomUUID().toString();
-    private String                    localServerName           = null;
-    private String                    localServerType           = defaultLocalServerType;
-    private String                    organizationName          = defaultLocalOrganizationName;
-    private String                    localServerURL            = defaultLocalServerURL;
-    private String                    localServerUserId         = defaultLocalServerUserId;
-    private String                        localServerPassword           = null;
-    private int                           maxPageSize                   = defaultMaxPageSize;
+    private String                          localServerId                   = UUID.randomUUID().toString();
+    private String                          localServerName                 = null;
+    private String                          localServerType                 = defaultLocalServerType;
+    private String                          organizationName                = defaultLocalOrganizationName;
+    private String                          localServerURL                  = defaultLocalServerURL;
+    private String                          localServerUserId               = defaultLocalServerUserId;
+    private String                          localServerPassword             = null;
+    private int                             maxPageSize                     = defaultMaxPageSize;
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
@@ -108,10 +108,10 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private StewardshipEngineServicesConfig stewardshipEngineServicesConfig = null;
     private SecuritySyncConfig              securitySyncConfig              = null;
     private SecurityOfficerConfig           securityOfficerConfig           = null;
-    private List<String>                    auditTrail                      = null;
     private VirtualizationConfig            virtualizationConfig            = null;
     private DataEngineProxyConfig           dataEngineProxyConfig           = null;
     private DataPlatformServicesConfig      dataPlatformServicesConfig      = null;
+    private List<String>                    auditTrail                      = null;
 
 
     /**
