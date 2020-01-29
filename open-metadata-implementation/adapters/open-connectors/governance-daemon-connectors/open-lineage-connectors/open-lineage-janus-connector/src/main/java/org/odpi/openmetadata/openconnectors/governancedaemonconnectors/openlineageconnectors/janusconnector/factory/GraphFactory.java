@@ -174,7 +174,7 @@ public class GraphFactory extends IndexingFactory {
      */
     private void createIndexesMainGraph(JanusGraph janusGraph){
         createCompositeIndexForProperty(PROPERTY_NAME_NODE_ID,PROPERTY_KEY_ENTITY_NODE_ID,true,janusGraph, Vertex.class);
-        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,false,janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_LABEL,false,janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,janusGraph, Edge.class);
 
