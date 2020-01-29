@@ -43,21 +43,6 @@ public enum OpenLineageServerErrorCode {
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
-    INVALID_SCOPE(400, "OPEN-LINEAGE-SERVER-400-002 ",
-            "Invalid scope argument",
-            "The scope value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed scope values"),
-
-    INVALID_VIEW(400, "OPEN-LINEAGE-SERVER-400-003 ",
-            "Invalid view argument",
-            "The view value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed view values"),
-
-    INVALID_SOURCE(400, "OPEN-LINEAGE-SERVER-400-004 ",
-            "Invalid sources argument",
-            "The source value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed source values"),
-
     SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-005 ",
             "The open lineage  services are unable to initialize a new instance of open lineage server {0};" +
                     " error message is {1}",
