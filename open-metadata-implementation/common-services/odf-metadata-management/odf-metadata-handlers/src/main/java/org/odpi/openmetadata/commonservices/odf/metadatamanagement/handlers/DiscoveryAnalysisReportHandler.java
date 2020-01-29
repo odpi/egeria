@@ -93,7 +93,7 @@ public class DiscoveryAnalysisReportHandler
                                                                  String                  description,
                                                                  Date                    creationDate,
                                                                  Map<String, String>     analysisParameters,
-                                                                 DiscoveryRequestStatus  discoveryRequestStatus,
+                                                                 DiscoveryRequestStatus discoveryRequestStatus,
                                                                  String                  assetGUID,
                                                                  String                  discoveryEngineGUID,
                                                                  String                  discoveryServiceGUID,

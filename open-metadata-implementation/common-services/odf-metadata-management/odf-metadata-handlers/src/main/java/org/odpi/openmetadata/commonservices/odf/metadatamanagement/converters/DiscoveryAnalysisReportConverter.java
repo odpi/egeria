@@ -3,11 +3,7 @@
 package org.odpi.openmetadata.commonservices.odf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.GovernanceDefinitionMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.LicenseMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryAnalysisReportMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.License;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;

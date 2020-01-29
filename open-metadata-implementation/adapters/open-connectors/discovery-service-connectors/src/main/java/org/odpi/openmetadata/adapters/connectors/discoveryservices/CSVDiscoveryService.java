@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.samples.discoveryservices;
+package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * CSVDiscoveryService is a discovery service implementation for analysing CSF Files.
  */
-public class CSVDiscoveryService extends DiscoveryService
+public class CSVDiscoveryService extends AuditableDiscoveryService
 {
     private final static String STRING_TYPE_NAME  = "string";
     private final static String CHAR_TYPE_NAME    = "char";
@@ -135,7 +135,7 @@ public class CSVDiscoveryService extends DiscoveryService
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
      *
-     * @throws DiscoveryServiceException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
     public void start() throws ConnectorCheckedException
     {
@@ -145,6 +145,7 @@ public class CSVDiscoveryService extends DiscoveryService
 
         try
         {
+
             CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)discoveryContext.getAssetStore().getConnectorToAsset();
             DiscoveryAnnotationStore annotationStore = discoveryContext.getAnnotationStore();
             int                      size            = 0;

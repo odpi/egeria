@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
 
 import java.util.List;
 import java.util.Map;
@@ -259,8 +258,8 @@ public class DiscoveryEngineClient extends DiscoveryEngine
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  DiscoveryRequestStatus getDiscoveryStatus(String   userId,
-                                                      String   discoveryRequestGUID) throws InvalidParameterException,
+    public DiscoveryRequestStatus getDiscoveryStatus(String   userId,
+                                                     String   discoveryRequestGUID) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             DiscoveryEngineException
     {

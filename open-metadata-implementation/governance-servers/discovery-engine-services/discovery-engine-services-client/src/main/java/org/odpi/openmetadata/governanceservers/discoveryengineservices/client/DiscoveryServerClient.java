@@ -4,23 +4,15 @@ package org.odpi.openmetadata.governanceservers.discoveryengineservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.DiscoveryEngineStatusResponse;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * DiscoveryServerClient is a client-side library for calling a specific discovery server - generally it
