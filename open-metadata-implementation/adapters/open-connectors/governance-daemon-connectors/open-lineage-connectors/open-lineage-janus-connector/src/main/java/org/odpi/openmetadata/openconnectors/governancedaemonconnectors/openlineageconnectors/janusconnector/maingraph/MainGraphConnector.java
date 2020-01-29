@@ -106,33 +106,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * {@inheritDoc}
      */
-    //TODO Remove before pentest or production
-    public void dumpMainGraph() {
-        try {
-            mainGraph.io(IoCore.graphml()).writeGraph("mainGraph.graphml");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String exportMainGraph() {
-        OutputStream out = new ByteArrayOutputStream();
-        GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
-        GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).wrapAdjacencyList(true).create();
-        try {
-            writer.writeGraph(out, mainGraph);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-        return out.toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Object getMainGraph() {
         return mainGraph;
     }

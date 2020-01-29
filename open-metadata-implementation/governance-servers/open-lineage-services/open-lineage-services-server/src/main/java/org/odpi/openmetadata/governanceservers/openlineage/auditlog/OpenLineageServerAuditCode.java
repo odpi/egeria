@@ -26,9 +26,9 @@ public enum OpenLineageServerAuditCode {
             "No action is required. This is part of the normal operation of the server."),
 
 
-    SERVER_REGISTERED_WITH_AL_OUT_TOPIC("OPEN-LINEAGE-0003",
+    SERVER_REGISTERED_WITH_IN_TOPIC("OPEN-LINEAGE-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Open Lineage Services is registering a listener with the Asset Lineage OMAS Out topic {0}",
+            "The Open Lineage Services server {0} is registering a listener for its in topic ",
             "The Open Lineage Services is registering to receive incoming events to store lineage data",
             "No action is required.  This is part of the normal operation of the server."),
 
@@ -99,7 +99,14 @@ public enum OpenLineageServerAuditCode {
             "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration"),
 
 
-    PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-0015",
+    ERROR_INITIALIZING_OLS("OPEN-LINEAGE-SERVICES-0015",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an unexpected error and could not start. The server configuration was {1}",
+            "An unexpected error occurred while initializing the Open Lineage Services",
+            "Please contact an Egeria maintainer about your issue"),
+
+
+    PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-0016",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Event {0} could not be consumed. Error: {1}",
             "The system is unable to process the request.",
