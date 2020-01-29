@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
 public interface BufferGraph extends OpenLineageGraphConnector {
 

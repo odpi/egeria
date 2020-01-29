@@ -76,6 +76,39 @@ public class OpenLineageServerOperationalServices {
     public void initialize(OpenLineageServerConfig openLineageServerConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
         final String methodName = "initialize";
         final String actionDescription = "Initialize Open lineage Services";
+        try {
+            initializeOLS(openLineageServerConfig, auditLog);
+        }
+        catch (OMAGConfigurationErrorException e){
+            throw e;
+        }
+        catch (Throwable e){
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.ERROR_INITIALIZING_OLS;
+            OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_INITIALIZING_OLS;
+
+            log.error(auditCode.getSystemAction(), e);
+            auditLog.logException(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(localServerName, openLineageServerConfig.toString()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
+        final String methodName = "initializeOLS";
+        final String actionDescription = "Initialize Open lineage Services";
         this.openLineageServerConfig = openLineageServerConfig;
         this.auditLog = auditLog;
 
@@ -200,7 +233,7 @@ public class OpenLineageServerOperationalServices {
         } catch (ConnectorCheckedException e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, actionDescription);
         }
-        logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_IN_TOPIC, actionDescription);
     }
 
 
