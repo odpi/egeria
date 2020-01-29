@@ -56,6 +56,9 @@ public enum OMRSAuditLogRecordSeverity
     STARTUP   (8,  "Startup",     "A new service instance is starting up."),
     SHUTDOWN  (9,  "Shutdown",    "An existing service instance is shutting down."),
     ASSET     (10, "Asset",       "An auditable action relating to an asset has been taken."),
+    TYPES     (11, "Types",       "Activity is occurring that relates to the open metadata types in use by this server."),
+    COHORT    (12, "Cohort",      "The server is exchanging registration information about an open metadata repository cohort that " +
+                                 "it is connecting to."),
 
 
     ;

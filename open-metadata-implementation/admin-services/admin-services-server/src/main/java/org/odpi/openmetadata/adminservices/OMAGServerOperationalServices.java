@@ -740,17 +740,17 @@ public class OMAGServerOperationalServices
                                            auditCode.getUserAction());
                     }
                 }
-
-                auditCode = OMAGAdminAuditCode.ALL_ACCESS_SERVICES_STARTED;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(Integer.toString(enabledAccessServiceCount),
-                                                                    Integer.toString(configuredAccessServiceCount)),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
             }
+
+            auditCode = OMAGAdminAuditCode.ALL_ACCESS_SERVICES_STARTED;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(Integer.toString(enabledAccessServiceCount),
+                                                                Integer.toString(configuredAccessServiceCount)),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
         }
 
         /*

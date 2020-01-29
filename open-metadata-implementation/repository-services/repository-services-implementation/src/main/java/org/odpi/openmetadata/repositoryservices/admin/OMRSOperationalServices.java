@@ -130,7 +130,7 @@ public class OMRSOperationalServices
     /**
      * Return the Enterprise OMRS Topic Connector.
      *
-     * @return OMRSTopicConnector for use by the Access Services.
+     * @return OMRSTopicConnector for use by the Conformance Test Services or Access Services.
      */
     public OMRSTopicConnector getEnterpriseOMRSTopicConnector()
     {
