@@ -18,18 +18,25 @@ public class StoringServices {
     public StoringServices(BufferGraph graphStore) {
         this.bufferGraph = graphStore;
         this.jobConfiguration = new JobConfiguration(graphStore);
-
     }
 
+    /**
+     * Delegates the call for the creation of entities and relationships to the connector
+     *
+     */
     public void addEntity(LineageEvent lineageEvent){
         bufferGraph.addEntity(lineageEvent);
     }
 
+    /**
+     * Delegates the call for the update of an entity to the connector
+     *
+     */
     public void updateEntity(LineageEvent lineageEvent){}
 
-    public void deleteEntity(LineageEvent lineageEvent){
-
-
-        bufferGraph.deleteEntity(lineageEvent.getLineageEntity().getGuid());
-    }
+    /**
+     * Delegates the call for the deletion of an entity to the connector
+     *
+     */
+    public void deleteEntity(LineageEvent lineageEvent){}
 }

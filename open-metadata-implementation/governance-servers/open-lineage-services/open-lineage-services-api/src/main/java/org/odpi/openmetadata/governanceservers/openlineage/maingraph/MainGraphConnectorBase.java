@@ -26,17 +26,5 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
      * {@inheritDoc}
      */
     @Override
-    public abstract void dumpMainGraph();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract String exportMainGraph();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public abstract Object getMainGraph();
 }
