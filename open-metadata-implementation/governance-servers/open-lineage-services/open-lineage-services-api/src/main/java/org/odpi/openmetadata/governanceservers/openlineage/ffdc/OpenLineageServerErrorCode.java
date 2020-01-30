@@ -104,7 +104,7 @@ public enum OpenLineageServerErrorCode {
             "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
 
     ERROR_INITIALIZING_OLS(503, "OPEN-LINEAGE-SERVICES-503-002 ",
-            "The Open Lineage Services server {0} encountered an unexpected error and could not start.",
+            "The Open Lineage Services server {0} encountered an unknown error and could not start.",
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
     ;
