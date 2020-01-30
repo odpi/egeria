@@ -17,7 +17,7 @@
     <parent>
         <artifactId>virtualization-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>virtualization-services-api</artifactId>
