@@ -91,7 +91,7 @@ The nodes have the following properties:
 - version
 - processType
 
-## OMAG Server Platform configuration
+## Configuring an Open Lineage Services server
 
 1. Build the open-lineage-janus-connector jar by running:
 
@@ -99,17 +99,16 @@ The nodes have the following properties:
 mvn clean install
 ```
 
-in directory
+The jar can now be found in the target directory of the open-lineage-janus-connector module:
 
 ```
-/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/
+/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/target/
 ```
 
-The jar can now be found in the target directory of the open-lineage-janus-connector module.
 Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
 
-2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
-run the default call for setting the server URL, eventbus and the cohort.
+2. Start an [OMAG Server](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
+run the default calls for setting the server URL, eventbus and the cohort.
 
 3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
@@ -121,8 +120,7 @@ With the following body:
 { 
     "class":"OpenLineageConfig",
     "openLineageDescription":"Open Lineage Service is used for the storage and querying of lineage",
-    "inTopicName":"omas.omas.assetlineage.outTopic",
-    "openLineageWiki":"wiki URL",
+    "inTopicName":"server.omas.omas.assetlineage.outTopic",
     "openLineageBufferGraphConnection":{ 
         "class":"Connection",
         "displayName":"Buffer Graph Connection",
@@ -159,10 +157,10 @@ With the following body:
 4. Enable the Open Lineage Services by issuing the following HTTP request:
 
 ```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage
 ```
 
-5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
+5. Start the instance of the OMAG Server by issuing the following HTTP request:
     
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance

@@ -16,23 +16,18 @@ public class GraphVertexMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphVertexMapper.class);
 
-
     public void mapEntityToVertex(LineageEntity lineageEntity, Vertex vertex){
 
         mapEntitySummaryToVertex(lineageEntity, vertex);
-
         Map<String,String> instanceProperties = lineageEntity.getProperties();
         if (instanceProperties != null) {
 
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+entry.getKey();
+                String key = PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY +entry.getKey();
                 vertex.property(key,entry.getValue());
             }
         }
-
     }
-
-
 
     public void mapEntitySummaryToVertex(LineageEntity lineageEntity, Vertex vertex){
 

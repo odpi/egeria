@@ -213,6 +213,11 @@ public enum OMAGAdminErrorCode
             "The server fails to initialize and an exception is returned to the caller.",
             "Reconfigure the server to include a compatible combination of subsystems."),
 
+    MISSING_CONFIGURATION_PROPERTY(400, "OMAG-ADMIN-400-032 ",
+            "The supplied configuration for server {0} was not accepted because there is no value provided for property {1}",
+            "The system returns an exception and does not update the configuration document for the server.",
+            "Retry the configuration request with the property value set up correctly."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",

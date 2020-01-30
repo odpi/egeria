@@ -30,10 +30,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String lineageServerURL;
     private String inTopicName;
     private Connection inTopicConnection;
-
-
-    private Map<String, Object> bufferGraphConfig;
-    private Map<String, Object> mainGraphConfig;
     private Connection openLineageBufferGraphConnection;
     private Connection openLineageMainGraphConnection;
 
@@ -62,8 +58,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             inTopicConnection = template.inTopicConnection;
             openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
             openLineageMainGraphConnection = template.openLineageMainGraphConnection;
-            bufferGraphConfig = template.bufferGraphConfig;
-            mainGraphConfig = template.mainGraphConfig;
         }
     }
 
@@ -217,45 +211,9 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     }
 
 
-    /**
-     * Return the configuration properties for BufferGraph that will be used for Open Lineage
-     *
-     * @return Map of Objects for BufferGraph
-     */
-    public Map<String, Object> getBufferGraphConfig() {
-        return bufferGraphConfig;
-    }
-
-    /**
-     * Set up the Open Lineage configuration for bufferGraph
-     *
-     * @param bufferGraphConfig Map for configuration of bufferGraph
-     */
-    public void setBufferGraphConfig(Map<String, Object> bufferGraphConfig) {
-        this.bufferGraphConfig = bufferGraphConfig;
-    }
-
-    /**
-     * Return the configuration properties for MainGraph that will be used for Open Lineage
-     *
-     * @return Map of Objects for MainGraph
-     */
-    public Map<String, Object> getMainGraphConfig() {
-        return mainGraphConfig;
-    }
-
-    /**
-     * Set up the Open Lineage configuration for mainGraph
-     *
-     * @param mainGraphConfig Map for configuration of mainGraph
-     */
-    public void setMainGraphConfig(Map<String, Object> mainGraphConfig) {
-        this.mainGraphConfig = mainGraphConfig;
-    }
-
     @Override
     public String toString() {
-        return "OpenLineageConfig{" +
+        return "OpenLineageServerConfig{" +
                 "openLineageId=" + openLineageId +
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
@@ -264,8 +222,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", inTopicConnection=" + inTopicConnection +
                 ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
                 ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
-                ", bufferGraphConfig=" + bufferGraphConfig +
-                ", mainGraphConfig=" + mainGraphConfig +
                 '}';
     }
 
@@ -281,9 +237,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
                 Objects.equals(openLineageBufferGraphConnection, that.openLineageBufferGraphConnection) &&
-                Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection) &&
-                Objects.equals(bufferGraphConfig, that.bufferGraphConfig) &&
-                Objects.equals(mainGraphConfig, that.mainGraphConfig);
+                Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection);
     }
 
     @Override
@@ -291,7 +245,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
         return Objects.hash(openLineageId, openLineageName,
                 openLineageDescription, lineageServerURL,
                 inTopicName, inTopicConnection, openLineageBufferGraphConnection,
-                openLineageMainGraphConnection, bufferGraphConfig,
-                mainGraphConfig);
+                openLineageMainGraphConnection);
     }
 }

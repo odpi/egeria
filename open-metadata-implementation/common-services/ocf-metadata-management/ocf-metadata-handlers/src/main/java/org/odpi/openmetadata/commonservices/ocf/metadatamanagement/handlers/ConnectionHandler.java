@@ -426,8 +426,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
             {
                 repositoryHandler.createRelationship(userId,
                                                      ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                     connectionGUID,
                                                      endpointGUID,
+                                                     connectionGUID,
                                                      null,
                                                      methodName);
             }

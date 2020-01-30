@@ -503,11 +503,16 @@ public class ConnectorConfigurationFactory
      * @param url  location of the repository proxy
      * @param configurationProperties name value pairs for the connection
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection  getRepositoryProxyConnection(String              serverName,
                                                     String              connectorProviderClassName,
                                                     String              url,
-                                                    Map<String, Object> configurationProperties)
+                                                    Map<String, Object> configurationProperties) throws ClassNotFoundException,
+                                                                                                        InstantiationException,
+                                                                                                        IllegalAccessException
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -536,7 +541,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;
@@ -754,11 +759,16 @@ public class ConnectorConfigurationFactory
      * @param configurationProperties additional properties for event mapper
      * @param eventSource  name of the event source used by the event mapper
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection getRepositoryEventMapperConnection(String              serverName,
                                                          String              connectorProviderClassName,
                                                          Map<String, Object> configurationProperties,
-                                                         String              eventSource)
+                                                         String              eventSource) throws ClassNotFoundException,
+                                                                                                 InstantiationException,
+                                                                                                 IllegalAccessException
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -786,7 +796,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;
@@ -976,14 +986,19 @@ public class ConnectorConfigurationFactory
      * @param url  url for the Open Lineage Server
      * @param configurationProperties name value pairs for the connection
      * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
     public Connection getOpenLineageServerConfiguration(String              serverName,
                                                         String              connectorProviderClassName,
                                                         String              url,
-                                                        Map<String, Object> configurationProperties)
+                                                        Map<String, Object> configurationProperties) throws ClassNotFoundException,
+                                                                                                            InstantiationException,
+                                                                                                            IllegalAccessException
     {
         final String endpointGUID          = UUID.randomUUID().toString();
-        final String connectionGUID           = UUID.randomUUID().toString();
+        final String connectionGUID        = UUID.randomUUID().toString();
 
         final String endpointDescription      = "Open Lineage native endpoint.";
         final String connectionDescription    = "Open Lineage native connection.";
@@ -993,30 +1008,57 @@ public class ConnectorConfigurationFactory
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
-        return getConnection(configurationProperties,
-                             endpoint,
-                             connectionName,
-                             connectionGUID,
-                             connectionDescription,
-                             connectorProviderClassName);
+        return getDynamicConnection(configurationProperties,
+                                    endpoint,
+                                    connectionName,
+                                    connectionGUID,
+                                    connectionDescription,
+                                    connectorProviderClassName);
     }
 
 
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
-     * can return their own connector type.  Otherwise it makes one up.
+     * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
+     * providers that are known at compile-time, not those that are only determined at runtime.
      *
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean
      */
-    private ConnectorType   getConnectorType(String   connectorProviderClassName)
+    private ConnectorType getConnectorType(String connectorProviderClassName)
+    {
+        ConnectorType  connectorType = null;
+        try
+        {
+            connectorType = getDynamicConnectorType(connectorProviderClassName);
+        }
+        catch (Exception classException)
+        {
+            log.error("Bad connectorProviderClassName: " + classException.getMessage());
+        }
+        return connectorType;
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider.  This is best used for connector providers that
+     * can return their own connector type.  Otherwise it makes one up.  This method is useful for connector providers
+     * that are defined at runtime rather than compile-time.
+     *
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     */
+    private ConnectorType getDynamicConnectorType(String connectorProviderClassName) throws ClassNotFoundException,
+                                                                                            InstantiationException,
+                                                                                            IllegalAccessException
     {
         ConnectorType  connectorType = null;
 
         if (connectorProviderClassName != null)
         {
-            try
-            {
                 Class      connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
@@ -1035,11 +1077,6 @@ public class ConnectorConfigurationFactory
                     connectorType.setDescription("ConnectorType for " + connectorType.getDisplayName());
                     connectorType.setConnectorProviderClassName(connectorProviderClassName);
                 }
-            }
-            catch (Throwable classException)
-            {
-                log.error("Bad connectorProviderClassName: " + classException.getMessage());
-            }
         }
 
         return connectorType;
@@ -1159,6 +1196,44 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(className));
+        connection.setConfigurationProperties(configurationProperties);
+
+        return connection;
+    }
+
+    /**
+     * Return the Connection build based on the given parameters, where the className is provided at runtime rather
+     * than compile-time.
+     *
+     * @param configurationProperties properties used to configure the underlying technology
+     * @param endpoint that contains the server url
+     * @param connectionName name of the connection
+     * @param connectionGUID connection identifier
+     * @param connectionDescription description for the connection
+     * @param className the name of the connectorType class
+     * @return Connection object
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     */
+    private Connection getDynamicConnection(Map<String, Object> configurationProperties,
+                                            Endpoint            endpoint,
+                                            String              connectionName,
+                                            String              connectionGUID,
+                                            String              connectionDescription,
+                                            String              className) throws ClassNotFoundException,
+                                                                                  InstantiationException,
+                                                                                  IllegalAccessException
+    {
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setEndpoint(endpoint);
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setConnectorType(getDynamicConnectorType(className));
         connection.setConfigurationProperties(configurationProperties);
 
         return connection;

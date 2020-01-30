@@ -6,14 +6,16 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -81,13 +83,15 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
     private static final String assertionMsg17  = " repository supports creation of instances.";
 
     private static final String assertion18     = testCaseId + "-18";
-    private static final String assertionMsg18  = " repository supports retype instances.";
+    private static final String assertionMsg18  = " repository supports retype of instances of type ";
 
 
 
     private String            metadataCollectionId;
     private EntityDef         entityDef;
     private String            testTypeName;
+
+    private List<EntityDetail>  createdEntities = new ArrayList<>();
 
 
     /**
@@ -127,8 +131,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          * on the test by setting the discovered property to disabled and returning.
          */
 
-        InstanceProperties instanceProperties;
         EntityDetail newEntity;
+        InstanceProperties instanceProperties = null;
 
         try {
 
@@ -153,6 +157,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
+            createdEntities.add(newEntity);
+
 
         }
         catch (FunctionNotSupportedException exception) {
@@ -170,6 +176,23 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+        }
+        catch(Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + entityDef.getName();
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("typeGUID"                , entityDef.getGUID());
+            parameters.put("initialProperties"       , instanceProperties!=null?instanceProperties.toString():"null");
+            parameters.put("initialClasiifications"  , "null");
+            parameters.put("initialStatus"           , "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception( msg , exc );
+
         }
 
         assertCondition((newEntity != null),
@@ -225,7 +248,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         else {
 
             /*
-             * This type has subtyeps - retype the entity instance to each subtype and back again.
+             * This type has subtypes - retype the entity instance to each subtype and back again.
              */
             for (String subTypeName : subTypeNames) {
 
@@ -242,175 +265,219 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                 try {
 
                     subTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
-                            newEntity.getGUID(),
-                            entityDef,
-                            subTypeDef);
+                                                                     newEntity.getGUID(),
+                                                                     entityDef,
+                                                                     subTypeDef);
+                } catch (FunctionNotSupportedException exception) {
 
-                    assertCondition(true,
-                            assertion18,
-                            testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    super.addNotSupportedAssertion(assertion18,
+                                                   assertionMsg18 + testTypeName,
+                                                   RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
+                    /* Give up the rest of the testcase */
+                    return;
+
+                } catch (Exception exc) {
                     /*
-                     * Check that the retyped entity was returned
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
                      */
 
-                    assertCondition((subTypedEntity != null),
-                            assertion3,
-                            testTypeName + assertionMsg3,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                    String methodName = "reTypeEntity";
+                    String operationDescription = "retype an entity of type " + entityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("currentTypeDefSummary", entityDef.toString());
+                    parameters.put("newTypeDefSummary", subTypeDef.toString());
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
-                    /*
-                     * Check that the retyped entity has the correct type
-                     */
+                    throw new Exception(msg, exc);
 
-                    assertCondition((subTypedEntity.getType() != null) && (subTypedEntity.getType().getTypeDefName().equals(subTypeName)),
-                            assertion4,
-                            testTypeName + assertionMsg4,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                }
 
-                    /*
-                     * Check that the retyped entity properties match the original
-                     */
+                assertCondition(true,
+                                assertion18,
+                                testTypeName + assertionMsg18,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
-                    assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
-                            assertion5,
-                            testTypeName + assertionMsg5,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                createdEntities.add(subTypedEntity);
 
-                    /*
-                     * Check that the retyped entity has a higher version than previously
-                     */
+                /*
+                 * Check that the retyped entity was returned
+                 */
 
-                    assertCondition(((subTypedEntity.getVersion() >= nextVersion)),
-                            assertion6,
-                            testTypeName + assertionMsg6 + nextVersion,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                assertCondition((subTypedEntity != null),
+                                assertion3,
+                                testTypeName + assertionMsg3,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
+                /*
+                 * Check that the retyped entity has the correct type
+                 */
 
-                    /*
-                     * Verify that the instance can be retrieved from the store and its type and properties match those for the instance returned by the reType method
-                     */
+                assertCondition((subTypedEntity.getType() != null) && (subTypedEntity.getType().getTypeDefName().equals(subTypeName)),
+                                assertion4,
+                                testTypeName + assertionMsg4,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
-                    EntityDetail retrievedSubTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+                /*
+                 * Check that the retyped entity properties match the original
+                 */
 
-                    verifyCondition((retrievedSubTypedEntity != null),
-                            assertion7,
-                            testTypeName + assertionMsg7,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
+                                assertion5,
+                                testTypeName + assertionMsg5,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
-                    assertCondition((subTypedEntity.getType() != null) && (subTypedEntity.getType().getTypeDefName().equals(subTypeName)),
-                            assertion8,
-                            testTypeName + assertionMsg8,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                /*
+                 * Check that the retyped entity has a higher version than previously
+                 */
 
-
-                    assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
-                            assertion9,
-                            testTypeName + assertionMsg9,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                assertCondition(((subTypedEntity.getVersion() >= nextVersion)),
+                                assertion6,
+                                testTypeName + assertionMsg6 + nextVersion,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
+                /*
+                 * Verify that the instance can be retrieved from the store and its type and properties match those for the instance returned by the reType method
+                 */
 
-                    /*
-                     * Re-type the entity instance from this subtype back to its original type.
-                     */
+                EntityDetail retrievedSubTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
-                    nextVersion = newEntity.getVersion() + 1;
+                verifyCondition((retrievedSubTypedEntity != null),
+                                assertion7,
+                                testTypeName + assertionMsg7,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
-                    EntityDetail superTypedEntity = null;
+                assertCondition((subTypedEntity.getType() != null) && (subTypedEntity.getType().getTypeDefName().equals(subTypeName)),
+                                assertion8,
+                                testTypeName + assertionMsg8,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
+
+                assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
+                                assertion9,
+                                testTypeName + assertionMsg9,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+
+
+                /*
+                 * Re-type the entity instance from this subtype back to its original type.
+                 */
+
+                nextVersion = newEntity.getVersion() + 1;
+
+                EntityDetail superTypedEntity = null;
+
+                try {
 
                     superTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
-                            newEntity.getGUID(),
-                            subTypeDef,
-                            entityDef);
-
-                    /*
-                     * Check that the retyped entity was returned
-                     */
-
-                    assertCondition((superTypedEntity != null),
-                            assertion10,
-                            testTypeName + assertionMsg10,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-                    /*
-                     * Check that the retyped entity has the correct type
-                     */
-
-                    assertCondition((superTypedEntity.getType() != null) && (superTypedEntity.getType().equals(newEntity.getType())),
-                            assertion11,
-                            testTypeName + assertionMsg11,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-                    /*
-                     * Check that the retyped entity properties match the original
-                     */
-
-                    assertCondition(((superTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, superTypedEntity.getProperties())),
-                            assertion12,
-                            testTypeName + assertionMsg12,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-                    /*
-                     * Check that the retyped entity has a higher version than previously
-                     */
-
-                    assertCondition(((superTypedEntity.getVersion() >= nextVersion)),
-                            assertion13,
-                            testTypeName + assertionMsg13 + nextVersion,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-                    /*
-                     * Verify that the instance can be retrieved from the store and that it has the correct type and properties
-                     */
-
-                    EntityDetail retrievedSuperTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
-
-                    verifyCondition((retrievedSuperTypedEntity != null),
-                            assertion14,
-                            testTypeName + assertionMsg14,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-                    /*
-                     * Verify that the instance can be retrieved from the store and its type name and properties match those for the original instance
-                     */
-
-                    assertCondition((retrievedSuperTypedEntity.getType() != null) && (retrievedSuperTypedEntity.getType().getTypeDefName().equals(entityDef.getName())),
-                            assertion15,
-                            testTypeName + assertionMsg15,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-
-                    assertCondition(((retrievedSuperTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, retrievedSuperTypedEntity.getProperties())),
-                            assertion16,
-                            testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
+                                                                       newEntity.getGUID(),
+                                                                       subTypeDef,
+                                                                       entityDef);
 
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion18,
-                            assertionMsg18,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                                                   assertionMsg18 + testTypeName,
+                                                   RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                    return;
+
+                } catch (Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "reTypeEntity";
+                    String operationDescription = "retype an entity of type " + entityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("currentTypeDefSummary", subTypeDef.toString());
+                    parameters.put("newTypeDefSummary", entityDef.toString());
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
+
                 }
+
+                /*
+                 * Check that the retyped entity was returned
+                 */
+
+                assertCondition((superTypedEntity != null),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                /*
+                 * Check that the retyped entity has the correct type
+                 */
+
+                assertCondition((superTypedEntity.getType() != null) && (superTypedEntity.getType().equals(newEntity.getType())),
+                                assertion11,
+                                testTypeName + assertionMsg11,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                /*
+                 * Check that the retyped entity properties match the original
+                 */
+
+                assertCondition(((superTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, superTypedEntity.getProperties())),
+                                assertion12,
+                                testTypeName + assertionMsg12,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                /*
+                 * Check that the retyped entity has a higher version than previously
+                 */
+
+                assertCondition(((superTypedEntity.getVersion() >= nextVersion)),
+                                assertion13,
+                                testTypeName + assertionMsg13 + nextVersion,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                /*
+                 * Verify that the instance can be retrieved from the store and that it has the correct type and properties
+                 */
+
+                EntityDetail retrievedSuperTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+                verifyCondition((retrievedSuperTypedEntity != null),
+                                assertion14,
+                                testTypeName + assertionMsg14,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+                /*
+                 * Verify that the instance can be retrieved from the store and its type name and properties match those for the original instance
+                 */
+
+                assertCondition((retrievedSuperTypedEntity.getType() != null) && (retrievedSuperTypedEntity.getType().getTypeDefName().equals(entityDef.getName())),
+                                assertion15,
+                                testTypeName + assertionMsg15,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+
+
+                assertCondition(((retrievedSuperTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, retrievedSuperTypedEntity.getProperties())),
+                                assertion16,
+                                testTypeName + assertionMsg16,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
             }
@@ -449,83 +516,52 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
 
 
+
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
     public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        /*
-         * Find any entities of the given type def and delete them....
-         */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                    entityDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (entities == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdEntities != null && !createdEntities.isEmpty()) {
 
             /*
-             * Report how many entities were left behind at the end of the test run
+             * Instances were created - clean them up.
+             * They may have already been cleaned up so be prepared to catch everything from
+             * FunctionNotSupportedException to EntityNotKnownException and maybe others.
              */
 
-            resultSize = entities.size();
+            for (EntityDetail entity : createdEntities) {
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
-
-            for (EntityDetail entity : entities) {
-
-                /*
-                 * Try soft delete (ok if it fails) and purge.
-                 */
-
-                try {
-                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-
-                } catch (FunctionNotSupportedException exception) {
-                    /* OK - had to try soft; continue to purge */
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
                 }
 
+                // If entity is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-
-                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
-
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
             }
-        } while (resultSize >= pageSize);
-
+        }
     }
 
     /**

@@ -98,7 +98,7 @@ public class OpenMetadataTypesArchive
 
         if (this.archiveBuilder != null)
         {
-            OpenMetadataTypesArchive1_3  previousTypes = new OpenMetadataTypesArchive1_3(archiveBuilder);
+            OpenMetadataTypesArchive1_4  previousTypes = new OpenMetadataTypesArchive1_4(archiveBuilder);
 
             /*
              * Call each of the methods to systematically add the contents of the archive.

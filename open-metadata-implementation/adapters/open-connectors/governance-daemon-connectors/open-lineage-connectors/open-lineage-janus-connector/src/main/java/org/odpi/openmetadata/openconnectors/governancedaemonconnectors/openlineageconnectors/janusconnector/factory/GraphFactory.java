@@ -51,7 +51,7 @@ public class GraphFactory extends IndexingFactory {
             janusGraph = config.open();
             return initializeGraph(janusGraph,graphType);
         } catch (Exception e) {
-            log.error("{} could not open graph store", e.getMessage());
+            log.error("{} could not open graph store with the specified configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
@@ -79,12 +79,12 @@ public class GraphFactory extends IndexingFactory {
             Set<String> vertexLabels = new HashSet<>();
             Set<String> relationshipsLabels = new HashSet<>();
 
-            if (graphType.equals("buffer")){
+            if (graphType.equals("bufferGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
             }
 
-            if(graphType.equals("main")){
+            if(graphType.equals("mainGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsMainGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsMainGraph.class);
             }
@@ -98,7 +98,7 @@ public class GraphFactory extends IndexingFactory {
             createIndexes(janusGraph,graphType);
             return janusGraph;
         } catch (Exception e) {
-            log.error("{} Caught exception during graph initialize operation", "open");
+            log.error("{} failed  during graph initialize operation with error: {}", graphType,e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
@@ -144,11 +144,11 @@ public class GraphFactory extends IndexingFactory {
     }
 
     private void createIndexes(JanusGraph janusGraph,String graphType){
-        if (graphType.equals("buffer")) {
+        if (graphType.equals("bufferGraph")) {
             createIndexesBuffer(janusGraph);
         }
 
-        if (graphType.equals("main")) {
+        if (graphType.equals("mainGraph")) {
             createIndexesMainGraph(janusGraph);
         }
     }
@@ -174,6 +174,9 @@ public class GraphFactory extends IndexingFactory {
      */
     private void createIndexesMainGraph(JanusGraph janusGraph){
         createCompositeIndexForProperty(PROPERTY_NAME_NODE_ID,PROPERTY_KEY_ENTITY_NODE_ID,true,janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,false,janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_LABEL,false,janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,janusGraph, Edge.class);
 
     }
 }

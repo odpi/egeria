@@ -89,7 +89,7 @@ public class GlossaryHandler {
             Set<LineageEntity> vertices = assetContext.getVertices();
             vertices = vertices.stream().filter(vertex -> validator.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
                     !validator.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
-;
+
             for(LineageEntity vertex: vertices){
                 getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 

@@ -4,9 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
-import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 
 import java.util.List;
@@ -38,43 +35,40 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the asset
-     * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate sources of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
-    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
+        exportedGraph = openLineageService.getUltimateSource(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
     /**
      *
      * @param guid unique identifier of the asset
-     * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the end to end flow
      */
     @GetMapping( value = "/entities/{guid}/end2end")
     @ResponseBody
-    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
+        exportedGraph = openLineageService.getEndToEndLineage(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
     /**
      *
      * @param guid unique identifier of the asset
-     * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
-    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
+        exportedGraph = openLineageService.getUltimateDestination(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -82,28 +76,26 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the glossary term
-     * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
     @GetMapping( value = "/entities/{guid}/glossary-lineage")
-    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
+        exportedGraph = openLineageService.getGlossaryLineage(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
     /**
      *
      * @param guid unique identifier of the asset
-     * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate source and destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/source-and-destination")
-    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
+        exportedGraph = openLineageService.getSourceAndDestination(userId, guid, includeProcesses);
         return exportedGraph;
     }
 
@@ -114,7 +106,6 @@ public class OpenLineageController {
      */
     @InitBinder
     public void initBinder(final WebDataBinder webdataBinder) {
-        webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
         webdataBinder.registerCustomEditor(Scope.class, new ScopeEnumConverter());
     }
 

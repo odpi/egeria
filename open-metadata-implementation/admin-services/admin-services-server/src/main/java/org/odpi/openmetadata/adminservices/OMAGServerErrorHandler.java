@@ -348,4 +348,31 @@ public class OMAGServerErrorHandler
                                                     errorCode.getUserAction());
         }
     }
+
+    /**
+     * Validate that an essential OMAG server configuration property has been set.
+     *
+     * @param property      The property that should be present in the OMAG server configuration.
+     * @param propertyName  The name of the property that should be present in the OMAG server configuration.
+     * @param serverName    server name for this server.
+     * @param methodName    method called.
+     * @throws OMAGInvalidParameterException The property is null.
+     */
+    void validatePropertyNotNull(Object property,
+                                 String propertyName,
+                                 String serverName,
+                                 String methodName) throws OMAGInvalidParameterException
+    {
+        if (property == null)
+        {
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY;
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, propertyName),
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
 }
