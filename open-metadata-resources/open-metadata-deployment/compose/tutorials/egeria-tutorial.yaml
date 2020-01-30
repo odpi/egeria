@@ -28,8 +28,6 @@ services:
     kafka:
         depends_on:
             - zookeeper
-        links:
-            - zookeeper
         image: 'bitnami/kafka:latest'
         environment:
             - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -55,13 +53,6 @@ services:
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
-        links:
-            - zookeeper
-            - kafka
-            - core
-            - dev
-            - datalake
-            - factory
         depends_on:
             - kafka
             - core
@@ -80,9 +71,6 @@ services:
         image: 'odpi/egeria:latest'
         ports:
             - '18080:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
@@ -92,9 +80,6 @@ services:
         image: 'odpi/egeria:latest'
         ports:
             - '18081:8080'
-        links:
-            - kafka
-            - zookeeper
         networks:
             - cocopharma
 
@@ -104,9 +89,6 @@ services:
         image: 'odpi/egeria:latest'
         ports:
             - '18082:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
@@ -116,9 +98,6 @@ services:
         image: 'odpi/egeria:latest'
         ports:
             - '18083:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
@@ -132,11 +111,6 @@ services:
             - OMAS_SERVER_NAME=cocoMDS4
         ports:
             - '18443:8443'
-        links:
-            - core
-            - dev
-            - datalake
-            - factory
         networks:
             cocopharma:
 networks:

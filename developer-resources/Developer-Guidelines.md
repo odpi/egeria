@@ -169,7 +169,11 @@ root. That will prove at least java, maven are correct .
 In addition, importantly, this also will retrieve additional dependencies which are not available in public
 repositories are retrieved, otherwise you may see an error like `Cannot resolve com.ibm.gaiandb:gaian` or `Cannot resolve org.apache.derby:derby`.
 
-We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' earlier on this page) or the build will fail running javadoc.
+We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' earlier on this page) or the build will fail running javadoc. 
+
+## Issue Tracking
+
+See [Issue Tracking](Issue-Tracking.md) for information about how we use issues in Egeria.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
