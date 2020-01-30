@@ -4,7 +4,7 @@
 # Configuring the discovery engine services
 
 The discovery engine services provide the principle [subsystem](../concepts/omag-subsystem.md) of
-a [discovery server](../../../governance-servers/discovery-engine-services/docs/discovery-server.md).
+a [discovery server](../concepts/discovery-server.md).
 
 The configuration for the discovery engine services is made up of 2 parts:
 

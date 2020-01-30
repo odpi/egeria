@@ -5,7 +5,7 @@
 
 An **[Open Metadata and Governance (OMAG) Server Platform](../../../../open-metadata-publication/website/omag-server)**
 hosts one or more **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
-and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md)
+and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md).
 
 The subsystems that are enabled in a specific instance of an OMAG Server
 are defined in a JSON **[configuration document](../concepts/configuration-document.md)**.

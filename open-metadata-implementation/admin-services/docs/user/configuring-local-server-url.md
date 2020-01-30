@@ -3,8 +3,13 @@
 
 # Local Server URL Root
 
-The local server URL root is a default value used when constructing
-the local repository configuration.
+The local server URL root is a default value for the URL root of the OMAG Server
+Platform where the server is going to run.  It is used as a default destination
+when deploying the server configuration document to a different OMAG Server Platform
+from the one use to maintain the configuration document.
+
+It is also used when constructing the 
+the local repository configuration in a metadata server.
 
 It is the root of the URL used to call the local server's 
 open metadata and governance REST calls.
@@ -18,10 +23,7 @@ in their URLs:
 ```
 
 The local server URL root is the content of the URL prior to `/servers/`.
-If the local server 
-
-
-
+The default value is "http://localhost:8080".
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
