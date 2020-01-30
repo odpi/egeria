@@ -7,9 +7,9 @@ import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGra
 
 public class BufferGraphConnectorProvider extends BufferGraphProviderBase {
 
-    static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
-    static final String connectorTypeName = "Janus Graph Connector";
-    static final String connectorTypeDescription = "Connector supports storing and retrieving entities for lineage from Janus Graph.";
+    static final String CONNECTOR_TYPE_GUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
+    static final String CONNECTOR_TYPE_NAME = "Janus Graph Connector";
+    static final String CONNECTOR_TYPE_DESCRIPTION = "Connector supports storing and retrieving entities for lineage from Janus Graph.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -22,10 +22,10 @@ public class BufferGraphConnectorProvider extends BufferGraphProviderBase {
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setGUID(CONNECTOR_TYPE_GUID);
+        connectorType.setQualifiedName(CONNECTOR_TYPE_NAME);
+        connectorType.setDisplayName(CONNECTOR_TYPE_NAME);
+        connectorType.setDescription(CONNECTOR_TYPE_DESCRIPTION);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;

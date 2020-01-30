@@ -2,13 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.maingraph;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
-public interface MainGraph{
+public interface MainGraph extends OpenLineageGraphConnector {
 
     /**
      * Returns a lineage subgraph.
@@ -22,28 +21,9 @@ public interface MainGraph{
     LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
     /**
-     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
-     */
-    //TODO Remove before pentest or production
-    void dumpMainGraph() throws OpenLineageException;
-
-    /**
-     * Registers the connector as active
-     */
-    void start() throws ConnectorCheckedException;
-
-    /**
      * Initialize the mainGraph database.
      */
     void initializeGraphDB() throws OpenLineageException;
-
-    /**
-     * Write the maingraph to JSON (GraphSON) format.
-     *
-     * @return The queried graph, in graphSON format.
-     */
-    //TODO Remove before pentest or production
-    String exportMainGraph() throws OpenLineageException;
 
 
     /**

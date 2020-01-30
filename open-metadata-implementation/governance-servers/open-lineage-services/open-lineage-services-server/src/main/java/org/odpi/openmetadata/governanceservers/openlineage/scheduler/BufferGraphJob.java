@@ -17,17 +17,17 @@ public class BufferGraphJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         LocalDateTime localTime = LocalDateTime.now();
-        System.out.println("Run QuartzJob at " + localTime);
-
-        JobKey key = context.getJobDetail().getKey();
+        log.debug("Run QuartzJob at {}",localTime);
 
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-
         BufferGraph bufferGraph = (BufferGraph) dataMap.get("openLineageGraphStore");
-
         performTask(bufferGraph);
     }
 
+    /**
+     * Delegates the call for the scheduler to the connector.
+     *
+     */
     private void performTask(BufferGraph bufferGraph){
         bufferGraph.schedulerTask();
     }

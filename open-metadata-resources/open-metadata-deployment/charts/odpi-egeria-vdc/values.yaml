@@ -107,11 +107,11 @@ cts:
 
 # Connectors information
 # - repo should be either 'snapshot' or 'release'
-#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.4-SNAPSHOT)
+#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.5-SNAPSHOT)
 #   - when 'release', version should be <version>  (eg. 1.3)
 connectors:
   repo: snapshot
-  version: 1.4-SNAPSHOT
+  version: 1.5-SNAPSHOT
 
 imageDefaults:
   registry: docker.io

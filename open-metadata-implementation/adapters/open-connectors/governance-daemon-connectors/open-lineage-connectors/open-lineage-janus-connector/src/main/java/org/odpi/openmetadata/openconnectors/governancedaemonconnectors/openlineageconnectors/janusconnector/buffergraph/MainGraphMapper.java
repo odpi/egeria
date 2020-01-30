@@ -33,7 +33,7 @@ public class MainGraphMapper {
     }
 
     /**
-     * Check bufferGraph if columns related to the process exist
+     * Checks bufferGraph about the columns related to the process exist
      *
      * @param columnInGuid  - unique id for starting column
      * @param columnOutGuid - unique id for end column
@@ -73,24 +73,25 @@ public class MainGraphMapper {
         Vertex newColumnIn = null;
         Vertex newColumnOut = null;
 
-            if (!columnIn.hasNext()) {
-                newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
-            }
+        if (!columnIn.hasNext()) {
+            newColumnIn = checkAssetVertex(mainG, bufferG, columnInVertex);
+        }
 
-            if (!columnOut.hasNext()) {
-                newColumnOut = checkAssetVertex(mainG, bufferG, columnOutVertex);
-            }
-            mainG.tx().commit();
-            bufferG.tx().commit();
+        if (!columnOut.hasNext()) {
+            newColumnOut = checkAssetVertex(mainG, bufferG, columnOutVertex);
+        }
+        mainG.tx().commit();
+        bufferG.tx().commit();
 
-            if (newColumnIn == null) {
-                newColumnIn = columnIn.next();
-            }
+        if (newColumnIn == null) {
+            newColumnIn = columnIn.next();
+        }
 
-            if (newColumnOut == null) {
-                newColumnOut = columnOut.next();
-            }
-            addProcess(newColumnIn, newColumnOut, process);
+        if (newColumnOut == null) {
+            newColumnOut = columnOut.next();
+        }
+
+        addProcess(newColumnIn, newColumnOut, process);
         }
 
     private Vertex checkAssetVertex(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex){
@@ -127,11 +128,17 @@ public class MainGraphMapper {
      * */
     private void addExtraProperties(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex,Vertex newVertex){
 
-        Iterator<Vertex> tableAsset = bufferG.V(originalVertex.id()).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel("RelationalTable"),hasLabel("DataFile"));
+        Iterator<Vertex> tableAsset = bufferG.V(originalVertex.id()).
+                                                emit().
+                                                repeat(bothE().
+                                                        otherV().
+                                                        simplePath()).
+                                                times(2).
+                                                or(hasLabel(RELATIONAL_TABLE),hasLabel("DataFile"));
+
         Iterator<Vertex> schema = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(3).
                 or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE),hasLabel(FILE_FOLDER));
 
-        //find a query for filefolder parent
         if(tableAsset.hasNext()){
             newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
@@ -139,10 +146,6 @@ public class MainGraphMapper {
         if(schema.hasNext()){
             newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
-
-//        if(db != null){
-//            mainTraversal.V(newVertex.id()).property(PROPERTY_NAME_DATABASE_DISPLAY_NAME,db.property(PROPERTY_KEY_ENTITY_NAME).value());
-//        }
 
         getGlossaryTerm(mainG,bufferG,newVertex);
 
@@ -157,7 +160,7 @@ public class MainGraphMapper {
 
         Iterator<Vertex> glossaryTermBuffer = bufferG.V()
                                                      .has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value().toString())
-                                                     .bothE("SemanticAssignment")
+                                                     .bothE(SEMANTIC_ASSIGNMENT)
                                                      .outV();
 
         if(glossaryTermBuffer.hasNext()) {
@@ -257,19 +260,23 @@ public class MainGraphMapper {
 
     /**
      * Add all the columns related to a table. This is needed  due to lack of Lineage Mappings
-     * between input schema element and its output.
+     * between input schema element and it's output.
      *
      * @param bufferG  - Traversal source for buffer Graph
      * @param mainG - Traversal source for main Graph
      * @param tableOut - table to add the columns
      * */
     private void addColumns(GraphTraversalSource bufferG, GraphTraversalSource mainG, Vertex tableOut) {
-        List<Vertex> columns = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,tableOut.property(PROPERTY_KEY_ENTITY_GUID).value()).inE(NESTED_SCHEMA_ATTRIBUTE).otherV().toList();
+        List<Vertex> columns =  bufferG.V().
+                                has(PROPERTY_KEY_ENTITY_GUID,tableOut.property(PROPERTY_KEY_ENTITY_GUID).value()).
+                                inE(NESTED_SCHEMA_ATTRIBUTE).
+                                otherV().toList();
+
         List<String> guidList = columns.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
         for(String guid: guidList) {
 
-            Iterator<Vertex> columntest = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid);
-            if (!columntest.hasNext()) {
+            Iterator<Vertex> columnToAdd = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid);
+            if (!columnToAdd.hasNext()) {
                 Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
                 Vertex originalVertex = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
                 copyVertexProperties(originalVertex, newColumn);
@@ -282,8 +289,6 @@ public class MainGraphMapper {
                 }
             }
         }
-
-
     }
 
     private Vertex getTable(GraphTraversalSource bufferG,GraphTraversalSource mainG,Vertex asset){
@@ -321,7 +326,6 @@ public class MainGraphMapper {
             column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
         }
     }
-
 
 }
 
