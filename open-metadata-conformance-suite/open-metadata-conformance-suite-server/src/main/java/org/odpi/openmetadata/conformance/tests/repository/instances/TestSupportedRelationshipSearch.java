@@ -54,8 +54,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private static final String assertion2     = testCaseId + "-02";
     private static final String assertionMsg2  = " repository does not support an entity type that can be used to test relationship type ";
 
-    private static final String assertion101     = testCaseId + "-101";
-    private static final String assertionMsg101  = "repository supports searching for relationships of type ";
+    private static final String assertion2a     = testCaseId + "-2a";
+    private static final String assertionMsg2a  = "repository supports searching for relationships of type ";
 
     private static final String assertion3     = testCaseId + "-03";
     private static final String assertionMsg3  = "repository supports creation of instances of type ";
@@ -96,6 +96,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private static final String assertion15     = testCaseId + "-15";
     private static final String assertionMsg15  = "repository property matchProperties search with general regex returned expected results for type ";
 
+    private static final String assertion101    = testCaseId + "-101";
+    private static final String assertionMsg101 = "findRelationshipsByPropertyValue supports general regular expressions: ";
+
+    private static final String assertion102    = testCaseId + "-102";
+    private static final String assertionMsg102 = "findRelationshipsByProperty supports general regular expressions: ";
 
 
 
@@ -320,8 +325,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * Report it as unsupported and back off.
              */
 
-            super.addNotSupportedAssertion(assertion101,
-                                           assertionMsg101 + relationshipDef.getName(),
+            super.addNotSupportedAssertion(assertion2a,
+                                           assertionMsg2a + relationshipDef.getName(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -376,6 +381,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             knownInstances = new ArrayList<>();
             createdInstances = new ArrayList<>();
+            createdEntityInstances = new ArrayList<>();
 
             /*
              * Create two pages worth of instances. Why two pages? Because it will allow us to test pagesize on searches.
@@ -669,7 +675,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
 
             String methodName = "addRelationship";
-            String operationDescription = "add an entity of type " + relationshipDef.getName();
+            String operationDescription = "add a relationship of type " + relationshipDef.getName();
             Map<String,String> parameters = new HashMap<>();
             parameters.put("typeGUID"                , relationshipDef.getGUID());
             parameters.put("end1 entityGUID"         , end1.getGUID());
@@ -2417,18 +2423,25 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                     null,
                                                                     pageSize);
             }
-            catch (FunctionNotSupportedException exception) {
+            catch (FunctionNotSupportedException exc) {
 
                 /*
-                 * The repository does not support relationship searches; we need to report and stop
-                 *
+                 * This may be because the repository either :
+                 *  - does not support search for relationships (io is optional), or
+                 *  - des not support general regular expressions.
+                 * Either way we are going to have to fail this test - but we want to provide human-interpretable output n the test results.
+                 * To do this, we record the exception message in the assertion message.
+                 * The requirement/profile used here is the more specific  - i.e. not supporting general regexes. This is because the ability to
+                 * search relationships will have been tested and validated by an earlier test, so it will be found anyway on inspection of the
+                 * test results. The actual nature of the failure should be clear from the exception message.
                  */
 
                 super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                                               assertionMsg101 + relationshipDef.getName() + ": " + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
+                return;
 
             }
             catch(Exception exc) {
@@ -2605,18 +2618,25 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                         pageSize);
 
             }
-            catch (FunctionNotSupportedException exception) {
+            catch (FunctionNotSupportedException exc) {
 
                 /*
-                 * The repository does not support relationship searches; we need to report and stop
-                 *
+                 * This may be because the repository either :
+                 *  - does not support search for relationships (io is optional), or
+                 *  - des not support general regular expressions.
+                 * Either way we are going to have to fail this test - but we want to provide human-interpretable output n the test results.
+                 * To do this, we record the exception message in the assertion message.
+                 * The requirement/profile used here is the more specific  - i.e. not supporting general regexes. This is because the ability to
+                 * search relationships will have been tested and validated by an earlier test, so it will be found anyway on inspection of the
+                 * test results. The actual nature of the failure should be clear from the exception message.
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                super.addNotSupportedAssertion(assertion102,
+                                               assertionMsg102 + relationshipDef.getName() + ": " + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
+                return;
 
             }
             catch(Exception exc) {
