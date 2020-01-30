@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Configuring an Open Lineage Services server
+# Configuring and starting Open Lineage Services server
 
 1. Build the open-lineage-janus-connector jar by running:
 
@@ -69,7 +69,23 @@ With the following body:
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
 ```
-# Open Lineage Services
+
+#Shutting down the Open Lineage Services
+
+1. Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
+    
+```
+{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
+```
+
+2. Start the server again now that the Open Lineage Services have been removed from its configuration.
+
+```
+{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
+```
+
+
+# About the Open Lineage Services
 
 The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are send out 
 by the Asset Lineage OMAS, and stores lineage data in a database. This lineage can then be queried through
