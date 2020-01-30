@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Configuring and starting Open Lineage Services server
+# Starting the Open Lineage Services
 
 1. Build the open-lineage-janus-connector jar by running:
 
@@ -20,7 +20,7 @@ Add the jar (with dependencies included) to the classpath of the server-chassis-
 2. Start an [OMAG Server](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
 run the default calls for setting the server URL, eventbus and the cohort.
 
-3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
+3. Set the configuration for the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
 ```
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
@@ -70,7 +70,7 @@ With the following body:
 POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
 ```
 
-#Shutting down the Open Lineage Services
+# Shutting down the Open Lineage Services
 
 1. Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
     
@@ -78,12 +78,11 @@ POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{serve
 {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
 ```
 
-2. Start the server again now that the Open Lineage Services have been removed from its configuration.
+2. Start the instance of the server again again now that the Open Lineage Services have been removed from its configuration:
 
 ```
-{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
 ```
-
 
 # About the Open Lineage Services
 
