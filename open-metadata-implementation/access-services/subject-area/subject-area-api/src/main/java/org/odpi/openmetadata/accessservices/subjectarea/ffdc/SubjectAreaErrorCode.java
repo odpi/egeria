@@ -291,11 +291,11 @@ public enum SubjectAreaErrorCode {
             "An error occurred when attempting to encode the value of Query parameter {0}",
             "The client is unable to send the rest call as the supplied query parameter {0} cannot be encoded.",
             "Correct the code in the caller to supply a query parameter that can be encoded."),
-    MAPPER_ENTITY_GUID_TYPE_ERROR(400, "OMAS-SUBJECTAREA-400-065 ",
+    MAPPER_ENTITY_GUID_TYPE_ERROR(400, "OMAS-SUBJECT-AREA-400-065 ",
             "An error occurred because guid {0} has type {1} but was expected to have type {2} , ",
             "The server is unable to continue the call.",
             "Correct the code in the caller to supply a guid that corresponds to appropriate type."),
-    MAPPER_RELATIONSHIP_GUID_TYPE_ERROR(400, "OMAS-SUBJECTAREA-400-066 ",
+    MAPPER_RELATIONSHIP_GUID_TYPE_ERROR(400, "OMAS-SUBJECT-AREA-400-066 ",
             "An error occurred because guid {0} is not a {1} so the Relationship cannot be mapped to a {1} , ",
             "The server is unable to continue the call.",
             "Correct the code in the caller to supply a guid that corresponds to type {1}."),
@@ -327,27 +327,6 @@ public enum SubjectAreaErrorCode {
             "The system is unable to populate the requested connection object.",
             "Check that the connection name and the OMAG Server Platform URL is correct.  Retry the request when the connection is available in the" +
                                    " OMAS Service"),
-
-
-
-
-//    CONNECTION_NOT_FOUND(404, "OMAS-SUBJECT-AREA-404-005 ",
-//            "The requested connection {0} is not found in OMAG Server {1}, optional error message {2}",
-//            "The system is unable to populate the requested connection object.",
-//            "Check that the connection name and the OMAG Server URL is correct.  Retry the request when the connection is available in the OMAG Service"),
-//    PROXY_CONNECTION_FOUND(404, "OMAS-SUBJECT-AREA-404-006 ",
-//            "Only an entity proxy for requested connection {0} is found in the open metadata server {1}, error message was: {2}",
-//            "The system is unable to populate the requested connection object.",
-//            "Check that the connection name and the OMAG Server URL is correct.  Retry the request when the connection is available in the OMAS Service"),
-//    ASSET_NOT_FOUND(404, "OMAS-SUBJECT-AREA-404-006 ",
-//            "The requested asset {0} is not found for connection {1}",
-//            "The system is unable to populate the asset properties object because none of the open metadata repositories are returning the asset's properties.",
-//            "Verify that the OMAS Service running and the connection definition in use is linked to the Asset definition in the metadata repository. Then retry the request."),
-//    UNKNOWN_ASSET(404, "OMAS-SUBJECT-AREA-404-006 ",
-//            "The asset with unique identifier {0} is not found for method {1} of access service {2} in open metadata server {3}, error message was: {4}",
-//            "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
-//            "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
-//
 
     NULL_CONNECTION_RETURNED(500, "OMAS-SUBJECT-AREA-500-001 ",
             "The requested connection named {0} is not returned by the open metadata Server {1}",
