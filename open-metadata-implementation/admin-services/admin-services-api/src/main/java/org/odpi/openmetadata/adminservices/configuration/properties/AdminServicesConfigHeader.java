@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ConformanceSuiteConfig.class, name = "ConformanceSuiteConfig"),
         @JsonSubTypes.Type(value = PlatformConformanceWorkbenchConfig.class, name = "PlatformConformanceWorkbenchConfig"),
         @JsonSubTypes.Type(value = RepositoryConformanceWorkbenchConfig.class, name = "RepositoryConformanceWorkbenchConfig"),
-        @JsonSubTypes.Type(value = DiscoveryServerConfig.class, name = "DiscoveryServerConfig"),
+        @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryServerConfig"),
         @JsonSubTypes.Type(value = EnterpriseAccessConfig.class, name = "EnterpriseAccessConfig"),
         @JsonSubTypes.Type(value = EventBusConfig.class, name = "EventBusConfig"),
         @JsonSubTypes.Type(value = LocalRepositoryConfig.class, name = "LocalRepositoryConfig"),
@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = OpenLineageServerConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = RepositoryServicesConfig.class, name = "RepositoryServicesConfig"),
         @JsonSubTypes.Type(value = SecuritySyncConfig.class, name = "SecuritySyncConfig"),
-        @JsonSubTypes.Type(value = StewardshipServicesConfig.class, name = "StewardshipServicesConfig"),
+        @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipServicesConfig"),
         @JsonSubTypes.Type(value = VirtualizationConfig.class, name = "VirtualizationConfig"),
         @JsonSubTypes.Type(value = DataEngineProxyConfig.class, name = "DataEngineProxyConfig"),
         @JsonSubTypes.Type(value = DataPlatformServicesConfig.class, name = "DataPlatformServicesConfig")

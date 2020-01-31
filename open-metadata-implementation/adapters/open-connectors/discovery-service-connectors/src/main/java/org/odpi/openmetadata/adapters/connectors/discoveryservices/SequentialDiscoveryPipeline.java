@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryReport;
+import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 
 /**
@@ -18,7 +18,7 @@ public class SequentialDiscoveryPipeline extends AuditableDiscoveryPipeline
      */
     protected void runDiscoveryPipeline() throws ConnectorCheckedException
     {
-        DiscoveryReport discoveryReport = super.discoveryContext.getAnnotationStore().getDiscoveryReport();
+        DiscoveryAnalysisReportStore discoveryReport = super.discoveryContext.getAnnotationStore().getDiscoveryReport();
 
         for (DiscoveryService embeddedDiscoveryService : super.embeddedDiscoveryServices)
         {

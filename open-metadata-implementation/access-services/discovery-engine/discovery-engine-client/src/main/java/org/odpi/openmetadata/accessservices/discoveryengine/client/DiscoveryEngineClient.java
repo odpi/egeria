@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private ODFRESTClient restClient;               /* Initialized in constructor */
+    private ODFRESTClient                          restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "discovery-engine";
 
@@ -501,9 +501,9 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      */
     public void setDiscoveryStatus(String                  userId,
                                    String                  discoveryReportGUID,
-                                   DiscoveryRequestStatus  newStatus) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                   DiscoveryRequestStatus newStatus) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         DiscoveryAnalysisReport report = this.getDiscoveryAnalysisReport(userId, discoveryReportGUID);
 

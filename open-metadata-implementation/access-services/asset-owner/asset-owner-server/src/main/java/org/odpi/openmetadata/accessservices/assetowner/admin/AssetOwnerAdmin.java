@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.auditlog.AssetOwnerAuditC
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -102,6 +103,10 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

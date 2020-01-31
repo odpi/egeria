@@ -146,7 +146,7 @@ class OMAGServerInstance
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
         {
-            throw new InvalidParameterException(error);
+            throw new InvalidParameterException(error.getErrorMessage(), error);
         }
 
         return this.securityVerifier;

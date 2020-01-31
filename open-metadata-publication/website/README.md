@@ -3,15 +3,25 @@
   
 # What is ODPi Egeria?
 
-ODPi Egeria implements a set of open APIs, [types](open-metadata-types/README.md)
-and interchange protocols to allow all metadata repositories
-to share and exchange metadata.
+ODPi Egeria implements a set of open APIs, [metadata types](open-metadata-types/README.md),
+frameworks, connectors and interchange protocols to allow all types of tools and
+metadata repositories to share and exchange metadata.
 
-From this common base, it adds governance,
-discovery and access frameworks to automate the collection, management and
-use of metadata across an enterprise.  The result is an enterprise catalog of
-data resources that are transparently assessed, governed and used in order to
+It is essentially a comprehensive toolkit for integrating and
+distributing metadata between different tools and technologies.  In addition, it has a multi-tenant platform
+that supports horizontal scale-out in Kubernetes and yet is light enough to run
+as an edge server on a Raspberry Pi.  This platform is
+used to host the integration and metadata exchange capabilities
+along with open governance,
+discovery and access services to automate the collection, management and
+use of metadata across an enterprise.  
+
+The result is an enterprise catalog of
+data and IT resources that are transparently assessed, governed and consumed 
+through many types of tools and technologies in order to
 deliver maximum value to the enterprise.
+
+## Why open source?
 
 Delivering this capability as open source is a critical part of the project
 since multiple vendors must buy into this ecosystem.
@@ -23,44 +33,53 @@ and deployments.
 
 # Project Objectives
 
-Figure 1 summarizes the objectives of the new open metadata and
-governance function for Egeria:
+Figure 1 summarizes the objectives of Egeria:
 **Automation**, **Business Value** and **Connectivity**.
 
 ![Figure 1: The ABC of open metadata and governance](Figure-1-Project-Objectives.png)
 > Figure 1: The ABC of open metadata and governance
 
 * **Automation**
-Open metadata and governance provides an API for components that capture
-metadata from data platforms as data sources are created and changed.
-This metadata is stored in the metadata repository and results in notifications
-to alert governance and discovery services about the new/changed data source.
-It provides frameworks and servers to host bespoke components that automate the
-capture of detailed metadata and the actions necessary to govern data and its
-related assets.  This includes: 
-  * A discovery server that manages discovery services for analyzing and
-  capturing metadata about new data sources.
-  * A stewardship server that manages stewardship services for resolving
-  issues detected during the governance and use of data.
+  
+  It is expensive (and error prone) to expect individuals to
+  maintain a metadata catalog by hand.  Egeria helps to
+  automate metadata management through its specialist
+  [governance servers](../../open-metadata-implementation/governance-servers)
+  that extract and synchronize metadata with different technologies.
+  Figure 1 shows two of these servers, the **Stewardship Server** and
+  **Discovery Server** managing metadata and storing it in an open
+  metadata repository.
 
-* **Business Value** 
-Open metadata and governance provides specialized access services and user interfaces
-for key data roles such as CDO, Data Scientist, Developer, DevOps Operator,
-Asset Owner, and for Applications.  This enables metadata to directly support the work
-of people in the organization.
-The access services can also be used by tools from different vendors to deliver
-business value with open metadata.
+* **Business Value**
 
+  Once metadata is integrated, new insight is possible into
+  the data and services owned by the enterprise.
+  Egeria provides access services
+  and open lineage services that use federated metadata 
+  queries to create this enterprise view.
+  
 * **Connectivity**
-Finally, connectivity enables a peer-to-peer Metadata Highway offering
-open metadata exchange, linking and federation between
-heterogeneous metadata repositories.
 
+  Finally, the automation and and business value would not be possible
+  without the ability to integrate and distribute metadata.
+  Connectivity enables a peer-to-peer Metadata Highway offering
+  open metadata exchange, linking and federation between
+  heterogeneous metadata repositories.
+
+
+# Further reading
+
+* **[Open Metadata Types](open-metadata-types/README.md)** - The open metadata types provide
+an overview of the scope of metadata that Egeria is covering.
+* **[Open Metadata Labs](../../open-metadata-resources/open-metadata-labs)** - The open metadata labs provide
+the means to get hands on experience with Egeria.
+* **[Administration Guide](../../open-metadata-implementation/admin-services/docs/user)** - The administration guide describes how to configure Egeria.
+* **[OMAG Server Platform Overview](omag-server)** - the OMAG Server Platform Overview describes the operation of Egeria's software platform.
 
 # Technical Components 
 
-The open metadata and governance project is divided into the following pieces:
-* **[Common types for open metadata](open-metadata-types/README.md)** - these types are built from the Egeria type system and define the types stored in the graph database as well as payloads for notifications and APIs.
+These are the principle technical components of Egeria
+
 * **[Open Metadata Repository Services (OMRS)](../../open-metadata-implementation/repository-services/README.md)** - Open metadata repository APIs and notifications to enable metadata repositories to exchange metadata in a peer-to-peer metadata repository cohort.  This capability is located in each metadata repository and collectively they enable what is referred to as the "metadata highway".
 * **[Open Metadata Access Services (OMAS)](../../open-metadata-implementation/access-services/README.md)** - Consumer-centric APIs and notifications for specific classes of tools and applications.  The OMAS services call the OMRS to access metadata from any open metadata repository.
 * New frameworks:
@@ -68,27 +87,20 @@ The open metadata and governance project is divided into the following pieces:
   * **[Open Discovery Framework (ODF)](../../open-metadata-implementation/frameworks/open-discovery-framework/README.md)** - provides management for automated processes and analytics to analyze the content of data resources and update the metadata about them.
   * **[Governance Action Framework (GAF)](../../open-metadata-implementation/frameworks/governance-action-framework/README.md)** - provides audit logging and governance enforcement services for implementing enforcement points in data engines, security managers such as Apache Ranger, and APIs.  It also adds stewardship services for analyzing audit logs and resolving issues identified in exceptions raised by the enforcement services.
 * **[Open Metadata Graph Repository](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md)** - A set of stores linked together with a graph database.  These stores provide linkage between business, technical and operational metadata along with logs for auditing, operational lineage, metering and exception management.
-* **Open Lineage Services** - Services for collecting and querying lineage information across multiple heterogeneous metadata repositories.
-
-At this current time, there is a huge investment into Egeria
-to add the open metadata and governance features plus also work on
-adoption of this technology across the data industry.
-
-# Help
+* **[Governance Servers](../../open-metadata-implementation/governance-servers)** for automating the management, governance and use of metadata with different tools, platforms and engines.
+* **[Open Lineage Services](../../open-metadata-implementation/governance-servers/open-lineage-services)** - Services for collecting and querying lineage information across multiple heterogeneous metadata repositories.
+* **[Administration Services](../../open-metadata-implementation/admin-services)** for configuring Egeria
+* **[Platform Services](../../open-metadata-implementation/platform-services)** for querying the status of the servers running on the platform.
+* **[Common Services](../../open-metadata-implementation/common-services)** for common services such as security and first failure data capture (FFDC).
+* **[Adapters](../../open-metadata-implementation/adapters)** connectors and plugins for different types of technologies.
+* **[Server Chassis](../../open-metadata-implementation/server-chassis)** the base component of the OMAG Server Platform.
+# Further Help
 
 * [Tutorials](../../open-metadata-resources/open-metadata-tutorials)
 * [Samples](../../open-metadata-resources/open-metadata-samples)
 * [Trouble shooting](trouble-shooting)
 * [Glossary of Terms](open-metadata-glossary.md)
-
-
-# Integrating into the Open Metadata and Governance Ecosystem
-
-With these frameworks and APIs in place,
-the Egeria function is divided into different packages to allow technology partners
-to connect into the open metadata and governance ecosystem.
-The integration options are described as five patterns
-([native, caller, adapter, plug-in, special](open-metadata-integration-patterns/README.md)).
+* [Contributing to Egeria](../../Community-Guide.md)
 
 
 # Additional contributions by the ODPi Community

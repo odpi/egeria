@@ -67,32 +67,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(OMAGCommonErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.SERVER_NAME_NOT_SPECIFIED);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_ARRAY_PARAMETER);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NEGATIVE_START_FROM);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NEGATIVE_PAGE_SIZE);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.MAX_PAGE_SIZE);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_CONNECTION_PARAMETER);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_TEXT);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_OBJECT);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.UNEXPECTED_EXCEPTION);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NO_REQUEST_BODY);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.UNRECOGNIZED_TYPE_NAME);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.BAD_SUB_TYPE_NAME);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NOT_IN_THE_ZONE);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.UNKNOWN_ELEMENT);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.NULL_SEARCH_STRING);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.CANNOT_DELETE_ELEMENT_IN_USE);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED);
-        testSingleErrorCodeValues(OMAGCommonErrorCode.CLIENT_SIDE_REST_API_ERROR);
+        for (OMAGCommonErrorCode errorCode : OMAGCommonErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

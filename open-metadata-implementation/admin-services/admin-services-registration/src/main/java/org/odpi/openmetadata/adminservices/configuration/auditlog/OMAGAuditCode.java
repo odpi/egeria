@@ -25,45 +25,45 @@ import java.util.Arrays;
 public enum OMAGAuditCode
 {
     ALL_ZONES("OMAG-ADMIN-0001",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",
               "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                       "This means it is providing access to all Assets irrespective of the zone(s) they are assigned to.",
               "No action is required.  This is part of the normal operation of the service."),
 
     SUPPORTED_ZONES("OMAG-ADMIN-0002",
-                    OMRSAuditLogRecordSeverity.INFO,
+                    OMRSAuditLogRecordSeverity.STARTUP,
                     "The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}",
                     "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
                       "This means it is only providing access to the Assets from these zone(s).",
                     "No action is required.  This is part of the normal operation of the service."),
 
     DEFAULT_ZONES("OMAG-ADMIN-0003",
-                  OMRSAuditLogRecordSeverity.INFO,
+                  OMRSAuditLogRecordSeverity.STARTUP,
                   "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}",
                   "The access service was passed a list of governance zones in the DefaultZones property of the access services options.",
                   "No action is required.  This is part of the normal operation of the service."),
 
     KARMA_POINT_COLLECTION_INCREMENT("OMAG-ADMIN-0004",
-                                     OMRSAuditLogRecordSeverity.INFO,
+                                     OMRSAuditLogRecordSeverity.STARTUP,
                                      "The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata",
                                      "The access service was passed this value in the KarmaPointInterval property of the access service's options.",
                                      "No action is required.  This is part of the normal operation of the service."),
 
     NO_KARMA_POINT_COLLECTION("OMAG-ADMIN-0005",
-                              OMRSAuditLogRecordSeverity.INFO,
+                              OMRSAuditLogRecordSeverity.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server",
                               "The access service can be configured to collect karma points by setting the KarmaPointIncrement property of the access service's options.",
                               "No action is required.  This is part of the normal operation of the service."),
 
     PLATEAU_THRESHOLD("OMAG-ADMIN-0006",
-                      OMRSAuditLogRecordSeverity.INFO,
+                      OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}",
                       "The access service was passed this value in the KarmaPointThreshold property of the access service's options.",
                       "No action is required.  This is part of the normal operation of the service."),
 
     DEFAULT_PLATEAU_THRESHOLD("OMAG-ADMIN-0007",
-                              OMRSAuditLogRecordSeverity.INFO,
+                              OMRSAuditLogRecordSeverity.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}",
                               "This default value can be overridden with the KarmaPointThreshold property of the access service's options.",
                               "No action is required.  This is part of the normal operation of the service."),
@@ -75,7 +75,7 @@ public enum OMAGAuditCode
                         "Correct the configuration and restart the service."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAG-ADMIN-0009",
-                                             OMRSAuditLogRecordSeverity.INFO,
+                                             OMRSAuditLogRecordSeverity.STARTUP,
                                              "The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}",
                                              "The OMAS is registering to receive events from the open metadata repositories registered with the cohort.",
                                              "No action is required.  This is part of the normal operation of the server."),
@@ -88,9 +88,17 @@ public enum OMAGAuditCode
 
     BAD_TOPIC_CONNECTOR("OMAG-ADMIN-0011",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        "Method {0} called on behalf of the {1} Open Metadata Access Service (OMAS) detected a {2} exception when creating an open metadata topic connector.  The error message was {3}",
-                        "The access service has not been passed valid configuration.",
+                        "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  " +
+                                "The error message was {3}",
+                        "The access service has not been passed valid configuration. The service failed to start.",
                         "Correct the configuration and restart the service."),
+
+    BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-ADMIN-0012",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
+                                         "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
+                        "This is an internal error.  The access service is not using a valid connector provider.",
+                        "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
 
     ;
 

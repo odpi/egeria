@@ -39,11 +39,11 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                                         List<String> supportedZones,
                                         OMRSAuditLog auditLog,
                                         String localServerUserId) throws NewInstanceException {
-        super(myDescription.getAccessServiceName() + " OMAS",
-                repositoryConnector,
-                auditLog,
-                localServerUserId,
-                repositoryConnector.getMaxPageSize());
+        super(myDescription.getAccessServiceFullName(),
+              repositoryConnector,
+              auditLog,
+              localServerUserId,
+              repositoryConnector.getMaxPageSize());
 
         final String methodName = "new ServiceInstance";
 

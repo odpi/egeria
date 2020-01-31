@@ -21,13 +21,13 @@ import java.text.MessageFormat;
  */
 public enum AssetCatalogAuditCode {
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Catalog OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Catalog OMAS.",
             "No action is required.  This is part of the normal operation of the service."),
@@ -39,7 +39,7 @@ public enum AssetCatalogAuditCode {
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
             "No action is required.  This is part of the normal operation of the service.");

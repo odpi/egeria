@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "ASSET-CONSUMER";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("ASSET-CONSUMER"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,13 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-
-        testSingleErrorCodeValues(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.CONNECTION_NOT_FOUND);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.PROXY_CONNECTION_FOUND);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.ASSET_NOT_FOUND);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.MULTIPLE_ASSETS_FOUND);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.UNKNOWN_ASSET);
+        for (AssetConsumerErrorCode errorCode : AssetConsumerErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

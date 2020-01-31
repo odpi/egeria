@@ -41,6 +41,13 @@ public class TestOMRSAuditingComponent
     }
 
 
+    private void testGetters(OMRSAuditingComponent   testValue)
+    {
+        assertTrue(testValue.getComponentName() != null);
+        assertTrue(testValue.getComponentDescription() != null);
+        assertTrue(testValue.getComponentWikiURL() != null);
+    }
+
     /**
      * Validated the values of the enum.
      */
@@ -48,139 +55,11 @@ public class TestOMRSAuditingComponent
     {
         existingOrdinals = new ArrayList<>();
 
-        OMRSAuditingComponent  testValue;
-
-        testValue = OMRSAuditingComponent.UNKNOWN;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() == null);
-
-        testValue = OMRSAuditingComponent.AUDIT_LOG;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.OPERATIONAL_SERVICES;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.REST_SERVICES;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.REST_REPOSITORY_CONNECTOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.METADATA_HIGHWAY_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.COHORT_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.COHORT_REGISTRY;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.REGISTRY_STORE;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.EVENT_PUBLISHER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.EVENT_LISTENER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-        testValue = OMRSAuditingComponent.ARCHIVE_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.LOCAL_REPOSITORY_CONNECTOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
-
-
-        testValue = OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR;
-        assertTrue(isUniqueOrdinal(testValue.getComponentId()));
-        assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentDescription() != null);
-        assertTrue(testValue.getComponentWikiURL() != null);
+        for (OMRSAuditingComponent  testValue : OMRSAuditingComponent.values())
+        {
+            assertTrue(isUniqueOrdinal(testValue.getComponentId()));
+            testGetters(testValue);
+        }
     }
 
 

@@ -2,30 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventInterface;
+import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventListener;
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientConnector;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.List;
 import java.util.Map;
 
 
-public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
+public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer implements DiscoveryEngineEventInterface
 {
+    private static final String  serviceName = "Discovery Engine OMAS";
+
     private String        serverName;               /* Initialized in constructor */
     private String        serverPlatformURLRoot;    /* Initialized in constructor */
     private ODFRESTClient restClient;               /* Initialized in constructor */
@@ -33,6 +41,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
     private NullRequestBody         nullRequestBody         = new NullRequestBody();
+
+    private DiscoveryEngineOutTopicClientConnector configurationEventTopicConnector = null;
+    private OMRSAuditLog                           auditLog = null;
 
 
     /**
@@ -89,13 +100,15 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
-     * @param maxPageSize pre-initialized parameter checker
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public DiscoveryConfigurationClient(String                  serverName,
-                                        String                  serverPlatformURLRoot,
+    public DiscoveryConfigurationClient(String        serverName,
+                                        String        serverPlatformURLRoot,
                                         ODFRESTClient restClient,
-                                        int                     maxPageSize) throws InvalidParameterException
+                                        int           maxPageSize,
+                                        OMRSAuditLog  auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -105,7 +118,112 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient = restClient;
+        this.auditLog = auditLog;
     }
+
+
+    /**
+     * Return the name of the server where configuration is supposed to be stored.
+     *
+     * @return server name
+     */
+    public String getConfigurationServerName()
+    {
+        return serverName;
+    }
+
+
+    /**
+     * Register a listener object that will be passed each of the events published by
+     * the Discovery Engine OMAS.
+     *
+     * @param userId calling user
+     * @param listener listener object
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void registerListener(String                       userId,
+                                 DiscoveryEngineEventListener listener) throws InvalidParameterException,
+                                                                               ConnectionCheckedException,
+                                                                               ConnectorCheckedException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "registerListener";
+        final String nameParameter = "listener";
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/topics/out-topic-connection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(listener, nameParameter, methodName);
+
+        if (configurationEventTopicConnector == null)
+        {
+            /*
+             * The connector is only created if/when a listener is registered to prevent unnecessary load on the
+             * event bus.
+             */
+            ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                 serverName,
+                                                                                 userId);
+
+            Connection      topicConnection = restResult.getConnection();
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+            Connector       connector       = connectorBroker.getConnector(topicConnection);
+
+            if (connector == null)
+            {
+                OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED;
+                String           errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(topicConnection.getQualifiedName(),
+                                                                                   serviceName,
+                                                                                   serverName,
+                                                                                   serverPlatformURLRoot);
+
+                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction(),
+                                                    null);
+            }
+
+            if (connector instanceof DiscoveryEngineOutTopicClientConnector)
+            {
+                configurationEventTopicConnector = (DiscoveryEngineOutTopicClientConnector)connector;
+                configurationEventTopicConnector.setAuditLog(auditLog);
+                configurationEventTopicConnector.start();
+            }
+            else
+            {
+                OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR;
+                String           errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(topicConnection.getQualifiedName(),
+                                                                                   serviceName,
+                                                                                   serverName,
+                                                                                   serverPlatformURLRoot,
+                                                                                   DiscoveryEngineOutTopicClientConnector.class.getName());
+
+                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction(),
+                                                    null);
+            }
+        }
+
+        configurationEventTopicConnector.registerListener(userId, listener);
+    }
+
 
 
     /**
@@ -713,33 +831,36 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param assetDiscoveryTypes list of asset types that this discovery service is able to process.
+     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
+     *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public  void  registerDiscoveryServiceWithEngine(String        userId,
-                                                     String        discoveryEngineGUID,
-                                                     String        discoveryServiceGUID,
-                                                     List<String>  assetDiscoveryTypes) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public  void  registerDiscoveryServiceWithEngine(String               userId,
+                                                     String               discoveryEngineGUID,
+                                                     String               discoveryServiceGUID,
+                                                     List<String>         discoveryRequestTypes,
+                                                     Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String assetDiscoveryTypesParameter = "assetDiscoveryTypes";
+        final String discoveryRequestTypesParameter = "discoveryRequestTypes";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        invalidParameterHandler.validateStringArray(assetDiscoveryTypes, assetDiscoveryTypesParameter, methodName);
+        invalidParameterHandler.validateStringArray(discoveryRequestTypes, discoveryRequestTypesParameter, methodName);
 
         DiscoveryServiceRegistrationRequestBody requestBody = new DiscoveryServiceRegistrationRequestBody();
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);
-        requestBody.setAssetDiscoveryTypes(assetDiscoveryTypes);
+        requestBody.setDiscoveryRequestTypes(discoveryRequestTypes);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,

@@ -18,7 +18,7 @@
 
     <name>Egeria Website</name>
     <description>
-        Markdown files that make up the website at https://odpi.github.io/egeria.
+        Markdown files that make up the website at https://egeria.odpi.org.
     </description>
 
     <artifactId>website</artifactId>

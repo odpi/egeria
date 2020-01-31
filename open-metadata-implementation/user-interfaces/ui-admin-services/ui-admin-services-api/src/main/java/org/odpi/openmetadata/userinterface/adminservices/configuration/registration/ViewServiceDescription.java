@@ -14,25 +14,25 @@ public enum ViewServiceDescription implements Serializable
             "asset-search",
             "Search and understand your assets.",
             //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/"),
+            "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-catalog/"),
     OPEN_LINEAGE  (1020,
             "Open Lineage",
             "open-lineage",
             "Explore open lineage.",
             //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-owner/"),
+            "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"),
     SUBJECT_AREA  (1030,
             "Subject Area",
             "subject-area",
             "Subject area authoring.",
             //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+            "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"),
     TYPE_EXPLORER (1040,
             "Type Explorer",
             "type-explorer",
             "Explore the open metadata types.",
             //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/")
+            "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/")
     ;
 
     private static final long     serialVersionUID    = 1L;

@@ -32,9 +32,9 @@ public class ConfigConformanceSuiteServicesResource
      */
     @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/repositories")
 
-    public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String userId,
-                                                                  @PathVariable String serverName,
-                                                                  @RequestBody RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
+    public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String                               userId,
+                                                                  @PathVariable String                               serverName,
+                                                                  @RequestBody  RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
         return adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, repositoryConformanceWorkbenchConfig);
     }

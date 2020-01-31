@@ -320,18 +320,21 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param assetTypes list of asset types that this discovery service is able to process.
+     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
+     *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract void  registerDiscoveryServiceWithEngine(String        userId,
-                                                             String        discoveryEngineGUID,
-                                                             String        discoveryServiceGUID,
-                                                             List<String>  assetTypes) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    public abstract void  registerDiscoveryServiceWithEngine(String               userId,
+                                                             String               discoveryEngineGUID,
+                                                             String               discoveryServiceGUID,
+                                                             List<String>         discoveryRequestTypes,
+                                                             Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException;
 
 
     /**

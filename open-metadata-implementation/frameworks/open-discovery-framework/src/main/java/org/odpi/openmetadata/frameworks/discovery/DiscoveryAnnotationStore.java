@@ -19,9 +19,9 @@ import java.util.List;
  */
 public abstract class DiscoveryAnnotationStore
 {
-    protected String           userId;
-    protected String           assetGUID;
-    protected DiscoveryReport  discoveryReport;
+    protected String                       userId;
+    protected String                       assetGUID;
+    protected DiscoveryAnalysisReportStore discoveryReport;
 
 
     /**
@@ -31,7 +31,7 @@ public abstract class DiscoveryAnnotationStore
      * @param assetGUID unique identifier of the asset that the annotations should be attached to
      * @param discoveryReport discovery report that these annotations will be filed against.
      */
-    public DiscoveryAnnotationStore(String userId, String assetGUID, DiscoveryReport discoveryReport)
+    public DiscoveryAnnotationStore(String userId, String assetGUID, DiscoveryAnalysisReportStore discoveryReport)
     {
         this.userId = userId;
         this.assetGUID = assetGUID;
@@ -45,7 +45,7 @@ public abstract class DiscoveryAnnotationStore
      *
      * @return the new discovery report.
      */
-    public DiscoveryReport getDiscoveryReport()
+    public DiscoveryAnalysisReportStore getDiscoveryReport()
     {
         return discoveryReport;
     }

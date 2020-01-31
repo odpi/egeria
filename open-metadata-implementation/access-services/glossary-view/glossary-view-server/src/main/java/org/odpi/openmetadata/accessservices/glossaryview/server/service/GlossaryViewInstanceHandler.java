@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHa
 public class GlossaryViewInstanceHandler extends OCFOMASServiceInstanceHandler {
 
     public GlossaryViewInstanceHandler() {
-        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceFullName());
     }
 
 }

@@ -3,14 +3,15 @@
 
 # Discovery Engine Services
 
-The discovery engine services provide the core subsystem for a discovery server.
-A discovery server is an [OMAG Server](../../../open-metadata-publication/website/omag-server/omag-server.md)
+The discovery engine services provide the core subsystem for a
+[discovery server](../../admin-services/docs/concepts/discovery-server.md).
+A discovery server is an [OMAG Server](../../admin-services/docs/concepts/omag-server.md)
 that hosts [automated metadata discovery](../../../open-metadata-publication/website/metadata-discovery).
 
-The discovery engine services subsystem hosts one or more
+The discovery engine services subsystem is capable of hosting one or more
 [discovery engines](../../frameworks/open-discovery-framework/docs/discovery-engine.md)
 and supports a REST API to request that a discovery engine runs an
-[open discovery service](../../frameworks/open-discovery-framework/docs/discovery-service.md)
+[discovery service](../../frameworks/open-discovery-framework/docs/discovery-service.md)
 to analyse an [asset](../../access-services/docs/concepts/assets) and to access the results.
 
 The REST API also supports a request to a discovery engine to run a specific open discovery service
@@ -26,11 +27,8 @@ store the results of the discovery services.
 The terminology associated with the discovery engine services comes from the
 [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework/docs).
 This framework provides the interface
-definitions for the
-open discovery services
-and the services that support them.
-
-
+definitions for the discovery services
+and the APIs that support them.
 
 An open discovery service is a specialized component from the
 [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework/docs).
@@ -45,7 +43,7 @@ The discovery engine provides a REST API to request that a specific discovery se
 that all applicable discovery services are run for the asset.
 
 The results of each of these
-calls is a [discovery analysis report](../../frameworks/open-discovery-framework/docs/discovery-report.md).
+calls is a [discovery analysis report](../../frameworks/open-discovery-framework/docs/discovery-analysis-report.md).
 
 The discovery engine calls the Discovery Engine OMAS to retrieve information about the Asset's supported discovery
 services and to attach the discovery analysis report to the Asset.

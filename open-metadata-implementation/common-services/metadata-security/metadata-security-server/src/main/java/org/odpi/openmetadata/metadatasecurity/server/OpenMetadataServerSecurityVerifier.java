@@ -79,7 +79,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
         catch (InvalidParameterException error)
         {
-            throw new InvalidParameterException(error);
+            throw new InvalidParameterException(error.getErrorMessage(), error);
         }
     }
 

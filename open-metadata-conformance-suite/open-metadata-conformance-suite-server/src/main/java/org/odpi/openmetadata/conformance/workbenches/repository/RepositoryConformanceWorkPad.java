@@ -26,7 +26,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchId            = "repository-workbench";
     private static final String workbenchName          = "Open Metadata Repository Test Workbench";
     private static final String workbenchVersionNumber = "V1.1";
-    private static final String workbenchDocURL        = "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/" + workbenchId;
+    private static final String workbenchDocURL        = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
     private OMRSAuditLog            auditLog;
