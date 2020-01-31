@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaAnalysisAnnotation.class, name = "SchemaAnalysisAnnotation"),
                 @JsonSubTypes.Type(value = DataSourceMeasurementAnnotation.class, name = "DataSourceMeasurementAnnotation"),
                 @JsonSubTypes.Type(value = DataFieldAnnotation.class, name = "DataFieldAnnotation"),
+                @JsonSubTypes.Type(value = SuspectDuplicateAnnotation.class, name = "SuspectDuplicateAnnotation"),
         })
 public class Annotation extends ElementHeader
 {

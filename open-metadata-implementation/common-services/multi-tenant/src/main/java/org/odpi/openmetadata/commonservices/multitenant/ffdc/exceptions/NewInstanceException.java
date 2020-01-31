@@ -11,6 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedException
  */
 public class NewInstanceException extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a NewInstanceException.
      *

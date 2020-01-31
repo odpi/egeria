@@ -203,25 +203,28 @@ public class AssetConverter extends ReferenceableConverter
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
-
-            if (instancePropertyValue instanceof EnumPropertyValue)
+            if (instancePropertiesMap != null)
             {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
 
-                switch (enumPropertyValue.getOrdinal())
+                if (instancePropertyValue instanceof EnumPropertyValue)
                 {
-                    case 0:
-                        ownerType = OwnerType.USER_ID;
-                        break;
+                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
 
-                    case 1:
-                        ownerType = OwnerType.PROFILE_ID;
-                        break;
+                    switch (enumPropertyValue.getOrdinal())
+                    {
+                        case 0:
+                            ownerType = OwnerType.USER_ID;
+                            break;
 
-                    case 99:
-                        ownerType = OwnerType.OTHER;
-                        break;
+                        case 1:
+                            ownerType = OwnerType.PROFILE_ID;
+                            break;
+
+                        case 99:
+                            ownerType = OwnerType.OTHER;
+                            break;
+                    }
                 }
             }
         }
@@ -244,7 +247,10 @@ public class AssetConverter extends ReferenceableConverter
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            instancePropertiesMap.remove(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
+            }
 
             properties.setInstanceProperties(instancePropertiesMap);
         }

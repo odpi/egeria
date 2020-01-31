@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,14 +15,16 @@ import java.util.Objects;
  */
 public class DataField extends PropertyBase
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
 
-    private int                       dataFieldPosition    = 0;
-    private String                    dataFieldName        = null;
-    private String                    dataFieldType        = null;
-    private List<DataFieldAnnotation> dataFieldAnnotations = null;
-    private Map<String, String>       additionalProperties = null;
-    private int                       nestedDataFields     = 0;
+    private int                 dataFieldPosition    = 0;
+    private String              dataFieldName        = null;
+    private String              dataFieldType        = null;
+    private int                 dataFieldAnnotations = 0;
+    private Map<String, String> additionalProperties = null;
+    private int                 nestedDataFields     = 0;
+    private Map<String, Object> extendedProperties   = null;
+
 
     /**
      * Default constructor
@@ -48,80 +51,180 @@ public class DataField extends PropertyBase
             dataFieldAnnotations = template.getDataFieldAnnotations();
             additionalProperties = template.getAdditionalProperties();
             nestedDataFields = template.getNestedDataFields();
+            extendedProperties = template.getExtendedProperties();
         }
     }
 
 
+    /**
+     * Return the position (index) of the data field in the schema.
+     *
+     * @return integer
+     */
     public int getDataFieldPosition()
     {
         return dataFieldPosition;
     }
 
 
+    /**
+     * Set up the position (index) of the data field in the schema.
+     *
+     * @param dataFieldPosition integer
+     */
     public void setDataFieldPosition(int dataFieldPosition)
     {
         this.dataFieldPosition = dataFieldPosition;
     }
 
 
+    /**
+     * Return the name of this data field.
+     *
+     * @return string name
+     */
     public String getDataFieldName()
     {
         return dataFieldName;
     }
 
 
+    /**
+     * Set up the name of this data field.
+     *
+     * @param dataFieldName string name
+     */
     public void setDataFieldName(String dataFieldName)
     {
         this.dataFieldName = dataFieldName;
     }
 
 
+    /**
+     * Return the name of type of this data field.
+     *
+     * @return string type name
+     */
     public String getDataFieldType()
     {
         return dataFieldType;
     }
 
 
+    /**
+     * Set up the name of type of this data field.
+     *
+     * @param dataFieldType string type name
+     */
     public void setDataFieldType(String dataFieldType)
     {
         this.dataFieldType = dataFieldType;
     }
 
 
-    public List<DataFieldAnnotation> getDataFieldAnnotations()
+    /**
+     * Return the number of the annotations currently attached to this data field.
+     *
+     * @return integer
+     */
+    public int getDataFieldAnnotations()
     {
         return dataFieldAnnotations;
     }
 
 
-    public void setDataFieldAnnotations(
-            List<DataFieldAnnotation> dataFieldAnnotations)
+    /**
+     * Set up the number of the annotations currently attached to this data field.
+     *
+     * @param dataFieldAnnotations integer
+     */
+    public void setDataFieldAnnotations(int dataFieldAnnotations)
     {
         this.dataFieldAnnotations = dataFieldAnnotations;
     }
 
 
+    /**
+     * Return any additional properties.
+     *
+     * @return map of property name to property value
+     */
     public Map<String, String> getAdditionalProperties()
     {
-        return additionalProperties;
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(additionalProperties);
     }
 
 
+    /**
+     * Set up any additional properties.
+     *
+     * @param additionalProperties map of property name to property value
+     */
     public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }
 
 
+    /**
+     * Return the number of nested data fields.
+     *
+     * @return integer
+     */
     public int getNestedDataFields()
     {
         return nestedDataFields;
     }
 
 
+    /**
+     * Set up the number of nested data fields.
+     *
+     * @param nestedDataFields integer
+     */
     public void setNestedDataFields(int nestedDataFields)
     {
         this.nestedDataFields = nestedDataFields;
+    }
+
+
+    /**
+     * Return any properties from subtypes.
+     *
+     * @return map of property name to property value
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(extendedProperties);
+    }
+
+
+    /**
+     * Set up any properties from subtypes.
+     *
+     * @param extendedProperties map of property name to property value
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
     }
 
 
@@ -140,7 +243,8 @@ public class DataField extends PropertyBase
                        ", dataFieldAnnotations=" + dataFieldAnnotations +
                        ", additionalProperties=" + additionalProperties +
                        ", nestedDataFields=" + nestedDataFields +
-                       '}';
+                       ", extendedProperties=" + extendedProperties +
+                '}';
     }
 
 

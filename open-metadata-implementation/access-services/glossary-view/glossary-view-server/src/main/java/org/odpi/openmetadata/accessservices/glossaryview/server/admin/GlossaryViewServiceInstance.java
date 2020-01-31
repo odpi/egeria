@@ -29,7 +29,7 @@ public class GlossaryViewServiceInstance extends OCFOMASServiceInstance {
                                        String                  localServerUserId,
                                        int                     maxPageSize) throws NewInstanceException {
 
-        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceName() + " OMAS",
+        super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceFullName(),
               omrsRepositoryConnector, omrsAuditLog, localServerUserId, maxPageSize);
     }
 

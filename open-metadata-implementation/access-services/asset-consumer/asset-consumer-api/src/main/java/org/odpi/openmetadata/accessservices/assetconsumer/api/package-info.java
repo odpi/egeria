@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package ...
- */
-/**
- * The API package defines the Java interfaces supported by the Asset Consumer OMAS.
+ * The API package defines the Java interfaces supported by the Asset Consumer OMAS.  These Java interfaces
+ * wrap the REST API calls to the server and the asynchronous event passing through Asset Consumer's Out Topic
  */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;

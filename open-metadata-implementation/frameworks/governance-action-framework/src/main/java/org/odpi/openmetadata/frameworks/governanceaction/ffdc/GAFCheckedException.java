@@ -8,6 +8,8 @@ package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
  */
 public class GAFCheckedException extends Exception
 {
+    private static final long    serialVersionUID = 1L;
+
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */

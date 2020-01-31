@@ -20,16 +20,17 @@ import java.util.Map;
  *     <li>url - external link for the asset</li>
  *     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
  *     management organization and should be used (when available) on audit logs and error messages.
- *     (qualifiedName from Referenceable - model 0010)</li>
- *     <li>displayName - A consumable name for the endpoint.  Often a shortened form of the assetQualifiedName
- *     for use on user interfaces and messages.   The assetDisplayName should be only be used for audit logs and error
- *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
+ *     (Sourced from qualifiedName from Referenceable - model 0010)</li>
+ *     <li>displayName - A consumable name for the asset.  Often a shortened form of the asset's qualifiedName
+ *     for use on user interfaces and messages.   The asset's displayName should be only be used for audit logs and error
+ *     messages if the qualifiedName is not set. (Sourced from displayName attribute name within Asset - model 0010)</li>
  *     <li>shortDescription - short description about the asset.
  *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from attribute owner within Asset - model 0010)</li>
+ *     (Sourced from attribute owner within AssetOwnershipClassification - model 0445)</li>
+ *     <li>zoneMembership - list of governance zones assigned to the asset</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
  * </ul>
  */

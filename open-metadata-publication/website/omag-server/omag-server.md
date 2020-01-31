@@ -4,7 +4,7 @@
 # Open Metadata and Governance (OMAG) Server
 
 An OMAG server is a software server that supports one or more Open Metadata and Governance (OMAG)
-services.  The services that are activated in an OMAG server are defined in its
+subsystems.  The subsystems that are activated in an OMAG server are defined in its
 [Configuration Document](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md).
 
 The OMAG Server runs in one or more [OMAG Server Platforms](.).  When it is started, the operational services

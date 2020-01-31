@@ -18,7 +18,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DataProfileAnnotation.class, name = "DataProfileAnnotation")
+                @JsonSubTypes.Type(value = ClassificationAnnotation.class, name = "ClassificationAnnotation"),
+                @JsonSubTypes.Type(value = DataClassAnnotation.class, name = "DataClassAnnotation"),
+                @JsonSubTypes.Type(value = DataProfileAnnotation.class, name = "DataProfileAnnotation"),
+                @JsonSubTypes.Type(value = DataProfileLogAnnotation.class, name = "DataProfileLogAnnotation"),
+                @JsonSubTypes.Type(value = QualityAnnotation.class, name = "QualityAnnotation"),
+                @JsonSubTypes.Type(value = RelationshipAdviceAnnotation.class, name = "RelationshipAdviceAnnotation"),
+                @JsonSubTypes.Type(value = SemanticAnnotation.class, name = "SemanticAnnotation"),
         })
 public class DataFieldAnnotation extends Annotation
 {
@@ -72,4 +78,29 @@ public class DataFieldAnnotation extends Annotation
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+
+
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
 }

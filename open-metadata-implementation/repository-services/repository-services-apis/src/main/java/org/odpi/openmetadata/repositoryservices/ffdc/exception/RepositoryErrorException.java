@@ -10,6 +10,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class RepositoryErrorException extends OMRSCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor for creating a RepositoryErrorException.  It captures the essential details
      * about the error, where it occurred and how to fix it.

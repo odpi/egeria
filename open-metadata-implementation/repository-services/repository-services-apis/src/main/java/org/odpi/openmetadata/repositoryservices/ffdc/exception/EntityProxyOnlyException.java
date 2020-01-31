@@ -8,6 +8,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class EntityProxyOnlyException extends OMRSCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an EntityProxyOnlyException.
      *

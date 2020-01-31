@@ -14,37 +14,37 @@ import java.util.Arrays;
 public enum InformationViewAuditCode {
 
     SERVICE_INITIALIZING("OMAS-INFORMATION-VIEW-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Information View OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-INFORMATION-VIEW-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
             "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-INFORMATION-VIEW-0003",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View In topic {0}",
             "The Information View OMAS is registering to receive incoming events from external tools and applications.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_IV_OUT_TOPIC("OMAS-INFORMATION-VIEW-0004",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is registering a publisher with the Information View Out topic {0}",
             "The Information View OMAS is registering to publish events to Information View Out topic.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-INFORMATION-VIEW-0005",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Information View OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-INFORMATION-VIEW-0006",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Information View Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Information View OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),
@@ -61,7 +61,7 @@ public enum InformationViewAuditCode {
             "The connection to information view topic could not be initialized.",
             "Review the exception and resolve the configuration. "),
     SUPPORTED_ZONES("OMAS-INFORMATION-VIEW-0009",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
             "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
                     "This means it is only providing access to the Assets from these zone(s) and the new Assets will be visible only for these zone(s)",
@@ -72,7 +72,7 @@ public enum InformationViewAuditCode {
             "The access service has not been passed valid configuration.",
             "Correct the configuration and restart the service."),
     ALL_ZONES("OMAS-INFORMATION-VIEW-0011",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Information View Open Metadata Access Service (OMAS) is supporting all governance zones",
             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                     "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",

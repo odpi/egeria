@@ -65,10 +65,14 @@ public class RegisteredDiscoveryServiceConverter extends ReferenceableConverter
 
             if (instanceProperties != null)
             {
-                bean.setAssetDiscoveryTypes(repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                    DiscoveryEnginePropertiesMapper.ASSET_DISCOVERY_TYPES_PROPERTY_NAME,
-                                                                                    instanceProperties,
-                                                                                    methodName));
+                bean.setDiscoveryRequestTypes(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                      DiscoveryEnginePropertiesMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
+                                                                                      instanceProperties,
+                                                                                      methodName));
+                bean.setDefaultAnalysisParameters(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                            DiscoveryEnginePropertiesMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
+                                                                                            instanceProperties,
+                                                                                            methodName));
             }
         }
 

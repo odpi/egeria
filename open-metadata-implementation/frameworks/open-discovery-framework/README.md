@@ -3,9 +3,16 @@
 
 # Open Discovery Framework (ODF)
   
-The Open Discovery Framework (ODF) provides the interfaces and base implementations for components
-(called discovery services) that access data-related assets and extract characteristics 
-about the data that can be stored in an open metadata repository.
+The Open Discovery Framework (ODF) enables
+[metadata discovery tools](../../../open-metadata-publication/website/metadata-discovery)
+to integrate with open metadata repositories by defining the interfaces
+for metadata discovery components (called discovery services) to:
+
+* Access metadata discovery configuration.
+* Search for assets in the metadata repository.
+* Extract all of the metadata known about a specific asset.
+* Record the results of the analysis in the open metadata repository and attach it to the
+  asset's metadata for later processing.
 
 More information is available [here](docs).
 
