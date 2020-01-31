@@ -10,7 +10,7 @@
     <parent>
         <artifactId>adapters</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,7 +29,6 @@
     <modules>
         <module>event-bus-connectors</module>
         <module>repository-services-connectors</module>
-        <module>access-services-connectors</module>
         <module>data-store-connectors</module>
         <module>governance-daemon-connectors</module>
         <module>discovery-service-connectors</module>

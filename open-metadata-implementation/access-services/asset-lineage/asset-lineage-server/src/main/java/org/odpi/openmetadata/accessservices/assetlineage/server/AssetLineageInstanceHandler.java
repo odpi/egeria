@@ -20,7 +20,7 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public AssetLineageInstanceHandler() {
-        super(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName());
 
     }
 

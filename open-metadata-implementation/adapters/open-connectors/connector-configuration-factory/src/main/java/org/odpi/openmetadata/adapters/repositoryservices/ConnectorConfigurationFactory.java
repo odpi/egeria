@@ -817,16 +817,22 @@ public class ConnectorConfigurationFactory
     {
         final String endpointGUID          = "edc55b7b-344f-77c8-7871-e42f08a858fd";
         final String endpointDescription   = "OMRS repository endpoint for Security Sync Server.";
-        String endpointName    = "SecuritySyncServer.Endpoint." + serverName;
+        String endpointName                = "SecuritySyncServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecuritySyncServer.Connection." + serverName;
         final String connectionGUID        = "caa5be1e-d51f-8306-fe81-d3853dc7e415";
         final String connectionDescription = "OMRS repository connection to Security Sync Server.";
-        return getConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, RangerSecurityServiceConnectorProvider.class.getName());
+
+        return getConnection(configurationProperties,
+                             endpoint,
+                             connectionName,
+                             connectionGUID,
+                             connectionDescription,
+                             RangerSecurityServiceConnectorProvider.class.getName());
     }
+
 
     /**
      * Return the connection.
@@ -842,15 +848,20 @@ public class ConnectorConfigurationFactory
     {
         final String endpointGUID          = "4e53023d-a3ec-73ae-d4d4-0302147f7834";
         final String endpointDescription   = "OMRS repository endpoint for Security Officer Server.";
-        String endpointName    = "SecurityOfficerServer.Endpoint." + serverName;
+        String endpointName                = "SecurityOfficerServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecurityOfficerServer.Connection." + serverName;
         final String connectionGUID        = "05cfb02d-3e40-ef76-ce93-02f492ce4c4d";
         final String connectionDescription = "OMRS repository connection to Security Officer Server.";
-        return getConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, SecurityTagConnectorProvider.class.getName());
+
+        return getConnection(configurationProperties,
+                             endpoint,
+                             connectionName,
+                             connectionGUID,
+                             connectionDescription,
+                             SecurityTagConnectorProvider.class.getName());
     }
 
 
@@ -864,16 +875,16 @@ public class ConnectorConfigurationFactory
      */
     public Connection getVirtualizationSolutionConnection (String              serverName,
                                                            String              connectorProviderClassName,
-                                                           Map<String, Object> virtualizationSolutionConfig){
-
+                                                           Map<String, Object> virtualizationSolutionConfig)
+    {
         Connection connection = new Connection();
         Map<String, String> additionalProperties = new HashMap<>();
         Endpoint endpoint = new Endpoint();
 
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
-        final String endpointDescription      = "Virualization solution endpoint.";
-        final String connectionDescription    = "Virualization solution connection.";
+        final String endpointDescription      = "Virtualization solution endpoint.";
+        final String connectionDescription    = "Virtualization solution connection.";
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
@@ -921,6 +932,7 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+
     /**
      * Return the connection of data platform
      *
@@ -931,8 +943,8 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDataPlatformConnection (String              serverName,
                                                  String              connectorProviderClassName,
-                                                 Map<String, Object> dataPlatformConfigurationProperties){
-
+                                                 Map<String, Object> dataPlatformConfigurationProperties)
+    {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
         final String endpointDescription      = "Data Platform Server endpoint.";
@@ -965,6 +977,7 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+
     /**
      * Return the connection.  This is used by open lineage graph connectors.
      *
@@ -987,18 +1000,23 @@ public class ConnectorConfigurationFactory
         final String endpointGUID          = UUID.randomUUID().toString();
         final String connectionGUID        = UUID.randomUUID().toString();
 
-        final String endpointDescription   = "OpenLineage native endpoint.";
-        final String connectionDescription = "Open Lineage native connection.";
+        final String endpointDescription      = "Open Lineage native endpoint.";
+        final String connectionDescription    = "Open Lineage native connection.";
 
         String endpointName    = "OpenLineage.Endpoint." + serverName;
         String connectionName  = "OpenLineage.Connection." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
-        return getDynamicConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, connectorProviderClassName);
+        return getDynamicConnection(configurationProperties,
+                                    endpoint,
+                                    connectionName,
+                                    connectionGUID,
+                                    connectionDescription,
+                                    connectorProviderClassName);
     }
-  
+
+
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
@@ -1109,6 +1127,7 @@ public class ConnectorConfigurationFactory
         return elementType;
     }
 
+
     /**
      * Return the standard type for a virtual connection type.
      *
@@ -1122,6 +1141,7 @@ public class ConnectorConfigurationFactory
 
         return elementType;
     }
+
 
     /**
      * Return the Endpoint build based on the given parameters.
@@ -1148,6 +1168,7 @@ public class ConnectorConfigurationFactory
 
         return endpoint;
     }
+
 
     /**
      * Return the Connection build based on the given parameters

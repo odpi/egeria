@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "GOVERNANCE-PROGRAM";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("GOVERNANCE-PROGRAM"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,21 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(GovernanceProgramErrorCode.SERVICE_NOT_INITIALIZED);
+        for (GovernanceProgramErrorCode errorCode : GovernanceProgramErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

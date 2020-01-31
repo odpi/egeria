@@ -36,7 +36,7 @@ the original complied lists.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-find-typedefs-by-category",
       "testCaseName" : "Repository find type definitions by category test case",
-      "testCaseDescriptionURL" : "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/repository-workbench/repository-find-typedefs-by-category-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-find-typedefs-by-category-test-case.md",
       "assertionMessage" : "Type definitions can be extracted by category",
       "successfulAssertions" : [ "All type definitions returned by category." ],
       "unsuccessfulAssertions" : [ ],

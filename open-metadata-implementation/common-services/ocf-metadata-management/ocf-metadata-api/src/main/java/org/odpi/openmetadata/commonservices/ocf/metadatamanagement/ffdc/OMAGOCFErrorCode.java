@@ -56,9 +56,17 @@ public enum OMAGOCFErrorCode
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
 
     NULL_CONNECTOR_RETURNED(500, "OMAG-OCF-500-001 ",
-                            "The requested connector for connection named {0} is not returned by the OMAS Server {1} at {2}",
-                            "The system is unable to create a connector.",
-                            "Verify that the OMAS server is running and the connection definition is correctly configured."),
+                            "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
+                                    " running in OMAG Server {2} at {3}",
+                            "The system is unable to create a connector which means some of its services will not work.",
+                            "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
+                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
+
+    WRONG_TYPE_OF_CONNECTOR(500, "OMAG-OCF-500-002 ",
+                            "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
+                                    "not of the required type. It should be an instance of {4}",
+                            "The system is unable to create the required connector which means some of its services will not work.",
+                            "Verify that the OMAG server is running and the OMAS service is correctly configured."),
 
     ;
 

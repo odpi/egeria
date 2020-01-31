@@ -8,6 +8,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class InvalidParameterException extends OMRSCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private   String  parameterName = null;
 
     /**

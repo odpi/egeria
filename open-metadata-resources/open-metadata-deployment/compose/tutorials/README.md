@@ -27,10 +27,11 @@ Components included are:
 
 ## Usage
 
+ - Docker & Docker compose must be installed - see https://docs.docker.com/install/
+ - Configure docker with at least 4GB memory
  - Ensure you have access to both 'egeria-tutorial.yaml' and the 'notebook-start.d' subdirectory 
  which contains an initialization script 'getnotebooks.sh'. You can either run directly from a git 
  clone, or download the files individually
- - Ensure docker is installed & configured. See https://docs.docker.com/install/ 
  - To start the environment `docker-compose -f ./egeria-tutorial.yaml up`
  - you will notice all the components starting. As the notebook server starts it will also load
    the latest notebooks we have available directly from git.

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
  */
 public class DiscoveryEngineException extends OCFCheckedExceptionBase
 {
+    private static final long serialVersionUID = 1L;
+
     /**
      * This is the typical constructor for creating the exception.  It captures the essential details
      * about the error, where it occurred and how to fix it.
@@ -61,10 +63,12 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
      * This constructor is used when an unexpected exception has been caught that needs to be translated in a
      * DiscoveryEngineException.
      *
+     * @param errorMessage associated message
      * @param template exception to copy
      */
-    public DiscoveryEngineException(OCFCheckedExceptionBase  template)
+    public DiscoveryEngineException(String                   errorMessage,
+                                    OCFCheckedExceptionBase  template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 }

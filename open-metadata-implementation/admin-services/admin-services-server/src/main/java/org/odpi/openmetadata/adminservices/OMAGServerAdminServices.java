@@ -107,7 +107,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -180,7 +180,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -253,7 +253,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -326,7 +326,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -406,7 +406,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -492,7 +492,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -571,7 +571,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -603,9 +603,44 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+            List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getDefaultAuditLogConnection(serverName));
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " set up default audit log destinations.");
+
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig == null)
+            {
+                OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
+
+                repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+            }
+            else
+            {
+                ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+                Connection                    defaultAuditLogDestination = configurationFactory.getDefaultAuditLogConnection(serverName);
+
+                List<Connection> auditLogDestinations = new ArrayList<>();
+
+                auditLogDestinations.add(defaultAuditLogDestination);
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+            }
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -617,7 +652,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -665,7 +700,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -713,7 +748,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -761,7 +796,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -818,7 +853,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -885,7 +920,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -938,7 +973,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -991,7 +1026,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1036,7 +1071,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1094,7 +1129,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1153,7 +1188,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1240,7 +1275,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1300,7 +1335,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1381,7 +1416,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1468,7 +1503,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1544,7 +1579,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1595,7 +1630,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1688,7 +1723,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1777,7 +1812,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1881,7 +1916,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1979,7 +2014,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2114,7 +2149,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2184,7 +2219,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2247,7 +2282,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2296,7 +2331,7 @@ public class OMAGServerAdminServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

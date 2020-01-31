@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryCo
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -23,6 +24,7 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
     private static AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 
     private DiscoveryConfigurationHandler discoveryConfigurationHandler;
+    private Connection                    outTopicConnection;
 
 
     /**
@@ -34,6 +36,7 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
+     * @param outTopicConnection connection to send to client if they which to listen on the out topic.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
@@ -42,9 +45,10 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
                                            List<String>            defaultZones,
                                            OMRSAuditLog            auditLog,
                                            String                  localServerUserId,
-                                           int                     maxPageSize) throws NewInstanceException
+                                           int                     maxPageSize,
+                                           Connection              outTopicConnection) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName() + " OMAS",
+        super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
               defaultZones,
@@ -56,6 +60,8 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
 
         super.supportedZones = supportedZones;
         super.defaultZones = defaultZones;
+
+        this.outTopicConnection = outTopicConnection;
 
         if (repositoryHandler != null)
         {
@@ -70,7 +76,7 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
         else
         {
             DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
                                            this.getClass().getName(),
@@ -81,6 +87,14 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
 
         }
     }
+
+
+    /**
+     * Return the connection used in the client to create a connector to access events from the out topic.
+     *
+     * @return connection object for client
+     */
+    Connection getOutTopicConnection() { return outTopicConnection; }
 
 
     /**

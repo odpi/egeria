@@ -10,7 +10,7 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,6 +26,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>discovery-engine-api</module>
+        <module>discovery-engine-connectors</module>
         <module>discovery-engine-client</module>
         <module>discovery-engine-server</module>
         <module>discovery-engine-spring</module>

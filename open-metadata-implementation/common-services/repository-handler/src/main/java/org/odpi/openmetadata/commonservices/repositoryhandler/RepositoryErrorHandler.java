@@ -151,8 +151,6 @@ public class RepositoryErrorHandler
      * @return boolean flag
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
      */
     void validateInstanceType(String         userId,
                               InstanceHeader instanceHeader,
@@ -225,11 +223,11 @@ public class RepositoryErrorHandler
         final String  defaultGUIDParameterName = "guid";
 
         RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID;
-        String                    errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(methodName,
-                                                     guid,
-                                                     actualType,
-                                                     expectedType);
+        String                     errorMessage = errorCode.getErrorMessageId()
+                                                + errorCode.getFormattedErrorMessage(methodName,
+                                                                                     guid,
+                                                                                     actualType,
+                                                                                     expectedType);
 
         throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),
@@ -241,6 +239,42 @@ public class RepositoryErrorHandler
 
     }
 
+
+    /**
+     * Report an error where an entity is being created with the same qualified name as an existing entity
+     * of the same type.
+     *
+     * @param typeName name of the type
+     * @param qualifiedName clashing qualified name
+     * @param existingEntityGUID existing entity found in the repository
+     * @param methodName calling method
+     * @throws InvalidParameterException exception that reports this error
+     */
+    public void handleDuplicateCreateRequest(String typeName,
+                                             String qualifiedName,
+                                             String existingEntityGUID,
+                                             String methodName) throws InvalidParameterException
+    {
+        final String  parameterName = "qualifiedName";
+
+        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.DUPLICATE_CREATE_REQUEST;
+        String                     errorMessage = errorCode.getErrorMessageId()
+                                                + errorCode.getFormattedErrorMessage(typeName,
+                                                                                     parameterName,
+                                                                                     qualifiedName,
+                                                                                     existingEntityGUID);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            parameterName);
+
+    }
+
+
     /**
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
@@ -250,7 +284,7 @@ public class RepositoryErrorHandler
      * @throws UserNotAuthorizedException the userId is unauthorised for the request
      */
     public void handleUnauthorizedUser(String userId,
-                                String methodName) throws UserNotAuthorizedException
+                                       String methodName) throws UserNotAuthorizedException
     {
         RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.USER_NOT_AUTHORIZED;
         String                     errorMessage = errorCode.getErrorMessageId()
@@ -537,7 +571,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if it is not possible to update an entity.
+     * Throw an exception if it is not possible to create an entity.
      *
      * @param entityTypeGUID  unique identifier for the entity's type
      * @param entityTypeName  name of the entity's type
@@ -587,12 +621,12 @@ public class RepositoryErrorHandler
                                                 String             methodName) throws PropertyServerException
     {
         RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION;
-        String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                   serverName,
-                                                                                                                   entityGUID,
-                                                                                                                   classificationTypeName,
-                                                                                                                   classificationTypeGUID,
-                                                                                                                   properties.toString());
+        String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                                     serverName,
+                                                                                                                     entityGUID,
+                                                                                                                     classificationTypeName,
+                                                                                                                     classificationTypeGUID,
+                                                                                                                     properties.toString());
 
         throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),

@@ -22,7 +22,7 @@ class AssetOwnerInstanceHandler extends ODFOMASServiceInstanceHandler
      */
     AssetOwnerInstanceHandler()
     {
-        super(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName());
 
         AssetOwnerRegistration.registerAccessService();
     }

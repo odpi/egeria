@@ -25,31 +25,37 @@ import java.util.Arrays;
 public enum CommunityProfileAuditCode
 {
     SERVICE_INITIALIZING("OMAS-COMMUNITY-PROFILE-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Community Profile Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Community Profile OMAS.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "The local server has started up a new instance of the Community Profile OMAS.  This service " +
+                                 "supports the personal profiles used in the user interface.  It also manages organization," +
+                                 "departmental and community " +
+                                 "information and will reward individual contribution to open metadata as karma points.  " +
+                                 "It can receive a feed of the latest user, organizational and profile information through " +
+                                 "a feed from another system and will publish significant events such as whenever an individual " +
+                                 "reaches a karma point plateau.",
+             "No action is required if this service is .  This is part of the normal operation of the service."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-COMMUNITY-PROFILE-0002",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Community Profile Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
              "The Community Profile OMAS is registering to receive events from the connected open metadata repositories.",
              "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-COMMUNITY-PROFILE-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Community Profile Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-COMMUNITY-PROFILE-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Community Profile Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local server has requested shut down of an Community Profile OMAS instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-COMMUNITY-PROFILE-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
+             OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Community Profile Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The Community Profile OMAS detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),

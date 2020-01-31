@@ -115,16 +115,17 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         /*
          * System (NPA) accounts
          */
-        final String archiverUserId  = "archiver01";
-        final String etlEngineUserId = "dlETL";
-        final String cocoMDS1UserId  = "cocoMDS1npa";
-        final String cocoMDS2UserId  = "cocoMDS2npa";
-        final String cocoMDS3UserId  = "cocoMDS3npa";
-        final String cocoMDS4UserId  = "cocoMDS4npa";
-        final String cocoMDS5UserId  = "cocoMDS5npa";
-        final String cocoMDS6UserId  = "cocoMDS6npa";
-        final String cocoMDSxUserId  = "cocoMDSxnpa";
-        final String discoDL01UserId = "discoDL01npa";
+        final String archiverUserId   = "archiver01";
+        final String etlEngineUserId  = "dlETL";
+        final String cocoMDS1UserId   = "cocoMDS1npa";
+        final String cocoMDS2UserId   = "cocoMDS2npa";
+        final String cocoMDS3UserId   = "cocoMDS3npa";
+        final String cocoMDS4UserId   = "cocoMDS4npa";
+        final String cocoMDS5UserId   = "cocoMDS5npa";
+        final String cocoMDS6UserId   = "cocoMDS6npa";
+        final String cocoMDSxUserId   = "cocoMDSxnpa";
+        final String findItDL01UserId = "findItDL01npa";
+        final String fixItDL01UserId  = "fixItDL01npa";
 
         /*
          * Set up default zone membership
@@ -170,7 +171,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(cocoMDS5UserId);
         allUsers.add(cocoMDS6UserId);
         allUsers.add(cocoMDSxUserId);
-        allUsers.add(discoDL01UserId);
+        allUsers.add(findItDL01UserId);
+        allUsers.add(fixItDL01UserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -221,7 +223,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(cocoMDS5UserId);
         npaAccounts.add(cocoMDS6UserId);
         npaAccounts.add(cocoMDSxUserId);
-        npaAccounts.add(discoDL01UserId);
+        npaAccounts.add(findItDL01UserId);
+        npaAccounts.add(fixItDL01UserId);
 
         List<String> zoneSetUp = new ArrayList<>();
 

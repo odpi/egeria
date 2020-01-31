@@ -25,32 +25,33 @@ import java.text.MessageFormat;
  */
 
 
-public enum OCFDatabaseConnectorErrorCode {
-    NOT_VALID_QUERY(400, "OCFDATABASECONNECTOR-QUERY-400-001",
+public enum OCFDatabaseConnectorErrorCode
+{
+    NOT_VALID_QUERY(400, "OCF-DATABASE-CONNECTOR-QUERY-400-001 ",
             "In {0}, the query is not valid.",
             "OCF Database Connector is not able to execute the query.",
             "Please check the query."),
-    ILLEGAL_ACCESS(400, "OCFDATABASECONNECTOR-INSTANCE-400-002",
-            "{0} is not able to create the ligal access",
+    ILLEGAL_ACCESS(400, "OCF-DATABASE-CONNECTOR-INSTANCE-400-002 ",
+            "{0} is not have legal access to the code it needs",
             "The method does not have access to the definition of the specified class, field, method or constructor.",
             "Please check the use of newInstance."),
-    ILLEGAL_INSTANCE_CREATION(400, "OCFDATABASECONNECTOR-INSTANCE-400-003",
+    ILLEGAL_INSTANCE_CREATION(400, "OCF-DATABASE-CONNECTOR-INSTANCE-400-003 ",
             "In {0}, the instance creation is illegal.",
             "The specified class object using the newInstance method in class Class cannot be instantiated.",
             "Please check the use of newInstance."),
-    CONNECT_FAIL(401, "OCFDATABASECONNECTOR-GAIAN-401-001",
+    CONNECT_FAIL(401, "OCF-DATABASE-CONNECTOR-GAIAN-401-001 ",
             "{0} does not get the access to the database.",
             "OCF Database Connector is not able to connect the database.",
             "Please check the user id."),
-    QUERY_EXECUTION_FAIL(401, "OCFDATABASECONNECTOR-GAIAN-401-002",
+    QUERY_EXECUTION_FAIL(401, "OCF-DATABASE-CONNECTOR-GAIAN-401-002 ",
             "{0} can not retrieve the data from database",
             "OCF Database Connector is not able to access data from the database.",
             "Please check the query and the connection to Gaian."),
-    DISCONNECT_FAIL(401, "OCFDATABASECONNECTOR-GAIAN-401-003",
-            "{0} can not close the connection, statement and resultset properly",
+    DISCONNECT_FAIL(401, "OCF-DATABASE-CONNECTOR-GAIAN-401-003 ",
+            "{0} can not close the connection, statement and result set properly",
             "OCF Database Connector is not able to shut down the connection to the database.",
             "Please check the code for shutting down the connection."),
-    UNKNOWN_JDBC_DRIVER(500, "OCFDATABASECONNECTOR-JDBCDRIVER-500-001",
+    UNKNOWN_JDBC_DRIVER(500, "OCF-DATABASE-CONNECTOR-JDBC-DRIVER-500-001 ",
             "In {0}, this JDBC driver is unknown.",
             "OCF Database Connector is not able to connect to the database without proper driver.",
             "Please check the driver name.");
@@ -62,11 +63,13 @@ public enum OCFDatabaseConnectorErrorCode {
     private String errorMessage;
     private String systemAction;
     private String userAction;
+
+
     /**
-     * The constructor for ConnectedAssetErrorCode expects to be passed one of the enumeration rows defined in
-     * ConnectedAssetErrorCode above.   For example:
+     * The constructor for OCFDatabaseConnectorErrorCode expects to be passed one of the enumeration rows defined in
+     * OCFDatabaseConnectorErrorCode above.   For example:
      *
-     *     OMRSErrorCode   errorCode = OMRSErrorCode.SERVER_NOT_AVAILABLE;
+     *     OMRSErrorCode   errorCode = OCFDatabaseConnectorErrorCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 5 parameters shown below.
      *
@@ -150,5 +153,23 @@ public enum OCFDatabaseConnectorErrorCode {
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OCFDatabaseConnectorErrorCode{" +
+                "httpErrorCode=" + httpErrorCode +
+                ", errorMessageId='" + errorMessageId + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }

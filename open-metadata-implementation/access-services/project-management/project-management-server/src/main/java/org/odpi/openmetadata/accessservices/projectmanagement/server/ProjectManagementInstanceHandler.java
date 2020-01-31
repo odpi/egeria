@@ -18,7 +18,7 @@ class ProjectManagementInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     ProjectManagementInstanceHandler()
     {
-        super(AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceFullName());
 
         ProjectManagementRegistration.registerAccessService();
     }

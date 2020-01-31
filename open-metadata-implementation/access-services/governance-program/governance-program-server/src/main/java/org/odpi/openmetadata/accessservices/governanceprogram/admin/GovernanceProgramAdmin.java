@@ -8,6 +8,8 @@ import org.odpi.openmetadata.accessservices.governanceprogram.listener.Governanc
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -114,6 +116,10 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

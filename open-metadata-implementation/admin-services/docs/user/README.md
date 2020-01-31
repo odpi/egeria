@@ -5,7 +5,7 @@
 
 An **[Open Metadata and Governance (OMAG) Server Platform](../../../../open-metadata-publication/website/omag-server)**
 hosts one or more **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
-and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md)
+and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md).
 
 The subsystems that are enabled in a specific instance of an OMAG Server
 are defined in a JSON **[configuration document](../concepts/configuration-document.md)**.
@@ -93,7 +93,7 @@ GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/c
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.4-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.5-SNAPSHOT)".
 
 ```
 GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin

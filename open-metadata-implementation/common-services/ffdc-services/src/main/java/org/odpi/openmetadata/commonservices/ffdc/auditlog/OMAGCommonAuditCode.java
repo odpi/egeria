@@ -26,7 +26,7 @@ public enum OMAGCommonAuditCode
 {
     UNEXPECTED_EXCEPTION("OMAG-COMMON-0001",
              OMRSAuditLogRecordSeverity.EXCEPTION,
-             "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was <{2}> and the stack trace was: {3}",
+             "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
              "The request returns a PropertyServerException.",
              "This is probably a logic error. Review the stack trace to identify where the error " +
                                  "occurred and work to resolve the cause.")

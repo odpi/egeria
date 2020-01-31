@@ -30,7 +30,6 @@
   * [Stewardship Action OMAS](../../open-metadata-implementation/access-services/stewardship-action)
   * [Subject Area OMAS](../../open-metadata-implementation/access-services/subject-area)
 * [Access Services Connectors](../../open-metadata-implementation/adapters/open-connectors/access-services-connectors)
-* [Access Services User Interface](../../open-metadata-implementation/user-interfaces/access-services-user-interface)
 * [Adapters](../../open-metadata-implementation/adapters)
 * [Administration REST API User Guide](../../open-metadata-implementation/admin-services/Using-the-Admin-Services.md)
 * [Administration Services (OMAG)](../../open-metadata-implementation/admin-services)
@@ -107,7 +106,12 @@
 * [Design Model OMAS](../../open-metadata-implementation/access-services/design-model)
 * [DevOps OMAS](../../open-metadata-implementation/access-services/dev-ops)
 * [Digital Architecture OMAS](../../open-metadata-implementation/access-services/digital-architecture)
+* [Discovery (metadata)](metadata-discovery)
+* [Discovery Context](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-context.md)
+* [Discovery Engine](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
 * [Discovery Engine OMAS](../../open-metadata-implementation/access-services/discovery-engine)
+* [Discovery Server](../../open-metadata-implementation/governance-servers/discovery-engine-services)
+* [Discovery Services](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
 * [Distribution Packages](../../open-metadata-distribution)
 
 
@@ -181,6 +185,7 @@
 * [Metadata Catalog](../../open-metadata-implementation/access-services/asset-catalog)
 * [Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 * [Metadata Collection Store Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
+* [Metadata Discovery](metadata-discovery)
 
 
 ## N
@@ -252,7 +257,6 @@
 * Packages
   * [access-services](../../open-metadata-implementation/access-services)
   * [access-services-connectors](../../open-metadata-implementation/adapters/open-connectors/access-services-connectors)
-  * [access-services-user-interface](../../open-metadata-implementation/user-interfaces/access-services-user-interface)
   * [adapters](../../open-metadata-implementation/adapters)
   * [asset-catalog](../../open-metadata-implementation/access-services/asset-catalog)
   * [asset-consumer](../../open-metadata-implementation/access-services/asset-consumer)
@@ -341,8 +345,8 @@
 * [Security Officer OMAS](../../open-metadata-implementation/access-services/security-officer)
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
-* [Server Configuration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
-* [Servers fo Governance](../../open-metadata-implementation/governance-servers)
+* [Servers for Governance](../../open-metadata-implementation/governance-servers)
+* [Server Personalities](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-personalities.md)
 * [Shop for Data](../../open-metadata-implementation/access-services/asset-catalog)
 * [Software Developer OMAS](../../open-metadata-implementation/access-services/software-developer)
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
@@ -373,7 +377,6 @@
 
 * [User Identity](../../open-metadata-implementation/access-services/docs/concepts/users/user-identity.md)
 * [User Interfaces](../../open-metadata-implementation/user-interfaces)
-  * [Access Services User Interface](../../open-metadata-implementation/user-interfaces/access-services-user-interface)
 * [User Roles](../../open-metadata-implementation/access-services/docs/concepts/user-roles)
 * [Users](../../open-metadata-implementation/access-services/docs/concepts/users)
 
