@@ -42,15 +42,15 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
         if (assetOwnerURLName.equals(callingServiceURLName))
         {
-            callingServiceName = AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceName() + " OMAS";
+            callingServiceName = AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName();
         }
         else if (assetConsumerURLName.equals(callingServiceURLName))
         {
-            callingServiceName = AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceName() + " OMAS";
+            callingServiceName = AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName();
         }
         else if (discoveryEngineURLName.equals(callingServiceURLName))
         {
-            callingServiceName = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName() + " OMAS";
+            callingServiceName = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName();
         }
         else
         {

@@ -65,11 +65,11 @@ public class ConnectorTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String findConnectorType(String               userId,
-                                     ConnectorType        connectorType,
-                                     String               methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    String findConnectorType(String        userId,
+                             ConnectorType connectorType,
+                             String        methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         final String  guidParameterName = "connectorType.getGUID";
         final String  qualifiedNameParameter = "connectorType.getQualifiedName";
@@ -157,10 +157,10 @@ public class ConnectorTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String  addConnectorType(String                 userId,
-                                     ConnectorType          connectorType) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    String  addConnectorType(String                 userId,
+                             ConnectorType          connectorType) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         final String  methodName        = "addConnectorType";
 
@@ -197,11 +197,11 @@ public class ConnectorTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String updateConnectorType(String         userId,
-                                       String         existingConnectorTypeGUID,
-                                       ConnectorType  connectorType) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    String updateConnectorType(String         userId,
+                               String         existingConnectorTypeGUID,
+                               ConnectorType  connectorType) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         final String  methodName        = "updateConnectorType";
 

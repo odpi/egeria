@@ -66,7 +66,17 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-connectors</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>multi-tenant</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
         </dependency>
 
         <dependency>

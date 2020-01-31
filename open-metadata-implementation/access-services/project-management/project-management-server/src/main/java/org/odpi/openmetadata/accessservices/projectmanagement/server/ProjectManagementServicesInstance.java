@@ -36,7 +36,7 @@ public class ProjectManagementServicesInstance extends OCFOMASServiceInstance
                                              String                  localServerUserId,
                                              int                     maxPageSize) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName() + " OMAS",
+        super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
               null,

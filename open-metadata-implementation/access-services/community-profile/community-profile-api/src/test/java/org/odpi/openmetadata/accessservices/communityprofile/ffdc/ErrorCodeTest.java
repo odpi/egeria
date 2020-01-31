@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "COMMUNITY-PROFILE";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("COMMUNITY-PROFILE"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,13 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_OTHER_IDENTITY);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.QUALIFIED_NAME_NOT_UNIQUE);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.UNKNOWN_IDENTITY);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.UNABLE_TO_CREATE_CONTRIBUTION_RECORD);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE);
+        for (CommunityProfileErrorCode errorCode : CommunityProfileErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

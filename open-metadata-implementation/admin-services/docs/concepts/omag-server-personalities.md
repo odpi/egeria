@@ -24,7 +24,8 @@ make use of and/or distribute open metadata to tools, engines and platforms.
 The governance daemons are special governance servers that do not have an API but are driven solely by
 changes in the metadata and the corresponding assets.
 
-The **conformance test suite** is a specific configuration of an OMAG Server that tests the compliance of a  
+The **conformance test suite** is a specific configuration of an OMAG Server that tests the compliance of a 
+metadata repository technology's integration into the open metadata ecosystem.
 
 Figure 2 shows these different personalities configured to work together.
 

@@ -18,7 +18,7 @@ class DevOpsInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     DevOpsInstanceHandler()
     {
-        super(AccessServiceDescription.DEVOPS_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DEVOPS_OMAS.getAccessServiceFullName());
 
         DevOpsRegistration.registerAccessService();
     }

@@ -166,7 +166,7 @@ public enum DataFolderConnectorErrorCode
     @Override
     public String toString()
     {
-        return "BasicFileConnectorErrorCode{" +
+        return "DataFolderConnectorErrorCode{" +
                 "httpErrorCode=" + httpErrorCode +
                 ", errorMessageId='" + errorMessageId + '\'' +
                 ", errorMessage='" + errorMessage + '\'' +

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.projectmanagement.listener.ProjectMa
 import org.odpi.openmetadata.accessservices.projectmanagement.server.ProjectManagementServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -120,6 +121,10 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

@@ -17,7 +17,7 @@ org.odpi.openmetadata.frameworks.connectors.ConnectorBroker
 
 and is used as follows:
 
-```java
+```
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 

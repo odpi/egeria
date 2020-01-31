@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  */
 public class DiscoveryServiceException extends ConnectorCheckedException
 {
+    private static final long serialVersionUID = 1L;
+
     /**
      * This is the typical constructor for creating the exception.  It captures the essential details
      * about the error, where it occurred and how to fix it.
@@ -21,7 +23,7 @@ public class DiscoveryServiceException extends ConnectorCheckedException
      * @param systemAction actions of the system as a result of the error
      * @param userAction instructions for correcting the error
      */
-    public DiscoveryServiceException(int    httpCode,
+    public DiscoveryServiceException( int    httpCode,
                                      String className,
                                      String actionDescription,
                                      String errorMessage,

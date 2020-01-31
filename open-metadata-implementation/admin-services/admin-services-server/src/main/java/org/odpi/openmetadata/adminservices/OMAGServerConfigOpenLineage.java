@@ -73,7 +73,7 @@ public class OMAGServerConfigOpenLineage {
         } catch (OMAGInvalidParameterException e) {
             exceptionHandler.captureInvalidParameterException(response, e);
         } catch (Throwable e) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, e);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, e);
         }
 
         return response;
@@ -115,7 +115,7 @@ public class OMAGServerConfigOpenLineage {
         } catch (OMAGNotAuthorizedException error) {
             exceptionHandler.captureNotAuthorizedException(response, error);
         } catch (Throwable error) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

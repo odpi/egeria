@@ -67,11 +67,11 @@ public class EndpointHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String findEndpoint(String   userId,
-                                Endpoint endpoint,
-                                String   methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    String findEndpoint(String   userId,
+                        Endpoint endpoint,
+                        String   methodName) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
     {
         final String guidParameterName      = "endpoint.getGUID";
         final String qualifiedNameParameter = "endpoint.getQualifiedName";
@@ -128,7 +128,7 @@ public class EndpointHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String saveEndpoint(String userId,
+    public String saveEndpoint(String   userId,
                                Endpoint endpoint) throws InvalidParameterException,
                                                          PropertyServerException,
                                                          UserNotAuthorizedException
@@ -159,10 +159,10 @@ public class EndpointHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String addEndpoint(String userId,
-                               Endpoint endpoint) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    String addEndpoint(String   userId,
+                       Endpoint endpoint) throws InvalidParameterException,
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException
     {
         final String methodName = "addEndpoint";
 
@@ -196,11 +196,11 @@ public class EndpointHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String updateEndpoint(String userId,
-                                  String existingEndpointGUID,
-                                  Endpoint endpoint) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    String updateEndpoint(String   userId,
+                          String   existingEndpointGUID,
+                          Endpoint endpoint) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
     {
         final String methodName = "updateEndpoint";
 

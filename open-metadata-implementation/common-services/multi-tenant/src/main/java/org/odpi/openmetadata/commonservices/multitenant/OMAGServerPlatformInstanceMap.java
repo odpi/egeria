@@ -319,7 +319,7 @@ public class OMAGServerPlatformInstanceMap
      *
      * @param localServerUserId server's userId
      * @param serverName name of the server
-     * @param auditLog logging destination
+     * @param auditLog logging destination for the metadata security verifier
      * @param connection connection for the server's security validator
      * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connector is not valid.
@@ -886,7 +886,7 @@ public class OMAGServerPlatformInstanceMap
      *
      * @param localServerUserId userId for local server
      * @param serverName name of the server
-     * @param auditLog logging destination
+     * @param auditLog logging destination for the metadata security verifier
      * @param connection connection properties for open metadata security connector for server (can be null for no security)
      * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connection is invalid

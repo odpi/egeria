@@ -18,7 +18,7 @@ class ITInfrastructureInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     ITInfrastructureInstanceHandler()
     {
-        super(AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName());
 
         ITInfrastructureRegistration.registerAccessService();
     }
