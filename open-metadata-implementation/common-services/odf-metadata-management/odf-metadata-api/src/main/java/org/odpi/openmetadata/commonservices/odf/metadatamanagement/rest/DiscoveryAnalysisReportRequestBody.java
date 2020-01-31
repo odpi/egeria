@@ -6,9 +6,7 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.FeedbackRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.Date;

@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *
@@ -107,11 +109,13 @@ public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.fra
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated message
      * @param template   object to copy
      */
-    public OMAGCheckedExceptionBase(OMAGCheckedExceptionBase template)
+    public OMAGCheckedExceptionBase(String                   errorMessage,
+                                    OMAGCheckedExceptionBase template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 
 

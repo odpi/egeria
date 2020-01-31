@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumer
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -113,11 +114,15 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
             auditLog.logException(actionDescription,
                                   auditCode.getLogMessageId(),
                                   auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
                                   accessServiceConfig.toString(),
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

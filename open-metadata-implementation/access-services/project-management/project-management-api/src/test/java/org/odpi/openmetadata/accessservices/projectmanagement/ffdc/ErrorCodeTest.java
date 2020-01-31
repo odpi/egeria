@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "PROJECT-MANAGEMENT";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("PROJECT-MANAGEMENT"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,23 +68,11 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(ProjectManagementErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(ProjectManagementErrorCode.SERVICE_NOT_INITIALIZED);
+        for (ProjectManagementErrorCode errorCode : ProjectManagementErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
-
 
 
     /**

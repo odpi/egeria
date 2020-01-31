@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public class InvalidParameterException extends org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *
@@ -112,23 +114,28 @@ public class InvalidParameterException extends org.odpi.openmetadata.frameworks.
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated error message
      * @param template   object to copy
      */
-    public InvalidParameterException(org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException template)
+    public InvalidParameterException(String                                                                     errorMessage,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 
 
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated error message
      * @param template   object to copy
      * @param parameterName name of parameter in error
      */
-    public InvalidParameterException(org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException template,
+    public InvalidParameterException(String                                                                      errorMessage,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException template,
                                      String                                                                      parameterName)
     {
-        super(template, parameterName);
+        super(errorMessage, template, parameterName);
     }
+
 }

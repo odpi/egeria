@@ -18,7 +18,7 @@ class DesignModelInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     DesignModelInstanceHandler()
     {
-        super(AccessServiceDescription.DESIGN_MODEL_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DESIGN_MODEL_OMAS.getAccessServiceFullName());
 
         DesignModelRegistration.registerAccessService();
     }

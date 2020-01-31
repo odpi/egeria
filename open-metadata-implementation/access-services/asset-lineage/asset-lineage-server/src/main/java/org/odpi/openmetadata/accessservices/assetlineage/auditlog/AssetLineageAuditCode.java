@@ -14,20 +14,20 @@ import java.util.Arrays;
 public enum AssetLineageAuditCode {
 
     SERVICE_INITIALIZING("OMAS-ASSET-LINEAGE-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Lineage OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
 
     SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0005",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Lineage OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0006",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Asset Lineage OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),

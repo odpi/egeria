@@ -14,12 +14,12 @@ import java.util.Objects;
  * AssetUniverse extends AssetDetail which extend AssetSummary.  AssetUniverse adds information about the
  * common open metadata entities related to this asset.
  * <ul>
- *     <li>Meanings - glossary term(s) assigned to this asset.</li>
- *     <li>SchemaType - details of the schema type associated with the asset.</li>
- *     <li>Feedback - details of the people, products and feedback that are connected to the asset.</li>
- *     <li>Locations - details of the known locations of the asset.</li>
- *     <li>Lineage - details of the lineage for the asset.</li>
- *     <li>Related Assets - details of the assets lined to this asset.</li>
+ *     <li>meanings - glossary term(s) assigned to this asset.</li>
+ *     <li>schema - details of the schema type associated with the asset.</li>
+ *     <li>feedback - details of the reviews, tags and comments that are connected to the asset.</li>
+ *     <li>knownLocations - details of the known locations of the asset.</li>
+ *     <li>lineage - details of the lineage for the asset.</li>
+ *     <li>relatedAssets - details of the assets lined to this asset.</li>
  * </ul>
  *
  */

@@ -18,7 +18,7 @@ class StewardshipActionInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     StewardshipActionInstanceHandler()
     {
-        super(AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName());
 
         StewardshipActionRegistration.registerAccessService();
     }
