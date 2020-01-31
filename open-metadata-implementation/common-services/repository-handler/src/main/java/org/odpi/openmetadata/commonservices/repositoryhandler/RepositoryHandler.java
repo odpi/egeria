@@ -2406,6 +2406,57 @@ public class RepositoryHandler
 
 
     /**
+     * Create a relationship between two entities.
+     *
+     * @param userId calling user
+     * @param end1TypeName unique name of the end 1's type
+     * @param end1GUID entity to store at end 1
+     * @param end2GUID entity to store at end 2
+     * @param relationshipTypeGUID unique identifier of the relationship's type
+     * @param relationshipTypeName unique name of the relationship's type
+     * @param relationshipProperties properties for the relationship
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void ensureRelationship(String                  userId,
+                                   String                  end1TypeName,
+                                   String                  end1GUID,
+                                   String                  end2GUID,
+                                   String                  relationshipTypeGUID,
+                                   String                  relationshipTypeName,
+                                   InstanceProperties      relationshipProperties,
+                                   String                  methodName) throws UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+       Relationship relationship = this.getRelationshipBetweenEntities(userId,
+                                                                       end1GUID,
+                                                                       end1TypeName,
+                                                                       end2GUID,
+                                                                       relationshipTypeGUID,
+                                                                       relationshipTypeName,
+                                                                       methodName);
+       if (relationship == null)
+       {
+           this.createRelationship(userId, relationshipTypeGUID, end1GUID, end2GUID, relationshipProperties, methodName);
+       }
+       else
+       {
+           if ((relationshipProperties != null) || (relationship.getProperties() != null))
+           {
+               /*
+                * This ensures the properties are identical.  It may create unnecessary update events if the properties have not changed.
+                * This could therefore be made more efficient if additional validation of whether the properties have changed is made.
+                */
+               // TODO make more efficient by avoiding unnecessary updates?
+               this.updateRelationshipProperties(userId, relationship.getGUID(), relationshipProperties, methodName);
+           }
+       }
+    }
+
+
+    /**
      * Create a relationship from an external source between two entities.
      *
      * @param userId calling user
@@ -2428,7 +2479,7 @@ public class RepositoryHandler
                                            String                  end2GUID,
                                            InstanceProperties      relationshipProperties,
                                            String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                      PropertyServerException
     {
         try
         {

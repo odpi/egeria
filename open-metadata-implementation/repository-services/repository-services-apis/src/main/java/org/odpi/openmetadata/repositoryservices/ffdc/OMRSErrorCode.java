@@ -532,8 +532,10 @@ public enum OMRSErrorCode
             "The guid is supplied by the caller to the server.  It may have a logic problem that has corrupted the guid, or the entity has been deleted since the guid was retrieved."),
     RELATIONSHIP_NOT_KNOWN(404, "OMRS-REPOSITORY-404-003 ",
             "The relationship identified with guid {0} passed on the {1} call is not known to the open metadata repository {2}",
-            "The system is unable to retrieve the properties for the requested relationship because the supplied guid is not recognized.",
-            "The guid is supplied by the caller to the OMRS.  It may have a logic problem that has corrupted the guid, or the relationship has been deleted since the guid was retrieved."),
+            "The system is unable to process the request for the requested relationship because the supplied guid is not recognized.",
+            "The guid is supplied by the caller to the OMRS.  It may have a logic problem that has corrupted the guid, or the " +
+                                   "relationship has been deleted since the guid was retrieved.  " +
+                                   "It is necessary to understand the logic of the caller to determine if this is a problem."),
     TYPEDEF_NOT_KNOWN(404, "OMRS-REPOSITORY-404-004 ",
             "The TypeDef {0} (guid = {1}) passed on the {2} parameter of the {3} operation is not known to the open metadata repository {4}",
             "The system is unable to retrieve the properties for the requested TypeDef because the supplied identifier is not recognized.",
@@ -562,6 +564,26 @@ public enum OMRSErrorCode
             "The TypeDef unique name {0} passed on a {1} request to open metadata repository {2} is not known to this repository",
             "The system is unable to retrieve the properties for the requested TypeDef because the supplied identifiers are not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the TypeDef has been deleted since the identifier was retrieved."),
+    RELATIONSHIP_NOT_FOUND(404, "OMRS-REPOSITORY-404-011 ",
+                           "The relationship identified with guid {0} passed on the {1} call is not found to the open metadata repository {2}",
+                           "The system is unable to retrieve the properties for the requested relationship because the supplied guid is not recognized.",
+                           "The guid is supplied by the caller to the OMRS.  It may have a logic problem that has corrupted the guid, or the relationship has been deleted since the guid was retrieved."),
+    RELATIONSHIP_SOFT_DELETED(404, "OMRS-REPOSITORY-404-012 ",
+                           "The {0} relationship identified with guid {1} passed on the {2} call is soft-deleted in the open metadata repository {3}",
+                           "The system is unable to retrieve the properties for the requested relationship because the supplied guid is for a " +
+                                      "relationship that has already been deleted.",
+                           "The guid is supplied by the caller to the OMRS.  It is most likely to be a timing issue where the" +
+                                      " relationship was deleted by another process since the guid was retrieved.  " +
+                                      "However, there is a  " +
+                                      "possibility of a logic problem that has corrupted the guid."),
+    ENTITY_SOFT_DELETED(404, "OMRS-REPOSITORY-404-013 ",
+                              "The {0} entity identified with guid {1} passed on the {2} call is soft-deleted in the open metadata repository {3}",
+                              "The system is unable to retrieve the properties for the requested entity because the supplied guid is for a " +
+                                      "entity that has already been deleted.",
+                              "The guid is supplied by the caller to the OMRS.  It is most likely to be a timing issue where the" +
+                                      " entity was deleted by another process since the guid was retrieved.  " +
+                                      "However, there is a  " +
+                                      "possibility of a logic problem that has corrupted the guid."),
     COHORT_NOT_CONNECTED(404, "OMRS-REPOSITORY-CONNECTOR-404-002 ",
             "The Open Metadata Repository Servers in the cohort are not available",
             "The system is unable to retrieve any metadata properties from this repository.",
