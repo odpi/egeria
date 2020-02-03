@@ -84,7 +84,8 @@ class VisGraph extends PolymerElement {
           // height: '100%',
           // width: '100%',
           nodes: {
-            fixed: false
+            shape: 'box',
+            margin: 10
           },
           edges: {
             width: 1,
@@ -93,19 +94,18 @@ class VisGraph extends PolymerElement {
             },
             arrows:'to'
           },
-          layout: {    improvedLayout: false  },
           interaction: {
             tooltipDelay: 200,
             hideEdgesOnDrag: true
           },
-          physics: {
-            stabilization: false
-            // barnesHut: {
-            //   gravitationalConstant: -10000,
-            //   springConstant: 0.002,
-            //   springLength: 150
-            // }
+          layout: {
+            hierarchical: {
+              enabled: true,
+              levelSeparation: 300,
+              direction: 'horizontal'
+            }
           },
+          physics: false,
           groups: {
 
           }
