@@ -1,50 +1,47 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Server Chassis for Spring
+# Spring-based Server Chassis
 
-The server chassis provides the base server framework to host the Open Metadata
+The [Server Chassis](..)
+provides the base server framework to host the Open Metadata
 and Governance (OMAG) Servers in the
-[OMAG Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server).  
+[OMAG Server Platform](../../../open-metadata-publication/website/omag-server).  
 
-The **server-chassis-spring** module provides the implementation of the server chassis.
-Its **main()** method is located in a Java class called
-**OMAGServerPlatform** that uses [Spring Boot](https://spring.io/projects/spring-boot)
-for the server framework.
+The **server-chassis-spring** module is an implementation of the
+server chassis written using [Spring Boot](../../../developer-resources/Spring.md).
+Its **main()** method is located in a Java class called **OMAGServerPlatform**.
 
-When the **OMAGServerPlatform** is started, Spring Boot does a component scan for all Spring
-services that are in Java packages stemming from `org.odpi.openmetadata.*`
-and that are visible to this module.
-
-To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
-to the **pom.xml** file for **server-chassis-spring**.
-
-For example, this is the snippet of XML in the pom.xml file that adds the
-[Asset Owner OMAS](https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner) services
-to the OMAG server platform.
-
-```xml
-<dependency>
-    <groupId>org.odpi.egeria</groupId>
-    <artifactId>asset-owner-spring</artifactId>
-</dependency>
-```
-
-When the OMAG server platform is first started, the REST APIs
-are defined for its endpoint.
+When the OMAGServerPlatform is first started, all of its REST APIs
+are visible and callable by an external client.
 However, only the [Administration Services](../../admin-services) 
-and [PlatformServices](../../platform-services) are activated at this point.
+and [Platform Services](../../platform-services) are operational at this point.
 The other Open Metadata and Governance (OMAG) services will each give an error response if called.
 
-The OMAG Services are selectively activated in one or more
-[OMAG Servers](../../../open-metadata-publication/website/omag-server/omag-server.md).
-The administration service define the services for an OMAG Server and 
-stores them in a configuration document.  This is a one-time activity.
+The [OMAG Subsystems](../../admin-services/docs/concepts/omag-subsystem.md)
+supporting the other OMAG services are selectively activated in one or more
+[OMAG Servers](../../../open-metadata-publication/website/omag-server/omag-server.md) that run
+in the OMAGServerPlatform.
+You can use the administration service to define and configure the subsystems for an OMAG Server.
+This definition is then stored in a configuration document for the server.  This is a one-time activity.
+
+Details of how to set up the configuration document, and activate/deactivate
+the open metadata services can be found in the 
+[OMAG Server Configuration User Guide](../../admin-services/docs/user).
 
 Once the configuration document is in place it is possible to activate and deactivate the
 server in the OMAGServerPlatform many times over multiple platform restarts.
 
-Servers an be automatically activated at startup 
+A detailed description of the internals of the OMAGServerPlatform during server start up
+is available [here](../../../open-metadata-publication/website/omag-server).
+
+## Application properties
+
+Since this is a Spring Boot application, OMAGServerPlatform can be
+[customized using the application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
+file found in the `resources` directory and using environment variables.
+
+For example, OMAG servers can be automatically activated at startup 
 by setting spring-boot property `startup.server.list`, typically in the `application.properties` file.
 The server names are listed without quotes.
 For example:
@@ -67,8 +64,27 @@ If `startup.server.list` is null then no servers are automatically started or st
 startup.server.list=
 ```
 
-Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
+## Adding a new subsystem to the OMAGServerPlatform
+
+When the **OMAGServerPlatform** class is called, Spring Boot does a component scan for all Spring
+services that are in Java packages stemming from `org.odpi.openmetadata.*`
+and that are visible to this module.
+
+To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
+to the **pom.xml** file for **server-chassis-spring** and it will be picked up in the component scan.
+
+For example, this is the snippet of XML in the pom.xml file that adds the
+[Asset Owner OMAS](https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner) services
+to the OMAG server platform.
+
+```xml
+<dependency>
+    <groupId>org.odpi.egeria</groupId>
+    <artifactId>asset-owner-spring</artifactId>
+</dependency>
+```
+
+## Swagger
 
 Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
 

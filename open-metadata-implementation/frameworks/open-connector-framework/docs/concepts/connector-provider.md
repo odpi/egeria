@@ -54,7 +54,7 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * store implementation.
      */
     public BasicFileStoreProvider()
     {

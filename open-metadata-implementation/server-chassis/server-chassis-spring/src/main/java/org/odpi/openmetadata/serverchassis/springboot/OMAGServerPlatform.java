@@ -127,9 +127,15 @@ public class OMAGServerPlatform
     {
         List<String>  servers = getAutoStartList();
 
-        log.info("Temporary deactivate the auto-started servers '{}'", servers.toString());
+        if (servers != null)
+        {
+            log.info("Temporarily deactivating the auto-started servers '{}'", servers.toString());
 
-        operationalServices.deactivateTemporarilyServerList(sysUser, getAutoStartList());
+            System.out.println(new Date().toString() + " OMag Server Platform shutdown requested. Temporarily deactivating the following " +
+                                       "auto-started servers: " + servers.toString());
+
+            operationalServices.deactivateTemporarilyServerList(sysUser, servers);
+        }
     }
 
 
@@ -166,7 +172,6 @@ public class OMAGServerPlatform
         @EventListener
         public void onApplicationEvent(ContextClosedEvent event)
         {
-            System.out.println("Platform shutdown requested. Temporary deactivating any auto-started servers");
             temporaryDeactivateServers();
         }
     }
