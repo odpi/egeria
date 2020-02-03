@@ -11,19 +11,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
  * of the Data Engine Proxies.
  */
 public class DataEngineProxyOperationalServices {
-
-    private static final Logger log = LoggerFactory.getLogger(DataEngineProxyOperationalServices.class);
 
     private String localServerName;
     private String localServerUserId;
@@ -143,10 +139,10 @@ public class DataEngineProxyOperationalServices {
         // Configure the connector
         Connection dataEngineConnection = dataEngineProxyConfig.getDataEngineConnection();
         if (dataEngineConnection != null) {
-            log.info("Found connection, attempting to retrieve connector via broker.");
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
+                dataEngineConnector.start();
                 // If the config says we should poll for changes, do so via a new thread
                 if (dataEngineConnector.requiresPolling()) {
                     changePoller = new DataEngineProxyChangePoller(
@@ -159,7 +155,6 @@ public class DataEngineProxyOperationalServices {
                 }
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-                log.error("Unable to initialize connector.", e);
                 auditCode = DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION;
                 this.auditLog.logRecord("ChangePoller construction",
                         auditCode.getLogMessageId(),
@@ -173,7 +168,25 @@ public class DataEngineProxyOperationalServices {
             }
         }
 
-        log.info("Data Engine Proxy has been started!");
+        if (dataEngineConnector != null && dataEngineConnector.isActive()) {
+            auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
+            this.auditLog.logRecord("Initializing",
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        } else {
+            auditCode = DataEngineProxyAuditCode.NO_CONFIG_DOC;
+            this.auditLog.logRecord(methodName,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        }
 
     }
 

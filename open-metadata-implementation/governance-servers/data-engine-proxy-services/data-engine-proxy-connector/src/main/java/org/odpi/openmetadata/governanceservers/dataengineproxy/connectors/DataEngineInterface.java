@@ -3,9 +3,9 @@
 /**
  * This is the interface for the generic operations on data virtualization solutions
  */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
+package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.model.*;
 
 import java.util.Date;
 import java.util.List;

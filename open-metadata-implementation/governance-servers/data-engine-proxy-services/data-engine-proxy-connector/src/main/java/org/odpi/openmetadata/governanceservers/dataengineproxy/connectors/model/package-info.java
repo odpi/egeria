@@ -5,4 +5,4 @@
  * The model package provides the definitions of the objects that data engines are expected to use in order
  * to integrate with the Data Engine Proxy Services.
  */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model;
+package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.model;

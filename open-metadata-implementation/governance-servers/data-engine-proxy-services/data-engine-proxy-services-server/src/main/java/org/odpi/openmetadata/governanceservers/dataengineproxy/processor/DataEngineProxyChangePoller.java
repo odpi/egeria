@@ -6,9 +6,8 @@ import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.DataEngineConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.DataEngineConnectorErrorCode;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.model.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,83 +63,32 @@ public class DataEngineProxyChangePoller implements Runnable {
 
         DataEngineProxyAuditCode auditCode;
 
-        // Start the connector
+        // Retrieve the base information from the connector
         if (connector != null) {
             try {
-                connector.start();
                 DataEngineSoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
                 dataEngineOMASClient.createExternalDataEngine(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
                 dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getSoftwareServerCapability().getQualifiedName());
             } catch (InvalidParameterException | PropertyServerException e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
+                auditCode = DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR;
+                this.auditLog.logException(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        e.getErrorMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
             } catch (UserNotAuthorizedException e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
-            } catch (ConnectorCheckedException e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.UNKNOWN_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
+                auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
+                this.auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        e.getErrorMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
             }
-        } else {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.NO_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction()
-            );
-        }
-
-        if (connector.isActive()) {
-            auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
-            this.auditLog.logRecord("Initializing",
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(connector.getConnection().getConnectorType().getConnectorProviderClassName()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-        } else {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.NO_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction()
-            );
         }
 
     }
@@ -162,9 +110,8 @@ public class DataEngineProxyChangePoller implements Runnable {
 
                 ensureSourceNameIsSet();
 
-                if (log.isInfoEnabled()) { log.info("Polling for changes since: {}", changesLastSynced); }
                 DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.POLLING;
-                this.auditLog.logRecord("Polling",
+                this.auditLog.logRecord(methodName,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
                         auditCode.getFormattedLogMessage(changesLastSynced == null ? "(all changes)" : changesLastSynced.toString()),
@@ -186,41 +133,34 @@ public class DataEngineProxyChangePoller implements Runnable {
                 Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
 
             } catch (InvalidParameterException | PropertyServerException e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
+                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR;
+                this.auditLog.logException(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        e.getErrorMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
             } catch (UserNotAuthorizedException e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
+                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
+                this.auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        e.getErrorMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
             } catch (Exception e) {
-                DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.UNKNOWN_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-                throw new OCFRuntimeException(
-                        errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e
-                );
+                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
+                this.auditLog.logException(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
             }
         }
 
@@ -237,13 +177,13 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        if (log.isInfoEnabled()) { log.info(" ... getting changed schema types."); }
+        log.info(" ... getting changed schema types.");
         List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
         if (changedSchemaTypes != null) {
             for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
                 dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
             }
-            if (log.isInfoEnabled()) { log.info(" ... completing schema type changes."); }
+            log.info(" ... completing schema type changes.");
         }
     }
 
@@ -252,13 +192,13 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        if (log.isInfoEnabled()) { log.info(" ... getting changed port implementations."); }
+        log.info(" ... getting changed port implementations.");
         List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
         if (changedPortImplementations != null) {
             for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
                 dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
             }
-            if (log.isInfoEnabled()) { log.info(" ... completing port implementation changes."); }
+            log.info(" ... completing port implementation changes.");
         }
     }
 
@@ -267,13 +207,13 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        if (log.isInfoEnabled()) { log.info(" ... getting changed port aliases."); }
+        log.info(" ... getting changed port aliases.");
         List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
         if (changedPortAliases != null) {
             for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
                 dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
             }
-            if (log.isInfoEnabled()) { log.info(" ... completing port alias changes."); }
+            log.info(" ... completing port alias changes.");
         }
     }
 
@@ -282,13 +222,13 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        if (log.isInfoEnabled()) { log.info(" ... getting changed processes."); }
+        log.info(" ... getting changed processes.");
         List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null) {
             for (DataEngineProcess changedProcess : changedProcesses) {
                 dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
             }
-            if (log.isInfoEnabled()) { log.info(" ... completing process changes."); }
+            log.info(" ... completing process changes.");
         }
     }
 
@@ -297,13 +237,13 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        if (log.isInfoEnabled()) { log.info(" ... getting changed lineage mappings."); }
+        log.info(" ... getting changed lineage mappings.");
         List<DataEngineLineageMappings> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
         if (changedLineageMappings != null) {
             for (DataEngineLineageMappings changedLineageMapping : changedLineageMappings) {
                 dataEngineOMASClient.addLineageMappings(changedLineageMapping.getUserId(), new ArrayList<>(changedLineageMapping.getLineageMappings()));
             }
-            if (log.isInfoEnabled()) { log.info(" ... completing lineage mapping changes."); }
+            log.info(" ... completing lineage mapping changes.");
         }
     }
 

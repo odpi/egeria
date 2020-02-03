@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
+package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,10 +31,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @return DataEngineSoftwareServerCapability
      */
-    public DataEngineSoftwareServerCapability getDataEngineDetails() {
-        log.warn("DataEngineConnectorBase::getDataEngineDetails() is not overridden (unimplemented).");
-        return null;
-    }
+    public abstract DataEngineSoftwareServerCapability getDataEngineDetails();
 
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
@@ -50,7 +47,9 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return Date
      */
     public Date getChangesLastSynced() {
-        log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented).");
+        if (requiresPolling()) {
+            log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented), yet the connector requires polling.");
+        }
         return null;
     }
 
@@ -60,7 +59,9 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @param time the time to record for the last synchronization
      */
     public void setChangesLastSynced(Date time) {
-        log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented).");
+        if (requiresPolling()) {
+            log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented), yet the connector requires polling.");
+        }
     }
 
     /**
@@ -71,7 +72,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<DataEngineSchemaType>}
      */
     public List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
+        log.debug("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
         return Collections.emptyList();
     }
 
@@ -83,7 +84,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<DataEnginePortImplementation>}
      */
     public List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
+        log.debug("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
         return Collections.emptyList();
     }
 
@@ -95,7 +96,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<DataEnginePortAlias>}
      */
     public List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
+        log.debug("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
         return Collections.emptyList();
     }
 
@@ -107,7 +108,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<DataEngineProcess>}
      */
     public List<DataEngineProcess> getChangedProcesses(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+        log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
         return Collections.emptyList();
     }
 
@@ -119,7 +120,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<DataEngineLineageMappings>}
      */
     public List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
+        log.debug("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
         return Collections.emptyList();
     }
 
