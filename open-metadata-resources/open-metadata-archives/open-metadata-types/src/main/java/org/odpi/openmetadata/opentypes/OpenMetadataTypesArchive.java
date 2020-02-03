@@ -141,58 +141,15 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
+        update0298LineageRelationships();
         update0501SchemaElements();
-        update0598LineageRelationships();
         update0602OpenDiscoveryServices();
         update0605OpenDiscoveryAnalysisReports();
         update0650RelationshipDiscovery();
     }
 
 
-    private void update0501SchemaElements()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
-    }
-
-
-    /**
-     * 0501 SchemaElement 'anchorGUID' property should refer to an Asset when available, updated description
-     */
-    private TypeDefPatch updateSchemaElementEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaElement";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name = "anchorGUID";
-        final String attribute1Description = "Optional identification of the Asset that this schema element is a part of.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private void update0598LineageRelationships()
+    private void update0298LineageRelationships()
     {
         this.archiveBuilder.addEnumDef(getProcessContainmentTypeEnum());
         this.archiveBuilder.addRelationshipDef(getProcessHierarchyRelationship());
@@ -331,6 +288,49 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+
+    private void update0501SchemaElements()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
+    }
+
+
+    /**
+     * 0501 SchemaElement 'anchorGUID' property should refer to an Asset when available, updated description
+     */
+    private TypeDefPatch updateSchemaElementEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaElement";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name = "anchorGUID";
+        final String attribute1Description = "Optional identification of the Asset that this schema element is a part of.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
