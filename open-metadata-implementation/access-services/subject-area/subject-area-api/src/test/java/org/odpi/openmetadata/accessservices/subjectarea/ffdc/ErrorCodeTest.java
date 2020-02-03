@@ -45,21 +45,21 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
-        assertTrue(testValue.getErrorMessageId().endsWith(" "));
-        assertTrue(testValue.getHTTPErrorCode() != 0);
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix),"Message "+testValue.getErrorMessageId()+" did not contain messageIdPrefix " + messageIdPrefix);
+        assertTrue(testValue.getErrorMessageId().endsWith(" "),"Message " + testValue.getErrorMessageId()+ " ends with a blank");
+        assertTrue(testValue.getHTTPErrorCode() != 0,"Message " + testValue.getErrorMessageId() + " does not have a HTTPErrorCode");
         testInfo = testValue.getUnformattedErrorMessage();
-        assertTrue(testInfo != null);
+        assertTrue(testInfo != null,"Message " + testValue.getErrorMessageId() + " does not have a UnformattedErrorMessage");
         assertFalse(testInfo.isEmpty());
         testInfo = testValue.getFormattedErrorMessage("Field1", "Field2", "Field3", "Field4", "Field5", "Field6");
-        assertTrue(testInfo != null);
-        assertFalse(testInfo.isEmpty());
+        assertTrue(testInfo != null,"Message " + testValue.getErrorMessageId() + " does not have a FormattedErrorMessage");
+        assertFalse(testInfo.isEmpty(),"Message " + testValue.getErrorMessageId() + " has an empty UnformattedErrorMessage");
         testInfo = testValue.getSystemAction();
-        assertTrue(testInfo != null);
-        assertFalse(testInfo.isEmpty());
+        assertTrue(testInfo != null,"Message " + testValue.getErrorMessageId() + " does not have a SystemAction");
+        assertFalse(testInfo.isEmpty(),"Message " + testValue.getErrorMessageId() + " has an empty SystemAction");
         testInfo = testValue.getUserAction();
-        assertTrue(testInfo != null);
-        assertFalse(testInfo.isEmpty());
+        assertTrue(testInfo != null,"Message " + testValue.getErrorMessageId() + " has null UserAction");
+        assertFalse(testInfo.isEmpty(),"Message " + testValue.getErrorMessageId() + " has an empty UserAction");
     }
 
 
