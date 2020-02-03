@@ -28,5 +28,20 @@ public class OpenLineageHandler {
         return mainGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
     }
 
+    /**
+     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
+     */
+    public void dumpMainGraph() throws OpenLineageException {
+        mainGraph.dumpMainGraph();
+    }
+
+    /**
+     * Return an entire graph, in GraphSon format.
+     *
+     * @return The queried graph, in graphSON format.
+     */
+    public String exportMainGraph() throws OpenLineageException {
+        return mainGraph.exportMainGraph();
+    }
 
 }
