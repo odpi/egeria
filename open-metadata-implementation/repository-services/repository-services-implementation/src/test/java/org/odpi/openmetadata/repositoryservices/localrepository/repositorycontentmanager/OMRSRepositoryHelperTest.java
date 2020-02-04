@@ -3,14 +3,13 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.testng.Assert.*;
@@ -175,6 +174,310 @@ public class OMRSRepositoryHelperTest
         assertFalse(createHelper().isStartsWithRegex(multiStarts));
         assertFalse(createHelper().isEndsWithRegex(multiEnds));
 
+    }
+
+    @Test
+    void testCommonDifferencesAcrossInstances() {
+
+        OMRSRepositoryHelper helper = createHelper();
+
+        EntitySummary left = getTestEntitySummary();
+        EntitySummary right = getTestEntitySummary();
+
+        // Test some of the base properties that exist on all instances
+        String otherUpdater = "DifferentUpdater";
+        right.setUpdatedBy(otherUpdater);
+        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        Set<String> differentProperties = differences.getNames();
+        assertNotNull(differentProperties);
+        assertEquals(differentProperties.size(), 1);
+        String differingPropertyName = "UpdatedBy";
+        assertTrue(differentProperties.contains(differingPropertyName));
+        assertEquals(differences.getLeftValue(differingPropertyName), left.getUpdatedBy());
+        assertEquals(differences.getRightValue(differingPropertyName), otherUpdater);
+
+        String otherAuthor = "DifferentAuthor";
+        right.setCreatedBy(otherAuthor);
+        differences = helper.getEntitySummaryDifferences(left, right, true);
+        assertTrue(differences.hasDifferences());
+        differentProperties = differences.getNames();
+        assertNotNull(differentProperties);
+        assertEquals(differentProperties.size(), 1);
+        differingPropertyName = "CreatedBy";
+        assertTrue(differentProperties.contains(differingPropertyName));
+        assertEquals(differences.getLeftValue(differingPropertyName), left.getCreatedBy());
+        assertEquals(differences.getRightValue(differingPropertyName), otherAuthor);
+
+        String otherCollection = "DifferentCollection";
+        left.setMetadataCollectionId(otherCollection);
+        differences = helper.getEntitySummaryDifferences(left, right, true);
+        assertTrue(differences.hasDifferences());
+        differentProperties = differences.getNames();
+        assertNotNull(differentProperties);
+        assertEquals(differentProperties.size(), 2);
+        assertTrue(differentProperties.contains(differingPropertyName));
+        assertTrue(differentProperties.contains("MetadataCollectionId"));
+        assertEquals(differences.getLeftValue(differingPropertyName), left.getCreatedBy());
+        assertEquals(differences.getRightValue(differingPropertyName), otherAuthor);
+        assertEquals(differences.getLeftValue("MetadataCollectionId"), otherCollection);
+        assertEquals(differences.getRightValue("MetadataCollectionId"), right.getMetadataCollectionId());
+
+    }
+
+    @Test
+    void testRelationshipDifferences() {
+
+        final String methodName = "testRelationshipDifferences";
+        OMRSRepositoryHelper helper = createHelper();
+
+        Relationship left = getTestRelationship();
+        Relationship right = getTestRelationship();
+
+        RelationshipDifferences differences = helper.getRelationshipDifferences(left, right, false);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change an instance property and ensure that shows as a difference
+        InstanceProperties ip = new InstanceProperties();
+        ip = helper.addStringPropertyToInstance("test", ip, "testPropertyName", "testValue", methodName);
+        right.setProperties(ip);
+
+        differences = helper.getRelationshipDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasInstancePropertiesDifferences());
+        assertFalse(differences.hasEntityProxyDifferences());
+        InstancePropertiesDifferences ipd = differences.getInstancePropertiesDifferences();
+        assertNotNull(ipd);
+        assertTrue(ipd.isDifferent("testPropertyName"));
+        Set<String> differingInstanceProperties = ipd.getNames();
+        assertNotNull(differingInstanceProperties);
+        assertEquals(differingInstanceProperties.size(), 2);
+        assertTrue(differingInstanceProperties.contains("testPropertyName"));
+        assertNull(ipd.getLeftValue("testPropertyName"));
+        assertEquals(ipd.getRightValue("testPropertyName"), ip.getPropertyValue("testPropertyName"));
+        assertEquals(ipd.getLeftValue("propertyName"), left.getProperties().getPropertyValue("propertyName"));
+        assertNull(ipd.getRightValue("propertyName"));
+
+        // Change an entity proxy and ensure that shows as a difference
+        EntityProxy other = getTestEntityProxy();
+        other.setUniqueProperties(ip);
+        right.setEntityTwoProxy(other);
+        differences = helper.getRelationshipDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasInstancePropertiesDifferences());
+        assertTrue(differences.hasEntityProxyDifferences());
+        assertFalse(differences.hasEntityProxyOneDifferences());
+        assertTrue(differences.hasEntityProxyTwoDifferences());
+        EntityProxyDifferences two = differences.getEntityProxyTwoDifferences();
+        assertTrue(two.hasDifferences());
+        assertTrue(two.hasUniquePropertiesDifferences());
+        assertFalse(two.hasClassificationDifferences());
+        ipd = two.getUniquePropertiesDifferences();
+        Set<String> differingUniqueProperties = ipd.getNames();
+        assertNotNull(differingUniqueProperties);
+        assertEquals(differingUniqueProperties.size(), 2);
+        assertTrue(differingUniqueProperties.contains("testPropertyName"));
+        assertNull(ipd.getLeftValue("testPropertyName"));
+        assertEquals(ipd.getRightValue("testPropertyName"), ip.getPropertyValue("testPropertyName"));
+        assertEquals(ipd.getLeftValue("propertyName"), left.getEntityTwoProxy().getUniqueProperties().getPropertyValue("propertyName"));
+        assertNull(ipd.getRightValue("propertyName"));
+
+    }
+
+    @Test
+    void testEntityDetailDifferences() {
+
+        final String methodName = "testEntityDetailDifferences";
+        OMRSRepositoryHelper helper = createHelper();
+
+        EntityDetail left = getTestEntityDetail();
+        EntityDetail right = getTestEntityDetail();
+
+        EntityDetailDifferences differences = helper.getEntityDetailDifferences(left, right, false);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change an instance property and ensure that shows as a difference
+        InstanceProperties ip = new InstanceProperties();
+        ip = helper.addStringPropertyToInstance("test", ip, "testPropertyName", "testValue", methodName);
+        right.setProperties(ip);
+
+        differences = helper.getEntityDetailDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasInstancePropertiesDifferences());
+        assertFalse(differences.hasClassificationDifferences());
+        InstancePropertiesDifferences ipd = differences.getInstancePropertiesDifferences();
+        assertNotNull(ipd);
+        assertTrue(ipd.isDifferent("testPropertyName"));
+        Set<String> differingInstanceProperties = ipd.getNames();
+        assertNotNull(differingInstanceProperties);
+        assertEquals(differingInstanceProperties.size(), 2);
+        assertTrue(differingInstanceProperties.contains("testPropertyName"));
+        assertNull(ipd.getLeftValue("testPropertyName"));
+        assertEquals(ipd.getRightValue("testPropertyName"), ip.getPropertyValue("testPropertyName"));
+        assertEquals(ipd.getLeftValue("propertyName"), left.getProperties().getPropertyValue("propertyName"));
+        assertNull(ipd.getRightValue("propertyName"));
+
+        // (Classification changes are tested in testEntitySummaryDifferences further below)
+
+    }
+
+    @Test
+    void testEntityProxyDifferences() {
+
+        final String methodName = "testEntityProxyDifferences";
+        OMRSRepositoryHelper helper = createHelper();
+
+        EntityProxy left = getTestEntityProxy();
+        EntityProxy right = getTestEntityProxy();
+
+        EntityProxyDifferences differences = helper.getEntityProxyDifferences(left, right, false);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change a unique property and ensure that shows as a difference
+        InstanceProperties ip = new InstanceProperties();
+        ip = helper.addStringPropertyToInstance("test", ip, "propertyName", "testValue", methodName);
+        right.setUniqueProperties(ip);
+
+        differences = helper.getEntityProxyDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasUniquePropertiesDifferences());
+        InstancePropertiesDifferences ipd = differences.getUniquePropertiesDifferences();
+        assertNotNull(ipd);
+        assertTrue(ipd.isDifferent("propertyName"));
+        Set<String> differingInstanceProperties = ipd.getNames();
+        assertNotNull(differingInstanceProperties);
+        assertEquals(differingInstanceProperties.size(), 1);
+        assertTrue(differingInstanceProperties.contains("propertyName"));
+        assertEquals(ipd.getLeftValue("propertyName"), left.getUniqueProperties().getPropertyValue("propertyName"));
+        assertEquals(ipd.getRightValue("propertyName"), ip.getPropertyValue("propertyName"));
+        assertNotEquals(left.getUniqueProperties().getPropertyValue("propertyName"), ip.getPropertyValue("propertyName"));
+
+    }
+
+    @Test
+    void testEntitySummaryDifferences() {
+
+        final String methodName = "testEntitySummaryDifferences";
+        OMRSRepositoryHelper helper = createHelper();
+
+        EntitySummary left = getTestEntitySummary();
+        EntitySummary right = getTestEntitySummary();
+
+        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right, false);
+        assertNotNull(differences);
+        assertFalse(differences.hasDifferences());
+
+        // Change just a property within the classification and ensure that flags differences
+        InstanceProperties ip = new InstanceProperties();
+        ip = helper.addStringPropertyToInstance("test", ip, "testPropertyName", "testValue", methodName);
+        Classification update = new Classification();
+        update.setName("TestClassification");
+        update.setProperties(ip);
+        List<Classification> list = new ArrayList<>();
+        list.add(update);
+        right.setClassifications(list);
+        differences = helper.getEntitySummaryDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasClassificationDifferences());
+        ClassificationDifferences cd = differences.getClassificationDifferences();
+        assertNotNull(cd);
+        assertTrue(cd.isDifferent("TestClassification"));
+        Set<String> differingClassifications = cd.getNames();
+        assertNotNull(differingClassifications);
+        assertEquals(differingClassifications.size(), 1);
+        assertTrue(differingClassifications.contains("TestClassification"));
+
+        // Calculate the instance properties differences within the classification to show their difference
+        InstancePropertiesDifferences ipd = new InstancePropertiesDifferences();
+        ipd.check(
+                ((Classification)cd.getLeftValue("TestClassification")).getProperties(),
+                ((Classification)cd.getRightValue("TestClassification")).getProperties()
+        );
+        assertTrue(ipd.hasDifferences());
+        assertTrue(ipd.isDifferent("testPropertyName"));
+        assertTrue(ipd.getOnlyOnRight().containsKey("testPropertyName"));
+
+        // Change the classifications list and ensure that shows as a difference
+        List<Classification> classifications = new ArrayList<>();
+        Classification confidentiality = new Classification();
+        confidentiality.setName("Confidentiality");
+        classifications.add(confidentiality);
+        right.setClassifications(classifications);
+        differences = helper.getEntitySummaryDifferences(left, right, false);
+        assertTrue(differences.hasDifferences());
+        assertTrue(differences.hasClassificationDifferences());
+        cd = differences.getClassificationDifferences();
+        assertNotNull(cd);
+        assertTrue(cd.isDifferent("Confidentiality"));
+        differingClassifications = cd.getNames();
+        assertNotNull(differingClassifications);
+        assertEquals(differingClassifications.size(), 2);
+        assertTrue(differingClassifications.contains("Confidentiality"));
+        assertNull(cd.getLeftValue("Confidentiality"));
+        assertEquals(cd.getRightValue("Confidentiality"), confidentiality);
+        Map<String, Object> onlyOnRight = cd.getOnlyOnRight();
+        assertTrue(onlyOnRight.containsKey("Confidentiality"));
+        assertEquals(onlyOnRight.get("Confidentiality"), confidentiality);
+
+    }
+
+    private Relationship getTestRelationship() {
+        Relationship relationship = new Relationship();
+        setupTestObject(relationship);
+        relationship.setEntityOneProxy(getTestEntityProxy());
+        relationship.setEntityTwoProxy(getTestEntityProxy());
+        InstanceProperties ip = createHelper().addStringPropertyToInstance("test", null, "propertyName", "propertyValue", "getTestRelationship");
+        relationship.setProperties(ip);
+        return relationship;
+    }
+
+    private EntityDetail getTestEntityDetail() {
+        EntityDetail entityDetail = new EntityDetail();
+        setupEntitySummary(entityDetail);
+        InstanceProperties ip = createHelper().addStringPropertyToInstance("test", null, "propertyName", "propertyValue", "getTestEntityDetail");
+        entityDetail.setProperties(ip);
+        return entityDetail;
+    }
+
+    private EntityProxy getTestEntityProxy() {
+        EntityProxy entityProxy = new EntityProxy();
+        setupEntitySummary(entityProxy);
+        InstanceProperties ip = createHelper().addStringPropertyToInstance("test", null, "propertyName", "propertyValue", "getTestEntityDetail");
+        entityProxy.setUniqueProperties(ip);
+        return entityProxy;
+    }
+
+    private EntitySummary getTestEntitySummary() {
+        EntitySummary entitySummary = new EntitySummary();
+        setupEntitySummary(entitySummary);
+        return entitySummary;
+    }
+
+    private <T extends EntitySummary> void setupEntitySummary(T object) {
+        setupTestObject(object);
+        Classification classification = new Classification();
+        classification.setName("TestClassification");
+        List<Classification> classifications = new ArrayList<>();
+        classifications.add(classification);
+        object.setClassifications(classifications);
+    }
+
+    private <T extends InstanceHeader> void setupTestObject(T object) {
+        object.setType(new InstanceType());
+        object.setCreatedBy("TestAuthor");
+        object.setUpdatedBy("TestEditor");
+        object.setCreateTime(new Date(23));
+        object.setUpdateTime(new Date(45));
+        object.setVersion(30L);
+        object.setStatus(InstanceStatus.UNKNOWN);
+        object.setStatusOnDelete(InstanceStatus.UNKNOWN);
+        object.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
+        object.setMetadataCollectionId("TestHomeId");
+        object.setGUID("TestInstanceGUID");
+        object.setInstanceURL("TestInstanceURL");
     }
 
     private OMRSRepositoryHelper createHelper() {
