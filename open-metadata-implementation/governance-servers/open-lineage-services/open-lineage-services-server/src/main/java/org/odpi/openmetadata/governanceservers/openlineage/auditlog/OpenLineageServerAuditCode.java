@@ -52,7 +52,7 @@ public enum OpenLineageServerAuditCode {
 
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Open Lineage Services server {0} was unable to obtain an in topic connector with the provided configuration {1}.",
+            "The Open Lineage Services server {0} is unable to obtain an in topic connector with the provided configuration {1}.",
             "The in topic connector could not be obtained.",
             "Review the topic name set by the Open Lineage Services configuration."),
 

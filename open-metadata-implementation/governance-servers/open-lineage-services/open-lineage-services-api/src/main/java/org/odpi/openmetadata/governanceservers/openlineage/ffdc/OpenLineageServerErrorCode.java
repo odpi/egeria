@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.ffdc;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,10 +77,26 @@ public enum OpenLineageServerErrorCode {
             "The Maingraph database connector could not be started.",
             "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
+
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-011 ",
-            "The Open Lineage Services server {0} was unable to obtain an in topic connector.",
+            "The Open Lineage Services server {0} is unable to obtain an in topic connector.",
             "The in topic connector could not be obtained.",
             "Review the topic name set by the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Buffergraph database connector.",
+            "The Buffergraph database connector could not be obtained.",
+            "Please verify the Buffergraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Maingraph database connector.",
+            "The Maingraph database connector could not be obtained.",
+            "Please verify the Maingraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_STARTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-013 ",
+            "The Open Lineage Services server {0} is unable to start an in topic listener.",
+            "The topic connector could not be started.",
+            "Review the status of the eventbus server and review the topic name set by the Open Lineage Services configuration."),
 
     NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
             "Error retrieving queried node.",
