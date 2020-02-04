@@ -409,52 +409,84 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                                               UserNotAuthorizedException
     {
         /*
-         * Delete the relationship to the endpoint if any.  It will be added back in if endpoint defined.
+         * Match the content in the repository with the connection description passed in on the parameters.
+         * It updates the endpoint, then the connector type and then the embedded connections.
          */
-        repositoryHandler.removeAllRelationshipsOfType(userId,
-                                                       connectionGUID,
-                                                       ConnectionMapper.CONNECTION_TYPE_NAME,
-                                                       ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                       ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
-                                                       methodName);
 
         if (endpoint != null)
         {
+            /*
+             * This connection has an endpoint.
+             */
             String endpointGUID = endpointHandler.saveEndpoint(userId, endpoint);
 
             if (endpointGUID != null)
             {
-                repositoryHandler.createRelationship(userId,
-                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                /*
+                 * Create a new relationship unless it already exists
+                 */
+                repositoryHandler.ensureRelationship(userId,
+                                                     EndpointMapper.ENDPOINT_TYPE_NAME,
                                                      endpointGUID,
                                                      connectionGUID,
+                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                      null,
                                                      methodName);
             }
         }
-
-        /*
-         * Delete the relationship to the connector type if any.  It will be added back in once connector type is updated.
-         */
-        repositoryHandler.removeAllRelationshipsOfType(userId,
-                                                       connectionGUID,
-                                                       ConnectionMapper.CONNECTION_TYPE_NAME,
-                                                       ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                                       ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
-                                                       methodName);
-
-        String connectorTypeGUID = connectorTypeHandler.saveConnectorType(userId, connectorType);
-
-        if (connectorTypeGUID != null)
+        else
         {
-            repositoryHandler.createRelationship(userId,
-                                                 ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                                 connectionGUID,
-                                                 connectorTypeGUID,
-                                                 null,
-                                                 methodName);
+            /*
+             * There should be no relationships between the connection and the endpoint.  So this would normally be a no-op.
+             * The only time this would do something is if the connection is already defined and this update is to remove the Endpoint.
+             * Since we don't know the original GUID for the endpoint, and a connection can only be connected to one endpoint,
+             * it is safe to delete any relationships to endpoints from this connection.
+             */
+            repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           connectionGUID,
+                                                           ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                           ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                           ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                           methodName);
         }
 
+        if (connectorType != null)
+        {
+            String connectorTypeGUID = connectorTypeHandler.saveConnectorType(userId, connectorType);
+
+            if (connectorTypeGUID != null)
+            {
+                repositoryHandler.ensureRelationship(userId,
+                                                     ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                     connectionGUID,
+                                                     connectorTypeGUID,
+                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                     null,
+                                                     methodName);
+            }
+        }
+        else
+        {
+            /*
+             * There should be no relationships between the connection and the connector type.  So this would normally be a no-op.
+             * The only time this would do something is if the connection is already defined and this update is to remove the connectorType.
+             * Since we don't know the original GUID for the connector type, and a connection can only be connected to one connectorType,
+             * it is safe to delete any relationships to connectorTypes from this connection.
+             */
+            repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           connectionGUID,
+                                                           ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                           ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                           ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                           methodName);
+        }
+
+        /*
+         * Managing embedded connections is awkward.  This approach is a bit of a blunt instrument but handles the cases where the
+         * virtual connection is being reorganized.
+         */
         repositoryHandler.removeAllRelationshipsOfType(userId,
                                                        connectionGUID,
                                                        ConnectionMapper.CONNECTION_TYPE_NAME,
