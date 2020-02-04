@@ -3,16 +3,16 @@
 package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
-import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.model.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,6 +29,7 @@ public class DataEngineProxyChangePoller implements Runnable {
     private DataEngineProxyConfig dataEngineProxyConfig;
     private DataEngineImpl dataEngineOMASClient;
     private DataEngineConnectorBase connector;
+    private String userId;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
@@ -45,11 +46,13 @@ public class DataEngineProxyChangePoller implements Runnable {
      * Default constructor
      *
      * @param connector             Data Engine Connector through which to connect to the data engine to poll
+     * @param userId                the user ID used to poll for changes against the connector
      * @param dataEngineProxyConfig configuration of the Data Engine (Proxy)
      * @param dataEngineOMASClient  Data Engine OMAS client through which to push any changes into Egeria
      * @param auditLog              audit log through which to record activities
      */
     public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
+                                       String userId,
                                        DataEngineProxyConfig dataEngineProxyConfig,
                                        DataEngineImpl dataEngineOMASClient,
                                        OMRSAuditLog auditLog) {
@@ -57,6 +60,7 @@ public class DataEngineProxyChangePoller implements Runnable {
         final String methodName = "DataEngineProxyChangePoller";
 
         this.connector = connector;
+        this.userId = userId;
         this.dataEngineProxyConfig = dataEngineProxyConfig;
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
@@ -66,9 +70,9 @@ public class DataEngineProxyChangePoller implements Runnable {
         // Retrieve the base information from the connector
         if (connector != null) {
             try {
-                DataEngineSoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                dataEngineOMASClient.createExternalDataEngine(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
-                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getSoftwareServerCapability().getQualifiedName());
+                SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
+                dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
+                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
             } catch (InvalidParameterException | PropertyServerException e) {
                 auditCode = DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR;
                 this.auditLog.logException(methodName,
@@ -84,7 +88,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                 this.auditLog.logRecord(methodName,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
+                        auditCode.getFormattedLogMessage("setup external data engine"),
                         e.getErrorMessage(),
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
@@ -147,12 +151,12 @@ public class DataEngineProxyChangePoller implements Runnable {
                 this.auditLog.logRecord(methodName,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
+                        auditCode.getFormattedLogMessage("send changes"),
                         e.getErrorMessage(),
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
             } catch (Exception e) {
-                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
+                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.UNKNOWN_ERROR;
                 this.auditLog.logException(methodName,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -168,7 +172,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void ensureSourceNameIsSet() {
         if (dataEngineOMASClient.getExternalSourceName() == null) {
-            dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getSoftwareServerCapability().getQualifiedName());
+            dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getQualifiedName());
         }
     }
 
@@ -178,10 +182,11 @@ public class DataEngineProxyChangePoller implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException {
         log.info(" ... getting changed schema types.");
-        List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
+        List<SchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
+
         if (changedSchemaTypes != null) {
-            for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
-                dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
+            for (SchemaType changedSchemaType : changedSchemaTypes) {
+                dataEngineOMASClient.createOrUpdateSchemaType(userId, changedSchemaType);
             }
             log.info(" ... completing schema type changes.");
         }
@@ -193,10 +198,10 @@ public class DataEngineProxyChangePoller implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException {
         log.info(" ... getting changed port implementations.");
-        List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
+        List<PortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
         if (changedPortImplementations != null) {
-            for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
-                dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
+            for (PortImplementation changedPortImplementation : changedPortImplementations) {
+                dataEngineOMASClient.createOrUpdatePortImplementation(userId, changedPortImplementation);
             }
             log.info(" ... completing port implementation changes.");
         }
@@ -208,10 +213,10 @@ public class DataEngineProxyChangePoller implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException {
         log.info(" ... getting changed port aliases.");
-        List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
+        List<PortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
         if (changedPortAliases != null) {
-            for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
-                dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
+            for (PortAlias changedPortAlias : changedPortAliases) {
+                dataEngineOMASClient.createOrUpdatePortAlias(userId, changedPortAlias);
             }
             log.info(" ... completing port alias changes.");
         }
@@ -223,10 +228,10 @@ public class DataEngineProxyChangePoller implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException {
         log.info(" ... getting changed processes.");
-        List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
+        List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null) {
-            for (DataEngineProcess changedProcess : changedProcesses) {
-                dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
+            for (Process changedProcess : changedProcesses) {
+                dataEngineOMASClient.createOrUpdateProcess(userId, changedProcess);
             }
             log.info(" ... completing process changes.");
         }
@@ -238,11 +243,9 @@ public class DataEngineProxyChangePoller implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException {
         log.info(" ... getting changed lineage mappings.");
-        List<DataEngineLineageMappings> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
+        List<LineageMapping> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
         if (changedLineageMappings != null) {
-            for (DataEngineLineageMappings changedLineageMapping : changedLineageMappings) {
-                dataEngineOMASClient.addLineageMappings(changedLineageMapping.getUserId(), new ArrayList<>(changedLineageMapping.getLineageMappings()));
-            }
+            dataEngineOMASClient.addLineageMappings(userId, changedLineageMappings);
             log.info(" ... completing lineage mapping changes.");
         }
     }

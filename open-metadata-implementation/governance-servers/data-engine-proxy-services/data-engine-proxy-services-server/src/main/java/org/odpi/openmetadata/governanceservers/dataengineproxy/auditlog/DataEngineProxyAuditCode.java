@@ -73,7 +73,7 @@ public enum DataEngineProxyAuditCode {
             "Check your OMAS configuration is correct and the OMAS is running."),
     USER_NOT_AUTHORIZED("DATA-ENGINE-PROXY-0011",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The user is not authorized for the Data Engine OMAS operation",
+            "The user is not authorized for the Data Engine OMAS operation: {0}",
             "The system is unable to process the operation due to the user not being authorized to do so.",
             "Check your OMAS configuration and user authorizations."),
     UNKNOWN_ERROR("DATA-ENGINE-PROXY-0012",

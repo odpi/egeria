@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
@@ -28,6 +29,9 @@ public class DataEngineProxyOperationalServices {
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
     private DataEngineProxyChangePoller changePoller;
+
+    // Retrieved from the Data Engine Connector's configuration, if available
+    private String dataEngineConnectorUserId = null;
 
     /**
      * Constructor used at server startup.
@@ -120,12 +124,15 @@ public class DataEngineProxyOperationalServices {
          */
         DataEngineImpl dataEngineClient;
         try {
-            dataEngineClient = new DataEngineImpl(
-                    dataEngineProxyConfig.getAccessServiceServerName(),
-                    dataEngineProxyConfig.getAccessServiceRootURL(),
-                    localServerUserId,
-                    localServerPassword
-            );
+            if ((localServerName != null) && (localServerPassword != null)) {
+                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                        dataEngineProxyConfig.getAccessServiceRootURL(),
+                        localServerUserId,
+                        localServerPassword);
+            } else {
+                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                        dataEngineProxyConfig.getAccessServiceRootURL());
+            }
         } catch (InvalidParameterException error) {
             throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
                     this.getClass().getName(),
@@ -143,10 +150,15 @@ public class DataEngineProxyOperationalServices {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 dataEngineConnector.start();
+                ConnectionProperties connectionProperties = dataEngineConnector.getConnection();
+                if (connectionProperties != null) {
+                    dataEngineConnectorUserId = connectionProperties.getUserId();
+                }
                 // If the config says we should poll for changes, do so via a new thread
                 if (dataEngineConnector.requiresPolling()) {
                     changePoller = new DataEngineProxyChangePoller(
                             dataEngineConnector,
+                            dataEngineConnectorUserId,
                             dataEngineProxyConfig,
                             dataEngineClient,
                             auditLog
@@ -170,7 +182,7 @@ public class DataEngineProxyOperationalServices {
 
         if (dataEngineConnector != null && dataEngineConnector.isActive()) {
             auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
-            this.auditLog.logRecord("Initializing",
+            this.auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()),
@@ -197,6 +209,7 @@ public class DataEngineProxyOperationalServices {
      * @return boolean indicated whether the disconnect was successful.
      */
     public boolean disconnect(boolean permanent) {
+        final String methodName = "disconnect";
         DataEngineProxyAuditCode auditCode;
         try {
             // Stop the change polling thread, if there is one and it is active
@@ -206,7 +219,7 @@ public class DataEngineProxyOperationalServices {
             // Disconnect the data engine connector
             dataEngineConnector.disconnect();
             auditCode = DataEngineProxyAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord("Disconnecting",
+            auditLog.logRecord(methodName,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(localServerName),
@@ -216,7 +229,7 @@ public class DataEngineProxyOperationalServices {
             return true;
         } catch (Exception e) {
             auditCode = DataEngineProxyAuditCode.ERROR_SHUTDOWN;
-            auditLog.logRecord("Disconnecting",
+            auditLog.logRecord(methodName,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(),
