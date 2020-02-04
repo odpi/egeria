@@ -8,6 +8,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class OMRSConnectorErrorException extends OMRSRuntimeException
 {
+    private static final long    serialVersionUID = 1L;
+
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */

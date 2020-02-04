@@ -25,25 +25,25 @@ import java.util.Arrays;
 public enum KafkaOpenMetadataTopicConnectorAuditCode
 {
     SERVICE_INITIALIZING("OCF-KAFKA-TOPIC-CONNECTOR-0001",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "Connecting to Apache Kafka Topic {0} with a server identifier of {1}",
               "The local server has started up the Apache Kafka connector.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_PRODUCER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0002",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "{0} properties passed to the Apache Kafka Producer for topic {1}",
               "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_CONSUMER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0003",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "{0} properties passed to the Apache Kafka Consumer for topic {1}",
               "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0004",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.SHUTDOWN,
               "The Apache Kafka connector for topic {0} is shutting down",
               "The local server has requested shut down of the Apache Kafka connector.",
               "No action is required.  This is part of the normal operation of the server."),
@@ -79,13 +79,13 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
              "Use the information in the event and the exception message, along with other messages to determine the source of the error."),
 
     KAFKA_PRODUCER_START("OCF-KAFKA-TOPIC-CONNECTOR-0010",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Apache Kafka producer for topic {0} is starting up with {1} buffered messages",
              "The local server has started the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),
 
     KAFKA_PRODUCER_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0011",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Apache Kafka producer for topic {0} is shutting down after sending {2} messages and with {1} unsent messages",
              "The local server has requested shut down of the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),

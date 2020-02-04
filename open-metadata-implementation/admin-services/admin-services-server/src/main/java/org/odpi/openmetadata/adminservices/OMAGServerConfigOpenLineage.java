@@ -19,8 +19,9 @@ import java.util.UUID;
 public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
 
-    private static final String serviceName    = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
-    private static final String defaultALOutTopicName = "omas.omas.assetlineage.outTopic";
+    private static final String serviceName = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
+    private static final String defaultInTopicName = "inTopic";
+
 
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
@@ -28,13 +29,68 @@ public class OMAGServerConfigOpenLineage {
     /**
      * Set the Open Lineage Config
      *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param openLineageServerConfig  Config for the Open Lineage Services
+     * @param userId                  user that is issuing the request.
+     * @param serverName              local server name.
+     * @param openLineageServerConfig Config for the Open Lineage Services
      * @return void response
      **/
     public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageServerConfig openLineageServerConfig) {
+
         String methodName = "setOpenLineageConfig";
+        VoidResponse response = new VoidResponse();
+
+        try {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageBufferGraphConnection(), "bufferGraphConnection", serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageMainGraphConnection(), "mainGraphConnection", serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
+
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
+                openLineageServerConfig.setInTopicConnection(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot(),
+                                openLineageServerConfig.getInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getConfigurationProperties())
+                );
+
+            serverConfig.setOpenLineageServerConfig(openLineageServerConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+            if (configAuditTrail == null)
+                configAuditTrail = new ArrayList<>();
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
+            serverConfig.setAuditTrail(configAuditTrail);
+        } catch (OMAGInvalidParameterException e) {
+            exceptionHandler.captureInvalidParameterException(response, e);
+        } catch (Throwable e) {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, e);
+        }
+
+        return response;
+    }
+
+
+
+    /**
+     * Remove this service from the server configuration.
+     *
+     * @param userId     user that is issuing the request.
+     * @param serverName local server name.
+     * @return void response
+     */
+    public VoidResponse removeOpenLineageConfig(String userId, String serverName) {
+        final String methodName = "shutdown";
+
         VoidResponse response = new VoidResponse();
 
         try {
@@ -43,71 +99,10 @@ public class OMAGServerConfigOpenLineage {
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-            EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            openLineageServerConfig.setInTopicConnection(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server",
-                            openLineageServerConfig.getInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getConfigurationProperties())
-            );
-
-            serverConfig.setOpenLineageServerConfig(openLineageServerConfig);
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
-
-
-            List<String> configAuditTrail = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null) {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if (openLineageServerConfig == null) {
-                configAuditTrail.add(
-                        new Date().toString() + " " + userId + " removed configuration for open lineage services.");
-            } else {
-                configAuditTrail.add(
-                        new Date().toString() + " " + userId + " updated configuration for open lineage services.");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-        } catch (OMAGInvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (Throwable error) {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
-        }
-
-        return response;
-    }
-
-    /**
-     * Remove this service from the server configuration.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @return void response
-     */
-    public VoidResponse removeOpenLineageConfig(String userId, String serverName)
-    {
-        final String methodName = "shutdown";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
-            {
                 configAuditTrail = new ArrayList<>();
-            }
 
             configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
 
@@ -115,18 +110,12 @@ public class OMAGServerConfigOpenLineage {
             serverConfig.setOpenLineageServerConfig(null);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        }
-        catch (OMAGInvalidParameterException error)
-        {
+        } catch (OMAGInvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
+        } catch (OMAGNotAuthorizedException error) {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Throwable  error)
-        {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        } catch (Throwable error) {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

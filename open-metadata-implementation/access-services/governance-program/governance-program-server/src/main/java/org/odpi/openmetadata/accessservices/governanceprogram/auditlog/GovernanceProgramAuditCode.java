@@ -25,32 +25,32 @@ import java.util.Arrays;
 public enum GovernanceProgramAuditCode
 {
     SERVICE_INITIALIZING("OMAS-GOVERNANCE-PROGRAM-0001",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "The Governance Program Open Metadata Access Service (OMAS) is initializing a new server instance",
               "The local server has started up a new instance of the Governance Program OMAS.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-GOVERNANCE-PROGRAM-0002",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "The Governance Program Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
               "The Governance Program OMAS is registering to receive events from the connected open metadata repositories.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-GOVERNANCE-PROGRAM-0003",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.STARTUP,
               "The Governance Program Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
               "The Governance Program OMAS has completed initialization of a new instance.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-GOVERNANCE-PROGRAM-0004",
-              OMRSAuditLogRecordSeverity.INFO,
+              OMRSAuditLogRecordSeverity.SHUTDOWN,
               "The Governance Program Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
               "The local server has requested shut down of an Governance Program OMAS instance.",
               "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CONSUMER-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
-             "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+    SERVICE_INSTANCE_FAILURE("OMAS-GOVERNANCE-PROGRAM-0005",
+             OMRSAuditLogRecordSeverity.EXCEPTION,
+             "The Governance Program Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
 

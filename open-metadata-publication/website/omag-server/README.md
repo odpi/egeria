@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Metadata and Governance (OMAG) Server Platform
+# Inside the Open Metadata and Governance (OMAG) Server Platform
 
 The **OMAG server platform** provides the server environment for running open metadata
 and governance services.  It hosts one or more **[OMAG servers](omag-server.md)**.  Each server is configured to support specific

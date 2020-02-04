@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,8 +23,9 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
 {
     private static final long    serialVersionUID = 1L;
 
-    private String       discoveryServiceGUID = null;
-    private List<String> assetDiscoveryTypes  = null;
+    private String              discoveryServiceGUID      = null;
+    private List<String>        discoveryRequestTypes     = null;
+    private Map<String, String> defaultAnalysisParameters = null;
 
     /**
      * Default constructor
@@ -48,8 +47,9 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
 
         if (template != null)
         {
-            discoveryServiceGUID = template.getDiscoveryServiceGUID();
-            assetDiscoveryTypes  = template.getAssetDiscoveryTypes();
+            discoveryServiceGUID  = template.getDiscoveryServiceGUID();
+            discoveryRequestTypes = template.getDiscoveryRequestTypes();
+            defaultAnalysisParameters = template.getDefaultAnalysisParameters();
         }
     }
 
@@ -81,31 +81,66 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
      *
      * @return list of asset type names
      */
-    public List<String> getAssetDiscoveryTypes()
+    public List<String> getDiscoveryRequestTypes()
     {
-        if (assetDiscoveryTypes == null)
+        if (discoveryRequestTypes == null)
         {
             return null;
         }
-        else if (assetDiscoveryTypes.isEmpty())
+        else if (discoveryRequestTypes.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(assetDiscoveryTypes);
+            return new ArrayList<>(discoveryRequestTypes);
         }
+    }
+
+
+    /**
+     * Return the list of analysis parameters that are passed the the discovery service (via
+     * the discovery context).  These values can be overridden on the actual discovery request.
+     *
+     * @return map of parameter name to parameter value
+     */
+    public Map<String, String> getDefaultAnalysisParameters()
+    {
+        if (defaultAnalysisParameters == null)
+        {
+            return null;
+        }
+        else if (defaultAnalysisParameters.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(defaultAnalysisParameters);
+        }
+    }
+
+
+    /**
+     * Set up the  list of analysis parameters that are passed the the discovery service (via
+     * the discovery context).  These values can be overridden on the actual discovery request.
+     *
+     * @param defaultAnalysisParameters map of parameter name to parameter value
+     */
+    public void setDefaultAnalysisParameters(Map<String, String> defaultAnalysisParameters)
+    {
+        this.defaultAnalysisParameters = defaultAnalysisParameters;
     }
 
 
     /**
      * Set up the list of asset types that this discovery service supports.
      *
-     * @param assetDiscoveryTypes list of asset type names
+     * @param discoveryRequestTypes list of asset type names
      */
-    public void setAssetDiscoveryTypes(List<String> assetDiscoveryTypes)
+    public void setDiscoveryRequestTypes(List<String> discoveryRequestTypes)
     {
-        this.assetDiscoveryTypes = assetDiscoveryTypes;
+        this.discoveryRequestTypes = discoveryRequestTypes;
     }
 
 
@@ -119,7 +154,8 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     {
         return "DiscoveryServiceRegistrationRequestBody{" +
                 "discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
-                ", assetDiscoveryTypes=" + assetDiscoveryTypes +
+                ", discoveryRequestTypes=" + discoveryRequestTypes +
+                ", defaultAnalysisParameters=" + defaultAnalysisParameters +
                 '}';
     }
 
@@ -142,10 +178,10 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
             return false;
         }
         DiscoveryServiceRegistrationRequestBody that = (DiscoveryServiceRegistrationRequestBody) objectToCompare;
-        return Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID()) &&
-                Objects.equals(getAssetDiscoveryTypes(), that.getAssetDiscoveryTypes());
+        return Objects.equals(discoveryServiceGUID, that.discoveryServiceGUID) &&
+                Objects.equals(discoveryRequestTypes, that.discoveryRequestTypes) &&
+                Objects.equals(defaultAnalysisParameters, that.defaultAnalysisParameters);
     }
-
 
 
     /**
@@ -156,6 +192,6 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDiscoveryServiceGUID(), getAssetDiscoveryTypes());
+        return Objects.hash(discoveryServiceGUID, discoveryRequestTypes, defaultAnalysisParameters);
     }
 }

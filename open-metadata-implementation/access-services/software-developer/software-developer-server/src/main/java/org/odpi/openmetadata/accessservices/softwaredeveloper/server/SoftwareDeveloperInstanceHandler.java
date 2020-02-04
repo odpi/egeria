@@ -18,7 +18,7 @@ class SoftwareDeveloperInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     SoftwareDeveloperInstanceHandler()
     {
-        super(AccessServiceDescription.SOFTWARE_DEVELOPER_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.SOFTWARE_DEVELOPER_OMAS.getAccessServiceFullName());
 
         SoftwareDeveloperRegistration.registerAccessService();
     }

@@ -25,5 +25,7 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
  * This caught exception is passed on the constructor so it is effectively
  * embedded in the resulting OCF exception.
  *
- * Both constructors take the values from the error code enum to define the cause and resolution.
+ * All constructors take the values from the error code enum to define the cause and resolution.
+ * There is also care to ensure that an error message is passed to the super class as the default
+ * behaviour is to use toString() to populate the error message.
  */

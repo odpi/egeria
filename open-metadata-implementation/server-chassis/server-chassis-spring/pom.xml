@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -234,6 +234,7 @@
         </dependency>
 
         <!-- Spring for REST APIs -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -314,6 +315,7 @@
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- all egeria spring modules are dynamically added -->
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*connector*</ignoredUnusedDeclaredDependency>
                                 <!-- springfox added for swagger UI -->
                                 <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui</ignoredUnusedDeclaredDependency>
                                 <!-- Spring seems to cause false positives on dependency checker -->

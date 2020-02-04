@@ -20,6 +20,24 @@ You will require a kubernetes environment to install to. Testing has been done s
 
 This chart should work with other providers with the exception of the definitions around ingress/load balancing - which are how ports are made available external to the cluster
 
+## Prerequisites
+
+In order to use the labs, you'll first need to have the following installed:
+
+- Kubernetes 1.15 or above
+- Helm 3.0 or above
+
+The minimum recommended configurations for Kubernetes are
+ - Cloud/remote service - 3 nodes, 4GB ram per node
+ - Local docker for mac/windows - 1 node, 8Gb ram dedicated to docker
+
+You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
+or a public cloud service that provides Kubernetes
+
+If you need to install helm3, please obtain from https://github.com/helm/helm/releases before starting and
+ensure the 'helm' executable is in your PATH. The
+instructions and examples that follow assume use of this version
+
 ## Caveats
 
 Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not configured

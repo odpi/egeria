@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "DATA-PRIVACY";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("DATA-PRIVACY"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,21 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(DataPrivacyErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(DataPrivacyErrorCode.SERVICE_NOT_INITIALIZED);
+        for (DataPrivacyErrorCode errorCode : DataPrivacyErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 
