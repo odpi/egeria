@@ -130,7 +130,7 @@ public class OMRSOperationalServices
     /**
      * Return the Enterprise OMRS Topic Connector.
      *
-     * @return OMRSTopicConnector for use by the Access Services.
+     * @return OMRSTopicConnector for use by the Conformance Test Services or Access Services.
      */
     public OMRSTopicConnector getEnterpriseOMRSTopicConnector()
     {
@@ -186,13 +186,16 @@ public class OMRSOperationalServices
             catch (Throwable error)
             {
                 OMRSAuditCode auditCode = OMRSAuditCode.ENTERPRISE_CONNECTOR_FAILED;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(callingServiceName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logException(actionDescription,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(callingServiceName,
+                                                                       error.getClass().getName(),
+                                                                       error.getMessage()),
+                                      null,
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      error);
             }
         }
 
@@ -234,18 +237,21 @@ public class OMRSOperationalServices
     }
 
 
+
     /**
-     * Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
-     * is taken as is.  Any configuration errors are reported as exceptions.
+     * Initialize the OMRS component for the Open Metadata Repository Services (OMRS) for a basic server.
+     * By that it means, for any type of server that is not a metadata server. In a basic server, only
+     * the audit log is enabled.
      *
      * @param repositoryServicesConfig current configuration values
+     * @param serverTypeClassification classification of server that will drive initialization
      */
-    public void initialize(RepositoryServicesConfig repositoryServicesConfig)
+    public void initializeAuditLog(RepositoryServicesConfig repositoryServicesConfig,
+                                   String                   serverTypeClassification)
     {
-        final String   actionDescription = "Initialize Open Metadata Repository Operational Services";
-        final String   methodName        = "initialize";
+        final String   actionDescription = "Initialize Open Metadata Repository Operational Services Audit Log";
+        final String   methodName        = "initializeAuditLog";
         OMRSAuditCode  auditCode;
-
 
         if (repositoryServicesConfig == null)
         {
@@ -253,8 +259,23 @@ public class OMRSOperationalServices
              * Throw exception as without configuration information the OMRS can not start.
              */
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage();
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        if (repositoryServicesConfig.getAuditLogConnections() == null)
+        {
+            /*
+             * Throw exception as without audit log, the OMRS refuses to start.
+             */
+            OMRSErrorCode errorCode = OMRSErrorCode.NO_AUDIT_LOG_DESTINATIONS;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -275,6 +296,64 @@ public class OMRSOperationalServices
         auditLog = new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.OPERATIONAL_SERVICES);
 
         /*
+         * Log that the OMRS has started.
+         */
+        auditCode = OMRSAuditCode.OMRS_AUDIT_LOG_READY;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(serverTypeClassification, localServerName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
+     * Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
+     * is taken as is.  Any configuration errors are reported as exceptions.
+     *
+     * @param repositoryServicesConfig current configuration values
+     */
+    public void initializeMetadataServer(RepositoryServicesConfig repositoryServicesConfig)
+    {
+        final String   actionDescription = "Initialize Open Metadata Repository Operational Services";
+        final String   methodName        = "initializeMetadataServer";
+        OMRSAuditCode  auditCode;
+
+        if (repositoryServicesConfig == null)
+        {
+            /*
+             * Throw exception as without configuration information the OMRS can not start.
+             */
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONFIG;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        if (auditLog == null)
+        {
+            /*
+             * Throw exception as without audit log, the OMRS refuses to start.
+             */
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AUDIT_LOG;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        /*
          * Log that the OMRS is starting.  There is another Audit log message logged at the end of this method
          * to confirm that all of the pieces started successfully.
          */
@@ -286,10 +365,12 @@ public class OMRSOperationalServices
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+
+
         /*
-         * There are 3 major groupings of components, each are optional and have linkages between one another.
-         * These are the enterprise access services, local repository and the metadata highway (cohort services).
-         * Each group as its own config.
+         * The audit log is present in all servers.  In addition, metadata servers have at least one additional
+         * subsystem enabled. These are the enterprise access services, local repository and the metadata
+         * highway (cohort services). Each group has its own config.
          */
         EnterpriseAccessConfig  enterpriseAccessConfig = repositoryServicesConfig.getEnterpriseAccessConfig();
         LocalRepositoryConfig   localRepositoryConfig  = repositoryServicesConfig.getLocalRepositoryConfig();
@@ -476,7 +557,6 @@ public class OMRSOperationalServices
         {
             localRepositoryEventManager.start();
         }
-
 
         /*
          * All done and no exceptions :)

@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  */
 public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a OMAGInvalidParameterException.
      *

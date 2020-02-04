@@ -29,6 +29,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     private int                            accessServiceId                = 0;
     private String                         accessServiceAdminClass        = null;
     private String                         accessServiceName              = null;
+    private String                         accessServiceFullName          = null;
     private String                         accessServiceURLMarker         = null;
     private String                         accessServiceDescription       = null;
     private String                         accessServiceWiki              = null;
@@ -61,6 +62,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
             accessServiceId = template.getAccessServiceId();
             accessServiceAdminClass = template.getAccessServiceAdminClass();
             accessServiceName = template.getAccessServiceName();
+            accessServiceFullName = template.getAccessServiceFullName();
             accessServiceDescription = template.getAccessServiceDescription();
             accessServiceWiki = template.getAccessServiceWiki();
             accessServiceOperationalStatus = template.getAccessServiceOperationalStatus();
@@ -81,6 +83,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     {
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
         this.accessServiceName = accessServiceRegistration.getAccessServiceName();
+        this.accessServiceFullName = accessServiceRegistration.getAccessServiceFullName();
         this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
         this.accessServiceAdminClass = accessServiceRegistration.getAccessServiceAdminClassName();
         this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
@@ -147,6 +150,17 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Set up the full name of the access service.
+     *
+     * @param accessServiceFullName String name
+     */
+    public void setAccessServiceFullName(String accessServiceFullName)
+    {
+        this.accessServiceFullName = accessServiceFullName;
+    }
+
+
+    /**
      * Set up the name of the access service.
      *
      * @param accessServiceName String name
@@ -154,6 +168,29 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
+    }
+
+
+    /**
+     * Return the full name of the access service.
+     *
+     * @return String name
+     */
+    public String getAccessServiceFullName()
+    {
+        if (accessServiceFullName == null)
+        {
+            if (accessServiceName == null)
+            {
+                return null;
+            }
+
+            return accessServiceName + " OMAS";
+        }
+        else
+        {
+            return accessServiceFullName;
+        }
     }
 
 

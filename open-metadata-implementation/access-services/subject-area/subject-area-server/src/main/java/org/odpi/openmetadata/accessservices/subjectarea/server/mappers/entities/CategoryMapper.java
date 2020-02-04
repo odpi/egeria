@@ -63,7 +63,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
             return category;
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,entityDetail.getGUID(),"Category");
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityDetail.getGUID(), entityTypeName, "GlossaryCategory");
             log.error(errorMessage);
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
         }

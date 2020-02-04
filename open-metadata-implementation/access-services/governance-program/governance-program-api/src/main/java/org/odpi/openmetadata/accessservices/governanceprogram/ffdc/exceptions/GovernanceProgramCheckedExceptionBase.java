@@ -16,6 +16,8 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedException
  */
 public abstract class GovernanceProgramCheckedExceptionBase extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

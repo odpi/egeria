@@ -23,8 +23,6 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisRe
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 
 /**
  * The DiscoveryEngineRESTServices provides the server-side implementation of the services used by the discovery

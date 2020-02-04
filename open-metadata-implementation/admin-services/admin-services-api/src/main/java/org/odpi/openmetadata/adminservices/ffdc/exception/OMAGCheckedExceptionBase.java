@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
  */
 public class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a OMRSCheckedExceptionBase.
      *

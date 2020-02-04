@@ -6,10 +6,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The InvalidParameterException is thrown by the OMAS when a parameter is null or an invalid value.
+ * The InvalidParameterException is thrown by the connector when a parameter is null or an invalid value.
  */
 public class InvalidParameterException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private   String  parameterName;
 
     /**
@@ -123,6 +125,24 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage message for the exception
+     * @param template   object to copy
+     */
+    public InvalidParameterException(String                    errorMessage,
+                                     InvalidParameterException template)
+    {
+        super(errorMessage, template);
+
+        if (template != null)
+        {
+            this.parameterName = template.getParameterName();
+        }
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
      * @param template   object to copy
      */
     public InvalidParameterException(InvalidParameterException template)
@@ -133,6 +153,23 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
         {
             this.parameterName = template.getParameterName();
         }
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param errorMessage message for the exception
+     * @param template   object to copy
+     * @param parameterName name of invalid parameter
+     */
+    public InvalidParameterException(String                  errorMessage,
+                                     OCFCheckedExceptionBase template,
+                                     String                  parameterName)
+    {
+        super(errorMessage, template);
+
+        this.parameterName = parameterName;
     }
 
 

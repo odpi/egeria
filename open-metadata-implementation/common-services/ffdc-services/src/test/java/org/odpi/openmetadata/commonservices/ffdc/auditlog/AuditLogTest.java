@@ -64,7 +64,10 @@ public class AuditLogTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(OMAGCommonAuditCode.UNEXPECTED_EXCEPTION);
+        for (OMAGCommonAuditCode auditCode : OMAGCommonAuditCode.values())
+        {
+            testSingleErrorCodeValues(auditCode);
+        }
     }
 
 

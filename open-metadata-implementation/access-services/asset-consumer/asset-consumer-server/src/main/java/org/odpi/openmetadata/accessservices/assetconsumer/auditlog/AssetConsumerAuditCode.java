@@ -25,32 +25,40 @@ import java.util.Arrays;
 public enum AssetConsumerAuditCode
 {
     SERVICE_INITIALIZING("OMAS-ASSET-CONSUMER-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Consumer Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Asset Consumer OMAS.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "The local server has started up a new instance of the Asset Consumer OMAS.  " +
+                                 "This service enables tools to locate assets in the catalog, retrieve information about them" +
+                                 "and create open connectors to access the content of the assets.  It also sends " +
+                                 "events on its out topic each time a new asset is created or updated.",
+             "No action is required as long as this service is expected to be started for this server.  " +
+                                 "If it is not required, then remove the configuration for this service " +
+                                 "from the access service list in this server's configuration document."),
 
     SERVICE_INITIALIZED("OMAS-ASSET-CONSUMER-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Consumer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "Verify that this service has initialized successfully and has the correct set of supported zones " +
+                                "defined.  Investigate any reported errors.  Also ensure that the enterprise repository " +
+                                "services and the OCF metadata management services are initialized."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-CONSUMER-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Asset Consumer Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Asset Consumer OMAS instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "No action is required if the server shutdown was intentional."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CONSUMER-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
-             "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+             OMRSAuditLogRecordSeverity.EXCEPTION,
+             "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance in server {0}; the {1} exception " +
+                                     "occurred with error message: {2}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     ASSET_AUDIT_LOG("OMAS-ASSET-CONSUMER-0008",
-               OMRSAuditLogRecordSeverity.INFO,
-               "Log message for asset {0}: {1}",
+               OMRSAuditLogRecordSeverity.ASSET,
+               "Audit message for asset {0}: {1}",
                "An asset consumer has logged a message for an asset.",
                "Review the message to ensure no action is required.")
 

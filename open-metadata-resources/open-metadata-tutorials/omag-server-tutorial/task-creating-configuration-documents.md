@@ -499,7 +499,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineAdmin",
                 "accessServiceName": "Data Engine",
                 "accessServiceDescription": "Create processes for lineage",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-engine/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -618,7 +618,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin",
                 "accessServiceName": "Subject Area",
                 "accessServiceDescription": "Document knowledge about a subject area",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -737,7 +737,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin",
                 "accessServiceName": "Governance Engine",
                 "accessServiceDescription": "Set up an operational governance engine",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-engine/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -856,7 +856,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceprogram.admin.GovernanceProgramAdmin",
                 "accessServiceName": "Governance Program",
                 "accessServiceDescription": "Manage the governance program",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-program/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -975,7 +975,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.informationview.admin.InformationViewAdmin",
                 "accessServiceName": "Information View",
                 "accessServiceDescription": "Support information virtualization and data set definitions",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/information-view/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/information-view/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1094,7 +1094,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin",
                 "accessServiceName": "Asset Consumer",
                 "accessServiceDescription": "Access assets through connectors",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-consumer/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-consumer/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1213,7 +1213,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.connectedasset.admin.ConnectedAssetAdmin",
                 "accessServiceName": "Connected Asset",
                 "accessServiceDescription": "Understand an asset",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/connected-asset/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1332,7 +1332,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin",
                 "accessServiceName": "Asset Catalog",
                 "accessServiceDescription": "Search and understand your assets",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-catalog/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",

@@ -6,7 +6,7 @@ ARG version
 ARG repo
 
 # Default to latest snapshot from official odpi repository
-ENV version ${version:-"1.4-SNAPSHOT"}
+ENV version ${version:-"1.5-SNAPSHOT"}
 ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
 
 LABEL org.label-schema.schema-version = "1.0"

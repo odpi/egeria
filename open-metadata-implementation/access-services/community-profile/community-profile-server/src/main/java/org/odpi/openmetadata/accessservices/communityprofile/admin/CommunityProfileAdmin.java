@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.omrstopic.Community
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -92,16 +92,16 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
 
                 if (accessServiceConfig.getAccessServiceOutTopic() != null)
                 {
-                    outTopicConnector = super.getOutTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                   accessServiceConfig.getAccessServiceName(),
-                                                                   auditLog);
+                    outTopicConnector = super.getOutTopicEventBusConnector(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                           auditLog);
                 }
 
                 OMRSTopicListener omrsTopicProcessor = new CommunityProfileOMRSTopicProcessor(outTopicConnector,
                                                                                               super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
                                                                                                                                accessServiceConfig.getAccessServiceName(),
                                                                                                                                auditLog),
-                                                                                              accessServiceConfig.getAccessServiceName(),
+                                                                                              AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
                                                                                               serverUserName,
                                                                                               auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER),
                                                                                               repositoryConnector.getRepositoryHelper(),
@@ -117,9 +117,9 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
 
             if (accessServiceConfig.getAccessServiceInTopic() != null)
             {
-                inTopicProcessor = new CommunityProfileInTopicProcessor(super.getInTopicConnector(accessServiceConfig.getAccessServiceInTopic(),
-                                                                                                  accessServiceConfig.getAccessServiceName(),
-                                                                                                  auditLog),
+                inTopicProcessor = new CommunityProfileInTopicProcessor(super.getInTopicEventBusConnector(accessServiceConfig.getAccessServiceInTopic(),
+                                                                                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                                                          auditLog),
                                                                         instance);
             }
 
@@ -151,15 +151,9 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                   auditCode.getUserAction(),
                                   error);
 
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      actionDescription,
-                                                      error.getMessage(),
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction(),
-                                                      error);
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

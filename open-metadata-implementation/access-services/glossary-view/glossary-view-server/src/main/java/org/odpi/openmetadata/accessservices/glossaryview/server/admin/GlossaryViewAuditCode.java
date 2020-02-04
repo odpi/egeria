@@ -25,25 +25,25 @@ import java.util.Arrays;
 public enum GlossaryViewAuditCode {
 
     SERVICE_INITIALIZING("OMAS-GLOSSARY-VIEW-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary View Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Glossary View OMAS.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-GLOSSARY-VIEW-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary View Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Glossary View OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-GLOSSARY-VIEW-0003",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Glossary View Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Glossary View OMAS instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-GLOSSARY-VIEW-0004",
-            OMRSAuditLogRecordSeverity.ERROR,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Glossary View Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  " +
                     "Its services are not available for the server.",

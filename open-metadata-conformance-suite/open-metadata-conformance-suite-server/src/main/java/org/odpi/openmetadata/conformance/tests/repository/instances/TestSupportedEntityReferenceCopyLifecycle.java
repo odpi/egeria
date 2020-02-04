@@ -324,18 +324,12 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
             retrievalOperationName = "getEntitySummary";
             verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
-                            assertion10,
-                            testTypeName + assertionMsg10,
+                            assertion2,
+                            testTypeName + assertionMsg2,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
             retrievalOperationName = "getEntityDetail";
-            verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                            assertion11,
-                            testTypeName + assertionMsg11,
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
-
             retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((retrievedReferenceCopy != null),

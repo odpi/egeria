@@ -22,7 +22,7 @@ class AssetConsumerInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     AssetConsumerInstanceHandler()
     {
-        super(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName());
 
         AssetConsumerRegistration.registerAccessService();
     }

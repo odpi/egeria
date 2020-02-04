@@ -5,6 +5,9 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.builders.DiscoveryAnalysisReportBuilder;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.converters.DiscoveryAnalysisReportConverter;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryAnalysisReportMapper;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -15,6 +18,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
@@ -89,7 +93,7 @@ public class DiscoveryAnalysisReportHandler
                                                                  String                  description,
                                                                  Date                    creationDate,
                                                                  Map<String, String>     analysisParameters,
-                                                                 DiscoveryRequestStatus  discoveryRequestStatus,
+                                                                 DiscoveryRequestStatus discoveryRequestStatus,
                                                                  String                  assetGUID,
                                                                  String                  discoveryEngineGUID,
                                                                  String                  discoveryServiceGUID,
@@ -120,7 +124,52 @@ public class DiscoveryAnalysisReportHandler
                                              DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                              methodName,
                                              discoveryEngineGUIDParameterName);
-        // TODO
+
+        DiscoveryAnalysisReportBuilder builder = new DiscoveryAnalysisReportBuilder(qualifiedName,
+                                                                                    displayName,
+                                                                                    description,
+                                                                                    creationDate,
+                                                                                    analysisParameters,
+                                                                                    discoveryRequestStatus,
+                                                                                    assetGUID,
+                                                                                    discoveryEngineGUID,
+                                                                                    discoveryServiceGUID,
+                                                                                    additionalProperties,
+                                                                                    null,
+                                                                                    repositoryHelper,
+                                                                                    serviceName,
+                                                                                    serverName);
+
+        String  reportGUID = repositoryHandler.createEntity(userId,
+                                                            DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
+                                                            DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                            builder.getInstanceProperties(methodName),
+                                                            methodName);
+
+        if (reportGUID != null)
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 DiscoveryAnalysisReportMapper.REPORT_TO_ASSET_TYPE_GUID,
+                                                 assetGUID,
+                                                 reportGUID,
+                                                 null,
+                                                 methodName);
+
+            repositoryHandler.createRelationship(userId,
+                                                 DiscoveryAnalysisReportMapper.REPORT_TO_ENGINE_TYPE_GUID,
+                                                 discoveryEngineGUID,
+                                                 reportGUID,
+                                                 null,
+                                                 methodName);
+
+            repositoryHandler.createRelationship(userId,
+                                                 DiscoveryAnalysisReportMapper.REPORT_TO_SERVICE_TYPE_GUID,
+                                                 discoveryServiceGUID,
+                                                 reportGUID,
+                                                 null,
+                                                 methodName);
+        }
+
         return null;
     }
 
@@ -179,8 +228,17 @@ public class DiscoveryAnalysisReportHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryReportGUID, reportGUIDParameterName, methodName);
 
-        // TODO
-        return null;
+        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                discoveryReportGUID,
+                                                                reportGUIDParameterName,
+                                                                DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                                methodName);
+
+        DiscoveryAnalysisReportConverter converter = new DiscoveryAnalysisReportConverter(entity,
+                                                                                          repositoryHelper,
+                                                                                          serviceName);
+
+        return converter.getBean();
     }
 
 

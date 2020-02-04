@@ -16,6 +16,7 @@ public class JobConfiguration {
 
     private static Scheduler scheduler;
     private static BufferGraph bufferGraph;
+
     public JobConfiguration(BufferGraph bufferGraph){
         this.bufferGraph = bufferGraph;
         schedule();
@@ -24,11 +25,9 @@ public class JobConfiguration {
     public void schedule() {
         final String methodName = "schedule";
         log.debug(" QuartzSchedulerApp main thread: {}",Thread.currentThread().getName());
-
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
             scheduler.start();
-
         } catch (SchedulerException e) {
             log.error("{} could not run the job for bufferGraph", methodName);
         }
@@ -50,7 +49,6 @@ public class JobConfiguration {
                     withIdentity("BufferGraphJob", GROUP).
                     build();
             jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
-
             scheduler.scheduleJob(jobDetail, trigger);
         }
 
@@ -58,14 +56,12 @@ public class JobConfiguration {
 
     private static Trigger buildSimpleSchedulerTrigger() {
 
-        //TODO change seconds now is used for developing
-        int INTERVAL_SECONDS = 15;
+        int INTERVAL_SECONDS = 600;
 
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
+        return TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(INTERVAL_SECONDS).repeatForever())
                 .build();
-        return trigger;
     }
 
 }

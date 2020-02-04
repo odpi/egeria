@@ -90,28 +90,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /*
      * Values in use by this server.
      */
-    private String                    localServerId             = UUID.randomUUID().toString();
-    private String                    localServerName           = null;
-    private String                    localServerType           = defaultLocalServerType;
-    private String                    organizationName          = defaultLocalOrganizationName;
-    private String                    localServerURL            = defaultLocalServerURL;
-    private String                    localServerUserId         = defaultLocalServerUserId;
-    private String                    localServerPassword       = null;
-    private int                       maxPageSize               = defaultMaxPageSize;
-    private Connection                serverSecurityConnection  = null;
-    private EventBusConfig            eventBusConfig            = null;
-    private List<AccessServiceConfig> accessServicesConfig      = null;
-    private RepositoryServicesConfig  repositoryServicesConfig  = null;
-    private ConformanceSuiteConfig    conformanceSuiteConfig    = null;
-    private DiscoveryServerConfig     discoveryServerConfig     = null;
-    private OpenLineageServerConfig openLineageServerConfig = null;
-    private StewardshipServicesConfig stewardshipServicesConfig = null;
-    private SecuritySyncConfig        securitySyncConfig        = null;
-    private SecurityOfficerConfig     securityOfficerConfig     = null;
-    private List<String>              auditTrail                = null;
-    private VirtualizationConfig      virtualizationConfig      = null;
-    private DataEngineProxyConfig     dataEngineProxyConfig     = null;
-    private DataPlatformServicesConfig dataPlatformServicesConfig = null;
+    private String                          localServerId                   = UUID.randomUUID().toString();
+    private String                          localServerName                 = null;
+    private String                          localServerType                 = defaultLocalServerType;
+    private String                          organizationName                = defaultLocalOrganizationName;
+    private String                          localServerURL                  = defaultLocalServerURL;
+    private String                          localServerUserId               = defaultLocalServerUserId;
+    private String                          localServerPassword             = null;
+    private int                             maxPageSize                     = defaultMaxPageSize;
+    private Connection                      serverSecurityConnection        = null;
+    private EventBusConfig                  eventBusConfig                  = null;
+    private List<AccessServiceConfig>       accessServicesConfig            = null;
+    private RepositoryServicesConfig        repositoryServicesConfig        = null;
+    private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
+    private DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = null;
+    private OpenLineageServerConfig         openLineageServerConfig         = null;
+    private StewardshipEngineServicesConfig stewardshipEngineServicesConfig = null;
+    private SecuritySyncConfig              securitySyncConfig              = null;
+    private SecurityOfficerConfig           securityOfficerConfig           = null;
+    private VirtualizationConfig            virtualizationConfig            = null;
+    private DataEngineProxyConfig           dataEngineProxyConfig           = null;
+    private DataPlatformServicesConfig      dataPlatformServicesConfig      = null;
+    private List<String>                    auditTrail                      = null;
 
 
     /**
@@ -140,23 +140,23 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             localServerType = template.getLocalServerType();
             organizationName = template.getOrganizationName();
             localServerURL = template.getLocalServerURL();
-            localServerUserId = template.getLocalServerUserId();
-            localServerPassword = template.getLocalServerPassword();
-            maxPageSize = template.getMaxPageSize();
-            serverSecurityConnection = template.getServerSecurityConnection();
-            eventBusConfig = template.getEventBusConfig();
-            accessServicesConfig = template.getAccessServicesConfig();
-            repositoryServicesConfig = template.getRepositoryServicesConfig();
-            conformanceSuiteConfig = template.getConformanceSuiteConfig();
-            discoveryServerConfig = template.getDiscoveryServerConfig();
-            openLineageServerConfig = template.getOpenLineageServerConfig();
-            stewardshipServicesConfig = template.getStewardshipServicesConfig();
-            securitySyncConfig = template.getSecuritySyncConfig();
-            securityOfficerConfig = template.getSecurityOfficerConfig();
-            auditTrail = template.getAuditTrail();
-            virtualizationConfig = template.getVirtualizationConfig();
-            dataEngineProxyConfig = template.getDataEngineProxyConfig();
-            dataPlatformServicesConfig = template.getDataPlatformServicesConfig();
+            localServerUserId             = template.getLocalServerUserId();
+            localServerPassword           = template.getLocalServerPassword();
+            maxPageSize                   = template.getMaxPageSize();
+            serverSecurityConnection      = template.getServerSecurityConnection();
+            eventBusConfig                  = template.getEventBusConfig();
+            accessServicesConfig            = template.getAccessServicesConfig();
+            repositoryServicesConfig        = template.getRepositoryServicesConfig();
+            conformanceSuiteConfig          = template.getConformanceSuiteConfig();
+            discoveryEngineServicesConfig   = template.getDiscoveryEngineServicesConfig();
+            openLineageServerConfig         = template.getOpenLineageServerConfig();
+            stewardshipEngineServicesConfig = template.getStewardshipEngineServicesConfig();
+            securitySyncConfig              = template.getSecuritySyncConfig();
+            securityOfficerConfig           = template.getSecurityOfficerConfig();
+            auditTrail                      = template.getAuditTrail();
+            virtualizationConfig            = template.getVirtualizationConfig();
+            dataEngineProxyConfig           = template.getDataEngineProxyConfig();
+            dataPlatformServicesConfig      = template.getDataPlatformServicesConfig();
         }
     }
 
@@ -481,20 +481,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return DiscoveryServerConfig properties
      */
-    public DiscoveryServerConfig getDiscoveryServerConfig()
+    public DiscoveryEngineServicesConfig getDiscoveryEngineServicesConfig()
     {
-        return discoveryServerConfig;
+        return discoveryEngineServicesConfig;
     }
 
 
     /**
      * Set up the configuration for a discovery server.
      *
-     * @param discoveryServerConfig DiscoveryServerConfig properties
+     * @param discoveryEngineServicesConfig DiscoveryServerConfig properties
      */
-    public void setDiscoveryServerConfig(DiscoveryServerConfig discoveryServerConfig)
+    public void setDiscoveryEngineServicesConfig(DiscoveryEngineServicesConfig discoveryEngineServicesConfig)
     {
-        this.discoveryServerConfig = discoveryServerConfig;
+        this.discoveryEngineServicesConfig = discoveryEngineServicesConfig;
     }
 
     /**
@@ -524,20 +524,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return StewardshipServicesConfig properties
      */
-    public StewardshipServicesConfig getStewardshipServicesConfig()
+    public StewardshipEngineServicesConfig getStewardshipEngineServicesConfig()
     {
-        return stewardshipServicesConfig;
+        return stewardshipEngineServicesConfig;
     }
 
 
     /**
      * Set up the configuration for the stewardship services in a server.
      *
-     * @param stewardshipServicesConfig StewardshipServicesConfig properties
+     * @param stewardshipEngineServicesConfig StewardshipServicesConfig properties
      */
-    public void setStewardshipServicesConfig(StewardshipServicesConfig stewardshipServicesConfig)
+    public void setStewardshipEngineServicesConfig(StewardshipEngineServicesConfig stewardshipEngineServicesConfig)
     {
-        this.stewardshipServicesConfig = stewardshipServicesConfig;
+        this.stewardshipEngineServicesConfig = stewardshipEngineServicesConfig;
     }
 
 
@@ -684,9 +684,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", eventBusConfig=" + eventBusConfig +
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
-                ", discoveryServerConfig=" + discoveryServerConfig +
+                ", discoveryServerConfig=" + discoveryEngineServicesConfig +
                 ", openLineageConfig=" + openLineageServerConfig +
-                ", stewardshipServicesConfig=" + stewardshipServicesConfig +
+                ", stewardshipServicesConfig=" + stewardshipEngineServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", securityOfficerConfig=" + securityOfficerConfig +
                 ", dataEngineProxyConfig=" + dataEngineProxyConfig +
@@ -724,9 +724,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
-                Objects.equals(getDiscoveryServerConfig(), that.getDiscoveryServerConfig()) &&
+                Objects.equals(getDiscoveryEngineServicesConfig(), that.getDiscoveryEngineServicesConfig()) &&
                 Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
-                Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
+                Objects.equals(getStewardshipEngineServicesConfig(), that.getStewardshipEngineServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
                 Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
@@ -746,8 +746,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     {
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
-                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
+                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineServicesConfig(),
+                            getStewardshipEngineServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
                             getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig(), getDataPlatformServicesConfig());
     }
 }

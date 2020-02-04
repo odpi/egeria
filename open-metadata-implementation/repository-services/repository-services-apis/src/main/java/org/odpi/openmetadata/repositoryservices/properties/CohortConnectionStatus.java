@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.properties;
 
 
+import java.io.Serializable;
+
 /**
  * CohortConnectionStatus defines the status of the local server's connection to the metadata highway for
  * a specific cohort.
@@ -39,7 +41,7 @@ package org.odpi.openmetadata.repositoryservices.properties;
  *     </li>
  * </ul>
  */
-public enum CohortConnectionStatus
+public enum CohortConnectionStatus implements Serializable
 {
     NOT_INITIALIZED      (0, "NotInitialized",     "The local components for communicating with the cohort are not initialized."),
     INITIALIZING         (1, "Initializing",       "The local components for communicating with the cohort are initializing."),
@@ -52,6 +54,8 @@ public enum CohortConnectionStatus
     DISCONNECTED         (6, "Disconnected",       "The server is disconnected from the metadata highway for this cohort.  This may be because the " +
                                                            "local server is shutting down or the configuration is being adjusted.");
 
+
+    private static final long    serialVersionUID = 1L;
 
     private int    statusCode;
     private String statusName;

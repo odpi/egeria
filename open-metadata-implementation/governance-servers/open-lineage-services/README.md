@@ -120,8 +120,7 @@ With the following body:
 { 
     "class":"OpenLineageConfig",
     "openLineageDescription":"Open Lineage Service is used for the storage and querying of lineage",
-    "inTopicName":"omas.omas.assetlineage.outTopic",
-    "openLineageWiki":"wiki URL",
+    "inTopicName":"server.omas.omas.assetlineage.outTopic",
     "openLineageBufferGraphConnection":{ 
         "class":"Connection",
         "displayName":"Buffer Graph Connection",

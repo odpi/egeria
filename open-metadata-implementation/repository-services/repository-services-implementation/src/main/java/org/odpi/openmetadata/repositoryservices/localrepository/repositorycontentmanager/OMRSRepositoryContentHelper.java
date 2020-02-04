@@ -73,7 +73,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return the list of typeDefs active in the local repository.
+     * Return the list of typeDefs known in the cohort.
      *
      * @return TypeDef list
      */
@@ -353,7 +353,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Validate that the type of an instance is of the expected/desired type.  The actual instnace may be a subtype
+     * Validate that the type of an instance is of the expected/desired type.  The actual instance may be a subtype
      * of the expected type of course.
      *
      * @param sourceName source of the request (used for logging)

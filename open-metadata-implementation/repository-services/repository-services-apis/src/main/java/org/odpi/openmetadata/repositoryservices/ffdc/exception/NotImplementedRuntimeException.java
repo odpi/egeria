@@ -8,6 +8,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class NotImplementedRuntimeException extends RuntimeException
 {
+    private static final long    serialVersionUID = 1L;
+
     public NotImplementedRuntimeException(String   className,
                                           String   methodName,
                                           String   issueName)
