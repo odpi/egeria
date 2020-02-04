@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryEngineServices;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class ConfigDiscoveryEngineServicesResource
 
     public VoidResponse setAccessServiceLocation(@PathVariable String                    userId,
                                                  @PathVariable String                    serverName,
-                                                 @RequestBody  AccessServiceClientConfig clientConfig)
+                                                 @RequestBody OMAGServerClientConfig clientConfig)
     {
         return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
     }

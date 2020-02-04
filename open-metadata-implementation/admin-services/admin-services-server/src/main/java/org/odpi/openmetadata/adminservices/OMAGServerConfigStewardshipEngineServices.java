@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -43,7 +43,7 @@ public class OMAGServerConfigStewardshipEngineServices
      */
     public VoidResponse setAccessServiceLocation(String                    userId,
                                                  String                    serverName,
-                                                 AccessServiceClientConfig clientConfig)
+                                                 OMAGServerClientConfig clientConfig)
     {
         final String methodName = "setAccessServiceLocation";
 
@@ -61,8 +61,8 @@ public class OMAGServerConfigStewardshipEngineServices
 
             if (clientConfig != null)
             {
-                accessServiceRootURL = clientConfig.getAccessServiceRootURL();
-                accessServiceServerName = clientConfig.getAccessServiceServerName();
+                accessServiceRootURL = clientConfig.getOMAGServerPlatformRootURL();
+                accessServiceServerName = clientConfig.getOMAGServerName();
             }
 
             errorHandler.validateAccessServiceRootURL(accessServiceRootURL, accessService, serverName, serviceName);
@@ -95,8 +95,8 @@ public class OMAGServerConfigStewardshipEngineServices
                 stewardshipEngineServicesConfig = new StewardshipEngineServicesConfig();
             }
 
-            stewardshipEngineServicesConfig.setAccessServiceRootURL(accessServiceRootURL);
-            stewardshipEngineServicesConfig.setAccessServiceServerName(accessServiceServerName);
+            stewardshipEngineServicesConfig.setOMAGServerPlatformRootURL(accessServiceRootURL);
+            stewardshipEngineServicesConfig.setOMAGServerName(accessServiceServerName);
 
             serverConfig.setStewardshipEngineServicesConfig(stewardshipEngineServicesConfig);
 
