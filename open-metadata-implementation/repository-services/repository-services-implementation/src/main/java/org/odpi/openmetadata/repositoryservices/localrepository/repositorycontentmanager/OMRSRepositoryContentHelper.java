@@ -1708,19 +1708,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
-     * used to find an exact match of the string, irrespective of whether it contains characters that may have special
-     * meanings to regular expressions).
-     *
-     * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
-     * using the getUnqualifiedLiteralString helper method.
-     *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression
-     * @return string that is interpreted literally rather than as a regular expression
-     * @see #isExactMatchRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public String getExactMatchRegex(String searchString)
     {
         return searchString == null ? null : Pattern.quote(searchString);
@@ -1728,22 +1718,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
-     * (false).
-     *
-     * Note that this method relies on the use of the getExactMatchRegex helper method having been used to
-     * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
-     * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
-     * general to arbitrarily detect whether they might be a regular expression or not.
-     *
-     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
-     *
-     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
-     * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
-     * @see #getExactMatchRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public boolean isExactMatchRegex(String searchString)
     {
         return searchString == null
@@ -1754,19 +1731,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
-     * if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
-     * own regular expression directly (not with this helper method).
-     *
-     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
-     * the returned string using the getUnqualifiedLiteralString helper method.
-     *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
-     * @return string that is interpreted literally, wrapped for a "contains" semantic
-     * @see #isContainsRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public String getContainsRegex(String searchString)
     {
         return searchString == null ? null : ".*" + getExactMatchRegex(searchString) + ".*";
@@ -1774,20 +1741,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
-     * other regular expression (false).
-     *
-     * Note that this method relies on the use of the getContainsRegex helper method having been used to
-     * qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
-     *
-     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
-     *
-     * @param searchString - the string to check whether it should be interpreted as a simple "contains"
-     * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
-     * @see #getContainsRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public boolean isContainsRegex(String searchString)
     {
         return searchString != null
@@ -1798,19 +1754,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
-     * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
-     * own regular expression directly (not with this helper method).
-     *
-     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
-     * the returned string using the getUnqualifiedLiteralString helper method.
-     *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
-     * @return string that is interpreted literally, wrapped for a "startswith" semantic
-     * @see #isStartsWithRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public String getStartsWithRegex(String searchString)
     {
         return searchString == null ? null : getExactMatchRegex(searchString) + ".*";
@@ -1818,20 +1764,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
-     * other regular expression (false).
-     *
-     * Note that this method relies on the use of the getStartsWithRegex helper method having been used to
-     * qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
-     *
-     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
-     *
-     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
-     * @return true if the provided string should be interpreted as a simple "starts with", false if it should be interpreted as a full regex
-     * @see #getStartsWithRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public boolean isStartsWithRegex(String searchString)
     {
         return searchString != null
@@ -1841,19 +1776,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with an "ends with" semantic. The passed string will NOT be treated as a regular expression;
-     * if you intend to use both a "ends with" semantic and a regular expression within the string, simply construct your
-     * own regular expression directly (not with this helper method).
-     *
-     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
-     * the returned string using the getUnqualifiedLiteralString helper method.
-     *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
-     * @return string that is interpreted literally, wrapped for an "ends with" semantic
-     * @see #isEndsWithRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public String getEndsWithRegex(String searchString)
     {
         return searchString == null ? null : ".*" + getExactMatchRegex(searchString);
@@ -1861,20 +1786,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
-     * other regular expression (false).
-     *
-     * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
-     * qualify a string when it should be treated primarily as a literal with only very basic "ends with" wrapping.
-     *
-     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
-     *
-     * @param searchString - the string to check whether it should be interpreted as a simple "ends with"
-     * @return true if the provided string should be interpreted as a simple "ends with", false if it should be interpreted as a full regex
-     * @see #getEndsWithRegex(String)
-     * @see #getUnqualifiedLiteralString(String)
+     * {@inheritDoc}
      */
+    @Override
     public boolean isEndsWithRegex(String searchString)
     {
         return searchString != null
@@ -1884,20 +1798,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).
-     * Primarily a helper method for methods that do not directly leverage regular expressions: so that they have a string
-     * they can treat as a literal without needing to un-escape the regex-meaningful characters injected by the various
-     * getXYZRegex helper methods.
-     *
-     * For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.
-     *
-     * @param searchString - the (potentially) wrapped and escaped string to un-escape and un-wrap
-     * @return the un-escaped, un-wrapped literal string
-     * @see #getExactMatchRegex(String)
-     * @see #getContainsRegex(String)
-     * @see #getStartsWithRegex(String)
-     * @see #getEndsWithRegex(String)
+     * {@inheritDoc}
      */
+    @Override
     public String getUnqualifiedLiteralString(String searchString)
     {
         if (searchString == null)
@@ -1920,6 +1823,235 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return searchString.substring(4, searchString.length() - 4);
         }
         return searchString;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right, boolean ignoreModificationStamps)
+    {
+
+        RelationshipDifferences differences = new RelationshipDifferences();
+        getInstanceHeaderDifferences(differences, left, right, ignoreModificationStamps);
+        Differences.SidePresent present = checkDifferenceNulls(left, right);
+
+        EntityProxyDifferences one = null;
+        EntityProxyDifferences two = null;
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+            differences.checkInstanceProperties(left.getProperties(), right.getProperties());
+            one = getEntityProxyDifferences(left.getEntityOneProxy(), right.getEntityOneProxy(), ignoreModificationStamps);
+            two = getEntityProxyDifferences(left.getEntityTwoProxy(), right.getEntityTwoProxy(), ignoreModificationStamps);
+        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+            differences.checkInstanceProperties(left.getProperties(), null);
+            one = getEntityProxyDifferences(left.getEntityOneProxy(), null, ignoreModificationStamps);
+            two = getEntityProxyDifferences(left.getEntityTwoProxy(), null, ignoreModificationStamps);
+        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)) {
+            differences.checkInstanceProperties(null, right.getProperties());
+            one = getEntityProxyDifferences(null, right.getEntityOneProxy(), ignoreModificationStamps);
+            two = getEntityProxyDifferences(null, right.getEntityTwoProxy(), ignoreModificationStamps);
+        }
+        differences.setEntityProxyOneDifferences(one);
+        differences.setEntityProxyTwoDifferences(two);
+
+        return differences;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right, boolean ignoreModificationStamps)
+    {
+
+        EntityDetailDifferences differences = new EntityDetailDifferences();
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
+        Differences.SidePresent present = checkDifferenceNulls(left, right);
+
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+            differences.checkInstanceProperties(left.getProperties(), right.getProperties());
+        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+            differences.checkInstanceProperties(left.getProperties(), null);
+        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)){
+            differences.checkInstanceProperties(null, right.getProperties());
+        }
+
+        return differences;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right, boolean ignoreModificationStamps)
+    {
+
+        EntityProxyDifferences differences = new EntityProxyDifferences();
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
+        Differences.SidePresent present = checkDifferenceNulls(left, right);
+
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+            differences.checkUniqueProperties(left.getUniqueProperties(), right.getUniqueProperties());
+        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+            differences.checkUniqueProperties(left.getUniqueProperties(), null);
+        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)) {
+            differences.checkUniqueProperties(null, right.getUniqueProperties());
+        }
+
+        return differences;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right, boolean ignoreModificationStamps)
+    {
+        EntitySummaryDifferences differences = new EntitySummaryDifferences();
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
+        return differences;
+    }
+
+
+    /**
+     * Calculate the differences between the two provided EntitySummary objects.
+     *
+     * @param differences the EntitySummaryDifferences object through which to track differences
+     * @param left one of the EntitySummary objects to compare
+     * @param right the other EntitySummary object to compare
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
+     */
+    private void getEntitySummaryDifferences(EntitySummaryDifferences differences,
+                                             EntitySummary left,
+                                             EntitySummary right,
+                                             boolean ignoreModificationStamps)
+    {
+        getInstanceHeaderDifferences(differences, left, right, ignoreModificationStamps);
+        differences.checkClassifications(left, right);
+    }
+
+
+    /**
+     * Calculate the differences between the two provided InstanceHeader objects.
+     *
+     * @param differences the InstanceDifferences object through which to track differences
+     * @param left one of the InstanceHeaders to compare
+     * @param right the other InstanceHeader to compare
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
+     */
+    private void getInstanceHeaderDifferences(Differences differences,
+                                              InstanceHeader left,
+                                              InstanceHeader right,
+                                              boolean ignoreModificationStamps)
+    {
+        getInstanceAuditHeaderDifferences(differences, left, right, ignoreModificationStamps);
+        Differences.SidePresent present = checkDifferenceNulls(left, right);
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+            differences.check("GUID", left.getGUID(), right.getGUID());
+            differences.check("InstanceURL", left.getInstanceURL(), right.getInstanceURL());
+        } else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH)) {
+            InstanceHeader sideWithValues;
+            if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+                sideWithValues = left;
+            } else {
+                sideWithValues = right;
+            }
+            differences.addOnlyOnOneSide(present, "GUID", sideWithValues.getGUID());
+            differences.addOnlyOnOneSide(present, "Type", sideWithValues.getInstanceURL());
+        }
+    }
+
+
+    /**
+     * Calculate the differences between the two provided InstanceAuditHeader objects.
+     *
+     * @param differences the InstanceDifferences object through which to track differences
+     * @param left one of the InstanceAuditHeaders to compare
+     * @param right the other InstanceAuditHeader to compare
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
+     */
+    private void getInstanceAuditHeaderDifferences(Differences differences,
+                                                   InstanceAuditHeader left,
+                                                   InstanceAuditHeader right,
+                                                   boolean ignoreModificationStamps)
+    {
+
+        Differences.SidePresent present = checkDifferenceNulls(left, right);
+
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+            if (!ignoreModificationStamps) {
+                differences.check("Version", left.getVersion(), right.getVersion());
+                differences.check("UpdatedBy", left.getUpdatedBy(), right.getUpdatedBy());
+                differences.check("UpdateTime", left.getUpdateTime(), right.getUpdateTime());
+            }
+            differences.check("Type", left.getType(), right.getType());
+            differences.check("InstanceProvenanceType", left.getInstanceProvenanceType(), right.getInstanceProvenanceType());
+            differences.check("MetadataCollectionId", left.getMetadataCollectionId(), right.getMetadataCollectionId());
+            differences.check("ReplicatedBy", left.getReplicatedBy(), right.getReplicatedBy());
+            differences.check("InstanceLicense", left.getInstanceLicense(), right.getInstanceLicense());
+            differences.check("CreatedBy", left.getCreatedBy(), right.getCreatedBy());
+            differences.check("MaintainedBy", left.getMaintainedBy(), right.getMaintainedBy());
+            differences.check("CreateTime", left.getCreateTime(), right.getCreateTime());
+            differences.check("Status", left.getStatus(), right.getStatus());
+            differences.check("StatusOnDelete", left.getStatusOnDelete(), right.getStatusOnDelete());
+            differences.check("MappingProperties", left.getMappingProperties(), right.getMappingProperties());
+        } else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH)) {
+            InstanceAuditHeader sideWithValues;
+            if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+                sideWithValues = left;
+            } else {
+                sideWithValues = right;
+            }
+            if (!ignoreModificationStamps) {
+                differences.addOnlyOnOneSide(present, "Version", sideWithValues.getVersion());
+                differences.addOnlyOnOneSide(present, "UpdatedBy", sideWithValues.getUpdatedBy());
+                differences.addOnlyOnOneSide(present, "UpdateTime", sideWithValues.getUpdateTime());
+            }
+            differences.addOnlyOnOneSide(present, "Type", sideWithValues.getType());
+            differences.addOnlyOnOneSide(present, "InstanceProvenanceType", sideWithValues.getInstanceProvenanceType());
+            differences.addOnlyOnOneSide(present, "MetadataCollectionId", sideWithValues.getMetadataCollectionId());
+            differences.addOnlyOnOneSide(present, "ReplicatedBy", sideWithValues.getReplicatedBy());
+            differences.addOnlyOnOneSide(present, "InstanceLicense", sideWithValues.getInstanceLicense());
+            differences.addOnlyOnOneSide(present, "CreatedBy", sideWithValues.getCreatedBy());
+            differences.addOnlyOnOneSide(present, "MaintainedBy", sideWithValues.getMaintainedBy());
+            differences.addOnlyOnOneSide(present, "CreateTime", sideWithValues.getCreateTime());
+            differences.addOnlyOnOneSide(present, "Status", sideWithValues.getStatus());
+            differences.addOnlyOnOneSide(present, "StatusOnDelete", sideWithValues.getStatusOnDelete());
+            differences.addOnlyOnOneSide(present, "MappingProperties", sideWithValues.getMappingProperties());
+        }
+
+    }
+
+
+    /**
+     * Do the null checking between the two objects that are being compared.
+     *
+     * @param left one object being compared
+     * @param right the other object being compared
+     * @return Differences.SidePresent
+     */
+    private Differences.SidePresent checkDifferenceNulls(InstanceAuditHeader left, InstanceAuditHeader right) {
+        Differences.SidePresent present;
+        if (left == null && right == null) {
+            present = Differences.SidePresent.NEITHER;
+        } else if (right == null) {
+            present = Differences.SidePresent.LEFT_ONLY;
+        } else if (left == null) {
+            present = Differences.SidePresent.RIGHT_ONLY;
+        } else {
+            present = Differences.SidePresent.BOTH;
+        }
+        return present;
     }
 
 
