@@ -130,8 +130,7 @@ public class OpenLineageServerOperationalServices {
             connector = new ConnectorBroker().getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throwError(errorCode, methodName, auditCode, actionDescription);
         }
         return connector;
@@ -158,8 +157,16 @@ public class OpenLineageServerOperationalServices {
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
-        startGraphConnector(bufferGraphConnector, OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR, "startBufferGraphConnector");
-        startGraphConnector(mainGraphConnector, OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR, "startMainGraphConnector");
+        startGraphConnector(bufferGraphConnector,
+                OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
+                "startBufferGraphConnector");
+
+        startGraphConnector(mainGraphConnector,
+                OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR,
+                "startMainGraphConnector");
+
         startIntopicConnector();
     }
 
@@ -178,8 +185,7 @@ public class OpenLineageServerOperationalServices {
             connector.initializeGraphDB();
         } catch (OpenLineageException e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throwError(errorCode, methodName, auditCode, actionDescription);
         }
     }
@@ -198,8 +204,7 @@ public class OpenLineageServerOperationalServices {
             connector.start();
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throwError(errorCode, methodName, auditCode, actionDescription);
         }
     }
@@ -221,8 +226,7 @@ public class OpenLineageServerOperationalServices {
             inTopicConnector.start();
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throwError(OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, auditCode, actionDescription);
         }
         logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_IN_TOPIC, actionDescription);
