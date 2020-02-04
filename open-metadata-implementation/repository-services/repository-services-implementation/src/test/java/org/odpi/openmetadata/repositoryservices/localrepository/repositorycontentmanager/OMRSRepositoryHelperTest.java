@@ -185,21 +185,33 @@ public class OMRSRepositoryHelperTest
         EntitySummary right = getTestEntitySummary();
 
         // Test some of the base properties that exist on all instances
-        String otherAuthor = "DifferentAuthor";
-        right.setCreatedBy(otherAuthor);
-        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right);
+        String otherUpdater = "DifferentUpdater";
+        right.setUpdatedBy(otherUpdater);
+        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         Set<String> differentProperties = differences.getNames();
         assertNotNull(differentProperties);
         assertEquals(differentProperties.size(), 1);
-        String differingPropertyName = "CreatedBy";
+        String differingPropertyName = "UpdatedBy";
+        assertTrue(differentProperties.contains(differingPropertyName));
+        assertEquals(differences.getLeftValue(differingPropertyName), left.getUpdatedBy());
+        assertEquals(differences.getRightValue(differingPropertyName), otherUpdater);
+
+        String otherAuthor = "DifferentAuthor";
+        right.setCreatedBy(otherAuthor);
+        differences = helper.getEntitySummaryDifferences(left, right, true);
+        assertTrue(differences.hasDifferences());
+        differentProperties = differences.getNames();
+        assertNotNull(differentProperties);
+        assertEquals(differentProperties.size(), 1);
+        differingPropertyName = "CreatedBy";
         assertTrue(differentProperties.contains(differingPropertyName));
         assertEquals(differences.getLeftValue(differingPropertyName), left.getCreatedBy());
         assertEquals(differences.getRightValue(differingPropertyName), otherAuthor);
 
         String otherCollection = "DifferentCollection";
         left.setMetadataCollectionId(otherCollection);
-        differences = helper.getEntitySummaryDifferences(left, right);
+        differences = helper.getEntitySummaryDifferences(left, right, true);
         assertTrue(differences.hasDifferences());
         differentProperties = differences.getNames();
         assertNotNull(differentProperties);
@@ -222,7 +234,7 @@ public class OMRSRepositoryHelperTest
         Relationship left = getTestRelationship();
         Relationship right = getTestRelationship();
 
-        RelationshipDifferences differences = helper.getRelationshipDifferences(left, right);
+        RelationshipDifferences differences = helper.getRelationshipDifferences(left, right, false);
         assertNotNull(differences);
         assertFalse(differences.hasDifferences());
 
@@ -231,7 +243,7 @@ public class OMRSRepositoryHelperTest
         ip = helper.addStringPropertyToInstance("test", ip, "testPropertyName", "testValue", methodName);
         right.setProperties(ip);
 
-        differences = helper.getRelationshipDifferences(left, right);
+        differences = helper.getRelationshipDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasInstancePropertiesDifferences());
         assertFalse(differences.hasEntityProxyDifferences());
@@ -251,7 +263,7 @@ public class OMRSRepositoryHelperTest
         EntityProxy other = getTestEntityProxy();
         other.setUniqueProperties(ip);
         right.setEntityTwoProxy(other);
-        differences = helper.getRelationshipDifferences(left, right);
+        differences = helper.getRelationshipDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasInstancePropertiesDifferences());
         assertTrue(differences.hasEntityProxyDifferences());
@@ -282,7 +294,7 @@ public class OMRSRepositoryHelperTest
         EntityDetail left = getTestEntityDetail();
         EntityDetail right = getTestEntityDetail();
 
-        EntityDetailDifferences differences = helper.getEntityDetailDifferences(left, right);
+        EntityDetailDifferences differences = helper.getEntityDetailDifferences(left, right, false);
         assertNotNull(differences);
         assertFalse(differences.hasDifferences());
 
@@ -291,7 +303,7 @@ public class OMRSRepositoryHelperTest
         ip = helper.addStringPropertyToInstance("test", ip, "testPropertyName", "testValue", methodName);
         right.setProperties(ip);
 
-        differences = helper.getEntityDetailDifferences(left, right);
+        differences = helper.getEntityDetailDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasInstancePropertiesDifferences());
         assertFalse(differences.hasClassificationDifferences());
@@ -320,7 +332,7 @@ public class OMRSRepositoryHelperTest
         EntityProxy left = getTestEntityProxy();
         EntityProxy right = getTestEntityProxy();
 
-        EntityProxyDifferences differences = helper.getEntityProxyDifferences(left, right);
+        EntityProxyDifferences differences = helper.getEntityProxyDifferences(left, right, false);
         assertNotNull(differences);
         assertFalse(differences.hasDifferences());
 
@@ -329,7 +341,7 @@ public class OMRSRepositoryHelperTest
         ip = helper.addStringPropertyToInstance("test", ip, "propertyName", "testValue", methodName);
         right.setUniqueProperties(ip);
 
-        differences = helper.getEntityProxyDifferences(left, right);
+        differences = helper.getEntityProxyDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasUniquePropertiesDifferences());
         InstancePropertiesDifferences ipd = differences.getUniquePropertiesDifferences();
@@ -354,7 +366,7 @@ public class OMRSRepositoryHelperTest
         EntitySummary left = getTestEntitySummary();
         EntitySummary right = getTestEntitySummary();
 
-        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right);
+        EntitySummaryDifferences differences = helper.getEntitySummaryDifferences(left, right, false);
         assertNotNull(differences);
         assertFalse(differences.hasDifferences());
 
@@ -367,7 +379,7 @@ public class OMRSRepositoryHelperTest
         List<Classification> list = new ArrayList<>();
         list.add(update);
         right.setClassifications(list);
-        differences = helper.getEntitySummaryDifferences(left, right);
+        differences = helper.getEntitySummaryDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasClassificationDifferences());
         ClassificationDifferences cd = differences.getClassificationDifferences();
@@ -394,7 +406,7 @@ public class OMRSRepositoryHelperTest
         confidentiality.setName("Confidentiality");
         classifications.add(confidentiality);
         right.setClassifications(classifications);
-        differences = helper.getEntitySummaryDifferences(left, right);
+        differences = helper.getEntitySummaryDifferences(left, right, false);
         assertTrue(differences.hasDifferences());
         assertTrue(differences.hasClassificationDifferences());
         cd = differences.getClassificationDifferences();

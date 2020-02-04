@@ -1830,27 +1830,27 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * {@inheritDoc}
      */
     @Override
-    public RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right)
+    public RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right, boolean ignoreModificationStamps)
     {
 
         RelationshipDifferences differences = new RelationshipDifferences();
-        getInstanceHeaderDifferences(differences, left, right);
+        getInstanceHeaderDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
         EntityProxyDifferences one = null;
         EntityProxyDifferences two = null;
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
             differences.checkInstanceProperties(left.getProperties(), right.getProperties());
-            one = getEntityProxyDifferences(left.getEntityOneProxy(), right.getEntityOneProxy());
-            two = getEntityProxyDifferences(left.getEntityTwoProxy(), right.getEntityTwoProxy());
+            one = getEntityProxyDifferences(left.getEntityOneProxy(), right.getEntityOneProxy(), ignoreModificationStamps);
+            two = getEntityProxyDifferences(left.getEntityTwoProxy(), right.getEntityTwoProxy(), ignoreModificationStamps);
         } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
             differences.checkInstanceProperties(left.getProperties(), null);
-            one = getEntityProxyDifferences(left.getEntityOneProxy(), null);
-            two = getEntityProxyDifferences(left.getEntityTwoProxy(), null);
+            one = getEntityProxyDifferences(left.getEntityOneProxy(), null, ignoreModificationStamps);
+            two = getEntityProxyDifferences(left.getEntityTwoProxy(), null, ignoreModificationStamps);
         } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)) {
             differences.checkInstanceProperties(null, right.getProperties());
-            one = getEntityProxyDifferences(null, right.getEntityOneProxy());
-            two = getEntityProxyDifferences(null, right.getEntityTwoProxy());
+            one = getEntityProxyDifferences(null, right.getEntityOneProxy(), ignoreModificationStamps);
+            two = getEntityProxyDifferences(null, right.getEntityTwoProxy(), ignoreModificationStamps);
         }
         differences.setEntityProxyOneDifferences(one);
         differences.setEntityProxyTwoDifferences(two);
@@ -1864,11 +1864,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * {@inheritDoc}
      */
     @Override
-    public EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right)
+    public EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right, boolean ignoreModificationStamps)
     {
 
         EntityDetailDifferences differences = new EntityDetailDifferences();
-        getEntitySummaryDifferences(differences, left, right);
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
@@ -1888,11 +1888,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * {@inheritDoc}
      */
     @Override
-    public EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right)
+    public EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right, boolean ignoreModificationStamps)
     {
 
         EntityProxyDifferences differences = new EntityProxyDifferences();
-        getEntitySummaryDifferences(differences, left, right);
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
@@ -1912,10 +1912,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * {@inheritDoc}
      */
     @Override
-    public EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right)
+    public EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right, boolean ignoreModificationStamps)
     {
         EntitySummaryDifferences differences = new EntitySummaryDifferences();
-        getEntitySummaryDifferences(differences, left, right);
+        getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         return differences;
     }
 
@@ -1926,10 +1926,15 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param differences the EntitySummaryDifferences object through which to track differences
      * @param left one of the EntitySummary objects to compare
      * @param right the other EntitySummary object to compare
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
      */
-    private void getEntitySummaryDifferences(EntitySummaryDifferences differences, EntitySummary left, EntitySummary right)
+    private void getEntitySummaryDifferences(EntitySummaryDifferences differences,
+                                             EntitySummary left,
+                                             EntitySummary right,
+                                             boolean ignoreModificationStamps)
     {
-        getInstanceHeaderDifferences(differences, left, right);
+        getInstanceHeaderDifferences(differences, left, right, ignoreModificationStamps);
         differences.checkClassifications(left, right);
     }
 
@@ -1940,13 +1945,15 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param differences the InstanceDifferences object through which to track differences
      * @param left one of the InstanceHeaders to compare
      * @param right the other InstanceHeader to compare
-     * @return InstanceDifferences
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
      */
     private void getInstanceHeaderDifferences(Differences differences,
                                               InstanceHeader left,
-                                              InstanceHeader right)
+                                              InstanceHeader right,
+                                              boolean ignoreModificationStamps)
     {
-        getInstanceAuditHeaderDifferences(differences, left, right);
+        getInstanceAuditHeaderDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
             differences.check("GUID", left.getGUID(), right.getGUID());
@@ -1970,27 +1977,31 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param differences the InstanceDifferences object through which to track differences
      * @param left one of the InstanceAuditHeaders to compare
      * @param right the other InstanceAuditHeader to compare
-     * @return InstanceDifferences
+     * @param ignoreModificationStamps true if we should ignore modification differences (Version, UpdateTime, UpdatedBy)
+     *                                 or false if we should include these
      */
     private void getInstanceAuditHeaderDifferences(Differences differences,
                                                    InstanceAuditHeader left,
-                                                   InstanceAuditHeader right)
+                                                   InstanceAuditHeader right,
+                                                   boolean ignoreModificationStamps)
     {
 
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
-            differences.check("Version", left.getVersion(), right.getVersion());
+            if (!ignoreModificationStamps) {
+                differences.check("Version", left.getVersion(), right.getVersion());
+                differences.check("UpdatedBy", left.getUpdatedBy(), right.getUpdatedBy());
+                differences.check("UpdateTime", left.getUpdateTime(), right.getUpdateTime());
+            }
             differences.check("Type", left.getType(), right.getType());
             differences.check("InstanceProvenanceType", left.getInstanceProvenanceType(), right.getInstanceProvenanceType());
             differences.check("MetadataCollectionId", left.getMetadataCollectionId(), right.getMetadataCollectionId());
             differences.check("ReplicatedBy", left.getReplicatedBy(), right.getReplicatedBy());
             differences.check("InstanceLicense", left.getInstanceLicense(), right.getInstanceLicense());
             differences.check("CreatedBy", left.getCreatedBy(), right.getCreatedBy());
-            differences.check("UpdatedBy", left.getUpdatedBy(), right.getUpdatedBy());
             differences.check("MaintainedBy", left.getMaintainedBy(), right.getMaintainedBy());
             differences.check("CreateTime", left.getCreateTime(), right.getCreateTime());
-            differences.check("UpdateTime", left.getUpdateTime(), right.getUpdateTime());
             differences.check("Status", left.getStatus(), right.getStatus());
             differences.check("StatusOnDelete", left.getStatusOnDelete(), right.getStatusOnDelete());
             differences.check("MappingProperties", left.getMappingProperties(), right.getMappingProperties());
@@ -2001,17 +2012,19 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             } else {
                 sideWithValues = right;
             }
-            differences.addOnlyOnOneSide(present, "Version", sideWithValues.getVersion());
+            if (!ignoreModificationStamps) {
+                differences.addOnlyOnOneSide(present, "Version", sideWithValues.getVersion());
+                differences.addOnlyOnOneSide(present, "UpdatedBy", sideWithValues.getUpdatedBy());
+                differences.addOnlyOnOneSide(present, "UpdateTime", sideWithValues.getUpdateTime());
+            }
             differences.addOnlyOnOneSide(present, "Type", sideWithValues.getType());
             differences.addOnlyOnOneSide(present, "InstanceProvenanceType", sideWithValues.getInstanceProvenanceType());
             differences.addOnlyOnOneSide(present, "MetadataCollectionId", sideWithValues.getMetadataCollectionId());
             differences.addOnlyOnOneSide(present, "ReplicatedBy", sideWithValues.getReplicatedBy());
             differences.addOnlyOnOneSide(present, "InstanceLicense", sideWithValues.getInstanceLicense());
             differences.addOnlyOnOneSide(present, "CreatedBy", sideWithValues.getCreatedBy());
-            differences.addOnlyOnOneSide(present, "UpdatedBy", sideWithValues.getUpdatedBy());
             differences.addOnlyOnOneSide(present, "MaintainedBy", sideWithValues.getMaintainedBy());
             differences.addOnlyOnOneSide(present, "CreateTime", sideWithValues.getCreateTime());
-            differences.addOnlyOnOneSide(present, "UpdateTime", sideWithValues.getUpdateTime());
             differences.addOnlyOnOneSide(present, "Status", sideWithValues.getStatus());
             differences.addOnlyOnOneSide(present, "StatusOnDelete", sideWithValues.getStatusOnDelete());
             differences.addOnlyOnOneSide(present, "MappingProperties", sideWithValues.getMappingProperties());

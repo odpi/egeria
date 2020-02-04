@@ -802,9 +802,11 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      *
      * @param left one of the Relationship objects to compare
      * @param right the other Relationship object to compare
+     * @param ignoreModificationStamps true if we should ignore modification details (Version, UpdateTime, UpdatedBy)
+     *                                 as differences, or false if we should include differences on these
      * @return RelationshipDifferences
      */
-    RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right);
+    RelationshipDifferences getRelationshipDifferences(Relationship left, Relationship right, boolean ignoreModificationStamps);
 
 
     /**
@@ -812,9 +814,11 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      *
      * @param left one of the EntityDetail objects to compare
      * @param right the other EntityDetail object to compare
+     * @param ignoreModificationStamps true if we should ignore modification details (Version, UpdateTime, UpdatedBy)
+     *                                 as differences, or false if we should include differences on these
      * @return EntityDetailDifferences
      */
-    EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right);
+    EntityDetailDifferences getEntityDetailDifferences(EntityDetail left, EntityDetail right, boolean ignoreModificationStamps);
 
 
     /**
@@ -822,9 +826,11 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      *
      * @param left one of the EntityProxy objects to compare
      * @param right the other EntityProxy object to compare
+     * @param ignoreModificationStamps true if we should ignore modification details (Version, UpdateTime, UpdatedBy)
+     *                                 as differences, or false if we should include differences on these
      * @return EntityProxyDifferences
      */
-    EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right);
+    EntityProxyDifferences getEntityProxyDifferences(EntityProxy left, EntityProxy right, boolean ignoreModificationStamps);
 
 
     /**
@@ -832,9 +838,11 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      *
      * @param left one of the EntitySummary objects to compare
      * @param right the other EntitySummary object to compare
+     * @param ignoreModificationStamps true if we should ignore modification details (Version, UpdateTime, UpdatedBy)
+     *                                 as differences, or false if we should include differences on these
      * @return EntitySummaryDifferences
      */
-    EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right);
+    EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right, boolean ignoreModificationStamps);
 
 
 }
