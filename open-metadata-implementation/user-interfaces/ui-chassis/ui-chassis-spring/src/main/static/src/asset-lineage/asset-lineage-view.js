@@ -13,6 +13,9 @@ import '@vaadin/vaadin-item/vaadin-item.js';
 import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 
 class AssetLineageView extends PolymerElement {
+    constructor() {
+        super();
+    }
   static get template() {
     return html`
     <style include="shared-styles">
@@ -116,7 +119,9 @@ class AssetLineageView extends PolymerElement {
                          edges : []};
             } else {
                 for (var i = 0; i < data.nodes.length; i++) {
-                    data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
+                    data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
+                    if(data.nodes[i].properties['tableDisplayName'])
+                          data.nodes[i].label += ' \n Table : ' + data.nodes[i].properties['tableDisplayName'];
                 }
             }
             this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
