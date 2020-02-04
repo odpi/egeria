@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# What is ODPi Egeria?
+# The Objectives of Egeria?
 
 ODPi Egeria implements a set of open APIs, [metadata types](open-metadata-types/README.md),
 frameworks, connectors and interchange protocols to allow all types of tools and
@@ -73,7 +73,7 @@ Figure 1 summarizes the objectives of Egeria:
 an overview of the scope of metadata that Egeria is covering.
 * **[Open Metadata Labs](../../open-metadata-resources/open-metadata-labs)** - The open metadata labs provide
 the means to get hands on experience with Egeria.
-* **[Administration Guide](../../open-metadata-implementation/admin-services/docs/user)** - The administration guide describes how to configure Egeria.
+* **[OMAG Server Configuration Guide](../../open-metadata-implementation/admin-services/docs/user)** - The administration guide describes how to configure Egeria.
 * **[OMAG Server Platform Overview](omag-server)** - the OMAG Server Platform Overview describes the operation of Egeria's software platform.
 
 # Technical Components 
@@ -94,12 +94,13 @@ These are the principle technical components of Egeria
 * **[Common Services](../../open-metadata-implementation/common-services)** for common services such as security and first failure data capture (FFDC).
 * **[Adapters](../../open-metadata-implementation/adapters)** connectors and plugins for different types of technologies.
 * **[Server Chassis](../../open-metadata-implementation/server-chassis)** the base component of the OMAG Server Platform.
+
 # Further Help
 
-* [Tutorials](../../open-metadata-resources/open-metadata-tutorials)
+* [Tutorials and Hands on Labs](../../open-metadata-resources/open-metadata-tutorials)
 * [Samples](../../open-metadata-resources/open-metadata-samples)
 * [Trouble shooting](trouble-shooting)
-* [Glossary of Terms](open-metadata-glossary.md)
+* [Glossary of Terms about Egeria](open-metadata-glossary.md)
 * [Contributing to Egeria](../../Community-Guide.md)
 
 

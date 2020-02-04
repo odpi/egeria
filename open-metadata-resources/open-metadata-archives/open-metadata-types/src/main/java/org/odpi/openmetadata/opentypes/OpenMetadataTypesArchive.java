@@ -141,9 +141,196 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
+        update0298LineageRelationships();
+        update0501SchemaElements();
         update0602OpenDiscoveryServices();
         update0605OpenDiscoveryAnalysisReports();
         update0650RelationshipDiscovery();
+    }
+
+
+    private void update0298LineageRelationships()
+    {
+        this.archiveBuilder.addEnumDef(getProcessContainmentTypeEnum());
+        this.archiveBuilder.addRelationshipDef(getProcessHierarchyRelationship());
+    }
+
+
+    /**
+     * The ProcessContainmentType enum describes the type of containment that exists between two processes.
+     *
+     * @return ProcessContainmentType EnumDef
+     */
+    private EnumDef getProcessContainmentTypeEnum()
+    {
+        final String guid            = "1bb4b908-7983-4802-a2b5-91b095552ee9";
+        final String name            = "ProcessContainmentType";
+        final String description     = "The containment relationship between two processes.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "OWNED";
+        final String element1Description     = "The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed. A child can have at most one such parent.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                element1Value,
+                element1Description,
+                element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "USED";
+        final String element2Description     = "The child process is simply used by the parent. A child process can have many such relationships to parents.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                element2Value,
+                element2Description,
+                element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 99;
+        final String element3Value           = "OTHER";
+        final String element3Description     = "None of the above.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                element3Value,
+                element3Description,
+                element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    /**
+     * The ProcessHierarchy relationship describes a parent-child relationship between processes.
+     *
+     * @return ProcessHierarchy RelationshipDef
+     */
+    private RelationshipDef getProcessHierarchyRelationship()
+    {
+        final String guid            = "70dbbda3-903f-49f7-9782-32b503c43e0e";
+        final String name            = "ProcessHierarchy";
+        final String description     = "A hierarchical relationship between processes.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Process";
+        final String                     end1AttributeName            = "parentProcess";
+        final String                     end1AttributeDescription     = "The more abstract or higher-level process.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Process";
+        final String                     end2AttributeName            = "childProcess";
+        final String                     end2AttributeDescription     = "The more detailed or lower-level process.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Enum            = "ProcessContainmentType";
+        final String attribute1Name            = "containmentType";
+        final String attribute1Description     = "The type of containment that exists between the related processes.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute(attribute1Enum,
+                attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private void update0501SchemaElements()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
+    }
+
+
+    /**
+     * 0501 SchemaElement 'anchorGUID' property should refer to an Asset when available, updated description
+     */
+    private TypeDefPatch updateSchemaElementEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaElement";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name = "anchorGUID";
+        final String attribute1Description = "Optional identification of the Asset that this schema element is a part of.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
