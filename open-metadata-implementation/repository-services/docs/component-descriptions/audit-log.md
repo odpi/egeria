@@ -4,7 +4,9 @@
 # Audit Log
 
 The audit log provides messages to the administrator relating to the operation of an
-[open metadata repository](../open-metadata-repository.md).
+[OMAG Server](../../../admin-services/docs/concepts/omag-server.md).
+
+
 
 
 
