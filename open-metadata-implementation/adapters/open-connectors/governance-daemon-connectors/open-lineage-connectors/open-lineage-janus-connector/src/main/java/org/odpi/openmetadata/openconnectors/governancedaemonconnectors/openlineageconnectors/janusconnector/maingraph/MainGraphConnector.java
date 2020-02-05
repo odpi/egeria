@@ -112,7 +112,6 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
     @Override
     public void disconnect() throws ConnectorCheckedException {
-        if (true) throw new NullPointerException();
         mainGraph.close();
         super.disconnect();
     }
