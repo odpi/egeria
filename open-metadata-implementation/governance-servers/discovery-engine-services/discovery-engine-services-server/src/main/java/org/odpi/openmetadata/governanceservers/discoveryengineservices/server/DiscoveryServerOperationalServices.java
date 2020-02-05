@@ -209,8 +209,8 @@ public class DiscoveryServerOperationalServices
                                                                   auditLog,
                                                                   localServerUserId,
                                                                   maxPageSize,
-                                                                  discoveryEngineServicesConfig.getAccessServiceRootURL(),
-                                                                  discoveryEngineServicesConfig.getAccessServiceServerName(),
+                                                                  discoveryEngineServicesConfig.getOMAGServerPlatformRootURL(),
+                                                                  discoveryEngineServicesConfig.getOMAGServerName(),
                                                                   discoveryEngineHandlers);
         }
         catch (Throwable error)
@@ -249,7 +249,7 @@ public class DiscoveryServerOperationalServices
      */
     private String getAccessServiceRootURL(DiscoveryEngineServicesConfig discoveryEngineServicesConfig) throws OMAGConfigurationErrorException
     {
-        String accessServiceRootURL = discoveryEngineServicesConfig.getAccessServiceRootURL();
+        String accessServiceRootURL = discoveryEngineServicesConfig.getOMAGServerPlatformRootURL();
 
         if (accessServiceRootURL == null)
         {
@@ -289,7 +289,7 @@ public class DiscoveryServerOperationalServices
      */
     private String getAccessServiceServerName(DiscoveryEngineServicesConfig discoveryEngineServicesConfig) throws OMAGConfigurationErrorException
     {
-        String accessServiceServerName = discoveryEngineServicesConfig.getAccessServiceServerName();
+        String accessServiceServerName = discoveryEngineServicesConfig.getOMAGServerName();
 
         if (accessServiceServerName == null)
         {

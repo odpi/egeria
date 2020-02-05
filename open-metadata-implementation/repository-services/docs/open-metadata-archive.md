@@ -13,6 +13,8 @@ The open metadata archive has two uses:
 * A **Metadata Export**: an export of metadata from a repository.  Used to transfer metadata
 between repositories that are not connected to the same [cohort](open-metadata-repository-cohort.md).
 
+More information about open metadata archives can be found in the
+[open-metadata-archives](../../../open-metadata-resources/open-metadata-archives) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -53,7 +53,8 @@ The advantage of retrieving the connection information from a metadata repositor
 do not need to be hard-coded in the consuming applications.
 
 Connections can be created in the open metadata repositories through the [Asset Owner OMAS](../../../../access-services/asset-owner/README.md).
-  
+
+## Configuring Egeria Connections 
   
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

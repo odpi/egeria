@@ -11,8 +11,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AccessServiceClientConfig provides the properties to configure a server that connects to an
- * Access Service.
+ * OMAGServerClientConfig provides the properties to configure a server that connects to an
+ * OMAG Server.  This is typically used by a Governance Server to retrieve metadata from
+ * a metadata server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,18 +26,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryEngineServicesConfig"),
         @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig")
 })
-public class AccessServiceClientConfig extends AdminServicesConfigHeader
+public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    /* Properties needed to call the access service REST APIs */
-    private String        accessServiceRootURL     = null;
-    private String        accessServiceServerName  = null;
+    /* Properties needed to call the OMAG Server REST APIs */
+    private String omagServerPlatformRootURL = null;
+    private String omagServerName            = null;
 
     /**
      * Default constructor
      */
-    public AccessServiceClientConfig()
+    public OMAGServerClientConfig()
     {
         super();
     }
@@ -47,14 +48,14 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
      *
      * @param template object to copy
      */
-    public AccessServiceClientConfig(AccessServiceClientConfig template)
+    public OMAGServerClientConfig(OMAGServerClientConfig template)
     {
         super(template);
 
         if (template != null)
         {
-            accessServiceRootURL = template.getAccessServiceRootURL();
-            accessServiceServerName = template.getAccessServiceServerName();
+            omagServerPlatformRootURL = template.getOMAGServerPlatformRootURL();
+            omagServerName            = template.getOMAGServerName();
         }
     }
 
@@ -64,20 +65,20 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
      *
      * @return string root url
      */
-    public String getAccessServiceRootURL()
+    public String getOMAGServerPlatformRootURL()
     {
-        return accessServiceRootURL;
+        return omagServerPlatformRootURL;
     }
 
 
     /**
      * Set up the root URL of the access service.
      *
-     * @param accessServiceRootURL string root url
+     * @param omagServerPlatformRootURL string root url
      */
-    public void setAccessServiceRootURL(String accessServiceRootURL)
+    public void setOMAGServerPlatformRootURL(String omagServerPlatformRootURL)
     {
-        this.accessServiceRootURL = accessServiceRootURL;
+        this.omagServerPlatformRootURL = omagServerPlatformRootURL;
     }
 
 
@@ -86,20 +87,20 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
      *
      * @return string server name
      */
-    public String getAccessServiceServerName()
+    public String getOMAGServerName()
     {
-        return accessServiceServerName;
+        return omagServerName;
     }
 
 
     /**
      * Set up the name of the server where the access service resides.
      *
-     * @param accessServiceServerName string server name
+     * @param omagServerName string server name
      */
-    public void setAccessServiceServerName(String accessServiceServerName)
+    public void setOMAGServerName(String omagServerName)
     {
-        this.accessServiceServerName = accessServiceServerName;
+        this.omagServerName = omagServerName;
     }
 
 
@@ -111,11 +112,12 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
     @Override
     public String toString()
     {
-        return "AccessServiceClientConfig{" +
-                "accessServiceRootURL='" + accessServiceRootURL + '\'' +
-                ", accessServiceServerName='" + accessServiceServerName + '\'' +
+        return "OMAGServerClientConfig{" +
+                "omagServerPlatformRootURL='" + omagServerPlatformRootURL + '\'' +
+                ", omagServerName='" + omagServerName + '\'' +
                 '}';
     }
+
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -134,9 +136,9 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
         {
             return false;
         }
-        AccessServiceClientConfig that = (AccessServiceClientConfig) objectToCompare;
-        return Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
-                Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName());
+        OMAGServerClientConfig that = (OMAGServerClientConfig) objectToCompare;
+        return Objects.equals(getOMAGServerPlatformRootURL(), that.getOMAGServerPlatformRootURL()) &&
+                Objects.equals(getOMAGServerName(), that.getOMAGServerName());
     }
 
 
@@ -148,6 +150,6 @@ public class AccessServiceClientConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName());
+        return Objects.hash(getOMAGServerPlatformRootURL(), getOMAGServerName());
     }
 }

@@ -8,8 +8,16 @@ import org.odpi.openmetadata.adminservices.configuration.properties.LocalReposit
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -218,6 +226,7 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param storageProperties  properties used to configure Egeria Graph DB
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -225,9 +234,10 @@ public class ConfigRepositoryServicesResource
      */
     @PostMapping(path = "/local-repository/mode/local-graph-repository")
     public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
-                                                @PathVariable                  String serverName)
+                                                @PathVariable                  String serverName,
+                                                @RequestBody @Nullable         Map<String, Object> storageProperties)
     {
-        return adminAPI.setGraphLocalRepository(userId, serverName);
+        return adminAPI.setGraphLocalRepository(userId, serverName, storageProperties);
     }
 
 
