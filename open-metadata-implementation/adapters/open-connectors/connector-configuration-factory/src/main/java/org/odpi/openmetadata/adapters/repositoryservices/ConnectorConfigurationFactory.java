@@ -2,31 +2,40 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
-import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
+import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -442,10 +451,13 @@ public class ConnectorConfigurationFactory
      *
      * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     *
      * @return Connection object
      */
     public Connection getLocalGraphRepositoryLocalConnection(String repositoryName,
-                                                             String localServerName)
+                                                             String localServerName,
+                                                             Map<String, Object> storageProperties)
     {
         final String connectionGUID    = "3f1fd4fc-90f9-436a-8e2c-2120d590f5e4";
 
@@ -461,6 +473,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConfigurationProperties(storageProperties);
 
         return connection;
     }
