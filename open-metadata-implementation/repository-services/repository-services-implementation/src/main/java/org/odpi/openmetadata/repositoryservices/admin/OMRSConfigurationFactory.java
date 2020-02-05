@@ -3,7 +3,12 @@
 package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataEventProtocolVersion;
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
@@ -183,10 +188,13 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of local server
      * @param localServerURL  URL root of local server used for REST calls
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     *
      * @return LocalRepositoryConfig object
      */
     public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String              localServerName,
-                                                                    String              localServerURL)
+                                                                    String              localServerURL,
+                                                                    Map<String, Object> storageProperties)
     {
         final String   repositoryName = "Graph Open Metadata Repository";
 
@@ -196,7 +204,8 @@ public class OMRSConfigurationFactory
 
         localRepositoryConfig.
                 setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(repositoryName,
-                                                                                                                       localServerName));
+                                                                                                                       localServerName,
+                                                                                                                       storageProperties));
 
         return localRepositoryConfig;
     }
