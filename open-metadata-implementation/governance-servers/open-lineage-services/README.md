@@ -75,7 +75,7 @@ POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{serve
 Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
     
 ```
-{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/remove-configuration
 ```
 
 # About the Open Lineage Services
