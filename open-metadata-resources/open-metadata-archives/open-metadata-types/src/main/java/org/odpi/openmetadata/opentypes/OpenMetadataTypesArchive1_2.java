@@ -18,7 +18,7 @@ import java.util.List;
  * should not be changed or extended in this file.  New types, and patches to existing types should be added to OpenMetadataTypes.
  * <p>
  * Details of the open metadata types are documented on the wiki:
- * <a href="https://odpi.github.io/egeria/open-metadata-publication/website/open-metadata-types/">The Open Metadata Type System</a>
+ * <a href="https://egeria.odpi.org/open-metadata-publication/website/open-metadata-types/">The Open Metadata Type System</a>
  * </p>
  * <p>
  * There are 8 areas, each covering a different topic area of metadata.  The module breaks down the process of creating

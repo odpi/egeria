@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 import java.io.Serializable;
 
 /**
- * AccessServiceRegistration is used by an access service to register its admin services interface
+ * AccessServiceRegistration is used by an access service to register its admin services interface.
  */
 public class AccessServiceRegistration implements Serializable
 {
@@ -17,6 +17,7 @@ public class AccessServiceRegistration implements Serializable
 
     private int                            accessServiceCode;
     private String                         accessServiceName;
+    private String                         accessServiceFullName;
     private String                         accessServiceURLMarker;
     private String                         accessServiceDescription;
     private String                         accessServiceWiki;
@@ -36,6 +37,7 @@ public class AccessServiceRegistration implements Serializable
      */
     public AccessServiceRegistration(int                            accessServiceCode,
                                      String                         accessServiceName,
+                                     String                         accessServiceFullName,
                                      String                         accessServiceURLMarker,
                                      String                         accessServiceDescription,
                                      String                         accessServiceWiki,
@@ -44,6 +46,7 @@ public class AccessServiceRegistration implements Serializable
     {
         this.accessServiceCode = accessServiceCode;
         this.accessServiceName = accessServiceName;
+        this.accessServiceFullName = accessServiceFullName;
         this.accessServiceURLMarker = accessServiceURLMarker;
         this.accessServiceDescription = accessServiceDescription;
         this.accessServiceWiki = accessServiceWiki;
@@ -65,6 +68,7 @@ public class AccessServiceRegistration implements Serializable
     {
         this(accessServiceDescription.getAccessServiceCode(),
              accessServiceDescription.getAccessServiceName(),
+             accessServiceDescription.getAccessServiceFullName(),
              accessServiceDescription.getAccessServiceURLMarker(),
              accessServiceDescription.getAccessServiceDescription(),
              accessServiceDescription.getAccessServiceWiki(),
@@ -122,6 +126,29 @@ public class AccessServiceRegistration implements Serializable
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
+    }
+
+
+    /**
+     * Return the full name for this access service.
+     *
+     * @return String default name
+     */
+    public String getAccessServiceFullName()
+    {
+        return accessServiceFullName;
+    }
+
+
+
+    /**
+     * Set up the full name for this access service.
+     *
+     * @param accessServiceFullName  String default name
+     */
+    public void setAccessServiceFullName(String accessServiceFullName)
+    {
+        this.accessServiceFullName = accessServiceFullName;
     }
 
 

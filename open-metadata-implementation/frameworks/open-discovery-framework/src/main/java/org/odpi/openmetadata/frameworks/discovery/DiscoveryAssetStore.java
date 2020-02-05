@@ -91,6 +91,7 @@ public abstract class DiscoveryAssetStore
                                                               PropertyServerException,
                                                               UserNotAuthorizedException;
 
+
     /**
      * Log an audit message about this asset.
      *

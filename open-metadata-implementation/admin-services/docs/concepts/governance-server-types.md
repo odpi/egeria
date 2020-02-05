@@ -8,15 +8,13 @@ Governance servers host specific integration or governance connectors for techno
 
 * **Data Engine Proxy Server** - captures information about processes and the data sources that they work with and catalogs them in open metadata.
 * **Data Platform Server** - captures information about assets on a data platform and catalogs them in open metadata.
-* **Discovery Server** - runs the discovery services to extract descriptive information from Assets and stores it in open metadata.
+* **[Discovery Server](discovery-server.md)** - runs the discovery services to extract descriptive information from Assets and stores it in open metadata.
 * **Security Officer Server** - sets up security definitions.
 * **Security Sync Server** - automatically configures security verification endpoints such as Apache Ranger based on open metadata values.
 * **Stewardship Server** - automates the management of assets.
 * **Open Lineage Server** - accumulates lineage information to provide a comprehensive historical reporting service for lineage.
 * **Virtualizer Server** - automatically configures a data virtualization engine based on the available assets.
 
-In addition, there is a special governance server
-for testing compliance called the  **Conformance Test Suite Server**.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

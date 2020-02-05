@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 /**
  * AssetConsumerOutTopicClientConnector is the java implementation of the
- * the client side connector that receives
+ * the client side connector that receives events from the Asset Consumer OMAS's out topic
  */
 public class AssetConsumerOutTopicClientConnector extends ConnectorBase implements AssetConsumerEventInterface
 {

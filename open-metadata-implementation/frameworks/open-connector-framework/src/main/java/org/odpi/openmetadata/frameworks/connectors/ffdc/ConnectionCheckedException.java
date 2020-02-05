@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectionCheckedException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private static final Logger log = LoggerFactory.getLogger(ConnectionCheckedException.class);
 
     /**
@@ -60,10 +62,12 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated message
      * @param template   object to copy
      */
-    public ConnectionCheckedException(ConnectionCheckedException template)
+    public ConnectionCheckedException(String                     errorMessage,
+                                      ConnectionCheckedException template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 }

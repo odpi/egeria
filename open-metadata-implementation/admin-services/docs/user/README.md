@@ -1,20 +1,21 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMAG Server Platform Administration Services User Guide
+# OMAG Server Configuration User Guide
 
 An **[Open Metadata and Governance (OMAG) Server Platform](../../../../open-metadata-publication/website/omag-server)**
 hosts one or more **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
-and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md)
+and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md).
 
 The subsystems that are enabled in a specific instance of an OMAG Server
 are defined in a JSON **[configuration document](../concepts/configuration-document.md)**.
-When the configuration document is loaded into the OMAG server platform, the OMAG server
+When the configuration document is loaded into the OMAG server platform, the OMAG server that is describes
 is started, and the subsystems defined in the configuration document are activated.
 
 In an open metadata landscape, it is anticipated that there may be multiple
-instances of the OMAG Server running, each performing a different role.
-The active subsystems of each of these instances would be defined in a different configuration document.
+instances of the OMAG Server running in an OMAG Server Platform, each performing a different role.
+The active subsystems of each of these server instances would be defined in a different
+configuration document.
 They could all, however, be loaded into the same OMAG Server Platform, or distributed across
 different OMAG Server Platforms ([more information](../concepts/omag-server-personalities.md)).
 

@@ -180,6 +180,7 @@ public class ConnectedAssetClientBase
             OMAGOCFErrorCode errorCode    = OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED;
             String           errorMessage = errorCode.getErrorMessageId()
                                           + errorCode.getFormattedErrorMessage(requestedConnection.getQualifiedName(),
+                                                                               serviceName,
                                                                                serverName,
                                                                                serverPlatformRootURL);
 

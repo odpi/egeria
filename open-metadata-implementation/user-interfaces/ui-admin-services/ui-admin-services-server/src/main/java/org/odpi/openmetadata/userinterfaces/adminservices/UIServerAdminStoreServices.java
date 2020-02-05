@@ -70,7 +70,7 @@ public class UIServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -102,7 +102,7 @@ public class UIServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -133,7 +133,7 @@ public class UIServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

@@ -92,7 +92,7 @@ public class OMAGServerAdminForAccessServices
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
-                            service.setServiceName(accessServiceConfig.getAccessServiceName());
+                            service.setServiceName(accessServiceConfig.getAccessServiceFullName());
                             service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
                             service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
                             service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
@@ -112,7 +112,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -202,7 +202,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -302,7 +302,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -435,7 +435,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -504,7 +504,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -608,7 +608,7 @@ public class OMAGServerAdminForAccessServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

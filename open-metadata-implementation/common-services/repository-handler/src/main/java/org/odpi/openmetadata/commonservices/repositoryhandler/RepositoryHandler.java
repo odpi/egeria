@@ -1999,7 +1999,7 @@ public class RepositoryHandler
                                            relationshipTypeGUID,
                                            relationshipTypeName,
                                            0,
-                                           100,
+                                           maxPageSize,
                                            methodName);
     }
 
@@ -2404,6 +2404,58 @@ public class RepositoryHandler
         }
     }
 
+
+    /**
+     * Create a relationship between two entities.
+     *
+     * @param userId calling user
+     * @param end1TypeName unique name of the end 1's type
+     * @param end1GUID entity to store at end 1
+     * @param end2GUID entity to store at end 2
+     * @param relationshipTypeGUID unique identifier of the relationship's type
+     * @param relationshipTypeName unique name of the relationship's type
+     * @param relationshipProperties properties for the relationship
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void ensureRelationship(String                  userId,
+                                   String                  end1TypeName,
+                                   String                  end1GUID,
+                                   String                  end2GUID,
+                                   String                  relationshipTypeGUID,
+                                   String                  relationshipTypeName,
+                                   InstanceProperties      relationshipProperties,
+                                   String                  methodName) throws UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+       Relationship relationship = this.getRelationshipBetweenEntities(userId,
+                                                                       end1GUID,
+                                                                       end1TypeName,
+                                                                       end2GUID,
+                                                                       relationshipTypeGUID,
+                                                                       relationshipTypeName,
+                                                                       methodName);
+       if (relationship == null)
+       {
+           this.createRelationship(userId, relationshipTypeGUID, end1GUID, end2GUID, relationshipProperties, methodName);
+       }
+       else
+       {
+           if ((relationshipProperties != null) || (relationship.getProperties() != null))
+           {
+               /*
+                * This ensures the properties are identical.  It may create unnecessary update events if the properties have not changed.
+                * This could therefore be made more efficient if additional validation of whether the properties have changed is made.
+                */
+               // TODO make more efficient by avoiding unnecessary updates?
+               this.updateRelationshipProperties(userId, relationship.getGUID(), relationshipProperties, methodName);
+           }
+       }
+    }
+
+
     /**
      * Create a relationship from an external source between two entities.
      *
@@ -2427,7 +2479,7 @@ public class RepositoryHandler
                                            String                  end2GUID,
                                            InstanceProperties      relationshipProperties,
                                            String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                      PropertyServerException
     {
         try
         {
@@ -2449,6 +2501,7 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName);
         }
     }
+
 
     /**
      * Delete a relationship between two entities.  If delete is not supported, purge is used.
@@ -2542,6 +2595,76 @@ public class RepositoryHandler
 
 
     /**
+     * Remove all relationships of a certain type anchored at a particular entity.
+     *
+     * @param userId calling user
+     * @param anchorEntityGUID identifier of starting entity
+     * @param anchorEntityTypeName type of entity
+     * @param relationshipTypeGUID unique identifier of the relationship type
+     * @param relationshipTypeName unique name of the relationship type
+     * @param methodName calling method
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeAllRelationshipsOfType(String                 userId,
+                                             String                 anchorEntityGUID,
+                                             String                 anchorEntityTypeName,
+                                             String                 relationshipTypeGUID,
+                                             String                 relationshipTypeName,
+                                             String                 methodName) throws UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        try
+        {
+            boolean moreToReceive = true;
+
+            while (moreToReceive)
+            {
+                /*
+                 * Because removing relationships, the startingFrom value is always 0 because retrieving what is left.
+                 */
+                List<Relationship> relationships = this.getRelationshipsByType(userId,
+                                                                               anchorEntityGUID,
+                                                                               anchorEntityTypeName,
+                                                                               relationshipTypeGUID,
+                                                                               relationshipTypeName,
+                                                                               0,
+                                                                               maxPageSize,
+                                                                               methodName);
+
+                if ((relationships != null) && (! relationships.isEmpty()))
+                {
+                    for (Relationship relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            this.removeRelationship(userId,
+                                                    relationshipTypeGUID,
+                                                    relationshipTypeName,
+                                                    relationship.getGUID(),
+                                                    methodName);
+                        }
+                    }
+                }
+                else
+                {
+                    moreToReceive = false;
+                }
+            }
+        }
+        catch (PropertyServerException | UserNotAuthorizedException error)
+        {
+            throw error;
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+    }
+
+
+    /**
      * Delete a relationship between two entities.
      *
      * @param userId calling user
@@ -2555,14 +2678,14 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeRelationshipBetweenEntities(String                  userId,
-                                                  String                  relationshipTypeGUID,
-                                                  String                  relationshipTypeName,
-                                                  String                  entity1GUID,
-                                                  String                  entity1TypeName,
-                                                  String                  entity2GUID,
-                                                  String                  methodName) throws UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public void removeRelationshipBetweenEntities(String   userId,
+                                                  String   relationshipTypeGUID,
+                                                  String   relationshipTypeName,
+                                                  String   entity1GUID,
+                                                  String   entity1TypeName,
+                                                  String   entity2GUID,
+                                                  String   methodName) throws UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         Relationship  relationship = this.getRelationshipBetweenEntities(userId,
                                                                          entity1GUID,

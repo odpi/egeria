@@ -25,19 +25,19 @@ import java.util.Arrays;
 public enum OCFMetadataAuditCode
 {
     SERVICE_INITIALIZING("OCF-METADATA-MANAGEMENT-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service is initializing a new server instance",
              "The local server has started up a new instance of the service.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OCF-METADATA-MANAGEMENT-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}",
              "The service has completed initialization of a new server instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OCF-METADATA-MANAGEMENT-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance for server {0}",
              "The local administrator has requested shut down of a server instance.",
              "No action is required.  This is part of the normal operation of the service."),

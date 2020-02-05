@@ -10,141 +10,141 @@ package org.odpi.openmetadata.repositoryservices.auditlog;
 public enum OMRSAuditingComponent
 {
     UNKNOWN (0,
-             "<Unknown>", "Uninitialized component name", null),
+             "<Unknown>", "Uninitialized component name", "https://egeria.odpi.org"),
 
     AUDIT_LOG (1,
              "Audit Log",
              "Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/audit-log.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/audit-log.html"),
 
     OPERATIONAL_SERVICES (3,
              "Operational Services",
              "Supports the administration services for the Open Metadata Repository Services (OMRS).",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/operational-services.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/operational-services.html"),
 
     ARCHIVE_MANAGER (4,
              "Archive Manager",
              "Manages the loading of Open Metadata Archives into an open metadata repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/archive-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/archive-manager.html"),
 
     ENTERPRISE_CONNECTOR_MANAGER (5,
              "Enterprise Connector Manager",
              "Manages the list of open metadata repositories that the Enterprise OMRS Repository Connector " +
                                           "should call to retrieve an enterprise view of the metadata collections " +
                                           "supported by these repositories",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-connector-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-connector-manager.html"),
 
     ENTERPRISE_REPOSITORY_CONNECTOR (6,
              "Enterprise Repository Connector",
              "Supports enterprise access to the list of open metadata repositories registered " +
                                              "with the OMRS Enterprise Connector Manager.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.html"),
 
     LOCAL_REPOSITORY_CONNECTOR (7,
              "Local Repository Connector",
              "Supports access to metadata stored in the local server's repository and ensures " +
                                         "repository events are generated when metadata changes in the local repository",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-connector.html"),
 
     REPOSITORY_CONTENT_MANAGER(8,
              "Repository Content Manager",
              "Supports an in-memory cache for open metadata type definitions (TypeDefs) used for " +
              "verifying TypeDefs in use in other open metadata repositories and for " +
                              "constructing new metadata instances.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/typedef-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/typedef-manager.html"),
 
     INSTANCE_EVENT_PROCESSOR (9,
              "Local Inbound Instance Event Processor",
              "Supports the loading of reference metadata into the local repository that has come from other members of the local server's cohorts and open metadata archives.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-instance-event-processor.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-instance-event-processor.html"),
 
     REPOSITORY_EVENT_MANAGER (10,
              "Repository Event Manager",
              "Distribute repository events (TypeDefs, Entity and Instance events) between internal OMRS components within a server.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/event-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/event-manager.html"),
 
     REST_SERVICES (11,
              "Repository REST Services",
              "Provides the server-side support the the OMRS Repository Services REST API.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.html"),
 
     REST_REPOSITORY_CONNECTOR (12,
              "REST Repository Connector",
              "Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote " +
                                        "open metadata repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/rest-repository-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/rest-repository-connector.html"),
 
     METADATA_HIGHWAY_MANAGER (13,
              "Metadata Highway Manager",
              "Manages the initialization and shutdown of the components that connector to each of the cohorts that the local server is a member of.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/metadata-highway-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/metadata-highway-manager.html"),
 
     COHORT_MANAGER  (14,
              "Cohort Manager",
              "Manages the initialization and shutdown of the server's connectivity to a cohort.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-manager.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-manager.html"),
 
     COHORT_REGISTRY(15,
              "Cohort Registry",
              "Manages the registration requests send and received from this local repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-registry.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-registry.html"),
 
     REGISTRY_STORE  (16,
              "Registry Store",
              "Stores information about the repositories registered in the open metadata repository cohort.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.html"),
 
     EVENT_PUBLISHER (17,
              "Event Publisher",
              "Manages the publishing of events that this repository sends to the OMRS topic.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/event-publisher.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/event-publisher.html"),
 
     EVENT_LISTENER  (18,
              "Event Listener",
              "Manages the receipt of incoming OMRS events.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/event-listener.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/event-listener.html"),
 
     OMRS_TOPIC_CONNECTOR(19,
              "OMRS Topic Connector",
              "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, " +
                                  "or to notify Open Metadata Access Services (OMASs) of changes to " +
                                  "metadata in the enterprise.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/omrs-topic-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/omrs-topic-connector.html"),
 
     OPEN_METADATA_TOPIC_CONNECTOR(20,
              "Open Metadata Topic Connector",
              "Provides access to an event bus to exchange events with participants in the open metadata ecosystem.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/open-metadata-topic-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/open-metadata-topic-connector.html"),
 
     LOCAL_REPOSITORY_EVENT_MAPPER(21,
              "Local Repository Event Mapper Connector",
              "Provides access to an event bus to process events from a specific local repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/event-mapper-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/event-mapper-connector.html"),
 
     ARCHIVE_STORE_CONNECTOR(22,
              "Open Metadata Archive Store Connector",
              "Reads and writes open metadata types and instances to an open metadata archive.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/open-metadata-archive-store-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/open-metadata-archive-store-connector.html"),
 
     REMOTE_REPOSITORY_CONNECTOR(23,
              "Remote Open Metadata Repository Connector",
              "Provides access to open metadata located in a remote repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/repository-connector.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/repository-connector.html"),
 
     OMAS_OUT_TOPIC(24,
              "Open Metadata Access Service (OMAS) Out Topic",
              "Publishes events from a specific access service.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.html"),
 
     OMAS_IN_TOPIC(25,
              "Open Metadata Access Service (OMAS) In Topic",
              "Receives events from external servers and tools directed at a specific access service.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.html"),
+             "https://egeria.odpi.org/open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.html"),
 
     ENTERPRISE_TOPIC_LISTENER(26,
              "Open Metadata Access Service (OMAS) In Topic",
              "Receives events from the open metadata repository cohorts that this server is registered with.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-event-topic.html")
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-event-topic.html")
     ;
 
 

@@ -749,7 +749,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         }
         catch (ConnectionCheckedException error)
         {
-            throw new InvalidParameterException(error, "connection to asset " + assetGUID);
+            throw new InvalidParameterException(error.getErrorMessage(), error, "connection to asset " + assetGUID);
         }
         catch (ConnectorCheckedException  error)
         {

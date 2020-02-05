@@ -18,7 +18,7 @@ class DigitalArchitectureInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     DigitalArchitectureInstanceHandler()
     {
-        super(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName());
 
         DigitalArchitectureRegistration.registerAccessService();
     }

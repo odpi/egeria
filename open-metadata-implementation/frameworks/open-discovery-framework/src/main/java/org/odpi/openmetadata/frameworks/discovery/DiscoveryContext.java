@@ -2,18 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 
 /**
- * DiscoveryContext provides the exchange area for annotations discovered from analysing
- * a specific asset.
+ * DiscoveryContext provides the discovery service with access to information about
+ * the discovery request along with the open metadata repository interfaces.
  */
-public class DiscoveryContext extends PropertyBase
+public class DiscoveryContext
 {
     private String                     userId;
     private String                     assetGUID;
@@ -45,8 +43,6 @@ public class DiscoveryContext extends PropertyBase
                                DiscoveryAnnotationStore   annotationStore,
                                DiscoveryAssetCatalogStore assetCatalogStore)
     {
-        super();
-
         this.userId = userId;
         this.assetGUID = assetGUID;
         this.analysisParameters = analysisParameters;
@@ -64,8 +60,6 @@ public class DiscoveryContext extends PropertyBase
      */
     public DiscoveryContext(DiscoveryContext template)
     {
-        super(template);
-
         if (template != null)
         {
             userId = template.userId;

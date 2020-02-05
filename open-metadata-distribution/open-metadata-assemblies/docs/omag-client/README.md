@@ -9,9 +9,9 @@ provide domain-specific services for open metadata and governance.
 
 Further information about this client library can be found on the ODPi Egeria website:
 
-* [Description of the OMAG Client Libraries](https://odpi.github.io/egeria/open-metadata-publication/website/omag-client).
-* [Tutorial describing how to use the OMAG Clients](https://odpi.github.io/egeria/open-metadata-resources/open-metadata-tutorials/omag-client-tutorial).
-* [Code Samples showing the use of the OMAG Clients](https://odpi.github.io/egeria/open-metadata-resources/open-metadata-samples/access-services-samples).
+* [Description of the OMAG Client Libraries](https://egeria.odpi.org/open-metadata-publication/website/omag-client).
+* [Tutorial describing how to use the OMAG Clients](https://egeria.odpi.org/open-metadata-resources/open-metadata-tutorials/omag-client-tutorial).
+* [Code Samples showing the use of the OMAG Clients](https://egeria.odpi.org/open-metadata-resources/open-metadata-samples/access-services-samples).
 
 
 

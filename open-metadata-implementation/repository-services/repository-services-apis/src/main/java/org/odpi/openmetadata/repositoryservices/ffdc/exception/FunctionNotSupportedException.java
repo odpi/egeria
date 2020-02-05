@@ -8,6 +8,8 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
  */
 public class FunctionNotSupportedException extends OMRSCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor for creating a FunctionNotSupportedException.  It captures the essential details
      * about the error, where it occurred and how to fix it.

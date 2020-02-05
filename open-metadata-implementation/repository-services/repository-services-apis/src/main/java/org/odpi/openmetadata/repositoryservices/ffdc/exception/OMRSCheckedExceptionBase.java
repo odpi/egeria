@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a OMRSCheckedExceptionBase.
      *

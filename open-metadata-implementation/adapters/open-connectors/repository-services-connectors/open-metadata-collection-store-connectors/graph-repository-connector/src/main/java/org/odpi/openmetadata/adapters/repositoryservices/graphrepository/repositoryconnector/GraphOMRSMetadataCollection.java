@@ -21,17 +21,38 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeRelationshipException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipConflictException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -62,7 +83,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                        OMRSRepositoryHelper         repositoryHelper,
                                        OMRSRepositoryValidator      repositoryValidator,
                                        String                       metadataCollectionId,
-                                       OMRSAuditLog                 auditLog)
+                                       OMRSAuditLog                 auditLog,
+                                       Map<String, Object>          storageProperties)
 
 
     {
@@ -82,7 +104,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         this.auditLog = auditLog;
 
         try {
-            this.graphStore = new GraphOMRSMetadataStore(metadataCollectionId, repositoryName, repositoryHelper, auditLog);
+            this.graphStore = new GraphOMRSMetadataStore(metadataCollectionId, repositoryName, repositoryHelper, auditLog,
+                    storageProperties);
         }
         catch(RepositoryErrorException e) {
             log.error("{} could not create graph metadata collection for repository name {}", methodName, repositoryName);

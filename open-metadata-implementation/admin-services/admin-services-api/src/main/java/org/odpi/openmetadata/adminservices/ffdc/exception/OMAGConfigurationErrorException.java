@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  */
 public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a OMAGConfigurationErrorException.
      *
