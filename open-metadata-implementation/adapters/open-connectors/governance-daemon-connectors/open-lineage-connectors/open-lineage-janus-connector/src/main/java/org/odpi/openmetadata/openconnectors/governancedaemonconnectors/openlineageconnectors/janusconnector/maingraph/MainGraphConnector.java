@@ -74,7 +74,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getUserAction());
         }
         String edgeLabel;
-        if(includeProcesses)
+        if (includeProcesses)
             edgeLabel = EDGE_LABEL_DATAFLOW_WITH_PROCESS;
         else
             edgeLabel = EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
@@ -112,6 +112,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
     @Override
     public void disconnect() throws ConnectorCheckedException {
+        if (true) throw new NullPointerException();
         mainGraph.close();
         super.disconnect();
     }
