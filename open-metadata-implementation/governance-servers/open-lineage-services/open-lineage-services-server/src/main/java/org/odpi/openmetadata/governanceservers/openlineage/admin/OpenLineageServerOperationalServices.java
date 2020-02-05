@@ -357,7 +357,7 @@ public class OpenLineageServerOperationalServices {
      * @param connector         The connector that is to be disconnected.
      * @param auditCode         The potential error that could occur, in a format intended for system administrators.
      * @param actionDescription The action taking place in this method, used in error reporting.
-     * @throws OMAGConfigurationErrorException
+     * @throws PropertyServerException
      */
     private void disconnectGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws PropertyServerException {
         final String methodName = "disconnectGraphConnector";
