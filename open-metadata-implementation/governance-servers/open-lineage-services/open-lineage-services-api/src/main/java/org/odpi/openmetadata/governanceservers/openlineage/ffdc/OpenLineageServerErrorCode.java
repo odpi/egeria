@@ -98,6 +98,21 @@ public enum OpenLineageServerErrorCode {
             "The topic connector could not be started.",
             "Review the status of the eventbus server and review the topic name set by the Open Lineage Services configuration."),
 
+    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-014 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
+            "An exception was thrown while disconnecting the Buffergraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-015 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
+            "An exception was thrown while disconnecting the Maingraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-016 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
+            "An exception was thrown while disconnecting the In-topic connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
     NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
             "Error retrieving queried node.",
             "The queried node was not found in the lineage graph.",
@@ -124,8 +139,8 @@ public enum OpenLineageServerErrorCode {
             "The Open Lineage Services server {0} encountered an unexpected error and could not start.",
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
-    ;
 
+    ;
 
 
     private int httpErrorCode;

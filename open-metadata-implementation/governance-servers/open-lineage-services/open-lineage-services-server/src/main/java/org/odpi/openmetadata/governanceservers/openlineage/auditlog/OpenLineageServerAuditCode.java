@@ -110,8 +110,28 @@ public enum OpenLineageServerAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Event {0} could not be consumed. Error: {1}",
             "The system is unable to process the request.",
-            "Verify the topic configuration.");
+            "Verify the topic configuration."),
 
+
+    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0017",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
+            "An exception was thrown while disconnecting the Buffergraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0018",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
+            "An exception was thrown while disconnecting the Maingraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-SERVICES-0019",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
+            "An exception was thrown while disconnecting the In-topic connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ;
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerAuditCode.class);
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
