@@ -22,4 +22,6 @@
 
     <artifactId>governance-action-connectors</artifactId>
 
+    <packaging>pom</packaging>
+
 </project>
