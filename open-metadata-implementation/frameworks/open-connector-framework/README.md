@@ -8,7 +8,7 @@ The OCF, as the name suggests, is an open framework for supporting connectors.
 Connector provide client-side access to remote digital [Assets](../../../open-metadata-implementation/access-services/docs/concepts/assets)
 such as data sets, APIs and software components.
 OCF Connectors also provide access to metadata about the asset and they may call
-the [Governance Action Framework (GAF)](../governance-action-framework) to execute
+the [Governance Action Framework (GAF)](../governance-action-framework) to log audit messages and execute
 appropriate governance actions related to the use of these assets
 in real-time.
 
@@ -19,7 +19,7 @@ Applications and tools benefit from using OCF connectors because:
 * Network and security parameters for accessing the data resources are managed in the metadata repository as part of a named connection.
 The application need only supply the identifier of the connection and provided they have the appropriate security credentials then a connector is returned to them for use. 
  
-  * There is no need to hard code user ids and passwords in the application code - nor manage keystores for this sensitive information since the metadata repository handles this.
+  * There is no need to hard code user ids and passwords in the application code - nor manage key stores for this sensitive information since the metadata repository handles this.
   * If the location of the data changes, then the named connection configuration is changed in the metadata repository and the application will be connected to the new location the next time they request a connector.
 
 * The OCF connector provides two sets of APIs.  The first set provides access to the Asset contents and the second set provides access to the properties of the asset stored in the open metadata repositories.
@@ -81,8 +81,8 @@ It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-pro
 
 For further information on implementing OCF components:
 
-* [Creating an OCF connector to access an underlying system](docs/design/connector-to-system.md)
 * [Creating an OCF connector to access the contents of an asset](docs/design/connector-to-asset.md)
+* [Creating an OCF connector to access an underlying system](docs/design/connector-to-system.md)
 
 ## Open Metadata Types
 

@@ -2,31 +2,40 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
-import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
+import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -442,10 +451,13 @@ public class ConnectorConfigurationFactory
      *
      * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     *
      * @return Connection object
      */
     public Connection getLocalGraphRepositoryLocalConnection(String repositoryName,
-                                                             String localServerName)
+                                                             String localServerName,
+                                                             Map<String, Object> storageProperties)
     {
         final String connectionGUID    = "3f1fd4fc-90f9-436a-8e2c-2120d590f5e4";
 
@@ -461,6 +473,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConfigurationProperties(storageProperties);
 
         return connection;
     }
@@ -817,16 +830,22 @@ public class ConnectorConfigurationFactory
     {
         final String endpointGUID          = "edc55b7b-344f-77c8-7871-e42f08a858fd";
         final String endpointDescription   = "OMRS repository endpoint for Security Sync Server.";
-        String endpointName    = "SecuritySyncServer.Endpoint." + serverName;
+        String endpointName                = "SecuritySyncServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecuritySyncServer.Connection." + serverName;
         final String connectionGUID        = "caa5be1e-d51f-8306-fe81-d3853dc7e415";
         final String connectionDescription = "OMRS repository connection to Security Sync Server.";
-        return getConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, RangerSecurityServiceConnectorProvider.class.getName());
+
+        return getConnection(configurationProperties,
+                             endpoint,
+                             connectionName,
+                             connectionGUID,
+                             connectionDescription,
+                             RangerSecurityServiceConnectorProvider.class.getName());
     }
+
 
     /**
      * Return the connection.
@@ -842,15 +861,20 @@ public class ConnectorConfigurationFactory
     {
         final String endpointGUID          = "4e53023d-a3ec-73ae-d4d4-0302147f7834";
         final String endpointDescription   = "OMRS repository endpoint for Security Officer Server.";
-        String endpointName    = "SecurityOfficerServer.Endpoint." + serverName;
+        String endpointName                = "SecurityOfficerServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecurityOfficerServer.Connection." + serverName;
         final String connectionGUID        = "05cfb02d-3e40-ef76-ce93-02f492ce4c4d";
         final String connectionDescription = "OMRS repository connection to Security Officer Server.";
-        return getConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, SecurityTagConnectorProvider.class.getName());
+
+        return getConnection(configurationProperties,
+                             endpoint,
+                             connectionName,
+                             connectionGUID,
+                             connectionDescription,
+                             SecurityTagConnectorProvider.class.getName());
     }
 
 
@@ -864,16 +888,16 @@ public class ConnectorConfigurationFactory
      */
     public Connection getVirtualizationSolutionConnection (String              serverName,
                                                            String              connectorProviderClassName,
-                                                           Map<String, Object> virtualizationSolutionConfig){
-
+                                                           Map<String, Object> virtualizationSolutionConfig)
+    {
         Connection connection = new Connection();
         Map<String, String> additionalProperties = new HashMap<>();
         Endpoint endpoint = new Endpoint();
 
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
-        final String endpointDescription      = "Virualization solution endpoint.";
-        final String connectionDescription    = "Virualization solution connection.";
+        final String endpointDescription      = "Virtualization solution endpoint.";
+        final String connectionDescription    = "Virtualization solution connection.";
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
@@ -921,6 +945,7 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+
     /**
      * Return the connection of data platform
      *
@@ -931,8 +956,8 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDataPlatformConnection (String              serverName,
                                                  String              connectorProviderClassName,
-                                                 Map<String, Object> dataPlatformConfigurationProperties){
-
+                                                 Map<String, Object> dataPlatformConfigurationProperties)
+    {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
         final String endpointDescription      = "Data Platform Server endpoint.";
@@ -965,6 +990,7 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+
     /**
      * Return the connection.  This is used by open lineage graph connectors.
      *
@@ -987,18 +1013,23 @@ public class ConnectorConfigurationFactory
         final String endpointGUID          = UUID.randomUUID().toString();
         final String connectionGUID        = UUID.randomUUID().toString();
 
-        final String endpointDescription   = "OpenLineage native endpoint.";
-        final String connectionDescription = "Open Lineage native connection.";
+        final String endpointDescription      = "Open Lineage native endpoint.";
+        final String connectionDescription    = "Open Lineage native connection.";
 
         String endpointName    = "OpenLineage.Endpoint." + serverName;
         String connectionName  = "OpenLineage.Connection." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
-        return getDynamicConnection(configurationProperties, endpoint, connectionName,
-                connectionGUID, connectionDescription, connectorProviderClassName);
+        return getDynamicConnection(configurationProperties,
+                                    endpoint,
+                                    connectionName,
+                                    connectionGUID,
+                                    connectionDescription,
+                                    connectorProviderClassName);
     }
-  
+
+
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
@@ -1109,6 +1140,7 @@ public class ConnectorConfigurationFactory
         return elementType;
     }
 
+
     /**
      * Return the standard type for a virtual connection type.
      *
@@ -1122,6 +1154,7 @@ public class ConnectorConfigurationFactory
 
         return elementType;
     }
+
 
     /**
      * Return the Endpoint build based on the given parameters.
@@ -1148,6 +1181,7 @@ public class ConnectorConfigurationFactory
 
         return endpoint;
     }
+
 
     /**
      * Return the Connection build based on the given parameters

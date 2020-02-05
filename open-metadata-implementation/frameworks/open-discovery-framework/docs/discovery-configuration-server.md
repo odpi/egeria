@@ -8,7 +8,17 @@ holding and managing the configuration needed by the
 [discovery servers](discovery-server.md) and
 the [discovery engines](discovery-engine.md) within them.
 
+This configuration consists of defining which [discovery request
+types] are supported and which [discovery ]
 
+## Implementation in Egeria
+
+Egeria's discovery configuration server support is implemented by the
+[Discovery Engine OMAS](../../../access-services/discovery-engine).
+It has a [client](../../../access-services/discovery-engine/discovery-engine-client) called `DiscoveryConfigurationClient` that
+implements the ODF's  `DiscoveryConfigurationServer` interface.
+It also supports event notifications through 
+the [Discovery Engine OMAS's out topic](../../../access-services/discovery-engine/docs/concepts/discovery-engine-omas-out-topic.md).
 
 
 ----

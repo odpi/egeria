@@ -244,8 +244,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     }
 
 
-
-
     /**
      * Look to see if there is one of more new events to process.
      *

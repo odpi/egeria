@@ -16,7 +16,7 @@ public class DataPlatformInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public DataPlatformInstanceHandler() {
-        super(AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName());
         DataPlatformOMASRegistration.registerAccessService();
     }
 

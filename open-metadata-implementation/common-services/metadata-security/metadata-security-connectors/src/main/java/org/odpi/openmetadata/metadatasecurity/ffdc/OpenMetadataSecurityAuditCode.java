@@ -25,26 +25,26 @@ import java.util.Arrays;
 public enum OpenMetadataSecurityAuditCode
 {
     PLATFORM_INITIALIZING("OPEN-METADATA-SECURITY-0001",
-                         OMRSAuditLogRecordSeverity.INFO,
+                         OMRSAuditLogRecordSeverity.STARTUP,
                          "The Open Metadata Security Service {0} for OMAG Server Platform {1} is initializing",
                          "The local server has started up a new instance of the Open Metadata Platform Security Service Connector.",
                          "No action is required.  This is part of the normal operation of the service."),
 
     PLATFORM_SHUTDOWN("OPEN-METADATA-SECURITY-0002",
-                     OMRSAuditLogRecordSeverity.INFO,
+                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                      "The Open Metadata Security Service {0} for OMAG Server Platform {1} is shutting down",
                      "The local administrator has requested shut down of the Open Metadata Platform Security Service Connector.",
                      "No action is required.  This is part of the normal operation of the service."),
 
 
     SERVICE_INITIALIZING("OPEN-METADATA-SECURITY-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Metadata Security Service {0} for server {1} is initializing",
              "The local server has started up a new instance of the Open Metadata Server Security Service Connector.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OPEN-METADATA-SECURITY-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Open Metadata Security Service {0} for server {1} is shutting down",
              "The local administrator has requested shut down of the Open Metadata Server Security Service Connector.",
              "No action is required.  This is part of the normal operation of the service."),

@@ -8,7 +8,7 @@ is called its **home repository**.
 
 Metadata in its home repository can be updated and deleted.
 
-The [Open Metadata Repository Services (OMRS)](../README.md) is responsible
+The [Open Metadata Repository Services (OMRS)](..) is responsible
 for sharing this metadata with other metadata repositories who are
 members of the same **[cohort](open-metadata-repository-cohort.md)**.
 
