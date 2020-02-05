@@ -3,11 +3,21 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerProvider;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.outtopic.DiscoveryEngineOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.discoveryengine.outtopic.DiscoveryEnginePublisher;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -19,9 +29,10 @@ import java.util.List;
  */
 public class DiscoveryEngineAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                    auditLog   = null;
-    private DiscoveryEngineServicesInstance instance   = null;
-    private String                          serverName = null;
+    private OMRSAuditLog                    auditLog       = null;
+    private DiscoveryEngineServicesInstance instance       = null;
+    private String                          serverName     = null;
+    private DiscoveryEnginePublisher        eventPublisher = null;
 
     /**
      * Default constructor
@@ -32,7 +43,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
 
 
     /**
-     * Initialize the access service.
+     * Initialize the Discovery Engine access service.
      *
      * @param accessServiceConfig  specific configuration properties for this access service.
      * @param omrsTopicConnector  connector for receiving OMRS Events from the cohorts
@@ -63,6 +74,13 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
 
         try
         {
+            /*
+             * The supported zones determines which assets can be queried/analysed by any discovery engine instance
+             * connected to this instance of the Discovery Engine OMAS.  The default zones determines the zone that
+             * any discovery service defined through this Discovery Engine OMAS's configuration interface is
+             * set to.  Putting the discovery services in a different zone to the data assets means that they are
+             * can be masked from view from users of other OMASs such as Asset Consumer OMAS.
+             */
             List<String>   supportedZones = super.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                         accessServiceConfig.getAccessServiceName(),
                                                                         auditLog);
@@ -71,15 +89,58 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                                                    accessServiceConfig.getAccessServiceName(),
                                                                    auditLog);
 
+            /*
+             * The instance is used to support REST API calls to this server instance.  It is given the
+             * OutTopic connection for the client so that the client can query it to connect to the right
+             * out topic.
+             */
             this.instance = new DiscoveryEngineServicesInstance(repositoryConnector,
                                                                 supportedZones,
                                                                 defaultZones,
                                                                 auditLog,
                                                                 serverUserName,
-                                                                repositoryConnector.getMaxPageSize());
+                                                                repositoryConnector.getMaxPageSize(),
+                                                                this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                           AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                           DiscoveryEngineOutTopicClientProvider.class.getName(),
+                                                                                           auditLog));
             this.serverName = instance.getServerName();
 
+            /*
+             * This piece is setting up the server-side mechanism for the out topic.
+             */
+            Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
+            if (outTopicEventBusConnection != null)
+            {
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                OMRSAuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                     DiscoveryEngineOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                DiscoveryEngineOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                         DiscoveryEngineOutTopicServerConnector.class,
+                                                                                                         outTopicAuditLog,
+                                                                                                         AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                                         actionDescription);
+                eventPublisher = new DiscoveryEnginePublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new DiscoveryEngineOMRSTopicListener(AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                      eventPublisher,
+                                                                                      repositoryConnector.getRepositoryHelper(),
+                                                                                      outTopicAuditLog),
+                                                 auditLog);
+            }
+
+            /*
+             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Discovery Server) and events
+             * from OMRS to indicate that there are metadata changes.
+             */
             auditCode = DiscoveryEngineAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
@@ -91,19 +152,41 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
         }
         catch (OMAGConfigurationErrorException error)
         {
+            auditCode = DiscoveryEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getMessage()),
+                               accessServiceConfig.toString(),
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
             throw error;
         }
         catch (Throwable error)
         {
-            auditCode = DiscoveryEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditCode = DiscoveryEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION;
             auditLog.logException(actionDescription,
                                   auditCode.getLogMessageId(),
                                   auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
                                   accessServiceConfig.toString(),
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            DiscoveryEngineErrorCode errorCode = DiscoveryEngineErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION;
+            String                   errorMessage = errorCode.getErrorMessageId()
+                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                                                                                       AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                       serverName,
+                                                                                       error.getMessage());
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      actionDescription,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
         }
     }
 
@@ -113,12 +196,17 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String            actionDescription = "shutdown";
+        final String              actionDescription = "shutdown";
         DiscoveryEngineAuditCode  auditCode;
 
-        if (instance != null)
+        if (this.instance != null)
         {
             this.instance.shutdown();
+        }
+
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
         }
 
         auditCode = DiscoveryEngineAuditCode.SERVICE_SHUTDOWN;

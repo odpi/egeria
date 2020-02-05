@@ -12,37 +12,37 @@ import java.text.MessageFormat;
 
 public enum SecurityOfficerAuditCode {
     SERVICE_INITIALIZING("OMAS-SECURITY-OFFICER-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Security Officer Open Metadata Access Service (OMAS) is initializing",
             "The local server has started up a new instance of the Security Officer OMAS.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_REGISTERED_WITH_TOPIC("OMAS-SECURITY-OFFICER-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Security Officer Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server instance {0}",
             "The Security Officer OMAS is registering the server instance to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-SECURITY-OFFICER-0003",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Security Officer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Security Officer OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_TERMINATING("OMAS-SECURITY-OFFICER-0004",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Security Officer Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local handlers has requested shut down of the Security Officer OMAS.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-SECURITY-OFFICER-0005",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Security Officer Open Metadata Access Service (OMAS) has completed shutdown of server instance {0}",
             "The requested shutdown has now been processed",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-SECURITY-OFFICER-0006",
-            OMRSAuditLogRecordSeverity.ERROR,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Security Officer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),

@@ -16,13 +16,13 @@ public enum CommonUIServicesDescription implements Serializable
                                       "UI Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance UI server (UI Server)",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/admin-services"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/admin-services"),
 
     OPEN_METADATA_SECURITY           (3101,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/metadata-security/");
+                                      "https://egeria.odpi.org/open-metadata-implementation/common-services/metadata-security/");
 
 
     private static final long     serialVersionUID    = 1L;

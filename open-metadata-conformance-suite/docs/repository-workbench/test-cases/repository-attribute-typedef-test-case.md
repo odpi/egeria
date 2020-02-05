@@ -108,7 +108,7 @@ is valid and consistent with other calls.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-attribute-typedef-GovernanceDomain",
       "testCaseName" : "Repository attribute type definition test case",
-      "testCaseDescriptionURL" : "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/origin-workbench/repository-attribute-typedef-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/origin-workbench/repository-attribute-typedef-test-case.md",
       "assertionMessage" : "GovernanceDomain attribute type definition is compliant",
       "successfulAssertions" : [ "GovernanceDomain type definition has a name.",
                                  "GovernanceDomain type definition has a guid.",

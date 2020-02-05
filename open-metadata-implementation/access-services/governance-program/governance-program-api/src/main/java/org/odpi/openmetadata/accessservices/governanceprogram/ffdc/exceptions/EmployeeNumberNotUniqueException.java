@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class EmployeeNumberNotUniqueException extends GovernanceProgramCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private List<EntityDetail> duplicateProfiles;
 
     /**

@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "DIGITAL-ARCHITECTURE";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("DIGITAL-ARCHITECTURE"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,21 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(DigitalArchitectureErrorCode.SERVICE_NOT_INITIALIZED);
+        for (DigitalArchitectureErrorCode errorCode : DigitalArchitectureErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

@@ -104,6 +104,15 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
+        DiscoveryEngineProperties existingEngine = this.getDiscoveryEngineByName(userId, qualifiedName);
+        if (existingEngine != null)
+        {
+            errorHandler.handleDuplicateCreateRequest(DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                      qualifiedName,
+                                                      existingEngine.getGUID(),
+                                                      methodName);
+        }
+
         /*
          * Build up the properties used to create the engine and pass to the repository services.
          */
@@ -247,13 +256,6 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                        retrievedEntities,
                                                        methodName);
             }
-        }
-        else
-        {
-            errorHandler.handleNoEntity(DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                        DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                        builder.getNameInstanceProperties(methodName),
-                                        methodName);
         }
 
         return null;
@@ -576,13 +578,6 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                        retrievedEntities,
                                                        methodName);
             }
-        }
-        else
-        {
-            errorHandler.handleNoEntity(DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                        DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                        builder.getNameInstanceProperties(methodName),
-                                        methodName);
         }
 
         return null;
@@ -933,36 +928,44 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param assetDiscoveryTypes list of asset discovery types that this discovery service is able to process.
+     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
+     *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public  void  registerDiscoveryServiceWithEngine(String        userId,
-                                                     String        discoveryEngineGUID,
-                                                     String        discoveryServiceGUID,
-                                                     List<String>  assetDiscoveryTypes) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public  void  registerDiscoveryServiceWithEngine(String               userId,
+                                                     String               discoveryEngineGUID,
+                                                     String               discoveryServiceGUID,
+                                                     List<String>         discoveryRequestTypes,
+                                                     Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String assetDiscoveryTypesParameter = "assetDiscoveryTypes";
+        final String discoveryRequestTypesParameter = "discoveryRequestTypes";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        invalidParameterHandler.validateStringArray(assetDiscoveryTypes, assetDiscoveryTypesParameter, methodName);
+        invalidParameterHandler.validateStringArray(discoveryRequestTypes, discoveryRequestTypesParameter, methodName);
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
         repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                           instanceProperties,
-                                                          DiscoveryEnginePropertiesMapper.ASSET_DISCOVERY_TYPES_PROPERTY_NAME,
-                                                          assetDiscoveryTypes,
+                                                          DiscoveryEnginePropertiesMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
+                                                          discoveryRequestTypes,
                                                           methodName);
+        repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                        instanceProperties,
+                                                        DiscoveryEnginePropertiesMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
+                                                        defaultAnalysisParameters,
+                                                        methodName);
         repositoryHandler.createRelationship(userId,
                                              DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
                                              discoveryServiceGUID,

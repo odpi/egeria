@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataprivacy.listener.DataPrivacyOMRS
 import org.odpi.openmetadata.accessservices.dataprivacy.server.DataPrivacyServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -118,6 +119,10 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
                                   auditCode.getSystemAction(),
                                   auditCode.getUserAction(),
                                   error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.DATA_PRIVACY_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 

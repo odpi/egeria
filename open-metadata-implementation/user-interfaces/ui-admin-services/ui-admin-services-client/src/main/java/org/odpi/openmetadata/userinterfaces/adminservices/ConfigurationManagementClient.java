@@ -51,7 +51,7 @@ public class ConfigurationManagementClient
         }
         catch (InvalidParameterException error)
         {
-            throw new InvalidParameterException(error);
+            throw new InvalidParameterException(error.getErrorMessage(), error);
         }
     }
 
@@ -85,7 +85,7 @@ public class ConfigurationManagementClient
         }
         catch (InvalidParameterException error)
         {
-            throw new InvalidParameterException(error);
+            throw new InvalidParameterException(error.getErrorMessage(), error);
         }
     }
 

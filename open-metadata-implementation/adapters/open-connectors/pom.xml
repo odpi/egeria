@@ -29,7 +29,6 @@
     <modules>
         <module>event-bus-connectors</module>
         <module>repository-services-connectors</module>
-        <module>access-services-connectors</module>
         <module>data-store-connectors</module>
         <module>governance-daemon-connectors</module>
         <module>discovery-service-connectors</module>

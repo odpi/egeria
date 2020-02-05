@@ -25,25 +25,25 @@ import java.util.Arrays;
 public enum DigitalArchitectureAuditCode
 {
     SERVICE_INITIALIZING("OMAS-DIGITAL-ARCHITECTURE-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Digital Architecture Open Metadata Access Service (OMAS) is initializing a new server instance",
              "The local server has started up a new instance of the Digital Architecture OMAS.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-DIGITAL-ARCHITECTURE-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Digital Architecture Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Digital Architecture Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Digital Architecture OMAS instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
+             OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Digital Architecture Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
