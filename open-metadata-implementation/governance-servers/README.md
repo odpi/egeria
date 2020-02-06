@@ -34,6 +34,8 @@ for a particular type of governance server.
 * **[virtualization-services](virtualization-services)** - Automatically configures a data virtualization
    platform as new data sets are cataloged.
 
+Return to [open-metadata-implementation](..).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

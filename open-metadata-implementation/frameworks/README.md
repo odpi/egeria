@@ -27,6 +27,8 @@ are specialized OCF connectors, making the OCF the
 only plug-in mechanism in the open metadata and governance
 technology.
 
+Return to [open-metadata-implementation](..).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
