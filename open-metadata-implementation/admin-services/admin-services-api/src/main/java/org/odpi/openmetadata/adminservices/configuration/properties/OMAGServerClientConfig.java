@@ -59,9 +59,8 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
         }
     }
 
-
     /**
-     * Return the root URL of the access service.
+     * Return the root URL of the OMAG ServerPlatform.
      *
      * @return string root url
      */
@@ -72,7 +71,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the root URL of the access service.
+     * Set up the root URL of the OMAG Server Platform.
      *
      * @param omagServerPlatformRootURL string root url
      */
@@ -83,7 +82,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the name of the server where the access service resides.
+     * Return the name of the OMAG server.
      *
      * @return string server name
      */
@@ -94,7 +93,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the name of the server where the access service resides.
+     * Set up the name of the OMAG server.
      *
      * @param omagServerName string server name
      */

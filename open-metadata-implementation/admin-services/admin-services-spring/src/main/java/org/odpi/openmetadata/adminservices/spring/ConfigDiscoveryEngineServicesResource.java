@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * OMAGServerConfigDiscoveryEngineServices provides the API for configuring the discovery engine services.
+ * ConfigDiscoveryEngineServicesResource provides the API for configuring the discovery engine services.
  * These services support the operation of one or more discovery engines in an OMAG server called the Discovery Server.
  *
  * The discovery engine services are a client to the Discovery Engine Open Metadata Access Services (OMAS).
@@ -39,9 +39,9 @@ public class ConfigDiscoveryEngineServicesResource
      */
     @PostMapping(path = "/access-service")
 
-    public VoidResponse setAccessServiceLocation(@PathVariable String                    userId,
-                                                 @PathVariable String                    serverName,
-                                                 @RequestBody OMAGServerClientConfig clientConfig)
+    public VoidResponse setAccessServiceLocation(@PathVariable String                 userId,
+                                                 @PathVariable String                 serverName,
+                                                 @RequestBody  OMAGServerClientConfig clientConfig)
     {
         return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
     }

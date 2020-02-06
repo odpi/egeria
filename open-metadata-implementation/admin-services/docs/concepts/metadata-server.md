@@ -3,8 +3,10 @@
 
 # Metadata Server
 
-A metadata server is an OMAG server that hosts a metadata repository.
+A metadata server is an OMAG server that hosts a
+metadata repository.
 
+![Metadata Server](metadata-server.png)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
