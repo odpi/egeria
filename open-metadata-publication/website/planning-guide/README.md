@@ -19,36 +19,41 @@ platforms.
 ![Figure 1](../images/egeria-distributed-operation.png)
 > **Figure 1:** Egeria integrating different tools distributed over many locations
 
-The green clouds represent each of the deployment location, the different technologies
+The green clouds represent each of the deployment locations.
+The different technologies
 are shown as grey boxes and Egeria itself is shown in blue and orange.
 
 The blue rounded boxes are Egeria's Open Metadata and Governance (OMAG) Server Platform.
 This platform is the heart of Egeria's implementation.  Typically you would expect to
 have at least one OMAG Server Platform deployed in each location.  However,
 when you are experimenting with Egeria, it is often sufficient to start with one
-OMAG Server Platform and expend the number of platforms
+OMAG Server Platform and expand the number of platforms
 as you expand the technologies being integrated.
 
-The OMAG Server platform is capable of hosting
+The OMAG Server Platform is capable of hosting
 one or more Open Metadata and Governance (OMAG) Servers.  The OMAG Servers are the orange
 circles in Figure 1.  They manage the connectors to third party technology as well as the
 frameworks and intelligence that Egeria brings to distributed metadata management.
 
 Different types of technology need different types of integration and so there are different
-types of OMAG Servers.  Figure 2 shows the OMAG Servers implemented today.
+types of OMAG Servers.
+Each type of OMAG Server is focused on the integration of a specific type of
+of tool.
+Figure 2 shows the OMAG Servers implemented today.
 This picture will expand as we embrace new types of technology.
 
-![Figure 2](../images/types-of-omag-servers.png)
+![Figure 2](../../../open-metadata-implementation/admin-services/docs/concepts/types-of-omag-servers.png)
 > **Figure 2:** Types of OMAG Servers
 
-The metadata server, repository proxy and conformance test server communicate with one another
-via an open metadata repository cohort.  They exchange metadata through a low level, fine-grained
+The **cohort members** communicate with one another
+via an [open metadata repository cohort](../../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md).
+This means that they exchange metadata through a low level, fine-grained
 API supported by the Open Metadata Repository Services (OMRS).
 The governance servers connect to the metadata server.
 
 Figure 3 shows how the servers connect together.
 
-![Figure 3](../images/omag-server-ecosystem.png)
+![Figure 3](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-ecosystem.png)
 > **Figure 3:** How the OMAG Servers interact
 
 When you are designing the deployment of Egeria, the first step is to identify the technology
