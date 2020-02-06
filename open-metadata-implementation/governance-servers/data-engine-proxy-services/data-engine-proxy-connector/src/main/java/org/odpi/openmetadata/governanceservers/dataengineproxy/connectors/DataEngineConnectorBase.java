@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
+package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +30,10 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     /**
      * Retrieve the details about the data engine to which we are connected.
      *
-     * @return DataEngineSoftwareServerCapability
+     * @return SoftwareServerCapability
      */
-    public DataEngineSoftwareServerCapability getDataEngineDetails() {
-        log.warn("DataEngineConnectorBase::getDataEngineDetails() is not overridden (unimplemented).");
-        return null;
-    }
+    @Override
+    public abstract SoftwareServerCapability getDataEngineDetails();
 
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
@@ -42,6 +41,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @return boolean
      */
+    @Override
     public boolean requiresPolling() { return true; }
 
     /**
@@ -49,8 +49,11 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @return Date
      */
+    @Override
     public Date getChangesLastSynced() {
-        log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented).");
+        if (requiresPolling()) {
+            log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented), yet the connector requires polling.");
+        }
         return null;
     }
 
@@ -59,8 +62,11 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param time the time to record for the last synchronization
      */
+    @Override
     public void setChangesLastSynced(Date time) {
-        log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented).");
+        if (requiresPolling()) {
+            log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented), yet the connector requires polling.");
+        }
     }
 
     /**
@@ -68,10 +74,13 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineSchemaType>}
+     * @return {@code List<SchemaType>}
      */
-    public List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
+    @Override
+    public List<SchemaType> getChangedSchemaTypes(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
+        }
         return Collections.emptyList();
     }
 
@@ -80,10 +89,13 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEnginePortImplementation>}
+     * @return {@code List<PortImplementation>}
      */
-    public List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
+    @Override
+    public List<PortImplementation> getChangedPortImplementations(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
+        }
         return Collections.emptyList();
     }
 
@@ -92,10 +104,13 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEnginePortAlias>}
+     * @return {@code List<PortAlias>}
      */
-    public List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
+    @Override
+    public List<PortAlias> getChangedPortAliases(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
+        }
         return Collections.emptyList();
     }
 
@@ -104,10 +119,13 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineProcess>}
+     * @return {@code List<Process>}
      */
-    public List<DataEngineProcess> getChangedProcesses(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+    @Override
+    public List<Process> getChangedProcesses(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+        }
         return Collections.emptyList();
     }
 
@@ -116,10 +134,13 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineLineageMappings>}
+     * @return {@code List<LineageMapping>}
      */
-    public List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to) {
-        log.warn("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
+    @Override
+    public List<LineageMapping> getChangedLineageMappings(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
+        }
         return Collections.emptyList();
     }
 

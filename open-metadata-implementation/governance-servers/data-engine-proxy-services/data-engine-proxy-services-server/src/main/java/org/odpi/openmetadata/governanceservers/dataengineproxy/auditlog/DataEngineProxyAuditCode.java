@@ -66,6 +66,21 @@ public enum DataEngineProxyAuditCode {
             "The Data Engine Proxy is polling for changes since {0}",
             "The local server is looking for changes since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
+    OMAS_CONNECTION_ERROR("DATA-ENGINE-PROXY-0010",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The Data Engine OMAS client was not successfully initialized",
+            "The system is unable to process anything due to a lack of OMAS connectivity.",
+            "Check your OMAS configuration is correct and the OMAS is running."),
+    USER_NOT_AUTHORIZED("DATA-ENGINE-PROXY-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The user is not authorized for the Data Engine OMAS operation: {0}",
+            "The system is unable to process the operation due to the user not being authorized to do so.",
+            "Check your OMAS configuration and user authorizations."),
+    UNKNOWN_ERROR("DATA-ENGINE-PROXY-0012",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "An unknown error occurred",
+            "The system is unable to process the operation due to an unknown runtime error.",
+            "Check your OMAS configuration and server logs to troubleshoot."),
     ;
 
     private String logMessageId;

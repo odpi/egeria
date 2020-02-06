@@ -3,9 +3,10 @@
 /**
  * This is the interface for the generic operations on data virtualization solutions
  */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
+package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 
 import java.util.Date;
 import java.util.List;
@@ -18,9 +19,9 @@ public interface DataEngineInterface {
     /**
      * Retrieve the details about the data engine to which we are connected.
      *
-     * @return DataEngineSoftwareServerCapability
+     * @return SoftwareServerCapability
      */
-    DataEngineSoftwareServerCapability getDataEngineDetails();
+    SoftwareServerCapability getDataEngineDetails();
 
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
@@ -49,44 +50,44 @@ public interface DataEngineInterface {
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineSchemaType>}
+     * @return {@code List<SchemaType>}
      */
-    List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to);
+    List<SchemaType> getChangedSchemaTypes(Date from, Date to);
 
     /**
      * Retrieve a list of the changed port implementations between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEnginePortImplementation>}
+     * @return {@code List<PortImplementation>}
      */
-    List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to);
+    List<PortImplementation> getChangedPortImplementations(Date from, Date to);
 
     /**
      * Retrieve a list of the changed port aliases between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEnginePortAlias>}
+     * @return {@code List<PortAlias>}
      */
-    List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to);
+    List<PortAlias> getChangedPortAliases(Date from, Date to);
 
     /**
      * Retrieve a list of the changed processes between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineProcess>}
+     * @return {@code List<Process>}
      */
-    List<DataEngineProcess> getChangedProcesses(Date from, Date to);
+    List<Process> getChangedProcesses(Date from, Date to);
 
     /**
      * Retrieve a list of the changed lineage mappings between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<DataEngineLineageMappings>}
+     * @return {@code List<LineageMapping>}
      */
-    List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to);
+    List<LineageMapping> getChangedLineageMappings(Date from, Date to);
 
 }
