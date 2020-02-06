@@ -39,11 +39,6 @@ asset(s) and understand how these assets are being used and governed.
   The Community OMAS supports the administration for a community and related user profiles.  These communities are
 involved in reviewing and crowd-sourcing knowledge about the data assets and their use.
 
-* **[connected-asset](connected-asset)** - provide metadata about assets for the connectors.
-  
-  The Connected Asset OMAS implements the open metadata ConnectedAssetProperties API for an OCF connector.
-An OCF connector is a connector that supports the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
-
 * **[data-engine](data-engine)** - exchange metadata with a data processing engine.
                                    
   The Data Engine OMAS provides APIs and events for a data movement/processing
@@ -204,6 +199,8 @@ whether this is through local or remote calls.
 
 The [administration services](../admin-services/README.md) provide
 the ability to configure, start and stop the access services.
+
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

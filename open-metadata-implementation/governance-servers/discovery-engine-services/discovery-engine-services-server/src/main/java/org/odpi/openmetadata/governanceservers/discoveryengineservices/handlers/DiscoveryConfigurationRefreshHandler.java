@@ -8,17 +8,20 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.listener.DiscoveryConfigurationRefreshListener;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * DiscoveryConfigurationHandler is the class responsible for establishing the listener for configuration
+ * DiscoveryConfigurationRefreshHandler is the class responsible for establishing the listener for configuration
  * updates.  It runs as a separate thread until the listener is registered with the Discovery Engine OMAS.
  * At that point, the listener is able to process incoming configuration updates and this thread can end.
  */
-public class DiscoveryConfigurationHandler implements Runnable
+public class DiscoveryConfigurationRefreshHandler implements Runnable
 {
     private Map<String, DiscoveryEngineHandler> discoveryEngineHandlers;
     private DiscoveryConfigurationClient        configurationClient;
@@ -27,6 +30,8 @@ public class DiscoveryConfigurationHandler implements Runnable
     private String                              localServerName;
     private String                              accessServiceServerName;
     private String                              accessServiceRootURL;
+
+    private static final Logger log = LoggerFactory.getLogger(DiscoveryConfigurationRefreshHandler.class);
 
 
     /**
@@ -41,15 +46,15 @@ public class DiscoveryConfigurationHandler implements Runnable
      * @param accessServiceServerName metadata server's name
      * @param accessServiceRootURL platform location for metadata server.
      */
-    public DiscoveryConfigurationHandler(Map<String, DiscoveryEngineHandler> discoveryEngineHandlers,
-                                         DiscoveryConfigurationClient        configurationClient,
-                                         OMRSAuditLog                        auditLog,
-                                         String                              localServerUserId,
-                                         String                              localServerName,
-                                         String                              accessServiceServerName,
-                                         String                              accessServiceRootURL)
+    public DiscoveryConfigurationRefreshHandler(Map<String, DiscoveryEngineHandler> discoveryEngineHandlers,
+                                                DiscoveryConfigurationClient        configurationClient,
+                                                OMRSAuditLog                        auditLog,
+                                                String                              localServerUserId,
+                                                String                              localServerName,
+                                                String                              accessServiceServerName,
+                                                String                              accessServiceRootURL)
     {
-        this.discoveryEngineHandlers = discoveryEngineHandlers;
+        this.discoveryEngineHandlers = new HashMap<>(discoveryEngineHandlers);
         this.configurationClient     = configurationClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
@@ -80,7 +85,6 @@ public class DiscoveryConfigurationHandler implements Runnable
         {
             configToRetrieve = new ArrayList<>();
         }
-
 
         while ((! listenerRegistered) && (configToRetrieve.size() != 0))
         {
@@ -182,18 +186,15 @@ public class DiscoveryConfigurationHandler implements Runnable
      */
     private void waitToRetry()
     {
-        final int  sleepTime = 200000;
+        final int  sleepTime = 2000000;
 
-        /*
-         * Sleep and then retry or exit.
-         */
         try
         {
             Thread.sleep(sleepTime);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            // ignore
+            log.error("Ignored exception from sleep - probably ok", error);
         }
     }
 }

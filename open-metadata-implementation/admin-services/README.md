@@ -16,6 +16,7 @@ on the OMAG server platform and querying the runtime (operational) state of thes
 * [Tutorials related to the Administration Services](../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
 * [Internal Design Documentation](docs/design)
 
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
