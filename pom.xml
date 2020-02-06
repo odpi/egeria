@@ -140,7 +140,7 @@
         <gremlin.version>3.4.4</gremlin.version>
         <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring.version>5.2.3.RELEASE</spring.version>
-        <spring-security.version>5.2.1.RELEASE</spring-security.version>
+        <spring-security.version>5.2.2.RELEASE</spring-security.version>
         <spring-data.version>2.2.4.RELEASE</spring-data.version>
         <tomcat.version>9.0.30</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
@@ -170,7 +170,7 @@
         <oss.version>4.4.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.9.9</joda.version>
+        <joda.version>2.10.5</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.3</snappy.version>
