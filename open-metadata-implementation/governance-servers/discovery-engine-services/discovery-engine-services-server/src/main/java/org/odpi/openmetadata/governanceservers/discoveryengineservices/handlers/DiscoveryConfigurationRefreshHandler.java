@@ -10,6 +10,7 @@ import org.odpi.openmetadata.governanceservers.discoveryengineservices.listener.
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class DiscoveryConfigurationHandler implements Runnable
                                          String                              accessServiceServerName,
                                          String                              accessServiceRootURL)
     {
-        this.discoveryEngineHandlers = discoveryEngineHandlers;
+        this.discoveryEngineHandlers = new HashMap<>(discoveryEngineHandlers);
         this.configurationClient     = configurationClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
@@ -80,7 +81,6 @@ public class DiscoveryConfigurationHandler implements Runnable
         {
             configToRetrieve = new ArrayList<>();
         }
-
 
         while ((! listenerRegistered) && (configToRetrieve.size() != 0))
         {
