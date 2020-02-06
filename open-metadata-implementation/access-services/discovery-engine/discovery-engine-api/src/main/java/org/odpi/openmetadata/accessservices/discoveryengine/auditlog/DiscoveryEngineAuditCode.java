@@ -127,7 +127,9 @@ public enum DiscoveryEngineAuditCode
              "The Discovery Engine Open Metadata Access Service (OMAS) has sent event: {0}",
              "The access service sends out configuration notifications to ensure connected discovery servers have the most up to-date " +
                             "configuration.",
-             "No action is required.  This event is logged to provide an audit trail of the events being processed."),
+             "This event indicates that the configuration for a discovery engine, or discovery service has changed.  " +
+                            "Check that each connected discovery server receives this event and updates its configuration if " +
+                            "the change affects their operation."),
 
     ASSET_AUDIT_LOG("OMAS-DISCOVERY-SERVER-0013",
              OMRSAuditLogRecordSeverity.INFO,
