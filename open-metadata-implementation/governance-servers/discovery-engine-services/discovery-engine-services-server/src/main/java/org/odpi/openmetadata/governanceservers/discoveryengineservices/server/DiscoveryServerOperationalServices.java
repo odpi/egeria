@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.Governance
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationHandler;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
@@ -191,13 +191,13 @@ public class DiscoveryServerOperationalServices
              * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
              * for the discovery engines.
              */
-            DiscoveryConfigurationHandler configurationHandler = new DiscoveryConfigurationHandler(discoveryEngineHandlers,
-                                                                                                   configurationClient,
-                                                                                                   auditLog,
-                                                                                                   localServerUserId,
-                                                                                                   localServerName,
-                                                                                                   accessServiceServerName,
-                                                                                                   accessServiceRootURL);
+            DiscoveryConfigurationRefreshHandler configurationHandler = new DiscoveryConfigurationRefreshHandler(discoveryEngineHandlers,
+                                                                                                                 configurationClient,
+                                                                                                                 auditLog,
+                                                                                                                 localServerUserId,
+                                                                                                                 localServerName,
+                                                                                                                 accessServiceServerName,
+                                                                                                                 accessServiceRootURL);
             Thread thread = new Thread(configurationHandler, configurationHandler.getClass().getName());
             thread.start();
 
