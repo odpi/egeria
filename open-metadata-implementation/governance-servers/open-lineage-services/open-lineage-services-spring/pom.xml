@@ -10,7 +10,6 @@
     <parent>
         <artifactId>open-lineage-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -28,7 +27,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-            <version>1.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
