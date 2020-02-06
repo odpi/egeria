@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
@@ -29,9 +28,6 @@ public class DataEngineProxyOperationalServices {
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
     private DataEngineProxyChangePoller changePoller;
-
-    // Retrieved from the Data Engine Connector's configuration, if available
-    private String dataEngineConnectorUserId = null;
 
     /**
      * Constructor used at server startup.
@@ -150,15 +146,11 @@ public class DataEngineProxyOperationalServices {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 dataEngineConnector.start();
-                ConnectionProperties connectionProperties = dataEngineConnector.getConnection();
-                if (connectionProperties != null) {
-                    dataEngineConnectorUserId = connectionProperties.getUserId();
-                }
                 // If the config says we should poll for changes, do so via a new thread
                 if (dataEngineConnector.requiresPolling()) {
                     changePoller = new DataEngineProxyChangePoller(
                             dataEngineConnector,
-                            dataEngineConnectorUserId,
+                            localServerUserId,
                             dataEngineProxyConfig,
                             dataEngineClient,
                             auditLog
