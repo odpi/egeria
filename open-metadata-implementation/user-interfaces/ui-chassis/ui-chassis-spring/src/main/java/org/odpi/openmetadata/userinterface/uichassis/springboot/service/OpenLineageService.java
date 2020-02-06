@@ -36,7 +36,6 @@ public class OpenLineageService {
 
     public static final String EDGES_LABEL = "edges";
     public static final String NODES_LABEL = "nodes";
-    public static final String GLOSSARY_TERM = "glossaryTerm";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -176,13 +175,6 @@ public class OpenLineageService {
      */
     private Node createNode(LineageVertex currentNode) {
         String displayName = currentNode.getDisplayName();
-        String glossaryTerm = "";
-        if (!CollectionUtils.isEmpty(currentNode.getProperties())) {
-            glossaryTerm = currentNode.getProperties().get(GLOSSARY_TERM);
-        }
-        if (!StringUtils.isEmpty(glossaryTerm)) {
-            displayName = displayName + "\n" + glossaryTerm;
-        }
         Node node = new Node(currentNode.getNodeID(), displayName);
         node.setGroup(currentNode.getNodeType());
         node.setProperties(currentNode.getProperties());

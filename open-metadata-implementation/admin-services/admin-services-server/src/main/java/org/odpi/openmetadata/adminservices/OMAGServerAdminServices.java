@@ -3,20 +3,23 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -987,13 +990,15 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param storageProperties  properties used to configure Egeria Graph DB
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     public VoidResponse setGraphLocalRepository(String              userId,
-                                                String              serverName)
+                                                String              serverName,
+                                                Map<String, Object> storageProperties)
     {
         final String methodName = "setGraphLocalRepository";
 
@@ -1014,7 +1019,8 @@ public class OMAGServerAdminServices
             this.setLocalRepositoryConfig(userId,
                                           serverName,
                                           configurationFactory.getLocalGraphLocalRepositoryConfig(serverConfig.getLocalServerName(),
-                                                                                                  serverConfig.getLocalServerURL()));
+                                                                                                  serverConfig.getLocalServerURL(),
+                                                                                                  storageProperties));
         }
         catch (OMAGInvalidParameterException error)
         {
