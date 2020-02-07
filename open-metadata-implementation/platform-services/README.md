@@ -8,6 +8,7 @@ The platform services provides the APIs for configuring the
 and discovering information about the
 OMAG Servers that it is hosting.
 
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
