@@ -101,7 +101,7 @@ public enum OpenLineageServerAuditCode {
 
     ERROR_INITIALIZING_OLS("OPEN-LINEAGE-SERVICES-0015",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} encountered an unexpected error and could not start. The server configuration was {1}.",
+            "The Open Lineage Services server {0} encountered an unknown error and could not start. The server configuration was {1}.",
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
 
