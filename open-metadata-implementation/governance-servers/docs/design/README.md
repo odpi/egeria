@@ -34,7 +34,7 @@ module. To clarify, the modules used in the examples below illustrate this separ
 Start by defining the methods underlying technologies need to provide for your service to operate.
 
 For example, the [Data Engine Proxy Services](../../data-engine-proxy-services) need to receive information
-about the processing activities data engines carry out. Therefore, the [DataEngineInterface](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineInterface.java)
+about the processing activities data engines carry out. Therefore, the [DataEngineInterface](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineInterface.java)
 defines methods for retrieving changed processes, lineage mappings, ports and schema types from an underlying data
 engine.
 
@@ -111,7 +111,7 @@ Read through the `initialize` method code of [DataEngineProxyOperationalService
 and you will see the creation of the:
 
 - Data engine OMAS client, using the server name and URL from the configuration object (approximately line 130-140).
-- Data engine connector, as an instance of the abstract [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorBase.java)
+- Data engine connector, as an instance of the abstract [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
     class (approximately line 150-170). Note that a `ConnectorBroker` is used on the generic connection object (from
     the configuration object) to create the data engine connector. The _connector broker_ gives us a _connector_ to a
     real data engine based on the configuration parameters defined in the _connection_.
@@ -129,7 +129,7 @@ and the threaded [DataEngineProxyChangePoller](../../data-engine-proxy-services
 it runs in our example).
 
 Note that the implementation of the operational services (in particular within [DataEngineProxyChangePoller](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyChangePoller.java))
-is entirely defined using the general methods defined in our interface (the [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorBase.java)
+is entirely defined using the general methods defined in our interface (the [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
 class in our example). As a result, it is not tightly-coupled to any specific underlying technology. However, since we
 obtain a real data engine connector from the connector broker, the functionality will actually execute against the data
 engine itself.

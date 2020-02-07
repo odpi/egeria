@@ -9,11 +9,11 @@ of open metadata along with support for audit logging.
 
 A OMAG server always needs the repository services because they all need to at least configure an audit log.
 
-In addition **Open Metadata Servers** and **Open Metadata Adapters** need to set up the local repository and
+In addition the **Open Metadata Servers** and **Repository Proxies** need to set up the local repository and
 connect to a cohort if they are to share metadata.  You may also define a list of open metadata
 archives to load into the metadata repository on server start up.
 
-See [OMAG Server personalities](../concepts/omag-server-personalities.md) for descriptions of these types of servers.
+See [OMAG Server](../concepts/omag-server.md) for descriptions of these types of servers.
 
 ## Configuring the audit log
 

@@ -96,7 +96,7 @@ that have been assigned to them as part of one of these roles.
 
 * [Accessing my roles](accessing-my-roles.md)
 * [Accessing my to dos for each role](accessing-my-to-dos.md)
-* [Managing to dos](act)
+* [Managing to dos](managing-a-to-do.md)
 
 An individual can add feedback to their profile and others (see below).
 

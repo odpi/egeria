@@ -94,8 +94,8 @@ When Egeria configures it's connector to use kafka, it will now set the followin
 "sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
 "sasl.mechanism":"PLAIN"
 ```
-This fragment is generated using the parameters above by the template code in [kafkaext.tpl](templates/kafkaext.tpl).
-For other cloud providers, you will need to update templates/_kafkaext.tpl and consider contributing back to the project!
+This fragment is generated using the parameters above by the template code in [_kafkaext.tpl](templates/_kafkaext.tpl).
+For other cloud providers, you will need to update `templates/_kafkaext.tpl` and consider contributing back to the project!
 
 Topics may need to be manually configured - for more details see [topic connector readme](../../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/README.md)
 

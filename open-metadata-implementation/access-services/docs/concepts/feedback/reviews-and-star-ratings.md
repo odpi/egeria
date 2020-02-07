@@ -12,7 +12,7 @@ and a review comment.
 * The [Asset Consumer OMAS](../../../asset-consumer) enables the consumer of an asset to
 add a review to an asset.
 These reviews are then visible to other asset consumers through the
-[Connected Asset OMAS](../../../connected-asset).
+[OCF Metadata Management APIs](../../../../common-services/ocf-metadata-management).
 The [asset owner](../user-roles/asset-owner.md) can also see the
 reviews using the [Asset Owner OMAS](../../../asset-owner).
 

@@ -13,7 +13,9 @@ A view service supports a collection of related presentation services
 that support a particular part of a UI.  **Asset Search** is an example of a view
 service.
 
+![Figure 1](view-server.png)
 
+The presentation server is hosting the JavaScript that controls the browser display.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

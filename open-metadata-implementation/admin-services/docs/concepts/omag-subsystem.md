@@ -45,7 +45,7 @@ The potential subsystems within an [OMAG Server](omag-server.md) are as follows:
 * **[Discovery Engine Services](../../../governance-servers/discovery-engine-services)** for running automated metadata discovery services in a discovery engine.
   These services are the principle services of the discovery server.
 
-* **[Stewardship Services](../../../governance-servers/stewardship-services)** for managing and resolving issues that are detected in the assets being governed by Egeria.
+* **[Stewardship Engine Services](../../../governance-servers/stewardship-engine-services)** for managing and resolving issues that are detected in the assets being governed by Egeria.
   These services are the principle services of the stewardship server.
   
 * **[Security Sync Services](../../../governance-servers/security-sync-services)** for maintaining metadata and configuration in an security enforcement engine.

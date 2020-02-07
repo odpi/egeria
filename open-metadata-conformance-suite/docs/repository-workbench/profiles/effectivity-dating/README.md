@@ -14,12 +14,10 @@ Thiese properties are stored in an
 
 The requirements for this profile are as follows:
 
-* **[TypeDef Creation](type-def-add)** - adding new definitions for attributes,
-entities, relationships and classifications.
-
-* **[TypeDef Maintenance](type-def-maintenance)** - making changes to existing
-types.  Note that this is only possible if there are not instances stored for the
-type.
+* [Storing Effectivity Dates](store-effective-dates)
+* [Updating Effectivity Dates](update-effective-dates)
+* [Remove Effectivity Dates](remove-effective-dates)
+* [Effectivity Dates in Reference Copies](reference-copy-effective-dates)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
