@@ -134,7 +134,7 @@ Note that to fully remove artifacts from an IGC environment you must also allow 
 be deleted from IBM Metadata Asset Manager. This requires a manual configuration change as follows
 (which must be completed before running the removal playbook):
 
-!["Administration"](docs/ibm-mam-enable-delete.png)
+!["Administration"](../docs/ibm-mam-enable-delete.png)
 
 1. Navigate to the "Administration" tab.
 1. Open the "Import Settings" under Navigation.
