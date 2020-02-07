@@ -10,7 +10,7 @@ This includes the Java API, events, beans, events and REST API structures.
 * **community-profile-client** supports the Java client library that allows applications and tools to call the remote REST APIs.
 * **community-profile-server** supports the server side implementation of the access service.
   This includes the
-  * interaction with the [administration services](../../../../governance-servers/admin-services) for
+  * interaction with the [administration services](../../../../admin-services) for
     registration, configuration, initialization and termination of the access service.
   * interaction with the [repository services](../../../../repository-services) to work with open metadata from the
     [cohort](../../../../repository-services/docs/open-metadata-repository-cohort.md).

@@ -32,7 +32,7 @@ There are different roles in the Egeria project.
 ### Egeria project members
 
 Anyone can become a member of the Egeria community by signing up to the [mailing
-list](https://lists.odpi.org/g/odpi-pmc-datagovernance).
+list](https://lists.odpi.org/g/odpi-project-egeria).
 As a member you are able to attend our meetings, just to listen, or to play an active part in the discussion.
 
 When you attend, your name will be recorded in the meeting minutes along with any remarks or suggestions you make.
