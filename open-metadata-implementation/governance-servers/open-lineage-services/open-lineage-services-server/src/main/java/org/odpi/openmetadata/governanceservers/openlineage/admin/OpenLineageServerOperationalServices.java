@@ -186,7 +186,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "initializeGraphConnectorDB";
         try {
             connector.initializeGraphDB();
-        } catch (OpenLineageException e) {
+        } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Throwable e) {
             throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
