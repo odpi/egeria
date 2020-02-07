@@ -10,14 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Check links
+        id: check_links
+        uses: cmgrote/github-action-link-check@master
+      - name: Create issue from file
+        uses: peter-evans/create-issue-from-file@v2
         with:
-          fetch-depth: 1
-      - name: Link Checker
-        uses: gaurav-nelson/github-action-markdown-link-check@0.4.0
-#      - name: Create Issue From File
-#        uses: peter-evans/create-issue-from-file@v2
-#        with:
-#          token: "${{ secrets.GITHUB_TOKEN }}"
-#          title: Link Checker Report
-#          content-filepath: ./link-checker/out.md
-#          labels: documentation, consumability, tidy up
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Broken links
+          content-filepath: ./errors.txt
+          labels: documentation, consumability, tidy up

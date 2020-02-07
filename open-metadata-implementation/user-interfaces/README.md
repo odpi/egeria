@@ -16,6 +16,8 @@ experience of open metadata.
 * [ui-chassis](ui-chassis) the user interface platform.
 * [ui-admin-services](ui-admin-services) supports UI administration, used to configure and operate the UI server.
 
+Return to [open-metadata-implementation](..).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

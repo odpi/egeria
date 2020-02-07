@@ -33,5 +33,21 @@ public interface MainGraph extends OpenLineageGraphConnector {
      * @return main graph object
      */
     Object getMainGraph();
+
+    /**
+     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
+     */
+    //TODO Remove before pentest or production
+    void dumpMainGraph() throws OpenLineageException;
+
+    /**
+     * Write the maingraph to JSON (GraphSON) format.
+     *
+     * @return The queried graph, in graphSON format.
+     */
+    //TODO Remove before pentest or production
+    String exportMainGraph() throws OpenLineageException;
+
+
 }
 

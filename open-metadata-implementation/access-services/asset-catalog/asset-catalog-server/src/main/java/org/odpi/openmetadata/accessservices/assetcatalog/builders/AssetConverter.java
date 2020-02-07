@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
@@ -241,7 +242,7 @@ public class AssetConverter {
     private Map<String, String> extractProperties(InstanceProperties instanceProperties) {
         Map<String, String> properties = new HashMap<>();
 
-        if (instanceProperties != null) {
+        if (instanceProperties != null && MapUtils.isNotEmpty(instanceProperties.getInstanceProperties())) {
             instanceProperties.getInstanceProperties().forEach((key, value) -> properties.put(key, value.valueAsString()));
         }
         return properties;
