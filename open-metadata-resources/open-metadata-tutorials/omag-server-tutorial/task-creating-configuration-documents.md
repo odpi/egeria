@@ -5,7 +5,7 @@
 
 The [OMAG server platform](../../../open-metadata-publication/website/omag-server)
 provides a software platform for running
-[OMAG Servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md).
+[OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md).
 
 Each OMAG Server supports selected open metadata and governance services based on its
 configuration. 
@@ -17,12 +17,12 @@ However there are three sets of Administration Service APIs active.
 * **Server Origin** - for discovering the source of the OMAG server platform.  
 (This was used in the previous [task](task-starting-the-omag-server-platform.md).)
 * **Configuration Services** - for creating configuration documents.
-* **Operational Services** - for starting and stopping [logical OMAG Servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md)
+* **Operational Services** - for starting and stopping [OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
 in the OMAG server platform using the configuration documents.
 
 ## What is a configuration document?
 
-A [configuration document](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/configuration-document.md)
+A [configuration document](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
 provides the configuration properties for an OMAG server.
 
 It includes:
@@ -1696,7 +1696,7 @@ adapt it to specific environment.  However, the defaults provide a good starting
 The contents of this tutorial cover a very simple OMAG server configuration.
 For guidance on configuring more complex OMAG servers see:
 
-* [Administration Services User Guide](../../../open-metadata-implementation/governance-servers/admin-services/docs/user)
+* [Administration Services User Guide](../../../open-metadata-implementation/admin-services/docs/user)
 
 For instructions on how to set up two OMAG Servers using in memory repositories that are exchanging metadata
 over [Apache Kafka](http://kafka.apache.org/), see:

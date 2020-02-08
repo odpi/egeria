@@ -38,11 +38,12 @@ The Egeria content is organized into the following modules:
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
     * **[governance-engines-plugins](open-metadata-implementation/adapters/governance-engines-plugins)** support plugins to governance engines to enable them to use open metadata settings in their validation and enforcement decisions, and the resulting actions they take.
     * **[open-connectors](open-metadata-implementation/adapters/open-connectors)** are connectors that support the Open Connector Framework (OCF).
-      * **[access-services-connectors](open-metadata-implementation/adapters/open-connectors/access-services-connectors)** contains the topic connector implementations for each of the access services that support inbound events through an InTopic.
       * **[configuration-store-connectors](open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)** contains the connectors that manage the open metadata configuration.
       * **[connector-configuration-factory](open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)** creates **Connection** objects to configure the open connectors.
       * **[data-store-connectors](open-metadata-implementation/adapters/open-connectors/data-store-connectors)** contain OCF connectors to data stores on different data platforms.
+      * **[discovery-service-connectors](open-metadata-implementation/adapters/open-connectors/discovery-service-connectors)** contain ODF discovery service implementations.
       * **[event-bus-connectors](open-metadata-implementation/adapters/open-connectors/event-bus-connectors)** supports different event/messaging infrastructures.  They can be plugged into the topic connectors from the access-service-connectors and repository-service-connectors.
+      * **[governance-action-connectors](open-metadata-implementation/adapters/open-connectors/governance-action-connectors)** contains GAF governance action implementations.
       * **[governance-daemon-connectors](open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors)** contains connectors for the governance daemon servers that monitor activity or synchronize metadata and configuration asynchronously between different tools.
       * **[repository-services-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors)** contains connector implementations for each type of connector supported by the Open Metadata Repository Services (OMRS).
         * **[audit-log-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors)** supports different destinations for audit log messages.
@@ -56,6 +57,7 @@ The Egeria content is organized into the following modules:
   * **[admin-services](open-metadata-implementation/admin-services)** - supports the configuration of the OMAG Server Platform.  This configuration determines which of the open metadata and governance services are active.
   * **[common-services](open-metadata-implementation/common-services)** - support modules that are reused by other services.
     * **[ffdc-services](open-metadata-implementation/common-services/ffdc-services)** - provides base classes and validation for First Failure Data Capture (FFDC).
+    * **[gaf-metadata-management](open-metadata-implementation/common-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
     * **[metadata-security](open-metadata-implementation/common-services/metadata-security)** - provides integration points for fine-grained security for metadata.
     * **[multi-tenant](open-metadata-implementation/common-services/multi-tenant)** - provides management of server instances within the OMAG Server Platform.
     * **[ocf-metadata-management](open-metadata-implementation/common-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
@@ -71,7 +73,7 @@ The Egeria content is organized into the following modules:
     * **[discovery-engine-services](open-metadata-implementation/governance-servers/discovery-engine-services)** - supports automated metadata discovery.
     * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
     * **[security-sync-services](open-metadata-implementation/governance-servers/security-sync-services)** - supports automated configuration of security engines.
-    * **[stewardship-services](open-metadata-implementation/governance-servers/stewardship-services)** - supports automated stewardship actions.
+    * **[stewardship-engine-services](open-metadata-implementation/governance-servers/stewardship-engine-services)** - supports automated stewardship actions.
     * **[virtualization-services](open-metadata-implementation/governance-servers/virtualization-services)** - supports automated stewardship actions.
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
   * **[repository-services](open-metadata-implementation/repository-services)** - metadata exchange and federation - aka the Open Metadata Repository Services (OMRS).
@@ -84,7 +86,7 @@ The Egeria content is organized into the following modules:
   * **[open-metadata-deployment](open-metadata-resources/open-metadata-deployment)** - contains resources for deploying ODPi Egeria and related technology.
   * **[open-metadata-labs](open-metadata-resources/open-metadata-labs)** - contains Jupyter Notebooks to guide you through using ODPi Egeria.
   * **[open-metadata-samples](open-metadata-resources/open-metadata-samples)** - contains coding samples for Egeria APIs.
-  * **[open-metadata-tutorials](open-metadata-resources/open-metadata-tutorials)** - contains tutorials for managing your own ODPi Egeria enviornment.
+  * **[open-metadata-tutorials](open-metadata-resources/open-metadata-tutorials)** - contains tutorials for managing your own ODPi Egeria environment.
 * **[open-metadata-test](open-metadata-test)** - supports additional test cases beyond unit test.
 
 
