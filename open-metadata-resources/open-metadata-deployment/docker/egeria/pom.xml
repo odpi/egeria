@@ -22,8 +22,40 @@
     <artifactId>open-metadata-docker-egeria</artifactId>
 
     <packaging>pom</packaging>
+
+    <!-- Use assemblies as built for distribution -->
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-assemblies</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
+            <!-- We need to copy required assemblies locally - Docker requires this due to the way all files
+                 in context are sent to the server -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-assemblies-for-docker</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${project.version}-distribution/egeria-omag-${project.version}</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Setup the docker build.
                  Note - bound to 'install' phase as deploy causes push of maven artifacts
             -->

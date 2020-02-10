@@ -7,7 +7,7 @@ ARG repo
 
 # Default to latest snapshot from official odpi repository
 ENV version ${version:-"1.5-SNAPSHOT"}
-ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
+#ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
 
 LABEL org.label-schema.schema-version = "1.0"
 LABEL org.label-schema.vendor = "ODPi"
@@ -28,12 +28,15 @@ RUN apk --no-cache add bash shadow && \
 
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/maven-metadata.xml /opt/egeria/server-chassis.xml
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/maven-metadata.xml /opt/egeria/user-chassis-spring.xml
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/maven-metadata.xml /opt/egeria/lib/janus-connector-jar-with-dependencies.xml
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/server-chassis-spring-${version}.jar /opt/egeria/server-chassis-spring.jar
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/ui-chassis-spring-${version}.jar /opt/egeria/ui-chassis-spring.jar
-ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/open-lineage-janus-connector-${version}-jar-with-dependencies.jar /opt/egeria/lib/janus-connector-jar-with-dependencies.jar
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/maven-metadata.xml /opt/egeria/server-chassis.xml
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/maven-metadata.xml /opt/egeria/user-chassis-spring.xml
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/maven-metadata.xml /opt/egeria/lib/janus-connector-jar-with-dependencies.xml
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/server-chassis-spring-${version}.jar /opt/egeria/server-chassis-spring.jar
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/ui-chassis-spring-${version}.jar /opt/egeria/ui-chassis-spring.jar
+#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/open-lineage-janus-connector-${version}-jar-with-dependencies.jar /opt/egeria/lib/janus-connector-jar-with-dependencies.jar
+
+# Copy distribution
+COPY --chown=egeria:egeria target/assembly /opt/egeria
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 8080 5005
@@ -41,5 +44,5 @@ EXPOSE 8080 5005
 WORKDIR /opt/egeria
 USER egeria:egeria
 
-CMD java -jar /opt/egeria/server-chassis-spring.jar
+CMD java -jar /opt/egeria/server/server-chassis-spring-1.5-SNAPSHOT.jar
 ENTRYPOINT ["/entrypoint.sh"]
