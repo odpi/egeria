@@ -50,7 +50,7 @@ Then, run the `deploy.yml` playbook to deploy everything (using Ansible):
 $ ansible-playbook -i hosts deploy.yml
 ```
 
-If you have configured the [IGC Repository Connector](../../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector/README.md)
+If you have configured the [IGC Repository Connector](https://github.com/odpi/egeria-connector-ibm-information-server)
 in advance of running the playbook, including the event mapper configuration, you will also
 see events published into the cohort for these samples as well as part of the load process.
 
