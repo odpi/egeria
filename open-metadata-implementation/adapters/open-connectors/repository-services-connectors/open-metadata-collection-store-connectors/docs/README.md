@@ -43,7 +43,7 @@ following:
 
 ```xml
 <properties>
-    <open-metadata.version>1.4-SNAPSHOT</open-metadata.version>
+    <open-metadata.version>1.4</open-metadata.version>
 </properties>
 <dependencies>
     <dependency>
