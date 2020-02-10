@@ -23,6 +23,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -62,6 +66,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -72,6 +80,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -82,6 +94,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -92,6 +108,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -102,6 +122,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -112,6 +136,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -122,6 +150,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -134,6 +166,10 @@
             <includes>
                 <include>*${open-metadata.version}.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -147,6 +183,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -157,6 +197,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -167,6 +211,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -180,6 +228,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -190,6 +242,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -200,6 +256,10 @@
             <includes>
                 <include>*${open-metadata.version}*</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -214,6 +274,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -224,6 +288,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -234,6 +302,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -244,6 +316,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -254,6 +330,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -264,6 +344,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -274,6 +358,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -284,6 +372,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -294,6 +386,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -304,6 +400,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -314,6 +414,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -324,6 +428,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -334,6 +442,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -344,6 +456,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -354,6 +470,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -364,6 +484,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -374,6 +498,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -384,6 +512,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -394,6 +526,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -404,6 +540,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -414,6 +554,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -424,6 +568,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
@@ -444,22 +592,26 @@
         <!-- Copy the Jars for the OMAG User Interface-->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/user-interfaces/access-services-user-interface/target</directory>
+            <directory>../../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/target</directory>
             <outputDirectory>./user-interface</outputDirectory>
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
 
-        <!-- Copy the properties for the OMAG User Interface-->
+        <!-- Copy the properties for the UI -->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/user-interfaces/access-services-user-interface/src/main</directory>
+            <directory>../../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main</directory>
             <outputDirectory>./user-interface</outputDirectory>
             <includes>
-                <include>resources/**</include>
+                <include>resources/*</include>
             </includes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
@@ -487,6 +639,10 @@
                 <include>lib/*.jar</include>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
