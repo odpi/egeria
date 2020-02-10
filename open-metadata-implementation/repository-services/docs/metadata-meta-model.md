@@ -65,7 +65,7 @@ type).
 > Figure 3: Example Type Definitions (from OpenMetadataTypes)
 
 For example, the `Referenceable` is defined as follows as part of the 
-**[`OpenMetadataTypes`](../repository-services-implementation/src/main/java/org/odpi/openmetadata/repositoryservices/archivemanager/opentypes/OpenMetadataTypesArchive.java)**:
+**[`OpenMetadataTypes`](../../../open-metadata-resources/open-metadata-archives/open-metadata-types/src/main/java/org/odpi/openmetadata/opentypes/OpenMetadataTypesArchive.java)**:
 
 ```java
 final String guid            = "a32316b8-dc8c-48c5-b12b-71c1b2a080bf";
