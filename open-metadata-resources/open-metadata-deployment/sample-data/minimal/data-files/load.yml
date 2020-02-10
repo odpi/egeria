@@ -1,0 +1,30 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: ensure data file directory exists
+  file:
+    path: "{{ egeria_samples_minimal_targets.files }}"
+    state: directory
+    mode: 0755
+    owner: "{% if 'egeria_samples_db_host' in group_names %}{{ egeria_samples_db_credentials.owner }}{% else %}{{ egeria_samples_metadata_credentials.owner }}{% endif %}"
+    group: "{% if 'egeria_samples_db_host' in group_names %}{{ egeria_samples_db_credentials.group }}{% else %}{{ egeria_samples_metadata_credentials.group }}{% endif %}"
+  become: yes
+
+- name: transfer sample data files
+  copy:
+    src: "data-files/"
+    dest: "{{ egeria_samples_minimal_targets.files }}/"
+    owner: "{% if 'egeria_samples_db_host' in group_names %}{{ egeria_samples_db_credentials.owner }}{% else %}{{ egeria_samples_metadata_credentials.owner }}{% endif %}"
+    group: "{% if 'egeria_samples_db_host' in group_names %}{{ egeria_samples_db_credentials.group }}{% else %}{{ egeria_samples_metadata_credentials.group }}{% endif %}"
+    mode: 0644
+  become: yes
+
+- name: remove any non-sample files
+  file:
+    path: "{{ egeria_samples_minimal_targets.files }}/{{ item }}"
+    state: absent
+  become: yes
+  with_items:
+    - load.yml
+    - remove.yml

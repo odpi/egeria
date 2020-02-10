@@ -4,10 +4,10 @@
 # User Interface Administration Services
 
 The administration services support the configuration of the open metadata and governance user interface services
-within the [OMAG UI Platform](docs/concepts/omag-ui-platform.md)
+within the OMAG UI Platform.
 This configuration determines how to connect to the OMAG Server platform services.
 
-It also supports the starting and stopping of logical [OMAG UI Servers](docs/concepts/logical-ui-server.md)
+It also supports the starting and stopping of logical OMAG UI Servers
 on the OMAG UI platform and querying the runtime (operational) state of these ui servers.
 
 An example rest call to configure the UI is a post call to https://localhost:8443/open-metadata/ui-admin-services/users/<userid>/servers/<server>/configuration

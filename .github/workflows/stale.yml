@@ -9,9 +9,8 @@ on:
 
 jobs:
   stale:
-
+    if: contains('github.repository','odpi/')
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/stale@v1
         with:

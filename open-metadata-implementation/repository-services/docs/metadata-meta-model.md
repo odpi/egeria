@@ -30,7 +30,7 @@ are abstract).
 
 **Examples**
 
-For example, the native **[`OpenMetadataTypes`](../repository-services-implementation/src/main/java/org/odpi/openmetadata/repositoryservices/archivemanager/opentypes/OpenMetadataTypesArchive.java)** 
+For example, the native **[`OpenMetadataTypes`](../../../open-metadata-resources/open-metadata-archives/open-metadata-types)** 
 that Egeria defines include:
 
 - a generic `Referenceable` entity type,

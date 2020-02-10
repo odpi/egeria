@@ -17,7 +17,7 @@ instances of the OMAG Server running in an OMAG Server Platform, each performing
 The active subsystems of each of these server instances would be defined in a different
 configuration document.
 They could all, however, be loaded into the same OMAG Server Platform, or distributed across
-different OMAG Server Platforms ([more information](../concepts/omag-server-personalities.md)).
+different OMAG Server Platforms ([more information](../concepts/omag-server.md)).
 
 The configuration document for a specific OMAG server is identified by the server's name.
 This is passed on the URL of every admin services API request along with the user

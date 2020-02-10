@@ -72,7 +72,7 @@ If you are not already familiar with these technologies, they will take more eff
 you want to leverage public cloud services these may be more appropriate than using Docker directly.
 
 After installing / configuring these components, details on deploying the labs can be found under:
-[https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/lab](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/lab)
+[https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab)
 
 ### Kubernetes
 

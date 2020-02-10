@@ -17,7 +17,7 @@ It has 2 parts to its interface:
       It has no special knowledge of the format.
 
     * **[avro-file-connector](../../../../adapters/open-connectors/data-store-connectors/file-connectors/avro-file-connector)** provides connector to read files
-      that have an [Apache Avro](https://avro.apache.org/https://avro.apache.org/) format.
+      that have an [Apache Avro](https://avro.apache.org/) format.
 
     * **[csv-file-connector](../../../../adapters/open-connectors/data-store-connectors/file-connectors/csv-file-connector)** provides connector to read files
       that have a CSV tabular format.

@@ -33,7 +33,7 @@ do not affect existing definitions in the configuration document.
 
 ## Storage of the configuration document
 
-By default the configuration document are stored as JSON in the default directory
+By default the configuration document are stored as JSON in a file in the default directory
 for the [OMAG Server Platform](omag-server-platform.md) that creates them.
 
 These files may contain security certificates and passwords and so should be treated as sensitive.
@@ -45,8 +45,7 @@ If this connection is not set up, the OMAG Server platform defaults to the JSON 
 
 ## Further reading
 
-* [OMAG Server Personalities](omag-server-personalities.md) - configuration
-patterns for different types of OMAG servers.
+* [OMAG Server](omag-server.md) - different types of OMAG servers and how they are configured.
 * [Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) -
 to understand more abut open connectors and connections.
 

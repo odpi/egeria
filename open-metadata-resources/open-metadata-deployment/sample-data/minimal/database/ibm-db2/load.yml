@@ -1,0 +1,23 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: copy data load scripts
+  template:
+    src: "database/ibm-db2/load{{ item }}.sql"
+    dest: "/home/{{ egeria_samples_db_credentials.owner }}/load{{ item }}.sql"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  become: yes
+  with_items: "{{ egeria_samples_minimal_databases }}"
+
+- name: load sample data to database
+  shell: >
+    source ~/.bashrc &&
+    db2 -td@ -f /home/{{ egeria_samples_db_credentials.owner }}/load{{ item }}.sql
+  args:
+    executable: /bin/bash
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  become: yes
+  with_items: "{{ egeria_samples_minimal_databases }}"
+  register: __db2_load_result
+  failed_when: __db2_load_result.rc != 0 and __db2_load_result.rc != 4

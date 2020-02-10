@@ -76,7 +76,7 @@ to that service.
 
 For example, the [Data Engine Proxy Services](../../../../governance-servers/data-engine-proxy-services) integrate
 metadata from data engines with Egeria. To integrate DataStage with Egeria, we want our [DataStageConnector](https://github.com/odpi/egeria-connector-ibm-information-server/blob/master/datastage-adapter/src/main/java/org/odpi/egeria/connectors/ibm/datastage/dataengineconnector/DataStageConnector.java)
-to be used by the data engine proxy services. Therefore the connector needs to extend [DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorBase.java),
+to be used by the data engine proxy services. Therefore the connector needs to extend [DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java),
 because this defines the methods needed by the data engine proxy services.
 
 Likewise, we want our [IGCOMRSRepositoryConnector](https://github.com/odpi/egeria-connector-ibm-information-server/blob/master/igc-adapter/src/main/java/org/odpi/egeria/connectors/ibm/igc/repositoryconnector/IGCOMRSRepositoryConnector.java)
@@ -85,13 +85,13 @@ to integrate IGC with Egeria as a metadata repository. Therefore the connector n
 because this defines the methods needed to integrate with Open Metadata Repository Services (OMRS).
 
 How did we know to extend these base classes? The _connector provider_ implementations in the previous step each
-extended a base class specific to the type of connector they provide ([DataEngineConnectorProviderBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorProviderBase.java)
+extended a base class specific to the type of connector they provide ([DataEngineConnectorProviderBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorProviderBase.java)
 and [OMRSRepositoryConnectorProviderBase](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnectorProviderBase.java)).
-These _connector_ base classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorBase.java)
+These _connector_ base classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
 and [OMRSRepositoryConnector](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
 are in the same package structure as those _connector provider_ base classes.
 
-In both cases, by extending the abstract classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/dataengineproxy/DataEngineConnectorBase.java)
+In both cases, by extending the abstract classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
 and [OMRSRepositoryConnector](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
 our connector must implement the methods these abstract classes define. These general methods implement our services
 (Data Engine Proxy Services and OMRS), without needing to know anything about the underlying technology. Therefore, we

@@ -4,7 +4,9 @@
 # Metadata Server
 
 A metadata server is an OMAG server that hosts a
-metadata repository.
+metadata repository.  It is able to be a 
+[member of an open metadata repository cohort](cohort-member.md) and so
+can exchange metadata with other members of the cohort.
 
 ![Metadata Server](metadata-server.png)
 
