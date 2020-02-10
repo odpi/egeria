@@ -2,23 +2,29 @@
 # Copyright Contributors to the Egeria project.
 
 FROM openjdk:8-jre-alpine
-ARG version
-ARG repo
+ARG version=1.5-SNAPSHOT
+ARG VCS_REF=unknown
+ARG VCS_ORIGIN=unknown
+ARG BUILD_TIME=unknown
+ARG VCS_DATE=unknown
 
-# Default to latest snapshot from official odpi repository
-ENV version ${version:-"1.5-SNAPSHOT"}
-#ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
+ENV version ${version}
 
-LABEL org.label-schema.schema-version = "1.0"
-LABEL org.label-schema.vendor = "ODPi"
-LABEL org.label-schema.name = "egeria"
-LABEL org.label-schema.description = "Common image for core ODPi Egeria runtimes: OMAG Server Platform (chassis) and UI."
-LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
-LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/egeria"
-LABEL org.label-schema.docker.cmd = "docker run -d -p 8080:8080 odpi/egeria"
-LABEL org.label-schema.docker.cmd.devel = "docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria"
-LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
-LABEL org.label-schema.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
+LABEL org.label-schema.schema-version = "1.0" \
+      org.label-schema.vendor = "ODPi" \
+      org.label-schema.name = "egeria" \
+      org.label-schema.description = "Common image for core ODPi Egeria runtime." \
+      org.label-schema.url = "https://egeria.odpi.org/" \
+      org.label-schema.vcs-url = "$VCS_ORIGIN" \
+      org.label-schema.vcs-ref = "$VCS_REF" \
+      org.label-schema.vcs-date = "$VCS_DATE" \
+      org.label-schema.build-date = "$BUILD_TIME" \
+      org.label-schema.version = "$version" \
+      org.label-schema.usage = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/egeria/" \
+      org.label-schema.docker.cmd = "docker run -d -p 8080:8080 odpi/egeria" \
+      org.label-schema.docker.cmd.devel = "docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria" \
+      org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
+      org.label-schema.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
 RUN apk --no-cache add bash shadow && \
     apk --no-cache update && \
@@ -27,13 +33,6 @@ RUN apk --no-cache add bash shadow && \
     useradd --no-log-init -r -g egeria -u 8080 -m -d /opt/egeria egeria
 
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
-
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/maven-metadata.xml /opt/egeria/server-chassis.xml
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/maven-metadata.xml /opt/egeria/user-chassis-spring.xml
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/maven-metadata.xml /opt/egeria/lib/janus-connector-jar-with-dependencies.xml
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/server-chassis-spring/${version}/server-chassis-spring-${version}.jar /opt/egeria/server-chassis-spring.jar
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/ui-chassis-spring/${version}/ui-chassis-spring-${version}.jar /opt/egeria/ui-chassis-spring.jar
-#ADD --chown=egeria:egeria ${repo}/org/odpi/egeria/open-lineage-janus-connector/${version}/open-lineage-janus-connector-${version}-jar-with-dependencies.jar /opt/egeria/lib/janus-connector-jar-with-dependencies.jar
 
 # Copy distribution
 COPY --chown=egeria:egeria target/assembly /opt/egeria
@@ -44,5 +43,10 @@ EXPOSE 8080 5005
 WORKDIR /opt/egeria
 USER egeria:egeria
 
-CMD java -jar /opt/egeria/server/server-chassis-spring-1.5-SNAPSHOT.jar
+# Spring loader path for connectors etc
+ENV LOADER_PATH=/opt/egeria/server/lib
+
+# Launch server chassis by default
+CMD java -jar /opt/egeria/server/server-chassis-spring-${version}.jar
+
 ENTRYPOINT ["/entrypoint.sh"]
