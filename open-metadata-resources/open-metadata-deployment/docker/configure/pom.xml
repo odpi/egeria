@@ -98,7 +98,7 @@
             <id>tag-latest</id>
             <activation>
                 <property>
-                    <name>taglatest</name>
+                    <name>docker.taglatest</name>
                 </property>
             </activation>
             <build>

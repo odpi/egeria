@@ -61,6 +61,7 @@ stages:
                   -e
                   -s .m2/settings.xml
                   -Ddocker
+                  -Ddocker.taglatest
                   -Ddocker.repo=odpi
                   -Ddocker.registry=docker.io
                   -Ddocker.images=ext
