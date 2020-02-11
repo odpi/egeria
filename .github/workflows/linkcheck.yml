@@ -7,14 +7,17 @@ on:
     - cron: '0 1 * * *'
 jobs:
   markdown-link-check:
-    if: contains('github.repository','odpi/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: checkout action code
+        if: contains('github.repository','odpi/')
+        uses: actions/checkout@master
       - name: Check links
+        if: success()
         id: check_links
         uses: cmgrote/github-action-link-check@master
       - name: Create issue from file
+        if: success()
         uses: peter-evans/create-issue-from-file@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
