@@ -9,10 +9,11 @@ on:
 
 jobs:
   stale:
-    if: contains('github.repository','odpi/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v1
+      - name: check stale issues and prs
+        if: contains('github.repository','odpi/')
+        uses: actions/stale@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: >
