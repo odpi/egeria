@@ -74,7 +74,6 @@ service:
     apachezookeeper: 32181
     solr: 30983
     # Set this to address of one of the local nodes - public IP
-    omrsmonitor: 31080
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
@@ -88,9 +87,6 @@ istio:
   enabled: false
 
 # Options to switch off certain components (not egeria)
-omrsmonitor:
-  enabled: true
-
 ui:
   enabled: true
 
@@ -147,9 +143,6 @@ image:
 
   configure:
     name: egeria-configure
-
-  omrsmonitor:
-    name: omrsmonitor-egeriavdc
 
   atlas:
     name: apache-atlas
