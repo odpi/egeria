@@ -57,12 +57,12 @@ spec:
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
-                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+                  :{{ .Values.image.egeria.tag | default .Values.egeriaversion }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
-            - "java -jar /opt/egeria/ui-chassis-spring.jar"
+            - "java -jar /opt/egeria/user-interface/ui-chassis-spring-{{ .Values.egeriaversion}}.jar"
           ports:
             - containerPort: 8443
           readinessProbe:

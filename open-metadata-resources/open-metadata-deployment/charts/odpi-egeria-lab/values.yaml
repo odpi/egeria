@@ -12,12 +12,14 @@ service:
     factory: 30083
     ui: 30443
 
+egeriaversion: 1.5-SNAPSHOT
+
 # Defaults for the images (can be overridden here or individually, see comment below)
+# Note for egeria provided images we use the version specified above
 imageDefaults:
   registry: docker.io
   namespace: odpi
   tag: latest
-  # set pullPolicy=Always to ensure getting the latest images each time. IfNotPresent to reuse existing (not recommended)
   pullPolicy: Always
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
