@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
@@ -246,8 +245,7 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription The action that was taking place when the error occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
-            auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
         OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),

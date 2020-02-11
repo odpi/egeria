@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.ffdc;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
