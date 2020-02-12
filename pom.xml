@@ -2451,7 +2451,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
-                    <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
                     <quiet>true</quiet>
                 </configuration>
                 <executions>

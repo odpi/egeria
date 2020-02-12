@@ -13,6 +13,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>jar</packaging>
+
     <name>Open Types Test generator</name>
     <description>
         Generate Functional Verification Test (FVT) for open types.
@@ -49,26 +51,4 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>createemptydocsource</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
-                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
