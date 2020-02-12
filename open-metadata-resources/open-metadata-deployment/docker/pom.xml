@@ -22,15 +22,6 @@
     <artifactId>open-metadata-docker</artifactId>
 
     <packaging>pom</packaging>
-    <modules>
-        <module>build-images</module>
-        <module>apache-atlas</module>
-        <module>apache-ranger-admin</module>
-        <module>configure</module>
-        <module>egeria</module>
-        <module>gaian</module>
-        <module>omrs-monitor</module>
-    </modules>
 
     <!-- Default docker registry to use -->
     <properties>
@@ -73,4 +64,38 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Set docker.images to 'core' for base images only, 'ext' for only extended images, otherwise all will be built -->
+    <profiles>
+        <profile>
+            <id>extended images</id>
+            <activation>
+                <property>
+                    <name>docker.images</name>
+                    <value>!core</value>
+                </property>
+            </activation>
+            <modules>
+                <module>build-images</module>
+                <module>apache-atlas</module>
+                <module>apache-ranger-admin</module>
+                <module>gaian</module>
+                <module>omrs-monitor</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>core images</id>
+            <activation>
+                <property>
+                    <name>docker.images</name>
+                    <value>!ext</value>
+                </property>
+            </activation>
+            <modules>
+                <module>configure</module>
+                <module>egeria</module>
+            </modules>
+        </profile>
+    </profiles>
+
 </project>
