@@ -17,7 +17,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
 
     <url>https://odpi.github.io/egeria</url>
 
@@ -2451,7 +2451,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
-                    <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
                     <quiet>true</quiet>
                 </configuration>
                 <executions>

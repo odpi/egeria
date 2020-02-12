@@ -9,9 +9,11 @@
     <parent>
         <artifactId>open-types-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
 
     <name>Open Types Test generator</name>
     <description>
@@ -48,4 +50,5 @@
         </dependency>
 
     </dependencies>
+
 </project>

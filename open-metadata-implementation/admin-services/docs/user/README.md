@@ -93,7 +93,7 @@ GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/c
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.4-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.4)".
 
 ```
 GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
