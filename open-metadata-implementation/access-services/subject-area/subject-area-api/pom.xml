@@ -16,6 +16,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Subject Area OMAS api</name>
     <description>
         Common code shared between the Subject Area Open Metadata Access Service (OMAS) client and server.

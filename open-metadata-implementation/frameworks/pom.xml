@@ -14,9 +14,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Open Metadata Frameworks</name>
     <description>
-        The open metadata and governance frameworks define the interfaces for pluggable components.  These
+        The open metadata and governance frameworks define the interfaces for pluggable components. These
         components provide much of the customization offered by the open metadata and governance
         implementation.
     </description>
