@@ -1294,6 +1294,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
+        catch (PropertyServerException error)
+        {
+            exceptionHandler.capturePropertyServerException(response, error);
+        }
         catch (Throwable error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
@@ -1355,6 +1359,10 @@ public class OMAGServerOperationalServices
         catch (OMAGNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            exceptionHandler.capturePropertyServerException(response, error);
         }
         catch (Throwable error)
         {
