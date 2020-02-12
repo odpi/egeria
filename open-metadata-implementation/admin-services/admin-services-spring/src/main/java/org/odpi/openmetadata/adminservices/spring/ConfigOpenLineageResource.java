@@ -41,7 +41,7 @@ public class ConfigOpenLineageResource
      * @param serverName  local server name.
      * @return void response
      */
-    @PostMapping(path = "/open-lineage/remove-configuration")
+    @DeleteMapping(path = "/open-lineage/configuration")
     public VoidResponse shutdown(@PathVariable String userId,
                                @PathVariable String serverName)
     {
