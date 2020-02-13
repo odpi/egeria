@@ -31,5 +31,8 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
 USER root
 RUN apt-get update && apt-get -y install git --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-USER $NB_USER
+COPY target/assembly/notebooks $HOME
+RUN chown -R $NB_UID:$NB_GID $HOME
+
+USER $NB_UID
 # Leave EXPOSE, ENTRYPOINT and CMD as per official images
