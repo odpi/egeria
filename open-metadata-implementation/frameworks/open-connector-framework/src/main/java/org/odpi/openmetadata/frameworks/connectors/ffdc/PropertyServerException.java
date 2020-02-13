@@ -40,7 +40,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -66,7 +66,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, relatedProperties);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -93,7 +93,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
     /**
@@ -121,7 +121,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 

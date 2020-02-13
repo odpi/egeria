@@ -34,7 +34,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -53,7 +53,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
