@@ -18,11 +18,11 @@
         <fileSet>
             <directory>../../open-metadata-resources/open-metadata-tutorials</directory>
             <outputDirectory>./notebooks</outputDirectory>
-            <includes>
+            <includesB>
                 <include>**/*.ipynb</include>
                 <include>**/*.md</include>
                 <include>**/resources/**</include>
-            </includes>
+            </includesB>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
