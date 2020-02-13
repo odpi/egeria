@@ -3,6 +3,9 @@
 
 # Discovery Context
 
+provides the discovery service with access to information about
+the discovery request along with the open metadata repository interfaces.
+
 The discovery context provides parameters used by
 a [discovery service](discovery-service.md) to locate
 and analyze an asset and then record the results.

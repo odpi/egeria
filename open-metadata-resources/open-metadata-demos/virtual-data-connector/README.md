@@ -29,9 +29,9 @@ from
 * any license associated with the data
 
 To provide this information, the VDC project needs to build out the
-**[default types for open metadata](../../../open-metadata-publication/website/open-metadata-types/README.md)**
-and **[provide a new catalog API](../../../open-metadata-implementation/access-services/asset-catalog/README.md)** and
-**[interface for the understanding of data](../../../open-metadata-implementation/access-services/connected-asset/README.md)**
+**[default types for open metadata](../../../open-metadata-publication/website/open-metadata-types)**
+and **[provide a new catalog API](../../../open-metadata-implementation/access-services/asset-catalog)** and
+**[interface for the understanding of data](../../../open-metadata-implementation/access-services/asset-consumer)**
 based on these values.
 
 #### What is the security model that determines which metadata and data each end user can see?
@@ -45,7 +45,7 @@ In the VDC demo we are providing a single endpoint for accessing data
 (this is the virtual data connector itself) that uses an [Apache Ranger](https://ranger.apache.org/) plugin to control access.
 This demo automatically configures the tag-based security access in
 Apache Ranger using information from the open
-metadata repositories (see [Governance Engine OMAS](../../../open-metadata-implementation/access-services/governance-engine/README.md))
+metadata repositories (see [Governance Engine OMAS](../../../open-metadata-implementation/access-services/governance-engine))
 in order to provide security access based on both the
 confidentiality classification tags (eg. `PII` and `SPI` tags) and the subject area of the data.
 
@@ -65,11 +65,11 @@ to allow an enterprise view of the potential data sources, plus a metadata-drive
 connector framework for connecting to both data and metadata repositories.  
 These frameworks are part of the open metadata and governance story and include:
 
-* **[Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework/README.md)** that provides a plugability mechanism for repositories
+* **[Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework)** that provides a plugability mechanism for repositories
 to plug into the open metadata ecosystem.
 * **[Open Metadata Repository Services (OMRS)](../../../open-metadata-implementation/repository-services/README.md)** provides the federated queries and metadata exchange
 required to search multiple repositories using a single request.
-* **[Open Connector Implementations](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/README.md)** to plug into the OMRS.
+* **[Open Connector Implementations](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors)** to plug into the OMRS.
 
 
 ## Walk-through of the VDC use case
@@ -110,11 +110,11 @@ drive updates through the OMRS repository connector API to the Apache Atlas repo
 
 The virtualizer is an optional component of the OMAG server that receives notifications
 from the open metadata repositories through the 
-[Information View OMAS](../../../open-metadata-implementation/access-services/information-view/README.md)
+[Information View OMAS](../../../open-metadata-implementation/access-services/information-view)
 event topic and builds logical tables in [Gaian](https://github.com/gaiandb/gaiandb) as well and the
 corresponding information view metadata in an open metadata repository.
 
-[Gaian](../../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector/README.md) is
+[Gaian](../../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector) is
 an open source information virtualization technology.
 The virtualizer is written to be modular so calls to a different virtualization
 technology can be made at this point with a small change to the virtualizer. 

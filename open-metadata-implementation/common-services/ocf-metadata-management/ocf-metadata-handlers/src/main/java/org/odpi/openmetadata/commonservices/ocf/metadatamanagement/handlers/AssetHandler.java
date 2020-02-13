@@ -424,23 +424,41 @@ public class AssetHandler
 
                 if (connectionGUID != null)
                 {
-                    InstanceProperties properties = null;
+                    /*
+                     * The connection object has been saved - or updated - depending on what is currently in the metadata repositories.
+                     * Check that if a relationship does not exist between the asset and this connection then create it.
+                     */
+                    Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
+                                                                                                 connectionGUID,
+                                                                                                 ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                                                                 asset.getGUID(),
+                                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                                 methodName);
 
-                    if (assetSummary != null)
+                    if (relationship == null)
                     {
-                        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
-                                                                                  assetSummary,
-                                                                                  methodName);
-                    }
+                        /*
+                         * The asset summary property is stored in the relationship between the asset and the connection.
+                         */
+                        InstanceProperties properties = null;
 
-                    repositoryHandler.createRelationship(userId,
-                                                         AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                         connectionGUID,
-                                                         asset.getGUID(),
-                                                         properties,
-                                                         methodName);
+                        if (assetSummary != null)
+                        {
+                            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
+                                                                                      assetSummary,
+                                                                                      methodName);
+                        }
+
+                        repositoryHandler.createRelationship(userId,
+                                                             AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                             connectionGUID,
+                                                             asset.getGUID(),
+                                                             properties,
+                                                             methodName);
+                    }
                 }
             }
         }

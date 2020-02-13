@@ -6,13 +6,16 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -38,9 +41,13 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     private static final String assertionMsg6 = " repository supports creation of instances ";
 
 
-    private EntityDef         testEntityDef;
-    private ClassificationDef classificationDef;
-    private String            testTypeName;
+    private EntityDef            testEntityDef;
+    private ClassificationDef    classificationDef;
+    private String               testTypeName;
+
+    private List<EntityDetail>   createdEntities = new ArrayList<>();
+
+
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
@@ -84,17 +91,37 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
         EntityDetail testEntity;
 
+        InstanceProperties instProps = null;
+
         try {
 
-            testEntity = addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, testEntityDef);
+            /*
+             * Generate property values for all the type's defined properties, including inherited properties
+             * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+             * thereby getting into the connector-logic beyond the property validation. It also creates an
+             * entity that is logically complete - versus an instance with just the locally-defined properties.
+             */
+
+            instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef);
+
+            testEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                     testEntityDef.getGUID(),
+                                                     instProps,
+                                                     null,
+                                                     null);
 
             assertCondition((true),
-                    assertion6,
-                    testTypeName + assertionMsg6,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
-        }
-        catch (FunctionNotSupportedException exception) {
+                            assertion6,
+                            testTypeName + assertionMsg6,
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
+            // Record the created instance for later clean up.
+            createdEntities.add(testEntity);
+
+
+        } catch (FunctionNotSupportedException exception) {
+
             /*
              * If running against a read-only repository/connector that cannot add
              * entities or relationships catch FunctionNotSupportedException and give up the test.
@@ -103,11 +130,28 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
              */
 
             super.addNotSupportedAssertion(assertion6,
-                    assertionMsg6,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                           assertionMsg6,
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + testEntityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", testEntityDef.getGUID());
+            parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
+            parameters.put("initialClasiifications", "null");
+            parameters.put("initialStatus", "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -117,10 +161,34 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                         RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
 
-        EntityDetail classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
-                                                                          testEntity.getGUID(),
-                                                                          classificationDef.getName(),
-                                                                          null);
+
+
+        EntityDetail classifiedEntity = null;
+        try {
+
+            classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
+                                                                              testEntity.getGUID(),
+                                                                              classificationDef.getName(),
+                                                                              null);
+
+        }
+        catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "classifyEntity";
+            String operationDescription = "classify an entity of type " + testEntityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", testEntity.getGUID());
+            parameters.put("classificationName", classificationDef.getName());
+            parameters.put("classificationProperties", "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
+
 
         assertCondition((classifiedEntity != null),
                         assertion2,
@@ -149,10 +217,34 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
         InstanceProperties  classificationProperties = this.getPropertiesForInstance(classificationDef.getPropertiesDefinition());
         if (classificationProperties != null)
         {
-            EntityDetail reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
-                                                                                            testEntity.getGUID(),
-                                                                                            classificationDef.getName(),
-                                                                                            classificationProperties);
+
+            EntityDetail reclassifiedEntity = null;
+
+            try {
+
+                 reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
+                                                                                                testEntity.getGUID(),
+                                                                                                classificationDef.getName(),
+                                                                                                classificationProperties);
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "updateEntityClassification";
+                String operationDescription = "update the classification of an entity of type " + testEntityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", testEntity.getGUID());
+                parameters.put("classificationName", classificationDef.getName());
+                parameters.put("classificationProperties", classificationProperties.toString());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
 
             Classification updatedClassification = null;
             classifications = reclassifiedEntity.getClassifications();
@@ -171,9 +263,32 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                             RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
         }
 
-        EntityDetail  declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
-                                                                               testEntity.getGUID(),
-                                                                               classificationDef.getName());
+
+        EntityDetail declassifiedEntity = null;
+
+        try {
+
+            declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
+                                                                                  testEntity.getGUID(),
+                                                                                  classificationDef.getName());
+
+        }
+        catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "declassifyEntity";
+            String operationDescription = "declassify an entity of type " + testEntityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", testEntity.getGUID());
+            parameters.put("classificationName", classificationDef.getName());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
+
 
         assertCondition(((declassifiedEntity != null) && (declassifiedEntity.getClassifications() == null)),
                         assertion5,
@@ -185,82 +300,49 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     }
 
 
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
-    protected void cleanup() throws Exception
+    public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        /*
-         * Find any entities of the given type def and delete them....
-         */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                    testEntityDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (entities == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdEntities != null && !createdEntities.isEmpty()) {
 
             /*
-             * Report how many entities were left behind at the end of the test run
+             * Instances were created - clean them up.
              */
 
-            resultSize = entities.size();
+            for (EntityDetail entity : createdEntities) {
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
-
-            for (EntityDetail entity : entities) {
-
-                /*
-                 * Try soft delete (ok if it fails) and purge.
-                 */
-
-                try {
-                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-
-                } catch (FunctionNotSupportedException exception) {
-                    /* OK - had to try soft; continue to purge */
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
                 }
 
+                // If entity is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-
-                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
-
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
             }
-        } while (resultSize >= pageSize);
-
+        }
     }
+
 }

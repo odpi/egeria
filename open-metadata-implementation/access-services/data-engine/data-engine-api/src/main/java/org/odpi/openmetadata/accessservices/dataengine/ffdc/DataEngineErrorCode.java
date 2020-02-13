@@ -37,16 +37,16 @@ public enum DataEngineErrorCode {
             "Correct the code in the caller to provide the correct port type."),
     PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-002",
             "The data engine event {0} could not be processed. Error: {1}",
-            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
-            Constants.USER_ACTION_EVENT_EXCEPTION),
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema."),
     PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
             "The data engine event {0} could not be parsed. Error: {1}",
-            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
-            Constants.USER_ACTION_EVENT_EXCEPTION),
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema."),
     DATA_ENGINE_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
             "Exception while processing the data engine event {0}",
-            Constants.SYSTEM_ACTION_EVENT_EXCEPTION,
-            Constants.USER_ACTION_EVENT_EXCEPTION);
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema.");
 
     private int httpErrorCode;
     private String errorMessageId;
@@ -134,8 +134,5 @@ public enum DataEngineErrorCode {
         return userAction;
     }
 
-    private static class Constants {
-        static final String SYSTEM_ACTION_EVENT_EXCEPTION = "The system is unable to process the event.";
-        static final String USER_ACTION_EVENT_EXCEPTION = "Verify the topic configuration or the event schema.";
-    }}
+}
 

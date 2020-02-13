@@ -32,7 +32,7 @@ There are different roles in the Egeria project.
 ### Egeria project members
 
 Anyone can become a member of the Egeria community by signing up to the [mailing
-list](https://lists.odpi.org/g/odpi-pmc-datagovernance).
+list](https://lists.odpi.org/g/odpi-project-egeria).
 As a member you are able to attend our meetings, just to listen, or to play an active part in the discussion.
 
 When you attend, your name will be recorded in the meeting minutes along with any remarks or suggestions you make.
@@ -131,7 +131,7 @@ The Egeria content is managed in GitHub under [https://github.com/odpi/egeria](h
 It may be developed using patches, branches from master, or forks/git pull requests.
 Each change should have a [GitHub issue](https://github.com/odpi/egeria/issues) explaining why the change is being made.
 The new or updated content should follow the Egeria
-[developer guidelines](https://odpi.github.io/egeria/developer-resources/Developer-Guidelines).
+[developer guidelines](https://egeria.odpi.org/developer-resources/Developer-Guidelines).
 
 When new content proposed to the project, the person contributing is required to sign the contribution
 to confirm it conforms to the [Developer Certificate of Origin (DCO)](https://developercertificate.org/).

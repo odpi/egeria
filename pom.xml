@@ -17,9 +17,9 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
 
-    <url>https://odpi.github.io/egeria</url>
+    <url>https://egeria.odpi.org</url>
 
     <!-- The Apache license is used for code and the creative commons license is used for documentation -->
 
@@ -124,8 +124,8 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.5.2</junit.platform.version>
-        <junit.jupiter.version>5.5.2</junit.jupiter.version>
+        <junit.platform.version>1.6.0</junit.platform.version>
+        <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.2.4</mockito.version>
@@ -136,15 +136,15 @@
         <jackson.version>2.10.2</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.4.0</kafka.version>
-        <janus.version>0.4.0</janus.version>
-        <gremlin.version>3.4.1</gremlin.version>
-        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
+        <janus.version>0.4.1</janus.version>
+        <gremlin.version>3.4.5</gremlin.version>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring.version>5.2.3.RELEASE</spring.version>
-        <spring-security.version>5.2.1.RELEASE</spring-security.version>
+        <spring-security.version>5.2.2.RELEASE</spring-security.version>
         <spring-data.version>2.2.4.RELEASE</spring-data.version>
         <tomcat.version>9.0.30</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-collections.version>4.4</commons-collections.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
         <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.200</h2-database.version>
@@ -153,7 +153,7 @@
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <gaian.version>2.1.8</gaian.version>
-        <avro.version>1.9.1</avro.version>
+        <avro.version>1.9.2</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
@@ -170,19 +170,23 @@
         <oss.version>4.4.0</oss.version>
         <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
+        <joda.version>2.10.5</joda.version>
+        <jackson-asl.version>1.9.13</jackson-asl.version>
+        <antlr.version>3.5.2</antlr.version>
+        <snappy.version>1.1.7.3</snappy.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-shade.version>3.2.1</maven-shade.version>
+        <maven-shade.version>3.2.2</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-pmd.version>3.12.0</maven-pmd.version>
+        <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.0</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-beta5</spotbugs.version>
+        <spotbugs.version>4.0.0-RC3</spotbugs.version>
         <maven-download.version>1.5.0</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -276,7 +280,7 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <scope>compile</scope>
-                <version>${commons-collections.version}</version>
+                <version>${commons-collections4.version}</version>
             </dependency>
 
             <dependency>
@@ -341,7 +345,6 @@
                 <scope>compile</scope>
                 <version>${javax-validation.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>javax.xml.bind</groupId>
@@ -450,6 +453,7 @@
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cql</artifactId>
                 <version>${janus.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
@@ -468,25 +472,28 @@
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-cassandra</artifactId>
                 <version>${janus.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
-                <scope>compile</scope>
                 <version>${janus.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
                 <version>${janus.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-lucene</artifactId>
                 <version>${janus.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
@@ -572,12 +579,14 @@
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>ui-admin-services</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>ui-admin-services-api</artifactId>
@@ -1014,6 +1023,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1050,6 +1066,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-service-connectors</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1665,6 +1688,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-engine-services-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1673,13 +1724,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>janus-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1799,6 +1843,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-platform-services-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1951,6 +2002,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.sleepycat</groupId>
+                <artifactId>je</artifactId>
+                <version>${sleepycat.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.datastax.oss</groupId>
                 <artifactId>java-driver-core</artifactId>
                 <scope>compile</scope>
@@ -1963,13 +2020,7 @@
                 <version>${guava.version}</version>
                 <scope>compile</scope>
             </dependency>
-
-            <dependency>
-              <groupId>com.sleepycat</groupId>
-              <artifactId>je</artifactId>
-              <version>${sleepycat.version}</version>
-            </dependency>
-
+            
             <dependency>
                 <groupId>com.google.crypto.tink</groupId>
                 <artifactId>tink</artifactId>
@@ -1993,6 +2044,41 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>${spotbugs-annotations.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson-asl.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson-asl.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr-runtime</artifactId>
+                <version>${antlr.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.xerial.snappy</groupId>
+                <artifactId>snappy-java</artifactId>
+                <version>${snappy.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
         </dependencies>
@@ -2211,9 +2297,14 @@
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${nexus-staging-maven-plugin}</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>4.0.0</version>
+                </plugin>
+
             </plugins>
-
-
 
         </pluginManagement>
 
@@ -2324,7 +2415,7 @@
                         <exclude>**/.classpath</exclude>
                         <exclude>**/.project</exclude>
                         <exclude>**/.settings/**</exclude>
-                        <exclude>egeria-graph-repositories/**</exclude>
+                        <exclude>*-graph-repositories/**</exclude>
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>

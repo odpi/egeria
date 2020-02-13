@@ -23,8 +23,9 @@ public class SchemaAnalysisAnnotation extends Annotation
 {
     private static final long    serialVersionUID = 1L;
 
-    private String     schemaName = null;
-    private String     schemaTypeName = null;
+    private String schemaName           = null;
+    private String schemaTypeName       = null;
+    private int    discoveredDataFields = 0;
 
 
     /**
@@ -89,13 +90,35 @@ public class SchemaAnalysisAnnotation extends Annotation
 
 
     /**
-     * Set up he name of the schema type for this asset.
+     * Set up the name of the schema type for this asset.
      *
      * @param schemaTypeName name
      */
     public void setSchemaTypeName(String schemaTypeName)
     {
         this.schemaTypeName = schemaTypeName;
+    }
+
+
+    /**
+     * Return the number of discovered data fields in this schema.
+     *
+     * @return integer
+     */
+    public int getDiscoveredDataFields()
+    {
+        return discoveredDataFields;
+    }
+
+
+    /**
+     * Set up the number of discovered data fields in this schema.
+     *
+     * @param discoveredDataFields integer
+     */
+    public void setDiscoveredDataFields(int discoveredDataFields)
+    {
+        this.discoveredDataFields = discoveredDataFields;
     }
 
 
@@ -110,6 +133,7 @@ public class SchemaAnalysisAnnotation extends Annotation
         return "SchemaAnalysisAnnotation{" +
                 "schemaName='" + schemaName + '\'' +
                 ", schemaTypeName='" + schemaTypeName + '\'' +
+                ", discoveredDataFields='" + discoveredDataFields + '\'' +
                 ", annotationType='" + getAnnotationType() + '\'' +
                 ", summary='" + getSummary() + '\'' +
                 ", confidenceLevel=" + getConfidenceLevel() +
@@ -141,6 +165,7 @@ public class SchemaAnalysisAnnotation extends Annotation
     @Override
     public boolean equals(Object objectToCompare)
     {
+
         if (this == objectToCompare)
         {
             return true;
@@ -154,10 +179,10 @@ public class SchemaAnalysisAnnotation extends Annotation
             return false;
         }
         SchemaAnalysisAnnotation that = (SchemaAnalysisAnnotation) objectToCompare;
-        return Objects.equals(getSchemaName(), that.getSchemaName()) &&
-                Objects.equals(getSchemaTypeName(), that.getSchemaTypeName());
+        return discoveredDataFields == that.discoveredDataFields &&
+                Objects.equals(schemaName, that.schemaName) &&
+                Objects.equals(schemaTypeName, that.schemaTypeName);
     }
-
 
 
     /**
@@ -168,6 +193,6 @@ public class SchemaAnalysisAnnotation extends Annotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaTypeName());
+        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaTypeName(), getDiscoveredDataFields());
     }
 }

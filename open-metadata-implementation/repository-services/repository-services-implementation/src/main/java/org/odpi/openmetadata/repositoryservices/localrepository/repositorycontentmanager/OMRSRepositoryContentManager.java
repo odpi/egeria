@@ -1121,9 +1121,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         List<TypeDef> results = null;
 
-        if (! activeTypeDefGUIDs.isEmpty())
+        if (! knownTypeDefGUIDs.isEmpty())
         {
-            results = new ArrayList<>(activeTypeDefGUIDs.values());
+            results = new ArrayList<>(knownTypeDefGUIDs.values());
         }
 
         return results;
@@ -1139,9 +1139,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         List<AttributeTypeDef> results = null;
 
-        if (!activeAttributeTypeDefGUIDs.isEmpty())
+        if (! knownAttributeTypeDefGUIDs.isEmpty())
         {
-            results = new ArrayList<>(activeAttributeTypeDefGUIDs.values());
+            results = new ArrayList<>(knownAttributeTypeDefGUIDs.values());
         }
 
         return results;
@@ -1736,7 +1736,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (attributeTypeDef == null)
             {
-                logUnknownType(sourceName, typeGUID, typeName);
                 return false;
             }
             else
@@ -1970,7 +1969,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * and suggests that two types with the same name have been defined in the cohort.  The conflict needs to be
      * resolved in order to replicate metadata of this type.
      *
-     * @param sourceName source of the request
      * @param sourceName source of the TypeDef (used for logging)
      * @param typeDefGUID unique identifier of the TypeDef
      * @param typeDefName unique name of the TypeDef
@@ -2192,8 +2190,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         TypeDef   typeDef = knownTypeDefNames.get(typeDefName);
 
-        if (!typeDef.getVersionName().equals(typeDefVersion))
+        if (typeDef == null)
         {
+            log.debug("Unknown TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from " + sourceName);
+
+            return true;
+        }
+
+        if (!typeDef.getVersionName().equals(typeDefVersion)) {
             logVersionMismatch(sourceName,
                                typeDefGUID,
                                typeDefName,
@@ -2230,6 +2234,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         AttributeTypeDef   attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
 
+        if (attributeTypeDef == null)
+        {
+            log.debug("Unknown TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from " + sourceName);
+
+            return true;
+
+        }
         if (!attributeTypeDef.getVersionName().equals(attributeTypeDefVersion))
         {
             logVersionMismatch(sourceName,
@@ -2654,8 +2665,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        typeDef.toString());
 
-            log.error("TypeDef " + typeDef.getName() + " not added because repository is not available: " + typeDef);
-            log.error("RepositoryErrorException:", error);
+            log.debug("TypeDef " + typeDef.getName() + " not added because repository is not available: " + typeDef);
+            log.debug("RepositoryErrorException:", error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -2667,13 +2678,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        typeDef.toString());
 
-            log.error("TypeDef " + typeDef.getName() + " not added because repository is not authorized: " + typeDef);
-            log.error("RepositoryErrorException:", error);
+            log.debug("TypeDef " + typeDef.getName() + " not added because repository is not authorized: " + typeDef);
+            log.debug("RepositoryErrorException:", error);
         }
         catch (TypeDefConflictException error)
         {
-            log.error("TypeDef not added because it conflicts with another TypeDef already in the repository: " + typeDef);
-            log.error("TypeDefConflictException:", error);
+            log.debug("TypeDef not added because it conflicts with another TypeDef already in the repository: " + typeDef);
+            log.debug("TypeDefConflictException:", error);
 
             logTypeProcessingException(error,
                                        typeDef.getName(),
@@ -2703,8 +2714,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        typeDef.toString());
 
-            log.error("TypeDef not added because repository thinks it is invalid: " + typeDef);
-            log.error("InvalidTypeDefException: ", error);
+            log.debug("TypeDef not added because repository thinks it is invalid: " + typeDef);
+            log.debug("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
@@ -2716,8 +2727,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        typeDef.toString());
 
-            log.error("TypeDef not added because repository has a logic error: " + typeDef);
-            log.error("TypeDefKnownException: ", error);
+            log.debug("TypeDef not added because repository has a logic error: " + typeDef);
+            log.debug("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
@@ -2726,8 +2737,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    sourceName,
                                    typeDef.toString());
 
-            log.error("TypeDef not added because repository has an unexpected error: " + typeDef);
-            log.error("Throwable: ", error);
+            log.debug("TypeDef not added because repository has an unexpected error: " + typeDef);
+            log.debug("Throwable: ", error);
         }
     }
 
@@ -2846,8 +2857,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        attributeTypeDef.toString());
 
-            log.error("TypeDef " + attributeTypeDef.getName() + " not added because repository is not available: " + attributeTypeDef);
-            log.error("RepositoryErrorException:", error);
+            log.debug("TypeDef " + attributeTypeDef.getName() + " not added because repository is not available: " + attributeTypeDef);
+            log.debug("RepositoryErrorException:", error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -2859,8 +2870,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        attributeTypeDef.toString());
 
-            log.error("TypeDef " + attributeTypeDef.getName() + " not added because repository is not authorized: " + attributeTypeDef);
-            log.error("RepositoryErrorException:", error);
+            log.debug("TypeDef " + attributeTypeDef.getName() + " not added because repository is not authorized: " + attributeTypeDef);
+            log.debug("RepositoryErrorException:", error);
         }
         catch (TypeDefConflictException error)
         {
@@ -2872,8 +2883,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        attributeTypeDef.toString());
 
-            log.error("TypeDef not added because it conflicts with another TypeDef already in the repository: " + attributeTypeDef);
-            log.error("TypeDefConflictException:", error);
+            log.debug("TypeDef not added because it conflicts with another TypeDef already in the repository: " + attributeTypeDef);
+            log.debug("TypeDefConflictException:", error);
 
             outboundRepositoryEventManager.processAttributeTypeDefConflictEvent(sourceName,
                                                                                 localRepositoryConnector.getMetadataCollectionId(),
@@ -2896,8 +2907,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        attributeTypeDef.toString());
 
-            log.error("TypeDef not added because repository thinks it is invalid: " + attributeTypeDef);
-            log.error("InvalidTypeDefException: ", error);
+            log.debug("TypeDef not added because repository thinks it is invalid: " + attributeTypeDef);
+            log.debug("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
@@ -2909,8 +2920,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        attributeTypeDef.toString());
 
-            log.error("TypeDef not added because repository has a logic error: " + attributeTypeDef);
-            log.error("TypeDefKnownException: ", error);
+            log.debug("TypeDef not added because repository has a logic error: " + attributeTypeDef);
+            log.debug("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
@@ -2919,8 +2930,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    sourceName,
                                    attributeTypeDef.toString());
 
-            log.error("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
-            log.error("Throwable: ", error);
+            log.debug("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
+            log.debug("Throwable: ", error);
         }
     }
 

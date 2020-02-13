@@ -18,6 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ErrorCodeTest
 {
+    final static String  messageIdPrefix = "ASSET-OWNER";
     private List<String> existingMessageIds = new ArrayList<>();
 
     /**
@@ -44,7 +45,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("ASSET-OWNER"));
+        assertTrue(testValue.getErrorMessageId().contains(messageIdPrefix));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -67,29 +68,10 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(AssetOwnerErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NO_CONNECTED_ASSET);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.TOO_MANY_CONNECTIONS);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.CONNECTION_NOT_FOUND);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.PROXY_CONNECTION_FOUND);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.ASSET_NOT_FOUND);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.UNKNOWN_ASSET);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_CONNECTION_RETURNED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_CONNECTOR_RETURNED);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(AssetOwnerErrorCode.SERVICE_NOT_INITIALIZED);
+        for (AssetOwnerErrorCode errorCode : AssetOwnerErrorCode.values())
+        {
+            testSingleErrorCodeValues(errorCode);
+        }
     }
 
 

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -22,16 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LineageQueryParameters {
 
     private Scope scope;
-    private View view;
     private String displayNameMustContain;
     private  boolean includeProcesses;
 
     public LineageQueryParameters() {
     }
 
-    public LineageQueryParameters(Scope scope, View view, String displayNameMustContain, boolean includeProcesses) {
+    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses) {
         this.scope = scope;
-        this.view = view;
         this.displayNameMustContain = displayNameMustContain;
         this.includeProcesses = includeProcesses;
     }
@@ -42,14 +39,6 @@ public class LineageQueryParameters {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-    }
-
-    public View getView() {
-        return view;
-    }
-
-    public void setView(View view) {
-        this.view = view;
     }
 
     public String getDisplayNameMustContain() {
@@ -72,7 +61,6 @@ public class LineageQueryParameters {
     public String toString() {
         return "LineageQueryParams{" +
                 "scope=" + scope +
-                ", view=" + view +
                 ", displayNameMustContain='" + displayNameMustContain + '\'' +
                 ", includeProcesses=" + includeProcesses +
                 '}';

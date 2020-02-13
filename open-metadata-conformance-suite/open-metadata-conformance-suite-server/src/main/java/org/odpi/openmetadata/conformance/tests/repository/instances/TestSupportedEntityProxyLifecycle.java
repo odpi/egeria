@@ -63,9 +63,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertion8     = testCaseId + "-08";
     private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
-
-    // TODO - renumber assertions
-
     private static final String assertion9     = testCaseId + "-09";
     private static final String assertionMsg9  = " entity proxy status cannot be updated ";
 
@@ -77,6 +74,15 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
     private static final String assertion12     = testCaseId + "-12";
     private static final String assertionMsg12  = " entity proxy identity cannot be updated ";
+
+
+    private List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
+    private List<EntityProxy>              createdEntityProxiesTUT   = new ArrayList<>();  // these are all proxy instances
+    private List<Relationship>             createdRelationshipsTUT   = new ArrayList<>();  // these are all master instances
+
+
 
     /*
      * This testcase:
@@ -202,8 +208,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         if (workPad != null) {
             OMRSRepositoryConnector cohortRepositoryConnector = workPad.getTutRepositoryConnector();
             repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-            if (repositoryHelper == null)
-            {
+            if (repositoryHelper == null) {
                 /*
                  * Critical failure - give up
                  */
@@ -330,6 +335,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                                null,
                                                                null);
 
+        createdEntitiesCTS.add(entity1);
+
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
          */
@@ -348,14 +355,31 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
          */
-        Integer remainingCount = this.pollCount;
-        while (entity1Ref == null && remainingCount>0 ) {
+        try {
+            Integer remainingCount = this.pollCount;
+            while (entity1Ref == null && remainingCount > 0) {
 
-            entity1Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
+                entity1Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+
+            }
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
 
         }
+
+        createdEntityRefCopiesTUT.add(entity1Ref);
 
         /*
          * This test needs to eliminate the reference copy - so that a proxy of E1 can be created at the TUT.
@@ -369,7 +393,26 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * If there is no reference copy it may be because the TUT does not support ref copies - that's OK, we can continue with the test of proxy support
              */
 
-            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), entity1Ref);
+            try {
+
+                metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), entity1Ref);
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "purgeEntityReferenceCopy";
+                String operationDescription = "purge a reference copy of an entity of type " + end1Type.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeDefGUID", entity1Ref.getType().getTypeDefGUID());
+                parameters.put("typeDefName", entity1Ref.getType().getTypeDefName());
+                parameters.put("deletedEntityGUID", entity1Ref.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
 
         }
 
@@ -385,9 +428,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             entity1Proxy = repositoryHelper.getNewEntityProxy(ctsMetadataCollectionName, retrievedEntity1);
 
-        }
-        else
-        {
+        } else {
             /*
              * If we cannot retrieve the entity (detail) from the CTS repository then we are in deep trouble.
              * The CTS is (most probably) using the in-memory repository which absolutely should support retrieval.
@@ -404,8 +445,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Ask the TUT to add the entity proxy to its repository
          */
 
-        try
-        {
+        try {
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity1Proxy);
 
             assertCondition((true),
@@ -414,9 +454,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
-        }
-        catch (FunctionNotSupportedException excpetion)
-        {
+            createdEntityProxiesTUT.add(entity1Proxy);
+
+        } catch (FunctionNotSupportedException excpetion) {
 
             /*
              * Report that the TUT does not support the creation of proxies - and do not pursue the test any further
@@ -427,6 +467,19 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
             return;
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntityProxy";
+            String operationDescription = "add a proxy instance for an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityProxy", entity1Proxy.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -448,9 +501,10 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         EntityDetail entity2 = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                                end2Type.getGUID(),
-                                                                 super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), end2Type),
-                                                                null,
-                                                                null);
+                                                               super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), end2Type),
+                                                               null,
+                                                               null);
+        createdEntitiesCTS.add(entity2);
 
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
@@ -470,16 +524,31 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
          */
-        remainingCount = this.pollCount;
-        while (entity2Ref == null && remainingCount>0 ) {
+        try {
+            Integer remainingCount = this.pollCount;
+            while (entity2Ref == null && remainingCount > 0) {
 
-            entity2Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity2.getGUID());
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
+                entity2Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity2.getGUID());
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+
+            }
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + end2Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity2.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
 
         }
 
-
+        createdEntityRefCopiesTUT.add(entity2Ref);
 
         /*
          * This test needs to eliminate the reference copy - so that a proxy of E2 can be created at the TUT.
@@ -493,7 +562,26 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * If there is no reference copy it may be because the TUT does not support ref copies - that's OK, we can continue with the test of proxy support
              */
 
-            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), entity2Ref);
+            try {
+
+                metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), entity2Ref);
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "purgeEntityReferenceCopy";
+                String operationDescription = "purge a reference copy an entity of type " + end2Type.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeDefGUID", entity2Ref.getType().getTypeDefGUID());
+                parameters.put("typeDefName", entity2Ref.getType().getTypeDefName());
+                parameters.put("deletedEntityGUID", entity2Ref.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
 
         }
 
@@ -510,9 +598,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             entity2Proxy = repositoryHelper.getNewEntityProxy(ctsMetadataCollectionName, retrievedEntity2);
 
-        }
-        else
-        {
+        } else {
             /*
              * If we cannot retrieve the entity (detail) from the CTS repository then we are in deep trouble.
              * The CTS is (most probably) using the in-memory repository which absolutely should support retrieval.
@@ -529,29 +615,42 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Ask the TUT to add the E2' entity proxy to its repository
          */
 
-        try
-        {
+        try {
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity2Proxy);
 
             assertCondition((true),
                             assertion2,
-                            assertionMsg2 + end1TypeName,
+                            assertionMsg2 + end2TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
-        }
-        catch (FunctionNotSupportedException excpetion)
-        {
+            createdEntityProxiesTUT.add(entity2Proxy);
+
+        } catch (FunctionNotSupportedException excpetion) {
 
             /*
              * Report that the TUT does not support the creation of proxies - and do not pursue the test any further
              */
             super.addNotSupportedAssertion(assertion2,
-                                           assertionMsg2 + end1TypeName,
+                                           assertionMsg2 + end2TypeName,
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
                                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
 
             return;
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntityProxy";
+            String operationDescription = "add a proxy instance for an entity of type " + end2Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityProxy", entity2Proxy.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -564,11 +663,29 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * It SHOULD be possible to retrieve the proxy as an EntitySummary
          */
 
-        EntitySummary retrievedEntity1Summary = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
+        EntitySummary retrievedEntity1Summary = null;
+        try {
+
+            retrievedEntity1Summary = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntitySummary";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
         assertCondition((retrievedEntity1Summary != null),
                         assertion3,
-                         assertionMsg3 + end1TypeName,
+                        assertionMsg3 + end1TypeName,
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
 
@@ -578,6 +695,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          */
 
         try {
+
             EntityDetail retrievedEntity1Detail = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entity1.getGUID());
 
             assertCondition((false),
@@ -585,29 +703,56 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
-        }
-        catch (EntityProxyOnlyException exception)
-        {
+        } catch (EntityProxyOnlyException exception) {
 
             assertCondition((true),
                             assertion4,
                             assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntityDetail";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
         /*
          * It SHOULD NOT be possible to retrieve the proxy using isEntityKnown - this should return null
          */
 
+        try {
 
-        EntityDetail retrievedEntity1Detail = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
+            EntityDetail retrievedEntity1Detail = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
 
-        assertCondition((retrievedEntity1Detail == null),
-                        assertion5,
-                        assertionMsg5 + end1TypeName,
-                        RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+            assertCondition((retrievedEntity1Detail == null),
+                            assertion5,
+                            assertionMsg5 + end1TypeName,
+                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
 
         /*
@@ -634,8 +779,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
 
-            }
-            catch (InvalidParameterException e) {
+            } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
@@ -645,6 +789,21 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                 testTypeName + assertionMsg9,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "updateEntityStatus";
+                String operationDescription = "update the status of an entity of type " + end1Type.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", entity1.getGUID());
+                parameters.put("newStatus", validInstanceStatus.toString());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
             }
 
         }
@@ -669,8 +828,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
 
-            }
-            catch (InvalidParameterException e) {
+            } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
@@ -680,6 +838,20 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                 testTypeName + assertionMsg10,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "updateEntityProperties";
+                String operationDescription = "update the properties of an entity of type " + end1Type.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", entity1.getGUID());
+                parameters.put("properties", minEntityProps.toString());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
             }
 
         }
@@ -706,9 +878,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
@@ -719,6 +889,21 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             testTypeName + assertionMsg11,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reTypeEntity";
+            String operationDescription = "retype an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            parameters.put("currentTypeDefSummary", end1Type.toString());
+            parameters.put("newTypeDefSummary", end1Type.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -730,14 +915,18 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * This test is performed against the TUT.
          */
 
+        String newGUID = UUID.randomUUID().toString();
+
         try {
 
             EntityDetail reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                                                                                   end1Type.getGUID(),
                                                                                   end1Type.getName(),
                                                                                   entity1.getGUID(),
-                                                                                  UUID.randomUUID().toString());
+                                                                                  newGUID);
 
+            if (reIdentifiedEntity != null)
+                createdEntitiesTUT.add(reIdentifiedEntity);
 
             assertCondition((false),
                             assertion12,
@@ -745,9 +934,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
@@ -758,6 +945,21 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reIdentifyEntity";
+            String operationDescription = "reidentify an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", end1Type.getGUID());
+            parameters.put("entityGUID", entity1.getGUID());
+            parameters.put("newEntityGUID", newGUID);
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -770,11 +972,15 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          */
 
         Relationship newRelationship = null;
+        InstanceProperties instanceProps = null;
 
         try {
+
+            instanceProps = super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition());
+
             newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                  relationshipDef.getGUID(),
-                                                                 super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                                                                 instanceProps,
                                                                  entity1.getGUID(),
                                                                  entity2.getGUID(),
                                                                  null);
@@ -785,8 +991,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
-        }
-        catch (FunctionNotSupportedException exception) {
+            createdRelationshipsTUT.add(newRelationship);
+
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -800,8 +1007,26 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
-        }
+            /* Worth carrying on with whatever else in the test we can achieve - so don't return here */
 
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addRelationship";
+            String operationDescription = "add a relationship of type " + relationshipDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", relationshipDef.getGUID());
+            parameters.put("end1 entityGUID", entity1.getGUID());
+            parameters.put("end2 entityGUID", entity2.getGUID());
+            parameters.put("initialProperties", instanceProps != null ? instanceProps.toString() : "null");
+            parameters.put("initialStatus", "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
 
         if (newRelationship != null) {
@@ -828,13 +1053,51 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                                                assertionMsg7 + testTypeName,
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
                                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+
+                /* Soft delete is optional so carry on */
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "deleteRelationship";
+                String operationDescription = "delete a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeDefGUID", newRelationship.getType().getTypeDefGUID());
+                parameters.put("typeDefName", newRelationship.getType().getTypeDefName());
+                parameters.put("obsoleteRelationshipGUID", newRelationship.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
             }
 
+            try {
 
-            metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
-                                                 newRelationship.getType().getTypeDefGUID(),
-                                                 newRelationship.getType().getTypeDefName(),
-                                                 newRelationship.getGUID());
+
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                                                     newRelationship.getType().getTypeDefGUID(),
+                                                     newRelationship.getType().getTypeDefName(),
+                                                     newRelationship.getGUID());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "purgeRelationship";
+                String operationDescription = "purge a relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeDefGUID", newRelationship.getType().getTypeDefGUID());
+                parameters.put("typeDefName", newRelationship.getType().getTypeDefName());
+                parameters.put("deletedRelationshipGUID", newRelationship.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
 
         }
 
@@ -890,19 +1153,34 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Retry the whole try catch up to pollCount times.
          */
 
+        try {
 
-        EntitySummary survivingEnt1Proxy;
-        remainingCount = this.pollCount;
-        do {
-            try {
-                survivingEnt1Proxy = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
-            }
-            catch (EntityNotKnownException exception)  {
-                survivingEnt1Proxy = null;
-            }
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
-        } while (survivingEnt1Proxy != null && remainingCount>0 );
+            EntitySummary survivingEnt1Proxy;
+            Integer remainingCount = this.pollCount;
+            do {
+                try {
+                    survivingEnt1Proxy = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
+                } catch (EntityNotKnownException exception) {
+                    survivingEnt1Proxy = null;
+                }
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+            } while (survivingEnt1Proxy != null && remainingCount > 0);
+        }
+        catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntitySummary";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
         /*
          * By now we have given this enough retries that it is either gone or is deemed to have failed....make one or other assertion
@@ -925,6 +1203,20 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                     assertionMsg8 + end1TypeName,
                     RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getProfileId(),
                     RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId());
+        }
+        catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntitySummary";
+            String operationDescription = "retrieve an entity of type " + end1Type.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity1.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -966,6 +1258,162 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
 
     }
+
+
+    /**
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
+     *
+     * @throws Exception something went wrong but there is no particular action to take.
+     */
+    public void cleanup() throws Exception
+    {
+
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        /*
+         * For this testcase we created master instances at the CTS and TUT and ref copies and proxies at the TUT. Also
+         * we created relationships at the TUT - five lists to clean up but you cannot directly delete/purge the proxy - only by
+         * removing the master at the CTS.
+         *   createdEntitiesCTS
+         *   createdEntitiesTUT
+         *   createdEntityRefCopiesTUT
+         *   createdEntityProxiesTUT    x cannot be cleaned directly via API
+         *   createdRelationshipsTUT
+         */
+
+        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (Relationship relationship : createdRelationshipsTUT) {
+
+                try
+                {
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                                                          relationship.getType().getTypeDefGUID(),
+                                                          relationship.getType().getTypeDefName(),
+                                                          relationship.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (RelationshipNotKnownException exception)
+                {
+                    // Relationship already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If relationship is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                                                     relationship.getType().getTypeDefGUID(),
+                                                     relationship.getType().getTypeDefName(),
+                                                     relationship.getGUID());
+            }
+        }
+
+        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesCTS) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntityRefCopiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+    }
+
 
 
 }

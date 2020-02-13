@@ -5,7 +5,7 @@
 
 The [OMAG server platform](../../../open-metadata-publication/website/omag-server)
 provides a software platform for running
-[OMAG Servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md).
+[OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md).
 
 Each OMAG Server supports selected open metadata and governance services based on its
 configuration. 
@@ -17,12 +17,12 @@ However there are three sets of Administration Service APIs active.
 * **Server Origin** - for discovering the source of the OMAG server platform.  
 (This was used in the previous [task](task-starting-the-omag-server-platform.md).)
 * **Configuration Services** - for creating configuration documents.
-* **Operational Services** - for starting and stopping [logical OMAG Servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md)
+* **Operational Services** - for starting and stopping [OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
 in the OMAG server platform using the configuration documents.
 
 ## What is a configuration document?
 
-A [configuration document](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/configuration-document.md)
+A [configuration document](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
 provides the configuration properties for an OMAG server.
 
 It includes:
@@ -499,7 +499,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineAdmin",
                 "accessServiceName": "Data Engine",
                 "accessServiceDescription": "Create processes for lineage",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-engine/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -618,7 +618,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin",
                 "accessServiceName": "Subject Area",
                 "accessServiceDescription": "Document knowledge about a subject area",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -737,7 +737,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin",
                 "accessServiceName": "Governance Engine",
                 "accessServiceDescription": "Set up an operational governance engine",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-engine/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -856,7 +856,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceprogram.admin.GovernanceProgramAdmin",
                 "accessServiceName": "Governance Program",
                 "accessServiceDescription": "Manage the governance program",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-program/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -975,7 +975,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.informationview.admin.InformationViewAdmin",
                 "accessServiceName": "Information View",
                 "accessServiceDescription": "Support information virtualization and data set definitions",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/information-view/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/information-view/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1094,7 +1094,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin",
                 "accessServiceName": "Asset Consumer",
                 "accessServiceDescription": "Access assets through connectors",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-consumer/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-consumer/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1213,7 +1213,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.connectedasset.admin.ConnectedAssetAdmin",
                 "accessServiceName": "Connected Asset",
                 "accessServiceDescription": "Understand an asset",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/connected-asset/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1332,7 +1332,7 @@ which results in the final configuration (this is request **10.** in Postman).
                 "accessServiceAdminClass": "org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin",
                 "accessServiceName": "Asset Catalog",
                 "accessServiceDescription": "Search and understand your assets",
-                "accessServiceWiki": "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/",
+                "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-catalog/",
                 "accessServiceOperationalStatus": "ENABLED",
                 "accessServiceInTopic": {
                     "class": "Connection",
@@ -1696,7 +1696,7 @@ adapt it to specific environment.  However, the defaults provide a good starting
 The contents of this tutorial cover a very simple OMAG server configuration.
 For guidance on configuring more complex OMAG servers see:
 
-* [Administration Services User Guide](../../../open-metadata-implementation/governance-servers/admin-services/docs/user)
+* [Administration Services User Guide](../../../open-metadata-implementation/admin-services/docs/user)
 
 For instructions on how to set up two OMAG Servers using in memory repositories that are exchanging metadata
 over [Apache Kafka](http://kafka.apache.org/), see:

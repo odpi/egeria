@@ -80,11 +80,9 @@ class VisGraph extends PolymerElement {
         type: Object,
         observer: '_optionsChanged',
         value: {
-          // autoResize: true,
-          // height: '100%',
-          // width: '100%',
           nodes: {
-            fixed: false
+            shape: 'box',
+            margin: 10
           },
           edges: {
             width: 1,
@@ -93,28 +91,24 @@ class VisGraph extends PolymerElement {
             },
             arrows:'to'
           },
-          layout: {    improvedLayout: false  },
           interaction: {
             tooltipDelay: 200,
             hideEdgesOnDrag: true
           },
-          physics: {
-            stabilization: false
-            // barnesHut: {
-            //   gravitationalConstant: -10000,
-            //   springConstant: 0.002,
-            //   springLength: 150
-            // }
+          layout: {
+            hierarchical: {
+              enabled: true,
+              levelSeparation: 300,
+              direction: 'RL'
+            }
           },
+          physics: false,
           groups: {
 
           }
         }
       },
-      dotcontent: {
-        type: String,
-        observer: '_dotcontentChanged'
-      },
+
       width: {
         type: String,
         value: '100%',
@@ -188,16 +182,6 @@ class VisGraph extends PolymerElement {
     this.setData(data);
   }
 
-  importDotString(dotString) {
-    var parsedData = vis.network.convertDot(dotString);
-    this.options = parsedData.options;
-    var data = {
-      nodes: parsedData.nodes,
-      edges: parsedData.edges
-    }
-    this.setData(data);
-  }
-
   setOptions(value) {
     if (this.network === undefined) {
       console.log('network is undefined');
@@ -233,15 +217,6 @@ class VisGraph extends PolymerElement {
       return false;
     }
     this.$.vis_container.style.height = value;
-  }
-
-  _dotcontentChanged(value) {
-    if (value === undefined || value === null) {
-      console.log('dotcontent is undefined or null');
-      return false;
-    }
-    console.log('importDotString:'+value)
-    this.importDotString(value);
   }
 
   _graphChanged(value) {

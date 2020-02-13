@@ -28,8 +28,6 @@ services:
     kafka:
         depends_on:
             - zookeeper
-        links:
-            - zookeeper
         image: 'bitnami/kafka:latest'
         environment:
             - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -55,13 +53,6 @@ services:
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
-        links:
-            - zookeeper
-            - kafka
-            - core
-            - dev
-            - datalake
-            - factory
         depends_on:
             - kafka
             - core
@@ -77,66 +68,49 @@ services:
     core:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18080:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
     datalake:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18081:8080'
-        links:
-            - kafka
-            - zookeeper
         networks:
             - cocopharma
 
     dev:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18082:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
     factory:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18083:8080'
-        links:
-            - zookeeper
-            - kafka
         networks:
             - cocopharma
 
     ui:
         depends_on:
             - datalake
-        image: 'odpi/egeria:latest'
-        command: /bin/bash -c "java -jar /opt/egeria/ui-chassis-spring.jar"
+        image: '${egeria_repo}/egeria:${egeria_version}'
+        command: /bin/bash -c "java -jar /opt/egeria/user-interface/ui-chassis-spring-${egeria_version}.jar"
         environment:
             - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
         ports:
             - '18443:8443'
-        links:
-            - core
-            - dev
-            - datalake
-            - factory
         networks:
             cocopharma:
 networks:

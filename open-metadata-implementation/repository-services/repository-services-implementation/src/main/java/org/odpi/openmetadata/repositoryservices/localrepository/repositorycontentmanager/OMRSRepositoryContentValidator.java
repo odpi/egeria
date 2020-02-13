@@ -2439,7 +2439,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         if (relationship == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
+            OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_FOUND;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
                                                                                                             methodName,
                                                                                                             sourceName);
@@ -2790,6 +2790,26 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Simple method used to extract the type name of an instance.  It is used in error messages and audit log messages.
+     *
+     * @param instanceHeader instance header.
+     * @return type name or "nullType"
+     */
+    private String getTypeNameForMessage(InstanceHeader  instanceHeader)
+    {
+        String       typeName = "<nullType>";
+        InstanceType type = instanceHeader.getType();
+
+        if ((type != null) && (type.getTypeDefName() != null))
+        {
+            typeName = type.getTypeDefName();
+        }
+
+        return typeName;
+    }
+
+
+    /**
      * Verify the status of an entity to check if it has been deleted.
      *
      * @param sourceName source of the request (used for logging)
@@ -2806,9 +2826,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             if (instance.getStatus() == InstanceStatus.DELETED)
             {
 
-                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_SOFT_DELETED;
                 String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(instance.getGUID(), methodName, sourceName);
+                                    + errorCode.getFormattedErrorMessage(this.getTypeNameForMessage(instance),
+                                                                         instance.getGUID(),
+                                                                         methodName,
+                                                                         sourceName);
 
                 throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -3041,9 +3065,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             if (instance.getStatus() == InstanceStatus.DELETED)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
+                OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_SOFT_DELETED;
                 String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(instance.getGUID(),
+                                    + errorCode.getFormattedErrorMessage(this.getTypeNameForMessage(instance),
+                                                                         instance.getGUID(),
                                                                          methodName,
                                                                          sourceName);
 

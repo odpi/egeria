@@ -17,11 +17,11 @@ public class SequentialDiscoveryPipelineProvider extends DiscoveryServiceProvide
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * discovery service implementation.
      */
     public SequentialDiscoveryPipelineProvider()
     {
-        Class    connectorClass = SequentialDiscoveryPipelineProvider.class;
+        Class    connectorClass = SequentialDiscoveryPipeline.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

@@ -22,7 +22,7 @@ entirely by changes in metadata and the IT landscape.
 | Open Lineage Server | Provides a historic reporting warehouse for lineage. | [Open Lineage Services](../open-lineage-services) | [Asset Lineage OMAS](../../access-services/asset-lineage) | No |
 | Security Officer Server | Provide operational support for the security policies defined by the security officer. | [Security Officer Services](../security-officer-services) | [Security Officer OMAS](../../access-services/security-officer) | No |
 | Security Synchronization Server | Keep security enforcement engines supplied with the latest metadata. | [Security Sync Services](../security-sync-services) | [Governance Engine OMAS](../../access-services/governance-engine) | Yes |
-| Stewardship Server | Manage the triage and remediation of **Request for Action** events raised through automated governance activity.| [Stewardship Services](../stewardship-services) | [Stewardship Action OMAS](../../access-services/stewardship-action) | No |
+| Stewardship Server | Manage the triage and remediation of **Request for Action** events raised through automated governance activity.| [Stewardship EngineServices](../stewardship-engine-services) | [Stewardship Action OMAS](../../access-services/stewardship-action) | No |
 | Virtualizer | Automatically configure a data virtualization platform based on available data sources. | [Virtualization Services](../virtualization-services) | [Information View OMAS](../../access-services/information-view) | Yes |
 
 ## Further information

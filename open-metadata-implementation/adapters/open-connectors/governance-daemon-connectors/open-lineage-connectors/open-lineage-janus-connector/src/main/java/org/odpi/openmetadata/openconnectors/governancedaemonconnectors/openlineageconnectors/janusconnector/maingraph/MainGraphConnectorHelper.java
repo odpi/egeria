@@ -8,7 +8,6 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
@@ -208,60 +207,8 @@ public class MainGraphConnectorHelper {
     }
 
     /**
-     * Removes all nodes of types sub process or process and creates new edges so that the graph will not become disjointed.
-     *
-     * @param lineageVerticesAndEdges The list of vertices and edges from which the processes should be removed.
-     * @return The original lineageVerticesAndEdges without processes or subprocesses.
-     */
-    void filterOutProcesses(LineageVerticesAndEdges lineageVerticesAndEdges) {
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
-        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
-
-        for (LineageVertex vertex : lineageVertices) {
-            String nodeID = vertex.getNodeID();
-            if (vertex.getNodeType().equals(NODE_LABEL_SUB_PROCESS) || vertex.getNodeType().equals(NODE_LABEL_PROCESS)) {
-                verticesToBeRemoved.add(vertex);
-                mergeEdges(nodeID, lineageEdges);
-            }
-        }
-        lineageVertices.removeAll(verticesToBeRemoved);
-
-        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
-        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
-    }
-
-    /**
-     * Prevents the disjointing of a graph when nodes are deleted. The incoming and outgoing edges of the provided node
-     * are replaced with new ones.
-     *
-     * @param nodeID       The node of which the incoming and outcoming edges should be repaired.
-     * @param lineageEdges The set of all lineage edges.
-     */
-    private void mergeEdges(String nodeID, Set<LineageEdge> lineageEdges) {
-        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
-        Set<LineageEdge> edgesToBeAdded = new HashSet<>();
-
-        for (LineageEdge edge1 : lineageEdges) {
-            if (nodeID.equals(edge1.getDestinationNodeID())) {
-                edgesToBeRemoved.add(edge1);
-
-                for (LineageEdge edge2 : lineageEdges) {
-                    if (nodeID.equals(edge2.getSourceNodeID())) {
-                        edgesToBeRemoved.add(edge2);
-                        String newDestinationNodeID = edge2.getDestinationNodeID();
-                        LineageEdge newEdge = new LineageEdge(EDGE_LABEL_DATAFLOW, edge1.getSourceNodeID(), newDestinationNodeID);
-                        edgesToBeAdded.add(newEdge);
-                    }
-                }
-            }
-        }
-        lineageEdges.removeAll(edgesToBeRemoved);
-        lineageEdges.addAll(edgesToBeAdded);
-    }
-
-    /**
      * Map a Tinkerpop vertex to the Open Lineage format.
+     *
      * @param originalVertex The vertex to be mapped.
      * @return The vertex in the Open Lineage format.
      */
@@ -276,8 +223,8 @@ public class MainGraphConnectorHelper {
         }
 
         //Displayname key is stored inconsistently in the graphDB.
-        else if (originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).isPresent()) {
-            String displayName = originalVertex.property(PROPERTY_KEY_ALTERNATIVE_DISPLAY_NAME).value().toString();
+        else if (originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
+            String displayName = originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
             lineageVertex.setDisplayName(displayName);
         }
 
@@ -285,13 +232,14 @@ public class MainGraphConnectorHelper {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
         }
-        Map<String, String> attributes = retrieveProperties(originalVertex);
-        lineageVertex.setAttributes(attributes);
+        Map<String, String> properties = retrieveProperties(originalVertex);
+        lineageVertex.setProperties(properties);
         return lineageVertex;
     }
 
     /**
      * Map a Tinkerpop edge to the Open Lineage format.
+     *
      * @param originalEdge The edge to be mapped
      * @return The edge in the Open Lineage format.
      */
@@ -310,26 +258,26 @@ public class MainGraphConnectorHelper {
      * @return
      */
     private Map<String, String> retrieveProperties(Vertex originalVertex) {
-        Map<String, String> attributes = new HashMap<>();
+        Map<String, String> newNodeProperties = new HashMap<>();
         Iterator originalProperties = originalVertex.properties();
         while (originalProperties.hasNext()) {
             Property originalProperty = (Property) originalProperties.next();
             if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
-                //If this property key is present in filterPrefixMap, remove the "ve" prefix. If it is not in this map,
-                //use the original value. This discrepancy between the whitelist and the filtermap can happen because
-                //at the moment the "ve" prefix is used inconsistently for the main graph properties.
-                if (immutableFilterPrefixMap.containsKey(originalProperty.key()))
-                    attributes.put(immutableFilterPrefixMap.get(originalProperty.key()), originalProperty.value().toString());
-                else
-                    attributes.put(originalProperty.key(), originalProperty.value().toString());
+                String newPropertyKey = originalProperty.key().
+                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
+                        replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
+
+                String newPropertyValue = originalProperty.value().toString();
+                newNodeProperties.put(newPropertyKey, newPropertyValue);
             }
         }
-        return attributes;
+        return newNodeProperties;
     }
 
     /**
      * Check whether the ultimate sources/destinations of the queried node are included in a cyclic data flow.
      * This is not supported by Open lineage Services.
+     *
      * @param methodName The name of the calling method.
      * @param vertexList The to be validated result of the Gremlin query.
      * @throws OpenLineageException
@@ -350,11 +298,12 @@ public class MainGraphConnectorHelper {
     /**
      * Remove all nodes and edges from the response graph that are in between the ultimate sources and the queried node
      * and replace them by a single "condensed" node.
-     * @param sourcesList The list of ultimate sources.
-     * @param lineageVertices The list of all vertices returned by the Gremlin query.
-     * @param lineageEdges The list of all edges returned by the Gremlin query.
+     *
+     * @param sourcesList           The list of ultimate sources.
+     * @param lineageVertices       The list of all vertices returned by the Gremlin query.
+     * @param lineageEdges          The list of all edges returned by the Gremlin query.
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
-     * @param queriedVertex The vertex which guid was queried by the user as an Open Lineage vertex object.
+     * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
      */
     private void addSourceCondensation(List<Vertex> sourcesList,
                                        Set<LineageVertex> lineageVertices,
@@ -366,7 +315,7 @@ public class MainGraphConnectorHelper {
         if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID)))
             return;
         LineageVertex condensedVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE, NODE_LABEL_CONDENSED);
-        condensedVertex.setDisplayName(DISPLAY_NAME_OF_CONDENSED);
+        condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
         lineageVertices.add(condensedVertex);
 
         for (Vertex originalVertex : sourcesList) {
@@ -390,20 +339,21 @@ public class MainGraphConnectorHelper {
     /**
      * Remove all nodes and edges from the response graph that are in between the ultimate destinations and the queried node
      * and replace them by a single "condensed" node.
-     * @param destinationsList The list of ultimate destinations.
-     * @param lineageVertices The list of all vertices returned by the Gremlin query.
-     * @param lineageEdges The list of all edges returned by the Gremlin query.
+     *
+     * @param destinationsList      The list of ultimate destinations.
+     * @param lineageVertices       The list of all vertices returned by the Gremlin query.
+     * @param lineageEdges          The list of all edges returned by the Gremlin query.
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
-     * @param queriedVertex The vertex which guid was queried by the user as an Open Lineage vertex object.
+     * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
      */
     private void addDestinationCondensation
-            (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
-                    originalQueriedVertex, LineageVertex queriedVertex) {
+    (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
+            originalQueriedVertex, LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
             LineageVertex condensedDestinationVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION, NODE_LABEL_CONDENSED);
-            condensedDestinationVertex.setDisplayName(DISPLAY_NAME_OF_CONDENSED);
+            condensedDestinationVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
             for (Vertex originalVertex : destinationsList) {
                 LineageVertex newVertex = abstractVertex(originalVertex);
                 LineageEdge newEdge = new LineageEdge(
@@ -450,22 +400,4 @@ public class MainGraphConnectorHelper {
         return lineageVerticesAndEdges;
     }
 
-    /**
-     * Retrieve the label of the edges that are to be traversed with the gremlin query.
-     *
-     * @param view The view queried by the user: table-view, column-view.
-     * @return The label of the edges that are to be traversed with the gremlin query.
-     */
-    String getEdgeLabel(View view) {
-        String edgeLabel = "";
-        switch (view) {
-            case TABLE_VIEW:
-                edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
-                break;
-            case COLUMN_VIEW:
-                edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
-                break;
-        }
-        return edgeLabel;
-    }
 }

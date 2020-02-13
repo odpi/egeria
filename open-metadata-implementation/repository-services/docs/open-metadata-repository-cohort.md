@@ -3,8 +3,9 @@
 
 # Open Metadata Repository Cohort
 
-An **open metadata repository cohort** is a collection of metadata repositories
-sharing metadata using the **[Open Metadata Repository Services (OMRS)](../README.md)**.
+An **open metadata repository cohort** is a collection of metadata servers
+and repository proxies
+sharing metadata using the **[Open Metadata Repository Services (OMRS)](..)**.
 This sharing is peer-to-peer.  
 Once a metadata repository becomes a member of the cohort, it can share
 metadata with, and receive metadata from, any other member.
@@ -21,7 +22,10 @@ linked to all metadata that describes the organization's data resources.
 Thus it makes sense for this metadata to be replicated across the repositories
 within the cohort.
 These copies are called **[reference copies](home-metadata-repositories.md)** of
-the metadata and they are read-only. 
+the metadata and they are read-only.
+The role of the OMRS is to optimize access to metadata across the cohort by using
+a combination of replication and federated queries, driven by the
+the metadata workload from the connected tools.
 
 To join an open metadata repository cohort, a metadata repository must integrate
 with the OMRS module.  The integration involves:
@@ -36,13 +40,11 @@ can be used or modified.
 module so that requests to the server can be secured against unauthorized access.
 * Integrating the OMRS, administration and security capability into your product.
 
-There are different integration patterns available to help you choose the best approach for your
-product.
+There are different integration patterns available to help you choose the best approach for your product.
 Each method is optimized for specific use cases and so the metadata repository can only play a full role in the open metadata use cases if it supports all integration methods.  These are:
 
 * Support for an OMRS repository connector to allow open metadata API calls to the repository to create, query, update and delete metadata stored in the repository.  The OMRS connectors support the Open Connector Framework (OCF) to provide a call interface to the metadata repositories.  The OMRS Repository Connector API is a standard interface for all metadata repositories.  This enables services such as the Enterprise OMRS Repository Connector to interact with 1 or many metadata repositories through the same interface.  The connection configuration it passes to the OCF determines which type of OMRS connector is returned by the OCF.
 * Support for the OMRS event notifications that are used to synchronize selective metadata between the metadata repositories. 
-* Support for OSLC linked data relationships to allow relationships between metadata entities that happen to reside in different metadata repositories.
 
 The OMRS protocols are peer-to-peer.
 Each repository in the cohort has an OMRS Cohort Registry that supports the registration of the metadata

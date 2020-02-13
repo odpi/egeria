@@ -3,11 +3,15 @@
 
 # Administration Services Concepts
 
+The admin services manages the configuration of the
+different subsystems with an [OMAG Server](omag-server.md).
+It uses the following terms.
+
 * [Configuration Document](configuration-document.md)
+* [Conformance Test Server](conformance-test-server.png)
 * [Event Bus](event-bus.md)
 * [OMAG Server](omag-server.md)
 * [OMAG Server Platform](omag-server-platform.md)
-* [OMAG Server Personalities](omag-server-personalities.md)
 
 
 

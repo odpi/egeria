@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DiscoveryAnalysisReport describes the header information for a discovery report
+ * DiscoveryAnalysisReport describes the properties for a discovery analysis report.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,6 +32,7 @@ public class DiscoveryAnalysisReport extends Referenceable
     protected String                 assetGUID              = null;
     protected String                 discoveryEngineGUID    = null;
     protected String                 discoveryServiceGUID   = null;
+    protected String                 analysisStep           = null;
 
 
     /**
@@ -62,6 +63,7 @@ public class DiscoveryAnalysisReport extends Referenceable
             assetGUID = template.getAssetGUID();
             discoveryEngineGUID = template.getDiscoveryEngineGUID();
             discoveryServiceGUID = template.getDiscoveryServiceGUID();
+            analysisStep = template.getAnalysisStep();
         }
     }
 
@@ -243,6 +245,28 @@ public class DiscoveryAnalysisReport extends Referenceable
 
 
     /**
+     * Return the locally defined analysis step.  This value is used in annotations generated in this phase.
+     *
+     * @return name of analysis step
+     */
+    public String getAnalysisStep()
+    {
+        return analysisStep;
+    }
+
+
+    /**
+     * Set up the name of the current analysis step.
+     *
+     * @param analysisStep name
+     */
+    public void setAnalysisStep(String analysisStep)
+    {
+        this.analysisStep = analysisStep;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -259,6 +283,7 @@ public class DiscoveryAnalysisReport extends Referenceable
                 ", assetGUID='" + assetGUID + '\'' +
                 ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
                 ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
+                ", analysisStep='" + analysisStep + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
@@ -300,7 +325,8 @@ public class DiscoveryAnalysisReport extends Referenceable
                 Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
                 Objects.equals(getAssetGUID(), that.getAssetGUID()) &&
                 Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
-                Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID());
+                Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID()) &&
+                Objects.equals(getAnalysisStep(), that.getAnalysisStep());
     }
 
 

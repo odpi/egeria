@@ -24,25 +24,25 @@ import java.util.Arrays;
  */
 public enum DataEngineAuditCode {
     SERVICE_INITIALIZING("OMAS-DATA-ENGINE-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Data Engine OMAS.",
-            Constants.DEFAULT_USER_ACTION),
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-DATA-ENGINE-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Data Engine OMAS has completed initialization of a new instance.",
-            Constants.DEFAULT_USER_ACTION),
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-DATA-ENGINE-0003",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Data Engine OMAS instance.",
-            Constants.DEFAULT_USER_ACTION),
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0004",
-            OMRSAuditLogRecordSeverity.ERROR,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
                     "message is {0}",
             "The access service detected an error during the start up of a specific server instance.  " +
@@ -50,7 +50,7 @@ public enum DataEngineAuditCode {
             "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server."),
     ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-DATA-ENGINE-0005",
-            OMRSAuditLogRecordSeverity.ERROR,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
                     "message is {0}",
             "The access service detected an error during the start up of a specific server instance.  " +
@@ -145,8 +145,5 @@ public enum DataEngineAuditCode {
     public String getUserAction() {
         return userAction;
     }
-
-    private static class Constants {
-        static final String DEFAULT_USER_ACTION = "No action is required.  This is part of the normal operation of the service.";
-    }}
+}
 

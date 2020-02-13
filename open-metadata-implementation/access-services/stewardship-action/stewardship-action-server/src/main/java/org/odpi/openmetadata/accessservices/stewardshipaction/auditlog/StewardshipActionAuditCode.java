@@ -25,25 +25,25 @@ import java.util.Arrays;
 public enum StewardshipActionAuditCode
 {
     SERVICE_INITIALIZING("OMAS-STEWARDSHIP-ACTION-0001",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Stewardship Action Open Metadata Access Service (OMAS) is initializing a new server instance",
              "The local server has started up a new instance of the Stewardship Action OMAS.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-STEWARDSHIP-ACTION-0003",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.STARTUP,
              "The Stewardship Action Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-STEWARDSHIP-ACTION-0004",
-             OMRSAuditLogRecordSeverity.INFO,
+             OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Stewardship Action Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Stewardship Action OMAS instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-STEWARDSHIP-ACTION-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
+             OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Stewardship Action Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),

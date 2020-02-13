@@ -41,9 +41,9 @@ remainder of these instructions.
 Start by defining a new Maven project in your IDE of choice, and at the root-level POM be sure to include the
 following:
 
-```xml
+```
 <properties>
-    <open-metadata.version>1.4-SNAPSHOT</open-metadata.version>
+    <open-metadata.version>1.5-SNAPSHOT</open-metadata.version>
 </properties>
 <dependencies>
     <dependency>
@@ -89,7 +89,7 @@ Within this `adapter` module, in a package like `...repositoryconnector`, implem
 Once these minimal starting points are implemented, you should be able to configure the
 [OMAG server chassis](../../../../../server-chassis/server-chassis-spring/README.md)
 as a proxy to your repository connector by following the instructions in
-[using the admin services](../../../../../admin-services/Using-the-Admin-Services.md).
+[using the admin services](../../../../../admin-services/docs/user).
 **Important**: this will *not* necessarily be the
 [end-state pattern](../../../../../../open-metadata-publication/website/open-metadata-integration-patterns/README.md)
 you intend to use for your repository connector, but can provide a quick way to start testing its functionality.
@@ -102,11 +102,11 @@ The configuration and startup sequence is important, to start with the following
 (ie. you should not need to configure the access services or event bus initially to just test your
 `OMRSMetadataCollection` logic):
 
-1. [Enable access to a cohort](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md#enable-access-to-a-cohort),
+1. [Enable access to a cohort](../../../../../admin-services/docs/user#enable-access-to-a-cohort),
     by picking a name for your cohort and POSTing according to the instructions linked.
-1. [Enable OMAG Server as a repository proxy](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md#enable-omag-server-as-a-repository-proxy),
+1. [Enable OMAG Server as a repository proxy](../../../../../admin-services/docs/user#enable-omag-server-as-a-repository-proxy),
     specifying your canonical `OMRSRepositoryConnectorProvider` class name for the `connectorProvider={javaClassName}` parameter.
-1. [Start the server instance](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md#activate-open-metadata-services),
+1. [Start the server instance](../../../../../admin-services/docs/user/operating-omag-server.md),
     by POSTing according to the instructions.
 
 You should then be in a position to invoke the REST API endpoints of the OMAG server, which will
@@ -144,16 +144,16 @@ configured by the base class, to publish these to the cohort. For example:
 
 To add the event mapper configuration to the configuration you started with above, add:
 
-1. [Configure the cohort event bus](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md#setting-up-the-event-bus).
+1. [Configure the cohort event bus](../../../../../admin-services/docs/user/configuring-event-bus.md).
     This can be done first, before any of the other configuration steps above
-1. [Configure the event mapper](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md#add-the-local-repositorys-event-mapper).
+1. [Configure the event mapper](../../../../../admin-services/docs/user#add-the-local-repositorys-event-mapper).
     This can be done nearly last: after all of the other configuration steps above, but before the start of the
     server instance.
 
 ### Test your connector
 
 As you progress with the implementation of your connector, it is a good idea to test it against the
-[Egeria Conformance Suite](../../../../../../open-metadata-conformance-suite/docs/), in particular to
+[Open Metadata Conformance Suite](../../../../../../open-metadata-conformance-suite/docs), in particular to
 gain guidance on what features you may still need to implement to conform to the open metadata standards.
 
 ### Package your connector

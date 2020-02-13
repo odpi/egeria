@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-docker</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -22,8 +22,60 @@
     <artifactId>open-metadata-docker-egeria</artifactId>
 
     <packaging>pom</packaging>
+
+    <!-- Use assemblies as built for distribution -->
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-assemblies</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>get git version info</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${maven.multiModuleProjectDirectory}/.git</dotGitDirectory>
+                    <prefix>git</prefix>
+                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
+                    <skipPoms>false</skipPoms>
+                </configuration>
+            </plugin>
+
+            <!-- We need to copy required assemblies locally - Docker requires this due to the way all files
+                 in context are sent to the server -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-assemblies-for-docker</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${project.version}-distribution/egeria-omag-${project.version}</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Setup the docker build.
                  Note - bound to 'install' phase as deploy causes push of maven artifacts
             -->
@@ -49,16 +101,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>push-latest</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                        <configuration>
-                            <tag>latest</tag>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>push-version</id>
                         <phase>install</phase>
                         <goals>
@@ -72,9 +114,55 @@
                 <configuration>
                     <repository>${docker.registry}/${docker.repo}/egeria</repository>
                     <buildArgs>
+                        <VCS_REF>${git.commit.id.describe}</VCS_REF>
+                        <VCS_DATE>${git.commit.time}</VCS_DATE>
+                        <BUILD_TIME>${git.build.time}</BUILD_TIME>
+                        <VCS_ORIGIN>${git.remote.origin.url}</VCS_ORIGIN>
                     </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>tag-latest</id>
+            <activation>
+                <property>
+                    <name>docker.taglatest</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>tag-latest</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <tag>latest</tag>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>push-latest</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <configuration>
+                                    <tag>latest</tag>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

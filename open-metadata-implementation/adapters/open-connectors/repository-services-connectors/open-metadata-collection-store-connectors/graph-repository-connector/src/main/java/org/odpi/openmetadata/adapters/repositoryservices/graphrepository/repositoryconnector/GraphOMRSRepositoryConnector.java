@@ -35,12 +35,10 @@ public class GraphOMRSRepositoryConnector extends OMRSRepositoryConnector
             /*
              * Initialize the metadata collection only once the connector is properly set up.
              */
-            super.metadataCollection = new GraphOMRSMetadataCollection(this,
-                                                                       super.serverName,
-                                                                       repositoryHelper,
-                                                                       repositoryValidator,
-                                                                       metadataCollectionId,
-                                                                       auditLog);
+            super.metadataCollection = new GraphOMRSMetadataCollection(this, super.serverName,
+                                                                       repositoryHelper, repositoryValidator,
+                                                                       metadataCollectionId, auditLog,
+                                                                       connectionBean.getConfigurationProperties());
         }
     }
 }

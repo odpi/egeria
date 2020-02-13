@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 The ui chassis provides the base server framework to host the open metadata
-services in the [UI Server Platform](https://egeria.odpi.org/open-metadata-publication/website/ui-server).  
+services in the UI Server Platform.  
 
 The **ui-chassis-spring** module provides the implementation of the ui chassis.
 Its **main()** method is located in a Java class called
@@ -33,8 +33,6 @@ default by user id `system`, and it can be override by setting spring-boot prope
 
 Details of how to set up the configuration document, and activate/deactivate
 the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
-
-Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
 
 
 ----

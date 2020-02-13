@@ -10,6 +10,7 @@ import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class BufferGraphConnector extends BufferGraphConnectorBase {
@@ -33,14 +35,17 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
 
-
+    /**
+     * Instantiates the graph based on the configuration passed.
+     *
+     */
     public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
         try {
             this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("buffer Graph cannot be initialized, something went wrong. The error is {}", error);
+            log.error("The Buffer graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -66,58 +71,87 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         GraphTraversalSource g = bufferGraph.traversal();
         try {
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, "Process").toList();
-
             List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
             guidList.stream().forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.error("Something went wrong when tyrying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
+            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
             g.tx().rollback();
         }
-
     }
 
-    private void findInputColumns(GraphTraversalSource g,String guid){
-         List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation")
-                                       .has("PortImplementation", PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
-                                       .out("PortSchema").in("AttributeForSchema").out("LineageMapping").toList();
+    /**
+     * Finds the paths to the input columns from all the processes in the graph.
+     * @param g - Graph traversal object
+     * @param guid - The unique identifier of a Process
+     */
+    private void findInputColumns(GraphTraversalSource g,String guid) {
+            List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
+                    .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
+                    .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
+                    .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
+                                    .has(PROPERTY_KEY_LABEL,DATA_FILE),
+                            __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
 
-         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-         inputPath.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
+        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        inputPathsForColumns.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
     }
 
+    /**
+     * Finds the output column of a Process based on the input.
+     * @param g - Graph traversal object
+     * @param columnIn - THe vertex of the schema element before processing.
+     * @param process - The vertex of the process.
+     */
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
-            List<Vertex> schemaElementVertex = g.V()
-                    .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
-                    .in("LineageMapping")
-                    .toList();
+        List<Vertex> schemaElementVertex = g.V()
+                                            .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                                            .in(LINEAGE_MAPPING)
+                                            .toList();
 
-            Vertex vertexToStart = null;
-            if (schemaElementVertex != null) {
-                for (Vertex v : schemaElementVertex) {
-                    List<Vertex> initialProcess = g.V(v.id())
-                            .bothE("AttributeForSchema")
-                            .otherV().inE("PortSchema").otherV()
-                            .inE("PortDelegation").otherV().
-                                    inE("ProcessPort").otherV().has(PROPERTY_KEY_ENTITY_GUID, process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
-
-                    if (!initialProcess.isEmpty()) {
-                        vertexToStart = v;
-                        break;
-                    }
-
-                }
-                 Vertex columnOut = null;
-                if (vertexToStart != null) {
-                    columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
-
-                }
-
-                moveColumnProcessColumn(columnIn, columnOut, process);
+        Vertex vertexToStart = null;
+        if (schemaElementVertex != null) {
+            Vertex columnOut = null;
+            vertexToStart = getProcessForTheSchemaElement(g,schemaElementVertex,process);
+            if (vertexToStart != null) {
+                columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
             }
+            moveColumnProcessColumn(columnIn, columnOut, process);
+        }
     }
 
+    /**
+     * Returns the vertex from where the searching for the output column will start.
+     * @param g - Graph traversal object
+     * @param schemaElementVertex - THe vertex of the column before processing.
+     * @param process - The vertex of the process.
+     * @return Return the vertex of the initial column
+     */
+    private Vertex getProcessForTheSchemaElement(GraphTraversalSource g,List<Vertex> schemaElementVertex,Vertex process){
+        Vertex vertexToStart = null;
+        for (Vertex v : schemaElementVertex) {
+            List<Vertex> initialProcess = g.V(v.id())
+                    .bothE(ATTRIBUTE_FOR_SCHEMA)
+                    .otherV().inE(PORT_SCHEMA).otherV()
+                    .inE(PORT_DELEGATION).otherV()
+                    .inE(PROCESS_PORT).otherV()
+                    .has(PROPERTY_KEY_ENTITY_GUID, process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+
+            if (!initialProcess.isEmpty()) {
+                vertexToStart = v;
+                break;
+            }
+        }
+        return vertexToStart;
+    }
+
+    /**
+     * Initiates the process of copying the input and output vertices to the MainGraph.
+     * @param columnIn - The vertex of the input schema element
+     * @param columnOut - THe vertex of the output schema element
+     * @param process - The vertex of the process.
+     */
     private void moveColumnProcessColumn(Vertex columnIn,Vertex columnOut,Vertex process){
         if (columnOut != null) {
             String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
@@ -128,7 +162,6 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             }
         }
     }
-
 
     /**
      * Creates a new vertex if it does not exist
@@ -159,6 +192,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         });
     }
 
+
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode)  throws JanusConnectorException{
         LineageEntity fromEntity = nodeToNode.getFromVertex();
         LineageEntity toEntity = nodeToNode.getToVertex();
@@ -166,11 +200,16 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Vertex vertexFrom = addVertex(g,fromEntity);
         Vertex vertexTo = addVertex(g,toEntity);
 
-        //add check gia null vertex
-        addRelationship(nodeToNode.getRelationshipGuid(),nodeToNode.getRelationshipType(),vertexFrom,vertexTo);
-
+        if(vertexFrom != null && vertexTo != null){
+            addRelationship(nodeToNode.getRelationshipGuid(),nodeToNode.getRelationshipType(),vertexFrom,vertexTo);
+        }
     }
 
+    /**
+     * Creates a new vertex in the graph.
+     * @param g - Graph traversal object
+     * @param lineageEntity - Entity to be created
+     */
     private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
         Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
@@ -196,29 +235,34 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex) throws JanusConnectorException{
         String methodName = "addRelationship";
+        GraphTraversalSource g = bufferGraph.traversal();
 
         if (relationshipType == null) {
-            log.error("{} Relationship type name is missing", methodName);
+            log.error("Relationship type name is missing");
             throwException(JanusConnectorErrorCode.RELATIONSHIP_TYPE_NAME_NOT_KNOWN,relationshipGuid,methodName);
         }
 
-        GraphTraversalSource g = bufferGraph.traversal();
+        try {
+            Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
+            if (edgeIt.hasNext()) {
+                g.tx().rollback();
+                log.debug("found existing edge {}", edgeIt);
+                return;
+            }
 
-        Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
-        if (edgeIt.hasNext()) {
-            g.tx().rollback();
-//            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
-            log.debug("{} found existing edge {}", methodName, edgeIt);
-
-            return;
+            fromVertex.addEdge(relationshipType, toVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,relationshipGuid);
+            g.tx().commit();
         }
-        //TODO add try catch
-        fromVertex.addEdge(relationshipType, toVertex).property(PROPERTY_KEY_RELATIONSHIP_GUID,relationshipGuid);
-        g.tx().commit();
+        catch (Exception e){
+            g.tx().rollback();
+
+        }
+
     }
 
     /**
-     * Creates a new vertex if it does not exist
+     * Add properties to vertex.
+     * @param g - Graph traversal object
      * @param lineageEntity - LineageEntity object to be created
      */
     private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity) throws JanusConnectorException{
@@ -227,17 +271,14 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         try {
             graphVertexMapper.mapEntityToVertex(lineageEntity, vertex);
         }catch (Exception e) {
-            log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
+            log.error("Caught exception from entity mapper {}", e.getMessage());
             g.tx().rollback();
             throwException(JanusConnectorErrorCode.ENTITY_NOT_CREATED,lineageEntity.getGuid(),methodName);
-
         }
     }
 
     @Override
-    public void updateEntity(LineageEvent lineageEvent){
-
-    }
+    public void updateEntity(LineageEvent lineageEvent){}
 
     @Override
     public void deleteEntity(String guid){
@@ -254,17 +295,25 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     }
 
-    private Vertex findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
+    /**
+     * Returns the vertex of the schema element in the output of a process.
+     * @param endingVertex - The vertex that is being checked if it is the output schema element
+     * @param g - Graph traversal object
+     * @param startingVertex - The vertex of the input schema element
+     * @return Return a vertex of the output schema element
+     */
+    private Vertex findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g,Vertex startingVertex)  {
+        final String VERTEX = "vertex";
 
         try{
-            Iterator<Vertex> end =  g.V(v.id())
-                    .or(__.out("AttributeForSchema").out("AssetSchemaType")
-                            .has(PROPERTY_KEY_LABEL,"DataFile").store("vertex"),
-                            __.out("NestedSchemaAttribute").has(PROPERTY_KEY_LABEL,"RelationalTable")
-                                    .store("vertex")).select("vertex").unfold();
+            Iterator<Vertex> end =  g.V(endingVertex.id())
+                    .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
+                            .has(PROPERTY_KEY_LABEL,DATA_FILE).store(VERTEX),
+                            __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)
+                                    .store(VERTEX)).select(VERTEX).unfold();
 
             if (!end.hasNext()) {
-                List<Vertex> next = g.V(v.id()).both("LineageMapping").toList();
+                List<Vertex> next = g.V(endingVertex.id()).both(LINEAGE_MAPPING).toList();
                 Vertex nextVertex = null;
                 for(Vertex vert: next){
                     if(vert.equals(startingVertex)){
@@ -274,10 +323,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 }
 
 
-                return findPathForOutputAsset(nextVertex, g,v);
+                return findPathForOutputAsset(nextVertex, g,endingVertex);
             }
 
-            return v;}
+            return endingVertex;
+        }
         catch (Exception e){
             if (log.isDebugEnabled()) {
                 log.debug("Vertex does not exist {}",startingVertex.id());
@@ -300,5 +350,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
+    }
+
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        this.bufferGraph.close();
+        super.disconnect();
     }
 }

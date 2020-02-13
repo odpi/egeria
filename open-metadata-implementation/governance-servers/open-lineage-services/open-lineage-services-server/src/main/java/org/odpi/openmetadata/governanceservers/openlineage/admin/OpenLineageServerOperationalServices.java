@@ -5,18 +5,17 @@ package org.odpi.openmetadata.governanceservers.openlineage.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
-import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
@@ -42,8 +41,9 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance = null;
     private OMRSAuditLog auditLog = null;
+    private BufferGraph bufferGraphConnector;
+    private MainGraph mainGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
-
 
     /**
      * Constructor used at server startup.
@@ -72,54 +72,35 @@ public class OpenLineageServerOperationalServices {
      * @param auditLog                destination for audit log messages.
      */
     public void initialize(OpenLineageServerConfig openLineageServerConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        final String actionDescription = "Initialize Open lineage Services";
-        final String methodName = "OpenLineageServerOperationalServices.initialize";
         this.openLineageServerConfig = openLineageServerConfig;
-
-        OpenLineageServerAuditCode auditCode;
-
         this.auditLog = auditLog;
+        final String methodName = "initialize";
+        final String actionDescription = "Initialize Open lineage Services";
 
-        auditCode = OpenLineageServerAuditCode.SERVER_INITIALIZING;
-        logAudit(auditCode, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
+        if (openLineageServerConfig == null)
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.NO_CONFIG_DOC, methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
 
-        if (openLineageServerConfig == null) {
-            logAudit(OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
-            throwError(OpenLineageServerErrorCode.NO_CONFIG_DOC, methodName);
+        try {
+            initializeOLS(openLineageServerConfig);
+        } catch (OMAGConfigurationErrorException e) {
+            throw e;
+        } catch (Throwable e) {
+            throwableToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_INITIALIZING_OLS, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_OLS, actionDescription);
         }
+    }
 
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException {
+        final String actionDescription = "Initialize Open lineage Services";
         Connection bufferGraphConnection = openLineageServerConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageServerConfig.getOpenLineageMainGraphConnection();
+        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
 
-        BufferGraph bufferGraphConnector = (BufferGraph) getGraphConnector(bufferGraphConnection);
-        MainGraph mainGraphConnector = (MainGraph) getGraphConnector(mainGraphConnection);
+        this.bufferGraphConnector = (BufferGraph) getConnector(bufferGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
+        this.mainGraphConnector = (MainGraph) getConnector(mainGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR);
+        this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
-        try {
-            bufferGraphConnector.initializeGraphDB();
-            mainGraphConnector.initializeGraphDB();
-        } catch (OpenLineageException e) {
-            logAudit(OpenLineageServerAuditCode.CANNOT_OPEN_GRAPH_DB, actionDescription);
-            toOMAGConfigurationErrorException(e);
-        }
-        Object mainGraph = mainGraphConnector.getMainGraph();
-        bufferGraphConnector.setMainGraph(mainGraph);
-
-        try {
-            bufferGraphConnector.start();
-        } catch (ConnectorCheckedException e) {
-            log.error("Could not start the buffer graph connector.");
-            logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
-            toOMAGConfigurationErrorException(e);
-        }
-        try {
-            mainGraphConnector.start();
-        } catch (ConnectorCheckedException e) {
-            log.error("Could not start the main graph connector.");
-            logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
-            toOMAGConfigurationErrorException(e);
-        }
-
-        StoringServices storingServices = new StoringServices(bufferGraphConnector);
+        initializeAndStartConnectors();
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(mainGraphConnector);
 
         this.openLineageServerInstance = new
@@ -128,127 +109,284 @@ public class OpenLineageServerOperationalServices {
                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                 maxPageSize,
                 openLineageHandler);
-        startEventBus(storingServices);
 
+        logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
     /**
-     * Use the connectorbroker to obtain a connector based on an connection object.
-     * @param connection the connection as provided by the user in the configure open lineage services postman call.
-     * @return The connector
-     * @throws OMAGConfigurationErrorException
-     */
-    private OpenLineageGraph getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
-        /*
-         * Configuring the Graph connectors
-         */
-        final String actionDescription = "Get Open Lineage graph connector";
-        if (connection != null) {
-            log.info("Found connection: {}", connection);
-            try {
-                ConnectorBroker connectorBroker = new ConnectorBroker();
-                return (OpenLineageGraph) connectorBroker.getConnector(connection);
-            } catch (ConnectionCheckedException | ConnectorCheckedException error) {
-                log.error("Unable to initialize graph connector.", error);
-                logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_GRAPH_CONNECTOR, actionDescription);
-                toOMAGConfigurationErrorException(error);
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     *  Start the kafka connector to listen to the asset lineage OMAS out topic.
-     * @param storingServices
-     * @throws OMAGConfigurationErrorException
-     */
-    private void startEventBus(StoringServices storingServices) throws OMAGConfigurationErrorException {
-        final String actionDescription = "Start event bus";
-        final String methodName = "OpenLineageServerOperationalServices.startEventBus";
-        inTopicConnector = getTopicConnector(openLineageServerConfig.getInTopicConnection(), auditLog);
-        if (inTopicConnector != null){
-            OpenMetadataTopicListener governanceEventListener = new InTopicListener(storingServices, auditLog);
-            inTopicConnector.registerListener(governanceEventListener);
-            startTopic(inTopicConnector);
-            logAudit(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
-        }
-        else {
-            throwError(OpenLineageServerErrorCode.NO_IN_TOPIC_CONNECTOR, methodName);
-
-        }
-    }
-
-    /**
-     * Returns the connector created from topic connection properties
+     * Use the ConnectorBroker to obtain a connector.
      *
-     * @param topicConnection properties of the topic connection
-     * @return the connector created based on the topic connection properties
+     * @param connection the  connection as provided by the user in the configure Open Lineage Services HTTP call.
+     * @param errorCode  The error code that should be used when the connector can not be obtained.
+     * @param auditCode  The audit code that should be used when the connector can not be obtained.
+     * @return The connector returned by the ConnectorBroker
+     * @throws OMAGConfigurationErrorException
      */
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        final String actionDescription = "getGraphConnector";
+    private Connector getConnector(Connection connection, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
+        final String actionDescription = "Obtaining graph database connector";
+        final String methodName = "getGraphConnector";
+        Connector connector = null;
         try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            connector = new ConnectorBroker().getConnector(connection);
+        } catch (OCFCheckedExceptionBase e) {
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
+        } catch (Throwable e) {
+            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
+        }
+        return connector;
+    }
 
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
-            topicConnector.setAuditLog(auditLog);
-            return topicConnector;
-        } catch (ConnectionCheckedException | ConnectorCheckedException error) {
-            logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_CONNECTOR, actionDescription);
-            toOMAGConfigurationErrorException(error);
-            return null;
+    /**
+     * Call the initialize() and start() method for all applicable connectors used by the Open Lineage Services.
+     *
+     * @throws OMAGConfigurationErrorException
+     */
+    private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
+        initializeGraphConnectorDB(
+                bufferGraphConnector,
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB,
+                "initializeBufferGraphConnector"
+        );
+
+        initializeGraphConnectorDB(
+                mainGraphConnector,
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB,
+                "initializeMainGraphConnector"
+        );
+
+        Object mainGraph = mainGraphConnector.getMainGraph();
+        bufferGraphConnector.setMainGraph(mainGraph);
+
+        startGraphConnector(bufferGraphConnector,
+                OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
+                "startBufferGraphConnector");
+
+        startGraphConnector(mainGraphConnector,
+                OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR,
+                "startMainGraphConnector");
+
+        startIntopicConnector();
+    }
+
+    /**
+     * Initialize the passed OpenLineageGraphConnector.
+     *
+     * @param connector         The connector that is to be initialized.
+     * @param errorCode         The error code that should be used when the connector can not be initialized.
+     * @param auditCode         The audit code that should be used when the connector can not be initialized.
+     * @param actionDescription The action taking place in this method, used in error reporting
+     * @throws OMAGConfigurationErrorException
+     */
+    private void initializeGraphConnectorDB(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        final String methodName = "initializeGraphConnectorDB";
+        try {
+            connector.initializeGraphDB();
+        } catch (OCFCheckedExceptionBase e) {
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
+        } catch (Throwable e) {
+            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
     }
 
     /**
-     * Start the kafka topic
-     * @param topic the kafka topic object
+     * Start the passed OpenLineageGraphConnector.
+     *
+     * @param connector         The connector that is to be started.
+     * @param errorCode         The error code that should be used when the connector can not be started.
+     * @param auditCode         The audit code that should be used when the connector can not be started.
+     * @param actionDescription The action taking place in this method, used in error reporting.
      * @throws OMAGConfigurationErrorException
      */
-    private void startTopic(OpenMetadataTopicConnector topic) throws OMAGConfigurationErrorException {
-        final String actionDescription = "Start OpenMetadataTopicConnector topic connection";
+    private void startGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        final String methodName = "startGraphConnector";
         try {
-            topic.start();
-        } catch (ConnectorCheckedException error) {
-            logAudit(OpenLineageServerAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION, actionDescription);
-            toOMAGConfigurationErrorException(error);
+            connector.start();
+        } catch (OCFCheckedExceptionBase e) {
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
+        } catch (Throwable e) {
+            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
+    }
+
+    /**
+     * Start the Open Lineage Services in-topic connector
+     *
+     * @throws OMAGConfigurationErrorException
+     */
+    private void startIntopicConnector() throws OMAGConfigurationErrorException {
+        final String actionDescription = "Start the Open Lineage Services in-topic listener";
+        final String methodName = "startIntopicConnector";
+        final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
+        inTopicConnector.setAuditLog(auditLog);
+        StoringServices storingServices = new StoringServices(bufferGraphConnector);
+        OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
+        inTopicConnector.registerListener(openLineageInTopicListener);
+        try {
+            inTopicConnector.start();
+        } catch (OCFCheckedExceptionBase e) {
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
+        } catch (Throwable e) {
+            throwableToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, auditCode, actionDescription);
+        }
+        logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_IN_TOPIC, actionDescription);
+    }
+
+
+    /**
+     * Throw an OMAGConfigurationErrorException using an OpenLineageServerErrorCode.
+     *
+     * @param errorCode         Details about the exception that occurred, in a format intended for web users.
+     * @param methodName        The name of the calling method.
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the error occurred.
+     * @throws OMAGConfigurationErrorException
+     */
+    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+        logException(auditCode, actionDescription, e);
+        throw e;
+    }
+
+
+    /**
+     * Convert a Throwable to an OMAGConfigurationErrorException
+     *
+     * @param throwable         The exception object that was thrown
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the exception occurred.
+     * @throws OMAGConfigurationErrorException
+     */
+    private void throwableToOMAGConfigurationError(Throwable throwable, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+            auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+        logException(auditCode, actionDescription, throwable);
+        throw e;
+    }
+
+    /**
+     * Convert a Throwable to a PropertyServerException
+     *
+     * @param throwable         The exception object that was thrown
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the exception occurred.
+     * @throws PropertyServerException The service had trouble shutting down.
+     */
+    private void throwableToPropertyServerException(Throwable throwable, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+            auditCode, String actionDescription) throws PropertyServerException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+        PropertyServerException e = new PropertyServerException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+        logException(auditCode, actionDescription, throwable);
+        throw e;
+    }
+
+    /**
+     * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
+     *
+     * @param exception         The exception object that was thrown
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription The action that was taking place when the exception occurred.
+     * @throws OMAGConfigurationErrorException
+     */
+    private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase exception, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(exception.getReportedHTTPCode(),
+                exception.getReportingClassName(),
+                exception.getReportingActionDescription(),
+                exception.getErrorMessage(),
+                exception.getReportedSystemAction(),
+                exception.getReportedUserAction());
+        logException(auditCode, actionDescription, e);
+        throw e;
     }
 
     /**
      * Shutdown the Open Lineage Services.
      *
-     * @param permanent boolean flag indicating whether this server permanently shutting down or not
      * @return boolean indicated whether the disconnect was successful.
      */
-    public boolean disconnect(boolean permanent) {
+    public boolean shutdown() throws PropertyServerException {
+        String actionDescription = "Shutting down the open lineage Services server.";
+        logRecord(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
 
-        try {
-            inTopicConnector.disconnect();
-        } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting Open lineages Services In Topic Connector");
-            return false;
-        }
+        disconnectInTopicConnector();
 
-        if (openLineageServerInstance != null) {
+        disconnectGraphConnector(bufferGraphConnector,
+                OpenLineageServerErrorCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
+                "Disconnecting the Buffergraph connection.");
+
+        disconnectGraphConnector(mainGraphConnector,
+                OpenLineageServerErrorCode.ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR,
+                "Disconnecting the Maingraph connection.");
+
+
+        if (openLineageServerInstance != null)
             openLineageServerInstance.shutdown();
-        }
 
-        final String actionDescription = "shutdown";
-        OpenLineageServerAuditCode auditCode;
-
-        auditCode = OpenLineageServerAuditCode.SERVER_SHUTDOWN;
-        logAudit(auditCode, actionDescription);
+        logRecord(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
         return true;
     }
 
 
     /**
-     *  Write to audit log
-     * @param auditCode Reference to the specific audit message
-     * @param actionDescription Describes what the user could do to prevent the error from occuring.
+     * Disconnect the passed OpenLineageGraphConnector.
+     *
+     * @param connector         The connector that is to be disconnected.
+     * @param auditCode         The potential error that could occur, in a format intended for system administrators.
+     * @param actionDescription The action taking place in this method, used in error reporting.
+     * @throws PropertyServerException
      */
-    private void logAudit(OpenLineageServerAuditCode auditCode, String actionDescription) {
+    private void disconnectGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws PropertyServerException {
+        final String methodName = "disconnectGraphConnector";
+        try {
+            connector.disconnect();
+        } catch (Throwable e) {
+            throwableToPropertyServerException(e, errorCode, methodName, auditCode, actionDescription);
+        }
+    }
+
+    /**
+     * Disconnect the Open Lineage Services in-topic connector
+     */
+    private void disconnectInTopicConnector() throws PropertyServerException {
+        final String methodName = "disconnectInTopicConnector";
+        final String actionDescription = "Disconnecting the Open Lineage Services in-topic listener";
+
+        try {
+            inTopicConnector.disconnect();
+        } catch (Throwable e) {
+            throwableToPropertyServerException(e, OpenLineageServerErrorCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, actionDescription);
+        }
+    }
+
+    /**
+     * Write a non-exception record to the audit log.
+     *
+     * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
+     * @param actionDescription Describes what the user could do to prevent the error from occurring.
+     */
+    private void logRecord(OpenLineageServerAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
@@ -256,36 +394,26 @@ public class OpenLineageServerOperationalServices {
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
+        log.info(auditCode.getSystemAction());
     }
 
     /**
-     * Throw an OMAGConfigurationErrorException using an OpenLineageServerErrorCode.
-     * @param errorCode Reference to the specific error type
-     * @param methodName The name of the calling method
-     * @throws OMAGConfigurationErrorException
+     * Write an exception to the audit log.
+     *
+     * @param auditCode         Reference to the specific audit message.
+     * @param actionDescription Describes what the user could do to prevent the error from occurring.
+     * @param e                 The exception object that was thrown.
      */
-    private void throwError(OpenLineageServerErrorCode errorCode, String methodName) throws OMAGConfigurationErrorException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
-
-    /**
-     * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
-     * @param error The error to be mapped
-     * @throws OMAGConfigurationErrorException
-     */
-    private void toOMAGConfigurationErrorException(OCFCheckedExceptionBase error) throws OMAGConfigurationErrorException {
-        throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
-                error.getReportingClassName(),
-                error.getReportingActionDescription(),
-                error.getErrorMessage(),
-                error.getReportedSystemAction(),
-                error.getReportedUserAction());
+    private void logException(OpenLineageServerAuditCode auditCode, String actionDescription, Throwable e) {
+        auditLog.logException(actionDescription,
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(localServerName, openLineageServerConfig.toString()),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction(),
+                e);
+        log.error(auditCode.getSystemAction(), e);
     }
 }
 

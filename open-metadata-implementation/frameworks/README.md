@@ -5,23 +5,29 @@
 # Open Metadata and Governance Frameworks
 
 The open metadata and governance frameworks define the interfaces for pluggable components.  These
-components provide much of the customization offered by the open metadata and governance
-implementation.
+components provide much of the customization and technology integration points offered by the open metadata and governance
+implementation.  
 
-The open metadata and governance frameworks supported by egeria are as follows:
+The open metadata and governance frameworks supported by Egeria are as follows:
   
 * **[Open Connector Framework (OCF)](open-connector-framework)** provides the interfaces and base implementations for components
 (called connectors) that access data-related assets.
 OCF connectors also provide detailed metadata about the assets they access.
 
+* **[Governance Action Framework (GAF)](governance-action-framework)** provides the interfaces and base implementations for components
+(called governance actions) that take action to assess and correct a situation that is harmful to the data,
+or the organization in some way.
+
 * **[Open Discovery Framework (ODF)](open-discovery-framework)** provides the interfaces and base implementations for components
 (called discovery services) that access data-related assets and extract characteristics 
 about the data that can be stored in an open metadata repository.
 
-* **[Governance Action Framework (GAF)](governance-action-framework)** provides the interfaces and base implementations for components
-(called governance actions) that take action to correct a situation that is harmful the data,
-or the organization in some way.
+Both the discovery services and the governance actions
+are specialized OCF connectors, making the OCF the
+only plug-in mechanism in the open metadata and governance
+technology.
 
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

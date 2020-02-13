@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 
@@ -13,6 +16,9 @@ import java.util.Map;
  */
 public class PropertyServerException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
+    private static final Logger log = LoggerFactory.getLogger(PropertyServerException.class);
 
     /**
      * This is the typical constructor for creating a PropertyServerException.  It captures the essential details
@@ -33,6 +39,8 @@ public class PropertyServerException extends OCFCheckedExceptionBase
                                    String userAction)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -57,6 +65,8 @@ public class PropertyServerException extends OCFCheckedExceptionBase
                                    Map<String, Object> relatedProperties)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, relatedProperties);
+
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -82,6 +92,8 @@ public class PropertyServerException extends OCFCheckedExceptionBase
                                    Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
     /**
@@ -108,6 +120,8 @@ public class PropertyServerException extends OCFCheckedExceptionBase
                                    Map<String, Object> relatedProperties)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
+
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 

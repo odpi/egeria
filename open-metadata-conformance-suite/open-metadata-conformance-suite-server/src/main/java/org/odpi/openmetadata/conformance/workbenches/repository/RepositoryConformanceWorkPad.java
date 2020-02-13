@@ -26,7 +26,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchId            = "repository-workbench";
     private static final String workbenchName          = "Open Metadata Repository Test Workbench";
     private static final String workbenchVersionNumber = "V1.1";
-    private static final String workbenchDocURL        = "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/" + workbenchId;
+    private static final String workbenchDocURL        = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
     private OMRSAuditLog            auditLog;
@@ -532,10 +532,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * Add the specified subtype to the list for the named entity type.
-     *
-     * @param entityTypeName type name
-     * @param subTypeName sub type name
+     * Add the specified subtype to the list for the named entity type
+     * @param entityTypeName - the name of the entity type
+     * @param subTypeName    - name of the entity subtype
      */
      void addEntitySubType(String entityTypeName, String subTypeName)
      {
@@ -553,10 +552,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     }
 
     /**
-     * Return the list of subtypes of the named entity type.
-     *
-     * @param entityTypeName entity name
-     * @return list of subtypes
+     * Return the list of subtypes of the named entity type
+     * @param entityTypeName - the name of the entity type
+     * @return - the list of subtypes of the entity type
      */
     public List<String> getEntitySubTypes(String entityTypeName)
     {
@@ -564,9 +562,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         return subTypeList;
     }
 
-
     /**
-     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified.
+     * Add the specified relationship type to the appropriate end-specific relationship type list, for the entity type specified
      *
      * @param entityTypeName entity type name
      * @param relationshipTypeName relationship type name
@@ -598,7 +595,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      * Return the list of end types for the named relationship type.
      *
      * @param entityTypeName requested type
-     * @return list of end types
+     * @return list of relationship types for the entity type
      */
     public List<List<String>> getEntityRelationshipTypes(String entityTypeName)
     {
@@ -662,12 +659,12 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * Remember the sets of instances for a given entity type. This is to support search test cases
+     * Remember the sets of instances for a given entity type. This is to support
      *
-     * @param entityTypeName name of entity
-     * @param set_0 set 0
-     * @param set_1 set 1
-     * @param set_2 set 3
+     * @param entityTypeName - name of entity type
+     * @param set_0 - a list of entities
+     * @param set_1 - a list of entities
+     * @param set_2 - a list of entities
      */
     public void addEntityInstanceSets(String entityTypeName, List<EntityDetail> set_0, List<EntityDetail> set_1, List<EntityDetail> set_2)
     {
@@ -681,6 +678,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
     /**
      * Retrieve entity instances for the given type for the given instance set
+     *
      * @param entityTypeName entity type name
      * @param setId which set
      * @return list of entities
@@ -709,12 +707,12 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * Remember the sets of instances for a given relationship type. This is to support search tests.
+     * Remember the sets of instances for a given relationship type. This is to support
      *
-     * @param relationshipTypeName name of type
-     * @param set_0 set 0
-     * @param set_1 set 1
-     * @param set_2 set 2
+     * @param relationshipTypeName - type name for relationship
+     * @param set_0 - a list of relationships
+     * @param set_1 - a list of relationships
+     * @param set_2 - a list of relationships
      */
     public void addRelationshipInstanceSets(String relationshipTypeName, List<Relationship> set_0, List<Relationship> set_1, List<Relationship> set_2)
     {

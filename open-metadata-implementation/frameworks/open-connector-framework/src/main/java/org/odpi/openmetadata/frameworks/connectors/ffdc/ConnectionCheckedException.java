@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * ConnectionCheckedException provides a checked exception for reporting errors found in connection objects.
  * Typically these errors are configuration errors that can be fixed by an administrator or power user.
@@ -11,6 +14,9 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
  */
 public class ConnectionCheckedException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
+    private static final Logger log = LoggerFactory.getLogger(ConnectionCheckedException.class);
 
     /**
      * This is the typical constructor for creating a ConnectionCheckedException.  It captures the essential details
@@ -26,6 +32,8 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
     public ConnectionCheckedException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -45,16 +53,20 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
     public ConnectionCheckedException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated message
      * @param template   object to copy
      */
-    public ConnectionCheckedException(ConnectionCheckedException template)
+    public ConnectionCheckedException(String                     errorMessage,
+                                      ConnectionCheckedException template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 }

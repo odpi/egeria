@@ -5,13 +5,13 @@
 
 This image is intended to support on-site labs, tutorials. 
 
-Rather than having to install Egeria, prereqs & tools seperately, these scripts make it easy
+Rather than having to install Egeria, prereqs & tools separately, these scripts make it easy
 to get a stack running quickly
 
 This has much reduced function than Egeria's kubernetes support via Helm which is a better
 option for real-world coding & deployment. The same configuration we have here for the lab is 
 also available for k8s. 
-See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/lab
+See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab
 
 Components included are:
  * Multiple egeria images -- this uses the latest docker egeria image, as published to dockerhub
@@ -27,10 +27,11 @@ Components included are:
 
 ## Usage
 
+ - Docker & Docker compose must be installed - see https://docs.docker.com/install/
+ - Configure docker with at least 4GB memory
  - Ensure you have access to both 'egeria-tutorial.yaml' and the 'notebook-start.d' subdirectory 
  which contains an initialization script 'getnotebooks.sh'. You can either run directly from a git 
  clone, or download the files individually
- - Ensure docker is installed & configured. See https://docs.docker.com/install/ 
  - To start the environment `docker-compose -f ./egeria-tutorial.yaml up`
  - you will notice all the components starting. As the notebook server starts it will also load
    the latest notebooks we have available directly from git.
