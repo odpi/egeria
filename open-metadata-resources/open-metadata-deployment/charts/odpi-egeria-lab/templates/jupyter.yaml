@@ -54,9 +54,6 @@ spec:
     spec:
       securityContext:
         fsGroup: 100
-      volumes:
-        - name: egeria-lab-notebooks
-          emptyDir: {}
       containers:
         - name: jupyter
           image: "{{ if (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.jupyter.registry | default .Values.imageDefaults.registry }}/{{ end }}\
