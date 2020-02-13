@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * ConnectionCheckedException provides a checked exception for reporting errors found in connection objects.
  * Typically these errors are configuration errors that can be fixed by an administrator or power user.
@@ -34,7 +33,7 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -55,7 +54,7 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
