@@ -1,10 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
   
-# View Generator Connectors
+# Data Platform Connectors
 
-The view generator connectors provide plugins to the governance daemon
-that automatically configure data virtualization platforms from
-open metadata.
+The Data Platform connectors provide plugins to the
+[Data Platform Server](../../../../admin-services/docs/concepts/data-platform-server.md).
 
 
 Return to [governance-daemon-connectors](..) module.
