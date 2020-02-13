@@ -153,7 +153,7 @@
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <gaian.version>2.1.8</gaian.version>
-        <avro.version>1.9.1</avro.version>
+        <avro.version>1.9.2</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
@@ -179,7 +179,7 @@
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-shade.version>3.2.1</maven-shade.version>
+        <maven-shade.version>3.2.2</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
