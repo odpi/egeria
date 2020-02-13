@@ -57,42 +57,13 @@ spec:
       volumes:
         - name: egeria-lab-notebooks
           emptyDir: {}
-      initContainers:
-        - name: init-samples
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          command:
-            - "/bin/bash"
-            - "-c"
-            - >
-                cd /opt/egeria/labs &&
-                git init . &&
-                git remote add origin https://github.com/odpi/egeria.git &&
-                git config core.sparsecheckout true &&
-                echo 'open-metadata-resources/open-metadata-labs/*' >> .git/info/sparse-checkout &&
-                git pull --depth=1 origin master &&
-                mv open-metadata-resources/open-metadata-labs/* . &&
-                rm -rf open-metadata-resources &&
-                rm -rf .git
-          volumeMounts:
-            - mountPath: /opt/egeria/labs
-              name: egeria-lab-notebooks
       containers:
         - name: jupyter
           image: "{{ if (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.jupyter.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.jupyter.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.jupyter.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.jupyter.name }}\
-                  :{{ .Values.image.jupyter.tag | default .Values.imageDefaults.tag }}"
+                  :{{ .Values.image.jupyter.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          command:
-            - "/bin/bash"
-            - "-c"
-            - >
-                conda install -y pandas &&
-                start.sh jupyter lab --NotebookApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
           args:
             - jupyter
             - lab
@@ -120,9 +91,6 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          volumeMounts:
-            - mountPath: /home/jovyan/open-metadata-labs
-              name: egeria-lab-notebooks
       restartPolicy: Always
 
 status: {}

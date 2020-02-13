@@ -37,8 +37,7 @@ image:
   configure:
     name: egeria-configure
   jupyter:
-    namespace: jupyter
-    name: base-notebook
+    name: jupyter
 
 # When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
 kafka:
