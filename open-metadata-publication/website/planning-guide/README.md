@@ -94,6 +94,9 @@ and OMAG Servers.
   
 * Consider where you need to have multiple versions of the same server running to give continuous
   availability.
+  
+* Plan your use of the event bus - which technology to use (Apache Kafka is the default)
+  and the names of the topics that your OMAG Servers will use.
 
 
 ----
