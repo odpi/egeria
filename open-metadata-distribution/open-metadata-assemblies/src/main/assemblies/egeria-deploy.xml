@@ -16,13 +16,13 @@
 
         <!-- Copy the tutorial notebooks -->
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-tutorials</directory>
+            <directory>../../open-metadata-resources/open-metadata-labs</directory>
             <outputDirectory>./notebooks</outputDirectory>
-            <includesB>
+            <includes>
                 <include>**/*.ipynb</include>
                 <include>**/*.md</include>
                 <include>**/resources/**</include>
-            </includesB>
+            </includes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
