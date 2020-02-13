@@ -39,10 +39,8 @@ services:
             - cocopharma
 
     notebook:
-        image: 'jupyter/base-notebook:latest'
+        image: '${egeria_repo}/jupyter:${egeria_version}'
         environment:
-            - GRANT_SUDO=yes
-            - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
             - corePlatformURL=http://core:8080
             - dataLakePlatformURL=http://datalake:8080
@@ -61,8 +59,6 @@ services:
             - factory
         networks:
             - cocopharma
-        volumes:
-            - ./notebook-start.d:/usr/local/bin/start-notebook.d
         user: root
 
     core:
