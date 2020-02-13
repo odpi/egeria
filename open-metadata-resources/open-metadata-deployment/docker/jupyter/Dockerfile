@@ -29,7 +29,6 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.vcs-date = "$VCS_DATE"
 
 USER root
-RUN apt-get update && apt-get -y install git --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 COPY target/assembly/notebooks $HOME
 RUN chown -R $NB_UID:$NB_GID $HOME
