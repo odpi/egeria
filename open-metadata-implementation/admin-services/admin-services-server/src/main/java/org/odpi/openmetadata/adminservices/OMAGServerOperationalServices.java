@@ -1460,9 +1460,6 @@ public class OMAGServerOperationalServices {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (OMAGNotAuthorizedException error) {
             exceptionHandler.captureNotAuthorizedException(response, error);
-<<<<<<< HEAD
-        } catch (Throwable error) {
-=======
         }
         catch (PropertyServerException error)
         {
@@ -1470,7 +1467,6 @@ public class OMAGServerOperationalServices {
         }
         catch (Throwable error)
         {
->>>>>>> 0bba2d86b9897c1e96bc88e6fa1cbf4a1b9d726c
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
