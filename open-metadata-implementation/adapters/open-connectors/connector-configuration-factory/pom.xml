@@ -15,6 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Connector Configuration Factory</name>
     <description>
         The connector configuration factory sets up connections to the default implementations
@@ -37,7 +43,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-	    <artifactId>open-connector-framework</artifactId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <dependency>

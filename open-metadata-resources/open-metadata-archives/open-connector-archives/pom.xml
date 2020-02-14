@@ -15,6 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Open Connector Archives</name>
     <description>
         The Open Connector Archives provide utilities for loading definitions for open connectors.
@@ -101,7 +107,8 @@
                                 <!-- Need to create ant property to pass from maven to ant task -->
                                 <!-- generating code here -->
                                 <property name="antDirectory" value="${project.build.directory}"/>
-                                <java classname="org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter" dir="${antDirectory}" fork="true">
+                                <java classname="org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter"
+                                      dir="${antDirectory}" fork="true">
                                     <classpath>
                                         <path refid="maven.compile.classpath"/>
                                         <path refid="maven.plugin.classpath"/>

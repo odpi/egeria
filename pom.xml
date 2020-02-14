@@ -9,6 +9,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Egeria</name>
     <description>
         Top-level package providing the standards, frameworks, reference implementations and
@@ -38,12 +44,6 @@
         <name>ODPi</name>
         <url>http://www.odpi.org</url>
     </organization>
-
-    <scm>
-        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
-        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
-    </scm>
 
     <issueManagement>
         <system>GitHub</system>
@@ -207,7 +207,8 @@
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-        <sonar.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.xml</sonar.jacoco.xmlReportPaths>
+        <sonar.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.xml
+        </sonar.jacoco.xmlReportPaths>
         <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
         <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -215,7 +216,8 @@
         <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
 
-        <gaiandb.url>https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true</gaiandb.url>
+        <gaiandb.url>https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true
+        </gaiandb.url>
 
     </properties>
 
@@ -2020,7 +2022,7 @@
                 <version>${guava.version}</version>
                 <scope>compile</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.google.crypto.tink</groupId>
                 <artifactId>tink</artifactId>
@@ -2209,9 +2211,9 @@
                 </plugin>
 
                 <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-plugin.version}</version>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license-plugin.version}</version>
                 </plugin>
 
                 <plugin>
@@ -2481,7 +2483,7 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                     </execution>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -2506,9 +2508,11 @@
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*
+                                </ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
-                                <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -2543,7 +2547,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
-                    <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
                     <quiet>true</quiet>
                 </configuration>
                 <executions>
@@ -2647,9 +2650,11 @@
                             <threshold>Low</threshold>
                             <failOnError>false</failOnError>
                             <!--suppress UnresolvedMavenProperty -->
-                            <includeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                            <includeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-include.xml
+                            </includeFilterFile>
                             <!--suppress UnresolvedMavenProperty -->
-                            <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+                            <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-exclude.xml
+                            </excludeFilterFile>
                             <plugins>
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
@@ -2781,7 +2786,8 @@
                                 <configuration>
                                     <acceptPomPackaging>false</acceptPomPackaging>
                                     <includedScopes>compile,runtime</includedScopes>
-                                    <outputDirectory>${project.build.directory}/generated-sources/license</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/generated-sources/license
+                                    </outputDirectory>
                                     <thirdPartyFilename>THIRD_PARTY.txt</thirdPartyFilename>
                                 </configuration>
                                 <goals>
