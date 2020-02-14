@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.softwaredeveloper.server;
 import org.odpi.openmetadata.accessservices.softwaredeveloper.admin.SoftwareDeveloperAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 /**
  * SoftwareDeveloperRegistration registers the access service with the OMAG Server administration services.
@@ -24,8 +24,8 @@ public class SoftwareDeveloperRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.SOFTWARE_DEVELOPER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  SoftwareDeveloperAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

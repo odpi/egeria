@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 import org.odpi.openmetadata.accessservices.itinfrastructure.admin.ITInfrastructureAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 /**
  * ITInfrastructureRegistration registers the access service with the OMAG Server administration services.
@@ -24,8 +24,8 @@ public class ITInfrastructureRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.IT_INFRASTRUCTURE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  ITInfrastructureAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

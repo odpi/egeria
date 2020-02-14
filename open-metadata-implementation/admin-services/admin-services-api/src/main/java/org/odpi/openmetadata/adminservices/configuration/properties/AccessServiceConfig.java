@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +32,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     private String                         accessServiceURLMarker         = null;
     private String                         accessServiceDescription       = null;
     private String                         accessServiceWiki              = null;
-    private AccessServiceOperationalStatus accessServiceOperationalStatus = null;
+    private ServiceOperationalStatus       accessServiceOperationalStatus = null;
     private Connection                     accessServiceInTopic           = null;
     private Connection                     accessServiceOutTopic          = null;
     private Map<String, Object>            accessServiceOptions           = null;
@@ -79,16 +78,16 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceRegistration fixed properties about the access service
      */
-    public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration)
+    public AccessServiceConfig(ServiceRegistration accessServiceRegistration)
     {
-        this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
-        this.accessServiceName = accessServiceRegistration.getAccessServiceName();
-        this.accessServiceFullName = accessServiceRegistration.getAccessServiceFullName();
-        this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
-        this.accessServiceAdminClass = accessServiceRegistration.getAccessServiceAdminClassName();
-        this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
-        this.accessServiceWiki = accessServiceRegistration.getAccessServiceWiki();
-        this.accessServiceOperationalStatus = accessServiceRegistration.getAccessServiceOperationalStatus();
+        this.accessServiceId = accessServiceRegistration.getServiceCode();
+        this.accessServiceName = accessServiceRegistration.getServiceName();
+        this.accessServiceFullName = accessServiceRegistration.getServiceFullName();
+        this.accessServiceURLMarker = accessServiceRegistration.getServiceURLMarker();
+        this.accessServiceAdminClass = accessServiceRegistration.getServiceAdminClassName();
+        this.accessServiceDescription = accessServiceRegistration.getServiceDescription();
+        this.accessServiceWiki = accessServiceRegistration.getServiceWiki();
+        this.accessServiceOperationalStatus = accessServiceRegistration.getServiceOperationalStatus();
     }
 
 
@@ -268,7 +267,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @return AccessServiceOperationalStatus enum
      */
-    public AccessServiceOperationalStatus getAccessServiceOperationalStatus()
+    public ServiceOperationalStatus getAccessServiceOperationalStatus()
     {
         return accessServiceOperationalStatus;
     }
@@ -279,7 +278,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
      */
-    public void setAccessServiceOperationalStatus(AccessServiceOperationalStatus accessServiceOperationalStatus)
+    public void setAccessServiceOperationalStatus(ServiceOperationalStatus accessServiceOperationalStatus)
     {
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
     }

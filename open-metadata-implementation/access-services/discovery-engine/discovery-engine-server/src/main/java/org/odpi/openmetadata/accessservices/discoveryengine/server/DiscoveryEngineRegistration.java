@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server;
 import org.odpi.openmetadata.accessservices.discoveryengine.admin.DiscoveryEngineAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 /**
  * DiscoveryEngineRegistration registers the access service with the OMAG Server administration services.
@@ -24,8 +24,8 @@ class DiscoveryEngineRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  DiscoveryEngineAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

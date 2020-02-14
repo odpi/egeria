@@ -42,12 +42,12 @@ public class TestInputValidator {
     @Test
     public void testOMASServerURLNotNull()  {
         try {
-            InputValidator.validateMetadataServerURLNotNull("c","m","A1");
+            InputValidator.validateRemoteServerURLNotNull("c", "m", "A1");
         } catch (InvalidParameterException e) {
             fail("Non null should not fail");
         }
         try {
-            InputValidator.validateMetadataServerURLNotNull("c","m",null);
+            InputValidator.validateRemoteServerURLNotNull("c", "m", null);
         } catch (InvalidParameterException e) {
             System.out.println("Expected error message " + e.getErrorMessage());
             if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){

@@ -24,6 +24,9 @@ public enum ServerTypeClassification
     GOVERNANCE_SERVER("Governance Server",
                       "Server that hosts integration, management or governance function",
                       ServerTypeClassification.OMAG_SERVER),
+    VIEW_SERVER("View Server",
+            "Server that hosts view services which are the task orientate services required by user interfaces.",
+            ServerTypeClassification.OMAG_SERVER),
     INTEGRATION_DAEMON("Integration Daemon",
                        "Governance server that hosts connectors that are exchanging metadata with third party technology.  " +
                                "These servers typically do not have their own API which is why they are called daemons",

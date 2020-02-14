@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 /**
  * AssetConsumerRegistration registers the access service with the OMAG Server administration services.
@@ -24,8 +24,8 @@ public class AssetConsumerRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  AssetConsumerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

@@ -218,6 +218,25 @@ public enum OMAGAdminErrorCode
             "The system returns an exception and does not update the configuration document for the server.",
             "Retry the configuration request with the property value set up correctly."),
 
+    VIEW_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-033 ",
+            "Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform",
+            "The system is unable to add this view service to the server's configuration document.",
+            "Check that the name of the view service is correctly specified in the configuration request.  " +
+                    "If you are not sure, issue the call to list the registered view services and verify the " +
+                    "values you are using.  If the name is right but the view service should be registered," +
+                    "then the developer of the view service needs to add this registration to the code of the view " +
+                    "service. An view service is registered in the " +
+                    "OMAG Server Platform by adding a description of the view service to the " +
+                    "view service registration (look for OMAGAccessServiceRegistration.registerViewService() in " +
+                    "existing view service modules to see this code pattern). Once the view service being " +
+                    "requested is registered, retry the configuration request."),
+
+    VIEW_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-034 ",
+            "Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform",
+            "The system is unable to configure the local server.",
+            "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
+
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",

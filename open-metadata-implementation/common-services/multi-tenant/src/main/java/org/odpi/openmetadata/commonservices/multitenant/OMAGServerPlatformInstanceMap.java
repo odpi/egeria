@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
@@ -89,42 +90,69 @@ public class OMAGServerPlatformInstanceMap
     {
         validateUserAsInvestigatorForPlatform(userId);
 
-        List<RegisteredOMAGService> response = new ArrayList<>();
-
         /*
          * Get the list of Access Services implemented in this server.
          */
-        List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+        List<ServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
         /*
          * Set up the available access services.
          */
-        if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
-        {
-            for (AccessServiceRegistration registration : accessServiceRegistrationList)
-            {
-                if (registration != null)
-                {
-                    if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
-                    {
-                        response.add(getServiceDescription(registration.getAccessServiceName(),
-                                                           registration.getAccessServiceURLMarker(),
-                                                           registration.getAccessServiceDescription(),
-                                                           registration.getAccessServiceWiki()));
+        return getRegisteredOMAGServices(accessServiceRegistrationList);
+    }
+    /**
+     * Return the list of view services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a server.
+     *
+     * @param userId calling user
+     * @return list of view service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredViewServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+
+
+        /*
+         * Get the list of View Services implemented in this server.
+         */
+        List<ServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
+
+        /*
+         * Set up the available view services.
+         */
+        return getRegisteredOMAGServices(viewServiceRegistrationList);
+    }
+
+    /**
+     * Return the list of services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a server.
+     * @param serviceRegistrationList  service registrations.
+     * @return list of service descriptions
+     */
+    private List<RegisteredOMAGService> getRegisteredOMAGServices(List<ServiceRegistration> serviceRegistrationList) {
+        List<RegisteredOMAGService> response = new ArrayList<>();
+        if ((serviceRegistrationList != null) && (!serviceRegistrationList.isEmpty())) {
+            for (ServiceRegistration registration : serviceRegistrationList) {
+                if (registration != null) {
+                    if (registration.getServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
+                        response.add(getServiceDescription(registration.getServiceName(),
+                                registration.getServiceURLMarker(),
+                                registration.getServiceDescription(),
+                                registration.getServiceWiki()));
                     }
                 }
             }
 
         }
 
-        if (response.isEmpty())
-        {
+        if (response.isEmpty()) {
             return null;
         }
 
         return response;
     }
-
 
     /**
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
@@ -237,6 +265,13 @@ public class OMAGServerPlatformInstanceMap
         }
 
         services = getRegisteredAccessServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredViewServices(userId);
 
         if ((services != null) && (! services.isEmpty()))
         {

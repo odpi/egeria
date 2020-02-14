@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.server;
 import org.odpi.openmetadata.accessservices.dataplatform.admin.DataPlatformAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 
 /**
@@ -23,8 +23,8 @@ public class DataPlatformOMASRegistration {
     public static void registerAccessService() {
 
             AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
-            AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                    AccessServiceOperationalStatus.ENABLED,
+            ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                    ServiceOperationalStatus.ENABLED,
                     DataPlatformAdmin.class.getName()
             );
             OMAGAccessServiceRegistration.registerAccessService(myRegistration);

@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
 
 /**
  * DataEngineRegistration registers the access service with the OMAG Server administration services.
@@ -23,8 +23,8 @@ class DataEngineRegistration {
     static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.DATA_ENGINE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                AccessServiceOperationalStatus.ENABLED,
+        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+                ServiceOperationalStatus.ENABLED,
                 DataEngineAdmin.class.getName());
 
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
