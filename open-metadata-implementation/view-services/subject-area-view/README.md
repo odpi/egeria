@@ -3,32 +3,21 @@
   
 # Open Metadata View Services (OMVS)
 
-The Open Metadata View Services (OMVS) provide task oriented, domain-specific services
-for user interfaces to integrate with open metadata. 
+![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
 
-The view services are as follows:
+Develop a definition of a subject area including terms, reference data and rules for use by a user interface. The Subject Area OMVS is for user interfaces that support subject matter experts
+who are defining glossaries, reference data and rules around data for a specific subject area, such as "customer data". 
 
-* **[subject-area](subject-area)** - develop a definition of a subject area including glossary
-terms, reference data and rules.
+This OMVS calls a remote server using the [Subject Area OMAS](../../access-services/subject-area/README.md).
 
-  The Subject Area OMVS is for tools that support subject matter experts
-who are defining glossaries, reference data and rules around data for a specific
-subject area, such as "customer data".  It supports the development of a comprehensive
-definition of the subject area and the standards that support it.
-These definitions can then be folded into the Governance Program,
-and used by Asset Owner's to improve the findability and understandability
-of their assets by linking their asset's structure to relevant parts of
-the subject area definition.
 
-## Inside an OMVS
+The module structure for the Subject Area OMVS is as follows:
 
-User Interfaces can connect to an OMVS through its REST API. The REST API interacts with a remote OMAG Server.
-The OMVS APIs are deployed together in a single web application. 
+* [subject-area-view-server](subject-area-view-server) supports an implementation of the view service.
+* [subject-area-view-spring](subject-area-view-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 
-The [administration services](../admin-services/README.md) provide
-the ability to configure, start and stop the view services.
 
-Return to [open-metadata-implementation](..).
+Return to [open-metadata-implementation](../..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
