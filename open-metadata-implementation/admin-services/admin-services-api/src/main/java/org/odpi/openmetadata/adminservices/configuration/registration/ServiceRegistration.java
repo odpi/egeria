@@ -35,7 +35,7 @@ public class ServiceRegistration implements Serializable
      * @param serviceOperationalStatus default initial operational status for the access service
      * @param serviceAdminClassName  name of serviceAdmin implementation class for the access service
      */
-    public ServiceRegistration(int                            serviceCode,
+    public ServiceRegistration(int                                  serviceCode,
                                      String                         serviceName,
                                      String                         serviceFullName,
                                      String                         serviceURLMarker,
