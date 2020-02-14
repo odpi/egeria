@@ -30,33 +30,32 @@ import java.util.Arrays;
 public enum SubjectAreaViewAuditCode {
     SERVICE_INITIALIZING("OMVS-SUBJECT-AREA-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The Subject Area View Open Metadata Access Service (OMVS) is initializing",
+            "The Subject Area View Service (OMVS) is initializing",
             "The local server has started up the Subject Area OMVS.",
             "No action is required. This is part of the normal operation of the Subject Area OMVS."),
 
     SERVICE_INITIALIZED("OMVS-SUBJECT-AREA-0003",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The Subject Area View Open Metadata Access Service (OMVS) is initialized",
+            "The Subject Area View Service (OMVS) is initialized",
             "The Subject Area OMVS has completed initialization.",
-            "No action is required. This is part of the normal operation of the  Subject Area OMVS."),
+            "No action is required. This is part of the normal operation of the Subject Area OMVS."),
 
     SERVICE_SHUTDOWN("OMVS-SUBJECT-AREA-0004",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
-            "The Subject Area View Open Metadata Access Service (OMVS) is shutting down",
+            "The Subject Area View Service (OMVS) is shutting down",
             "The local server has requested shut down of the Subject Area OMVS.",
-            "No action is required. This is part of the normal operation of the  Subject Area OMVS."),
-
+            "No action is required. This is part of the normal operation of the Subject Area OMVS."),
 
     SERVICE_INSTANCE_FAILURE("OMVS-SUBJECT-AREA-0032",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Subject Area View Open Metadata Access Service (OMVS) is unable to initialize a new instance; error message is {0}",
+            "The Subject Area View Service (OMVS) is unable to initialize a new instance; error message is {0}",
             "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
     SERVICE_TERMINATING("OMVS-SUBJECT-AREA-0033",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
-            "The Subject Area View Open Metadata Access Service (OMVS) is shutting down server instance {0}",
-            "The local handlers has requested shut down of the Governance Engine OMAS.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "The Subject Area View Service (OMVS) is shutting down server instance {0}",
+            "The local handlers has requested shut down of the Subject Area OMVS.",
+            "No action is required. This is part of the normal operation of the service."),
 
     ;
 
