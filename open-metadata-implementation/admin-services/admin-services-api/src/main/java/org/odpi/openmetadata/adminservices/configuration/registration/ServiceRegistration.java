@@ -84,8 +84,8 @@ public class ServiceRegistration implements Serializable
      * @param viewServiceAdminClassName  name of viewServiceAdmin implementation class for the view service
      */
     public ServiceRegistration(ViewServiceDescription      viewServiceDescription,
-                               ServiceOperationalStatus viewServiceOperationalStatus,
-                               String                         viewServiceAdminClassName)
+                               ServiceOperationalStatus    viewServiceOperationalStatus,
+                               String                      viewServiceAdminClassName)
     {
         this(viewServiceDescription.getViewServiceCode(),
                 viewServiceDescription.getViewServiceName(),
@@ -121,7 +121,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceCode  int type code
      */
-    public void setserviceCode(int serviceCode)
+    public void setServiceCode(int serviceCode)
     {
         this.serviceCode = serviceCode;
     }
@@ -144,7 +144,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceName  String default name
      */
-    public void setserviceName(String serviceName)
+    public void setServiceName(String serviceName)
     {
         this.serviceName = serviceName;
     }
@@ -167,7 +167,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceFullName  String default name
      */
-    public void setserviceFullName(String serviceFullName)
+    public void setServiceFullName(String serviceFullName)
     {
         this.serviceFullName = serviceFullName;
     }
@@ -213,7 +213,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceDescription  String default description
      */
-    public void setserviceDescription(String serviceDescription)
+    public void setServiceDescription(String serviceDescription)
     {
         this.serviceDescription = serviceDescription;
     }
@@ -235,7 +235,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceWiki  String URL name for the wiki page
      */
-    public void setserviceWiki(String serviceWiki)
+    public void setServiceWiki(String serviceWiki)
     {
         this.serviceWiki = serviceWiki;
     }
@@ -257,7 +257,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceOperationalStatus serviceOperationalStatus enum
      */
-    public void setserviceOperationalStatus(ServiceOperationalStatus serviceOperationalStatus)
+    public void setServiceOperationalStatus(ServiceOperationalStatus serviceOperationalStatus)
     {
         this.serviceOperationalStatus = serviceOperationalStatus;
     }
@@ -280,7 +280,7 @@ public class ServiceRegistration implements Serializable
      *
      * @param serviceAdminClassName  class name
      */
-    public void setserviceAdminClassName(String serviceAdminClassName)
+    public void setServiceAdminClassName(String serviceAdminClassName)
     {
         this.serviceAdminClassName = serviceAdminClassName;
     }
