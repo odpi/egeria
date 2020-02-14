@@ -3,20 +3,19 @@
 package org.odpi.openmetadata.adminservices.configuration.properties;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * CohortConfig provides the configuration properties used to connect to an open metadata repository cohort.
@@ -49,6 +48,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         selectedTypesToProcess - list of TypeDefs used if the eventsToProcess rule (above) says
  *         "SELECTED_TYPES" - otherwise it is set to null.
  *     </li>
+ *     <li>
+ *         maxCohortInitAttempts - Maximum number of attempts to initialize a cohort in the event of an initialization failure.  
+ *            If the value is less than 1, there is no limit on the number of retry attempts.  The default is 20.
+ *     </li>
+ *     <li>
+ *         minCohortInitAttemptRetryIntervalMs - In the event of a cohort initialization failure, this controls
+ *            how often initialization retry attempts are scheduled, in milliseconds.  The default is 10000 (10 seconds).
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -58,13 +65,14 @@ public class CohortConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                           cohortName                     = null;
-    private Connection                       cohortRegistryConnection       = null;
-    private Connection                       cohortOMRSTopicConnection      = null;
-    private OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion = null;
-    private OpenMetadataExchangeRule         eventsToProcessRule            = null;
-    private List<TypeDefSummary>             selectedTypesToProcess         = null;
-
+    private String                           cohortName                          = null;
+    private Connection                       cohortRegistryConnection            = null;
+    private Connection                       cohortOMRSTopicConnection           = null;
+    private OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion      = null;
+    private OpenMetadataExchangeRule         eventsToProcessRule                 = null;
+    private List<TypeDefSummary>             selectedTypesToProcess              = null;
+    private int                              maxCohortInitAttempts               = 20;
+    private long                             minCohortInitAttemptRetryIntervalMs = 10000;
 
 
     /**
@@ -252,6 +260,61 @@ public class CohortConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Gets the maximum number of attempts to make at initializing the cohort.
+     * 
+     * If max &lt; 0, there will be unlimited retries.
+     * 
+     * @return max number of cohort initialization attempts
+     */
+    public int getMaxCohortInitAttempts()
+    {
+    
+        return maxCohortInitAttempts;
+    }
+
+
+    /**
+     * Sets the maximum number of attempts to make at initializing the cohort.
+     * 
+     * If max &lt; 0, there will be unlimited retries.
+     * 
+     * @param maxCohortInitAttempts max number of cohort initialization attempts
+     */
+    public void setMaxCohortInitAttempts(int maxCohortInitAttempts)
+    {
+    
+        this.maxCohortInitAttempts = maxCohortInitAttempts;
+    }
+
+
+    /**
+     * Gets the time to wait between retry attempts if
+     * the cohort initialization fails, in milliseconds
+     * 
+     * @return initialization retry interval in milliseconds
+     * 
+     */
+    public long getMinCohortInitAttemptRetryIntervalMs()
+    {
+    
+        return minCohortInitAttemptRetryIntervalMs;
+    }
+
+
+    /**
+     * Sets the time to wait between retry attempts if
+     * the cohort initialization fails, in milliseconds
+     * 
+     * @param minCohortInitAttemptRetryIntervalMs initialization attempt retry interval, in milliseconds
+     */
+    public void setMinCohortInitAttemptRetryIntervalMs(long minCohortInitAttemptRetryIntervalMs) 
+    {
+    
+        this.minCohortInitAttemptRetryIntervalMs = minCohortInitAttemptRetryIntervalMs;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -295,8 +358,6 @@ public class CohortConfig extends AdminServicesConfigHeader
                 getEventsToProcessRule() == that.getEventsToProcessRule() &&
                 Objects.equals(getSelectedTypesToProcess(), that.getSelectedTypesToProcess());
     }
-
-
 
     /**
      * Return a hash code based on the values of this object.

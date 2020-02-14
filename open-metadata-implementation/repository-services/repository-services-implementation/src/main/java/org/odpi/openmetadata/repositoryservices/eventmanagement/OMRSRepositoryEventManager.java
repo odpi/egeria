@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
@@ -23,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
 import org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
@@ -139,8 +139,10 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         auditLog.logMessage(actionDescription,
                             OMRSAuditCode.REGISTERING_EVENT_PROCESSOR.getMessageDefinition(instanceEventConsumer.getEventProcessorName(),
                                                                                            super.getEventProcessorName()));
+        if (! instanceEventConsumers.contains(instanceEventConsumer)) {
 
-        instanceEventConsumers.add(instanceEventConsumer);
+              instanceEventConsumers.add(instanceEventConsumer);
+        }
     }
 
 
