@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
-import org.quartz.*;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

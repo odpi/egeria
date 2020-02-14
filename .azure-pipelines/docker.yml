@@ -11,7 +11,7 @@ trigger:
 pr: none
 schedules:
   - cron: "11 0 * * *"
-    displayName: Daily Docker Build
+    displayName: Daily Docker Build for extended images
     always: true
     branches:
       include:
@@ -30,10 +30,6 @@ stages:
           matrix:
             apache-atlas:
               POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/apache-atlas/pom.xml'
-            egeria:
-              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/egeria/pom.xml'
-            egeria-configure:
-              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/configure/pom.xml'
             egeria-gaian:
               POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/gaian/pom.xml'
             egeria-omrs-monitor:
@@ -65,6 +61,8 @@ stages:
                   -e
                   -s .m2/settings.xml
                   -Ddocker
+                  -Ddocker.taglatest
                   -Ddocker.repo=odpi
                   -Ddocker.registry=docker.io
+                  -Ddocker.images=ext
                   -Ddockerfile.googleContainerRegistryEnabled=false

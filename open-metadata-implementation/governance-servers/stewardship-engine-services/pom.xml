@@ -15,9 +15,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Stewardship Engine Services</name>
     <description>
-        The stewardship engine services manage the triage and remediation if issues raised in Request for Action annotations.
+        The stewardship engine services manage the triage and remediation if issues raised in Request for Action
+        annotations.
     </description>
 
     <artifactId>stewardship-engine-services</artifactId>

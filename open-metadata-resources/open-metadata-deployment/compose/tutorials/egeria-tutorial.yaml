@@ -39,10 +39,8 @@ services:
             - cocopharma
 
     notebook:
-        image: 'jupyter/base-notebook:latest'
+        image: '${egeria_repo}/jupyter:${egeria_version}'
         environment:
-            - GRANT_SUDO=yes
-            - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
             - corePlatformURL=http://core:8080
             - dataLakePlatformURL=http://datalake:8080
@@ -61,14 +59,12 @@ services:
             - factory
         networks:
             - cocopharma
-        volumes:
-            - ./notebook-start.d:/usr/local/bin/start-notebook.d
         user: root
 
     core:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18080:8080'
         networks:
@@ -77,7 +73,7 @@ services:
     datalake:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18081:8080'
         networks:
@@ -86,7 +82,7 @@ services:
     dev:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18082:8080'
         networks:
@@ -95,7 +91,7 @@ services:
     factory:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
             - '18083:8080'
         networks:
@@ -104,8 +100,8 @@ services:
     ui:
         depends_on:
             - datalake
-        image: 'odpi/egeria:latest'
-        command: /bin/bash -c "java -jar /opt/egeria/ui-chassis-spring.jar"
+        image: '${egeria_repo}/egeria:${egeria_version}'
+        command: /bin/bash -c "java -jar /opt/egeria/user-interface/ui-chassis-spring-${egeria_version}.jar"
         environment:
             - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
