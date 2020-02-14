@@ -35,6 +35,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
 
+    private static final String KAFKA_TOPIC_ID = "kafka.omrs.topic.id";
+
     private String       topicName          = null;
     private String       serverId           = null;
     private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
@@ -80,7 +82,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         EndpointProperties endpoint = connectionProperties.getEndpoint();
         if (endpoint != null)
         {
-            topicName = endpoint.getAddress();
+            
+            topicName = determineTopicName(endpoint);
 
             Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
             if (configurationProperties != null)
@@ -136,6 +139,36 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                                    auditCode.getUserAction());
             }
         }
+    }
+
+    /**
+     * Topic name can be overidden by setting kafka.omrs.topic.id in
+     * the producer properties.  If it is not set there, the topic 
+     * name comes from the endpoint address.
+     * 
+     * @param endpoint
+     * @return
+     */
+    private String determineTopicName(EndpointProperties endpoint) 
+    {
+        String topicName = null;
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        if (configurationProperties != null) 
+        {
+            Map<String, Object> producerProperties = (Map<String, Object>)configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
+            if (producerProperties != null) 
+            {
+                topicName = (String)producerProperties.get(KAFKA_TOPIC_ID);
+            }
+        }        
+        
+        if (topicName == null) 
+        {
+            //Topic name override is not present, use the endpoint address as the topic name
+            topicName = endpoint.getAddress();
+        }
+        log.info("Configured server " + serverId + " to use Kafka topic '" + topicName + "'.");
+        return topicName;
     }
 
 
