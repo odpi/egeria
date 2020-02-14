@@ -189,6 +189,21 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
+        <!-- Discovery Connector -->
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/discovery-service-connectors/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
         <!-- Open Metadata Archives -->
         <!-- Copy the archive utilities -->
 
