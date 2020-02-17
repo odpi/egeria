@@ -120,7 +120,7 @@ public class OMAGServerOperationalServices
 
         if (response.getRelatedHTTPCode() == 200)
         {
-            response.setSuccessMessage(startUpMessage);
+            response.setSuccessMessage(new Date().toString() + " " + startUpMessage);
         }
 
         return response;
