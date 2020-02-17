@@ -16,7 +16,7 @@ Equally well, the
 
 ## Further reading
 
-
+* [Configuring the OMAG Server Platform](../user/configuring-the-omag-server-platform.md)
 * [Overview of the OMAG Server Platform](../../../../open-metadata-publication/website/omag-server)
 * [Installing the OMAG Server Platform Tutorial](../../../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial/task-installing-egeria.md)
 * [OMAG Server Platform Tutorial](../../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
