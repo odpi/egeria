@@ -193,7 +193,11 @@ public class OMAGServerAdminStoreServices
 
             Connector connector = connectorBroker.getConnector(connection);
 
-            return (OMAGServerConfigStore) connector;
+            OMAGServerConfigStore serverConfigStore = (OMAGServerConfigStore) connector;
+
+            serverConfigStore.setServerName(serverName);
+
+            return serverConfigStore;
         }
         catch (Throwable   error)
         {

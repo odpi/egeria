@@ -7,7 +7,7 @@ the [Configuration Documents](../../../admin-services/docs/concepts/configuratio
 for [OMAG Servers](../../../admin-services/docs/concepts/omag-server.md).
 
 The definition of the connector interface for these connectors is
-defined in the [admin-services-connector](../../../admin-services/admin-services-connector) module.
+defined in the [admin-services-connector](../../../admin-services/admin-services-api) module.
 
 These are the configuration store connectors implemented by Egeria.
 
