@@ -189,6 +189,7 @@ public class OMAGServerOperationalServices
     {
         final String methodName        = "activateWithSuppliedConfig";
         final String actionDescription = "Initialize OMAG Server subsystems";
+        final String configParameterName = "configurationDocument";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -205,10 +206,18 @@ public class OMAGServerOperationalServices
 
             /*
              * Validate the content of the configuration document.  This will throw an exception if the
-             * combination of requested services does not make a useful server.
+             * configuration document is null or the combination of requested services does not make a useful server.
              */
-            ServerTypeClassifier serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
+            ServerTypeClassifier     serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
             ServerTypeClassification serverTypeClassification = serverTypeClassifier.getServerType();
+
+            /*
+             * If the server type is not set then use the value from the classification.
+             */
+            if (configuration.getLocalServerType() == null)
+            {
+                configuration.setLocalServerType(serverTypeClassification.getServerTypeName());
+            }
 
             /*
              * Save the configuration document to the config store.  This ensures we have the latest version of the
@@ -234,7 +243,7 @@ public class OMAGServerOperationalServices
                                                                                            configuration.getMaxPageSize());
 
             /*
-             * Save the configuration that is going to be used to start the server.  This configuration can be queried by
+             * Save the configuration that is going to be used to start the server for this instance.  This configuration can be queried by
              * the operator to verify the configuration used to start the server. (The values in the config store may have been
              * updated since the server was started.)
              */
@@ -298,6 +307,7 @@ public class OMAGServerOperationalServices
              * A this point the type of server influences the start up sequence.
              */
             if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
+                (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.REPOSITORY_PROXY.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification)))
             {
