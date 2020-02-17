@@ -27,7 +27,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/repositories")
@@ -49,7 +49,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param requestBody url of the OMAG platform to test.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/conformance-suite-workbenches/platform-workbench/platforms")
@@ -69,7 +69,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/repository-workbench")
@@ -87,7 +87,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/platform-workbench")
@@ -105,7 +105,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches")
