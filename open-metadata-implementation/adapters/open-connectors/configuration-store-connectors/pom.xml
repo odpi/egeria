@@ -15,6 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Configuration Store Connectors</name>
     <description>
         The configuration store connectors contains the connectors that manage
@@ -40,7 +46,7 @@
             <artifactId>ui-admin-services-api</artifactId>
         </dependency>
 
-	    <dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>

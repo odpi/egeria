@@ -15,6 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Open Lineage with Spring</name>
     <description>
         The open lineage with Spring module uses Spring to implement a RESTful service
@@ -65,7 +71,8 @@
                         </goals>
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
-                                <ignoredUnusedDeclaredDependency>org.springframework:spring-context</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework:spring-context
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
