@@ -11,6 +11,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.List;
+
 /**
  * OMAGServerErrorHandler provides common error handling routines for the admin services
  */
@@ -242,6 +244,85 @@ public class OMAGServerErrorHandler
                                                     errorCode.getUserAction());
         }
     }
+
+
+    /**
+     * Retrieve the cohort configuration for the named cohort or throw exception if it is not
+     * found.
+     *
+     * @param serverName requested server
+     * @param serverConfig corresponding configuration
+     * @param cohortName requested cohort
+     * @param methodName calling method
+     * @return configuration for requested cohort
+     * @throws OMAGInvalidParameterException cohort is not configured
+     */
+    CohortConfig validateCohortIsSet(String           serverName,
+                                     OMAGServerConfig serverConfig,
+                                     String           cohortName,
+                                     String           methodName) throws OMAGInvalidParameterException
+    {
+        RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+        if (repositoryServicesConfig != null)
+        {
+            List<CohortConfig> cohortConfigs = repositoryServicesConfig.getCohortConfigList();
+
+            if (cohortConfigs != null)
+            {
+                for (CohortConfig cohortConfig : cohortConfigs)
+                {
+                    if (cohortConfig != null)
+                    {
+                        if (cohortName.equals(cohortConfig.getCohortName()))
+                        {
+                            return cohortConfig;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * If we get here then the cohort is not configured for this server
+         */
+        OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.COHORT_NOT_KNOWN;
+        String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, cohortName);
+
+        throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Log that the cohort topic name can not be changed because the format of the topic connection
+     * is unexpected.
+     *
+     * @param cohortName name of the cohort
+     * @param serverName name of the server
+     * @param methodName calling method
+     *
+     * @throws OMAGConfigurationErrorException resulting error (always returned)
+     */
+    void logNoCohortTopicChange(String cohortName,
+                                String serverName,
+                                String methodName) throws OMAGConfigurationErrorException
+    {
+        OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.COHORT_TOPIC_STRANGE;
+        String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, cohortName);
+
+        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+    }
+
 
 
     /**

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices;
+package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -29,7 +29,7 @@ public class ConfigurationManagementClient
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the admin services
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
@@ -59,7 +59,7 @@ public class ConfigurationManagementClient
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the admin services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
@@ -97,7 +97,7 @@ public class ConfigurationManagementClient
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      * @throws OMAGInvalidParameterException   invalid serverName or destinationPlatform parameter.
      */
-    public void setOMAGServerConfig(String userId,
+    public void setOMAGServerConfig(String           userId,
                                     OMAGServerConfig serverConfig) throws OMAGNotAuthorizedException,
                                                                           OMAGConfigurationErrorException,
                                                                           OMAGInvalidParameterException
@@ -162,10 +162,10 @@ public class ConfigurationManagementClient
         final String methodName  = "getOMAGServerConfig";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/configuration";
 
-        OMAGServerConfigResponse restResult = restClient.callConfigGetRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
-                                                                               userId,
-                                                                               serverName);
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         userId,
+                                                                                         serverName);
 
         return restResult.getOMAGServerConfig();
     }
