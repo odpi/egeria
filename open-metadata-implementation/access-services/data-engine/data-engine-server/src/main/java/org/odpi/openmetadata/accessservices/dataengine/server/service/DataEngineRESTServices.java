@@ -33,6 +33,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -702,12 +704,13 @@ public class DataEngineRESTServices {
 
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            String processGUID = processHandler.findProcess(userId, qualifiedName);
-
-            if (StringUtils.isEmpty(processGUID)) {
+            Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
+            String processGUID;
+            if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
-                processHandler.updateProcess(userId, processGUID, process);
+                processGUID = processEntity.get().getGUID();
+                processHandler.updateProcess(userId, processEntity.get(), process);
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {
