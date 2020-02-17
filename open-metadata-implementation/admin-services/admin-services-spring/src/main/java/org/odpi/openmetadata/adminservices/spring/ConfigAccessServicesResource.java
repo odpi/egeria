@@ -31,9 +31,8 @@ public class ConfigAccessServicesResource
      * @return list of access service descriptions
      */
     @GetMapping(path = "/access-services/configuration")
-
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String              userId,
-                                                                      @PathVariable String              serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String userId,
+                                                                      @PathVariable String serverName)
     {
         return adminAPI.getConfiguredAccessServices(userId, serverName);
     }
@@ -52,7 +51,6 @@ public class ConfigAccessServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services/{serviceURLMarker}")
-
     public VoidResponse configureAccessService(@PathVariable                   String              userId,
                                                @PathVariable                   String              serverName,
                                                @PathVariable                   String              serviceURLMarker,
