@@ -189,7 +189,6 @@ public class OMAGServerOperationalServices
     {
         final String methodName        = "activateWithSuppliedConfig";
         final String actionDescription = "Initialize OMAG Server subsystems";
-        final String configParameterName = "configurationDocument";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -291,7 +290,7 @@ public class OMAGServerOperationalServices
              * Having a limit helps to prevent a denial of service attack that uses very large requests to overwhelm the server.
              * If this value is 0 it means there is no upper limit.  If this value is negative then it is invalid.
              */
-            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog);
+            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog, methodName);
 
             /*
              * Save the instance of the repository services and then initialize it.  OMRS has 2 modes of initialization.
@@ -577,10 +576,13 @@ public class OMAGServerOperationalServices
      * @param maxPageSize value to validate
      * @param serverName name of the server that the configuration comes from
      * @param auditLog logging destination
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException the max page size is negative.
      */
     private void validateMaxPageSize(int          maxPageSize,
                                      String       serverName,
-                                     OMRSAuditLog auditLog)
+                                     OMRSAuditLog auditLog,
+                                     String       methodName) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "Validating max page size during server initialization";
 
@@ -616,6 +618,18 @@ public class OMAGServerOperationalServices
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE;
+            String             errorMessage = errorCode.getErrorMessageId()
+                                            + errorCode.getFormattedErrorMessage(serverName,
+                                                                                 Integer.toString(maxPageSize));
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
         }
     }
 
