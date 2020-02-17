@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,15 +43,17 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/audit-log-destinations/default")
-    public VoidResponse setDefaultAuditLog(@PathVariable String userId,
-                                           @PathVariable String serverName)
+    public VoidResponse setDefaultAuditLog(@PathVariable String                            userId,
+                                           @PathVariable String                            serverName,
+                                           @RequestBody(required = false)  NullRequestBody requestBody)
     {
-        return adminAPI.setDefaultAuditLog(userId, serverName);
+        return adminAPI.setDefaultAuditLog(userId, serverName, requestBody);
     }
 
 
@@ -158,7 +161,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    @PostMapping(path = "/audit-log-destinations/none")
+    @DeleteMapping(path = "/audit-log-destinations")
     public VoidResponse clearAuditLogDestinations(@PathVariable String userId,
                                                   @PathVariable String serverName)
     {
@@ -209,15 +212,17 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/local-repository/mode/in-memory-repository")
-    public VoidResponse setInMemLocalRepository(@PathVariable String userId,
-                                                @PathVariable String serverName)
+    public VoidResponse setInMemLocalRepository(@PathVariable                   String          userId,
+                                                @PathVariable                   String          serverName,
+                                                @RequestBody(required = false)  NullRequestBody requestBody)
     {
-        return adminAPI.setInMemLocalRepository(userId, serverName);
+        return adminAPI.setInMemLocalRepository(userId, serverName, requestBody);
     }
 
 
@@ -226,15 +231,15 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param storageProperties  properties used to configure Egeria Graph DB
+     * @param storageProperties  properties used to configure the back end storage for the graph
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/local-repository/mode/local-graph-repository")
-    public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
-                                                @PathVariable                  String serverName,
+    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
+                                                @PathVariable                  String              serverName,
                                                 @RequestBody @Nullable         Map<String, Object> storageProperties)
     {
         return adminAPI.setGraphLocalRepository(userId, serverName, storageProperties);
@@ -390,12 +395,35 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the event bus is not set.
      */
     @PostMapping(path = "/cohorts/{cohortName}")
-    public VoidResponse enableCohortRegistration(@PathVariable                   String               userId,
-                                                 @PathVariable                   String               serverName,
-                                                 @PathVariable                   String               cohortName,
-                                                 @RequestBody(required = false)  Map<String, Object>  additionalProperties)
+    public VoidResponse addCohortRegistration(@PathVariable                   String               userId,
+                                              @PathVariable                   String               serverName,
+                                              @PathVariable                   String               cohortName,
+                                              @RequestBody(required = false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.enableCohortRegistration(userId, serverName, cohortName, additionalProperties);
+        return adminAPI.addCohortRegistration(userId, serverName, cohortName, additionalProperties);
+    }
+
+
+    /**
+     * Override the current topic name for the cohort.  This call can only be made once the cohort
+     * is set up with enableCohortRegistration().
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @param topicName new name for the topic.
+     * @return void or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter or
+     * OMAGConfigurationErrorException the cohort is not set up.
+     */
+    @PostMapping(path = "/cohorts/{cohortName}/topic-name-override")
+    public VoidResponse overrideCohortTopicName(@PathVariable  String userId,
+                                                @PathVariable  String serverName,
+                                                @PathVariable  String cohortName,
+                                                @RequestBody   String topicName)
+    {
+        return adminAPI.overrideCohortTopicName(userId, serverName, cohortName, topicName);
     }
 
 
@@ -410,11 +438,11 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
     @DeleteMapping(path = "/cohorts/{cohortName}")
-    public VoidResponse disableCohortRegistration(@PathVariable String          userId,
-                                                  @PathVariable String          serverName,
-                                                  @PathVariable String          cohortName)
+    public VoidResponse clearCohortRegistration(@PathVariable String          userId,
+                                                @PathVariable String          serverName,
+                                                @PathVariable String          cohortName)
     {
-        return adminAPI.disableCohortRegistration(userId, serverName, cohortName);
+        return adminAPI.clearCohortRegistration(userId, serverName, cohortName);
     }
 
 

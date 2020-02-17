@@ -28,10 +28,10 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
     private static final String KEYSTORE_FOLDER_PREFIX = "keystore";
     private static final String KEY_FILE_EXTENSION = ".key";
-    private static final int RANDOM_NAME_LENGTH = 32;
+    private static final int    RANDOM_NAME_LENGTH = 32;
 
-    private static final String DEFAULT_FILENAME = "omag.server.config";
-    private static final KeyTemplate KEY_TEMPLATE = AeadKeyTemplates.CHACHA20_POLY1305;
+    private static final String      DEFAULT_FILENAME_TEMPLATE = "omag.server.{0}.config";
+    private static final KeyTemplate KEY_TEMPLATE              = AeadKeyTemplates.CHACHA20_POLY1305;
 
     private String configStoreName  = null;
 
@@ -52,12 +52,16 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         super.initialize(connectorInstanceId, connectionProperties);
         EndpointProperties endpoint = connectionProperties.getEndpoint();
+        String configStoreTemplateName = null;
         if (endpoint != null) {
-            configStoreName = endpoint.getAddress();
+            configStoreTemplateName = endpoint.getAddress();
         }
-        if (configStoreName == null) {
-            configStoreName = DEFAULT_FILENAME;
+        if (configStoreTemplateName == null) {
+            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
         }
+
+        configStoreName = super.getStoreName(configStoreTemplateName, serverName);
+
         try {
             AeadConfig.register();
         } catch (GeneralSecurityException e) {

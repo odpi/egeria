@@ -27,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         ({
                 @JsonSubTypes.Type(value = SuccessMessageResponse.class, name = "SuccessMessageResponse"),
                 @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
-                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse")
+                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
+                @JsonSubTypes.Type(value = DiscoveryEngineServicesConfigResponse.class, name = "DiscoveryEngineServicesConfigResponse"),
         })
 public abstract class AdminServicesAPIResponse extends FFDCResponseBase
 {

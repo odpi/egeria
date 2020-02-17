@@ -8,7 +8,7 @@ within a software server that supports one or more related services.
 Subsystems can be organized in a hierarchy where course-grained subsystems can be
 decomposed into more fine grained subsystems.
 
-The  [OMAG Server](omag-server.md) is a flexible software server whose subsystems
+The [OMAG Server](omag-server.md) is a flexible software server whose subsystems
 can be activated (or not) through the presence (or absence) of the subsystem's configuration
 properties in the OMAG server's [configuration document](configuration-document.md).
 

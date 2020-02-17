@@ -31,9 +31,8 @@ public class ConfigAccessServicesResource
      * @return list of access service descriptions
      */
     @GetMapping(path = "/access-services/configuration")
-
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String              userId,
-                                                                      @PathVariable String              serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String userId,
+                                                                      @PathVariable String serverName)
     {
         return adminAPI.getConfiguredAccessServices(userId, serverName);
     }
@@ -45,14 +44,13 @@ public class ConfigAccessServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
-     * @param serviceURLMarker string indicating which access service it is calling
+     * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services/{serviceURLMarker}")
-
     public VoidResponse configureAccessService(@PathVariable                   String              userId,
                                                @PathVariable                   String              serverName,
                                                @PathVariable                   String              serviceURLMarker,
@@ -75,11 +73,11 @@ public class ConfigAccessServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services")
-    public VoidResponse enableAccessServices(@PathVariable                  String              userId,
-                                             @PathVariable                  String              serverName,
-                                             @RequestBody(required = false) Map<String, Object> accessServiceOptions)
+    public VoidResponse configureAllAccessServices(@PathVariable                  String              userId,
+                                                   @PathVariable                  String              serverName,
+                                                   @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.enableAccessServices(userId, serverName, accessServiceOptions);
+        return adminAPI.configureAllAccessServices(userId, serverName, accessServiceOptions);
     }
 
 
@@ -91,13 +89,14 @@ public class ConfigAccessServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @DeleteMapping(path = "/access-services")
-    public VoidResponse disableAccessServices(@PathVariable String          userId,
-                                              @PathVariable String          serverName)
+    public VoidResponse clearAllAccessServices(@PathVariable String          userId,
+                                               @PathVariable String          serverName)
     {
-        return adminAPI.disableAccessServices(userId, serverName);
+        return adminAPI.clearAllAccessServices(userId, serverName);
     }
 
 
@@ -110,7 +109,8 @@ public class ConfigAccessServicesResource
      * @param accessServicesConfig  list of configuration properties for each access service.
      * @return void response or
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @PostMapping(path = "/access-services/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String                    userId,
@@ -132,7 +132,8 @@ public class ConfigAccessServicesResource
      * @param enterpriseAccessConfig  enterprise repository services configuration properties.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
+     * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @PostMapping(path = "/enterprise-access/configuration")
     public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 userId,
