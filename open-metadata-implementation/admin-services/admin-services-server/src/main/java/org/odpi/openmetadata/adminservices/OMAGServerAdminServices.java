@@ -72,7 +72,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerType";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -145,7 +145,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOrganizationName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -218,7 +218,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerUserId";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -291,7 +291,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerPassword";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -364,7 +364,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setMaxPageSize";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -453,7 +453,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setEventBus";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -537,7 +537,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerURLRoot";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -617,7 +617,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerURLRoot";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -691,7 +691,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setDefaultAuditLog";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -774,7 +774,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addConsoleAuditLogDestination";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -822,7 +822,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addSLF4JAuditLogDestination";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -870,7 +870,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addFileAuditLogDestination";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -918,7 +918,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addEventTopicAuditLogDestination";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -975,7 +975,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addStartUpOpenMetadataArchiveFile";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1043,7 +1043,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setInMemLocalRepository";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1098,7 +1098,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setGraphLocalRepository";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1152,7 +1152,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setNoRepositoryMode";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1198,7 +1198,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setRepositoryProxyConnection";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1260,7 +1260,7 @@ public class OMAGServerAdminServices
     {
         final String methodName  = "setRepositoryProxyConnection";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1318,7 +1318,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryEventMapper";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1409,7 +1409,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryEventMapper";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1462,7 +1462,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "getLocalMetadataCollectionId";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -1545,7 +1545,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalMetadataCollectionName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1637,7 +1637,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addCohortRegistration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1713,7 +1713,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "overrideCohortTopicName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1827,7 +1827,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "clearCohortRegistration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1881,7 +1881,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setAuditLogDestinations";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1968,7 +1968,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setAuditLogDestinations";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2074,7 +2074,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOpenMetadataArchives";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2176,7 +2176,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2277,7 +2277,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setCohortConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2409,7 +2409,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOMAGServerConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2480,7 +2480,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "deployOMAGServerConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2545,7 +2545,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "getStoredConfiguration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMAGServerConfigResponse response = new OMAGServerConfigResponse();
 
