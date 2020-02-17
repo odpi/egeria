@@ -309,8 +309,8 @@ public class RESTExceptionHandler
      * @param restResult  response from the encoded exception from the server.
      * @throws PropertyServerException wrapping exception for the caught exception
      */
-    private void throwUnexpectedException(String           methodName,
-                                          FFDCResponseBase restResult) throws PropertyServerException
+    protected void throwUnexpectedException(String           methodName,
+                                            FFDCResponseBase restResult) throws PropertyServerException
     {
         OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(restResult.getExceptionClassName(),
