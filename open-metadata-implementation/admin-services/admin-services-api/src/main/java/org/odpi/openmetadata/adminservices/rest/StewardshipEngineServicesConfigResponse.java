@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
 
 import java.util.Objects;
 
@@ -14,23 +14,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OMAGServerConfigResponse is the response structure used on the OMAG REST API calls that returns a
- * OMAGServerConfig object as a response.
+ * StewardshipEngineServicesConfigResponse is the response structure used on the OMAG REST API calls that returns a
+ * StewardshipEngineServicesConfig object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMAGServerConfigResponse extends AdminServicesAPIResponse
+public class StewardshipEngineServicesConfigResponse extends AdminServicesAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private OMAGServerConfig serverConfig = null;
+    private StewardshipEngineServicesConfig config = null;
 
 
     /**
      * Default constructor
      */
-    public OMAGServerConfigResponse()
+    public StewardshipEngineServicesConfigResponse()
     {
     }
 
@@ -40,27 +40,27 @@ public class OMAGServerConfigResponse extends AdminServicesAPIResponse
      *
      * @return OMAGServerConfig object
      */
-    public OMAGServerConfig getOMAGServerConfig()
+    public StewardshipEngineServicesConfig getConfig()
     {
-        if (serverConfig == null)
+        if (config == null)
         {
             return null;
         }
         else
         {
-            return new OMAGServerConfig(serverConfig);
+            return new StewardshipEngineServicesConfig(config);
         }
     }
 
 
     /**
-     * Set up the OMAGServerConfig object.
+     * Set up the StewardshipEngineServicesConfig object.
      *
-     * @param serverConfig - OMAGServerConfig object
+     * @param config - StewardshipEngineServicesConfig object
      */
-    public void setOMAGServerConfig(OMAGServerConfig serverConfig)
+    public void setConfig(StewardshipEngineServicesConfig config)
     {
-        this.serverConfig = serverConfig;
+        this.config = config;
     }
 
 
@@ -72,8 +72,8 @@ public class OMAGServerConfigResponse extends AdminServicesAPIResponse
     @Override
     public String toString()
     {
-        return "OMAGServerConfigResponse{" +
-                "serverConfig=" + serverConfig +
+        return "StewardshipEngineServicesConfig{" +
+                "config=" + config +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -97,7 +97,7 @@ public class OMAGServerConfigResponse extends AdminServicesAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof OMAGServerConfigResponse))
+        if (!(objectToCompare instanceof StewardshipEngineServicesConfigResponse))
         {
             return false;
         }
@@ -105,8 +105,8 @@ public class OMAGServerConfigResponse extends AdminServicesAPIResponse
         {
             return false;
         }
-        OMAGServerConfigResponse that = (OMAGServerConfigResponse) objectToCompare;
-        return Objects.equals(serverConfig, that.serverConfig);
+        StewardshipEngineServicesConfigResponse that = (StewardshipEngineServicesConfigResponse) objectToCompare;
+        return Objects.equals(config, that.config);
     }
 
 
@@ -119,6 +119,6 @@ public class OMAGServerConfigResponse extends AdminServicesAPIResponse
     public int hashCode()
     {
 
-        return Objects.hash(super.hashCode(), serverConfig);
+        return Objects.hash(super.hashCode(), config);
     }
 }
