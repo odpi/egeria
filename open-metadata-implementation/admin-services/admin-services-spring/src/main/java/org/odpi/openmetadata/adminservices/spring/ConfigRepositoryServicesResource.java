@@ -212,6 +212,7 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.

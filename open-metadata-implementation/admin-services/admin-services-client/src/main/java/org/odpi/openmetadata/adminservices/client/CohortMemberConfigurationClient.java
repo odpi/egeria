@@ -409,6 +409,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      * Return the local metadata collection id.  If the local repository is not configured
      * then the invalid parameter exception is returned.
      *
+     * @return string guid
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
