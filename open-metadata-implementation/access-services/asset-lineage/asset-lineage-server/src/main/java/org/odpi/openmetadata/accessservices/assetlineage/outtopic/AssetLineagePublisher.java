@@ -99,10 +99,11 @@ public class AssetLineagePublisher {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
-        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, superTypes);
+
+        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypes);
 
         LineageEvent event = new LineageEvent();
-        if (context.size() != 0)
+        if (!context.isEmpty())
             event.setAssetContext(context);
         else
             event.setAssetContext(assetContext.getNeighbors());

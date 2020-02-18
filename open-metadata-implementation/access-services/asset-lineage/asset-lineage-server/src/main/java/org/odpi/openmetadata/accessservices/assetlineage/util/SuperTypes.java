@@ -12,21 +12,18 @@ import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-/**
- * The validator is used for validating whether the entity or relationship types are relevant for asset lineage context.
- */
+
 public class SuperTypes {
 
     private OMRSRepositoryHelper repositoryHelper;
 
-    public SuperTypes(OMRSRepositoryHelper repositoryHelper){
+    public SuperTypes(OMRSRepositoryHelper repositoryHelper) {
         this.repositoryHelper = repositoryHelper;
     }
 
-    public Set<String> getSuperTypes(String typeDefName){
-       return  collectSuperTypes(ASSET_LINEAGE_OMAS, typeDefName);
+    public Set<String> getSuperTypes(String typeDefName) {
+        return collectSuperTypes(ASSET_LINEAGE_OMAS, typeDefName);
     }
-
 
     private Set<String> collectSuperTypes(String userId, String typeDefName) {
         Set<String> superTypes = new HashSet<>();

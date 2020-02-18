@@ -59,7 +59,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Ignoring registry event: " + event.toString());
     }
 
-
     /**
      * Method to pass a Registry event received on topic.
      *
@@ -68,7 +67,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
         log.debug("Ignoring type event: " + event.toString());
     }
-
 
     /**
      * Unpack and deliver an instance event to the InstanceEventProcessor
