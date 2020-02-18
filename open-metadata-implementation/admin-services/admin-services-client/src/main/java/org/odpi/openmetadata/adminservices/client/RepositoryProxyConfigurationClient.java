@@ -27,9 +27,9 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    RepositoryProxyConfigurationClient(String adminUserId,
-                                       String serverName,
-                                       String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public RepositoryProxyConfigurationClient(String adminUserId,
+                                              String serverName,
+                                              String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -47,11 +47,11 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    RepositoryProxyConfigurationClient(String adminUserId,
-                                       String serverName,
-                                       String serverPlatformRootURL,
-                                       String connectionUserId,
-                                       String connectionPassword) throws OMAGInvalidParameterException
+    public RepositoryProxyConfigurationClient(String adminUserId,
+                                              String serverName,
+                                              String serverPlatformRootURL,
+                                              String connectionUserId,
+                                              String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

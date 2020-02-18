@@ -32,9 +32,9 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    MetadataAccessPointConfigurationClient(String adminUserId,
-                                           String serverName,
-                                           String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public MetadataAccessPointConfigurationClient(String adminUserId,
+                                                  String serverName,
+                                                  String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -52,11 +52,11 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    MetadataAccessPointConfigurationClient(String adminUserId,
-                                           String serverName,
-                                           String serverPlatformRootURL,
-                                           String connectionUserId,
-                                           String connectionPassword) throws OMAGInvalidParameterException
+    public MetadataAccessPointConfigurationClient(String adminUserId,
+                                                  String serverName,
+                                                  String serverPlatformRootURL,
+                                                  String connectionUserId,
+                                                  String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

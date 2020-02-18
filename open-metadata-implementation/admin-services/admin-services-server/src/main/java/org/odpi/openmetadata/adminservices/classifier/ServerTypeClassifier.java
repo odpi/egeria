@@ -115,6 +115,7 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
+
         /*
          * The access service list is only allowed in a metadata server or metadata access point.
          */
@@ -623,6 +624,18 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
                                                 stewardshipEngineServicesConfig);
+        }
+
+        if (serverTypeClassification == null)
+        {
+            /*
+             * Last attempt to classify is the repository proxy.
+             * The repository proxy has the local repository and nothing else.
+             */
+            if (this.detectLocalRepository(repositoryServicesConfig))
+            {
+                serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
+            }
         }
 
         this.validateServerClassificationNotNull(serverName, serverTypeClassification, methodName);

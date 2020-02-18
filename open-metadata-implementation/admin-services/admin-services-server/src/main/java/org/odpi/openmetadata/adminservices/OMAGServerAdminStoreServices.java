@@ -258,6 +258,7 @@ public class OMAGServerAdminStoreServices
 
             serverConfig = new OMAGServerConfig();
             serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
+            serverConfig.setLocalServerType(OMAGServerConfig.defaultLocalServerType);
         }
         else
         {

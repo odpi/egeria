@@ -16,6 +16,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposit
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
@@ -655,7 +656,7 @@ public class ConnectorConfigurationFactory
 
         String connectorTypeJavaClassName = KafkaOpenMetadataTopicProvider.class.getName();
 
-        if (connectorProviderClassName != null)
+        if ((connectorProviderClassName != null) && (! "".equals(connectorProviderClassName)))
         {
             connectorTypeJavaClassName = connectorProviderClassName;
         }
@@ -901,7 +902,8 @@ public class ConnectorConfigurationFactory
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
-        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName)){
+        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName))
+        {
             endpoint.setType(Endpoint.getEndpointType());
             endpoint.setGUID(endpointGUID);
             endpoint.setQualifiedName(endpointName);
@@ -916,7 +918,7 @@ public class ConnectorConfigurationFactory
 
             endpoint.setAdditionalProperties(endpointProperties);
 
-            String connectionName = "Vitualizer.Connection." + serverName;
+            String connectionName = "Virtualizer.Connection." + serverName;
 
             connection.setType(Connection.getConnectionType());
             connection.setGUID(connectionGUID);
@@ -937,8 +939,8 @@ public class ConnectorConfigurationFactory
 
             connection.setAdditionalProperties(additionalProperties);
         }
-
-        else {
+        else
+        {
             log.error("Provided connector class is not registered in virtualizer api or implemented.");
         }
 
@@ -992,45 +994,6 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection.  This is used by open lineage graph connectors.
-     *
-     * @param serverName  name of the real repository server
-     * @param connectorProviderClassName name of the connector provider's implementation
-     * @param url  url for the Open Lineage Server
-     * @param configurationProperties name value pairs for the connection
-     * @return Connection object
-     * @throws ClassNotFoundException when the provided class cannot be found
-     * @throws InstantiationException when the provided class cannot be instantiated
-     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
-     */
-    public Connection getOpenLineageServerConfiguration(String              serverName,
-                                                        String              connectorProviderClassName,
-                                                        String              url,
-                                                        Map<String, Object> configurationProperties) throws ClassNotFoundException,
-                                                                                                            InstantiationException,
-                                                                                                            IllegalAccessException
-    {
-        final String endpointGUID          = UUID.randomUUID().toString();
-        final String connectionGUID        = UUID.randomUUID().toString();
-
-        final String endpointDescription      = "Open Lineage native endpoint.";
-        final String connectionDescription    = "Open Lineage native connection.";
-
-        String endpointName    = "OpenLineage.Endpoint." + serverName;
-        String connectionName  = "OpenLineage.Connection." + serverName;
-
-        Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
-
-        return getDynamicConnection(configurationProperties,
-                                    endpoint,
-                                    connectionName,
-                                    connectionGUID,
-                                    connectionDescription,
-                                    connectorProviderClassName);
-    }
-
-
-    /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
      * providers that are known at compile-time, not those that are only determined at runtime.
@@ -1040,16 +1003,29 @@ public class ConnectorConfigurationFactory
      */
     private ConnectorType getConnectorType(String connectorProviderClassName)
     {
-        ConnectorType  connectorType = null;
+        final String methodName = "getConnectorType";
+
         try
         {
-            connectorType = getDynamicConnectorType(connectorProviderClassName);
+            return getDynamicConnectorType(connectorProviderClassName);
         }
         catch (Exception classException)
         {
             log.error("Bad connectorProviderClassName: " + classException.getMessage());
+            ConnectorConfigurationFactoryErrorCode errorCode    = ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER;
+            String                                 errorMessage =
+                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectorProviderClassName,
+                                                                                       classException.getClass().getName(),
+                                                                                       classException.getMessage());
+
+            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          classException);
         }
-        return connectorType;
     }
 
 
