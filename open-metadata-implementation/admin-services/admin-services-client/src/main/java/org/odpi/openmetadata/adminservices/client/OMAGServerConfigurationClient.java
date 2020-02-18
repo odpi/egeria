@@ -4,13 +4,12 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
+import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -108,6 +107,31 @@ public abstract class OMAGServerConfigurationClient
 
 
     /**
+     * Return the derived server type that is classified based on the configuration values.
+     *
+     * @return server classification description
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public ServerTypeClassificationSummary getServerClassification() throws OMAGNotAuthorizedException,
+                                                                            OMAGInvalidParameterException,
+                                                                            OMAGConfigurationErrorException
+    {
+        final String methodName    = "getServerClassification";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/server-type-classification";
+
+
+        ServerTypeClassificationResponse response = restClient.callServerClassificationGetRESTCall(methodName,
+                                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                                   adminUserId,
+                                                                                                   serverName);
+
+        return response.getServerTypeClassification();
+    }
+
+
+    /**
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces.  Typically this is the URL root of the OMAG Server Platform
      * Where the server is deployed to.  However it may be a DNS name - particularly if the server is
@@ -166,17 +190,7 @@ public abstract class OMAGServerConfigurationClient
                                                                                 OMAGConfigurationErrorException
     {
         final String methodName    = "setEventBus";
-        final String parameterName = "connectorProvider";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/event-bus?connectorProvider={2}&topicURLRoot={3}";
-
-        try
-        {
-            invalidParameterHandler.validateName(connectorProvider, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error);
-        }
 
         Map<String, Object> requestBody = configurationProperties;
         if (requestBody == null)

@@ -22,7 +22,7 @@ The location of the metadata server (or metadata access point) is configured usi
 metadata server's OMAG Server Platform and the name of the metadata server.
  
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminIserId}/servers/{discoveryServerName}/discovery-server/client-config
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server/client-config
 {
         "class": "OMAGServerClientConfig",
         "omagserverPlatformRootURL": {MDServerURLRoot},
@@ -47,7 +47,7 @@ The following command removes the configuration for the discovery engine service
 OMAG server's configuration document.  This may be used if the discovery engine services have been
 added in error.  
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId/servers/{discoveryServerName}/discovery-server
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server
 ```
 
 ----
