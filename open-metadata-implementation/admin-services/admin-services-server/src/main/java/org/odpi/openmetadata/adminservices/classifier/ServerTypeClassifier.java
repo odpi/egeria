@@ -90,13 +90,6 @@ public class ServerTypeClassifier
 
 
         /*
-         * If there is a mismatch in the server name inside the configuration document and the
-         * requested server name it means there is an error in either the implementation or
-         * configuration of the configuration document store.
-         */
-        this.validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
-
-        /*
          * All servers need the repository services
          */
         if (repositoryServicesConfig == null)
@@ -742,35 +735,6 @@ public class ServerTypeClassifier
                                                       errorMessage,
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param configServerName serverName passed in config (should match request name)
-     * @param methodName  method being called
-     * @throws OMAGConfigurationErrorException incompatible server names
-     */
-    private void validateConfigServerName(String serverName,
-                                          String configServerName,
-                                          String methodName) throws OMAGConfigurationErrorException
-    {
-        if (! serverName.equals(configServerName))
-        {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
-
         }
     }
 }

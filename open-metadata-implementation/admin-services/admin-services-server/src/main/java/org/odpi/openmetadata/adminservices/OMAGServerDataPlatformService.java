@@ -43,7 +43,6 @@ public class OMAGServerDataPlatformService {
             if (dataPlatformServicesConfig.getDataPlatformOmasInTopicName()==null) {
                 dataPlatformServicesConfig.setDataPlatformOmasInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
-                                defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 defaultDataPlatformInTopicName,
@@ -56,7 +55,6 @@ public class OMAGServerDataPlatformService {
             } else {
                 dataPlatformServicesConfig.setDataPlatformOmasInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
-                                defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 dataPlatformServicesConfig.getDataPlatformOmasInTopicName(),

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -40,10 +41,15 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     }
 
 
+    /**
+     * Set up the name of the file store
+     *
+     * @throws ConnectorCheckedException something went wrong
+     */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
