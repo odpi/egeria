@@ -113,11 +113,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>security-officer-tag-connector</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>virtualization-services-api</artifactId>
         </dependency>
 

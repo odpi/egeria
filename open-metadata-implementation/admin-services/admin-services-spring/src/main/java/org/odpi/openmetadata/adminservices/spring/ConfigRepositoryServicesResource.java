@@ -493,6 +493,24 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @DeleteMapping(path = "/open-metadata-archives")
+    public VoidResponse clearOpenMetadataArchives(@PathVariable String           userId,
+                                                  @PathVariable String           serverName)
+    {
+        return adminAPI.clearOpenMetadataArchives(userId, serverName);
+    }
+
+
+    /**
      * Set up the configuration for the local repository.  This overrides the current values.
      *
      * @param userId  user that is issuing the request.
