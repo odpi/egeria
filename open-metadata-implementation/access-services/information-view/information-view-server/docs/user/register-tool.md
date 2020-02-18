@@ -7,7 +7,7 @@ Register an external tool.
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/register
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/register
 ```
 
 ```json

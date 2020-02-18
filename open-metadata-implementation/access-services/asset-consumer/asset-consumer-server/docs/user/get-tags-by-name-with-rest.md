@@ -7,7 +7,7 @@ Return the tags matching the supplied name.
 This name may contain wild cards.
 
 ```
-GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/by-name/{{termName}}?elementStart={{startFrom}}&maxElements={{pageSize}}
+GET {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/tags/by-name/{termName}?elementStart={startFrom}&maxElements={pageSize}
 ```
 
 ```java

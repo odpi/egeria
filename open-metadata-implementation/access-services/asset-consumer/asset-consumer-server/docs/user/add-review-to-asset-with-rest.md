@@ -6,7 +6,7 @@
 Adds a star rating and optional review text to the asset.
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/reviews
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/assets/{assetGUID}/reviews
 ```
 
 ```java

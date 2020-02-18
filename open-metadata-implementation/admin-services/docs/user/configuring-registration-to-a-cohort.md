@@ -17,7 +17,7 @@ The following command registers the server with a cohort.
 Each cohort has a memorable name - eg `cocoCohort`.
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{srerverName}}/cohorts/{{cohortName}}
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
 ```
 
 ## Override the default value for the cohort topic
@@ -25,13 +25,13 @@ POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{s
 At the heart of a cohort is the cohort topic.  This is a topic on an event bus that
 the members use to exchange metadata on.
 
-The default topic name is `egeria.omag.openmetadata.repositoryservices.cohort.{{cohortName}}.OMRSTopic`.
+The default topic name is `egeria.omag.openmetadata.repositoryservices.cohort.{cohortName}.OMRSTopic`.
 
 It is possible to change the topic name used by a cohort with the following command.
-The `{{newTopicName}}` flows in the request body.
+The `{newTopicName}` flows in the request body.
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{srerverName}}/cohorts/{{cohortName}}topic-name-override
-{{newTopicName}}
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
+{newTopicName}
 ```
 It must be issued against each member of the cohort so that they are
 all connecting to the same cohort topic.
@@ -43,7 +43,7 @@ The new value takes affect the next time the server is started.
 This command unregisters a server from a cohort.
 
 ```
-DELETE {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/cohorts/{{cohortName}}
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
 ```
 
 ----

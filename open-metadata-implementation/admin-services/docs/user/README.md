@@ -22,10 +22,11 @@ What follows is more background on the administration services.
 
 An OMAG server is a set of configured [OMAG Subsystems](../concepts/omag-subsystem.md)
 supported by the OMAG Server Platform.
-These subsystems enable a particular type of technology to exchange metadata with the
-open metadata ecosystem.
+Each subsystem supports a particular type of technology so it can exchange metadata with the
+open metadata ecosystem.  Some technologies are sources of metadata, others just consume metadata
+and then there are technologies that have a two-way exchange of metadata with the open metadata ecosystem.
 
-The subsystems that are enabled in a specific instance of an OMAG Server
+The OMAG subsystems that are to be enabled in a specific instance of an OMAG Server
 are defined in a **[configuration document](../concepts/configuration-document.md)**.
 When the configuration document is loaded into the OMAG server platform, the OMAG server that it describes
 is started, and the subsystems defined in the configuration document are activated for that server.

@@ -39,7 +39,7 @@ and [add tags to the asset](../scenarios/tagging-an-asset.md).
 The Asset Consumer OMAS offers the following types of interface:
 
 * [Java client](../../asset-consumer-client/docs/user/java-client), 
-* [REST API](../../asset-consumer-client/docs/user) and 
+* [REST API](../../asset-consumer-server/docs/user) and 
 * [Out Topic Events](../../asset-consumer-client/docs/user/java-events) for receiving events about assets.
 
 Connectors are only available through the Java client.

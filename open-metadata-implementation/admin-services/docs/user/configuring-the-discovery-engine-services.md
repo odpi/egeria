@@ -22,11 +22,11 @@ The location of the metadata server (or metadata access point) is configured usi
 metadata server's OMAG Server Platform and the name of the metadata server.
  
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server/client-config
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminIserId}/servers/{discoveryServerName}/discovery-server/client-config
 {
         "class": "OMAGServerClientConfig",
-        "omagserverPlatformRootURL": {{MDServerURLRoot}},
-        "omagserverName" : "{{MDServerName}}"
+        "omagserverPlatformRootURL": {MDServerURLRoot},
+        "omagserverName" : "{MDServerName}"
 }
 ```
 
@@ -36,7 +36,7 @@ The following command sets up the list of discovery engines that are to run in t
 The list of discovery engines are sent in the request body
     
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{discoveryServerName}}/discovery-server/set-discovery-engines
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server/set-discovery-engines
 { list of unique names (qualified names) for the discovery engines }
 ```
 
@@ -45,11 +45,9 @@ POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{d
 
 The following command removes the configuration for the discovery engine services from an
 OMAG server's configuration document.  This may be used if the discovery engine services have been
-added in error.  In this example, the discovery engine services are removed from
-OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://localhost:8080`.
-
+added in error.  
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId/servers/{discoveryServerName}/discovery-server
 ```
 
 ----
