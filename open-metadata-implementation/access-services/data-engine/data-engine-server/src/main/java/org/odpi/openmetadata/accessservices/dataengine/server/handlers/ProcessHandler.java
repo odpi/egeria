@@ -125,8 +125,12 @@ public class ProcessHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
 
+        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(process.getQualifiedName(), process.getName(), process.getDisplayName(),
+                process.getDescription(), process.getOwner(), process.getOwnerType(), process.getZoneMembership(), process.getLatestChange(),
+                process.getFormula(), null, null, repositoryHelper, serverName, serviceName);
+
         String processGUID = repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), externalSourceGUID,
-                externalSourceName, buildProcessInstanceProperties(process, methodName), InstanceStatus.DRAFT, methodName);
+                externalSourceName, builder.getInstanceProperties(methodName), InstanceStatus.DRAFT, methodName);
 
         classifyAsset(userId, process, processGUID);
 
@@ -176,7 +180,7 @@ public class ProcessHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
         repositoryHandler.updateEntity(userId, processGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
-                buildProcessInstanceProperties(updatedProcess, methodName), methodName);
+                updatedProcessBuilder.getInstanceProperties(methodName), methodName);
     }
 
     /**
@@ -186,7 +190,7 @@ public class ProcessHandler {
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
      *
-     * @return unique identifier of the process or null
+     * @return  optional with entity details if found, empty optional if not found
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -355,14 +359,4 @@ public class ProcessHandler {
                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, ownerProperties, methodName);
         }
     }
-
-    private InstanceProperties buildProcessInstanceProperties(Process process, String methodName) throws InvalidParameterException {
-
-        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(process.getQualifiedName(), process.getName(), process.getDisplayName(),
-                process.getDescription(), process.getOwner(), process.getOwnerType(), process.getZoneMembership(), process.getLatestChange(),
-                process.getFormula(), null, null, repositoryHelper, serverName, serviceName);
-
-        return builder.getInstanceProperties(methodName);
-    }
-
 }
