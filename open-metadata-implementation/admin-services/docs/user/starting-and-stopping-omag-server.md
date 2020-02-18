@@ -8,26 +8,26 @@ for an [OMAG Server](../concepts/omag-server.md), it can be started using the fo
 REST call:
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
 ```
 
 and stopped, as follows:
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
 ```
 
 The configuration document is not changed by these calls.
 It is possible to query the running server's configuration using the following REST API:
 
 ```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance/configuration
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverNAme}/instance/configuration
 ```
 
 If you want to delete the server's configuration document then issue:
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}
 ```
 
 If the OMAG server is running, this command also unregisters the named server from the cohorts it

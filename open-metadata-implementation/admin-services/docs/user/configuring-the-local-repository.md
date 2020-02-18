@@ -18,7 +18,7 @@ This command enables a JanusGraph based metadata repository that is embedded in 
 and uses the local disk to store the metadata.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serever}/local-repository/mode/local-graph-repository
 ```
 
 ## Enable the in-memory repository
@@ -28,7 +28,7 @@ No metadata is kept if the open metadata services are deactivated,
 or the server is shutdown.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/in-memory-repository
 ```
 
 
@@ -40,7 +40,7 @@ added, it will have a new local metadata collection id and will
 not be able to automatically re-register with its cohort(s).
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository
 ```
 
 

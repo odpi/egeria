@@ -6,7 +6,7 @@
 Creates a new private informal tag and returns the unique identifier for it.
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/private
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/tags/private
 ```
 
 ```java

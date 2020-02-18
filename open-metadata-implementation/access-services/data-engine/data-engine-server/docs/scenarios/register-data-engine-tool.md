@@ -6,7 +6,7 @@
 Register an external tool.
 
 ```
-POST {{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/software-server-capabilities
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/software-server-capabilities
 
 {
 	"dataEngine": 

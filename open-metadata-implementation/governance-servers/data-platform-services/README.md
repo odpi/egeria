@@ -9,7 +9,7 @@ OMAS directly, a Data Platform Service for the Data Platform can run on server-s
 OMAG Server Platform and broker calls to the Data Platform itself into calls back
 to the Data Platform OMAS. 
 
-## OMAG Server Platform configuration
+## Data Platform Server configuration
 
 1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
 2. Configure the Data Platform:
@@ -51,18 +51,18 @@ to the Data Platform OMAS.
     to the following address
 
     ```
-    http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/data-platform-service/configuration
+    {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/data-platform-service/configuration
     ```
 
     The object *dataPlatformServicesConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
     The authentication information should be modified based on the information needed by the connector.
 
-3. Start the instance of the OMAG Server Platform
+3. Start the instance of the Data Platform Server on the OMAG Server Platform
 
     **POST** to the following address
     
     ```
-    http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/instance
+    {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/instance
     ```
 
 ----

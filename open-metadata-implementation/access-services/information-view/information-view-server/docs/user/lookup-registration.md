@@ -6,7 +6,7 @@
 Lookup registration submitted by an external tool.
 
 ```
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/registration/lookup
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/registration/lookup
 ```
 
 ```json
