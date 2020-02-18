@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Constants {
 
@@ -17,6 +14,7 @@ public final class Constants {
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";
+    public static final String VALUE_FOR_ACTIVE = "Active";
 
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
@@ -83,4 +81,15 @@ public final class Constants {
 
     public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
 
+    private static final List<String> validLineageEventEntities = new ArrayList<>();
+
+    static{
+        validLineageEventEntities.add(GLOSSARY_TERM);
+        validLineageEventEntities.add(TABULAR_COLUMN);
+        validLineageEventEntities.add(RELATIONAL_COLUMN);
+        validLineageEventEntities.add(RELATIONAL_TABLE);
+        validLineageEventEntities.add(DATA_FILE);
+    }
+
+    public static final ImmutableList<String> immutableValidLineageEventEntities = ImmutableList.copyOf(validLineageEventEntities);
 }

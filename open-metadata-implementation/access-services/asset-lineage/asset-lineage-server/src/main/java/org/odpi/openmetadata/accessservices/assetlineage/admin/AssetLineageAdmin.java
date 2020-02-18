@@ -23,8 +23,7 @@ import java.util.List;
  * the Asset Lineage OMAS. The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class AssetLineageAdmin extends AccessServiceAdmin
-{
+public class AssetLineageAdmin extends AccessServiceAdmin {
 
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
@@ -81,21 +80,15 @@ public class AssetLineageAdmin extends AccessServiceAdmin
             this.serverName = instance.getServerName();
 
 
-            Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
+            Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             if (outTopicConnection != null) {
-
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
-
-                AssetLineageOMRSTopicListener omrsTopicListener;
-
-                omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        outTopicConnector,
-                        repositoryConnector.getRepositoryHelper(),
-                        serverUserName,
-                        serverName);
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
+                        serverName, serverUserName, repositoryConnector.getRepositoryHelper(), outTopicConnector
+                );
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
                         omrsTopicConnector,

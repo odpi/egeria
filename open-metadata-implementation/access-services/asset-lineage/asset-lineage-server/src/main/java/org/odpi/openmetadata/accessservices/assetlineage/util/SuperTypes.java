@@ -15,11 +15,11 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
 /**
  * The validator is used for validating whether the entity or relationship types are relevant for asset lineage context.
  */
-public class Validator {
+public class SuperTypes {
 
     private OMRSRepositoryHelper repositoryHelper;
 
-    public Validator(OMRSRepositoryHelper repositoryHelper){
+    public SuperTypes(OMRSRepositoryHelper repositoryHelper){
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -49,15 +49,4 @@ public class Validator {
             collectSuperTypes(userId, typeDefByName, superTypes);
         }
     }
-    /**
-     * Is valid lineage entity event boolean.
-     *
-     * @param typeDefName the type def name
-     * @return the boolean
-     */
-    public boolean isValidLineageEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(GLOSSARY_TERM, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
-        return types.contains(typeDefName);
-    }
-
 }

@@ -6,10 +6,11 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypes;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -59,7 +60,6 @@ public class GlossaryHandler {
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
-
     }
 
 
@@ -68,16 +68,14 @@ public class GlossaryHandler {
      *
      * @param assetGuid    guid of the asset that has been created
      * @param userId       String - userId of user making request.
-     * @param entityDetail the entity detail
      * @param assetContext the asset context
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
      * @throws InvalidParameterException the invalid parameter exception
      */
     public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
                                                           String userId,
-                                                          EntityDetail entityDetail,
                                                           AssetContext assetContext,
-                                                          Validator validator) throws InvalidParameterException {
+                                                          SuperTypes superTypes) throws InvalidParameterException {
 
         String methodName = "getGlossaryTerm";
 
@@ -87,15 +85,15 @@ public class GlossaryHandler {
             graph = assetContext;
 
             Set<LineageEntity> vertices = assetContext.getVertices();
-            vertices = vertices.stream().filter(vertex -> validator.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
-                    !validator.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
+            vertices = vertices.stream().filter(vertex -> superTypes.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
+                    !superTypes.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
 
             for (LineageEntity vertex : vertices) {
                 getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 
             }
             return graph.getNeighbors();
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+        } catch (OCFCheckedExceptionBase e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
                     e.getReportingClassName(),
                     e.getReportingActionDescription(),
