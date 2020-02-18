@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public class PropertyServerException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private static final Logger log = LoggerFactory.getLogger(PropertyServerException.class);
 
     /**
@@ -38,7 +40,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -64,7 +66,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, relatedProperties);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -91,7 +93,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
     /**
@@ -119,7 +121,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 

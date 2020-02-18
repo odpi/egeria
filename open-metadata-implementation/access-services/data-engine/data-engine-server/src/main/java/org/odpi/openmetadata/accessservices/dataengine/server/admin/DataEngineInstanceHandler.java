@@ -22,7 +22,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public DataEngineInstanceHandler() {
-        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName());
+        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName()+ " OMAS");
 
         DataEngineRegistration.registerAccessService();
     }

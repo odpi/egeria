@@ -45,7 +45,7 @@ public class JanusFactoryBeans {
         return JanusGraphFactory.build().
                 set("storage.backend", connectionProperties.getConfigurationProperties().get("storageBackend")).
                 set("storage.directory", storagePath).
-                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend") ).
+                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
                 set("index.search.directory", indexPath);
     }
 

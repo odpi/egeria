@@ -8,7 +8,7 @@ catalogued using open metadata.
 
 Avro files are files that include a schema along with one or more data records.
 The format of the schema and the records is managed by the
-[Apache Avro](https://avro.apache.org/https://avro.apache.org/) specification.
+[Apache Avro](https://avro.apache.org/) specification.
 
 The API for reading Avro files is based around the Java File object.
 This connector provides access to this File object along with the information

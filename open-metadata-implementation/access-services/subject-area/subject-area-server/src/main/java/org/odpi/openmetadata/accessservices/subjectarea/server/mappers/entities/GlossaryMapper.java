@@ -74,7 +74,7 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
             return glossary;
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,entityDetail.getGUID(),"Glossary");
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityDetail.getGUID(), entityTypeName, "Glossary");
             log.error(errorMessage);
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
 

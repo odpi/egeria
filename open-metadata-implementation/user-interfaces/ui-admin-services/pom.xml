@@ -10,16 +10,22 @@
     <parent>
         <artifactId>user-interfaces</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
     <artifactId>ui-admin-services</artifactId>
 
     <name>User Interface Administration Services</name>
     <description>
         The ui administration services support the configuration of the user interface platform.
-        This configuration determines where the open metadata services are.  It also supports
+        This configuration determines where the open metadata services are. It also supports
         the querying the runtime (operational) state of the user interface components.
     </description>
 

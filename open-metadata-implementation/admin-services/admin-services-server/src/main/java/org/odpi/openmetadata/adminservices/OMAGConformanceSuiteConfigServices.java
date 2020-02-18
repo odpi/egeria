@@ -3,12 +3,16 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -21,11 +25,10 @@ import java.util.List;
  */
 public class OMAGConformanceSuiteConfigServices
 {
-    static private final String serviceName    = "Open Metadata Conformance Suite";
     static private final int    maxPageSize    = 50;
 
-    private static final Logger log = LoggerFactory.getLogger(OMAGConformanceSuiteConfigServices.class);
-
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGConformanceSuiteConfigServices.class),
+                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private OMAGServerAdminStoreServices configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
@@ -44,22 +47,14 @@ public class OMAGConformanceSuiteConfigServices
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    public VoidResponse enableRepositoryConformanceSuiteWorkbench(String userId,
-                                                                  String serverName,
+    public VoidResponse enableRepositoryConformanceSuiteWorkbench(String                               userId,
+                                                                  String                               serverName,
                                                                   RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
-        final String methodName = "enableRepositoryConformanceSuiteWorkbench";
-
-        log.debug("Calling method: " + methodName);
-
-        VoidResponse response = this.enableAllConformanceSuiteWorkbenches(userId,
-                                                                          serverName,
-                                                                          repositoryConformanceWorkbenchConfig,
-                                                                          null);
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
+        return this.enableAllConformanceSuiteWorkbenches(userId,
+                                                         serverName,
+                                                         repositoryConformanceWorkbenchConfig,
+                                                         null);
     }
 
 
@@ -79,18 +74,10 @@ public class OMAGConformanceSuiteConfigServices
                                                                 String         serverName,
                                                                 URLRequestBody requestBody)
     {
-        final String methodName = "enablePlatformConformanceSuiteWorkbench";
-
-        log.debug("Calling method: " + methodName);
-
-        VoidResponse response = this.enableAllConformanceSuiteWorkbenches(userId,
-                                                                          serverName,
-                                                                          null,
-                                                                          requestBody.getUrlRoot());
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
+        return this.enableAllConformanceSuiteWorkbenches(userId,
+                                                         serverName,
+                                                         null,
+                                                         requestBody.getUrlRoot());
     }
 
 
@@ -108,14 +95,14 @@ public class OMAGConformanceSuiteConfigServices
      * OMAGInvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    private VoidResponse enableAllConformanceSuiteWorkbenches(String userId,
-                                                              String serverName,
+    private VoidResponse enableAllConformanceSuiteWorkbenches(String                               userId,
+                                                              String                               serverName,
                                                               RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig,
-                                                              String tutPlatformRootURL)
+                                                              String                               tutPlatformRootURL)
     {
         final String methodName = "enableAllConformanceSuiteWorkbenches";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -135,7 +122,7 @@ public class OMAGConformanceSuiteConfigServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " begins adding configuration for " + serviceName + ".");
+            configAuditTrail.add(new Date().toString() + " " + userId + " begins adding configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
 
             serverConfig.setAuditTrail(configAuditTrail);
 
@@ -152,8 +139,8 @@ public class OMAGConformanceSuiteConfigServices
                 OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
                 adminAPI.setMaxPageSize(userId, serverName, maxPageSize);
-                adminAPI.setServerType(userId, serverName, serviceName);
-                adminAPI.setInMemLocalRepository(userId, serverName);
+                adminAPI.setServerType(userId, serverName, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                adminAPI.setInMemLocalRepository(userId, serverName, new NullRequestBody());
 
                 serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -191,7 +178,7 @@ public class OMAGConformanceSuiteConfigServices
 
             serverConfig.setConformanceSuiteConfig(conformanceSuiteConfig);
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " finished adding configuration for " + serviceName + ".");
+            configAuditTrail.add(new Date().toString() + " " + userId + " finished adding configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
 
             serverConfig.setAuditTrail(configAuditTrail);
 
@@ -207,10 +194,10 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -230,7 +217,7 @@ public class OMAGConformanceSuiteConfigServices
     {
         final String methodName = "disableRepositoryConformanceSuiteServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -256,7 +243,7 @@ public class OMAGConformanceSuiteConfigServices
                         configAuditTrail = new ArrayList<>();
                     }
 
-                    configAuditTrail.add(new Date().toString() + " " + userId + " removed repository workbench configuration for " + serviceName + ".");
+                    configAuditTrail.add(new Date().toString() + " " + userId + " removed repository workbench configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
 
                     serverConfig.setAuditTrail(configAuditTrail);
 
@@ -277,10 +264,10 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -300,7 +287,7 @@ public class OMAGConformanceSuiteConfigServices
     {
         final String methodName = "disablePlatformConformanceSuiteServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -326,7 +313,7 @@ public class OMAGConformanceSuiteConfigServices
                         configAuditTrail = new ArrayList<>();
                     }
 
-                    configAuditTrail.add(new Date().toString() + " " + userId + " removed platform workbench configuration for " + serviceName + ".");
+                    configAuditTrail.add(new Date().toString() + " " + userId + " removed platform workbench configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
 
                     serverConfig.setAuditTrail(configAuditTrail);
 
@@ -347,10 +334,10 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -370,7 +357,7 @@ public class OMAGConformanceSuiteConfigServices
     {
         final String methodName = "disableAllConformanceSuiteWorkbenches";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -388,7 +375,7 @@ public class OMAGConformanceSuiteConfigServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
+            configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
 
             serverConfig.setAuditTrail(configAuditTrail);
 
@@ -408,10 +395,10 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (Throwable   error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

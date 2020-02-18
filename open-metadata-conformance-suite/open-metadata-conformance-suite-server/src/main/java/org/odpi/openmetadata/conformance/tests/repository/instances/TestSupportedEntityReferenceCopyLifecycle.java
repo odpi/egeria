@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private String                         testTypeName;
     private OMRSMetadataCollection         localMetadataCollection;
 
+    private List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
+
 
     /*
      * A propagation timeout is used to limit how long the testcase will wait for
@@ -156,10 +161,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
         EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
         verifyCondition((entityDef.equals(knownEntityDef)),
-                assertion0,
-                testTypeName + assertionMsg0,
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+                        assertion0,
+                        testTypeName + assertionMsg0,
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
 
         /*
@@ -220,8 +225,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         EntityDetail newEntity = ctsMetadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                                  entityDef.getGUID(),
                                                                  super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
-                                                                null,
-                                                                null);
+                                                                 null,
+                                                                 null);
+
+        createdEntitiesCTS.add(newEntity);
 
         /*
          * This test does not verify the content of the entity - that is tested in the entity-lifecycle tests
@@ -241,12 +248,27 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
          */
-        Integer remainingCount = this.pollCount;
-        while (refEntity == null && remainingCount>0 ) {
+        try {
+            Integer remainingCount = this.pollCount;
+            while (refEntity == null && remainingCount > 0) {
 
-            refEntity = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
+                refEntity = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+
+            }
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
 
         }
 
@@ -263,10 +285,13 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              */
 
             assertCondition((true),
-                    assertion1,
-                    testTypeName + assertionMsg1,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            assertion1,
+                            testTypeName + assertionMsg1,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+
+
+            createdEntityRefCopiesTUT.add(refEntity);
 
 
         } else {
@@ -275,9 +300,9 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              * Report that reference storage requirement is not supported.
              */
             super.addNotSupportedAssertion(assertion1,
-                    assertionMsg1,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                                           assertionMsg1,
+                                           RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
             /*
              * Terminate the test
@@ -287,56 +312,97 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         }
 
 
-
         /*
          * Validate that the reference copy can be consistently retrieved from the TUT and that the retrieved reference copy 'matches' what was saved.
          */
 
-        verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
-                assertion2,
-                testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        String retrievalOperationName = "";
 
+        EntityDetail retrievedReferenceCopy = null;
 
-        EntityDetail retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+        try {
 
-        assertCondition((retrievedReferenceCopy != null),
-                assertion3,
-                testTypeName + assertionMsg3,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+            retrievalOperationName = "getEntitySummary";
+            verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
+                            assertion2,
+                            testTypeName + assertionMsg2,
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
+            retrievalOperationName = "getEntityDetail";
+            retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+            assertCondition((retrievedReferenceCopy != null),
+                            assertion3,
+                            testTypeName + assertionMsg3,
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = retrievalOperationName;
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
         /*
          * Verify that the retrieved reference copy matches the original entity
          */
 
         verifyCondition((newEntity.equals(retrievedReferenceCopy)),
-                assertion4,
-                testTypeName + assertionMsg4,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                        assertion4,
+                        testTypeName + assertionMsg4,
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
 
 
         /*
          * No relationships have been created so none should be returned.
          */
-        verifyCondition((metadataCollection.getRelationshipsForEntity(workPad.getLocalServerUserId(),
-                retrievedReferenceCopy.getGUID(),
-                null,
-                0,
-                null,
-                null,
-                null,
-                null,
-                0) == null),
-                assertion5,
-                testTypeName + assertionMsg5,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        try {
+            verifyCondition((metadataCollection.getRelationshipsForEntity(workPad.getLocalServerUserId(),
+                                                                          retrievedReferenceCopy.getGUID(),
+                                                                          null,
+                                                                          0,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          0) == null),
+                            assertion5,
+                            testTypeName + assertionMsg5,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
 
+            String methodName = "getRelationshipsForEntity";
+            String operationDescription = "retrieve the relationships for an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            parameters.put("relationshipTypeGUID", "null");
+            parameters.put("fromRelationshipElement", Integer.toString(0));
+            parameters.put("limitResultsByStatus", "null");
+            parameters.put("asOfTime", "null");
+            parameters.put("sequencingProperty", "null");
+            parameters.put("sequencingOrder", "null");
+            parameters.put("pageSize", Integer.toString(0));
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
 
         /*
@@ -351,22 +417,35 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                 EntityDetail updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), validInstanceStatus);
 
                 assertCondition((false),
-                        assertion6,
-                        testTypeName + assertionMsg6,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                assertion6,
+                                testTypeName + assertionMsg6,
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            }
-            catch (InvalidParameterException e) {
+            } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
 
                 assertCondition((true),
-                        assertion6,
-                        testTypeName + assertionMsg6,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                assertion6,
+                                testTypeName + assertionMsg6,
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "updateEntityStatus";
+                String operationDescription = "update the status of an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", retrievedReferenceCopy.getGUID());
+                parameters.put("newStatus", validInstanceStatus.toString());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
             }
 
         }
@@ -387,22 +466,35 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                 EntityDetail minPropertiesEntity = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), minEntityProps);
 
                 assertCondition((false),
-                        assertion7,
-                        testTypeName + assertionMsg7,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                assertion7,
+                                testTypeName + assertionMsg7,
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-            }
-            catch (InvalidParameterException e) {
+            } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
 
                 assertCondition((true),
-                        assertion7,
-                        testTypeName + assertionMsg7,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                assertion7,
+                                testTypeName + assertionMsg7,
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "updateEntityProperties";
+                String operationDescription = "update the properties of an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", retrievedReferenceCopy.getGUID());
+                parameters.put("properties", minEntityProps.toString());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
             }
 
         }
@@ -424,24 +516,37 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                                                          entityDef); // see comment above about using original type
 
             assertCondition((false),
-                    assertion8,
-                    testTypeName + assertionMsg8,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            assertion8,
+                            testTypeName + assertionMsg8,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
              */
 
             assertCondition((true),
-                    assertion8,
-                    testTypeName + assertionMsg8,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            assertion8,
+                            testTypeName + assertionMsg8,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reTypeEntity";
+            String operationDescription = "retype an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            parameters.put("currentTypeDefSummary", entityDef.toString());
+            parameters.put("newTypeDefSummary", entityDef.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -453,34 +558,53 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          * This test is performed against the TUT.
          */
 
+        String newGUID = UUID.randomUUID().toString();
+
         try {
 
             EntityDetail reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                                                                                   entityDef.getGUID(),
                                                                                   entityDef.getName(),
                                                                                   newEntity.getGUID(),
-                                                                                  UUID.randomUUID().toString());
+                                                                                  newGUID);
+
+
+            if (reIdentifiedEntity != null)
+                createdEntityRefCopiesTUT.add(reIdentifiedEntity);
 
 
             assertCondition((false),
-                    assertion9,
-                    testTypeName + assertionMsg9,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            assertion9,
+                            testTypeName + assertionMsg9,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
 
-        }
-        catch (InvalidParameterException e)
-        {
+        } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
              */
 
             assertCondition((true),
-                    assertion9,
-                    testTypeName + assertionMsg9,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            assertion9,
+                            testTypeName + assertionMsg9,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "reIdentifyEntity";
+            String operationDescription = "reidentify an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", entityDef.getGUID());
+            parameters.put("entityGUID", newEntity.getGUID());
+            parameters.put("newEntityGUID", newGUID);
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -497,24 +621,24 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              * Note that the ref copy could be purged
              */
             assertCondition((true),
-                    assertion10,
-                    testTypeName + assertionMsg10,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            assertion10,
+                            testTypeName + assertionMsg10,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
 
-        }
-        catch (Exception e)
-        {
-
+        } catch (Exception exc) {
             /*
-             * If for any reason the ref copy could not be purged, fail the test
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
 
-            assertCondition((false),
-                    assertion10,
-                    testTypeName + assertionMsg10,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+            String methodName = "purgeEntityReferenceCopy";
+            String operationDescription = "purge a reference copy of an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entity", refEntity.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -529,23 +653,26 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              * Note that the refresh request could be sent
              */
             assertCondition((true),
-                    assertion11,
-                    testTypeName + assertionMsg11,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-        }
-        catch (Exception e)
-        {
-
+                            assertion11,
+                            testTypeName + assertionMsg11,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        } catch (Exception exc) {
             /*
-             * If for any reason the refresh request failed, fail the test
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
 
-            assertCondition((false),
-                    assertion11,
-                    testTypeName + assertionMsg11,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+            String methodName = "refreshEntityReferenceCopy";
+            String operationDescription = "request a refresh of a reference copy of an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", refEntity.getGUID());
+            parameters.put("typeDefGUID", entityDef.getGUID());
+            parameters.put("typeDefName", entityDef.getName());
+            parameters.put("homeMetadataCollectionId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -563,25 +690,58 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
          */
-        remainingCount = this.pollCount;
-        while (refreshedEntityRefCopy == null && remainingCount>0 ) {
+        try {
+            Integer remainingCount = this.pollCount;
+            while (refreshedEntityRefCopy == null && remainingCount > 0) {
 
-            refreshedEntityRefCopy = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
+                refreshedEntityRefCopy = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+            }
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
         /*
          * Verify that the reference copy can be retrieved form the TUT and matches the original...
          */
-        refreshedEntityRefCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+        try {
+
+            refreshedEntityRefCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntityDetail";
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
         assertCondition((refreshedEntityRefCopy != null),
-                assertion12,
-                testTypeName + assertionMsg12,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                        assertion12,
+                        testTypeName + assertionMsg12,
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
 
         /*
@@ -589,10 +749,10 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          */
 
         verifyCondition((newEntity.equals(refreshedEntityRefCopy)),
-                assertion13,
-                testTypeName + assertionMsg13,
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                        assertion13,
+                        testTypeName + assertionMsg13,
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
 
 
@@ -629,32 +789,59 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          * Since it may take time to propagate the purge event, retry until the entity is no longer known at the TUT.
          */
 
-        EntityDetail survivingEntRefCopy;
-        remainingCount = this.pollCount;
-        do {
-            survivingEntRefCopy = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
-            Thread.sleep(this.pollPeriod);
-            remainingCount--;
-        } while (survivingEntRefCopy != null && remainingCount>0 );
+        try {
+            EntityDetail survivingEntRefCopy;
+            Integer remainingCount = this.pollCount;
+            do {
+                survivingEntRefCopy = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
+                Thread.sleep(this.pollPeriod);
+                remainingCount--;
+            } while (survivingEntRefCopy != null && remainingCount > 0);
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "isEntityKnown";
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
 
         try {
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
-                    assertion14,
-                    testTypeName + assertionMsg14,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            assertion14,
+                            testTypeName + assertionMsg14,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
 
-        }
-        catch (EntityNotKnownException exception) {
+        } catch (EntityNotKnownException exception) {
 
             assertCondition((true),
-                    assertion14,
-                    testTypeName + assertionMsg14,
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            assertion14,
+                            testTypeName + assertionMsg14,
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "getEntityDetail";
+            String operationDescription = "retrieve an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
 
@@ -670,7 +857,6 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
 
-
         /*
          * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
          * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
@@ -678,6 +864,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
          */
 
         EntityDetail entityWithMappingProperties;
+        InstanceProperties instanceProperties = null;
 
         try {
             /*
@@ -691,21 +878,24 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
              * Generate property values for all the type's defined properties, including inherited properties
              */
 
+            instanceProperties = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+
             entityWithMappingProperties = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                                        entityDef.getGUID(),
-                                                                       super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
+                                                                       instanceProperties,
                                                                        null,
                                                                        null);
 
             assertCondition((true),
                             assertion15,
-                           testTypeName + assertionMsg15,
+                            testTypeName + assertionMsg15,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
+            createdEntitiesTUT.add(entityWithMappingProperties);
 
-        }
-        catch (FunctionNotSupportedException exception) {
+
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -720,6 +910,23 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
+
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "addEntity";
+            String operationDescription = "add an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", entityDef.getGUID());
+            parameters.put("initialProperties", instanceProperties != null ? instanceProperties.toString() : "null");
+            parameters.put("initialClasiifications", "null");
+            parameters.put("initialStatus", "null");
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
         /*
@@ -744,18 +951,50 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                             entityWithMappingProperties.getType().getTypeDefGUID(),
                                             entityWithMappingProperties.getType().getTypeDefName(),
                                             entityWithMappingProperties.getGUID());
-        }
-        catch (FunctionNotSupportedException exception) {
+        } catch (FunctionNotSupportedException exception) {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
              */
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "deleteEntity";
+            String operationDescription = "delete an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeDefGUID", newEntity.getType().getTypeDefGUID());
+            parameters.put("typeDefName", newEntity.getType().getTypeDefName());
+            parameters.put("obsoleteEntityGUID", newEntity.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
         }
 
-        metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                                       entityWithMappingProperties.getType().getTypeDefGUID(),
-                                       entityWithMappingProperties.getType().getTypeDefName(),
-                                       entityWithMappingProperties.getGUID());
+
+        try {
+            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                           entityWithMappingProperties.getType().getTypeDefGUID(),
+                                           entityWithMappingProperties.getType().getTypeDefName(),
+                                           entityWithMappingProperties.getGUID());
+        } catch (Exception exc) {
+            /*
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "purgeEntity";
+            String operationDescription = "purge an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeDefGUID", entityWithMappingProperties.getType().getTypeDefGUID());
+            parameters.put("typeDefName", entityWithMappingProperties.getType().getTypeDefName());
+            parameters.put("deletedEntityGUID", entityWithMappingProperties.getGUID());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
 
         // Beyond this point, there should be no further references to entityWithMappingProperties
         entityWithMappingProperties = null;
@@ -794,15 +1033,38 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
             metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntityWithMappingProperties);
 
-
             assertCondition((true),
                             assertion16,
                             testTypeName + assertionMsg16,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
+            createdEntityRefCopiesTUT.add(remoteEntityWithMappingProperties);
 
-            EntityDetail retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+
+            EntityDetail retrievedReferenceCopyWithMappingProperties = null;
+
+            try {
+
+                retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+            }
+            catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "getEntityDetail";
+                String operationDescription = "retrieve an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntityGUID);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
 
             assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteEntityWithMappingProperties)),
                             assertion17,
@@ -814,6 +1076,164 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
 
+            /*
+             * Continuing with the tests based on a locally synthesized entity used as a reference copy, emulating
+             * adoption of an instance from a virtual or defunct remote repository....
+             *
+             *
+             * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
+             * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
+             * This should not be performed on a reference copy of an entity whose master is on the CTS server - the
+             * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
+             * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
+             * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
+             * test. Therefore the rehome is performed on the locally synthesized instance used above for the
+             * mappingProperties test.
+             */
+
+
+
+            /*
+             * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
+             */
+            EntityDetail newMasterEntity = null;
+
+            try {
+
+                newMasterEntity = metadataCollection.reHomeEntity(workPad.getLocalServerUserId(),
+                                                                  remoteEntityGUID,
+                                                                  entityDef.getGUID(),
+                                                                  entityDef.getName(),
+                                                                  ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
+                                                                  metadataCollectionId,
+                                                                  repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+
+                assertCondition((true),
+                                assertion18,
+                                testTypeName + assertionMsg18,
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+                createdEntitiesTUT.add(newMasterEntity);
+
+                /*
+                 * Verify that the new master instance can be retrieved
+                 */
+
+                try {
+
+                    retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+
+                } catch (Exception exc) {
+                    /*
+                     * We are not expecting any other exceptions from this method call. Log and fail the test.
+                     */
+
+                    String methodName = "getEntityDetail";
+                    String operationDescription = "retrieve an entity of type " + entityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("entityGUID", remoteEntityGUID);
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                    throw new Exception(msg, exc);
+
+                }
+
+                assertCondition((retrievedReferenceCopyWithMappingProperties != null),
+                                assertion19,
+                                assertionMsg19 + entityDef.getName(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+                /*
+                 * Verify that the new master instance has the local metadataCollectionId
+                 */
+                String instanceHome = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
+                assertCondition((instanceHome.equals(metadataCollectionId)),
+                                assertion20,
+                                assertionMsg20 + entityDef.getName(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+
+
+                /*
+                 * Now clean up.
+                 * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
+                 * If the rehome did not work then we have a local reference copy to purge.
+                 * In both cases the operation is performed at the TUT.
+                 */
+
+                if (newMasterEntity != null) {
+
+                    /*
+                     * The rehome operation worked - perform a soft delete (optional) followed by a purge.
+                     */
+                    try {
+                        metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                        remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                        remoteEntityWithMappingProperties.getGUID());
+                    } catch (FunctionNotSupportedException exception) {
+
+                        /*
+                         * This is OK - we can NO OP and just proceed to purgeEntity
+                         */
+                    }
+
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                                   remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                   remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                   remoteEntityWithMappingProperties.getGUID());
+                } else {
+                    /*
+                     * The rehome operation did not work - the TUT is still holding a reference copy
+                     */
+
+                    /*
+                     * Purge the reference copy.
+                     */
+
+                    metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
+                                                                remoteEntityWithMappingProperties.getGUID(),
+                                                                remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
+                                                                remoteEntityWithMappingProperties.getType().getTypeDefName(),
+                                                                remoteEntityWithMappingProperties.getMetadataCollectionId());
+
+                }
+
+
+            } catch (FunctionNotSupportedException exception) {
+
+                /*
+                 * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
+                 */
+
+                super.addNotSupportedAssertion(assertion18,
+                                               assertionMsg18,
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+
+            } catch (Exception exc) {
+                /*
+                 * We are not expecting any other exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "reHomeEntity";
+                String operationDescription = "rehome an entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", remoteEntityGUID);
+                parameters.put("typeDefGUID", entityDef.getGUID());
+                parameters.put("typeDefName", entityDef.getName());
+                parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+                parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
+                parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception(msg, exc);
+
+            }
+
 
         }
         catch (FunctionNotSupportedException e) {
@@ -824,132 +1244,20 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
         }
-
-
-
-        /*
-         * Continuing with the tests based on a locally synthesized entity used as a reference copy, emulating
-         * adoption of an instance from a virtual or defunct remote repository....
-         *
-         *
-         * The next test verifies whether it is possible to re-home a reference copy. The rehome operation is
-         * effectively a pull of the master-ship of the reference copy - i.e. it is a request made by the TUT.
-         * This should not be performed on a reference copy of an entity whose master is on the CTS server - the
-         * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
-         * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
-         * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
-         * test. Therefore the rehome is performed on the locally synthesized instance used above for the
-         * mappingProperties test.
-         */
-
-
-
-        /*
-         * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
-         */
-        EntityDetail newMasterEntity = null;
-        try {
-            newMasterEntity = metadataCollection.reHomeEntity(workPad.getLocalServerUserId(),
-                                                              remoteEntityGUID,
-                                                              entityDef.getGUID(),
-                                                              entityDef.getName(),
-                                                              ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
-                                                              metadataCollectionId,
-                                                              repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-
-
-            assertCondition((true),
-                            assertion18,
-                           testTypeName + assertionMsg18,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
+        catch (Exception exc) {
             /*
-             * Verify that the new master instance can be retrieved
+             * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-            EntityDetail retrievedReferenceCopyWithMappingProperties = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
 
-            assertCondition((retrievedReferenceCopyWithMappingProperties != null),
-                            assertion19,
-                           assertionMsg19 + entityDef.getName(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+            String methodName = "saveEntityReferenceCopy";
+            String operationDescription = "save a reference copy of an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entity", remoteEntityWithMappingProperties.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
-            /*
-             * Verify that the new master instance has the local metadataCollectionId
-             */
-            String instanceHomne = retrievedReferenceCopyWithMappingProperties.getMetadataCollectionId();
-            assertCondition((instanceHomne.equals(metadataCollectionId)),
-                            assertion20,
-                           assertionMsg20 + entityDef.getName(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
+            throw new Exception(msg, exc);
 
         }
-        catch (FunctionNotSupportedException exception) {
-
-            /*
-             * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
-             */
-
-            super.addNotSupportedAssertion(assertion18,
-                                           assertionMsg18,
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                                           RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
-
-        }
-
-
-
-
-        /*
-         * Now clean up.
-         * If the rehome worked we have a master instance locally - so we need to (optionally) delete and then (always) purge.
-         * If the rehome did not work then we have a local reference copy to purge.
-         * In both cases the operation is performed at the TUT.
-         */
-
-        if (newMasterEntity != null) {
-
-            /*
-             * The rehome operation worked - perform a soft delete (optional) followed by a purge.
-             */
-            try {
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                                                remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                                remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                                remoteEntityWithMappingProperties.getGUID());
-            }
-            catch (FunctionNotSupportedException exception) {
-
-                /*
-                 * This is OK - we can NO OP and just proceed to purgeEntity
-                 */
-            }
-
-            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                                           remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                           remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                           remoteEntityWithMappingProperties.getGUID());
-        }
-        else {
-            /*
-             * The rehome operation did not work - the TUT is still holding a reference copy
-             */
-
-            /*
-             * Purge the reference copy.
-             */
-
-            metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
-                                                        remoteEntityWithMappingProperties.getGUID(),
-                                                        remoteEntityWithMappingProperties.getType().getTypeDefGUID(),
-                                                        remoteEntityWithMappingProperties.getType().getTypeDefName(),
-                                                        remoteEntityWithMappingProperties.getMetadataCollectionId());
-
-        }
-
 
 
 
@@ -958,82 +1266,120 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
     }
 
+
+
     /**
-     * Method to clean any instance created by the test case.
+     * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
-     * @throws Exception something went wrong with the test.
+     * @throws Exception something went wrong but there is no particular action to take.
      */
     public void cleanup() throws Exception
     {
+
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
         /*
-         * Find any entities of the given type def and delete them....
+         * For this testcase we created master instances at the CTS and TUT and ref copies at the TUT - three lists to clean up
          */
-
-        int fromElement = 0;
-        int pageSize = 50; // chunk size - loop below will repeatedly get chunks
-        int resultSize = 0;
-
-        do {
-
-            InstanceProperties emptyMatchProperties = new InstanceProperties();
-
-
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                    entityDef.getGUID(),
-                    emptyMatchProperties,
-                    MatchCriteria.ANY,
-                    fromElement,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pageSize);
-
-
-            if (entities == null) {
-                /*
-                 * There are no instances of this type reported by the repository.
-                 */
-                return;
-
-            }
+        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
 
             /*
-             * Report how many entities were left behind at the end of the test run
+             * Instances were created - clean them up.
              */
 
-            resultSize = entities.size();
+            for (EntityDetail entity : createdEntitiesCTS) {
 
-            System.out.println("At completion of testcase "+testTypeName+", there were " + entities.size() + " entities found");
-
-            for (EntityDetail entity : entities) {
-
-                /*
-                 * Try soft delete (ok if it fails) and purge.
-                 */
-
-                try {
-                    EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-
-                } catch (FunctionNotSupportedException exception) {
-                    /* OK - had to try soft; continue to purge */
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
                 }
 
+                // If entity is known then (whether delete was supported or not) issue purge
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-
-                System.out.println("Entity wth GUID " + entity.getGUID() + " removed");
-
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
             }
-        } while (resultSize >= pageSize);
+        }
 
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntitiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
+
+        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+
+            /*
+             * Instances were created - clean them up.
+             */
+
+            for (EntityDetail entity : createdEntityRefCopiesTUT) {
+
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (EntityNotKnownException exception)
+                {
+                    // Entity already cleaned up - nothing more to do here.
+                    continue;
+                }
+
+                // If entity is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                               entity.getType().getTypeDefGUID(),
+                                               entity.getType().getTypeDefName(),
+                                               entity.getGUID());
+            }
+        }
     }
+
+
 }

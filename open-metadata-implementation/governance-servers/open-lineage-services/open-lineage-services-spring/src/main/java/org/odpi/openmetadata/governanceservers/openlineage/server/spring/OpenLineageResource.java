@@ -34,10 +34,9 @@ public class OpenLineageResource {
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("guid") String guid,
-            @RequestBody LineageQueryParameters params){
-        return restAPI.lineage(serverName, userId, params.getScope(), params.getView(), guid, params.getDisplayNameMustContain(), params.getIncludeProcesses());
+            @RequestBody LineageQueryParameters params) {
+        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.getIncludeProcesses());
     }
-
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.

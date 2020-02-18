@@ -88,6 +88,7 @@ support for the peer-to-peer metadata exchange and federation.
 * **[repository-services-spring](repository-services-spring)** uses spring to create the OMRS REST services.
 
 
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

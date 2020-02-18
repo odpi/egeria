@@ -20,7 +20,7 @@ public class AssetCatalogInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public AssetCatalogInstanceHandler() {
-        super(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceName() + " OMAS");
+        super(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceFullName());
 
         AssetCatalogRegistration.registerAccessService();
     }

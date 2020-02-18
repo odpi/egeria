@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2019. -->
   
 # Repository Services Connectors
 
@@ -23,3 +24,9 @@ support mappings to different vendors' metadata repositories.
 The **[connector-configuration-factory](../connector-configuration-factory)** sets
 up connections to the default implementations
 of each type of repository services connector.
+
+Return to [open-connectors](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

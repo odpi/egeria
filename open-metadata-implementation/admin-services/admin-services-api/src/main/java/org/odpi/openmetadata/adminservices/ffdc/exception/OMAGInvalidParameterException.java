@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  */
 public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a OMAGInvalidParameterException.
      *
@@ -41,12 +43,29 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 
+
     /**
      * This is the constructor used for creating a OMAGInvalidParameterException that resulted from a previous error.
      *
      * @param template previous error
      * */
     public OMAGInvalidParameterException(InvalidParameterException template)
+    {
+        super(template.getReportedHTTPCode(),
+              template.getReportingClassName(),
+              template.getReportingActionDescription(),
+              template.getErrorMessage(),
+              template.getReportedSystemAction(),
+              template.getReportedUserAction());
+    }
+
+
+    /**
+     * This is the constructor used for creating a OMAGInvalidParameterException that resulted from a previous error.
+     *
+     * @param template previous error
+     * */
+    public OMAGInvalidParameterException(OMAGInvalidParameterException template)
     {
         super(template.getReportedHTTPCode(),
               template.getReportingClassName(),

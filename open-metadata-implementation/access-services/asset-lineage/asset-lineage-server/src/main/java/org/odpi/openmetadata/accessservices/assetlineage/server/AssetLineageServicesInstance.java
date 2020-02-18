@@ -31,14 +31,19 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
      * @param auditLog            destination for audit log events.
+     * @param localServerUserId   userId used for server initiated actions
+     *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
-                                        OMRSAuditLog auditLog) throws NewInstanceException {
-        super(myDescription.getAccessServiceName() + " OMAS",
-                repositoryConnector,
-                auditLog);
+                                        OMRSAuditLog auditLog,
+                                        String localServerUserId) throws NewInstanceException {
+        super(myDescription.getAccessServiceFullName(),
+              repositoryConnector,
+              auditLog,
+              localServerUserId,
+              repositoryConnector.getMaxPageSize());
 
         final String methodName = "new ServiceInstance";
 
@@ -55,7 +60,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
-                    repositoryHandler);
+                    repositoryHandler,
+                    supportedZones);
 
             commonHandler = new CommonHandler(serviceName,
                     serverName,
@@ -67,7 +73,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
-                    repositoryHandler);
+                    repositoryHandler,
+                    supportedZones);
 
             classificationHandler = new ClassificationHandler(serviceName,
                     serverName,

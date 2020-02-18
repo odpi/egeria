@@ -15,30 +15,36 @@ related to data access.
 
 The open connectors are grouped as follows:
 
-* **[access-services-connectors](access-services-connectors)** contains the topic connector implementations
-for each of the access services that support inbound events through an InTopic.
-
-* **[repository-services-connectors](repository-services-connectors)** contains connector implementations for
-each type of connector supported by the Open Metadata Repository Services (OMRS).
-These connectors enable the OMRS to be adapted to many different platforms.
-
 * **[configuration-store-connectors](configuration-store-connectors)** contains the connectors that manage
 the open metadata configuration.
+
+* **[data-store-connectors](data-store-connectors)** contains OCF connectors to data stores on different
+data platforms.
+
+* **[discovery-service-connectors](discovery-service-connectors)** implementations of discovery services.
 
 * **[event-bus-connectors](event-bus-connectors)** supports different event/messaging infrastructures.
 They can be plugged into the topic connectors from the access-service-connectors
 and repository-service-connectors.
 
+* **[governance-action-connectors](governance-action-connectors)** contains governance actions for assessing and acting on
+governance issues detected in the metadata ecosystem.
+
 * **[governance-daemon-connectors](governance-daemon-connectors)** contains connectors for the governance
-daemon servers that monitor activity or synchronize metadata and configuration
+servers that monitor activity or synchronize metadata and configuration
 asynchronously between different tools.
 
-* **[data-store-connectors](data-store-connectors)** contain OCF connectors to data stores on different
-data platforms.
+* **[repository-services-connectors](repository-services-connectors)** contains connector implementations for
+each type of connector supported by the Open Metadata Repository Services (OMRS).
+These connectors enable the OMRS to be adapted to many different platforms.
+
+* **[rest-client-connectors](rest-client-connectors)** provides a connector to call a REST API from
+Java.
 
 In addition there is the **[connector-configuration-factory](connector-configuration-factory)**
 that creates **Connection** objects to configure these connectors.
 
+Return to [Adapters](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

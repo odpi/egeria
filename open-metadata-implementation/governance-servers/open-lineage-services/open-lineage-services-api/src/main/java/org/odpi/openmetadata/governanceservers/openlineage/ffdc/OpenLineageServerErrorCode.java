@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The ODF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- * ODF Discovery Services.  It is used in conjunction with all ODF Exceptions, both Checked and Runtime (unchecked).
+ * Open Lineage Services.  It is used in conjunction with all ODF Exceptions, both Checked and Runtime (unchecked).
  * <p>
  * The 5 fields in the enum are:
  * <ul>
@@ -38,28 +38,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public enum OpenLineageServerErrorCode {
 
-    NO_CONFIG_DOC(400, "OPEN-LINEAGE-SERVER-400-001",
-            "Open Lineage server {0} does not have a configuration document",
+    NO_CONFIG_DOC(400, "OPEN-LINEAGE-SERVER-400-001 ",
+            "Open Lineage server {0} does not have a configuration document.",
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
-    INVALID_SCOPE(400, "OPEN-LINEAGE-SERVER-400-002",
-            "Invalid scope argument",
-            "The scope value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed scope values"),
-
-    INVALID_VIEW(400, "OPEN-LINEAGE-SERVER-400-003",
-            "Invalid view argument",
-            "The view value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed view values"),
-
-    INVALID_SOURCE(400, "OPEN-LINEAGE-SERVER-400-004",
-            "Invalid sources argument",
-            "The source value passed in the lineage query was nog recognized.",
-            "Consult an Egeria maintainer for a list of allowed source values"),
-
-
-    SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-005",
+    SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-005 ",
             "The open lineage  services are unable to initialize a new instance of open lineage server {0};" +
                     " error message is {1}",
             "The open lineage  services detected an error during the start up of a specific open lineage server " +
@@ -67,40 +51,96 @@ public enum OpenLineageServerErrorCode {
             "Review the error message and any other reported failures to determine the cause of the problem.  " +
                     "Once this is resolved, restart the server."),
 
-    GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001",
-            "The graph database could not be initialized for open metadata repository {0}",
+    CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVER-400-006 ",
+            "It is not possible to open the graph database at path {0} in the {1} method of {2} class.",
+            "Graph could not be opened due to invalid configuration.",
+            "Please check that the graph database exists and is not in use by another process."),
+
+    ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-007 ",
+            "The Open Lineage server {0} is not able to initialize the Buffergraph database connector.",
+            "The Buffergraph database connector could not be initialized.",
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
+
+    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB(400, "OPEN-LINEAGE-SERVER-400-008 ",
+            "The Open Lineage server {0} is not able to initialize the Maingraph database connector.",
+            "The Maingraph database connector could not be initialized.",
+            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
+
+    ERROR_STARTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-009 ",
+            "The Open Lineage server {0} is not able to register the Buffergraph database connector as \"active\".",
+            "The Buffergraph database connector could not be started.",
+            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
+
+    ERROR_STARTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-010 ",
+            "The Open Lineage server {0} is not able to register the Maingraph database connector as \"active\" .",
+            "The Maingraph database connector could not be started.",
+            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
+
+
+    ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-011 ",
+            "The Open Lineage Services server {0} is unable to obtain an in topic connector.",
+            "The in topic connector could not be obtained.",
+            "Review the topic name set by the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Buffergraph database connector.",
+            "The Buffergraph database connector could not be obtained.",
+            "Please verify the Buffergraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Maingraph database connector.",
+            "The Maingraph database connector could not be obtained.",
+            "Please verify the Maingraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_STARTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-013 ",
+            "The Open Lineage Services server {0} is unable to start an in topic listener.",
+            "The topic connector could not be started.",
+            "Review the status of the eventbus server and review the topic name set by the Open Lineage Services configuration."),
+
+    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-014 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
+            "An error occured while while disconnecting the Buffergraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-015 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
+            "An error occured while disconnecting the Maingraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-016 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
+            "An error occured while disconnecting the In-topic connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
+            "Error retrieving queried node.",
+            "The queried node was not found in the lineage graph.",
+            "Please verify the queried GUID."),
+
+    GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001 ",
+            "The graph database could not be initialized for open metadata repository {0}.",
             "The system was unable to initialize.",
             "Please raise a github issue."),
 
-    OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(500, "OPEN-LINEAGE-SERVER-500-002",
+    OPEN_LINEAGE_HANDLER_NOT_INSTANTIATED(500, "OPEN-LINEAGE-SERVER-500-002 ",
             "The OpenLineageHandler {0} has not been instantiated in the open lineage server {1}",
             "The OpenLineageHandler has not been instantiated in the open lineage server.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of " +
-                    "the open lineage server. Once the cause is resolved, retry the open lineage request."),
+            "the open lineage server. Once the cause is resolved, retry the open lineage request."),
 
-    CANNOT_OPEN_GRAPH_DB(400, "OPEN-LINEAGE-SERVICES-001",
-            "It is not possible to open the graph database at path {0} in the {1} method of {2} class.",
-            "Graph could not be opened due to invalid configuration",
-            "The system was unable to open the graph repository graph database. " +
-                    "Please check that the graph database exists and is not in use by another process."),
 
-    NO_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVICES-002",
-            "Error retrieving inTopic Connector",
-            "IError retrieving inTopic Connector",
-            "The system was unable to obtain a connector for the eventbus. " +
-                    "Please verify the topic specifications in the configuration."),
-
-    NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-001",
-            "Error retrieving queried node",
-            "The queried node was not found in the lineage graph.",
-            "Please verify the queried GUID"),
-
-    LINEAGE_CYCLE(503, "OPEN-LINEAGE-SERVICES-001",
-            "A possible cycle in the lineage graph has been detected. ",
+    LINEAGE_CYCLE(503, "OPEN-LINEAGE-SERVICES-503-001 ",
+            "A possible cycle in the lineage graph has been detected.",
             "No nodes were returned by the lineage query. This could mean that the ultimate sources/destinations of the " +
                     "queried node are included in a cyclic data flow. This is not supported by the Open lineage Services.",
             "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
+
+    ERROR_INITIALIZING_OLS(503, "OPEN-LINEAGE-SERVICES-503-002 ",
+            "The Open Lineage Services server {0} encountered an unknown error and could not start.",
+            "An unexpected error occurred while initializing the Open Lineage Services.",
+            "Please contact an Egeria maintainer about your issue."),
+
     ;
+
 
     private int httpErrorCode;
     private String errorMessageId;

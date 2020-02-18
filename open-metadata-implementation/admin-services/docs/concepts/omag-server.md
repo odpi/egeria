@@ -5,18 +5,70 @@
 
 An **OMAG server** is a software server that
 runs inside the [OMAG server platform](omag-server-platform.md).
+It supports the integration of one or more technologies by hosting
+connectors that interact with that technology, or providing specialist
+APIs or event topics (both in and out).
 
-It is started up and shut down using administration commands.
-The start up command (called **initialize**) passes a
-[configuration document](configuration-document.md) to
-the OMAG Server Platform.
-This configuration document defines the type of OMAG server
-that is to be started, and how the services within it are configured.
+Because of the wide variety of technologies deployed in organization's today,
+each with very different capabilities and needs,
+the integration and exchange of metadata needs to be organized.
+This organization is managed through the Egeria frameworks and services
+supported by the OMAG Servers.
+There are different types of OMAG Server,
+each supporting specific technologies.  The OMAG Server ensures this
+type of technology is integrated appropriately for its needs.
 
-The shutdown command (called **terminate**) performs an orderly shutdown
-of the services within the server and disables its URL.
+The types of OMAG Server are shown in Figure 1. The hierarchy groups
+similar types of server together.
 
-There is more information on the OMAG Server and its relationship to
+![Figure 1](types-of-omag-servers.png)
+
+More detail about each type of OMAG Server can be found by following the links below:
+* [Cohort Member](cohort-member.md) - able to exchange metadata through an open metadata repository cohort
+  * [Metadata Server](metadata-server.md) - supports a metadata repository that can natively store open metadata types
+    as well as specialized metadata APIs for different types of tools (these APIs are called [access services](../../../access-services)).
+  * [Metadata Access Point](metadata-access-point.md) - supports the access services like the metadata server but does not have a repository.
+    All of the metadata it serves up and stores belongs to the metadata repositories in other members of the cohort.
+  * [Repository Proxy](repository-proxy.md) - acts as an open metadata translator for
+    a proprietary metadata repository.  It supports open metadata API calls and translates them to the
+    proprietary APIs of the repository.  It also translates events from the proprietary repository into
+    open metadata events that flow over the cohort.
+  * [Conformance test server](conformance-test-server.png) - validates that a member of the
+    cohort is conforming with the open metadata protocols.  This server is typically only see in development
+    and test cohort rather than production.
+* [View Server](view-server.md) - manages specialist services for user interfaces.
+* [Governance Server](governance-server-types.md) - supports the use of metadata in the broader IT landscape.
+  * [Engine Host](engine-host.md) - provides a runtime for a specific type of governance engine.
+     * [Discovery Server](discovery-server.md) - hosts discovery engines that manage automated metadata discovery.
+     * [Stewardship Server](stewardship-server.md) - hosts stewardship engines that manage requests for action and
+       their remediation.
+  * [Integration Daemon](integration-daemon.md) - manages the synchronization with third party technology that
+    can not call the access services directly.
+     * [Data Platform Server](data-platform-server.md) - manages retrieval of metadata from a data platform such as
+     a database server, Apache Cassandra and Apache Hive.
+     * [Virtualizer](virtualizer.md) - Supports the configuration of data virtualization platforms based on
+     the data sources stored in open metadata.
+     * [Data Engine Proxy](data-engine-proxy.md) - Supports the capture of metadata from a data engine.  This includes
+     details of the processing of data that it is doing which is valuable when piecing together lineage.
+     * [Security Sync Server](security-sync-server.md) - Supports the configuration of a data access endpoint with information
+     to control access to the data.
+   * [Open Lineage Server](open-lineage-server.md) - Manages the collation of lineage information am maintains it in a format for reporting.
+     This includes the state of the lineage at different points in time.
+   * [Security Officer Server](security-officer-server.md)  - Supports a Security Officer in setting up security classifications (Security Tags)
+     for assets based on a variety of metadata.
+  
+The different types of OMAG Servers connect together as shown in Figure 2.  There is an inner
+ring of cohort members communicating via the cohort.  Each cohort member is sharing the metadata
+they receive with the governance servers and view servers that connect to it.
+The governance servers connect out to external tools, engines and platforms.
+
+
+![Figure 2](omag-server-ecosystem.png)
+
+
+## Further Information
+
+There is design information on the OMAG Server and its relationship to
 the OMAG Server Platform [here](../../../../open-metadata-publication/website/omag-server).
 
 

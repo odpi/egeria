@@ -26,7 +26,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     private final String   UNKNOWN_EVENT_INSERT = "<Unknown Value>";
 
     protected String       serviceName;
-    protected OMRSAuditLog auditLog;
+    protected OMRSAuditLog auditLog = null;
 
 
     /**
@@ -66,24 +66,25 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                         Throwable  error,
                                         String     actionDescription)
     {
-        log.error("Unexpected exception from " + actionDescription, error);
+        if (auditLog != null)
+        {
+            StringWriter stackTrace = new StringWriter();
+            error.printStackTrace(new PrintWriter(stackTrace));
 
-        StringWriter stackTrace = new StringWriter();
-        error.printStackTrace(new PrintWriter(stackTrace));
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER;
 
-        OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER;
-
-        auditLog.logException(actionDescription,
-                              auditCode.getLogMessageId(),
-                              auditCode.getSeverity(),
-                              auditCode.getFormattedLogMessage(serviceName,
-                                                               error.getClass().getName(),
-                                                               error.getMessage(),
-                                                               stackTrace.toString()),
-                              event,
-                              auditCode.getSystemAction(),
-                              auditCode.getUserAction(),
-                              error);
+            auditLog.logException(actionDescription,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(serviceName,
+                                                                   error.getClass().getName(),
+                                                                   error.getMessage(),
+                                                                   stackTrace.toString()),
+                                  event,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
+        }
     }
 
 
@@ -1183,7 +1184,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param originatorAttributeTypeDef- description of the AttributeTypeDef in the event originator.
+     * @param originatorAttributeTypeDef description of the AttributeTypeDef in the event originator.
      * @param otherMetadataCollectionId the metadataCollection using the conflicting AttributeTypeDef.
      * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage details of the error that occurs when the connection is used.

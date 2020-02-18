@@ -31,38 +31,34 @@ With this base implementation, a specific Connector Provider implementation need
 configure the base class's function with details of itself and the Java class of the connector it needs.
 
 For example, here is the implementation of the Connector Provider for the
-[structured file connector](../../../../adapters/open-connectors/data-store-connectors/structured-file-connector/README.md).
+[basic file connector](../../../../adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector).
 
 ```java
-package org.odpi.openmetadata.adapters.connectors.csvfile;
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.adapters.connectors.datastore.basicfile;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
- * StructuredFileStoreProvider is the OCF connector provider for the structured file store connector.
+ * BasicFileStoreProvider is the OCF connector provider for the basic file store connector.
  */
-public class StructuredFileStoreProvider extends ConnectorProviderBase
+public class BasicFileStoreProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
-    static final String  connectorTypeName = "Structured File Store Connector";
-    static final String  connectorTypeDescription = "Connector supports storing of the open metadata cohort registry in a file.";
-    static final String  columnNamesProperty = "columnNames";
-    static final String  delimiterCharacterProperty = "delimiterCharacter";
-    static final String  quoteCharacterProperty = "quoteCharacter";
-
+    static final String  connectorTypeGUID = "ba213761-f5f5-4cf5-a95f-6150aef09e0b";
+    static final String  connectorTypeName = "Basic File Store Connector";
+    static final String  connectorTypeDescription = "Connector supports reading of Files.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * store implementation.
      */
-    public StructuredFileStoreProvider()
+    public BasicFileStoreProvider()
     {
-        Class    connectorClass = StructuredFileStoreConnector.class;
+        Class    connectorClass = BasicFileStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
@@ -74,13 +70,6 @@ public class StructuredFileStoreProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(columnNamesProperty);
-        recognizedConfigurationProperties.add(delimiterCharacterProperty);
-        recognizedConfigurationProperties.add(quoteCharacterProperty);
-
-        connectorType.setRecognizedConfigurationProperties(recognizedAdditionalProperties);
 
         super.connectorTypeBean = connectorType;
     }

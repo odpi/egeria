@@ -12,8 +12,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class OMAGServerDataPlatformService {
@@ -81,7 +79,7 @@ public class OMAGServerDataPlatformService {
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -111,7 +109,7 @@ public class OMAGServerDataPlatformService {
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

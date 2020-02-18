@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectorCheckedException extends OCFCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private static final Logger log = LoggerFactory.getLogger(ConnectorCheckedException.class);
 
     /**
@@ -32,7 +34,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription);
     }
 
 
@@ -51,17 +53,19 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
     /**
      * This is the copy/clone constructor used for creating an exception.
      *
+     * @param errorMessage associated message
      * @param template   object to copy
      */
-    public ConnectorCheckedException(ConnectorCheckedException template)
+    public ConnectorCheckedException(String                    errorMessage,
+                                     ConnectorCheckedException template)
     {
-        super(template);
+        super(errorMessage, template);
     }
 }

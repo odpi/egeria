@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>governance-servers</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.5-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
+    <name>Stewardship Engine Services</name>
+    <description>
+        The stewardship engine services manage the triage and remediation if issues raised in Request for Action
+        annotations.
+    </description>
+
+    <artifactId>stewardship-engine-services</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>stewardship-engine-services-api</module>
+        <module>stewardship-engine-services-client</module>
+        <module>stewardship-engine-services-server</module>
+        <module>stewardship-engine-services-spring</module>
+    </modules>
+
+    <dependencies>
+
+    </dependencies>
+
+</project>

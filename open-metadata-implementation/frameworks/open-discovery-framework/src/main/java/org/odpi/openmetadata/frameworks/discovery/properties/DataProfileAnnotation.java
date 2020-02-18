@@ -4,10 +4,7 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -61,60 +58,110 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     }
 
 
+    /**
+     * Return the length of the data field.  Assumes static predefined lengths.
+     *
+     * @return integer
+     */
     public int getLength()
     {
         return length;
     }
 
 
+    /**
+     * Set up the length of the data field. Assumes static predefined lengths.
+     *
+     * @param length integer
+     */
     public void setLength(int length)
     {
         this.length = length;
     }
 
 
+    /**
+     * Return the name of the data type that the discovery service believes the field is.
+     *
+     * @return string name
+     */
     public String getInferredDataType()
     {
         return inferredDataType;
     }
 
 
+    /**
+     * Set up the name of the data type that the discovery service believes the field is.
+     *
+     * @param inferredDataType string name
+     */
     public void setInferredDataType(String inferredDataType)
     {
         this.inferredDataType = inferredDataType;
     }
 
 
+    /**
+     * Return the name of the data format that the discovery service believes the field is.
+     *
+     * @return string name
+     */
     public String getInferredFormat()
     {
         return inferredFormat;
     }
 
 
+    /**
+     * Set up the name of the data format that the discovery service believes the field is.
+     *
+     * @param inferredFormat string name
+     */
     public void setInferredFormat(String inferredFormat)
     {
         this.inferredFormat = inferredFormat;
     }
 
 
+    /**
+     * Return the length of the data field that has been deduced from the data stored.
+     *
+     * @return integer
+     */
     public int getInferredLength()
     {
         return inferredLength;
     }
 
 
+    /**
+     * Set up the length of the data field that has been deduced from the data stored.
+     *
+     * @param inferredLength integer
+     */
     public void setInferredLength(int inferredLength)
     {
         this.inferredLength = inferredLength;
     }
 
 
+    /**
+     * Return the inferred scale used in other properties.
+     *
+     * @return integer
+     */
     public int getInferredScale()
     {
         return inferredScale;
     }
 
 
+    /**
+     * Set up the inferred scale used in other properties.
+     *
+     * @param inferredScale integer
+     */
     public void setInferredScale(int inferredScale)
     {
         this.inferredScale = inferredScale;
@@ -136,10 +183,8 @@ public class DataProfileAnnotation extends DataFieldAnnotation
         {
             return null;
         }
-        else
-        {
-            return new HashMap<>(profileProperties);
-        }
+
+        return new HashMap<>(profileProperties);
     }
 
 
@@ -154,84 +199,190 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     }
 
 
+    /**
+     * Return a set of boolean flags describing different aspects of the data.
+     *
+     * @return map of flag names to flag values
+     */
     public Map<String, Boolean> getProfileFlags()
     {
-        return profileFlags;
+        if (profileFlags == null)
+        {
+            return null;
+        }
+        else if (profileFlags.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(profileFlags);
     }
 
 
+    /**
+     * Set up a set of boolean flags describing different aspects of the data.
+     *
+     * @param profileFlags map of flag names to flag values
+     */
     public void setProfileFlags(Map<String, Boolean> profileFlags)
     {
         this.profileFlags = profileFlags;
     }
 
 
+    /**
+     * Return the map of different profiling counts that have been calculated.
+     *
+     * @return map of count name to count value
+     */
     public Map<String, Long> getProfileCounts()
     {
-        return profileCounts;
+        if (profileCounts == null)
+        {
+            return null;
+        }
+        else if (profileCounts.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(profileCounts);
     }
 
 
+    /**
+     * Set up the map of different profiling counts that have been calculated.
+     *
+     * @param profileCounts map of count name to count value
+     */
     public void setProfileCounts(Map<String, Long> profileCounts)
     {
         this.profileCounts = profileCounts;
     }
 
 
+    /**
+     * Return the list of values found in the data field.
+     *
+     * @return list of values
+     */
     public List<String> getValueList()
     {
-        return valueList;
+        if (valueList == null)
+        {
+            return null;
+        }
+        else if (valueList.isEmpty())
+        {
+            return null;
+        }
+
+        return new ArrayList<>(valueList);
     }
 
 
+    /**
+     * Set up the list of values found in the data field.
+     *
+     * @param valueList list of values
+     */
     public void setValueList(List<String> valueList)
     {
         this.valueList = valueList;
     }
 
 
+    /**
+     * Return a map of values to value count for the data field.
+     *
+     * @return map of values to value count
+     */
     public Map<String, Integer> getValueCount()
     {
-        return valueCount;
+        if (valueCount == null)
+        {
+            return null;
+        }
+        else if (valueCount.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(valueCount);
     }
 
 
+    /**
+     * Set up a map of values to value count for the data field.
+     *
+     * @param valueCount map of values to value count
+     */
     public void setValueCount(Map<String, Integer> valueCount)
     {
         this.valueCount = valueCount;
     }
 
 
+    /**
+     * Return the lowest value of the data stored in this data field.
+     *
+     * @return string version of the value.
+     */
     public String getValueRangeFrom()
     {
         return valueRangeFrom;
     }
 
 
+    /**
+     * Set up the lowest value of the data stored in this data field.
+     *
+     * @param valueRangeFrom string version of the value.
+     */
     public void setValueRangeFrom(String valueRangeFrom)
     {
         this.valueRangeFrom = valueRangeFrom;
     }
 
 
+    /**
+     * Return the upper value of the data stored in this data field.
+     *
+     * @return string version of the value.
+     */
     public String getValueRangeTo()
     {
         return valueRangeTo;
     }
 
 
+    /**
+     * Set up the upper value of the data stored in this data field.
+     *
+     * @param valueRangeTo string version of the value.
+     */
     public void setValueRangeTo(String valueRangeTo)
     {
         this.valueRangeTo = valueRangeTo;
     }
 
 
+    /**
+     * Return the average (mean) value of the values stored in the data field.
+     *
+     * @return string version of the value.
+     */
     public String getAverageValue()
     {
         return averageValue;
     }
 
 
+    /**
+     * Set up the average (mean) value of the values stored in the data field.
+     *
+     * @param averageValue string version of the value.
+     */
     public void setAverageValue(String averageValue)
     {
         this.averageValue = averageValue;

@@ -72,7 +72,7 @@ is valid and consistent with other calls.
   Each type definition describes the list of valid status that an instance can
   be set to during its lifetime.  OMRS defines a list of possible statuses to
   choose from in the 
-  **[InstanceStatus](../../../open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.java)** enum.
+  **[InstanceStatus](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.java)** enum.
   
 * **repository-typedef-`type name`-11** - classification can be added to at least one entity.
 
@@ -136,7 +136,7 @@ is valid and consistent with other calls.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-typedef-LicenseType",
       "testCaseName" : "Repository type definition test case",
-      "testCaseDescriptionURL" : "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/origin-workbench/repository-typedef-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/origin-workbench/repository-typedef-test-case.md",
       "assertionMessage" : "LicenseType type definition is compliant",
       "successfulAssertions" : [ "LicenseType type definition has a name.", "LicenseType type definition has a guid.", "LicenseType type definition has a version number.", "LicenseType type definition has a version name.", "LicenseType type definition has a valid category.", "LicenseType type definition has a valid origin.", "LicenseType type definition has a creator.", "LicenseType type definition has a creation date.", "LicenseType type definition has an initial status.", "LicenseType type definition has a list of valid statuses.", "LicenseType type verified by repository.", "LicenseType type retrieved from repository by name.", "LicenseType same type retrieved from repository by name.", "LicenseType type retrieved from repository by guid.", "LicenseType same type retrieved from repository by guid.", "LicenseType type found by repository by name.", "LicenseType same type found by repository by name.", "LicenseType type name is unique." ],
       "unsuccessfulAssertions" : [ ],

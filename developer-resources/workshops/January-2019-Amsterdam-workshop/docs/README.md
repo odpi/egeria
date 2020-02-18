@@ -40,7 +40,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 
 2. 13h -13:30h IGC Connector 11.5 update - Chris Grote
 
-3. 13:30h -- 14:30h - Emily Jiang, She is the technical lead for the [Eclipse MicroProfile](https://microprofile.io/>) -- call.
+3. 13:30h -- 14:30h - Emily Jiang, She is the technical lead for the [Eclipse MicroProfile](https://microprofile.io/) -- call.
 
 4. Egeria metadata store (persistence)
 
@@ -112,13 +112,13 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 - Community Profile OMAS `REVIEW DOC` see below.
 - MDM brings information in.
 
-### Dev process for building OMAS (Mandy) See: [github](https://github.com/mandy-chessell/egeria/tree/ibm-updates/open-metadata-implementation/access-services/community-profile/docs/scenarios)
+### Dev process for building OMAS (Mandy) See: [github](https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/docs/scenarios/)
 
 - [A Rational Design Process: how and why to Fake it.](https://users.ece.utexas.edu/~perry/education/SE-Intro/fakeit.pdf)
 - Review doc from mandy.
-- [Design doc](https://github.com/mandy-chessell/egeria/tree/ibm-updates/open-metadata-implementation/access-services/docs/design)
+- [Design doc](https://egeria.odpi.org/open-metadata-implementation/access-services/docs/design/)
 - How to write a local connector? ask Graham
-- [Concepts](https://github.com/mandy-chessell/egeria/tree/ibm-updates/open-metadata-implementation/access-services/docs/concepts)
+- [Concepts](https://egeria.odpi.org/open-metadata-implementation/access-services/docs/concepts)
 
 ### Subject Area (David)
 
@@ -178,7 +178,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 
 ### Role of Spine objects: (Maryna)
 
-- [Tag Propagation](https://github.com/planetf1/egeria/blob/propogation1/open-metadata-implementation/access-services/governance-engine/docs/TagPropogation/TagPropogation.md#the-role-of-spine-objects) diagram of \"Role of spine objects\" from Nigel\'s branch.
+- [Tag Propagation](../../../../open-metadata-implementation/access-services/governance-engine/docs/TagPropogation/TagPropogation.md).
 - typedBy in the role of spine objects.
 - 9 Concepts/subjects (customer, sales, finance, operations, legal,... )
 - Semantic modeling vs. structural modeling w/spine objects.

@@ -1,10 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Discovery Engine API
+# Discovery Engine Services API
 
-The discovery engine API provides the property structures and
-REST structures used to drive the discovery engine.
+The discovery engine services API provides the property structures and
+REST structures used to drive a discovery engine running inside a
+[discovery server](../../../admin-services/docs/concepts/discovery-server.md).
 
 
 

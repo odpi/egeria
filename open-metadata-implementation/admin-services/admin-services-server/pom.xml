@@ -10,10 +10,16 @@
     <parent>
         <artifactId>admin-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Administration Services Server-side</name>
     <description>
@@ -96,11 +102,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>security-sync-services-server</artifactId>
         </dependency>
 
@@ -126,6 +127,11 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-services-server</artifactId>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>stewardship-engine-services-server</artifactId>
         </dependency>
 
     </dependencies>

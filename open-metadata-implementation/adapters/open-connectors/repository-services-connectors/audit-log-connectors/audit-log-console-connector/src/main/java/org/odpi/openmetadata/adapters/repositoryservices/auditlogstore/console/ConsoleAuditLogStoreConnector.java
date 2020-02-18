@@ -37,12 +37,12 @@ public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBas
         {
             System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
 
-            if ((OMRSAuditLogRecordSeverity.ERROR.getName().equals(logRecord.getSeverity())) ||
-                    (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity())))
+            if (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity()))
             {
                 if (logRecord.getExceptionClassName() != null)
                 {
-                    System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " + logRecord.getMessageId() + " " + logRecord.getGUID() + " " +
+                    System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " +
+                                               logRecord.getMessageId() + " Supplementary information: log record id " + logRecord.getGUID() + " " +
                                                logRecord.getExceptionClassName() + " returned " +
                                                "message of " + logRecord.getExceptionMessage() +
                                                " and stacktrace of \n" + logRecord.getExceptionStackTrace());

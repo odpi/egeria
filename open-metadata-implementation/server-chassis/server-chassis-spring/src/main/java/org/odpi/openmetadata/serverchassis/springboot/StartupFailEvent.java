@@ -8,6 +8,9 @@ import org.springframework.context.ApplicationEvent;
  *   Application event used for the case of startup list fails
  */
 public class StartupFailEvent extends ApplicationEvent {
+
+    private static final long serialVersionUID = 1L;
+
     private Object source;
     private String message;
 

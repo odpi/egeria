@@ -1,0 +1,18 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: list sample data files
+  find:
+    path: "{{ egeria_samples_minimal_targets.files }}"
+    patterns: "*.csv,*.osh"
+  register: __egeria_samples_minimal_files
+
+- name: remove sample data files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  become: yes
+  with_items: "{{ __egeria_samples_minimal_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"

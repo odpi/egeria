@@ -10,6 +10,9 @@ get started
 You may need to contact your cluster admin, or read your cloud provider helptext to understand
 the correct 'addressofmycluster' to use.
 
+If you experience problems, check memory consumption on your nodes. A minimum of
+a 3 node cluster, 2GB per node; or a desktop environment with 6GB dedicated is recommended.
+
 Please provide any feeback via a github issue at https://github.com/odpi/egeria or 
 join us on slack via https://slack.odpi.org
 

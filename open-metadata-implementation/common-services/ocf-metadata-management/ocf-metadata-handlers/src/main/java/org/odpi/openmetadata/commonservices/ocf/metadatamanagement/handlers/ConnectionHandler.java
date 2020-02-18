@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 
-
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ConnectionBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.EmbeddedConnectionBuilder;
@@ -180,7 +179,7 @@ public class ConnectionHandler extends AttachmentHandlerBase
     /**
      * Find out if the connection object is already stored in the repository.  If the connection's
      * guid is set, it uses it to retrieve the entity.  If the GUID is not set, it tries the
-     * fully qualified name.  If neither are set it throws an exception.
+     * fully qualified name.  If neither are set it returns null.
      *
      * @param userId calling user
      * @param connectionGUID unique Id
@@ -207,6 +206,11 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
         if (connectionGUID != null)
         {
+            /*
+             * The connection object has a GUID in it.  This would typically be blank if the connection
+             * is to be created.  The guid is accepted if an entity of the right type is found.
+             * Otherwise it is ignored.
+             */
             if (repositoryHandler.isEntityKnown(userId,
                                                 connectionGUID,
                                                 ConnectionMapper.CONNECTION_TYPE_NAME,
@@ -226,6 +230,9 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                     serviceName,
                                                                     serverName);
 
+        /*
+         * The qualified name should be unique.
+         */
         EntityDetail existingConnection = repositoryHandler.getUniqueEntityByName(userId,
                                                                                   qualifiedName,
                                                                                   qualifiedNameParameter,
@@ -238,15 +245,61 @@ public class ConnectionHandler extends AttachmentHandlerBase
             return existingConnection.getGUID();
         }
 
+        return null;
+    }
+
+
+    /**
+     * Find out if the connection object is already stored in the repository.  If the connection's
+     * guid is set, it uses it to retrieve the entity.  If the GUID is not set, it tries the
+     * fully qualified name.  If neither are set it throws an exception.
+     *
+     * @param userId calling user
+     * @param qualifiedName unique name
+     * @param displayName human readable name
+     * @param methodName calling method
+     *
+     * @return unique identifier of the connection or null
+     *
+     * @throws InvalidParameterException the connection bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private String findConnectionByName(String               userId,
+                                        String               qualifiedName,
+                                        String               displayName,
+                                        String               methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        String connectionGUID = this.findConnection(userId, null, qualifiedName, displayName, methodName);
+
+        if (connectionGUID != null)
+        {
+            return connectionGUID;
+        }
+
+        /*
+         * Now try to find using the display name - this is not guaranteed to be unique so an exception may occur.
+         */
         if (displayName != null)
         {
-            existingConnection = repositoryHandler.getUniqueEntityByName(userId,
-                                                                         qualifiedName,
-                                                                         qualifiedNameParameter,
-                                                                         connectionBuilder.getNameInstanceProperties(methodName),
-                                                                         ConnectionMapper.CONNECTION_TYPE_GUID,
-                                                                         ConnectionMapper.CONNECTION_TYPE_NAME,
-                                                                         methodName);
+            final String qualifiedNameParameter   = "qualifiedName";
+
+            ConnectionBuilder connectionBuilder = new ConnectionBuilder(qualifiedName,
+                                                                        displayName,
+                                                                        null,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+            EntityDetail existingConnection = repositoryHandler.getUniqueEntityByName(userId,
+                                                                                      qualifiedName,
+                                                                                      qualifiedNameParameter,
+                                                                                      connectionBuilder.getNameInstanceProperties(methodName),
+                                                                                      ConnectionMapper.CONNECTION_TYPE_GUID,
+                                                                                      ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                                                      methodName);
 
             if (existingConnection != null)
             {
@@ -305,12 +358,20 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String  saveConnection(String             userId,
-                                  Connection         connection) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public String  saveConnection(String      userId,
+                                  Connection  connection) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
-        final String  methodName        = "saveConnection";
+        final String methodName                 = "saveConnection";
+        final String connectionParameterName    = "connection";
+        final String connectorTypeParameterName = "connection.connectorType";
+
+        /*
+         * The connection should always have a connector type - the endpoint is optional.
+         */
+        invalidParameterHandler.validateObject(connection, connectionParameterName, methodName);
+        invalidParameterHandler.validateObject(connection.getConnectorType(), connectorTypeParameterName, methodName);
 
         String existingConnection = this.findConnection(userId, connection, methodName);
         if (existingConnection == null)
@@ -347,21 +408,48 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
+        /*
+         * Match the content in the repository with the connection description passed in on the parameters.
+         * It updates the endpoint, then the connector type and then the embedded connections.
+         */
+
         if (endpoint != null)
         {
+            /*
+             * This connection has an endpoint.
+             */
             String endpointGUID = endpointHandler.saveEndpoint(userId, endpoint);
 
             if (endpointGUID != null)
             {
-                repositoryHandler.createRelationship(userId,
-                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                /*
+                 * Create a new relationship unless it already exists
+                 */
+                repositoryHandler.ensureRelationship(userId,
+                                                     EndpointMapper.ENDPOINT_TYPE_NAME,
                                                      endpointGUID,
                                                      connectionGUID,
+                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                      null,
                                                      methodName);
             }
         }
-
+        else
+        {
+            /*
+             * There should be no relationships between the connection and the endpoint.  So this would normally be a no-op.
+             * The only time this would do something is if the connection is already defined and this update is to remove the Endpoint.
+             * Since we don't know the original GUID for the endpoint, and a connection can only be connected to one endpoint,
+             * it is safe to delete any relationships to endpoints from this connection.
+             */
+            repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           connectionGUID,
+                                                           ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                           ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                           ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                           methodName);
+        }
 
         if (connectorType != null)
         {
@@ -369,14 +457,42 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
             if (connectorTypeGUID != null)
             {
-                repositoryHandler.createRelationship(userId,
-                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                repositoryHandler.ensureRelationship(userId,
+                                                     ConnectionMapper.CONNECTION_TYPE_NAME,
                                                      connectionGUID,
                                                      connectorTypeGUID,
+                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                                      null,
                                                      methodName);
             }
         }
+        else
+        {
+            /*
+             * There should be no relationships between the connection and the connector type.  So this would normally be a no-op.
+             * The only time this would do something is if the connection is already defined and this update is to remove the connectorType.
+             * Since we don't know the original GUID for the connector type, and a connection can only be connected to one connectorType,
+             * it is safe to delete any relationships to connectorTypes from this connection.
+             */
+            repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           connectionGUID,
+                                                           ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                           ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                           ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                           methodName);
+        }
+
+        /*
+         * Managing embedded connections is awkward.  This approach is a bit of a blunt instrument but handles the cases where the
+         * virtual connection is being reorganized.
+         */
+        repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                       connectionGUID,
+                                                       ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                       ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
+                                                       ConnectionMapper.EMBEDDED_CONNECTION_TYPE_NAME,
+                                                       methodName);
 
         if ((embeddedConnections != null) && (! embeddedConnections.isEmpty()))
         {
@@ -426,6 +542,9 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                         UserNotAuthorizedException
     {
         final String  methodName        = "addConnection";
+        final String  parameterName     = "connection.connectorType";
+
+        invalidParameterHandler.validateObject(connection.getConnectorType(), parameterName, methodName);
 
         String                   connectionTypeGUID  = ConnectionMapper.CONNECTION_TYPE_GUID;
         String                   connectionTypeName  = ConnectionMapper.CONNECTION_TYPE_NAME;
@@ -492,6 +611,9 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                    UserNotAuthorizedException
     {
         final String  methodName        = "updateConnection";
+        final String  parameterName     = "connection.connectorType";
+
+        invalidParameterHandler.validateObject(connection.getConnectorType(), parameterName, methodName);
 
         String                   connectionTypeGUID  = ConnectionMapper.CONNECTION_TYPE_GUID;
         String                   connectionTypeName  = ConnectionMapper.CONNECTION_TYPE_NAME;
@@ -506,7 +628,6 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
             embeddedConnections = virtualConnection.getEmbeddedConnections();
         }
-
 
         ConnectionBuilder connectionBuilder = new ConnectionBuilder(connection.getQualifiedName(),
                                                                     connection.getDisplayName(),
@@ -718,10 +839,11 @@ public class ConnectionHandler extends AttachmentHandlerBase
                     {
                         embeddedConnection.setEmbeddedConnection(this.getConnection(userId, entityProxy.getGUID()));
                     }
+
+                    embeddedConnections.add(embeddedConnection);
                 }
             }
         }
-
 
         if (embeddedConnections.isEmpty())
         {
@@ -761,11 +883,10 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
         invalidParameterHandler.validateName(name, nameParameter, methodName);
 
-        String connectionGUID = findConnection(userId,
-                                               null,
-                                               name,
-                                               name,
-                                               methodName);
+        String connectionGUID = findConnectionByName(userId,
+                                                     name,
+                                                     name,
+                                                     methodName);
 
         if (connectionGUID != null)
         {

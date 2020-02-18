@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import org.apache.commons.collections4.MapUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -12,7 +13,6 @@ import org.janusgraph.core.PropertyKey;
 import org.janusgraph.core.schema.ConsistencyModifier;
 import org.janusgraph.core.schema.JanusGraphIndex;
 import org.janusgraph.core.schema.JanusGraphManagement;
-
 import org.janusgraph.core.schema.Mapping;
 import org.janusgraph.core.schema.SchemaAction;
 import org.janusgraph.core.schema.SchemaStatus;
@@ -28,8 +28,47 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.*;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CREATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_UPDATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_INSTANCE_LICENSE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_INSTANCE_URL;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_MAINTAINED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_REPLICATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_UPDATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_CREATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_UPDATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_CREATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_INSTANCE_LICENSE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_INSTANCE_URL;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_MAINTAINED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_MAPPING_PROPERTIES;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_METADATACOLLECTION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_REPLICATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_UPDATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertyTypes;
 
 
 public class GraphOMRSGraphFactory {
@@ -51,9 +90,10 @@ public class GraphOMRSGraphFactory {
         String
     }
 
-    public static JanusGraph open(String       metadataCollectionId,
-                                  String       repositoryName,
-                                  OMRSAuditLog auditLog)
+    public static JanusGraph open(String              metadataCollectionId,
+                                  String              repositoryName,
+                                  OMRSAuditLog        auditLog,
+                                  Map<String, Object> storageProperties)
             throws
             RepositoryErrorException
     {
@@ -74,29 +114,21 @@ public class GraphOMRSGraphFactory {
         // you will need to configure the component-scan otherwise Spring boot tries to autoconfigure a
         // REST client which fails (on HttpHost).
 
-        final String serverRepositoryPath = repositoryName + "-graph-repository";
-
-        final String storageBackend = "berkeleyje";
-        final String storagePath = "./"+serverRepositoryPath+"/berkeley";
-
-        final String indexBackend = "lucene";
-        final String indexPath = "./"+serverRepositoryPath+"/searchindex";
-
-        JanusGraphFactory.Builder config = JanusGraphFactory.build().
-                set("storage.backend", storageBackend).
-                set("storage.directory", storagePath).
-                set("index.search.backend", indexBackend).
-                set("index.search.directory", indexPath);
+        if(MapUtils.isEmpty(storageProperties)){
+            storageProperties = getBerkleyStorageProperties();
+        }
+        JanusGraphFactory.Builder build = JanusGraphFactory.build();
+        storageProperties.forEach((k, v) -> build.set(k, v));
 
         try {
 
-            graph = config.open();
+            graph = build.open();
 
         } catch (Exception e) {
-            log.error("{} could not open graph stored at {}", methodName, storagePath);
+            log.error("{} could not open graph", methodName);
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, GraphOMRSGraphFactory.class.getName(), repositoryName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, GraphOMRSGraphFactory.class.getName(), repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     GraphOMRSGraphFactory.class.getName(),
@@ -188,6 +220,7 @@ public class GraphOMRSGraphFactory {
                     // Update the lastOpenDate
                     now = new Date();
                     controlVertex.property("lastOpenDate", now);
+                    g.tx().commit();
                     success = true;
 
                 } catch (Exception e) {
@@ -216,8 +249,8 @@ public class GraphOMRSGraphFactory {
             // Graph is pre-existing - check and update control vertex
 
             try {
-                success = checkAndUpdateControlInformation(controlVertex, storagePath);
-
+                success = checkAndUpdateControlInformation(controlVertex);
+                g.tx().commit();
             }
             catch (RepositoryErrorException e) {
                 log.error("{} Check and update of control vertex failed, exception {}", methodName, e.getMessage());
@@ -256,6 +289,16 @@ public class GraphOMRSGraphFactory {
         return graph;
     }
 
+    private static Map<String, Object> getBerkleyStorageProperties() {
+        final String serverRepositoryPath = thisRepositoryName + "-graph-repository";
+
+        Map<String, Object> berkleyStorageProperties = new HashMap<>();
+        berkleyStorageProperties.put("storage.backend", "berkeleyje");
+        berkleyStorageProperties.put("storage.directory", "./" + serverRepositoryPath + "/berkeley");
+        berkleyStorageProperties.put("index.search.backend", "lucene");
+        berkleyStorageProperties.put("index.search.directory", "./" + serverRepositoryPath + "/searchindex");
+        return berkleyStorageProperties;
+    }
 
 
     // This method is idempotent.
@@ -860,7 +903,7 @@ public class GraphOMRSGraphFactory {
 
 
 
-    private static boolean checkAndUpdateControlInformation(Vertex controlVertex, String storagePath)
+    private static boolean checkAndUpdateControlInformation(Vertex controlVertex)
         throws
         RepositoryErrorException
     {
@@ -916,7 +959,7 @@ public class GraphOMRSGraphFactory {
 
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.GRAPH_DB_HAS_DIFFERENT_METADATACOLLECTION_ID;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName,
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     GraphOMRSGraphFactory.class.getName(),
                     thisRepositoryName);
 

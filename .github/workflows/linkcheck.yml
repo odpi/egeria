@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+name: Check documentation links
+on:
+  schedule:
+    - cron: '0 1 * * *'
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout action code
+        if: startsWith(github.repository,'odpi/')
+        uses: actions/checkout@master
+      - name: Check links
+        if: success()
+        id: check_links
+        uses: cmgrote/github-action-link-check@master
+      - name: Create issue from file
+        if: success()
+        uses: peter-evans/create-issue-from-file@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Broken links
+          content-filepath: ./errors.txt
+          labels: documentation, consumability, tidy up

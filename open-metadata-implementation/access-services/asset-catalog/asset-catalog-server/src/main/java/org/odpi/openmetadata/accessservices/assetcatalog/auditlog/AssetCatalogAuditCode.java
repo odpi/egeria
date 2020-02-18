@@ -6,8 +6,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 import java.text.MessageFormat;
 
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.THE_NORMAL_OPERATION_OF_THE_SERVICE;
-
 /**
  * The AssetConsumerAuditCode is used to define the message content for the OMRS Audit Log.
  * <p>
@@ -23,16 +21,16 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.T
  */
 public enum AssetCatalogAuditCode {
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Catalog OMAS has completed initialization of a new instance.",
-            THE_NORMAL_OPERATION_OF_THE_SERVICE),
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0002",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Catalog OMAS.",
-            THE_NORMAL_OPERATION_OF_THE_SERVICE),
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.ERROR,
@@ -41,10 +39,10 @@ public enum AssetCatalogAuditCode {
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
-            THE_NORMAL_OPERATION_OF_THE_SERVICE);
+            "No action is required.  This is part of the normal operation of the service.");
 
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;

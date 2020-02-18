@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum AssetConsumerEventType implements Serializable
 {
     UNKNOWN_ASSET_CONSUMER_EVENT        (0,  "Unknown Event",  "An event that is not recognized by the local server."),
-    NEW_ASSET_EVENT                     (1,  "New Asset",      "A new asset has been added to one of the access point zones."),
-    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",  "An existing asset has been updated or added to one of the access point zones.");
+    NEW_ASSET_EVENT                     (1,  "New Asset",      "A new asset has been added to one of the access service's zones."),
+    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",  "An existing asset has been updated or added to one of the access service's zones.");
 
     private static final long     serialVersionUID = 1L;
 

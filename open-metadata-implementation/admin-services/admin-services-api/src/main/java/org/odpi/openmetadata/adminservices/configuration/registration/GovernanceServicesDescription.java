@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * GovernanceServicesDescription provides a list of registered governance servers.
+ * GovernanceServicesDescription provides a list of subsystems that support the various governance servers.
  */
 public enum GovernanceServicesDescription implements Serializable
 {
@@ -17,47 +17,47 @@ public enum GovernanceServicesDescription implements Serializable
                                       "Discovery Engine Services",
                                       "discovery-server",
                                       "Run automated discovery services",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/discovery-engine-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/"),
     SECURITY_SYNC_SERVICES           (2001,
                                       "Security Sync Services",
                                       null,
                                       "Keep security enforcement engine up-to-date",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/security-sync-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/security-sync-services/"),
     STEWARDSHIP_SERVICES             (2002,
-                                      "Stewardship Services",
+                                      "Stewardship Engine Services",
                                       "stewardship-server",
                                       "Run automated stewardship actions",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/stewardship-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/stewardship-services/"),
     OPEN_LINEAGE_SERVICES            (2003,
                                       "Open Lineage Services",
                                       "open-lineage",
                                       "Store and query asset lineage",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/open-lineage-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/open-lineage-services/"),
     VIRTUALIZATION_SERVICES          (2004,
                                       "Virtualization Services",
                                       null,
                                       "Run virtualization services",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/virtualization-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/virtualization-services/"),
     CONFORMANCE_SUITE_SERVICES       (2005,
                                       "Conformance Suite Services",
                                       "conformance-suite",
                                       "Run automated open metadata conformance suite services",
-                                      "https://odpi.github.io/egeria/open-metadata-conformance-suite/"),
+                                      "https://egeria.odpi.org/open-metadata-conformance-suite/"),
     SECURITY_OFFICER_SERVICES        (2006,
                                       "Security Officer Services",
                                       null,
                                       "Manage security tags and other operational security settings",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/security-officer-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/security-officer-services/"),
     DATA_ENGINE_PROXY_SERVICES       (2007,
                                       "Data Engine Proxy Services",
                                       null,
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/data-engine-proxy-services/"),
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/data-engine-proxy-services/"),
     DATA_PLATFORM_SERVICES           (2008,
                                       "Data Platform Services",
                                       null,
                                       "Publish metadata on data platforms that are not self-capable of integrating directly with the Data Platform OMAS",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/data-platform-services/");
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/data-platform-services/");
 
 
     private static final long     serialVersionUID    = 1L;

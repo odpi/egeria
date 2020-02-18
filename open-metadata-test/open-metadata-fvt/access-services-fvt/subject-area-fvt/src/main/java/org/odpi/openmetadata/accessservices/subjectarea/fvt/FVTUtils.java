@@ -46,4 +46,29 @@ public class FVTUtils {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + line.getName() + "'s guid  to exist,  ", "", "");
         }
     }
+
+    /**
+     * Check that the guids for a relationship end 1 match
+     * @param lineType string Type of Line
+     * @param entityGuid entityGuid to compare
+     * @param relationshipEnd1Guid relationshipEnd1Guid to compare
+     * @throws SubjectAreaFVTCheckedException
+     */
+    static void checkGuidEnd1s(String lineType,String  entityGuid, String relationshipEnd1Guid) throws SubjectAreaFVTCheckedException {
+        if (!entityGuid.equals(relationshipEnd1Guid)) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: "+ lineType + " Relationship end 1 guid not as expected entityGuid=" + entityGuid+",relationshipEnd1Guid="+relationshipEnd1Guid, "", "");
+        }
+    }
+    /**
+     * Check that the guids for a relationship end 2 match
+     * @param lineType string Type of Line
+     * @param entityGuid entityGuid to compare
+     * @param relationshipEnd2Guid relationshipEnd2Guid to compare
+     * @throws SubjectAreaFVTCheckedException
+     */
+    static void checkGuidEnd2s(String lineType,String  entityGuid, String relationshipEnd2Guid) throws SubjectAreaFVTCheckedException {
+        if (!entityGuid.equals(relationshipEnd2Guid)) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: "+ lineType + " Relationship end 2 guid not as expected entityGuid=" + entityGuid+",relationshipEnd2Guid="+relationshipEnd2Guid, "", "");
+        }
+    }
 }

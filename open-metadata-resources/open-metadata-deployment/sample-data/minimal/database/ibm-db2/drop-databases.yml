@@ -1,0 +1,26 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: pre-check database catalog status
+  shell: >
+    source ~/.bashrc &&
+    db2 list database directory
+  args:
+    executable: /bin/bash
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  become: yes
+  ignore_errors: yes
+  register: __minimal_db2catalog_completion
+  changed_when: False
+
+- name: drop databases
+  shell: >
+    source ~/.bashrc &&
+    db2 drop database {{ item | upper }}
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  when: __minimal_db2catalog_completion.stdout.find(item) > 0
+  with_items: "{{ egeria_samples_minimal_databases }}"

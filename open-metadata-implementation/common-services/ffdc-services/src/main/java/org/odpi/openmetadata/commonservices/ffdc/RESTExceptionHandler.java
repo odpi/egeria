@@ -11,18 +11,23 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * RESTExceptionHandler converts standard exceptions to REST responses.  These responses ensure exception objects
  * (with their stack traces) are not serialized over REST APIs.
+ *
+ * This class does use developer logging (SLF4J) for components that are not mature enough to have implemented
+ * FFDC.  For mature components, this logging is superfluous.
  */
 public class RESTExceptionHandler
 {
+    private static final Logger log = LoggerFactory.getLogger(RESTExceptionHandler.class);
+
     /**
      * Constructor
      */
@@ -48,13 +53,16 @@ public class RESTExceptionHandler
                                                                                                  methodName,
                                                                                                  serverName);
 
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
-                                          "requestBody");
+        InvalidParameterException error = new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        errorMessage,
+                                                                        errorCode.getSystemAction(),
+                                                                        errorCode.getUserAction(),
+                                                                        "requestBody");
+
+        log.error("No rest body supplied", error);
+        throw error;
     }
 
 
@@ -79,6 +87,7 @@ public class RESTExceptionHandler
 
         if (restResult != null)
         {
+            log.error("FFDC Response: {}", restResult.toString());
             String exceptionClassName = restResult.getExceptionClassName();
 
             if (exceptionClassName != null)
@@ -102,6 +111,7 @@ public class RESTExceptionHandler
             }
         }
     }
+
 
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
@@ -148,13 +158,15 @@ public class RESTExceptionHandler
             }
         }
 
-        throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            restResult.getExceptionErrorMessage(),
-                                            restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction(),
-                                            parameterName);
+        InvalidParameterException error = new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        restResult.getExceptionErrorMessage(),
+                                                                        restResult.getExceptionSystemAction(),
+                                                                        restResult.getExceptionUserAction(),
+                                                                        parameterName);
+        log.error("Detected Invalid Parameter Exception in REST Response", error);
+        throw error;
     }
 
 
@@ -189,12 +201,15 @@ public class RESTExceptionHandler
     private void throwPropertyServerException(String           methodName,
                                               FFDCResponseBase restResult) throws PropertyServerException
     {
-        throw new PropertyServerException(restResult.getRelatedHTTPCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          restResult.getExceptionErrorMessage(),
-                                          restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction());
+        PropertyServerException error = new PropertyServerException(restResult.getRelatedHTTPCode(),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    restResult.getExceptionErrorMessage(),
+                                                                    restResult.getExceptionSystemAction(),
+                                                                    restResult.getExceptionUserAction());
+
+        log.error("Property Server Error Exception returned by REST Call", error);
+        throw error;
     }
 
 
@@ -243,13 +258,15 @@ public class RESTExceptionHandler
             }
         }
 
-        throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             restResult.getExceptionErrorMessage(),
-                                             restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction(),
-                                             userId);
+        UserNotAuthorizedException error = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
+                                                                          this.getClass().getName(),
+                                                                          methodName,
+                                                                          restResult.getExceptionErrorMessage(),
+                                                                          restResult.getExceptionSystemAction(),
+                                                                          restResult.getExceptionUserAction(),
+                                                                          userId);
+        log.error("User Not Authorized Exception", error);
+        throw error;
     }
 
 
@@ -273,6 +290,8 @@ public class RESTExceptionHandler
                                                                                                  serverURL,
                                                                                                  error.getMessage());
 
+        log.error("Unexpected runtime exception returned from REST Call", error);
+
         throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
@@ -290,13 +309,15 @@ public class RESTExceptionHandler
      * @param restResult  response from the encoded exception from the server.
      * @throws PropertyServerException wrapping exception for the caught exception
      */
-    private void throwUnexpectedException(String           methodName,
-                                          FFDCResponseBase restResult) throws PropertyServerException
+    protected void throwUnexpectedException(String           methodName,
+                                            FFDCResponseBase restResult) throws PropertyServerException
     {
         OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(restResult.getExceptionClassName(),
                                                                                                  methodName,
                                                                                                  restResult.getExceptionErrorMessage());
+
+        log.error(methodName + " returned unexpected exception", restResult);
 
         throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -408,6 +429,8 @@ public class RESTExceptionHandler
                                   String                       methodName,
                                   OMRSAuditLog                 auditLog)
     {
+        log.error("Exception from " + methodName + " being packaged for return on REST call", error);
+
         if (error instanceof PropertyServerException)
         {
             capturePropertyServerException(response, (PropertyServerException)error);
@@ -441,12 +464,15 @@ public class RESTExceptionHandler
             {
                 OMAGCommonAuditCode auditCode;
 
-                StringWriter stackTrace = new StringWriter();
-                error.printStackTrace(new PrintWriter(stackTrace));
-
-
                 auditCode = OMAGCommonAuditCode.UNEXPECTED_EXCEPTION;
-                auditLog.logRecord(methodName, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(error.getClass().getName(), methodName, message, stackTrace.toString()), null, auditCode.getSystemAction(), auditCode.getUserAction());
+                auditLog.logException(methodName,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(error.getClass().getName(), methodName, message),
+                                      null,
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      error);
             }
         }
     }
@@ -520,18 +546,28 @@ public class RESTExceptionHandler
         response.setExceptionUserAction(error.getReportedUserAction());
     }
 
+
     /**
      * Set the exception information into the response.
      *
      * @param response REST Response
      * @param error    returned response.
      */
-    public void captureRepositoryErrorException(FFDCResponseBase response,
-                                                RepositoryErrorException error) {
-        setExceptionInformationInResponse(response, error);
+    public void captureRepositoryErrorException(FFDCResponseBase         response,
+                                                RepositoryErrorException error)
+    {
+        setOMRSExceptionInformationInResponse(response, error);
     }
 
-    private void setExceptionInformationInResponse(FFDCResponseBase response, OMRSCheckedExceptionBase error) {
+
+    /**
+     * Set up the standard fields from an OMRS exception.
+     *
+     * @param response response to fill out
+     * @param error error to process
+     */
+    private void setOMRSExceptionInformationInResponse(FFDCResponseBase response, OMRSCheckedExceptionBase error)
+    {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(error.getClass().getName());
         response.setExceptionErrorMessage(error.getErrorMessage());

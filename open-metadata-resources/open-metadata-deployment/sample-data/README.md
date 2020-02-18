@@ -7,6 +7,7 @@ Ansible playbooks for loading various sample data and metadata for use in demons
 
 Currently the following samples are provided:
 
+- [Minimal](minimal/README.md)
 - [Coco Pharmaceuticals](coco-pharmaceuticals/README.md)
 
 ----

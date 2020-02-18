@@ -43,7 +43,7 @@ public abstract class LineMapper implements ILineMapper
                 setEnd1GuidInLine(line,guid1);
             }
         }
-        EntityProxy  proxy2 =relationship.getEntityOneProxy();
+        EntityProxy  proxy2 =relationship.getEntityTwoProxy();
         if (proxy2 !=null) {
             String guid2 =  proxy2.getGUID();
             if (guid2 !=null) {

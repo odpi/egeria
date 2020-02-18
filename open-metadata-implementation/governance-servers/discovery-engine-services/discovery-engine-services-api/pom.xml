@@ -10,16 +10,22 @@
     <parent>
         <artifactId>discovery-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
-    <name>Discovery Engine API</name>
+
+    <name>Discovery Engine Services API</name>
     <description>
         Provides the definitions that make up the APIs used by external components when communicating
-        with the discovery engine.
+        with the discovery engine services (heart of the discovery server).
     </description>
 
     <artifactId>discovery-engine-services-api</artifactId>
@@ -34,6 +40,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
     </dependencies>

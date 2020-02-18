@@ -8,7 +8,7 @@ around an individual's
 responsibilities in the organization.
 
 Further information about this user interface can be found on the ODPi Egeria website
-[ODPi Egeria website](https://odpi.github.io/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface).
+[ODPi Egeria website](https://egeria.odpi.org/open-metadata-implementation/user-interfaces).
 
 
 ----

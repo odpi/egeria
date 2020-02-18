@@ -1,7 +1,84 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Lineage Services
+# Starting the Open Lineage Services
+
+1. Build the open-lineage-janus-connector jar by running:
+
+```
+mvn clean install
+```
+
+The jar can now be found in the target directory of the open-lineage-janus-connector module:
+
+```
+/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/target/
+```
+
+Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
+
+2. Start the [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
+run the default calls for setting the server URL, eventbus and the cohort.
+
+3. Set the configuration for the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
+Lineage OMAS Out topic via the following HTTP request:
+```
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+```
+With the following body: 
+```json
+{ 
+    "class":"OpenLineageConfig",
+    "openLineageDescription":"Open Lineage Service is used for the storage and querying of lineage",
+    "inTopicName":"server.omas.omas.assetlineage.outTopic",
+    "openLineageBufferGraphConnection":{ 
+        "class":"Connection",
+        "displayName":"Buffer Graph Connection",
+        "description":"Used for storing lineage in the Open Metadata format",
+        "connectorType":{ 
+            "class":"ConnectorType",
+            "connectorProviderClassName":"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.BufferGraphConnectorProvider"
+        },
+        "configurationProperties":{ 
+            "graphDB":"berkeleydb",
+            "graphType":"bufferGraph",
+            "storageBackend":"berkeleyje",
+            "indexSearchBackend":"lucene"
+        }
+    },
+    "openLineageMainGraphConnection":{ 
+        "class":"Connection",
+        "displayName":"Main Graph Connection",
+        "description":"Used for storing lineage in a format optimized for querying lineage",
+        "connectorType":{ 
+            "class":"ConnectorType",
+            "connectorProviderClassName":"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph.MainGraphConnectorProvider"
+        },
+        "configurationProperties":{ 
+            "graphDB":"berkeleydb",
+            "graphType":"mainGraph",
+            "storageBackend":"berkeleyje",
+            "indexSearchBackend":"lucene"
+        }
+    }
+}
+```
+
+4. Start the instance of the OMAG Server by issuing the following HTTP request:
+    
+```
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
+```
+
+# Removing the Open Lineage Services from the server configuration
+
+Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
+    
+```
+DEL {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+```
+
+# About the Open Lineage Services
 
 The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are send out 
 by the Asset Lineage OMAS, and stores lineage data in a database. This lineage can then be queried through
@@ -91,82 +168,6 @@ The nodes have the following properties:
 - version
 - processType
 
-## OMAG Server Platform configuration
-
-1. Build the open-lineage-janus-connector jar by running:
-
-```
-mvn clean install
-```
-
-in directory
-
-```
-/open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/
-```
-
-The jar can now be found in the target directory of the open-lineage-janus-connector module.
-Add the jar (with dependencies included) to the classpath of the server-chassis-spring module.
-
-2. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and
-run the default call for setting the server URL, eventbus and the cohort.
-
-3. Configure the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
-Lineage OMAS Out topic via the following HTTP request:
-```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
-```
-With the following body: 
-```json
-{ 
-    "class":"OpenLineageConfig",
-    "openLineageDescription":"Open Lineage Service is used for the storage and querying of lineage",
-    "inTopicName":"omas.omas.assetlineage.outTopic",
-    "openLineageWiki":"wiki URL",
-    "openLineageBufferGraphConnection":{ 
-        "class":"Connection",
-        "displayName":"Buffer Graph Connection",
-        "description":"Used for storing lineage in the Open Metadata format",
-        "connectorType":{ 
-            "class":"ConnectorType",
-            "connectorProviderClassName":"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.BufferGraphConnectorProvider"
-        },
-        "configurationProperties":{ 
-            "graphDB":"berkeleydb",
-            "graphType":"bufferGraph",
-            "storageBackend":"berkeleyje",
-            "indexSearchBackend":"lucene"
-        }
-    },
-    "openLineageMainGraphConnection":{ 
-        "class":"Connection",
-        "displayName":"Main Graph Connection",
-        "description":"Used for storing lineage in a format optimized for querying lineage",
-        "connectorType":{ 
-            "class":"ConnectorType",
-            "connectorProviderClassName":"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph.MainGraphConnectorProvider"
-        },
-        "configurationProperties":{ 
-            "graphDB":"berkeleydb",
-            "graphType":"mainGraph",
-            "storageBackend":"berkeleyje",
-            "indexSearchBackend":"lucene"
-        }
-    }
-}
-```
-
-4. Enable the Open Lineage Services by issuing the following HTTP request:
-
-```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services
-```
-
-5. Start the instance of the OMAG Server Platform by issuing the following HTTP request:
-    
-```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
-```
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

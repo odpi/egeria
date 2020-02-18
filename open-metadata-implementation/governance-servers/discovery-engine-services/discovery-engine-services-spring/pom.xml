@@ -10,15 +10,21 @@
     <parent>
         <artifactId>discovery-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Discovery Engine with Spring</name>
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
+    <name>Discovery Engine Services with Spring</name>
     <description>
-        The discovery engine with Spring module uses Spring to implement a RESTful service
-        for the discovery engine server.
+        The discovery engine services with Spring module uses Spring to implement a RESTful service
+        for the discovery engine services (heart of the discovery server).
     </description>
 
     <artifactId>discovery-engine-services-spring</artifactId>
@@ -42,8 +48,14 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-services-server</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

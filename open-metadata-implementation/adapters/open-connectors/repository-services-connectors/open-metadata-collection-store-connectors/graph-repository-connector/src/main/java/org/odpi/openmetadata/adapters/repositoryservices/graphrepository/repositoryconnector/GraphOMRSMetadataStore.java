@@ -6,9 +6,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposi
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.DefaultGraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
@@ -30,7 +30,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -39,29 +38,43 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-
-import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
-import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
-
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.*;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSGraphFactory.corePropertyMixedIndexMappings;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
+import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_IS_PROXY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_STATUS;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_CLASSIFICATION;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_ENTITY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_RELATIONSHIP;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_STATUS;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertiesClassification;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertiesEntity;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertiesRelationship;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertyTypes;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyClassification;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyEntity;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyRelationship;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSGraphFactory.corePropertyMixedIndexMappings;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
 
 /**
  * GraphOMRSMetadataStore provides the graph store for the GraphRepositoryConnector
@@ -91,7 +104,9 @@ class GraphOMRSMetadataStore {
     public GraphOMRSMetadataStore(String               metadataCollectionId,
                                   String               repositoryName,
                                   OMRSRepositoryHelper repositoryHelper,
-                                  OMRSAuditLog         auditLog)
+                                  OMRSAuditLog         auditLog,
+                                  Map<String, Object> storageProperties
+    )
         throws
             RepositoryErrorException
     {
@@ -105,7 +120,7 @@ class GraphOMRSMetadataStore {
 
         try {
             synchronized (GraphOMRSMetadataStore.class) {
-                instanceGraph = GraphOMRSGraphFactory.open(metadataCollectionId, repositoryName, auditLog);
+                instanceGraph = GraphOMRSGraphFactory.open(metadataCollectionId, repositoryName, auditLog, storageProperties);
             }
         }
         catch (RepositoryErrorException e) {
@@ -846,39 +861,18 @@ class GraphOMRSMetadataStore {
 
         if (vertexIt.hasNext()) {
 
-            vertex = vertexIt.next();
-            log.debug("{} found existing vertex {}", methodName, vertex);
-
             /*
-             * Check the metadataCollectionId matches the metadataCollectionId of the
-             * passed entity. It does not matter if it is the local metadataCollectionId
-             * or not - the entity will be reused in either case.
+             * There is a vertex for the entity.
+             * It could be the master, a ref copy or a proxy. In any of these cases
+             * it will be reused.
+             * There is no point performing validation checks on type, home metadataCollection, etc
+             * because there could be pending events that this repository has not seen yet. Any
+             * updates to the entity will be handled via entity instance events.
              */
-            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
 
-            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex for end1 {}", methodName, vertex);
 
-                /*
-                 *  Error condition
-                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
-                 *
-                 */
-
-                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
-                g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
         }
         else {
             // Entity does not exist, create proxy
@@ -891,39 +885,17 @@ class GraphOMRSMetadataStore {
 
         if (vertexIt.hasNext()) {
 
-            vertex = vertexIt.next();
-            log.debug("{} found existing vertex {}", methodName, vertex);
-
             /*
-             * Check the metadataCollectionId matches the metadataCollectionId of the
-             * passed entity. It does not matter if it is the local metadataCollectionId
-             * or not - the entity will be reused in either case.
+             * There is a vertex for the entity.
+             * It could be the master, a ref copy or a proxy. In any of these cases
+             * it will be reused.
+             * There is no point performing validation checks on type, home metadataCollection, etc
+             * because there could be pending events that this repository has not seen yet. Any
+             * updates to the entity will be handled via entity instance events.
              */
-            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
 
-            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
-
-                /*
-                 *  Error condition
-                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
-                 *
-                 */
-
-                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
-                g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex for end2 {}", methodName, vertex);
         }
         else {
             // Entity does not exist, create proxy
@@ -2321,7 +2293,7 @@ class GraphOMRSMetadataStore {
                 if (corePropertyTypes.get(corePropName).equals("java.lang.String") && !corePropName.equals(PROPERTY_NAME_TYPE_NAME)) {
                     PrimitivePropertyValue ppv = new PrimitivePropertyValue();
                     ppv.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
-                    ppv.setPrimitiveValue((Object) searchCriteria);
+                    ppv.setPrimitiveValue(searchCriteria);
                     log.debug("{} include string type core property {} value {}", methodName, corePropName, ppv);
                     stringMatchProperties.setProperty(corePropName, ppv);
                 }

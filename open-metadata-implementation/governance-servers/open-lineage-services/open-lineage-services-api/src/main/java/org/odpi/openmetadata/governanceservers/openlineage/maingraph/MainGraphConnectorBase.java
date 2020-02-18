@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.maingraph;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public abstract class MainGraphConnectorBase extends ConnectorBase implements MainGraph {
@@ -23,7 +20,13 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
      * {@inheritDoc}
      */
     @Override
-    public abstract LineageResponse lineage(Scope scope, View view, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
+    public abstract LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract Object getMainGraph();
 
     /**
      * {@inheritDoc}
@@ -36,10 +39,4 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
      */
     @Override
     public abstract String exportMainGraph();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract Object getMainGraph();
 }

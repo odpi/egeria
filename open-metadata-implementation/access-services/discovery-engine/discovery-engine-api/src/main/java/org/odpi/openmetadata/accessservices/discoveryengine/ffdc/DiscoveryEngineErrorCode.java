@@ -77,7 +77,7 @@ public enum DiscoveryEngineErrorCode
             "The number of records to return, passed on the {0} parameter of the {1} operation, is less than 1",
             "The system is unable to process the request with this page size value.",
             "Correct the code in the caller to provide a page size of 1 or greater."),
-    BAD_CONFIG(400, "OMAS-DISCOVERY-ENGINE-400-014",
+    BAD_CONFIG(400, "OMAS-DISCOVERY-ENGINE-400-014 ",
             "The Discovery Engine Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
             "The access service has not been passed valid configuration.",
             "Correct the configuration and restart the service."),
@@ -89,10 +89,14 @@ public enum DiscoveryEngineErrorCode
             "OMAG server has been called with a null local server name",
             "The system is unable to configure the local server.",
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+    NULL_LISTENER(500, "OMAS-DISCOVERY-ENGINE-400-017 ",
+            "A null topic listener has been passed by user {0} on method {1}",
+            "There is a coding error in the caller to the Discovery Engine OMAS.",
+            "Correct the caller logic and retry the request."),
     SERVER_NOT_AVAILABLE(404, "OMAS-DISCOVERY-ENGINE-404-001 ",
             "The OMAS Service {0} is not available",
-            "The system is unable to connect to the OMAS Server.",
-            "Check that the OMAS Server URL is correct and the OMAS Service is running.  Retry the request when the OMAS Service is available."),
+            "The system is unable to connect to the OMAG Server where the Discovery Engine OMAS is running.",
+            "Check that the OMAG Server URL is correct and the OMAS Service is running.  Retry the request when the OMAS Service is available."),
     OMRS_NOT_INITIALIZED(404, "OMAS-DISCOVERY-ENGINE-404-002 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
@@ -143,6 +147,11 @@ public enum DiscoveryEngineErrorCode
             "A relationship of type {0} and unique identifier of {1} has a null entity proxy 2.  Relationship contents are: {2}",
             "The system is unable to retrieve the asset.",
             "This is a logic error in the open metadata repositories as it is not valid to have a relationship without two entity proxies that represent the entities that is connects.  Gather as much information about the usage of the metadata.  Use the metadata collection id to identify which server owns the relationship and raise an issue."),
+    UNABLE_TO_SEND_EVENT(500, "OMAS-DISCOVERY-ENGINE-500-004 ",
+            "An unexpected exception occurred when sending an event through connector {0} to the Discovery Engine OMAS out topic.  The failing " +
+                    "event was {1}, the exception was {2} with message {2}",
+            "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
+            "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     NULL_RESPONSE_FROM_API(503, "OMAS-DISCOVERY-ENGINE-503-001 ",
             "A null response was received from REST API call {0} to server {1}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
@@ -158,8 +167,14 @@ public enum DiscoveryEngineErrorCode
     EXCEPTION_RESPONSE_FROM_API(503, "OMAS-DISCOVERY-ENGINE-503-004 ",
             "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
+            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to " +
+                                        "understand and correct the source of the error."),
+    UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-DISCOVERY-ENGINE-503-005 ",
+            "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
+            "The system detected an unexpected error during start up and is now in an unknown start.",
             "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
-    ;
+
+            ;
 
 
     private int    httpErrorCode;

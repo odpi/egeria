@@ -17,7 +17,7 @@ org.odpi.openmetadata.frameworks.connectors.ConnectorBroker
 
 and is used as follows:
 
-```java
+```
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 
@@ -37,8 +37,8 @@ the result to its caller.
 The Connector Broker is used in the client code of the Open Metadata Access Services (OMASs) that provide
 connector instances to their consumers.  Examples include:
 
-* [Asset Consumer OMAS](../../../../access-services/asset-consumer/docs/concepts/README.md)
-* [Asset Owner OMAS](../../../../access-services/asset-owner/README.md)
+* [Asset Consumer OMAS](../../../../access-services/asset-consumer)
+* [Asset Owner OMAS](../../../../access-services/asset-owner)
 
 
 ----
