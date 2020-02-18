@@ -10,8 +10,10 @@ import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServ
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -79,16 +81,19 @@ public class AssetLineageAdmin extends AccessServiceAdmin
             this.serverName = instance.getServerName();
 
 
+            Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
+            if (outTopicConnection != null) {
+
+                OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
+
                 AssetLineageOMRSTopicListener omrsTopicListener;
 
                 omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        accessServiceConfig.getAccessServiceOutTopic(),
+                        outTopicConnector,
                         repositoryConnector.getRepositoryHelper(),
-                        auditLog,
                         serverUserName,
                         serverName);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
@@ -120,6 +125,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                     error);
         }
     }
+
 
     /**
      * Shutdown the access service.
