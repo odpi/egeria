@@ -7,6 +7,7 @@ import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -48,9 +49,12 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
 
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
+    public void start() throws ConnectorCheckedException
+    {
+        super.start();
 
-        super.initialize(connectorInstanceId, connectionProperties);
+        final String methodName = "start";
+
         EndpointProperties endpoint = connectionProperties.getEndpoint();
         String configStoreTemplateName = null;
         if (endpoint != null) {
@@ -65,11 +69,18 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         try {
             AeadConfig.register();
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException("Unable to initialize encryption library configuration.", e);
+            DocStoreErrorCode errorCode = DocStoreErrorCode.INIT_ERROR;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getClass().getName(), e.getMessage());
+
+            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
         }
 
     }
-
 
     /**
      * Save the server configuration.

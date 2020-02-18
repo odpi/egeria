@@ -76,7 +76,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /*
      * Default values used when the server configuration does not provide a value.
      */
-    private static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
+    public  static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
     private static final String  defaultLocalOrganizationName             = null;
     private static final String  defaultLocalServerURL                    = "http://localhost:8080";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
@@ -92,7 +92,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     private String                          localServerId                   = UUID.randomUUID().toString();
     private String                          localServerName                 = null;
-    private String                          localServerType                 = defaultLocalServerType;
+    private String                          localServerType                 = null;
     private String                          organizationName                = defaultLocalOrganizationName;
     private String                          localServerURL                  = defaultLocalServerURL;
     private String                          localServerUserId               = defaultLocalServerUserId;
@@ -134,16 +134,16 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
-            versionId = template.getVersionId();
-            localServerId = template.getLocalServerId();
-            localServerName = template.getLocalServerName();
-            localServerType = template.getLocalServerType();
-            organizationName = template.getOrganizationName();
-            localServerURL = template.getLocalServerURL();
-            localServerUserId             = template.getLocalServerUserId();
-            localServerPassword           = template.getLocalServerPassword();
-            maxPageSize                   = template.getMaxPageSize();
-            serverSecurityConnection      = template.getServerSecurityConnection();
+            versionId                       = template.getVersionId();
+            localServerId                   = template.getLocalServerId();
+            localServerName                 = template.getLocalServerName();
+            localServerType                 = template.getLocalServerType();
+            organizationName                = template.getOrganizationName();
+            localServerURL                  = template.getLocalServerURL();
+            localServerUserId               = template.getLocalServerUserId();
+            localServerPassword             = template.getLocalServerPassword();
+            maxPageSize                     = template.getMaxPageSize();
+            serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
