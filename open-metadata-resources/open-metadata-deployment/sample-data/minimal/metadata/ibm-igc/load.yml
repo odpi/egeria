@@ -79,8 +79,8 @@
           name: Minimal_{{ db_name }}_{{ egeria_samples_minimal_db_type }}
           description: "Minimal DB2 connection"
           database: "{{ db_name | upper }}"
-          username: "{{ ibm_infosvr_users.db2inst1 }}"
-          password: "{{ ibm_infosvr_upwds.db2inst1 }}"
+          username: "{{ egeria_samples_db_credentials.owner }}"
+          password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
             - "database[{{ db_name | upper }}]"
         hostname: "{{ egeria_samples_db_host_remote | upper }}"
