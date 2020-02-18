@@ -6,7 +6,7 @@
 Retrieve table context: host, database name, schema name, table name, list of columns along with business terms assigned 
 
 ```
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/tables/{{table-guid}}
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/tables/{tableGUID}
 ```
 
 `VoidResponse` response with error status in case of error.
@@ -35,7 +35,7 @@ Sample:
                     "endpointSource": {
                         "class": "EndpointSource",
                         "@id": 3,
-                        "networkAddress": "{{host}}",
+                        "networkAddress": "{host}",
                         "connectorProviderName": "DB2Connector"
                     }
                 }
@@ -43,7 +43,7 @@ Sample:
             "tableColumns": [
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.faunv1i.4jppgp.vcpqhhv5aub9uk5thtugp",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STATE",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STATE",
                     "name": "STATE",
                     "position": 20,
                     "businessTerms": [{
@@ -62,7 +62,7 @@ Sample:
                 },
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.fadq4s6.5vn3hu.ehqs5908s76ig6cn8ho6g",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=EMPSTATUS",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=EMPSTATUS",
                     "name": "EMPSTATUS",
                     "position": 4,
                     "businessTerms": [{
@@ -81,7 +81,7 @@ Sample:
                 },
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.fadoft6.jdu07h.62mt3l35mh6qmt0lcufbv",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=TAXP",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=TAXP",
                     "name": "TAXP",
                     "position": 22,
                     "businessTerms": [{
@@ -100,7 +100,7 @@ Sample:
                 },
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.fadue7h.1773qq.bgf1nnglkv2j42jlnrs7o",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=BONUS",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=BONUS",
                     "name": "BONUS",
                     "position": 16,
                     "businessTerms": [{
@@ -119,7 +119,7 @@ Sample:
                 },
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.fauqp0r.jqrvpc.6bo5obcmp33g86iegdc0l",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STREET",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STREET",
                     "name": "STREET",
                     "position": 18,
                     "businessTerms": [{
@@ -138,7 +138,7 @@ Sample:
                 },
                 {
                     "guid": "b1c497ce.60641b50.0v9mgsb2t.fadn9e2.qq5dgo.t0gu7m9sucub1dns5u1ov",
-                    "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=SNUM",
+                    "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=SNUM",
                     "name": "SNUM",
                     "position": 17,
                     "isNullable": false,

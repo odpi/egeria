@@ -18,7 +18,7 @@ use the following command.  The file should be specified either as a fully quali
 or as a path name relative to the start up directory of the OMAG Server Platform.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/open-metadata-archives/file
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives/file
 { path name of file }
 ```
 
@@ -26,7 +26,7 @@ Alternatively it is possible to set up the list of open metadata archives as a l
 [Connections](../../../frameworks/open-connector-framework/docs/concepts/connection.md).
 These connections refer to connectors that can read and retrieve the open metadata archive content.
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/open-metadata-archives
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserID}/servers/serverName/open-metadata-archives
 { list of connections }
 ```
 This option can be used when the open metadata archives are not stored in a file, or a different
@@ -35,7 +35,7 @@ file connector from the default one for the OMAG Server Platform is required.
 Finally this is how to remove the archives from the configuration document.
 
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/open-metadata-archives
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
 { path name of file }
 ```
 

@@ -6,7 +6,7 @@
 Add existing ports to processes. Creates the ProcessPort relationship for all ports from the payload.
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes/{{process-guid}}/ports
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes/{processGUID}/ports
 
 {
 	"ports":["port1Guid", "port2Guid"],

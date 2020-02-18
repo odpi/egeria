@@ -16,7 +16,7 @@ It is possible to add arbitrary name/value pairs as JSON in the
 request body.  The correct properties to use are defined in the connector type for the event bus.
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/event-bus
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/event-bus
 ```
 
 For example, when using Apache Kafka as your event bus you may want to configure properties such as:

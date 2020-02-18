@@ -4,7 +4,7 @@
 # Update Tag Description
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/{{tagGUID}}/update
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/tags/{tagGUID}/update
 ```
 
 ```java

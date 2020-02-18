@@ -7,7 +7,7 @@ Create a data view as a view on top of other sources.
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/dataview
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/dataview
 ```
 ```json
 {

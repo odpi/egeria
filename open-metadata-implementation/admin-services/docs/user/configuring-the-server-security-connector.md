@@ -16,7 +16,7 @@ for this connector to the server's [Configuration Document](../concepts/configur
 using the following command.
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/security/connection
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/security/connection
 ```
 This passes in a connection used to create the server security connector
 in the request body.  
@@ -26,7 +26,7 @@ in the request body.
     "class": "Connection",
     "connectorType": {
         "class": "ConnectorType",
-        "connectorProviderClassName": "{{fullyQualifiedJavaClassName}}"
+        "connectorProviderClassName": "{fullyQualifiedJavaClassName}"
     }
 }
 ```
@@ -49,7 +49,7 @@ It is possible to query the setting of the server security connector
 using the following command:
 
 ```
-GET {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/security/connection
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/security/connection
 ```
 
 If the response is:
@@ -72,7 +72,7 @@ If the response looks more like the JSON below, a connector is configured.  The
         "class": "Connection",
         "connectorType": {
             "class": "ConnectorType",
-            "connectorProviderClassName": "{{fullyQualifiedJavaClassName}}"
+            "connectorProviderClassName": "{fullyQualifiedJavaClassName}"
         }
     }
 }
@@ -84,7 +84,7 @@ It is possible to remove the configuration for the connector using
 the following command:
 
 ```
-DELETE {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/security/connection
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/security/connection
 ```
 
 This removes all authorization checking from the server.
