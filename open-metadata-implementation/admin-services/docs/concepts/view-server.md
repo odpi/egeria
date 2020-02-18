@@ -9,7 +9,7 @@ These services are designed to support specific display paradigms needed
 by different types of UIs.
 
 Each view server hosts one or more **Open Metadata View Services (OMVSs)**.
-A view service supports a collection of related presentation services
+A [view service](view-services.md) supports a collection of related presentation services
 that support a particular part of a UI.  **Asset Search** is an example of a view
 service.
 

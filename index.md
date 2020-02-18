@@ -40,7 +40,7 @@ types of integration services that are tailored to support specific types
 of tools (see orange circles).  The Egeria services also manage the exchange of
 metadata between the platforms.
 
-![Figure 1](open-metadata-publication/website/images/egeria-distributed-operation.png)
+![Figure 1](open-metadata-publication/website/images/egeria-distributed-operation.png#pagewidth)
 
 The Egeria open metadata and governance technology provides an open metadata
 type system, frameworks, connectors, APIs, event payloads and interchange protocols to enable tools,
@@ -60,48 +60,65 @@ The guides provide step-by-step guidance on a specific aspect of working with Eg
 
 * [Egeria Planning Guide - How to deploy Egeria into your organization](open-metadata-publication/website/planning-guide) - provides
 guidance on how to deploy Egeria in your organization.
+
 * [OMAG Server Configuration Guide](open-metadata-implementation/admin-services/docs/user) - describes how to
 configure Open Metadata and Governance (OMAG) servers (shown as an orange circle in **Figure 1**)
 to support the integration of different types of technologies.
+
 * [Egeria Developer Guide - Extending Egeria using connectors](open-metadata-publication/website/developer-guide)
 describes how to use Java classes called connectors to extend Egeria to exchange metadata with
 new types of technology and add new capabilities.
+
 * [Egeria Diagnostic Guide](open-metadata-publication/website/diagnostic-guide)
 describes the different types of diagnostics produced by Egeria and how to use them.
+
 * [Open Metadata Conformance Test Suite Guide](open-metadata-conformance-suite) describes
 how to run the Open Metadata Conformance Test Suite to validate that a technology is
 compliant with the open metadata specifications.
 
 ## The Lists
 
+The Egeria glossary provides definitions to terms used in the Egeria project.
+The module organization defines the hierarchical structure of the modules in the
+Egeria project.
+
 * [Egeria Glossary](open-metadata-publication/website/open-metadata-glossary.md)
-* [Egeria Site Organization](Content-Organization.md)
+* [Egeria Module Organization](Content-Organization.md)
 
-## Miscellaneous Articles
+## Your Questions ...
 
-* **[What are the goals of ODPi Egeria](open-metadata-publication/website)**
-* **[Why is ODPI Egeria important?](https://zenodo.org/record/556504)**
-* **[How do I run ODPi Egeria?](open-metadata-resources/open-metadata-tutorials)**
-* **[Where is the design documentation?](open-metadata-implementation)**
-* **[Where are the open metadata specifications?](open-metadata-publication/website/open-metadata-specifications)**
-* **[How do I raise a bug or feature request?](https://github.com/odpi/egeria/issues)**
-* **[How do I enhance my product to support open metadata?](open-metadata-publication/website/open-metadata-integration-patterns)**
-* **[How do I test that a technology is conformant with the open metadata specifications?](open-metadata-conformance-suite)**
-* **[How is the egeria project content organized?](Content-Organization.md)**
-* **[How do I find out more about Data Governance?](https://odpi.github.io/data-governance/)**
+The following articles may answer additional questions that you have.
+
+* [Where is the code?](https://github.com/odpi/egeria)
+* [Who is contributing?](https://lfanalytics.io/projects/5b554807-b041-4f98-a6ba-3306f688e05e/dashboard)
+* [How do I join the mailing list?](https://lists.odpi.org/g/odpi-project-egeria)
+* [What is the ODPi?](https://www.odpi.org/)
+* [Why is the project called Egeria?](open-metadata-publication/website/why-egeria)
+* [What are the goals of Egeria?](open-metadata-publication/website)
+* [Why is open metadata important?](https://www.redbooks.ibm.com/redpapers/pdfs/redp5486.pdf)
+* [How do I run Egeria?](open-metadata-resources/open-metadata-tutorials)
+* [Where is the design documentation?](open-metadata-implementation)
+* [Where are the open metadata specifications?](open-metadata-publication/website/open-metadata-specifications)
+* [How do I raise a bug or feature request?](https://github.com/odpi/egeria/issues)
+* [How do I enhance my product to support open metadata?](open-metadata-publication/website/open-metadata-integration-patterns)
+* [How do I test that a technology is conformant with the open metadata specifications?](open-metadata-conformance-suite)
+* [How is the egeria project content organized?](Content-Organization.md)
+* [How do I find out more about Data Governance?](https://odpi.github.io/data-governance/)
 
 
-## ODPi Egeria governance
+## ODPi Egeria project governance
 
-This project is maintained by the ODPI Egeria community.
+This project is maintained by the ODPi Egeria community.
 To understand how to join and contribute see the
 [Community Guide](Community-Guide.md).
 
 We aim to operate in a transparent, accessible way for the benefit
 of the Egeria community.
-All participation in this project is open and not
-bound to any corporate affiliation.
-Participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+
+All participation in this project is therefore open and not
+bound to any corporate affiliation nor membership of the ODPi.
+Participants are only required to follow the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+
 The governance of the project is described in more detail in the
 [Egeria Operations](Egeria-Operations.md).
 

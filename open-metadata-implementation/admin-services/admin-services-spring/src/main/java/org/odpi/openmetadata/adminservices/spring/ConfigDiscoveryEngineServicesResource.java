@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryEngineServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
+import org.odpi.openmetadata.adminservices.rest.DiscoveryEngineServicesConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,15 +36,15 @@ public class ConfigDiscoveryEngineServicesResource
      * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/access-service")
-
-    public VoidResponse setAccessServiceLocation(@PathVariable String                 userId,
-                                                 @PathVariable String                 serverName,
-                                                 @RequestBody  OMAGServerClientConfig clientConfig)
+    @PostMapping(path = "/client-config")
+    public VoidResponse setClientConfig(@PathVariable String                 userId,
+                                        @PathVariable String                 serverName,
+                                        @RequestBody  OMAGServerClientConfig clientConfig)
     {
-        return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
+        return adminAPI.setClientConfig(userId, serverName, clientConfig);
     }
 
 
@@ -57,9 +58,9 @@ public class ConfigDiscoveryEngineServicesResource
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/discovery-engines")
-
     public VoidResponse setDiscoveryEngines(@PathVariable String       userId,
                                             @PathVariable String       serverName,
                                             @RequestBody  List<String> discoveryEngines)
@@ -74,15 +75,35 @@ public class ConfigDiscoveryEngineServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param servicesConfig full configuration for the service.
-     * @return void response
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "")
-
-    VoidResponse addService(@PathVariable String                         userId,
-                            @PathVariable String                         serverName,
-                            @RequestBody  DiscoveryEngineServicesConfig  servicesConfig)
+    public VoidResponse setDiscoveryEngineServicesConfig(@PathVariable String                         userId,
+                                                         @PathVariable String                         serverName,
+                                                         @RequestBody  DiscoveryEngineServicesConfig  servicesConfig)
     {
-        return adminAPI.addService(userId, serverName, servicesConfig);
+        return adminAPI.setDiscoveryEngineServicesConfig(userId, serverName, servicesConfig);
+    }
+
+
+    /**
+     * Get the configuration for the discovery engine services for this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return full configuration for the service.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "")
+    public DiscoveryEngineServicesConfigResponse getDiscoveryEngineServicesConfig(@PathVariable String userId,
+                                                                                  @PathVariable String serverName)
+    {
+        return adminAPI.getDiscoveryEngineServicesConfig(userId, serverName);
     }
 
 
@@ -92,12 +113,14 @@ public class ConfigDiscoveryEngineServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     @DeleteMapping(path = "")
-
-    VoidResponse deleteService(@PathVariable String userId,
-                               @PathVariable String serverName)
+    public VoidResponse clearDiscoveryEngineServicesConfig(@PathVariable String userId,
+                                                           @PathVariable String serverName)
     {
-        return adminAPI.deleteService(userId, serverName);
+        return adminAPI.clearDiscoveryEngineServicesConfig(userId, serverName);
     }
 }

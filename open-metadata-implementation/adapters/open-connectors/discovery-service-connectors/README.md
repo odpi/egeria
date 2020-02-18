@@ -28,6 +28,8 @@ The interfaces used by a discovery service are defined in
 the [Open Discovery Framework (ODF)](../../../frameworks/open-discovery-framework)
 along with a guide on how to write a discovery service.
 
+Return to [open-connectors](..) module.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

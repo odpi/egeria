@@ -120,7 +120,7 @@ public class OMAGServerOperationalServices
 
         if (response.getRelatedHTTPCode() == 200)
         {
-            response.setSuccessMessage(startUpMessage);
+            response.setSuccessMessage(new Date().toString() + " " + startUpMessage);
         }
 
         return response;
@@ -205,10 +205,18 @@ public class OMAGServerOperationalServices
 
             /*
              * Validate the content of the configuration document.  This will throw an exception if the
-             * combination of requested services does not make a useful server.
+             * configuration document is null or the combination of requested services does not make a useful server.
              */
-            ServerTypeClassifier serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
+            ServerTypeClassifier     serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
             ServerTypeClassification serverTypeClassification = serverTypeClassifier.getServerType();
+
+            /*
+             * If the server type is not set then use the value from the classification.
+             */
+            if (configuration.getLocalServerType() == null)
+            {
+                configuration.setLocalServerType(serverTypeClassification.getServerTypeName());
+            }
 
             /*
              * Save the configuration document to the config store.  This ensures we have the latest version of the
@@ -234,7 +242,7 @@ public class OMAGServerOperationalServices
                                                                                            configuration.getMaxPageSize());
 
             /*
-             * Save the configuration that is going to be used to start the server.  This configuration can be queried by
+             * Save the configuration that is going to be used to start the server for this instance.  This configuration can be queried by
              * the operator to verify the configuration used to start the server. (The values in the config store may have been
              * updated since the server was started.)
              */
@@ -282,7 +290,7 @@ public class OMAGServerOperationalServices
              * Having a limit helps to prevent a denial of service attack that uses very large requests to overwhelm the server.
              * If this value is 0 it means there is no upper limit.  If this value is negative then it is invalid.
              */
-            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog);
+            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog, methodName);
 
             /*
              * Save the instance of the repository services and then initialize it.  OMRS has 2 modes of initialization.
@@ -298,6 +306,7 @@ public class OMAGServerOperationalServices
              * A this point the type of server influences the start up sequence.
              */
             if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
+                (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.REPOSITORY_PROXY.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification)))
             {
@@ -567,10 +576,13 @@ public class OMAGServerOperationalServices
      * @param maxPageSize value to validate
      * @param serverName name of the server that the configuration comes from
      * @param auditLog logging destination
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException the max page size is negative.
      */
     private void validateMaxPageSize(int          maxPageSize,
                                      String       serverName,
-                                     OMRSAuditLog auditLog)
+                                     OMRSAuditLog auditLog,
+                                     String       methodName) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "Validating max page size during server initialization";
 
@@ -606,6 +618,18 @@ public class OMAGServerOperationalServices
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE;
+            String             errorMessage = errorCode.getErrorMessageId()
+                                            + errorCode.getFormattedErrorMessage(serverName,
+                                                                                 Integer.toString(maxPageSize));
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
         }
     }
 

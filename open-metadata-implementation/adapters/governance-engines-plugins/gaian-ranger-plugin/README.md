@@ -281,3 +281,9 @@ _Cannot create gaian service on ranger server_
 
 If you get an error 'cannot find class XXX' copy the ranger gaian plugin to the ranger server as 
 documented above in the section on deploying the servicedef.
+
+Return to [governance-engine-plugins](..) module.
+ 
+ ----
+ License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+ Copyright Contributors to the ODPi Egeria project.

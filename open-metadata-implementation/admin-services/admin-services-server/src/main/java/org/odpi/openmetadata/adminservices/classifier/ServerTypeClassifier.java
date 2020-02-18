@@ -49,7 +49,7 @@ public class ServerTypeClassifier
     {
         final String methodName = "getServerType";
 
-        ServerTypeClassification serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+        ServerTypeClassification serverTypeClassification = null;
 
         this.validateConfigurationDocumentNotNull(serverName, configurationDocument, methodName);
 
@@ -88,6 +88,12 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
+
+        /*
+         * If there is a mismatch in the server name inside the configuration document and the
+         * requested server name it means there is an error in either the implementation or
+         * configuration of the configuration document store.
+         */
         this.validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
 
         /*
@@ -109,8 +115,20 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
+        /*
+         * The access service list is only allowed in a metadata server or metadata access point.
+         */
         if (accessServiceConfigList != null)
         {
+            if (this.detectLocalRepository(repositoryServicesConfig))
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+            }
+
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
@@ -607,6 +625,7 @@ public class ServerTypeClassifier
                                                 stewardshipEngineServicesConfig);
         }
 
+        this.validateServerClassificationNotNull(serverName, serverTypeClassification, methodName);
         return serverTypeClassification;
     }
 
@@ -635,6 +654,49 @@ public class ServerTypeClassifier
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
         }
+    }
+
+
+    /**
+     * Checks that a classification has been derived for a configuration document.
+     * This should never be called.  If it is occurring then there has probably been a new type
+     * of server configuration added to Egeria without a corresponding update to the
+     * server classifier.
+     *
+     * @param serverName requested server
+     * @param serverTypeClassification classification value derived from the analysis of the
+     *                                 configuration document
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     */
+    private void validateServerClassificationNotNull(String                    serverName,
+                                                     ServerTypeClassification  serverTypeClassification,
+                                                     String                    methodName) throws OMAGInvalidParameterException
+    {
+        if (serverTypeClassification == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Determine if the server is to have a local repository or not.
+     *
+     * @param repositoryServicesConfig repository services config section of configuration document
+     * @return true if there is a local repository, otherwise false.
+     */
+    private boolean detectLocalRepository(RepositoryServicesConfig  repositoryServicesConfig)
+    {
+        return repositoryServicesConfig.getLocalRepositoryConfig() != null;
     }
 
 

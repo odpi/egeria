@@ -5,20 +5,21 @@
 
 An **OMAG server** is a software server that
 runs inside the [OMAG server platform](omag-server-platform.md).
+It supports the integration of one or more technologies by hosting
+connectors that interact with that technology, or providing specialist
+APIs or event topics (both in and out).
 
+Because of the wide variety of technologies deployed in organization's today,
+each with very different capabilities and needs,
+the integration and exchange of metadata needs to be organized.
+This organization is managed through the Egeria frameworks and services
+supported by the OMAG Servers.
+There are different types of OMAG Server,
+each supporting specific technologies.  The OMAG Server ensures this
+type of technology is integrated appropriately for its needs.
 
-An OMAG Server is started up and shut down using administration commands.
-The start up command (called **initialize**) passes a
-[configuration document](configuration-document.md) to
-the OMAG Server Platform.
-This configuration document defines the type of OMAG server
-that is to be started, and how the services within it are configured.
-
-The shutdown command (called **terminate**) performs an orderly shutdown
-of the services within the server and disables its URL.
-
-There are many types of OMAG Server, each supporting specific technologies.
-The types are shown in Figure 1.
+The types of OMAG Server are shown in Figure 1. The hierarchy groups
+similar types of server together.
 
 ![Figure 1](types-of-omag-servers.png)
 
@@ -43,17 +44,17 @@ More detail about each type of OMAG Server can be found by following the links b
        their remediation.
   * [Integration Daemon](integration-daemon.md) - manages the synchronization with third party technology that
     can not call the access services directly.
-     * **Data Platform Server** - manages retrieval of metadata from a data platform such as
+     * [Data Platform Server](data-platform-server.md) - manages retrieval of metadata from a data platform such as
      a database server, Apache Cassandra and Apache Hive.
-     * **Virtualizer Server** - Supports the configuration of data virtualization platforms based on
+     * [Virtualizer](virtualizer.md) - Supports the configuration of data virtualization platforms based on
      the data sources stored in open metadata.
-     * **Data Engine Proxy** - Supports the capture of metadata from a data engine.  This includes
+     * [Data Engine Proxy](data-engine-proxy.md) - Supports the capture of metadata from a data engine.  This includes
      details of the processing of data that it is doing which is valuable when piecing together lineage.
-     * **Security Sync Server** - Supports the configuration of a data access endpoint with information
+     * [Security Sync Server](security-sync-server.md) - Supports the configuration of a data access endpoint with information
      to control access to the data.
-   * **Open Lineage Server** - Manages the collation of lineage information am maintains it in a format for reporting.
+   * [Open Lineage Server](open-lineage-server.md) - Manages the collation of lineage information am maintains it in a format for reporting.
      This includes the state of the lineage at different points in time.
-   * **Security Officer Server** _ Supports a Security Officer in setting up security classifications (Security Tags)
+   * [Security Officer Server](security-officer-server.md)  - Supports a Security Officer in setting up security classifications (Security Tags)
      for assets based on a variety of metadata.
   
 The different types of OMAG Servers connect together as shown in Figure 2.  There is an inner
@@ -67,7 +68,7 @@ The governance servers connect out to external tools, engines and platforms.
 
 ## Further Information
 
-There is more information on the OMAG Server and its relationship to
+There is design information on the OMAG Server and its relationship to
 the OMAG Server Platform [here](../../../../open-metadata-publication/website/omag-server).
 
 

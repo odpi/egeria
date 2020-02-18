@@ -19,7 +19,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilename = "omag.server.config";
+    private static final String defaultFilenameTemplate = "omag.server.{0}.config";
 
     /*
      * Variables used in writing to the file.
@@ -47,15 +47,18 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
+        String configStoreTemplateName = null;
         if (endpoint != null)
         {
-            configStoreName = endpoint.getAddress();
+            configStoreTemplateName = endpoint.getAddress();
         }
 
-        if (configStoreName == null)
+        if (configStoreTemplateName == null)
         {
-            configStoreName = defaultFilename;
+            configStoreTemplateName = defaultFilenameTemplate;
         }
+
+        configStoreName = super.getStoreName(configStoreTemplateName, serverName);
     }
 
 

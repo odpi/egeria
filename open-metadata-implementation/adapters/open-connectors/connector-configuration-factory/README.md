@@ -22,6 +22,8 @@ This includes:
 * A connection for the [OMRS topic connector](../../../repository-services/docs/omrs-event-topic.md) used to exchange events with other members of an [open metadata repository cohort](../../../repository-services/docs/open-metadata-repository-cohort.md).
 
 
+Return to [open-connectors](..) module.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
