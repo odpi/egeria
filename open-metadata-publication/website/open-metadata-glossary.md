@@ -174,7 +174,7 @@
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
 * [Servers for Governance](../../open-metadata-implementation/governance-servers)
-* [Server Personalities](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-personalities.md)
+* [Server Personalities](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
 * [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-engine.md)
 * [Stewardship Server](../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-server.md)
