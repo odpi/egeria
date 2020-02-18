@@ -8,7 +8,7 @@ Removes a tag from the repository.  All of the relationships to assets are lost.
 
 
 ```
-POST {{serverURLRoot}}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/{{tagGUID}}/delete
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/tags/{tagGUID}/delete
 ```
 
 ```java

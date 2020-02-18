@@ -6,7 +6,7 @@
 Retrieve list of databases using pagination
 
 ```
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/databases?pageSize=10&startFrom=0
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/databases?pageSize=10&startFrom=0
 ```
 
 `DatabaseListResponse` response containing list of databases or
@@ -27,7 +27,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 2,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         },
@@ -39,7 +39,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 4,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         },
@@ -51,7 +51,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 6,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         },
@@ -63,7 +63,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 8,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         },
@@ -75,7 +75,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 10,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         },
@@ -87,7 +87,7 @@ Sample:
             "endpointSource": {
                 "class": "EndpointSource",
                 "@id": 12,
-                "networkAddress": "{{host}}",
+                "networkAddress": "{host}",
                 "connectorProviderName": "DB2Connector"
             }
         }

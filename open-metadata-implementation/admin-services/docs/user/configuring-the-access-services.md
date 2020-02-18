@@ -22,7 +22,7 @@ that are registered with the [OMAG Server Platform](../concepts/omag-server-plat
 using the following command.
 
 ```
-GET {{serverURLRoot}}/open-metadata/platform-services/users/{{userId}}/server-platform/registered-services/access-services
+GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/server-platform/registered-services/access-services
 ```
 The result looks something like this:
 
@@ -180,13 +180,13 @@ To enable all of the access services (and the [Enterprise Repository Services](.
 that support them) with default configuration values use the following command.
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/access-services
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
 Alternatively, each service can be configured individually with the following command:
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/access-services/{{serviceURLMarker}}
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/{serviceURLMarker}
 ```
 The service URL marker for each service is shown in the list above.
 
@@ -204,7 +204,7 @@ This also disables the enterprise repository services since they
 are not being used.
 
 ```
-DELETE {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/access-services
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
 ## Retrieve the current configuration for the access services
@@ -212,14 +212,14 @@ DELETE {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{
 It is possible to retrieve the 
 
 ```
-GET {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/access-services/configuration
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
 ```
 
 it is then possible to make changes to the configuration and 
 save it back:
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{{userId}}/servers/{{serverName}}/access-services/configuration
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
 ```
 
 ----

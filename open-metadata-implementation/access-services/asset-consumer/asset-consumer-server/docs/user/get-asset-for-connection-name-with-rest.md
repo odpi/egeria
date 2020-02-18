@@ -6,7 +6,7 @@
 Returns the unique identifier for the asset connected to the connection identified by the supplied name.
 
 ```
-GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/by-connection-name/{{connectionName}}
+GET {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/assets/by-connection-name/{connectionName}
 ```
 
 ```java
