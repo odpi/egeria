@@ -18,7 +18,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Validator;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -38,7 +37,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
-import static org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType.*;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -56,6 +54,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private AssetContextHandler assetContextHandler;
+    private GlossaryHandler glossaryHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -81,7 +80,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
-
+        this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -110,9 +109,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param instanceEvent event to unpack
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
-
-        final String serviceOperationName = "processOMRSInstanceEvent: ";
-
         log.debug("Processing instance event" + instanceEvent);
 
         if (instanceEvent == null) {
@@ -164,68 +160,52 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
 
     private void processUpdatedEntityEvent(EntityDetail entityDetail) {
-        String serviceOperationName = "processUpdatedEntityEvent";
         log.debug("Asset Lineage OMAS start processing events for the following entity {}: ", entityDetail.getGUID());
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")) {
             processNewEntity(entityDetail);
         } else {
-            processUpdatedEntity(entityDetail, serviceOperationName + UPDATED_ENTITY_EVENT.getName());
+            processUpdatedEntity(entityDetail);
         }
 
     }
 
     private void processNewEntity(EntityDetail entityDetail) {
-        String serviceOperationName = "processNewEntity";
-        final String methodName = "processNewEntity";
-
         log.debug("Asset Lineage OMAS start processing new entity events for the following entity {}: ", entityDetail.getGUID());
 
-        try {
-            if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
-                getContextForProcess(entityDetail);
-            } else {
-                getAssetContext(entityDetail, serviceOperationName);
+        if (entityDetail.getType().getTypeDefName().equals(PROCESS))
+            getContextForProcess(entityDetail);
+        else {
+            try {
+                getAssetContext(entityDetail);
+            } catch (InvalidParameterException e) {
+                log.error("An invalid parameter exception occurred while processing a NewEntity event", e);
+                throw new AssetLineageException(e.getReportedHTTPCode(),
+                        e.getReportingClassName(),
+                        e.getReportingActionDescription(),
+                        e.getErrorMessage(),
+                        e.getReportedSystemAction(),
+                        e.getReportedUserAction());
             }
-        } catch (OCFCheckedExceptionBase e) {
-            log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
-
-            throw new AssetLineageException(e.getReportedHTTPCode(),
-                    e.getReportingClassName(),
-                    e.getReportingActionDescription(),
-                    e.getErrorMessage(),
-                    e.getReportedSystemAction(),
-                    e.getReportedUserAction());
         }
     }
 
-
     private void processNewRelationship(EntityDetail entityDetail) {
-        final String methodName = "processNewRelationship";
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
+        log.debug("Asset Lineage OMAS is processing a NewRelationship event which contains the following entity {}: ", entityDetail.getGUID());
 
     }
 
     private void processUpdatedRelationshipEvent(EntityDetail entityDetail) {
-
-        final String methodName = "processUpdatedRelationshipEvent";
-
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
-
+        log.debug("Asset Lineage OMAS is processing an UpdatedRelationship event which contains the following entity {}: ", entityDetail.getGUID());
     }
 
     private void processDeletedRelationshipEvent(EntityDetail entityDetail) {
-
-        final String methodName = "processDeletedRelationshipEvent";
-
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
-
+        log.debug("Asset Lineage OMAS is processing a DeletedRelationship event which contains the following entity {}: ", entityDetail.getGUID());
     }
 
 
     private void processDeleteEntity(EntityDetail entityDetail) {
-
-        log.debug("Asset Lineage OMAS start processing events for deleting the following entity: {} ", entityDetail.getGUID());
+        log.debug("Asset Lineage OMAS is processing a DeleteEntity event which contains the following entity {}: ", entityDetail.getGUID());
 
         LineageEvent event = new LineageEvent();
         event.setLineageEntity(converter.createLineageEntity(entityDetail));
@@ -241,13 +221,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
 
     private void processReclassifiedEntityEvent(EntityDetail entityDetail) {
-        String methodName = "processReclassifiedEntityEvent";
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
+        log.debug("Asset Lineage OMAS is processing a ReClassified Entity event which contains the following entity {}: ", entityDetail.getGUID());
     }
 
     private void processDeclassifiedEntityEvent(EntityDetail entityDetail) {
-        String methodName = "processDeclassifiedEntityEvent";
-        log.debug("Asset Lineage OMAS start processing events with method {} for the following entity {}: ", methodName, entityDetail.getGUID());
+        log.debug("Asset Lineage OMAS is processing a DeClassified Entity event which contains the following entity {}: ", entityDetail.getGUID());
     }
 
 
@@ -280,15 +258,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void getAssetContext(EntityDetail entityDetail) throws InvalidParameterException {
         String technicalGuid = entityDetail.getGUID();
 
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
-
-        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
-        Map<String, Set<GraphContext>> context = glossaryHandler.getGlossaryTerm(technicalGuid, serviceOperationName, entityDetail, assetContext, validator);
+        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, entityDetail, assetContext, validator);
 
         LineageEvent event = new LineageEvent();
         if (context.size() != 0)
@@ -300,7 +274,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private void processUpdatedEntity(EntityDetail entityDetail, String serviceOperationName) {
+    private void processUpdatedEntity(EntityDetail entityDetail) {
 
         log.debug("Asset Lineage OMAS start processing events for updating the following entity: {} ", entityDetail.getGUID());
 

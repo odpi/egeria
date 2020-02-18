@@ -77,12 +77,12 @@ public class GlossaryHandler {
                                                           String userId,
                                                           EntityDetail entityDetail,
                                                           AssetContext assetContext,
-                                                          Validator validator) throws InvalidParameterException{
+                                                          Validator validator) throws InvalidParameterException {
 
         String methodName = "getGlossaryTerm";
 
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
-                
+
         try {
             graph = assetContext;
 
@@ -90,18 +90,18 @@ public class GlossaryHandler {
             vertices = vertices.stream().filter(vertex -> validator.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
                     !validator.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
 
-            for(LineageEntity vertex: vertices){
+            for (LineageEntity vertex : vertices) {
                 getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 
             }
             return graph.getNeighbors();
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
-                                            e.getReportingClassName(),
-                                            e.getReportingActionDescription(),
-                                            e.getErrorMessage(),
-                                            e.getReportedSystemAction(),
-                                            e.getReportedUserAction());
+                    e.getReportingClassName(),
+                    e.getReportingActionDescription(),
+                    e.getErrorMessage(),
+                    e.getReportedSystemAction(),
+                    e.getReportedUserAction());
         }
     }
 
@@ -114,34 +114,34 @@ public class GlossaryHandler {
      * @return Glossary Term retrieved from the property server
      */
     private void getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "getGlossary";
 
         String typeGuid = commonHandler.getTypeName(userId, SEMANTIC_ASSIGNMENT);
         List<Relationship> semanticAssignments = repositoryHandler.getRelationshipsByType(userId,
-                                                                                          assetGuid,
-                                                                                          typeDefName,
-                                                                                          typeGuid,
-                                                                                          SEMANTIC_ASSIGNMENT,
-                                                                                          methodName);
+                assetGuid,
+                typeDefName,
+                typeGuid,
+                SEMANTIC_ASSIGNMENT,
+                methodName);
 
-        if (semanticAssignments == null) {
+        if (semanticAssignments == null)
             return;
-        }
+
         addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
      * Add semantic assignments for an asset to the Context structure
      *
-     * @param userId      userId
-     * @param semanticAssignments   array of the semantic assignments
+     * @param userId              userId
+     * @param semanticAssignments array of the semantic assignments
      * @return true if semantic relationships exist, false otherwise
      */
     private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
-                                                                                                              PropertyServerException,
-                                                                                                              UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "addSemanticAssignmentToContext";
 
         List<EntityDetail> entityDetails = new ArrayList<>();
@@ -149,12 +149,12 @@ public class GlossaryHandler {
 
             String glossaryTermGuid = relationship.getEntityTwoProxy().getGUID();
             EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId,
-                                                                          glossaryTermGuid,
-                                                        "guid",
-                                                                          GLOSSARY_TERM,
-                                                                          methodName);
+                    glossaryTermGuid,
+                    "guid",
+                    GLOSSARY_TERM,
+                    methodName);
 
-            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph,false));
+            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false));
         }
     }
 
