@@ -9,7 +9,7 @@ Cloud infrastructure and services are classified as such to show
 that the organization is not completely in control of the technology
 supporting their data and processes.
 
-![UML](0090-Cloud-Platforms-and-Services.png)
+![UML](0090-Cloud-Platforms-and-Services.png#pagewidth)
 
 The cloud provider is the organization that provides and runs the
 infrastructure for a cloud service.

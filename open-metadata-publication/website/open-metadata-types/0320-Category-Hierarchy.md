@@ -8,7 +8,7 @@ hierarchy of categories.
 These categories effectively provide a folder structure
 for the glossary.
 
-![UML](0320-Category-Hierarchy.png)
+![UML](0320-Category-Hierarchy.png#pagewidth)
 
 * **GlossaryCategory** represents a category in a glossary. 
 * **CategoryAnchor** links each category to exactly one Glossary object.

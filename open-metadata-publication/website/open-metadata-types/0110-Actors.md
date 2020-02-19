@@ -18,7 +18,7 @@ changes to the metadata.
 
 Figure 1 captures how people and teams are represented.
 
-![UML](0110-Actors.png)
+![UML](0110-Actors.png#pagewidth)
 > Figure 1: Collecting information about people and teams
 
 **UserIdentity** provides a structure for storing the security

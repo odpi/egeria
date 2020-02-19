@@ -3,7 +3,7 @@
 
 # 0225 Metadata Repositories
 
-![UML](0225-Metadata-Repositories.png)
+![UML](0225-Metadata-Repositories.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

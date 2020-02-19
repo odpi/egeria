@@ -7,7 +7,7 @@ A metadata model is a design mode that describes the structure of another,
 specific model types.  The **MetamodelInstance** classification indicates
 which element in the metamodel is this metamodel element mapped to.
 
-![UML](0570-Metamodels.png)
+![UML](0570-Metamodels.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

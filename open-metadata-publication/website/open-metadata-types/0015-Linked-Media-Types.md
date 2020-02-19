@@ -7,7 +7,7 @@ Linked media types describe the simple
 structures that are used repeatedly in open metadata to connect it to
 documents and entities in other types of repositories.
 
-![UML](0015-Linked-Media-Types.png)
+![UML](0015-Linked-Media-Types.png#pagewidth)
 
 
 * **ExternalReference**s link metadata to elements in external repositories.

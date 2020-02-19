@@ -5,7 +5,7 @@
 
 Model 0532 describes an object schema - such as the structure for a series of POJO Java objects.
 
-![UMl](0532-Object-Schemas.png)
+![UMl](0532-Object-Schemas.png#pagewidth)
 
 
 
