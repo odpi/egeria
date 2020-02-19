@@ -28,6 +28,6 @@
     <artifactId>view-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>subject-area-view</module>
+        <module>glossary-author-view</module>
     </modules>
 </project>

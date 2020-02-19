@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.dataprivacy.admin.DataPrivacyAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * DataPrivacyRegistration registers the access service with the OMAG Server administration services.
@@ -24,7 +24,7 @@ public class DataPrivacyRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.DATA_PRIVACY_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  ServiceOperationalStatus.ENABLED,
                                                                                  DataPrivacyAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

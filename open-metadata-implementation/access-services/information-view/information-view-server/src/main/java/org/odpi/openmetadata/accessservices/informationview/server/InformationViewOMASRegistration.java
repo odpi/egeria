@@ -7,16 +7,16 @@ import org.odpi.openmetadata.accessservices.informationview.admin.InformationVie
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 class InformationViewOMASRegistration {
 
     InformationViewOMASRegistration() {
 
         AccessServiceDescription myDescription = AccessServiceDescription.INFORMATION_VIEW_OMAS;
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
-                ServiceOperationalStatus.ENABLED,
-                InformationViewAdmin.class.getName()
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 InformationViewAdmin.class.getName()
 
         );
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

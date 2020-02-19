@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 
 import java.util.Map;
 import java.util.Objects;
@@ -71,15 +71,15 @@ public class ViewServiceConfig extends AdminServicesConfigHeader
      *
      * @param viewRegistration fixed properties about the view service
      */
-    public ViewServiceConfig(ServiceRegistration viewRegistration)
+    public ViewServiceConfig(ViewServiceRegistration viewRegistration)
     {
-        this.viewServiceId = viewRegistration.getServiceCode();
-        this.viewServiceName = viewRegistration.getServiceName();
-        this.viewURLMarker = viewRegistration.getServiceURLMarker();
-        this.viewAdminClass = viewRegistration.getServiceAdminClassName();
-        this.viewDescription = viewRegistration.getServiceDescription();
-        this.viewWiki = viewRegistration.getServiceWiki();
-        this.viewOperationalStatus = viewRegistration.getServiceOperationalStatus();
+        this.viewServiceId = viewRegistration.getViewServiceCode();
+        this.viewServiceName = viewRegistration.getViewServiceName();
+        this.viewURLMarker = viewRegistration.getViewServiceURLMarker();
+        this.viewAdminClass = viewRegistration.getViewServiceAdminClassName();
+        this.viewDescription = viewRegistration.getViewServiceDescription();
+        this.viewWiki = viewRegistration.getViewServiceWiki();
+        this.viewOperationalStatus = viewRegistration.getViewServiceOperationalStatus();
     }
 
 

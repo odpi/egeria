@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.adminservices;
 
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -158,7 +157,7 @@ public class OMAGServerAdminForViewServices
             /*
              * Get the registration information for this view service.
              */
-            ServiceRegistration viewServiceRegistration = OMAGViewServiceRegistration.getViewServiceRegistration(serviceURLMarker);
+            ViewServiceRegistration viewServiceRegistration = OMAGViewServiceRegistration.getViewServiceRegistration(serviceURLMarker);
 
             errorHandler.validateViewServiceIsRegistered(viewServiceRegistration, serviceURLMarker, serverName, methodName);
 
@@ -229,18 +228,18 @@ public class OMAGServerAdminForViewServices
             /*
              * Get the list of View Services implemented in this server.
              */
-            List<ServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
+            List<ViewServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
 
             /*
              * Set up the available view services.
              */
             if ((viewServiceRegistrationList != null) && (! viewServiceRegistrationList.isEmpty()))
             {
-                for (ServiceRegistration registration : viewServiceRegistrationList)
+                for (ViewServiceRegistration registration : viewServiceRegistrationList)
                 {
                     if (registration != null)
                     {
-                        if (registration.getServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             viewServiceConfigList.add(createViewServiceConfig(registration,
                                                                                   viewServiceOptions));
@@ -287,7 +286,7 @@ public class OMAGServerAdminForViewServices
      * @param viewServiceOptions options for the service
      * @return newly created config object
      */
-    private ViewServiceConfig  createViewServiceConfig(ServiceRegistration registration,
+    private ViewServiceConfig  createViewServiceConfig(ViewServiceRegistration registration,
                                                        Map<String, Object> viewServiceOptions
                                                         )
     {

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * SubjectAreaRegistration registers the access service with the OMAG Server administration services.
@@ -22,9 +22,9 @@ public class SubjectAreaRegistration
     public static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
-                ServiceOperationalStatus.ENABLED,
-                SubjectAreaAdmin.class.getName());
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 SubjectAreaAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

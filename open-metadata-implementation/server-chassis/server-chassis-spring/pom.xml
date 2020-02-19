@@ -241,7 +241,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-view-spring</artifactId>
+            <artifactId>glossary-author-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 

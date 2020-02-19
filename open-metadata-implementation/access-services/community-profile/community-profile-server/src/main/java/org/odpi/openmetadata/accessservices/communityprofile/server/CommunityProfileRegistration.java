@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.admin.CommunityProf
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * CommunityProfileRegistration registers the access service with the OMAG Server administration services.
@@ -24,7 +24,7 @@ class CommunityProfileRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  ServiceOperationalStatus.ENABLED,
                                                                                  CommunityProfileAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

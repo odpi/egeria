@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class OMAGAccessServiceRegistration
      * A map is used so multiple registrations from the same access service are ignored.
      * The last registration is used.
      */
-    static private Map<String, ServiceRegistration> accessServiceRegistrationMap = new HashMap<>();
+    static private Map<String, AccessServiceRegistration> accessServiceRegistrationMap = new HashMap<>();
 
 
     /**
@@ -31,11 +31,11 @@ public class OMAGAccessServiceRegistration
      *
      * @param registration information about the specific OMAS
      */
-    public static synchronized void registerAccessService(ServiceRegistration registration)
+    public static synchronized void registerAccessService(AccessServiceRegistration registration)
     {
         if (registration != null)
         {
-            String  serviceName = registration.getServiceName();
+            String  serviceName = registration.getAccessServiceName();
 
             if (serviceName != null)
             {
@@ -50,11 +50,11 @@ public class OMAGAccessServiceRegistration
      *
      * @return list of registration info
      */
-    public static synchronized List<ServiceRegistration> getAccessServiceRegistrationList()
+    public static synchronized List<AccessServiceRegistration> getAccessServiceRegistrationList()
     {
-        List<ServiceRegistration>  registrationList = new ArrayList<>();
+        List<AccessServiceRegistration>  registrationList = new ArrayList<>();
 
-        for (ServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
+        for (AccessServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
         {
             if (accessServiceRegistration != null)
             {
@@ -72,15 +72,15 @@ public class OMAGAccessServiceRegistration
      * @param urlMarker URL insert that identifies the service
      * @return access service registration info
      */
-    public static synchronized ServiceRegistration getAccessServiceRegistration(String   urlMarker)
+    public static synchronized AccessServiceRegistration getAccessServiceRegistration(String   urlMarker)
     {
         if (urlMarker != null)
         {
-            for (ServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
+            for (AccessServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
             {
                 if (accessServiceRegistration != null)
                 {
-                    if (urlMarker.equals(accessServiceRegistration.getServiceURLMarker()))
+                    if (urlMarker.equals(accessServiceRegistration.getAccessServiceURLMarker()))
                     {
                         return accessServiceRegistration;
                     }

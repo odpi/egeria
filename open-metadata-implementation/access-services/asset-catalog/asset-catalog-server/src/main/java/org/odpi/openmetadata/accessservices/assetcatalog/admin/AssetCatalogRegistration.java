@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * AssetCatalogRegistration registers the access service with the OMAG Server administration services.
@@ -24,9 +24,9 @@ class AssetCatalogRegistration {
     static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
-                ServiceOperationalStatus.ENABLED,
-                AssetCatalogAdmin.class.getName());
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

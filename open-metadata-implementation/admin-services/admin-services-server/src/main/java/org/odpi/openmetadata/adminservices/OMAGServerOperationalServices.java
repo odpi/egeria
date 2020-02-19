@@ -1017,7 +1017,7 @@ public class OMAGServerOperationalServices
      * @return Admin class for the view service
      * @throws OMAGConfigurationErrorException if the class is invalid
      */
-    private ViewServiceAdmin getViewServiceAdminClass(ViewServiceConfig   viewServiceConfig,
+    private ViewServiceAdmin getViewServiceAdminClass(ViewServiceConfig         viewServiceConfig,
                                                           OMRSAuditLog          auditLog,
                                                           String                serverName) throws OMAGConfigurationErrorException
     {

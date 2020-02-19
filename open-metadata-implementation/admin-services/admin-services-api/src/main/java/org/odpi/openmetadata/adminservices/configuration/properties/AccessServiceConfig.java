@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 import java.util.Map;
 import java.util.Objects;
@@ -78,16 +78,16 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceRegistration fixed properties about the access service
      */
-    public AccessServiceConfig(ServiceRegistration accessServiceRegistration)
+    public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration)
     {
-        this.accessServiceId = accessServiceRegistration.getServiceCode();
-        this.accessServiceName = accessServiceRegistration.getServiceName();
-        this.accessServiceFullName = accessServiceRegistration.getServiceFullName();
-        this.accessServiceURLMarker = accessServiceRegistration.getServiceURLMarker();
-        this.accessServiceAdminClass = accessServiceRegistration.getServiceAdminClassName();
-        this.accessServiceDescription = accessServiceRegistration.getServiceDescription();
-        this.accessServiceWiki = accessServiceRegistration.getServiceWiki();
-        this.accessServiceOperationalStatus = accessServiceRegistration.getServiceOperationalStatus();
+        this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
+        this.accessServiceName = accessServiceRegistration.getAccessServiceName();
+        this.accessServiceFullName = accessServiceRegistration.getAccessServiceFullName();
+        this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
+        this.accessServiceAdminClass = accessServiceRegistration.getAccessServiceAdminClassName();
+        this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
+        this.accessServiceWiki = accessServiceRegistration.getAccessServiceWiki();
+        this.accessServiceOperationalStatus = accessServiceRegistration.getAccessServiceOperationalStatus();
     }
 
 

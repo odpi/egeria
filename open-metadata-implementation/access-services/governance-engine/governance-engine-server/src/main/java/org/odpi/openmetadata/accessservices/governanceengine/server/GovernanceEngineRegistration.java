@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.server.admin.Govern
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * GovernanceEngineRegistration registers the access service with the OMAG Server administration services.
@@ -21,9 +21,9 @@ class GovernanceEngineRegistration {
     static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
-                ServiceOperationalStatus.ENABLED,
-                GovernanceEngineAdmin.class.getName());
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 GovernanceEngineAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

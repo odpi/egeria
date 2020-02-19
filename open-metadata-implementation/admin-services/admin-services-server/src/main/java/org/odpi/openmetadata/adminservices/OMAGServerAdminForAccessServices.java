@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -162,7 +162,7 @@ public class OMAGServerAdminForAccessServices
             /*
              * Get the registration information for this access service.
              */
-            ServiceRegistration accessServiceRegistration = OMAGAccessServiceRegistration.getAccessServiceRegistration(serviceURLMarker);
+            AccessServiceRegistration accessServiceRegistration = OMAGAccessServiceRegistration.getAccessServiceRegistration(serviceURLMarker);
 
             errorHandler.validateAccessServiceIsRegistered(accessServiceRegistration, serviceURLMarker, serverName, methodName);
 
@@ -250,18 +250,18 @@ public class OMAGServerAdminForAccessServices
             /*
              * Get the list of Access Services implemented in this server.
              */
-            List<ServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+            List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
             /*
              * Set up the available access services.
              */
             if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
             {
-                for (ServiceRegistration registration : accessServiceRegistrationList)
+                for (AccessServiceRegistration registration : accessServiceRegistrationList)
                 {
                     if (registration != null)
                     {
-                        if (registration.getServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             accessServiceConfigList.add(createAccessServiceConfig(registration,
                                                                                   accessServiceOptions,
@@ -321,7 +321,7 @@ public class OMAGServerAdminForAccessServices
      * @param localServerId unique Id for this server
      * @return newly created config object
      */
-    private AccessServiceConfig  createAccessServiceConfig(ServiceRegistration registration,
+    private AccessServiceConfig  createAccessServiceConfig(AccessServiceRegistration registration,
                                                            Map<String, Object>         accessServiceOptions,
                                                            EventBusConfig              eventBusConfig,
                                                            String                      serverName,
@@ -336,14 +336,14 @@ public class OMAGServerAdminForAccessServices
                 connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
                                                                            eventBusConfig.getConnectorProvider(),
                                                                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                           registration.getServiceInTopic(),
+                                                                           registration.getAccessServiceInTopic(),
                                                                            localServerId,
                                                                            eventBusConfig.getConfigurationProperties()));
         accessServiceConfig.setAccessServiceOutTopic(
                 connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                                                            eventBusConfig.getConnectorProvider(),
                                                                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                           registration.getServiceOutTopic(),
+                                                                           registration.getAccessServiceOutTopic(),
                                                                            localServerId,
                                                                            eventBusConfig.getConfigurationProperties()));
 

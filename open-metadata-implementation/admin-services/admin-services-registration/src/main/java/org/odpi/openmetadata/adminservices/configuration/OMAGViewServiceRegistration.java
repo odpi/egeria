@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class OMAGViewServiceRegistration
      * A map is used so multiple registrations from the same view service are ignored.
      * The last registration is used.
      */
-    static private Map<String, ServiceRegistration> viewServiceRegistrationMap = new HashMap<>();
+    static private Map<String, ViewServiceRegistration> viewServiceRegistrationMap = new HashMap<>();
 
 
     /**
@@ -31,11 +32,11 @@ public class OMAGViewServiceRegistration
      *
      * @param registration information about the specific OMVS
      */
-    public static synchronized void registerViewService(ServiceRegistration registration)
+    public static synchronized void registerViewService(ViewServiceRegistration registration)
     {
         if (registration != null)
         {
-            String  serviceName = registration.getServiceName();
+            String  serviceName = registration.getViewServiceName();
 
             if (serviceName != null)
             {
@@ -50,11 +51,11 @@ public class OMAGViewServiceRegistration
      *
      * @return list of registration info
      */
-    public static synchronized List<ServiceRegistration> getViewServiceRegistrationList()
+    public static synchronized List<ViewServiceRegistration> getViewServiceRegistrationList()
     {
-        List<ServiceRegistration>  registrationList = new ArrayList<>();
+        List<ViewServiceRegistration>  registrationList = new ArrayList<>();
 
-        for (ServiceRegistration viewServiceRegistration : viewServiceRegistrationMap.values())
+        for (ViewServiceRegistration viewServiceRegistration : viewServiceRegistrationMap.values())
         {
             if (viewServiceRegistration != null)
             {
@@ -72,15 +73,15 @@ public class OMAGViewServiceRegistration
      * @param urlMarker URL insert that identifies the service
      * @return view service registration info
      */
-    public static synchronized ServiceRegistration getViewServiceRegistration(String   urlMarker)
+    public static synchronized ViewServiceRegistration getViewServiceRegistration(String   urlMarker)
     {
         if (urlMarker != null)
         {
-            for (ServiceRegistration viewServiceRegistration : viewServiceRegistrationMap.values())
+            for (ViewServiceRegistration viewServiceRegistration : viewServiceRegistrationMap.values())
             {
                 if (viewServiceRegistration != null)
                 {
-                    if (urlMarker.equals(viewServiceRegistration.getServiceURLMarker()))
+                    if (urlMarker.equals(viewServiceRegistration.getViewServiceURLMarker()))
                     {
                         return viewServiceRegistration;
                     }

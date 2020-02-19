@@ -4,7 +4,8 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -127,7 +128,7 @@ public class OMAGServerErrorHandler
      * @param methodName calling method
      * @throws OMAGConfigurationErrorException resulting exception if the access service is not supported.
      */
-    void validateAccessServiceIsRegistered(ServiceRegistration registration,
+    void validateAccessServiceIsRegistered(AccessServiceRegistration registration,
                                            String                    serviceURLMarker,
                                            String                    serverName,
                                            String                    methodName) throws OMAGConfigurationErrorException
@@ -144,7 +145,7 @@ public class OMAGServerErrorHandler
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
         }
-        else if (registration.getServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
+        else if (registration.getAccessServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
@@ -168,10 +169,10 @@ public class OMAGServerErrorHandler
      * @param methodName calling method
      * @throws OMAGConfigurationErrorException resulting exception if the view service is not supported.
      */
-    void validateViewServiceIsRegistered(ServiceRegistration registration,
-                                           String                    serviceURLMarker,
-                                           String                    serverName,
-                                           String                    methodName) throws OMAGConfigurationErrorException
+    void validateViewServiceIsRegistered(ViewServiceRegistration registration,
+                                         String                    serviceURLMarker,
+                                         String                    serverName,
+                                         String                    methodName) throws OMAGConfigurationErrorException
     {
         if (registration == null)
         {
@@ -185,7 +186,7 @@ public class OMAGServerErrorHandler
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        else if (registration.getServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
+        else if (registration.getViewServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);

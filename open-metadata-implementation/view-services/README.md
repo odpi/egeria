@@ -10,11 +10,11 @@ for user interfaces to integrate with open metadata.
 
 The view services are as follows:
 
-* **[subject-area-view](subject-area-view)** - develop a definition of a subject area including glossary
+* **[glossary-author-view](glossary-author-view)** - develop a definition of a subject area including glossary
 terms, reference data and rules. 
 
-  The Subject Area OMVS is for user interfaces that support subject matter experts
-who are defining glossaries, reference data and rules around data for a specific
+  The Glossary Author OMVS is for user interfaces that support subject matter experts
+who are defining glossaries around data for a specific
 subject area, such as "customer data".  It supports the development of a comprehensive
 definition of the subject area and the standards that support it.
 These definitions can then be folded into the Governance Program,
@@ -44,7 +44,7 @@ remote server called 'Server1' is:
    "viewServicesConfig":[ 
       { 
          "class":"ViewServiceConfig",
-         "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.subjectarea.admin.SubjectAreaViewAdmin",
+         "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
          "viewServiceOperationalStatus":"ENABLED",
          "viewServiceOptions":{
             "remoteServerName":"Server1",

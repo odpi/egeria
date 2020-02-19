@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.admin.AssetLineageAdmin
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * AssetLineageRegistration registers the access service with the OMAG Server administration services.
@@ -24,9 +24,9 @@ class AssetLineageRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
-                ServiceOperationalStatus.ENABLED,
-                AssetLineageAdmin.class.getName());
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 AssetLineageAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

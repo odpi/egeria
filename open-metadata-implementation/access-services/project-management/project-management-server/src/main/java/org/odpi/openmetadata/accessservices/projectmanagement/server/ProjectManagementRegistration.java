@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.projectmanagement.admin.ProjectManag
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
  * ProjectManagementRegistration registers the access service with the OMAG Server administration services.
@@ -24,7 +24,7 @@ public class ProjectManagementRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS;
 
-        ServiceRegistration myRegistration = new ServiceRegistration(myDescription,
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  ServiceOperationalStatus.ENABLED,
                                                                                  ProjectManagementAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

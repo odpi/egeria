@@ -7,27 +7,25 @@ import java.io.Serializable;
 /**
  * ViewServiceDescription provides a list of registered view services.
  */
-public enum ViewServiceDescription implements Serializable
-{
-    SUBJECT_AREA  (1010,
-            "Subject Area",
-            "Subject Area OMVS",
-            "subject-area",
-            "Subject area authoring.",
-            //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
-    TYPE_EXPLORER (1020,
-            "Type Explorer",
-            "Type Explorer OMVS",
-            "type-explorer",
-            "Explore the open metadata types.",
-            //TODO create appropriate wiki
-            "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/")
-    ;
+public enum ViewServiceDescription implements Serializable {
+    GLOSSARY_AUTHOR(1010,
+                    "Glossary Author",
+                    "Glossary Author OMVS",
+                    "glossary-author",
+                    "View Service for glossary authoring.",
+                    //TODO create appropriate wiki
+                    "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+    TYPE_EXPLORER(1020,
+                  "Type Explorer",
+                  "Type Explorer OMVS",
+                  "type-explorer",
+                  "Explore the open metadata types.",
+                  //TODO create appropriate wiki
+                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/");
 
-    private static final long     serialVersionUID    = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private int    viewServiceCode;
+    private int viewServiceCode;
     private String viewServiceName;
     private String viewServiceFullName;
     private String viewServiceURLMarker;
@@ -38,19 +36,18 @@ public enum ViewServiceDescription implements Serializable
     /**
      * Default Constructor
      *
-     * @param viewServiceCode ordinal for this UI view
-     * @param viewServiceURLMarker string used in URLs
-     * @param viewServiceName symbolic name for this UI view
+     * @param viewServiceCode        ordinal for this UI view
+     * @param viewServiceURLMarker   string used in URLs
+     * @param viewServiceName        symbolic name for this UI view
      * @param viewServiceDescription short description for this UI view
-     * @param viewServiceWiki wiki page for the UI view for this UI view
+     * @param viewServiceWiki        wiki page for the UI view for this UI view
      */
-    ViewServiceDescription(int                            viewServiceCode,
-                           String                         viewServiceName,
-                           String                         viewServiceFullName,
-                           String                         viewServiceURLMarker,
-                           String                         viewServiceDescription,
-                           String                         viewServiceWiki)
-    {
+    ViewServiceDescription(int viewServiceCode,
+                           String viewServiceName,
+                           String viewServiceFullName,
+                           String viewServiceURLMarker,
+                           String viewServiceDescription,
+                           String viewServiceWiki) {
         /*
          * Save the values supplied
          */
@@ -68,8 +65,7 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return int type code
      */
-    public int getViewServiceCode()
-    {
+    public int getViewServiceCode() {
         return viewServiceCode;
     }
 
@@ -79,8 +75,7 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return String default name
      */
-    public String getViewServiceName()
-    {
+    public String getViewServiceName() {
         return viewServiceName;
     }
 
@@ -90,7 +85,9 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return String default name
      */
-    public String getViewServiceFullName() { return viewServiceFullName; }
+    public String getViewServiceFullName() {
+        return viewServiceFullName;
+    }
 
     /**
      * Return the string that appears in the REST API URL that identifies the owning service.
@@ -98,8 +95,7 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return String default name
      */
-    public String getViewServiceURLMarker()
-    {
+    public String getViewServiceURLMarker() {
         return viewServiceURLMarker;
     }
 
@@ -108,8 +104,7 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return String default description
      */
-    public String getViewServiceDescription()
-    {
+    public String getViewServiceDescription() {
         return viewServiceDescription;
     }
 
@@ -119,8 +114,7 @@ public enum ViewServiceDescription implements Serializable
      *
      * @return String URL name for the wiki page
      */
-    public String getViewServiceWiki()
-    {
+    public String getViewServiceWiki() {
         return viewServiceWiki;
     }
 
