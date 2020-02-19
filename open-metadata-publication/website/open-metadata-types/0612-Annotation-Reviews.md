@@ -15,7 +15,7 @@ The AnnotationReview entity records how the discovered annotations
 have been actioned in the metadata server and the steward that
 approved it.
 
-![UML](0612-Annotation-Reviews.png)
+![UML](0612-Annotation-Reviews.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

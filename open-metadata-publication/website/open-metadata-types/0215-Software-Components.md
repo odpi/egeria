@@ -5,7 +5,7 @@
 
 Software components describe the code assets that are deployed to implement software capabilities.
 
-![UML](0215-Software-Components.png)
+![UML](0215-Software-Components.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

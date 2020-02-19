@@ -3,7 +3,7 @@
 
 # 0511 Map Schema Elements
 
-![UML](0511-Map-Schema-Elements.png)
+![UML](0511-Map-Schema-Elements.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

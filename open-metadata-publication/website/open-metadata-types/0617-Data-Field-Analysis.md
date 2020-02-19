@@ -8,7 +8,7 @@ This relationship works with a specialization of Annotation called DataFieldAnno
 A DataFieldAnnotation is one that could apply to a single data field - or more broadly to the Asset.
 
 
-![UML](0617-Data-Field-Analysis.png)
+![UML](0617-Data-Field-Analysis.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

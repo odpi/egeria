@@ -10,7 +10,7 @@ Different organizations and tools can choose the granularity
 in which the capabilities are captured in order to provide appropriate
 context to data assets and the decisions made around them.
 
-![UML](0042-Software-Server-Capabilities.png)
+![UML](0042-Software-Server-Capabilities.png#pagewidth)
 
 
 Return to [Area 0](Area-0-models.md).

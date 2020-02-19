@@ -3,7 +3,7 @@
 
 # 0457 Security Capabilities
 
-![UML](0457-Security-Capabilities.png)
+![UML](0457-Security-Capabilities.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

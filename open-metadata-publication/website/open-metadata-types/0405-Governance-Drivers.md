@@ -11,7 +11,7 @@ It defines how the governance program supports the business strategy.
 Reconciling the governance strategy with the regulations creates synergies
 in an organization's approach to governance.
 
-![UML](0405-Governance-Drivers.png)
+![UML](0405-Governance-Drivers.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

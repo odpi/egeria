@@ -6,7 +6,7 @@
 Technical controls are governance controls that are implemented using technology.  They are deployed into
 the IT landscape as software components and processes.
 
-![UML](0430-Technical-Controls.png)
+![UML](0430-Technical-Controls.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

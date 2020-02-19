@@ -3,7 +3,7 @@
 
 # 0460 Governance Actions
 
-![UML](0460-Governance-Actions.png)
+![UML](0460-Governance-Actions.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

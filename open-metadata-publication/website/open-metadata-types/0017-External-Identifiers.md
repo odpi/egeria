@@ -5,7 +5,7 @@
 
 External Identifiers are identifiers for a Referenceable that are used in external systems.
 
-![UML](0017-External-Identifiers.png)
+![UML](0017-External-Identifiers.png#pagewidth)
 
 They are used to correlate information from these other systems with the open metadata.
 

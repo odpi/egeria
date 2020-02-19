@@ -22,7 +22,7 @@ of a particular type.
 schema elements in metadata.   The **SchemaType** describes the
 top-level name of a schema and also the types of any fields nested in it.
 
-![UML](0501-Schema-Elements.png)
+![UML](0501-Schema-Elements.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

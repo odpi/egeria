@@ -15,7 +15,7 @@ Note that the type information for each column can be directly embedded on the *
 Also recall that the [NestedSchemaAttribute](0505-Schema-Attributes.md) relationship can be used to link directly
 between **RelationalTable** (or **RelationalView**) and the **RelationalColumn**s contained within the table (or view).
 
-![UML](0534-Relational-Schemas.png)
+![UML](0534-Relational-Schemas.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).
