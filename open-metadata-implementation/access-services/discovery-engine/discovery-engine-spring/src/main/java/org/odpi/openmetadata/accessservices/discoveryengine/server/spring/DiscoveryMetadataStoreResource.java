@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -264,6 +261,25 @@ public class DiscoveryMetadataStoreResource
                                                               @PathVariable String   discoveryReportGUID)
     {
         return restAPI.getDiscoveryAnalysisReport(serverName, userId, discoveryReportGUID);
+    }
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/annotations/sub-types")
+
+    public NameListResponse getTypesOfAnnotation(@PathVariable String  serverName,
+                                                 @PathVariable String  userId)
+    {
+        return restAPI.getTypesOfAnnotation(serverName, userId);
     }
 
 

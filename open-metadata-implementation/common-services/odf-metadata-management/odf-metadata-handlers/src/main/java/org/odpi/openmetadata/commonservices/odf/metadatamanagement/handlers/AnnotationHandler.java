@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.AnnotationMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -51,6 +52,17 @@ public class AnnotationHandler
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
         this.dataFieldHandler = dataFieldHandler;
+    }
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @return list of type names that are subtypes of annotation
+     */
+    public List<String>  getTypesOfAnnotation()
+    {
+        return repositoryHelper.getSubTypesOf(serviceName, AnnotationMapper.ANNOTATION_TYPE_NAME);
     }
 
 
@@ -163,7 +175,7 @@ public class AnnotationHandler
     }
 
 
-       /**
+    /**
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *

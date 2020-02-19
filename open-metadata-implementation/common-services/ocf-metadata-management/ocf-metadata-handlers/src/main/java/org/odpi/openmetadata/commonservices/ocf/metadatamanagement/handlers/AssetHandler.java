@@ -149,11 +149,32 @@ public class AssetHandler
     }
 
 
+    /**
+     * Return the list of supported zones for this asset.  This originates from the configuration of the access server.
+     * but may be changed by the security verifier.
+     *
+     * @param userId calling user
+     * @param serviceName called service
+     * @return list of zone names
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem from the verifier
+     */
     private List<String> getSupportedZones(String      userId,
                                            String      serviceName) throws InvalidParameterException,
                                                                            PropertyServerException
     {
         return securityVerifier.setSupportedZonesForUser(supportedZones, serviceName, userId);
+    }
+
+
+    /**
+     * Return the asset subtype names.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public List<String>  getTypesOfAsset()
+    {
+        return repositoryHelper.getSubTypesOf(serviceName, AssetMapper.ASSET_TYPE_NAME);
     }
 
 

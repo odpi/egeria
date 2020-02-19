@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
@@ -34,6 +35,35 @@ public class AssetOwnerResource
     public AssetOwnerResource()
     {
     }
+
+
+
+    /*
+     * ==============================================
+     * AssetKnowledgeInterface
+     * ==============================================
+     */
+
+
+
+    /**
+     * Return the asset subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/assets/sub-types")
+
+    public NameListResponse getTypesOfAsset(@PathVariable String           serverName,
+                                            @PathVariable String           userId)
+    {
+        return restAPI.getTypesOfAsset(serverName, userId);
+    }
+
 
     /*
      * ==============================================

@@ -45,7 +45,30 @@ public class FFDCRESTClient extends FFDCRESTClientBase
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
+    /**
+     * Issue a GET REST call that returns a list of names.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return NameListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public NameListResponse callNameListGetRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        NameListResponse restResult = this.callGetRESTCall(methodName, NameListResponse.class, urlTemplate, params);
 
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
 
     /**
      * Issue a GET REST call that returns a GUIDResponse object.
@@ -113,7 +136,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return GUIDListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
