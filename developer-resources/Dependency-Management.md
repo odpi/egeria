@@ -67,7 +67,7 @@ Egeria dependencies are scanned for potential CVEs automatically in two main way
 
 The maintainers will review these regularly and action any required changes through issues and pull requests.
 
-Egeria code itself is also scanned for vulnerabilities using [Sonar](https://sonarcloud.io/dashboard?id=odpi_egeria) .
+Egeria code itself is also scanned for vulnerabilities using [Sonar](https://sonarcloud.io/dashboard?id=odpi_egeria).
 
 Additionally any developer can perform similar checks by running:
 
@@ -88,7 +88,9 @@ If running against ALL components (ie from the root) an invocation like
 MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC" mvn clean install -DfindBugs 
 ```
 
-may be needed due to the memory requirements of a security scan
+may be needed due to the memory requirements of a security scan.
+
+For more information on how potential security issues are handled, see [Security Hardening](Security-Hardening.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
