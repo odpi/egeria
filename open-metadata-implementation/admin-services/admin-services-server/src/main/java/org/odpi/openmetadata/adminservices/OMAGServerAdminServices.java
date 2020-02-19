@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
+import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
@@ -15,6 +16,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
+import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -49,13 +52,61 @@ public class OMAGServerAdminServices
     private            OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
     private            OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
+
+    /**
+     * Return the derived server type that is created from the classification of the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return server type classification response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     */
+    public ServerTypeClassificationResponse getServerTypeClassification(String userId,
+                                                                        String serverName)
+    {
+        final String methodName = "getServerTypeClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ServerTypeClassificationResponse response = new ServerTypeClassificationResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ServerTypeClassifier classifier = new ServerTypeClassifier(serverName, configStore.getServerConfig(userId, serverName, methodName));
+            ServerTypeClassificationSummary summary = new ServerTypeClassificationSummary(classifier.getServerType());
+
+            response.setServerTypeClassification(summary);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /*
      * =============================================================
      * Configure server - basic options using defaults
      */
 
 
-                                                                                          /**
+    /**
      * Set up the descriptive type of the server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
      *
@@ -83,7 +134,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -717,12 +768,12 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig();
             }
             else
             {
                 ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
-                Connection                    defaultAuditLogDestination = configurationFactory.getDefaultAuditLogConnection(serverName);
+                Connection                    defaultAuditLogDestination = configurationFactory.getDefaultAuditLogConnection();
 
                 List<Connection> auditLogDestinations = new ArrayList<>();
 
@@ -785,7 +836,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -833,7 +884,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1275,8 +1326,7 @@ public class OMAGServerAdminServices
 
             this.setRepositoryProxyConnection(userId,
                                               serverName,
-                                              connectorConfigurationFactory.getRepositoryProxyConnection(serverName,
-                                                                                                         connectorProvider,
+                                              connectorConfigurationFactory.getRepositoryProxyConnection(connectorProvider,
                                                                                                          serverConfig.getLocalServerURL(),
                                                                                                          additionalProperties));
         }
@@ -1422,8 +1472,7 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryEventMapper(userId,
                                                serverName,
-                                               connectorConfigurationFactory.getRepositoryEventMapperConnection(serverName,
-                                                                                                                connectorProvider,
+                                               connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
                                                                                                                 eventSource));
         }
@@ -1922,7 +1971,7 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
             }
 
@@ -1993,7 +2042,7 @@ public class OMAGServerAdminServices
                 {
                     OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
 
-                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 }
 
                 List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
@@ -2115,7 +2164,7 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setOpenMetadataArchiveConnections(openMetadataArchives);
             }
 
@@ -2229,7 +2278,7 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
             }
 
@@ -2366,7 +2415,7 @@ public class OMAGServerAdminServices
             }
             else if (newCohortConfigs != null)
             {
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
 
                 repositoryServicesConfig.setCohortConfigList(newCohortConfigs);
             }

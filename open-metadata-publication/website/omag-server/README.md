@@ -39,7 +39,7 @@ Figure 2 shows the configuration services creating three configuration documents
 ![Figure 2](omag-server-platform-configure.png)
 > Figure 2: Creating configuration documents for OMAG Servers
 
-The [Administration Services User Guide](../../../open-metadata-implementation/admin-services/Using-the-Admin-Services.md)
+The [Administration Services User Guide](../../../open-metadata-implementation/admin-services/docs/user)
 provides detailed instructions on creating configuration documents.
 
 Once a configuration document for an OMAG server is used by

@@ -10,7 +10,7 @@ Check [create-port-implementation](create-port-implementation.md), [create-port-
 and [create-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
 
 {
   "processes": [

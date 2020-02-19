@@ -5,7 +5,7 @@
 # Update review on asset
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/reviews/{{reviewGUID}}/update
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/reviews/{reviewGUID}/update
 ```
 
 ```java

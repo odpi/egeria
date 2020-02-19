@@ -336,15 +336,13 @@ public class OMAGServerAdminForAccessServices
 
         accessServiceConfig.setAccessServiceOptions(accessServiceOptions);
         accessServiceConfig.setAccessServiceInTopic(
-                connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
-                                                                           eventBusConfig.getConnectorProvider(),
+                connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
                                                                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                                                            registration.getAccessServiceInTopic(),
                                                                            localServerId,
                                                                            eventBusConfig.getConfigurationProperties()));
         accessServiceConfig.setAccessServiceOutTopic(
-                connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
-                                                                           eventBusConfig.getConnectorProvider(),
+                connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
                                                                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                                                            registration.getAccessServiceOutTopic(),
                                                                            localServerId,
@@ -593,7 +591,7 @@ public class OMAGServerAdminForAccessServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
 
                 repositoryServicesConfig.setEnterpriseAccessConfig(enterpriseAccessConfig);
             }

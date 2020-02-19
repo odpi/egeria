@@ -3,7 +3,7 @@
 
 # Open Metadata Repository Services (OMRS) Metadata Meta-Model
 
-![Figure 1: Overview of OMRS's metamodel](metadata-meta-model-overview.png)
+![Figure 1: Overview of OMRS's metamodel](metadata-meta-model-overview.png#pagewidth)
 > Figure 1: Overview of OMRS's metadata metamodel
 
 OMRS's metamodel defines the structures used to represent metadata,
@@ -25,7 +25,7 @@ the following three general types (`TypeDefCategory`):
 TypeDefs are implemented as Java classes in Egeria (those in *italics* 
 are abstract).
 
-![Figure 2: Type Definitions](metadata-meta-model-typedef-detail.png)
+![Figure 2: Type Definitions](metadata-meta-model-typedef-detail.png#pagewidth)
 > Figure 2: Type Definitions
 
 **Examples**
@@ -61,7 +61,7 @@ any `Referenceable` entity (hence including both `GlossaryTerm` and
 `GlossaryCategory`, as both of these extend the `Referenceable` entity 
 type).
 
-![Figure 3: Example Type Definitions (from OpenMetadataTypes)](metadata-meta-model-typedef-examples.png)
+![Figure 3: Example Type Definitions (from OpenMetadataTypes)](metadata-meta-model-typedef-examples.png#pagewidth)
 > Figure 3: Example Type Definitions (from OpenMetadataTypes)
 
 For example, the `Referenceable` is defined as follows as part of the 
@@ -197,7 +197,7 @@ used to describe the entity, classification or relationship.
 Instances as a concept are implemented as generic Java classes in Egeria 
 (those in *italics* are abstract).
 
-![Figure 5: Instances](metadata-meta-model-instances-detail.png)
+![Figure 5: Instances](metadata-meta-model-instances-detail.png#pagewidth)
 > Figure 5: Instances
 
 **Examples**
@@ -230,8 +230,8 @@ a `Relationship` representing the `TermCategorization` with one end
 pointing to an `EntityProxy` for "Address Line 1" and one end pointing 
 to an `EntityProxy` for "Coco Pharmaceuticals/Terms"
 
-![Figure 6: Example instances (using opentypes)](metadata-meta-model-instances-examples.png)
-> Figure 6: Example instances (using opentypes)
+![Figure 6: Example instances (using open metadata types)](metadata-meta-model-instances-examples.png#pagewidth)
+> Figure 6: Example instances (using open metadata types)
 
 As code, this example could be implemented using something like the following:
 
@@ -367,7 +367,7 @@ omrsRelationship.setGUID("...");
 ## More information on types
 
 For more information on the OpenMetadataTypes that are covered by and included 
-with Egeria, see [the open metadata type system](../../../open-metadata-publication/website/open-metadata-types/README.md).
+with Egeria, see [the open metadata type system](../../../open-metadata-publication/website/open-metadata-types).
 
 
 

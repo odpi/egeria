@@ -148,8 +148,7 @@ public class OMRSConfigurationFactory
 
         localRepositoryConfig.setMetadataCollectionId(UUID.randomUUID().toString());
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getDefaultLocalRepositoryLocalConnection());
-        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(repositoryName,
-                                                                                                                                         localServerName,
+        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(localServerName,
                                                                                                                                          localServerURL));
         localRepositoryConfig.setEventsToSaveRule(this.getDefaultEventsToSaveRule());
         localRepositoryConfig.setSelectedTypesToSave(this.getDefaultSelectedTypesToSave());
@@ -176,8 +175,7 @@ public class OMRSConfigurationFactory
                                                                                            localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(repositoryName,
-                                                                                                                                        localServerName));
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection());
 
         return localRepositoryConfig;
     }
@@ -203,9 +201,7 @@ public class OMRSConfigurationFactory
                                                                                            localServerURL);
 
         localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(repositoryName,
-                                                                                                                       localServerName,
-                                                                                                                       storageProperties));
+                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(storageProperties));
 
         return localRepositoryConfig;
     }
@@ -300,16 +296,15 @@ public class OMRSConfigurationFactory
     /**
      * Returns a repository services config with the audit log set up.
      *
-     * @param localServerName name of the local server
      * @return minimally configured repository services config
      */
-    public RepositoryServicesConfig getDefaultRepositoryServicesConfig(String localServerName)
+    public RepositoryServicesConfig getDefaultRepositoryServicesConfig()
     {
         RepositoryServicesConfig repositoryServicesConfig = new RepositoryServicesConfig();
 
         List<Connection>   auditLogStoreConnections = new ArrayList<>();
 
-        auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection(localServerName));
+        auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection());
 
         repositoryServicesConfig.setAuditLogConnections(auditLogStoreConnections);
 

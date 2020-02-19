@@ -28,9 +28,9 @@ public class StewardshipServerConfigurationClient extends EngineHostConfiguratio
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    StewardshipServerConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public StewardshipServerConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -48,11 +48,11 @@ public class StewardshipServerConfigurationClient extends EngineHostConfiguratio
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    StewardshipServerConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL,
-                                         String connectionUserId,
-                                         String connectionPassword) throws OMAGInvalidParameterException
+    public StewardshipServerConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL,
+                                                String connectionUserId,
+                                                String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

@@ -6,7 +6,7 @@
 Returns the connection corresponding to the supplied connection GUID.
 
 ```
-GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/connections/{{connectionGUID}}
+GET {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/connections/{connectionGUID}
 ```
 
 ```java

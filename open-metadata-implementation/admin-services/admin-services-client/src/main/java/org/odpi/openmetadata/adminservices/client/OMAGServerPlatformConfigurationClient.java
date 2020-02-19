@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  * There are two aspects to this. Firstly setting up the connector for the configuration
  * document store.  Then secondly, configuring the platform security connector.
  */
-public abstract class OMAGServerPlatformConfigurationClient
+public class OMAGServerPlatformConfigurationClient
 {
     protected String adminUserId;              /* Initialized in constructor */
     protected String serverPlatformRootURL;    /* Initialized in constructor */
@@ -36,8 +36,8 @@ public abstract class OMAGServerPlatformConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    OMAGServerPlatformConfigurationClient(String adminUserId,
-                                          String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public OMAGServerPlatformConfigurationClient(String adminUserId,
+                                                 String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -69,10 +69,10 @@ public abstract class OMAGServerPlatformConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    OMAGServerPlatformConfigurationClient(String adminUserId,
-                                          String serverPlatformRootURL,
-                                          String connectionUserId,
-                                          String connectionPassword) throws OMAGInvalidParameterException
+    public OMAGServerPlatformConfigurationClient(String adminUserId,
+                                                 String serverPlatformRootURL,
+                                                 String connectionUserId,
+                                                 String connectionPassword) throws OMAGInvalidParameterException
     {
         final String methodName = "Client Constructor (with security)";
 

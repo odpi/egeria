@@ -53,7 +53,7 @@ public class OMAGServerConfigOpenLineage {
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
                 openLineageServerConfig.setInTopicConnection(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot(),
                                 openLineageServerConfig.getInTopicName(),
