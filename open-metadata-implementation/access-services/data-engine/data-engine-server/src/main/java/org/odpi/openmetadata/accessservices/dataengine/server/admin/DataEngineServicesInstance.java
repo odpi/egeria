@@ -51,8 +51,8 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper);
             processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
-            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    schemaTypeHandler, dataEngineRegistrationHandler);
+            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, schemaTypeHandler, dataEngineRegistrationHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineRegistrationHandler);
 
