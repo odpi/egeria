@@ -24,9 +24,9 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    MetadataServerConfigurationClient(String adminUserId,
-                                      String serverName,
-                                      String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public MetadataServerConfigurationClient(String adminUserId,
+                                             String serverName,
+                                             String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -44,11 +44,11 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    MetadataServerConfigurationClient(String adminUserId,
-                                      String serverName,
-                                      String serverPlatformRootURL,
-                                      String connectionUserId,
-                                      String connectionPassword) throws OMAGInvalidParameterException
+    public MetadataServerConfigurationClient(String adminUserId,
+                                             String serverName,
+                                             String serverPlatformRootURL,
+                                             String connectionUserId,
+                                             String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

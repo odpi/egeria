@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
     {
         final String methodName    = "addCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}";
 
         try
         {
@@ -96,9 +97,15 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
             throw new OMAGInvalidParameterException(error);
         }
 
+        Map<String, Object>  requestBody = additionalProperties;
+        if (requestBody == null)
+        {
+            requestBody = new HashMap<>();
+        }
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        additionalProperties,
+                                        requestBody,
                                         adminUserId,
                                         serverName,
                                         cohortName);
@@ -166,7 +173,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
     {
         final String methodName    = "setCohortConfig";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/configuration";
 
         try
         {

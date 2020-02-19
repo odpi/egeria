@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,23 @@ import org.springframework.web.bind.annotation.*;
 public class ConfigPropertiesResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+
+
+    /**
+     * Return the derived server type that is created from the classification of the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     */
+    @GetMapping(path = "/server-type-classification")
+    public ServerTypeClassificationResponse getServerTypeClassification(@PathVariable String userId,
+                                                                        @PathVariable String serverName)
+    {
+        return adminAPI.getServerTypeClassification(userId, serverName);
+    }
 
 
     /**

@@ -25,9 +25,9 @@ abstract class ConformanceTestServerConfigurationClient extends CohortMemberConf
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    ConformanceTestServerConfigurationClient(String adminUserId,
-                                             String serverName,
-                                             String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public ConformanceTestServerConfigurationClient(String adminUserId,
+                                                    String serverName,
+                                                    String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -45,11 +45,11 @@ abstract class ConformanceTestServerConfigurationClient extends CohortMemberConf
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    ConformanceTestServerConfigurationClient(String adminUserId,
-                                             String serverName,
-                                             String serverPlatformRootURL,
-                                             String connectionUserId,
-                                             String connectionPassword) throws OMAGInvalidParameterException
+    public ConformanceTestServerConfigurationClient(String adminUserId,
+                                                    String serverName,
+                                                    String serverPlatformRootURL,
+                                                    String connectionUserId,
+                                                    String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

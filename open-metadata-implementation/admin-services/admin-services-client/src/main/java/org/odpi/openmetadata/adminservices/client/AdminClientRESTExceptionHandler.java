@@ -41,11 +41,12 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
 
         if (restResult != null)
         {
-            log.error("FFDC Response: {}", restResult.toString());
             String exceptionClassName = restResult.getExceptionClassName();
 
             if (exceptionClassName != null)
             {
+                log.error("FFDC Response: {}", restResult.toString());
+
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
                     this.throwOMAGInvalidParameterException(methodName, restResult);
@@ -58,6 +59,10 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                 {
                     this.throwOMAGConfigurationException(methodName, restResult);
                 }
+            }
+            else
+            {
+                log.debug("FFDC Response: {}", restResult.toString());
             }
         }
     }
