@@ -30,9 +30,9 @@ import java.util.Arrays;
  */
 public enum SubjectAreaErrorCode {
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-SUBJECT-AREA-400-001 ",
-            "The remote server Platform root URL is null",
-            "The system is unable to connect to the remote server to retrieve metadata properties.",
-            "Ensure a valid remote server Platform root URL is passed to the Subject Area OMAS when it is created."),
+            "The OMAG Server Platform root URL is null",
+            "The system is unable to connect to the OMAG Server to retrieve metadata properties.",
+            "Ensure a valid OMAG Server Platform root URL is passed to the Subject Area OMAS when it is created."),
     NULL_USER_ID(400, "OMAS-SUBJECT-AREA-400-002 ",
             "The user identifier (user id) passed on the {0} operation is null",
             "The system is unable to process the request without a user id.",
@@ -308,11 +308,11 @@ public enum SubjectAreaErrorCode {
             "The system is unable to process the request.",
             "Correct the code in the caller to create a Project with a name."),
     SERVER_NAME_NOT_SPECIFIED(400, "OMAS-SUBJECT-AREA-400-069 ",
-            "The remote server name is null",
-            "The system is unable to connect to the remote server to retrieve metadata properties.",
-            "Ensure a valid remote server name is passed to the Subject Area OMAS when it is created."),
+            "The OMAG server name is null",
+            "The system is unable to connect to the OMAG Server to retrieve metadata properties.",
+            "Ensure a valid OMAG Server name is passed to the Subject Area OMAS when it is created."),
     UNEXPECTED_EXCEPTION(400, "OMAS-SUBJECT-AREA-400-070 ",
-            "An unexpected exception occurred while processing method {0}. The Exception message is {1}.",
+            "An unexpected Exception occurred while processing method {0}. The Exception message is {1}.",
             "The system is got unexpected exception.",
             "Review the exception message to assess whether this is a logic error (in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001 ",
@@ -326,18 +326,18 @@ public enum SubjectAreaErrorCode {
             "Check that the server where the Subject Area OMAS is running initialized correctly." +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     NO_METADATA_COLLECTION(404, "OMAS-SUBJECT-AREA-404-003 ",
-            "The requested connection {0} is not found in remote server {1}",
+            "The requested connection {0} is not found in OMAG Server {1}",
             "The system is unable to populate the requested connection object.",
-            "Check that the connection name and the remote server Platform URL is correct.  Retry the request when the connection is available in the" +
+            "Check that the connection name and the OMAG Server Platform URL is correct.  Retry the request when the connection is available in the" +
                                    " OMAS Service"),
 
     NULL_CONNECTION_RETURNED(500, "OMAS-SUBJECT-AREA-500-001 ",
             "The requested connection named {0} is not returned by the open metadata Server {1}",
-            "The system is unable to create a connector because the remote server is not returning the Connection properties.",
-            "Verify that the remote server running and the connection definition is correctly " +
+            "The system is unable to create a connector because the OMAG Server is not returning the Connection properties.",
+            "Verify that the OMAG server running and the connection definition is correctly " +
                                      "configured."),
     NULL_CONNECTOR_RETURNED(500, "OMAS-SUBJECT-AREA-500-002 ",
-            "The requested connector for connection named {0} is not returned by the remote server {1}",
+            "The requested connector for connection named {0} is not returned by the OMAG Server {1}",
             "The system is unable to create a connector.",
             "Verify that the server is running and the connection definition is correctly configured."),
     NULL_RESPONSE_FROM_API(503, "OMAS-SUBJECT-AREA-503-001 ",

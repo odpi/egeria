@@ -28,7 +28,7 @@ like sets and arrays:
 - Set: `minCardinality = 0`, `maxCardinality = -1`, `allowsDuplicateValues = false`, `orderedValues = false`
 - Bag: `minCardinality = 0`, `maxCardinality = -1`, `allowsDuplicateValues = true`, `orderedValues = false`
 
-![UML](0505-Schema-Attributes.png)
+![UML](0505-Schema-Attributes.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

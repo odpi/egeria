@@ -218,6 +218,17 @@ branch creation:
    distributed to [Bintray](https://bintray.com/odpi) which will sign
    them and sync them to [Maven Central](https://oss.sonatype.org).
 
+### Release Process Troubleshooting
+
+The Linux Foundation maintains a Knowledge Base (KB) of articles on
+possible issues that may arise during the release process:
+ * [Including a New Package in the Release](https://confluence.linuxfoundation.org/display/ITKB/Including+Bintray+Packages+in+JCenter)
+ * [Fixing Package Corruption](https://confluence.linuxfoundation.org/display/ITKB/Redistribute+Artifacts+to+Bintray)
+ * [Getting Packages Synced to Maven-Central](https://confluence.linuxfoundation.org/display/ITKB/Sync+Artifacts+from+Bintray+to+Maven+Central)
+
+If the KB articles are not able to fix the problem, please open a ticket
+with [Linux Foundation support](https://jira.linuxfoundation.org/servicedesk/customer/portal/2)
+
 ## Conflict resolution and voting
 
 In general, we prefer that technical issues and maintainer membership are amicably worked out

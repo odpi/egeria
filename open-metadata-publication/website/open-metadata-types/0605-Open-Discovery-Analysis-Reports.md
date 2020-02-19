@@ -20,7 +20,7 @@ discovery service description itself (see DiscoveryInvocationReport relationship
 so it is possible to navigate to the report from different
 perspectives.
 
-![UML](0605-Open-Discovery-Analysis-Reports.png)
+![UML](0605-Open-Discovery-Analysis-Reports.png#pagewidth)
 
 The **OpenDiscoveryAnalysisReport** entity is the report header.
 It identifies the date of the report and the parameters used.

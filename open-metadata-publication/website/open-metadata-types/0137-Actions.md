@@ -9,7 +9,7 @@ An item of work is describe in a ToDo.
 Figure 1 captures the ToDo entity and its originator, along
 with the people assigned to work on it.
 
-![UML](0137-Actions.png)
+![UML](0137-Actions.png#pagewidth)
 > Figure 1: Describing an action
 
 Return to [Area 1](Area-1-models.md).

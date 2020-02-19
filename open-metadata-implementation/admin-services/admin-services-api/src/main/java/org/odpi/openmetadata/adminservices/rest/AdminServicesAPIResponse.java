@@ -6,10 +6,6 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -27,7 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         ({
                 @JsonSubTypes.Type(value = SuccessMessageResponse.class, name = "SuccessMessageResponse"),
                 @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
-                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse")
+                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
+                @JsonSubTypes.Type(value = ServerTypeClassificationResponse.class, name = "ServerClassificationResponse"),
+                @JsonSubTypes.Type(value = DiscoveryEngineServicesConfigResponse.class, name = "DiscoveryEngineServicesConfigResponse"),
         })
 public abstract class AdminServicesAPIResponse extends FFDCResponseBase
 {

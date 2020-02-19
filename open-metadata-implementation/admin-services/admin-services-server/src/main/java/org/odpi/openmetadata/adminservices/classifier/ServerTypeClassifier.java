@@ -49,7 +49,7 @@ public class ServerTypeClassifier
     {
         final String methodName = "getServerType";
 
-        ServerTypeClassification serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+        ServerTypeClassification serverTypeClassification = null;
 
         this.validateConfigurationDocumentNotNull(serverName, configurationDocument, methodName);
 
@@ -90,7 +90,6 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
-        this.validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
 
         /*
          * All servers need the repository services
@@ -110,7 +109,20 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
-        if (accessServiceConfigList != null) {
+        /*
+         * The access service list is only allowed in a metadata server or metadata access point.
+         */
+        if (accessServiceConfigList != null)
+        {
+            if (this.detectLocalRepository(repositoryServicesConfig))
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+            }
+
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
@@ -694,6 +706,19 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
+        if (serverTypeClassification == null)
+        {
+            /*
+             * Last attempt to classify is the repository proxy.
+             * The repository proxy has the local repository and nothing else.
+             */
+            if (this.detectLocalRepository(repositoryServicesConfig))
+            {
+                serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
+            }
+        }
+
+        this.validateServerClassificationNotNull(serverName, serverTypeClassification, methodName);
         return serverTypeClassification;
     }
 
@@ -726,6 +751,49 @@ public class ServerTypeClassifier
 
 
     /**
+     * Checks that a classification has been derived for a configuration document.
+     * This should never be called.  If it is occurring then there has probably been a new type
+     * of server configuration added to Egeria without a corresponding update to the
+     * server classifier.
+     *
+     * @param serverName requested server
+     * @param serverTypeClassification classification value derived from the analysis of the
+     *                                 configuration document
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     */
+    private void validateServerClassificationNotNull(String                    serverName,
+                                                     ServerTypeClassification  serverTypeClassification,
+                                                     String                    methodName) throws OMAGInvalidParameterException
+    {
+        if (serverTypeClassification == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Determine if the server is to have a local repository or not.
+     *
+     * @param repositoryServicesConfig repository services config section of configuration document
+     * @return true if there is a local repository, otherwise false.
+     */
+    private boolean detectLocalRepository(RepositoryServicesConfig  repositoryServicesConfig)
+    {
+        return repositoryServicesConfig.getLocalRepositoryConfig() != null;
+    }
+
+
+    /**
      * Check that the server configuration does not include a subsystem that it should not have.
      *
      * @param serverName name of the server that the configuration belongs to
@@ -754,35 +822,6 @@ public class ServerTypeClassifier
                                                       errorMessage,
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param configServerName serverName passed in config (should match request name)
-     * @param methodName  method being called
-     * @throws OMAGConfigurationErrorException incompatible server names
-     */
-    private void validateConfigServerName(String serverName,
-                                          String configServerName,
-                                          String methodName) throws OMAGConfigurationErrorException
-    {
-        if (! serverName.equals(configServerName))
-        {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
-
         }
     }
 }

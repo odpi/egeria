@@ -1,10 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Metadata Governance Servers
+# Open Metadata Governance Services
 
-The open metadata governance servers bring combinations of the Egeria services together to
-support different integration patterns.
+The open metadata governance services provide the primary function for
+Egeria's [governance servers](../admin-services/docs/concepts/governance-server-types.md).
+They add services that either help to integrate third party technology, or
+make use of open metadata to create new services.
 
 More information about Governance Servers in general can be found under [docs](docs).
 However each of the services below provide the principle service

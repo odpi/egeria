@@ -6,7 +6,7 @@
 Adds a comment to an existing comment as a reply.
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/comments/{{commentGUID}}/replies
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/comments/{commentGUID}/replies
 ```
 
 ```java

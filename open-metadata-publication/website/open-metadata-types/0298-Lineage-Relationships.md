@@ -5,7 +5,7 @@
 
 Lineage Relationships define the constructs used by Lineage.
 
-![UML](0298-Lineage-Relationships.png)
+![UML](0298-Lineage-Relationships.png#pagewidth)
 
 - **ProcessHierarchy** defines a parent-child relationship between processes, which can be used to define
     more abstract processes that are comprised of lower-level processes; helping to support coarser- and finer-

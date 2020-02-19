@@ -15,6 +15,7 @@ engine.
 [Apache Cassandra](http://cassandra.apache.org/).
 
 
+Return to [open-connectors](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

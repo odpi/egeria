@@ -6,7 +6,7 @@
 Meetings allows a record of meetings for projects or the governance
 program to be associated with the appropriate metadata elements.
 
-![UML](0135-Meetings.png)
+![UML](0135-Meetings.png#pagewidth)
 
 Return to [Area 1](Area-1-models.md).
 

@@ -469,9 +469,12 @@ public class OMAGServerPlatformInstanceMap
         else
         {
             handleBadServerName(userId, serverName, serviceOperationName);
-        }
 
-        return null;
+            /*
+             * Note, this return is unreachable because handleBadServerName always throws an exception.
+             */
+            return null;
+        }
     }
 
 
