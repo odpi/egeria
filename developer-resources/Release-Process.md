@@ -101,7 +101,6 @@
 * Fill in the release notes using a title of 'Release x.y' and copy the notes from the appropriate release notes at https://github.com/odpi/egeria/tree/master/release-notes
 * Artifacts will be available on maven central within around half a day.
 * Source archives will be added to the release on git within an hour or so.
-* Maven central artifacts should appear within 24 hours
 
 ## Useful links
 * Azure pipelines - https://dev.azure.com/odpi/egeria/_build
