@@ -5,7 +5,7 @@
 
 Describes relationships where operational lineage may be collected.
 
-![UML](0710-Data-Passing.png)
+![UML](0710-Data-Passing.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

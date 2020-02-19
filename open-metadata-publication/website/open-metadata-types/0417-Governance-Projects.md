@@ -9,7 +9,7 @@ The **GovernanceProject** classification tags these projects
 so they are easy for the governance team to identify when it comes
 to reporting.
 
-![UML](0417-Governance-Projects.png)
+![UML](0417-Governance-Projects.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

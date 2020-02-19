@@ -9,7 +9,7 @@ Engines that are performing processing on the resources may
 also write notes to the note log.
 The note log can be attached to any referenceable metadata object.
 
-![UML](0160-Notes.png)
+![UML](0160-Notes.png#pagewidth)
 
 A referenceable object can have many notes linked off of it.
 Notes are used by the people with edit access to the

@@ -13,7 +13,7 @@ The certifications awarded can be captured in the metadata
 repository to enable both use and management of the
 certification process.
 
-![UML](0482-Certifications.png)
+![UML](0482-Certifications.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

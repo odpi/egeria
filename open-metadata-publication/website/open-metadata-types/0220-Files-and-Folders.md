@@ -8,7 +8,7 @@ that can be processed and their location.
 
 Files and folders describe physical files and how they are organized on the file system.
 
-![UML](0220-Files-and-Folders.png)
+![UML](0220-Files-and-Folders.png#pagewidth)
 
 The file system is a [Software Server Capability](0042-Software-Server-Capabilities.md).
 The root folders (**FileFolders**) are connected to it using the
@@ -26,7 +26,7 @@ They are not individually catalogued.
 
 The diagram below illustrates the structure.
 
-![File system structure](0220-Files-and-Folders-Example.png)
+![File system structure](0220-Files-and-Folders-Example.png#pagewidth)
 
 Return to [Area 2](Area-2-models.md).
 
