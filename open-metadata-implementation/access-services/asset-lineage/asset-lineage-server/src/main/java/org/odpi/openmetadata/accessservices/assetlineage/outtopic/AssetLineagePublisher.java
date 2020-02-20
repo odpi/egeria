@@ -92,7 +92,7 @@ public class AssetLineagePublisher {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
                 serverUserName,
                 entityDetail);
-        if (classificationContext.isEmpty())
+        if (classificationContext == null || classificationContext.isEmpty())
             return;
         LineageEvent event = new LineageEvent();
         event.setAssetContext(classificationContext);

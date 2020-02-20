@@ -85,9 +85,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         EntityDetail entityDetail = instanceEvent.getEntity();
 
-        if (!immutableValidLineageEventEntities.contains(entityDetail.getType().getTypeDefName()))
-            return;
-
         try {
             switch (instanceEventType) {
                 case NEW_ENTITY_EVENT:
@@ -119,24 +116,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //                break;
             }
         } catch (OCFCheckedExceptionBase e) {
-            log.error("An exception occurred while processing an event \n \n" + e.toString(), e);
+            log.error("An exception occurred while processing an OMRSTopic event \n \n" + e.toString(), e);
             logExceptionToAudit(instanceEvent, e);
         } catch (Throwable e) {
-            log.error("An exception occurred while processing an event", e);
+            log.error("An exception occurred while processing an OMRSTopic event", e);
             logExceptionToAudit(instanceEvent, e);
         }
-    }
-
-    private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
-        AssetLineageAuditCode auditCode = AssetLineageAuditCode.EVENT_PROCESSING_ERROR;
-        auditLog.logException("Asset Lineage OMAS is processing a OMRSTopic event",
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(instanceEvent.toString()),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction(),
-                e);
     }
 
 
@@ -157,6 +142,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
+            return;
         log.debug("Asset Lineage OMAS start processing new entity events for the following entity {}: ", entityDetail.getGUID());
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS))
@@ -174,6 +161,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
+            return;
         log.debug("Asset Lineage OMAS is processing a Classified Entity event which contains the following entity {}: ", entityDetail.getGUID());
         publisher.publishClassificationContext(entityDetail);
     }
@@ -196,6 +185,18 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private void processDeletedRelationshipEvent(EntityDetail entityDetail) {
         log.debug("Asset Lineage OMAS is processing a DeletedRelationship event which contains the following entity {}: ", entityDetail.getGUID());
+    }
+
+    private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
+        AssetLineageAuditCode auditCode = AssetLineageAuditCode.EVENT_PROCESSING_ERROR;
+        auditLog.logException("Asset Lineage OMAS is processing a OMRSTopic event",
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(instanceEvent.toString()),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction(),
+                e);
     }
 
 }

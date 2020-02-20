@@ -84,15 +84,15 @@ public final class Constants {
 
     public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
 
-    private static final List<String> validLineageEventEntities = new ArrayList<>();
+    private static final List<String> validLineageEntityEvents = new ArrayList<>();
 
     static{
-        validLineageEventEntities.add(GLOSSARY_TERM);
-        validLineageEventEntities.add(TABULAR_COLUMN);
-        validLineageEventEntities.add(RELATIONAL_COLUMN);
-        validLineageEventEntities.add(RELATIONAL_TABLE);
-        validLineageEventEntities.add(DATA_FILE);
+        validLineageEntityEvents.add(GLOSSARY_TERM);
+        validLineageEntityEvents.add(TABULAR_COLUMN);
+        validLineageEntityEvents.add(RELATIONAL_COLUMN);
+        validLineageEntityEvents.add(RELATIONAL_TABLE);
+        validLineageEntityEvents.add(DATA_FILE);
     }
 
-    public static final ImmutableList<String> immutableValidLineageEventEntities = ImmutableList.copyOf(validLineageEventEntities);
+    public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
 }
