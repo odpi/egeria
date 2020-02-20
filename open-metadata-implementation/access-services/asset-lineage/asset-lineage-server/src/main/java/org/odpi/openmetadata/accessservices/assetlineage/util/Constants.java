@@ -92,6 +92,7 @@ public final class Constants {
         validLineageEntityEvents.add(RELATIONAL_COLUMN);
         validLineageEntityEvents.add(RELATIONAL_TABLE);
         validLineageEntityEvents.add(DATA_FILE);
+        validLineageEntityEvents.add(PROCESS);
     }
 
     public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
