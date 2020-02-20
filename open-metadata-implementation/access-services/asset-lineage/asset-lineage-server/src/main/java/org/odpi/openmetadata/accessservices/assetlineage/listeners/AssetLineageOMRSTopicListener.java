@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
+import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -26,7 +28,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
 
     private AssetLineagePublisher publisher;
-
+    private OMRSAuditLog auditLog;
     private Converter converter = new Converter();
 
     /**
@@ -38,9 +40,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
      * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
      */
-    public AssetLineageOMRSTopicListener(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector)
+    public AssetLineageOMRSTopicListener(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector, OMRSAuditLog auditLog)
             throws OCFCheckedExceptionBase {
         this.publisher = new AssetLineagePublisher(serverName, serverUserName, repositoryHelper, outTopicConnector);
+        this.auditLog = auditLog;
     }
 
     /**
@@ -116,10 +119,24 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //                break;
             }
         } catch (OCFCheckedExceptionBase e) {
-            log.info("An exception occurred while processing an event \n \n" + e.toString(), e);
+            log.error("An exception occurred while processing an event \n \n" + e.toString(), e);
+            logExceptionToAudit(instanceEvent, e);
         } catch (Throwable e) {
-            log.info("An exception occurred while processing an event", e);
+            log.error("An exception occurred while processing an event", e);
+            logExceptionToAudit(instanceEvent, e);
         }
+    }
+
+    private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
+        AssetLineageAuditCode auditCode = AssetLineageAuditCode.EVENT_PROCESSING_ERROR;
+        auditLog.logException("Asset Lineage OMAS is processing a OMRSTopic event",
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(instanceEvent.toString()),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction(),
+                e);
     }
 
 

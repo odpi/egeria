@@ -86,9 +86,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
-                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        serverName, serverUserName, repositoryConnector.getRepositoryHelper(), outTopicConnector
-                );
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(serverName, serverUserName, repositoryConnector.getRepositoryHelper(), outTopicConnector, auditLog);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
                         omrsTopicConnector,

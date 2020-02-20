@@ -170,13 +170,11 @@ public class ProcessContextHandler {
      */
     private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         boolean relationshipsExist = false;
-        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS)) {
+        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS))
             relationshipsExist = hasEndRelationship(entityDetails, userId);
-        }
 
-        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_IMPLEMENTATION)) {
+        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_IMPLEMENTATION))
             relationshipsExist = hasTabularSchemaTypes(entityDetails, userId);
-        }
 
         return relationshipsExist;
     }

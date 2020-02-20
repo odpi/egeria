@@ -40,9 +40,7 @@ public class GlossaryHandler {
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public GlossaryHandler(InvalidParameterHandler invalidParameterHandler,
-                           OMRSRepositoryHelper repositoryHelper,
-                           RepositoryHandler repositoryHandler) {
+    public GlossaryHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.commonHandler = new CommonHandler(invalidParameterHandler, repositoryHelper, repositoryHandler);
