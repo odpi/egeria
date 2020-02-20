@@ -96,15 +96,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 case DELETED_ENTITY_EVENT:
                     processDeleteEntity(entityDetail);
                     break;
-                case CLASSIFIED_ENTITY_EVENT:
-                    processClassifiedEntityEvent(entityDetail);
-                    break;
-                case RECLASSIFIED_ENTITY_EVENT:
-                    processReclassifiedEntityEvent(entityDetail);
-                    break;
-                case DECLASSIFIED_ENTITY_EVENT:
-                    processDeclassifiedEntityEvent(entityDetail);
-                    break;
+//                case CLASSIFIED_ENTITY_EVENT:
+//                    processClassifiedEntityEvent(entityDetail);
+//                    break;
+//                case RECLASSIFIED_ENTITY_EVENT:
+//                    processReclassifiedEntityEvent(entityDetail);
+//                    break;
+//                case DECLASSIFIED_ENTITY_EVENT:
+//                    processDeclassifiedEntityEvent(entityDetail);
+//                    break;
 //            case NEW_RELATIONSHIP_EVENT:
 //                processNewRelationship(entityDetail);
 //                break;
