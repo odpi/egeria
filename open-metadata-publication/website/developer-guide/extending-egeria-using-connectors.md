@@ -18,7 +18,7 @@ to access data resources and services.
 
 Figure 1 contrasts these two approaches:
 
-![Figure 1](../images/compare-use-of-connectors.png)
+![Figure 1](../images/compare-use-of-connectors.png#pagewidth)
 > **Figure 1:** How OCF connectors are used in Egeria
 
 Many subsystems in Egeria support the first approach. They define the interface for a connector.
