@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableQualifiedLineageClassifications;
 
@@ -119,7 +121,7 @@ public class ClassificationHandler {
         return null;
     }
 
-    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) {
+    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) throws OCFCheckedExceptionBase {
 
         final String methodName = "mapClassificationsToLineageEntity";
 
@@ -136,13 +138,16 @@ public class ClassificationHandler {
 
             log.debug("Classfication mapping for lineage entity {}: ", lineageEntity);
 
-        } catch (Throwable exc) {
+        } catch (Throwable e) { //TODO This is basically catching nullpointers, so check for null instead
 
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
-                    this.getClass().getName());
-
-            log.error("Caught exception from classification mapper {}", errorMessage);
+            String formattedErrorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName());
+            throw new AssetLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    formattedErrorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
     }
