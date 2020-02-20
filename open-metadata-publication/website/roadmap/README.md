@@ -30,7 +30,9 @@ follow along.
 Follow the links for more information about the
 three layers:
 
-* [Governance Solution]
+* [Governance Solution](governance-solution-functional-detail.md)
+* [Integration Platform](integration-platform-functional-detail.md)
+* [Developer Toolkit](developer-toolkit-functional-detail.md)
 
 ----
 Return to [Home Page](../../../index.md)
