@@ -86,7 +86,7 @@ public class ClassificationHandler {
      * @param graph            the graph
      * @return the list
      */
-    private List<LineageEntity> buildGraphContextByClassificationType(EntityDetail classifiedEntity,  AssetContext graph) {
+    private List<LineageEntity> buildGraphContextByClassificationType(EntityDetail classifiedEntity,  AssetContext graph) throws OCFCheckedExceptionBase {
 
         List<LineageEntity> classificationEntities = new ArrayList<>();
 
