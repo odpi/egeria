@@ -44,17 +44,17 @@ remote server called 'Server1' is:
    "viewServicesConfig":[ 
       { 
          "class":"ViewServiceConfig",
+         "viewServiceId":0,
+         "viewServiceFullName":"Glossary Author",
          "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
          "viewServiceOperationalStatus":"ENABLED",
-         "viewServiceOptions":{
-            "remoteServerName":"Server1",
-            "remoteServerURL":"http://localhost:8080"
-         }
+         "omagserverPlatformRootURL":"http://localhost:8080",
+         "omagserverName":"Server1"
       }
-      ],
+   ],
    "repositoryServicesConfig":{ 
       "class":"RepositoryServicesConfig",
-       "auditLogConnections":[ 
+      "auditLogConnections":[ 
          { 
             "class":"Connection",
             "type":{ 
@@ -105,11 +105,7 @@ remote server called 'Server1' is:
       ]
    }
 }
-'''
-
-
- 
-
+```
 
 
 Return to [open-metadata-implementation](..).

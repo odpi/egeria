@@ -259,6 +259,20 @@ public enum OMAGAdminErrorCode
                              "The system is unable to configure the local server.",
                              "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
 
+    NULL_CLIENT_CONFIG(400, "OMAG-ADMIN-400-037 ",
+                           "OMAG server {0} has been called by {1} with a null client config",
+                           "The system is unable to configure the local server.",
+                           "The client config is supplied by the caller to the OMAG server. This call needs to be supplied, including the name and URL of the OMAG server, before the server can operate correctly."),
+
+    NULL_OMAG_SERVER_ROOT_URL(400, "OMAG-ADMIN-400-038 ",
+                                 "The {0} service of OMAG server {1} has been configured with a null root URL for the OMAG Server",
+                                 "The system is unable to accept this value in the configuration properties.",
+                                 "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_OMAG_SERVER_NAME(400, "OMAG-ADMIN-400-039 ",
+                          "The {0} service of server {1} has been configured with a null OMAG Server name",
+                          "The system is unable to accept this value in the configuration properties.",
+                          "The OMAG Server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",

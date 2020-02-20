@@ -20,60 +20,60 @@ import java.util.Map;
  */
 public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
 
-        private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewAdmin.class);
+    private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewAdmin.class);
 
-        private ViewServiceConfig viewServiceConfig = null;
-        private OMRSAuditLog auditLog            = null;
-        private String                  serverUserName      = null;
+    private ViewServiceConfig viewServiceConfig = null;
+    private OMRSAuditLog auditLog = null;
+    private String serverUserName = null;
 
-        private GlossaryAuthorViewServicesInstance instance =null;
-        private String serverName =null;
+    private GlossaryAuthorViewServicesInstance instance = null;
+    private String serverName = null;
 
-        /**
-         * Default constructor
-         */
-        public GlossaryAuthorViewAdmin()
-        {
-        }
-        /**
-         * Initialize the subject area access service.
-         *
-         * @param serverName                         name of the local server
-         * @param viewServiceConfigurationProperties specific configuration properties for this view service.
-         * @param auditLog                           audit log component for logging messages.
-         * @param serverUserName                     user id to use to issue calls to the remote server.
-         * @param maxPageSize                        maximum page size. 0 means unlimited
-         * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
-         */
+    /**
+     * Default constructor
+     */
+    public GlossaryAuthorViewAdmin() {
+    }
+
+    /**
+     * Initialize the subject area access service.
+     *
+     * @param serverName                         name of the local server
+     * @param viewServiceConfigurationProperties specific configuration properties for this view service.
+     * @param auditLog                           audit log component for logging messages.
+     * @param serverUserName                     user id to use to issue calls to the remote server.
+     * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     */
     @Override
     public void initialize(String serverName, ViewServiceConfig viewServiceConfigurationProperties, OMRSAuditLog auditLog, String serverUserName, int maxPageSize) throws OMAGConfigurationErrorException {
-        final String            actionDescription = "initialize";
+        final String actionDescription = "initialize";
         final String methodName = actionDescription;
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userid="+ serverUserName);
+            log.debug("==> Method: " + methodName + ",userid=" + serverUserName);
         }
         //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
 
         GlossaryAuthorViewAuditCode auditCode = GlossaryAuthorViewAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-        
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
         try {
             this.viewServiceConfig = viewServiceConfigurationProperties;
             this.auditLog = auditLog;
             this.serverUserName = serverUserName;
             this.serverName = serverName;
-            Map<String, Object> viewOpions = viewServiceConfigurationProperties.getViewServiceOptions();
             this.instance = new GlossaryAuthorViewServicesInstance(this.serverName,
-                                                                   auditLog, serverUserName,
+                                                                   auditLog,
+                                                                   serverUserName,
                                                                    maxPageSize,
-                                                                   extractRemoteServerName(viewOpions),
-                                                                   extractRemoteServerURL(viewOpions));
+                                                                   this.viewServiceConfig.getOMAGServerName(),
+                                                                   this.viewServiceConfig.getOMAGServerPlatformRootURL());
             auditCode = GlossaryAuthorViewAuditCode.SERVICE_INITIALIZED;
             writeAuditLogPassingErrorMessage(auditLog, actionDescription, auditCode, serverName);
 
@@ -99,20 +99,19 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
                            auditCode.getUserAction());
     }
 
-    private String extractRemoteServerURL(Map<String, Object> viewServiceOptions) {
-        return (String)viewServiceOptions.get(remoteServerURL);
-    }
-
-    private String extractRemoteServerName(Map<String, Object> viewServiceOptions) {
-        return (String)viewServiceOptions.get(remoteServerName);
-    }
+//    private String extractRemoteServerURL(Map<String, Object> viewServiceOptions) {
+//        return (String)viewServiceOptions.get(remoteServerURL);
+//    }
+//
+//    private String extractRemoteServerName(Map<String, Object> viewServiceOptions) {
+//        return (String)viewServiceOptions.get(remoteServerName);
+//    }
 
     /**
      * Shutdown the subject area view service.
      */
     @Override
-    public void shutdown()
-    {
+    public void shutdown() {
         final String actionDescription = "shutdown";
 
         log.debug(">>" + actionDescription);
@@ -122,8 +121,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
         auditCode = GlossaryAuthorViewAuditCode.SERVICE_TERMINATING;
         writeAuditLogPassingErrorMessage(auditLog, actionDescription, auditCode, serverName);
 
-        if (instance != null)
-        {
+        if (instance != null) {
             this.instance.shutdown();
         }
 

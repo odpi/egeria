@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForViewServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * ConfigViewServicesResource provides the configuration for setting up the Open Metadata View
@@ -38,11 +38,11 @@ public class ConfigViewServicesResource
 
 
     /**
-     * Enable a single view service.
+     * Configure a single view service.
      *
      * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param viewServiceOptions  property name/value pairs used to configure the view services
+     * @param serverName       local server name.
+     * @param clientConfig     URL root and server name that are used to access the downstream OMAG Server.
      * @param serviceURLMarker string indicating which view service it is configuring
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -53,19 +53,18 @@ public class ConfigViewServicesResource
     public VoidResponse configureViewService(@PathVariable                     String              userId,
                                                @PathVariable                   String              serverName,
                                                @PathVariable                   String              serviceURLMarker,
-                                               @RequestBody(required = false)  Map<String, Object> viewServiceOptions)
+                                               @RequestBody                    OMAGServerClientConfig clientConfig)
     {
-        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, viewServiceOptions);
+        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, clientConfig);
     }
-
 
     /**
      * Enable all view services that are registered with this server platform.
      * The view services are set up to use the default event bus.
      *
-     * @param userId  user that is issuing the request.
+     * @param userId      user that is issuing the request.
      * @param serverName  local server name.
-     * @param viewServiceOptions  property name/value pairs used to configure the view services
+     * @param clientConfig URL root and server name that are used to access the downstream OMAG Server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -74,11 +73,10 @@ public class ConfigViewServicesResource
     @PostMapping()
     public VoidResponse configureAllViewServices(@PathVariable                  String              userId,
                                                  @PathVariable                  String              serverName,
-                                                 @RequestBody(required = false) Map<String, Object> viewServiceOptions)
+                                                 @RequestBody                   OMAGServerClientConfig clientConfig)
     {
-        return adminAPI.configureAllViewServices(userId, serverName, viewServiceOptions);
+        return adminAPI.configureAllViewServices(userId, serverName, clientConfig);
     }
-
 
     /**
      * Disable the view services.  This removes all configuration for the view services.
@@ -103,7 +101,7 @@ public class ConfigViewServicesResource
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
-     * @param viewServicesConfig  list of configuration properties for each view service.
+     * @param viewServicesConfig    list of configuration properties for each view service.
      * @return void response or
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter or

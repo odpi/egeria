@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -108,12 +107,12 @@ public class OMAGServerAdminForViewServices {
 
 
     /**
-     * Enable a single view service.
+     * Configure a single view service.
      *
      * @param userId             user that is issuing the request.
      * @param serverName         local server name.
      * @param serviceURLMarker   view service name used in URL
-     * @param viewServiceOptions property name/value pairs used to configure the view services
+     * @param clientConfig       URL root and server name that are used to access the downstream OMAG Server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -122,7 +121,7 @@ public class OMAGServerAdminForViewServices {
     public VoidResponse configureViewService(String userId,
                                              String serverName,
                                              String serviceURLMarker,
-                                             Map<String, Object> viewServiceOptions) {
+                                             OMAGServerClientConfig clientConfig) {
         final String methodName = "configureViewService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -135,6 +134,8 @@ public class OMAGServerAdminForViewServices {
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateOMAGServerClientConfig(serverName, clientConfig,methodName);
+
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -148,10 +149,16 @@ public class OMAGServerAdminForViewServices {
 
             errorHandler.validateViewServiceIsRegistered(viewServiceRegistration, serviceURLMarker, serverName, methodName);
 
-            viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration,
-                                                                                         viewServiceOptions),
-                                                                 viewServiceConfigList);
 
+            viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration,
+                                                                                         clientConfig),
+                                                                 viewServiceConfigList);
+            errorHandler.validateOMAGServerName(clientConfig.getOMAGServerName(),
+                                                serverName,
+                                                viewServiceRegistration.getViewServiceName());
+            errorHandler.validateOMAGServerServiceRootURL(clientConfig.getOMAGServerPlatformRootURL(),
+                                                          serverName,
+                                                          viewServiceRegistration.getViewServiceName());
             this.setViewServicesConfig(userId, serverName, viewServiceConfigList);
 
         } catch (OMAGInvalidParameterException error) {
@@ -174,9 +181,9 @@ public class OMAGServerAdminForViewServices {
      * Enable all view services that are registered with this server platform.   The configuration properties
      * for each view service can be changed from their default using setViewServicesConfig operation.
      *
-     * @param userId             user that is issuing the request.
-     * @param serverName         local server name.
-     * @param viewServiceOptions property name/value pairs used to configure the view services
+     * @param userId       user that is issuing the request.
+     * @param serverName   local server name.
+     * @param clientConfig       URL root and server name that are used to access the downstream OMAG Server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -184,11 +191,10 @@ public class OMAGServerAdminForViewServices {
      */
     public VoidResponse configureAllViewServices(String userId,
                                                  String serverName,
-                                                 Map<String, Object> viewServiceOptions) {
+                                                 OMAGServerClientConfig clientConfig) {
         final String methodName = "configureViewServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
         VoidResponse response = new VoidResponse();
 
         try {
@@ -197,6 +203,9 @@ public class OMAGServerAdminForViewServices {
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateOMAGServerClientConfig(serverName, clientConfig,methodName);
+
+
             List<ViewServiceConfig> viewServiceConfigList = new ArrayList<>();
 
 
@@ -212,8 +221,15 @@ public class OMAGServerAdminForViewServices {
                 for (ViewServiceRegistration registration : viewServiceRegistrationList) {
                     if (registration != null) {
                         if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
+                            errorHandler.validateOMAGServerName(clientConfig.getOMAGServerName(),
+                                                         serverName,
+                                                         registration.getViewServiceName());
+                            errorHandler.validateOMAGServerServiceRootURL(clientConfig.getOMAGServerPlatformRootURL(),
+                                                      serverName,
+                                                     registration.getViewServiceName());
+
                             viewServiceConfigList.add(createViewServiceConfig(registration,
-                                                                              viewServiceOptions));
+                                                                              clientConfig));
                         }
                     }
                 }
@@ -241,14 +257,15 @@ public class OMAGServerAdminForViewServices {
     /**
      * Set up the configuration for a single view service.
      *
-     * @param registration       registration information about the service.
-     * @param viewServiceOptions options for the service
+     * @param registration registration information about the service.
+     * @param clientConfig URL root and server name for the OMAG server that are used to access the downstream OMAG Server.
      * @return newly created config object
      */
     private ViewServiceConfig createViewServiceConfig(ViewServiceRegistration registration,
-                                                      Map<String, Object> viewServiceOptions) {
+                                                      OMAGServerClientConfig clientConfig) {
         ViewServiceConfig viewServiceConfig = new ViewServiceConfig(registration);
-        viewServiceConfig.setViewServiceOptions(viewServiceOptions);
+        viewServiceConfig.setOMAGServerName(clientConfig.getOMAGServerName());
+        viewServiceConfig.setOMAGServerPlatformRootURL(clientConfig.getOMAGServerPlatformRootURL());
         return viewServiceConfig;
     }
 
