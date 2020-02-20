@@ -93,10 +93,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     processNewEntity(entityDetail);
                     break;
                 case UPDATED_ENTITY_EVENT:
-                    processUpdatedEntityEvent(entityDetail);
+                    if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE))
+                        processNewEntity(entityDetail);
+                    else
+                        processUpdatedEntity(entityDetail);
                     break;
                 case DELETED_ENTITY_EVENT:
-                    processDeleteEntity(entityDetail);
+                    processDeletedEntity(entityDetail);
                     break;
 //                case CLASSIFIED_ENTITY_EVENT:
 //                    processClassifiedEntityEvent(entityDetail);
@@ -126,35 +129,25 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
-
-    private void processUpdatedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug("Asset Lineage OMAS start processing events for the following entity {}: ", entityDetail.getGUID());
-        if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE))
-            processNewEntity(entityDetail);
-        else
-            processUpdatedEntity(entityDetail);
-    }
-
-    private void processUpdatedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
-        log.debug("Asset Lineage OMAS start processing events for updating the following entity: {} ", entityDetail.getGUID());
-        LineageEvent event = new LineageEvent();
-        event.setLineageEntity(converter.createLineageEntity(entityDetail));
-        event.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
-        publisher.publishEvent(event);
-    }
-
     private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
-        log.debug("Asset Lineage OMAS start processing new entity events for the following entity {}: ", entityDetail.getGUID());
-
+        log.debug("Asset Lineage OMAS is processing a NewEntity event which contains the following entity {}: ", entityDetail.getGUID());
         if (entityDetail.getType().getTypeDefName().equals(PROCESS))
             publisher.publishProcessContext(entityDetail);
         else
             publisher.publishAssetContext(entityDetail);
     }
 
-    private void processDeleteEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
+    private void processUpdatedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
+        log.debug("Asset Lineage OMAS is processing an UpdatedEntity event which contains the following entity {}: ", entityDetail.getGUID());
+        LineageEvent event = new LineageEvent();
+        event.setLineageEntity(converter.createLineageEntity(entityDetail));
+        event.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
+        publisher.publishEvent(event);
+    }
+
+    private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
         log.debug("Asset Lineage OMAS is processing a DeleteEntity event which contains the following entity {}: ", entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setLineageEntity(converter.createLineageEntity(entityDetail));
