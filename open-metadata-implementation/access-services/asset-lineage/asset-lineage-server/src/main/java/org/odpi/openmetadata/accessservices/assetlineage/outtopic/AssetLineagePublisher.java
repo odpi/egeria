@@ -14,8 +14,9 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContext
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypes;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -36,9 +37,8 @@ public class AssetLineagePublisher {
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private OpenMetadataTopicConnector outTopicConnector;
-    private String serverName;
     private String serverUserName;
-    private SuperTypes superTypes;
+    private SuperTypesRetriever superTypesRetriever;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private AssetContextHandler assetContextHandler;
@@ -57,14 +57,52 @@ public class AssetLineagePublisher {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "AssetLineagePublisher";
         this.outTopicConnector = outTopicConnector;
-        this.serverName = serverName;
         this.serverUserName = serverUserName;
-        this.superTypes = new SuperTypes(repositoryHelper);
+        this.superTypesRetriever = new SuperTypesRetriever(repositoryHelper);
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
     }
+
+    /**
+     * Takes the context for a Process and publishes the event to the Cohort
+     *
+     * @param entityDetail entity to get context
+     */
+    public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
+        LineageEvent event = new LineageEvent();
+        event.setAssetContext(processContext);
+        event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
+        publishEvent(event);
+    }
+
+    public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        String technicalGuid = entityDetail.getGUID();
+        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
+        LineageEvent event = new LineageEvent();
+        if (!context.isEmpty())
+            event.setAssetContext(context);
+        else
+            event.setAssetContext(assetContext.getNeighbors());
+        event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
+        publishEvent(event);
+    }
+
+    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase{
+        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
+                serverUserName,
+                entityDetail);
+        if (classificationContext.isEmpty())
+            return;
+        LineageEvent event = new LineageEvent();
+        event.setAssetContext(classificationContext);
+        event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
+        publishEvent(event);
+    }
+
 
     /**
      * Output a new asset event.
@@ -81,51 +119,5 @@ public class AssetLineagePublisher {
             log.error("Unable to publish new asset event: " + event.toString() + "; error was " + error.toString());
         }
     }
-
-    /**
-     * Takes the context for a Process and publishes the event to the Cohort
-     *
-     * @param entityDetail entity to get context
-     */
-    public void publishProcessContext(EntityDetail entityDetail) {
-        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
-        LineageEvent event = new LineageEvent();
-        event.setAssetContext(processContext);
-        event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
-        publishEvent(event);
-    }
-
-    public void publishAssetContext(EntityDetail entityDetail) throws InvalidParameterException {
-        String technicalGuid = entityDetail.getGUID();
-
-        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
-
-        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypes);
-
-        LineageEvent event = new LineageEvent();
-        if (!context.isEmpty())
-            event.setAssetContext(context);
-        else
-            event.setAssetContext(assetContext.getNeighbors());
-
-        event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
-        publishEvent(event);
-    }
-
-    public void publishClassificationContext(EntityDetail entityDetail) {
-        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
-                serverName,
-                serverUserName,
-                entityDetail);
-
-        if (classificationContext.isEmpty())
-            return;
-
-        LineageEvent event = new LineageEvent();
-        event.setAssetContext(classificationContext);
-        event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
-        publishEvent(event);
-    }
-
 }
 

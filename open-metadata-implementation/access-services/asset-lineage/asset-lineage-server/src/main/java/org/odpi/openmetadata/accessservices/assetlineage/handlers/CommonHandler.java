@@ -37,8 +37,6 @@ public class CommonHandler {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
-    private String serviceName;
-    private String serverName;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
@@ -47,19 +45,13 @@ public class CommonHandler {
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public CommonHandler(String serviceName,
-                         String serverName,
-                         InvalidParameterHandler invalidParameterHandler,
+    public CommonHandler(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
@@ -78,8 +70,8 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
 
         String methodName = "getEntityDetails";
 
@@ -155,8 +147,8 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     private EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
-                                                                                                                     PropertyServerException,
-                                                                                                                     UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
 
         String methodName = "getEntityAtTheEnd";
 
@@ -197,19 +189,18 @@ public class CommonHandler {
 
         LineageEntity startVertex;
         LineageEntity endVertex;
-        if(changeDirection){
+        if (changeDirection) {
             startVertex = converter.createLineageEntity(endEntity);
             endVertex = converter.createLineageEntity(startEntity);
-        }else{
-             startVertex = converter.createLineageEntity(startEntity);
-             endVertex = converter.createLineageEntity(endEntity);
+        } else {
+            startVertex = converter.createLineageEntity(startEntity);
+            endVertex = converter.createLineageEntity(endEntity);
         }
-
 
 
         GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if(graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))){
+        if (graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))) {
             graph.addVertex(startVertex);
             graph.addVertex(endVertex);
             graph.addEdge(edge);

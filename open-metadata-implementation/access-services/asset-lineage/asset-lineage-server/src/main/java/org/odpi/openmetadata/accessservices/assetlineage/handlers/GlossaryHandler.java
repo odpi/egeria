@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypes;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -16,8 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,12 +27,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
  */
 public class GlossaryHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlossaryHandler.class);
-
-    private String serviceName;
-    private String serverName;
     private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
     private AssetContext graph = new AssetContext();
     private CommonHandler commonHandler;
@@ -43,23 +36,16 @@ public class GlossaryHandler {
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public GlossaryHandler(String serviceName,
-                           String serverName,
-                           InvalidParameterHandler invalidParameterHandler,
+    public GlossaryHandler(InvalidParameterHandler invalidParameterHandler,
                            OMRSRepositoryHelper repositoryHelper,
                            RepositoryHandler repositoryHandler) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-        this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.commonHandler = new CommonHandler(invalidParameterHandler, repositoryHelper, repositoryHandler);
     }
 
 
@@ -75,32 +61,23 @@ public class GlossaryHandler {
     public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
                                                           String userId,
                                                           AssetContext assetContext,
-                                                          SuperTypes superTypes) throws InvalidParameterException {
+                                                          SuperTypesRetriever superTypesRetriever) throws OCFCheckedExceptionBase {
 
         String methodName = "getGlossaryTerm";
 
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
 
-        try {
-            graph = assetContext;
+        graph = assetContext;
 
-            Set<LineageEntity> vertices = assetContext.getVertices();
-            vertices = vertices.stream().filter(vertex -> superTypes.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
-                    !superTypes.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
+        Set<LineageEntity> vertices = assetContext.getVertices();
+        vertices = vertices.stream().filter(vertex -> superTypesRetriever.getSuperTypes(vertex.getTypeDefName()).contains(SCHEMA_ELEMENT) &&
+                !superTypesRetriever.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
 
-            for (LineageEntity vertex : vertices) {
-                getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
+        for (LineageEntity vertex : vertices)
+            getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 
-            }
-            return graph.getNeighbors();
-        } catch (OCFCheckedExceptionBase e) {
-            throw new AssetLineageException(e.getReportedHTTPCode(),
-                    e.getReportingClassName(),
-                    e.getReportingActionDescription(),
-                    e.getErrorMessage(),
-                    e.getReportedSystemAction(),
-                    e.getReportedUserAction());
-        }
+        return graph.getNeighbors();
+
     }
 
     /**
@@ -111,9 +88,7 @@ public class GlossaryHandler {
      * @param typeDefName the typeName of the asset.
      * @return Glossary Term retrieved from the property server
      */
-    private void getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void getGlossary(String userId, String assetGuid, String typeDefName) throws OCFCheckedExceptionBase {
         final String methodName = "getGlossary";
 
         String typeGuid = commonHandler.getTypeName(userId, SEMANTIC_ASSIGNMENT);
@@ -137,9 +112,7 @@ public class GlossaryHandler {
      * @param semanticAssignments array of the semantic assignments
      * @return true if semantic relationships exist, false otherwise
      */
-    private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
         final String methodName = "addSemanticAssignmentToContext";
 
         List<EntityDetail> entityDetails = new ArrayList<>();

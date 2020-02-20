@@ -13,11 +13,11 @@ import java.util.Set;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 
-public class SuperTypes {
+public class SuperTypesRetriever {
 
     private OMRSRepositoryHelper repositoryHelper;
 
-    public SuperTypes(OMRSRepositoryHelper repositoryHelper) {
+    public SuperTypesRetriever(OMRSRepositoryHelper repositoryHelper) {
         this.repositoryHelper = repositoryHelper;
     }
 
