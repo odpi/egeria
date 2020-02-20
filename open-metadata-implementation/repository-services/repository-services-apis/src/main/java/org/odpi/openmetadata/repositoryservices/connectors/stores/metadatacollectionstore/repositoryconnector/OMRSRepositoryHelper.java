@@ -196,6 +196,17 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the list of type names for all of the subtypes of an entity type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param superTypeName name of the super type - this value is not included in the result.
+     * @return list of type names (a null means the type is not know or it has no sub types)
+     */
+    List<String>  getSubTypesOf(String sourceName,
+                                String superTypeName);
+
+
+    /**
      * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.

@@ -50,7 +50,7 @@ of tool.
 Figure 3 shows the OMAG Servers implemented today and how they are related.
 This picture will expand as we embrace new types of technology.
 
-![Figure 3](../../../open-metadata-implementation/admin-services/docs/concepts/types-of-omag-servers.png)
+![Figure 3](../../../open-metadata-implementation/admin-services/docs/concepts/types-of-omag-servers.png#pagewidth)
 > **Figure 3:** Types of OMAG Servers
 
 The **cohort members** communicate with one another
@@ -61,7 +61,7 @@ The governance servers connect to a metadata access point / metadata server.
 
 Figure 4 shows how the servers connect together.
 
-![Figure 4](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-ecosystem.png)
+![Figure 4](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-ecosystem.png#pagewidth)
 > **Figure 4:** How the OMAG Servers interact
 
 When you are designing the deployment of Egeria, the first step is to identify the technology
