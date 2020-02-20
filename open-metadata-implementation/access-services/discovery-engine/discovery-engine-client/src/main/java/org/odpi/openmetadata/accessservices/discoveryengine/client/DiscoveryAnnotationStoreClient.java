@@ -45,6 +45,22 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
 
 
     /**
+     * Return the annotation subtype names.
+     *
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  getTypesOfAnnotation() throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
+    {
+        return discoveryEngineClient.getTypesOfAnnotation(userId);
+    }
+
+
+    /**
      * Return the list of Annotations created for the asset by previous runs of the discovery service.
      *
      * @param startingFrom starting position in the list.

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
@@ -30,7 +31,8 @@ import java.util.Map;
  * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
  * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
  */
-public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboardingInterface,
+public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowledgeInterface,
+                                                                    AssetOnboardingInterface,
                                                                     AssetClassificationInterface,
                                                                     AssetReviewInterface,
                                                                     AssetDecommissioningInterface
@@ -77,6 +79,33 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         super(serverName, serverPlatformRootURL);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
+    }
+
+
+    /**
+     * Return the asset subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  getTypesOfAsset(String userId) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String   methodName = "getTypesOfAsset";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/sub-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId);
+
+        return restResult.getNames();
     }
 
 
@@ -490,7 +519,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
     {
         final String   methodName = "addSecurityTags";
         final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/origin";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
