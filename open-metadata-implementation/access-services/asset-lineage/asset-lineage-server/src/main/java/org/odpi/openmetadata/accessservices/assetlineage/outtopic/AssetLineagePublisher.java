@@ -15,10 +15,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -54,7 +51,7 @@ public class AssetLineagePublisher {
      * @param outTopicConnector connection to the out topic
      */
     public AssetLineagePublisher(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
         this.outTopicConnector = outTopicConnector;
         this.serverUserName = serverUserName;

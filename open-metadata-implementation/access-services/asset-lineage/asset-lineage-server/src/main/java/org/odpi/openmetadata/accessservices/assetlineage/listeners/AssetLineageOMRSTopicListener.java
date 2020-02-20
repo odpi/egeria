@@ -4,22 +4,14 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +39,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
      */
     public AssetLineageOMRSTopicListener(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+            throws OCFCheckedExceptionBase {
         this.publisher = new AssetLineagePublisher(serverName, serverUserName, repositoryHelper, outTopicConnector);
     }
 
@@ -152,19 +144,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         if (entityDetail.getType().getTypeDefName().equals(PROCESS))
             publisher.publishProcessContext(entityDetail);
-        else {
-            try {
-                publisher.publishAssetContext(entityDetail);
-            } catch (InvalidParameterException e) {
-                log.error("An invalid parameter exception occurred while processing a NewEntity event", e);
-                throw new AssetLineageException(e.getReportedHTTPCode(),
-                        e.getReportingClassName(),
-                        e.getReportingActionDescription(),
-                        e.getErrorMessage(),
-                        e.getReportedSystemAction(),
-                        e.getReportedUserAction());
-            }
-        }
+        else
+            publisher.publishAssetContext(entityDetail);
     }
 
     private void processDeleteEntity(EntityDetail entityDetail) {

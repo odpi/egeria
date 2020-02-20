@@ -7,34 +7,18 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_ALIAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_IMPLEMENTATION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableProcessRelationshipsTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -151,10 +135,7 @@ public class ProcessContextHandler {
      * @param typeDefName      type of the entity that has the Relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid,
-                                                               String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-            PropertyServerException,
-            InvalidParameterException {
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid, String relationshipType, String typeDefName) throws OCFCheckedExceptionBase {
         List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, guid, relationshipType, typeDefName);
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
@@ -187,9 +168,7 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS)) {
             relationshipsExist = hasEndRelationship(entityDetails, userId);
@@ -209,9 +188,7 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
             result.addAll(getRelationshipsBetweenEntities(userId,
@@ -229,9 +206,7 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
@@ -252,9 +227,7 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 

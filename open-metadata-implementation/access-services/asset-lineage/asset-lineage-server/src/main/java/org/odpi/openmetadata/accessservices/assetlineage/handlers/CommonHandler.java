@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -69,9 +70,7 @@ public class CommonHandler {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws OCFCheckedExceptionBase {
 
         String methodName = "getEntityDetails";
 
@@ -94,8 +93,7 @@ public class CommonHandler {
      * @throws InvalidParameterException  the invalid parameter exception
      */
     List<Relationship> getRelationshipsByType(String userId, String assetGuid,
-                                              String relationshipTypeName, String entityTypeName) throws
-            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+                                              String relationshipTypeName, String entityTypeName) throws OCFCheckedExceptionBase {
 
         final String methodName = "getRelationshipsByType";
 
@@ -146,9 +144,7 @@ public class CommonHandler {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    private EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws OCFCheckedExceptionBase {
 
         String methodName = "getEntityAtTheEnd";
 
@@ -178,9 +174,7 @@ public class CommonHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                              Relationship relationship, AssetContext graph, boolean changeDirection) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                              Relationship relationship, AssetContext graph, boolean changeDirection) throws OCFCheckedExceptionBase {
 
         Converter converter = new Converter();
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);

@@ -15,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,8 +30,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
-    private String serverUserName;
-
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
 
     /**
      * Default constructor
@@ -55,7 +56,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
-        this.serverUserName = serverUserName;
 
         auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
@@ -105,8 +105,10 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (OMAGConfigurationErrorException error) {
+            log.error("The Asset Lineage OMAS could not be started", error);
             throw error;
         } catch (Throwable error) {
+            log.error("The Asset Lineage OMAS could not be started", error);
             auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),

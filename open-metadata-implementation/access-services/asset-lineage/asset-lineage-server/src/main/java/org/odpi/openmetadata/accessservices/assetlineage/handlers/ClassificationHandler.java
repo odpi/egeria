@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -17,9 +15,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableQualifiedLineageClassifications;
 
 /**
  * The classification handler maps classifications attached with an entity to an lineage entity.

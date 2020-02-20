@@ -5,12 +5,11 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.REFERENCEABLE;
 
 
 public class SuperTypesRetriever {
