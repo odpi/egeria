@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -67,7 +69,7 @@ public class AssetLineagePublisher {
      *
      * @param entityDetail entity to get context
      */
-    public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
@@ -75,7 +77,7 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String technicalGuid = entityDetail.getGUID();
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
         Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
@@ -88,7 +90,7 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase{
+    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
                 serverUserName,
                 entityDetail);
@@ -106,14 +108,10 @@ public class AssetLineagePublisher {
      *
      * @param event event to send
      */
-    public void publishEvent(AssetLineageEventHeader event) {
-        try {
-            if (outTopicConnector != null) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
-            }
-        } catch (Throwable error) {
-            log.error("Unable to publish new asset event: " + event.toString() + "; error was " + error.toString());
+    public void publishEvent(AssetLineageEventHeader event) throws JsonProcessingException, ConnectorCheckedException {
+        if (outTopicConnector != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
         }
     }
 }

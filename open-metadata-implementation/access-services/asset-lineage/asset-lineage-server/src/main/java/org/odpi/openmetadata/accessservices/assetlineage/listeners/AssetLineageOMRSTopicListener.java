@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
@@ -125,7 +127,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
 
-    private void processUpdatedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private void processUpdatedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         log.debug("Asset Lineage OMAS start processing events for the following entity {}: ", entityDetail.getGUID());
         if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE))
             processNewEntity(entityDetail);
@@ -133,7 +135,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             processUpdatedEntity(entityDetail);
     }
 
-    private void processUpdatedEntity(EntityDetail entityDetail) {
+    private void processUpdatedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
         log.debug("Asset Lineage OMAS start processing events for updating the following entity: {} ", entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setLineageEntity(converter.createLineageEntity(entityDetail));
@@ -141,7 +143,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishEvent(event);
     }
 
-    private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug("Asset Lineage OMAS start processing new entity events for the following entity {}: ", entityDetail.getGUID());
@@ -152,7 +154,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             publisher.publishAssetContext(entityDetail);
     }
 
-    private void processDeleteEntity(EntityDetail entityDetail) {
+    private void processDeleteEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
         log.debug("Asset Lineage OMAS is processing a DeleteEntity event which contains the following entity {}: ", entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setLineageEntity(converter.createLineageEntity(entityDetail));
@@ -160,7 +162,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishEvent(event);
     }
 
-    private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug("Asset Lineage OMAS is processing a Classified Entity event which contains the following entity {}: ", entityDetail.getGUID());
