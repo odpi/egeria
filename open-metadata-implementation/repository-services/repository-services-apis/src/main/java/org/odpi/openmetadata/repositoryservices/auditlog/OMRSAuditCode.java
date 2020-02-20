@@ -178,13 +178,15 @@ public enum OMRSAuditCode
 
     OMRS_TOPIC_LISTENER_DEAF("OMRS-AUDIT-0018",
                        OMRSAuditLogRecordSeverity.ERROR,
-                       "The OMRS Topic Connector {0} has no connector to an event bus",
-                       "The OMRS Topic Connector is unable to receive or send events",
-                       "Verify the start up configuration to ensure there is an event bus configured."),
+                       "The OMRS Topic Listener has no embedded connector to an event bus",
+                       "The OMRS Topic Connector is unable to receive or send events because its connection object does not include " +
+                                     "an embedded connection to the event bus.",
+                       "Verify the start up configuration to ensure there is an event bus configured and that it was in place before the cohort was" +
+                                     " defined."),
 
     OMRS_TOPIC_LISTENER_REGISTERED("OMRS-AUDIT-0019",
                        OMRSAuditLogRecordSeverity.STARTUP,
-                       "The OMRS Topic Connector {0} has registered with an event bus connector connected to topic {1}",
+                       "An OMRS Topic Connector has registered with an event bus connector for topic {0}",
                        "The OMRS Topic Connector is able to receive or send events",
                        "This is the connector that receives events from the OMRS Topic.  It is vital for the server's" +
                                            "ability to register with the open metadata repository cohort, validate its types and " +
@@ -194,14 +196,14 @@ public enum OMRSAuditCode
 
     OMRS_TOPIC_LISTENER_STARTED("OMRS-AUDIT-0020",
                        OMRSAuditLogRecordSeverity.STARTUP,
-                       "The OMRS Topic Connector {0} is ready to send and receive events",
-                       "The OMRS Topic Connector is able to receive or send events",
+                       "An OMRS Topic Connector is ready to send and receive events on topic {0}",
+                       "The OMRS Topic Connector is able to receive or send events.",
                        "Verify that events are flowing and not buffering."),
 
     OMRS_TOPIC_LISTENER_DISCONNECTED("OMRS-AUDIT-0021",
                       OMRSAuditLogRecordSeverity.SHUTDOWN,
-                      "The OMRS Topic Connector {0} has disconnected the event bus connectors",
-                      "The OMRS Topic Connector is no longer able to receive or send events",
+                      "The OMRS Topic Listener has disconnected the event bus connectors for topic {0}",
+                      "The OMRS Topic Connector is no longer able to receive or send events.",
                       "Verify that this is part of the server disconnecting from the cohort."),
 
     EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
@@ -603,6 +605,81 @@ public enum OMRSAuditCode
                                       "This is likely to be a logic error.  Gather information from the audit log, and the configuration" +
                                    "information in the configuration document for this server."),
 
+    NEW_REMOTE_MEMBER("OMRS-AUDIT-0127",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "A new remote member from server {0} for cohort {1} is being configured into the enterprise connector manager.  It has" +
+                              " a metadata collection id of {2}, a metadata collection name of {3}, the server type is {4} and its owning " +
+                              "organization is {5}",
+                             "The enterprise connector manager is preparing to process a new connection from a remote member of the cohort.  " +
+                              "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
+                              "well, the list of systems that are called when a request is made by the access services is updated with the new " +
+                              "member.",
+                             "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
+                              "the enterprise connector manager's list."),
+
+
+    REMOTE_MEMBER_REFRESHED("OMRS-AUDIT-0128",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "Configuration for an existing remote member from server {0} for cohort {1} is being refreshed into the enterprise connector" +
+                                    " manager.  It has a metadata collection id of {2}, a metadata collection name of {3}, " +
+                                    "the server type is {4} and its owning organization is {5}",
+                      "The enterprise connector manager is preparing to process new connection information from a remote member of the cohort.  " +
+                              "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
+                              "well, the list of systems that are called when a request is made by the access services is updated with the new " +
+                              "member.",
+                      "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
+                              "the enterprise connector manager's list."),
+
+    NEW_REMOTE_MEMBER_FAILURE("OMRS-AUDIT-0129",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "A exception occurred whilst adding a new remote member from server {0} for cohort {1} into the " +
+                                      "enterprise connector manager.  The exception was {2} and the error message was {3}",
+                      "The enterprise connector manager is preparing to process a new connection from a remote member of the cohort.  " +
+                              "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
+                              "well, the list of systems that are called when a request is made by the access services is updated with the new " +
+                              "member.",
+                      "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
+                              "the enterprise connector manager's list."),
+
+    FEDERATION_LIST("OMRS-AUDIT-0130",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The enterprise repository services are managing federated queries to the following list of servers: {0}",
+                      "The enterprise connector manager is recording the current list of servers that the enterprise repository services are " +
+                            "calling on behalf of the access services.",
+                      "Validate that this list matches the members of the cohort that have local repositories."),
+
+    REMOVE_REMOTE_MEMBER("OMRS-AUDIT-0131",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "A remote member from cohort {0} with metadata collection id {1} is being removed by the enterprise connector manager",
+                      "The enterprise connector manager is removing the connection for a remote member of the cohort from the list " +
+                                 "of servers that are called during a metadata request from the access services.",
+                      "Validate that this remote server is shutting down, or unregistering from the cohort.  If it is not," +
+                                 "then look for error messages to determine why it is being removed."),
+
+    NEW_REMOTE_MEMBER_DEPLOYED("OMRS-AUDIT-0132",
+                         OMRSAuditLogRecordSeverity.INFO,
+                         "A new remote connector from server {0} with metadata collection id {1} has been deployed to enterprise connector " +
+                                       "for {2}",
+                         "The enterprise connector for the named service has had a new connector to a remote partner added to its federation list. " +
+                                       "It will begin to include calls to this partner when it processes metadata requests from the calling service.",
+                               "Verify that this message appears for each of the access services operating in this server."),
+
+    REMOTE_MEMBER_DEPLOY_REFRESH("OMRS-AUDIT-0133",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "Information about remote connector from server {0} with metadata collection id {1} has been refreshed in " +
+                                         "enterprise connector for {2}",
+                               "The enterprise connector for the named service has had a new information about a remote partner " +
+                                         "refreshed in its federation list. " +
+                                       "It will make use of this new information on subsequent calls to this partner when it processes metadata " +
+                                         "requests from the calling service.",
+                               "Verify that this message appears for each of the access services operating in this server."),
+
+    REMOTE_MEMBER_UNDEPLOYED("OMRS-AUDIT-0134",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The remote connector for metadata collection id {0} is no longer being called by {1}",
+                               "The connector has been removed from this access service's federation list " +
+                                       "of servers that are called during a metadata request.",
+                             "Verify that this message appears for each of the access services operating in this server."),
 
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                       OMRSAuditLogRecordSeverity.TYPES,
@@ -879,7 +956,7 @@ public enum OMRSAuditCode
 
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
-                      "Unable to process a received event because its content is null",
+                      "Unable to process a received event from topic {0} because its content is null",
                       "The system is unable to process an incoming event.",
                       "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent"),
 
@@ -954,8 +1031,8 @@ public enum OMRSAuditCode
 
     UNEXPECTED_EXCEPTION("OMRS-AUDIT-9014",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                         "The Open Metadata Repository Service has generated an unexpected {0} exception during method {1}.  The message was <{2}> and the stack trace was: {3}",
-                         "The request returns a RepositoryServerException.",
+                         "The Open Metadata Repository Service has generated an unexpected {0} exception during method {1}.  The message was {2}",
+                         "The request returns an exception to the caller.  The exception and stack trace is added to the audit log",
                          "This is probably a logic error. Review the stack trace to identify where the error " +
                                  "occurred and work to resolve the cause."),
 
