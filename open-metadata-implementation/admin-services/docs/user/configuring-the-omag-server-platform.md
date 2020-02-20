@@ -4,11 +4,11 @@
 # Configuring the OMAG Server Platform
 
 The OMAG Server platform is a JVM process that includes a tomcat
-web server and uses `Spring Boot` to support REST APIs.
+web server and uses [Spring Boot](https://spring.io/) to support REST APIs.
 
 By default it registers the REST APIs
-at `http://localhost:8080`. This address is called the server platform's **root URL** and
-is configured in a number of places in the [OMAG Server configuration](configuring-an-omag-server.md).
+at **http://localhost:8080**. This address is called the server platform's **root URL** and
+is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
 
 By default the platform also supports no specific security
 authorization and stores its configuration in files in clear
@@ -26,7 +26,7 @@ The choices are:
   determine who is allowed to call the platform services.](configuring-the-platform-security-connector.md)
   
 Since the OMAG Server Platform is a Spring Boot application, there are other values that can be set in
-its `application.properties` file found in the `resources` subdirectory.
+its **application.properties** file found in the **resources** subdirectory.
 
 * Defining the port that the OMAG Server Platform will listen on for
   REST API calls.
@@ -40,8 +40,8 @@ Follow [this link for more information](https://docs.spring.io/spring-boot/docs/
 on standard properties.
 In addition, Egeria adds support for additional application properties.
 
-* [Defining which OMAG Servers, if any, should be started automatically by the
-  OMAG Server Platform when it starts](configuring-the-server-startup-list-for-the-platform.md).
+* [Auto-starting servers](configuring-the-server-startup-list-for-the-platform.md) - Defining which OMAG Servers, 
+  if any, should be started automatically by the OMAG Server Platform when it starts.
 
 ----
 Return to the [Administration Services User Guide](.)

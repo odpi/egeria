@@ -39,9 +39,9 @@ In the descriptions of the configuration commands, there are placeholders
 for the specific configuration values.  They are names of the value in double curly braces.
 For example:
 
-* {{serverURLRoot}} - The network address that the OMAG server platform is registered at - such as **http://localhost:8080**.
-* {{userId}} - The user id of the administrator, for example **garygeeke**.
-* {{serverName}} - The name of the OMAG server, for example **cocoMDS1**.
+* {serverURLRoot} - The network address that the OMAG server platform is registered at - such as **http://localhost:8080**.
+* {adminUserId} - The user id of the administrator, for example **garygeeke**.
+* {serverName} - The name of the OMAG server, for example **cocoMDS1**.
 
 Below are the commands to 
 
@@ -74,14 +74,14 @@ Below are the commands to
 It is possible to query the configuration document for a specific OMAG server using the following command.
 
 ```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
 For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.5-SNAPSHOT)".
 
 ```
-GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
+GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/servers/{serverName}/server-platform-origin
 ```
 
 

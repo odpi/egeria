@@ -8,7 +8,7 @@ meaning of the data values in the asset.
 The result is a recommended glossary term
 stored as an annotation.
 
-![UML](0630-Semantic-Discovery.png)
+![UML](0630-Semantic-Discovery.png#pagewidth)
 
 Return to [Area 6](Area-6-models.md).
 

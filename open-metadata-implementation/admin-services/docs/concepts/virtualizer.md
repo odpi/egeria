@@ -12,6 +12,7 @@ The virtualizer is paired with the
 ----
 * Return to [Integration Daemon](integration-daemon.md).
 * Return to [Admin Guide](../user).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

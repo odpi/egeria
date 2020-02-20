@@ -8,6 +8,8 @@
 * User documentation for each OMAS
   * [Asset Consumer OMAS User Documentation](../../asset-consumer/docs/user)
   * [Community Profile OMAS User Documentation](../../community-profile/docs/user)
+  * [Data Engine OMAS User Documentation](../../data-engine/docs/user)
+  * [Information View OMAS User Documentation](../../information-view/docs/user)
 
 
 

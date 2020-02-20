@@ -32,7 +32,7 @@ by setting spring-boot property  `startup.server.list`. This startup option is m
 default by user id `system`, and it can be override by setting spring-boot property `startup.user`
 
 Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
+the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user).
 
 
 ----

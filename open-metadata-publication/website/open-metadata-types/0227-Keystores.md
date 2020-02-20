@@ -3,7 +3,7 @@
 
 # 0227 Keystores
 
-![UML](0227-Keystores.png)
+![UML](0227-Keystores.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

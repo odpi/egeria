@@ -23,7 +23,7 @@ run the default calls for setting the server URL, eventbus and the cohort.
 3. Set the configuration for the Open Lineage Services by providing a database connection object and setting the topic name of Asset 
 Lineage OMAS Out topic via the following HTTP request:
 ```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+POST {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage/configuration
 ```
 With the following body: 
 ```json
@@ -67,7 +67,7 @@ With the following body:
 4. Start the instance of the OMAG Server by issuing the following HTTP request:
     
 ```
-POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
+POST {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/instance
 ```
 
 # Removing the Open Lineage Services from the server configuration
@@ -75,7 +75,7 @@ POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{serve
 Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
     
 ```
-DEL {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage/configuration
 ```
 
 # About the Open Lineage Services

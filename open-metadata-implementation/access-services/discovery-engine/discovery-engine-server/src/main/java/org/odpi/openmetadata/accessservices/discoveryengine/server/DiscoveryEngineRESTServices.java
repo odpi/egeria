@@ -6,10 +6,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEn
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
@@ -611,6 +608,42 @@ public class DiscoveryEngineRESTServices
         return response;
     }
 
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public NameListResponse getTypesOfAnnotation(String serverName,
+                                                 String userId)
+    {
+        final String   methodName = "getTypesOfAnnotation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NameListResponse response = new NameListResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+
+            response.setNames(handler.getTypesOfAnnotation());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
     /**
      * Return the list of annotations from previous runs of the discovery service that are set to a specific status.

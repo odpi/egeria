@@ -6,7 +6,7 @@
 Create a SchemaType with SchemaAttributes and relationships
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types/
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/schema-types/
 
 {
   "schema":  {

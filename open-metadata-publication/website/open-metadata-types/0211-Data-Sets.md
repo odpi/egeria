@@ -6,7 +6,7 @@
 **VirtualDataSet** extends the concept of [DataSet](0010-Base-Model.md) to include
 virtual data sets - that is data sets built up from calling other data sets.
 
-![UML](0211-Data-Sets.png)
+![UML](0211-Data-Sets.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

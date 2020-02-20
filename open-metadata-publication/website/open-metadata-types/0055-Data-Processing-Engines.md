@@ -3,7 +3,7 @@
 
 # 0055 Data Processing Engines
 
-![UML](0055-Data-Processing-Engines.png)
+![UML](0055-Data-Processing-Engines.png#pagewidth)
 
 Return to [Area 0](Area-0-models.md).
 

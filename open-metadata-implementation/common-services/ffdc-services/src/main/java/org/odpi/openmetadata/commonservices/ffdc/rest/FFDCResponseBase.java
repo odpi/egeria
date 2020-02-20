@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +14,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BooleanResponse.class, name = "BooleanResponse"),
+        @JsonSubTypes.Type(value = CountResponse.class, name = "CountResponse"),
+        @JsonSubTypes.Type(value = GUIDListResponse.class, name = "GUIDListResponse"),
+        @JsonSubTypes.Type(value = GUIDResponse.class, name = "GUIDResponse"),
+        @JsonSubTypes.Type(value = NameListResponse.class, name = "NameListResponse"),
+        @JsonSubTypes.Type(value = RegisteredOMAGServicesResponse.class, name = "RegisteredOMAGServicesResponse"),
+        @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
+
+})
 public class FFDCResponseBase implements java.io.Serializable
 {
     private static final long    serialVersionUID = 1L;

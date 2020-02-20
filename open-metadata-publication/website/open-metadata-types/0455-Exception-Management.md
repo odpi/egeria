@@ -5,7 +5,7 @@
 
 Exception management handles errors detected by verification points.
 
-![UML](0455-Exception-Management.png)
+![UML](0455-Exception-Management.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

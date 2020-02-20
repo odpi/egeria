@@ -56,7 +56,7 @@ The structure of the report is described by elements of type ReportElement. Repo
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/report
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/report
 
 Sample 1
 {
