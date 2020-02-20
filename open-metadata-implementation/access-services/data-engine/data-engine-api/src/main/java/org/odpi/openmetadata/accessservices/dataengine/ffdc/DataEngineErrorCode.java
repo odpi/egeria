@@ -50,7 +50,12 @@ public enum DataEngineErrorCode {
     SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005 ",
             "SchemaAttribute with qualifiedName {0} was not found",
             "The system is unable to create a new LineageMapping relation.",
-            "Correct the code in the caller to provide the correct port type.");
+            "Correct the code in the caller to provide the correct schema attribute qualified name."),
+    PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005 ",
+            "Port with qualifiedName {0} was not found",
+            "The system is unable to create a new PortDelegation relation.",
+            "Correct the code in the caller to provide the correct port qualified name.");
+
 
     private int httpErrorCode;
     private String errorMessageId;

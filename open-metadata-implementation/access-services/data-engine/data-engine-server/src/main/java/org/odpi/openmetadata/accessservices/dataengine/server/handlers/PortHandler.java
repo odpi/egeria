@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -25,7 +24,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Optional;
-
 
 /**
  * PortHandler manages Port objects from the property server. It runs server-side in the DataEngine OMAS
@@ -164,9 +162,10 @@ public class PortHandler {
     /**
      * Update the port
      *
-     * @param userId         the name of the calling user
-     * @param port           the port values
-     * @param entityTypeName the type name
+     * @param userId             the name of the calling user
+     * @param originalPortEntity the created port entity
+     * @param port               the port values
+     * @param entityTypeName     the type name
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -279,10 +278,11 @@ public class PortHandler {
                 dataEngineCommonHandler.addExternalRelationshipRelationship(userId, portGUID, delegatedPortEntity.get().getGUID(),
                         PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName);
             } else {
-                throwInvalidParameterException(portGUID, methodName, delegatesToQualifiedName, delegatedPortType);
+                throwInvalidParameterException(portGUID, DataEngineErrorCode.INVALID_PORT_TYPE, delegatesToQualifiedName, delegatedPortType,
+                        methodName);
             }
         } else {
-            throwInvalidParameterException(portGUID, methodName, delegatesToQualifiedName, null);
+            throwInvalidParameterException(portGUID, DataEngineErrorCode.PORT_NOT_FOUND, delegatesToQualifiedName, portGUID, methodName);
         }
     }
 
@@ -304,8 +304,7 @@ public class PortHandler {
     }
 
     /**
-     * Find out if the Port Implementation object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity
+     * Find out if the PortImplementation object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
@@ -323,8 +322,7 @@ public class PortHandler {
     }
 
     /**
-     * Find out if the Port Alias object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity
+     * Find out if the PortAlias object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
@@ -342,8 +340,7 @@ public class PortHandler {
     }
 
     /**
-     * Find out if the Port object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity.
+     * Find out if the Port object is already stored in the repository. It uses the fully qualified name to retrieve the entity.
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
@@ -389,9 +386,8 @@ public class PortHandler {
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
-    private void throwInvalidParameterException(String qualifiedName, String methodName, String delegatedQualifiedName, String delegatedPortType) throws
-                                                                                                                                                  InvalidParameterException {
-        DataEngineErrorCode errorCode = DataEngineErrorCode.INVALID_PORT_TYPE;
+    private void throwInvalidParameterException(String qualifiedName, DataEngineErrorCode errorCode, String delegatedQualifiedName,
+                                                String delegatedPortType, String methodName) throws InvalidParameterException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(delegatedQualifiedName, qualifiedName);
 
         throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,

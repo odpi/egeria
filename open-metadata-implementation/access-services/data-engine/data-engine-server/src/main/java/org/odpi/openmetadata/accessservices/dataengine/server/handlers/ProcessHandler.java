@@ -168,7 +168,6 @@ public class ProcessHandler {
                 updatedProcessBuilder.getInstanceProperties(methodName));
         EntityDetailDifferences entityDetailDifferences = repositoryHelper.getEntityDetailDifferences(originalProcessEntity, updatedProcessEntity,
                 true);
-        // classifications are being handled in assetHandler.reclassifyAsset
         if (!entityDetailDifferences.hasInstancePropertiesDifferences()) {
             return;
         }
@@ -178,8 +177,7 @@ public class ProcessHandler {
     }
 
     /**
-     * Find out if the Process object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity
+     * Find out if the Process object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched

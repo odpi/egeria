@@ -127,8 +127,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Find out if the Process object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity
+     * Find out if the SchemaType object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
@@ -146,8 +145,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Find out if the Process object is already stored in the repository. It uses the fully qualified name
-     * to retrieve the entity
+     * Find out if the SchemaAttribute object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
@@ -189,10 +187,10 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> sourceSchemaAttributeEntity = findSchemaAttributeEntity(userId, sourceSchemaAttributeQualifiedName);
         Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
 
-        if(!sourceSchemaAttributeEntity.isPresent()) {
+        if (!sourceSchemaAttributeEntity.isPresent()) {
             throwInvalidParameterException(sourceSchemaAttributeQualifiedName, methodName);
         }
-        if(!targetSchemaAttributeEntity.isPresent()) {
+        if (!targetSchemaAttributeEntity.isPresent()) {
             throwInvalidParameterException(targetSchemaAttributeQualifiedName, methodName);
         }
 
@@ -221,8 +219,8 @@ public class DataEngineSchemaTypeHandler {
 
         Set<String> schemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
 
-        for (String oldSchemaAttributeGUID : schemaAttributeGUIDs) {
-            removeTabularColumn(userId, oldSchemaAttributeGUID);
+        for (String schemaAttributeGUID : schemaAttributeGUIDs) {
+            removeTabularColumn(userId, schemaAttributeGUID);
         }
 
         removeTabularSchemaType(userId, schemaTypeGUID);
