@@ -164,12 +164,12 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
                         super.defaultProfileId,
                         super.defaultRequirementId);
 
-        verifyCondition(((typeDef.getCreatedBy() != null)),
+        verifyCondition(((typeDef.getCreatedBy() != null) && ((typeDef.getVersion() == 1) || (typeDef.getUpdatedBy() != null))),
                         assertion7,
                         testTypeName + assertionMsg7,
                         super.defaultProfileId,
                         super.defaultRequirementId);
-        verifyCondition(((typeDef.getCreateTime() != null)),
+        verifyCondition(((typeDef.getCreateTime() != null) && ((typeDef.getVersion() == 1) || (typeDef.getUpdateTime() != null))),
                         assertion8,
                         testTypeName + assertionMsg8,
                         super.defaultProfileId,
