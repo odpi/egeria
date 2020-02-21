@@ -35,6 +35,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param parentConnector      connector that this metadata collection supports.  The connector has the information
      *                             to call the metadata repository.
+     * @param serverName           name of the remote server.
      * @param repositoryName       name of the repository used for logging.
      * @param repositoryHelper     class used to build type definitions and instances.
      * @param repositoryValidator  class used to validate type definitions and instances.
@@ -42,6 +43,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws RepositoryErrorException problem creating the REST client
      */
     OMRSRESTMetadataCollection(OMRSRESTRepositoryConnector parentConnector,
+                               String                      serverName,
                                String                      repositoryName,
                                OMRSRepositoryHelper        repositoryHelper,
                                OMRSRepositoryValidator     repositoryValidator,
@@ -87,11 +89,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                errorCode.getUserAction());
         }
 
+        /*
+         * Override the repository name
+         */
         super.repositoryName = defaultRepositoryName + endpointAddress;
 
         try
         {
-            this.omrsClient = new LocalRepositoryServicesClient(repositoryName,
+            this.omrsClient = new LocalRepositoryServicesClient(serverName,
                                                                 endpointAddress,
                                                                 localServerUserId,
                                                                 localServerPassword);
