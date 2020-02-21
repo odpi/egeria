@@ -6,14 +6,19 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.AnnotationMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AnnotationHandler manages the storage and retrieval of metadata relating to annotations
@@ -67,6 +72,42 @@ public class AnnotationHandler
 
 
     /**
+     * Return the list of annotation subtype names mapped to their descriptions.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public Map<String, String> getTypesOfAnnotationDescriptions()
+    {
+        List<String>        annotationTypeList = repositoryHelper.getSubTypesOf(serviceName, AnnotationMapper.ANNOTATION_TYPE_NAME);
+        Map<String, String> annotationDescriptions = new HashMap<>();
+
+        if (annotationTypeList != null)
+        {
+            for (String  annotationTypeName : annotationTypeList)
+            {
+                if (annotationTypeName != null)
+                {
+                    TypeDef annotationTypeDef = repositoryHelper.getTypeDefByName(serviceName, annotationTypeName);
+
+                    if (annotationTypeDef != null)
+                    {
+                        annotationDescriptions.put(annotationTypeName, annotationTypeDef.getDescription());
+                    }
+                }
+            }
+
+        }
+
+        if (annotationDescriptions.isEmpty())
+        {
+            return null;
+        }
+
+        return annotationDescriptions;
+    }
+
+
+    /**
      * Return the annotations linked direction to the report.
      *
      * @param userId identifier of calling user
@@ -85,6 +126,8 @@ public class AnnotationHandler
     List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
                                                   String            anchorGUID,
                                                   String            anchorGUIDParameterName,
+                                                  String            relationshipTypeGUID,
+                                                  String            relationshipTypeName,
                                                   int               startingFrom,
                                                   int               maximumResults,
                                                   String            methodName) throws InvalidParameterException,
@@ -105,6 +148,7 @@ public class AnnotationHandler
      *
      * @param userId identifier of calling user
      * @param anchorGUID identifier of the anchor for the annotations.
+     * @param anchorGUIDTypeName parameter that passed the type name of the anchor for the annotations.
      * @param anchorGUIDParameterName parameter that passed the identifier of the anchor for the annotations.
      * @param annotationStatus limit the results to this annotation status
      * @param startingFrom initial position in the stored list.
@@ -119,7 +163,10 @@ public class AnnotationHandler
      */
     List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
                                                   String            anchorGUID,
+                                                  String            anchorGUIDTypeName,
                                                   String            anchorGUIDParameterName,
+                                                  String            relationshipTypeGUID,
+                                                  String            relationshipTypeName,
                                                   AnnotationStatus  annotationStatus,
                                                   int               startingFrom,
                                                   int               maximumResults,
@@ -131,7 +178,22 @@ public class AnnotationHandler
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        // todo
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       anchorGUID,
+                                                                                       anchorGUIDTypeName,
+                                                                                       relationshipTypeGUID,
+                                                                                       relationshipTypeName,
+                                                                                       startingFrom,
+                                                                                       queryPageSize,
+                                                                                       methodName);
+
+        List<Annotation> results = new ArrayList<>();
+        while (iterator.moreToReceive())
+        {
+            // todo
+        }
+
         return null;
     }
 

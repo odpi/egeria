@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -14,6 +16,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The AssetReviewInterface is used by the asset owner to review the state of the asset including any quality and usage
@@ -132,6 +135,34 @@ public interface AssetReviewInterface
                                                                 int     maximumResults) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException;
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<String>  getTypesOfAnnotation(String userId) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param userId calling user
+     * @return map of type names that are subtypes of annotation to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    Map<String, String> getTypesOfAnnotationWithDescriptions(String userId) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 
 
     /**

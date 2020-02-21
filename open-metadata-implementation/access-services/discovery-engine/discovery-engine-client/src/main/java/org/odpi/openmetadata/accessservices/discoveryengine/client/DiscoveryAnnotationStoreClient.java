@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DiscoveryAnnotationStoreClient provides a client-side implementation of the ODF DiscoveryAnnotationStore
@@ -57,6 +58,22 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                        PropertyServerException
     {
         return discoveryEngineClient.getTypesOfAnnotation(userId);
+    }
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @return map of type names that are subtypes of annotation to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Map<String, String> getTypesOfAnnotationWithDescriptions() throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return discoveryEngineClient.getTypesOfAnnotationWithDescriptions(userId);
     }
 
 

@@ -262,8 +262,8 @@ public class DiscoveryAnalysisReportHandler
                                                                        int     startingFrom,
                                                                        int     maximumResults,
                                                                        String  methodName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String   assetGUIDParameter = "assetGUID";
 
@@ -305,7 +305,10 @@ public class DiscoveryAnalysisReportHandler
 
         return annotationHandler.getAnnotationsLinkedToAnchor(userId,
                                                               discoveryReportGUID,
+                                                              DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                               reportGUIDParameterName,
+                                                              DiscoveryAnalysisReportMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                                              DiscoveryAnalysisReportMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                                               annotationStatus,
                                                               startingFrom,
                                                               maximumResults,

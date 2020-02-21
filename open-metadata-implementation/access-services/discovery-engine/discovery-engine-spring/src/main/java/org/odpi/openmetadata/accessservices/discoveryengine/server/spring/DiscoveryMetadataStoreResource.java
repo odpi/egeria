@@ -283,6 +283,26 @@ public class DiscoveryMetadataStoreResource
     }
 
 
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/annotations/sub-types/descriptions")
+
+    public StringMapResponse getTypesOfAnnotationWithDescriptions(@PathVariable String  serverName,
+                                                                  @PathVariable String  userId)
+    {
+        return restAPI.getTypesOfAnnotationWithDescriptions(serverName, userId);
+    }
+
+
     /**
      * Return the list of annotations from previous runs of the discovery service that are set to a specific status.
      * If status is null then annotations that have been reviewed, approved and/or actioned are returned from

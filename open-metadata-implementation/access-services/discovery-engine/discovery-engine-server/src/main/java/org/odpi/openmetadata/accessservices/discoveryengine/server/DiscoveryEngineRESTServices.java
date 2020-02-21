@@ -645,6 +645,43 @@ public class DiscoveryEngineRESTServices
         return response;
     }
 
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public StringMapResponse getTypesOfAnnotationWithDescriptions(String serverName, String userId)
+    {
+        final String   methodName = "getTypesOfAnnotationWithDescriptions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+
+            response.setStringMap(handler.getTypesOfAnnotationDescriptions());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Return the list of annotations from previous runs of the discovery service that are set to a specific status.
      * If status is null then annotations that have been reviewed, approved and/or actioned are returned from

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The DiscoveryAnnotationStore provides the interface used by a discovery engine to
@@ -62,6 +63,19 @@ public abstract class DiscoveryAnnotationStore
     public abstract List<String>  getTypesOfAnnotation() throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public abstract Map<String, String> getTypesOfAnnotationWithDescriptions() throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
     /**
