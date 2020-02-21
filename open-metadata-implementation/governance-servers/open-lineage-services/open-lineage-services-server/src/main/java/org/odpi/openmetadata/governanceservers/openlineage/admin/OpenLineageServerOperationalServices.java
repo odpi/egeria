@@ -261,62 +261,59 @@ public class OpenLineageServerOperationalServices {
     /**
      * Convert a Throwable to an OMAGConfigurationErrorException
      *
-     * @param throwable         The exception object that was thrown
+     * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void throwableToOMAGConfigurationError(Throwable throwable, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+    private void throwableToOMAGConfigurationError(Throwable e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
             auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+        logException(auditCode, actionDescription, e);
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
-        logException(auditCode, actionDescription, throwable);
-        throw e;
     }
 
     /**
      * Convert a Throwable to a PropertyServerException
      *
-     * @param throwable         The exception object that was thrown
+     * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws PropertyServerException The service had trouble shutting down.
      */
-    private void throwableToPropertyServerException(Throwable throwable, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+    private void throwableToPropertyServerException(Throwable e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
             auditCode, String actionDescription) throws PropertyServerException {
+        logException(auditCode, actionDescription, e);
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-        PropertyServerException e = new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
-        logException(auditCode, actionDescription, throwable);
-        throw e;
     }
 
     /**
      * Convert an OCFCheckedExceptionBase exception to an OMAGConfigurationErrorException
      *
-     * @param exception         The exception object that was thrown
+     * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase exception, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
-        OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(exception.getReportedHTTPCode(),
-                exception.getReportingClassName(),
-                exception.getReportingActionDescription(),
-                exception.getErrorMessage(),
-                exception.getReportedSystemAction(),
-                exception.getReportedUserAction());
+    private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase e, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         logException(auditCode, actionDescription, e);
-        throw e;
+        throw new OMAGConfigurationErrorException(e.getReportedHTTPCode(),
+                e.getReportingClassName(),
+                e.getReportingActionDescription(),
+                e.getErrorMessage(),
+                e.getReportedSystemAction(),
+                e.getReportedUserAction());
     }
 
     /**
