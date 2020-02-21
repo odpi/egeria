@@ -356,6 +356,8 @@ public class OpenLineageServerOperationalServices {
      */
     private void disconnectGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws PropertyServerException {
         final String methodName = "disconnectGraphConnector";
+        if (connector == null)
+            return;
         try {
             connector.disconnect();
         } catch (Throwable e) {
@@ -370,6 +372,8 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "disconnectInTopicConnector";
         final String actionDescription = "Disconnecting the Open Lineage Services in-topic listener";
 
+        if (inTopicConnector == null)
+            return;
         try {
             inTopicConnector.disconnect();
         } catch (Throwable e) {
