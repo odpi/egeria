@@ -42,7 +42,6 @@
                 </property>
             </activation>
             <modules>
-                <module>ui-admin-services</module>
                 <module>ui-chassis</module>
             </modules>
         </profile>

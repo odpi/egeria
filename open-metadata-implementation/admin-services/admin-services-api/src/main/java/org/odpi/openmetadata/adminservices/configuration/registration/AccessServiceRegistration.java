@@ -23,7 +23,7 @@ public class AccessServiceRegistration implements Serializable
     private String                         accessServiceURLMarker;
     private String                         accessServiceDescription;
     private String                         accessServiceWiki;
-    private AccessServiceOperationalStatus accessServiceOperationalStatus;
+    private ServiceOperationalStatus accessServiceOperationalStatus;
     private String                         accessServiceAdminClassName;
 
     /**
@@ -44,7 +44,7 @@ public class AccessServiceRegistration implements Serializable
                                      String                         accessServiceURLMarker,
                                      String                         accessServiceDescription,
                                      String                         accessServiceWiki,
-                                     AccessServiceOperationalStatus accessServiceOperationalStatus,
+                                     ServiceOperationalStatus accessServiceOperationalStatus,
                                      String                         accessServiceAdminClassName)
     {
         this.accessServiceCode = accessServiceCode;
@@ -66,7 +66,7 @@ public class AccessServiceRegistration implements Serializable
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
     public AccessServiceRegistration(AccessServiceDescription       accessServiceDescription,
-                                     AccessServiceOperationalStatus accessServiceOperationalStatus,
+                                     ServiceOperationalStatus accessServiceOperationalStatus,
                                      String                         accessServiceAdminClassName)
     {
         this(accessServiceDescription.getAccessServiceCode(),
@@ -228,7 +228,7 @@ public class AccessServiceRegistration implements Serializable
      *
      * @return AccessServiceOperationalStatus enum
      */
-    public AccessServiceOperationalStatus getAccessServiceOperationalStatus()
+    public ServiceOperationalStatus getAccessServiceOperationalStatus()
     {
         return accessServiceOperationalStatus;
     }
@@ -239,7 +239,7 @@ public class AccessServiceRegistration implements Serializable
      *
      * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
      */
-    public void setAccessServiceOperationalStatus(AccessServiceOperationalStatus accessServiceOperationalStatus)
+    public void setAccessServiceOperationalStatus(ServiceOperationalStatus accessServiceOperationalStatus)
     {
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
     }

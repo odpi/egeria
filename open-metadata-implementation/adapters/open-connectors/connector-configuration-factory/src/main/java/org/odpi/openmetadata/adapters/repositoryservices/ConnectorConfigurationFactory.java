@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
@@ -80,27 +79,6 @@ public class ConnectorConfigurationFactory
 
         return connection;
     }
-
-
-    /**
-     * Returns the connection for the user interface server configuration file.
-     *
-     * @param serverName  name of the server
-     * @return Connection object
-     */
-    public Connection getUIServerConfigConnection(String serverName)
-    {
-        Endpoint   endpoint = new Endpoint();
-        endpoint.setAddress("ui.server." + serverName + ".config");
-
-        Connection connection = new Connection();
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedUIServerConfigStoreProvider.class.getName()));
-        connection.setQualifiedName(endpoint.getAddress());
-
-        return connection;
-    }
-
 
     /**
      * Return the connection for the default audit log.

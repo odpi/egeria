@@ -101,6 +101,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
+    private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
     private DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = null;
@@ -429,6 +430,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
         this.accessServicesConfig = accessServicesConfig;
+    }
+
+    /**
+     * Return the configuration for the registered Open Metadata View Services (OMVS).
+     *
+     * @return array of configuration properties one for each OMVS
+     */
+    public List<ViewServiceConfig> getViewServicesConfig()
+    {
+        return viewServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the registered Open Metadata View Services (OMVS).
+     *
+     * @param viewServicesConfig array of configuration properties one for each OMVS
+     */
+    public void setViewServicesConfig(List<ViewServiceConfig> viewServicesConfig)
+    {
+        this.viewServicesConfig = viewServicesConfig;
     }
 
 

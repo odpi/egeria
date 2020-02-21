@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.initialization;
 import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -23,8 +23,8 @@ public class SubjectAreaRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                AccessServiceOperationalStatus.ENABLED,
-                SubjectAreaAdmin.class.getName());
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 SubjectAreaAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -22,8 +22,8 @@ class GovernanceEngineRegistration {
         AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                AccessServiceOperationalStatus.ENABLED,
-                GovernanceEngineAdmin.class.getName());
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 GovernanceEngineAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }
