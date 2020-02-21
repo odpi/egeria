@@ -247,6 +247,24 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Set up a read only local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/local-repository/mode/read-only-repository")
+    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
+                                                @PathVariable                  String              serverName)
+    {
+        return adminAPI.setReadOnlyLocalRepository(userId, serverName);
+    }
+
+
+    /**
      * Provide the connection to the local repository - used when the local repository mode is set to repository proxy.
      *
      * @param userId  user that is issuing the request.

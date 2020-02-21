@@ -208,6 +208,27 @@ public class OMRSConfigurationFactory
 
 
     /**
+     * Return the configuration for an in-memory local repository.
+     *
+     * @param localServerName name of the local server
+     * @param localServerURL  URL root of local server used for REST calls
+     * @return LocalRepositoryConfig object
+     */
+    public LocalRepositoryConfig getReadOnlyLocalRepositoryConfig(String localServerName, String localServerURL)
+    {
+        final String  repositoryName = "Read only repository";
+
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
+                                                                                           localServerName,
+                                                                                           localServerURL);
+
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getReadOnlyLocalRepositoryLocalConnection());
+
+        return localRepositoryConfig;
+    }
+
+
+    /**
      * Return the local repository configuration for a repository proxy.
      *
      * @param localServerName name of local server

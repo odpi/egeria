@@ -1189,6 +1189,59 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Set up a read only store as the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse setReadOnlyLocalRepository(String              userId,
+                                                   String              serverName)
+    {
+        final String methodName = "setReadOnlyLocalRepository";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+
+
+            this.setLocalRepositoryConfig(userId,
+                                          serverName,
+                                          configurationFactory.getReadOnlyLocalRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                                serverConfig.getLocalServerURL()));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Remove all configuration for a local repository.  The default is no local repository.  This call
      * can be used to remove subsequent local repository configuration.
      *

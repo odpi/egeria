@@ -1487,6 +1487,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>readonly-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>repository-handler</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
