@@ -6,8 +6,8 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 
 /**
- * OMASServiceInstanceHandler retrieves information from the instance map for the
- * access service instances.  The instance map is thread-safe.  Instances are added
+ * OMVSServiceInstanceHandler retrieves information from the instance map for the
+ * view service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the GovernanceProgramAdmin class.
  */
 public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHandler
@@ -18,7 +18,7 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
     /**
      * Constructor
      *
-     * @param serviceName a descriptive name for the OMAS
+     * @param serviceName a descriptive name for the OMVS
      */
     public OMVSServiceInstanceHandler(String   serviceName)
     {
