@@ -35,6 +35,7 @@
         <module>common-services</module>
         <module>repository-services</module>
         <module>access-services</module>
+        <module>view-services</module>
         <module>governance-servers</module>
         <module>admin-services</module>
         <module>platform-services</module>

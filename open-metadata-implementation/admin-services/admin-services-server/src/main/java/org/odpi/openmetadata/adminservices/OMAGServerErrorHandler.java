@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -53,6 +54,33 @@ public class OMAGServerErrorHandler
     }
 
 
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param clientConfig  client config
+     * @param methodName  method receiving the call
+     * @throws OMAGInvalidParameterException null server name
+     */
+    void validateOMAGServerClientConfig(String serverName,
+                            OMAGServerClientConfig clientConfig,String methodName) throws OMAGInvalidParameterException
+    {
+        /*
+         * If the client config is null then this is an error.
+         */
+        if (clientConfig == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_CLIENT_CONFIG;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
     /**
      * Validate that the server name is not null and save it in the config.
      *
@@ -146,7 +174,7 @@ public class OMAGServerErrorHandler
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
         }
-        else if (registration.getAccessServiceOperationalStatus() != AccessServiceOperationalStatus.ENABLED)
+        else if (registration.getAccessServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
@@ -157,6 +185,47 @@ public class OMAGServerErrorHandler
                                                       errorMessage,
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
+        }
+    }
+
+    /**
+     * Check that a requested view service is registered with this server before allowing the view service to be configured
+     * into the configuration document
+     *
+     * @param registration registration record for the view service.
+     * @param serviceURLMarker string used in URL for this view service
+     * @param serverName name of the server being configured
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException resulting exception if the view service is not supported.
+     */
+    void validateViewServiceIsRegistered(ViewServiceRegistration registration,
+                                         String                    serviceURLMarker,
+                                         String                    serverName,
+                                         String                    methodName) throws OMAGConfigurationErrorException
+    {
+        if (registration == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.VIEW_SERVICE_NOT_RECOGNIZED;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        else if (registration.getViewServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -452,6 +521,57 @@ public class OMAGServerErrorHandler
                                                     this.getClass().getName(),
                                                     methodName,
                                                     errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, propertyName),
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+    /**
+     * Validate that the root URL of the server where an access service resides is not null.
+     *
+     * @param omagServerServiceRootURL  remote server name passed on the request
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the root URL is null
+     */
+    void validateOMAGServerServiceRootURL(String  omagServerServiceRootURL,
+                                      String  serverName,
+                                      String  serverService) throws OMAGInvalidParameterException
+    {
+        if ((omagServerServiceRootURL == null) || ("".equals(omagServerServiceRootURL)))
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_OMAG_SERVER_ROOT_URL;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    serverService,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the server name of the server where an access service resides is not null.
+     *
+     * @param omagServerName  remote server name passed on the request
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the name is null
+     */
+    public void validateOMAGServerName(String omagServerName, String serverName, String serverService)  throws OMAGInvalidParameterException
+        {
+        if ((omagServerName == null) || ("".equals(omagServerName)))
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    serverService,
+                                                    errorMessage,
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
         }

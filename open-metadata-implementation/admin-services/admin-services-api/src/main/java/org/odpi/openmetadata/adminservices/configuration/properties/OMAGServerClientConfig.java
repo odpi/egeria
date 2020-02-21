@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMAGServerClientConfig provides the properties to configure a server that connects to an
- * OMAG Server.  This is typically used by a Governance Server to retrieve metadata from
+ * OMAG Server.  This is typically used by a Governance or a View Server to retrieve metadata from
  * a metadata server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryEngineServicesConfig"),
-        @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig")
+        @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig"),
+        @JsonSubTypes.Type(value = ViewServiceConfig.class, name = "ViewServiceConfig")
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {

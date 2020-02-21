@@ -62,6 +62,39 @@ public class OMAGServerPlatformActiveServices
         return response;
     }
 
+    /**
+     * Return the list of view services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a metadata server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    public RegisteredOMAGServicesResponse getRegisteredViewServices(String userId)
+    {
+        final String methodName = "getRegisteredViewServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            response.setServices(serverInstanceMap.getRegisteredViewServices(userId));
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureThrowable(response, error, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
 
     /**
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform

@@ -2,6 +2,8 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Subject Area Open Metadata Access Service (OMAS)
+![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
+
 
 The Subject Area OMAS supports subject matter experts who are documenting
 their knowledge about a particular subject.  This includes:
