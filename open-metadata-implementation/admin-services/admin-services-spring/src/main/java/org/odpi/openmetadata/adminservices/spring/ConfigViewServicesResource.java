@@ -61,47 +61,6 @@ public class ConfigViewServicesResource
 
 
     /**
-     * Disable a view service.  This removes all configuration for the view service.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param serviceURLMarker string indicating which view service
-     * @return view service config response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
-     * OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    @GetMapping(path = "/{serviceURLMarker}")
-    public ViewServiceConfigResponse getViewService(@PathVariable String userId,
-                                                    @PathVariable String serverName,
-                                                    @PathVariable String serviceURLMarker)
-    {
-        return adminAPI.getViewServiceConfig(userId, serverName, serviceURLMarker);
-    }
-
-
-
-    /**
-     * Disable a view service.  This removes all configuration for the view service.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param serviceURLMarker string indicating which view service
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
-     * OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    @DeleteMapping(path = "/{serviceURLMarker}")
-    public VoidResponse clearViewService(@PathVariable String userId,
-                                         @PathVariable String serverName,
-                                         @PathVariable String serviceURLMarker)
-    {
-        return adminAPI.clearViewService(userId, serverName, serviceURLMarker);
-    }
-
-
-    /**
      * Enable all view services that are registered with this server platform.
      * The view services are set up to use the default event bus.
      *
