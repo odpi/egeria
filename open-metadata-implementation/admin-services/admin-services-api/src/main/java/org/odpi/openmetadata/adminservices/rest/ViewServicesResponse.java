@@ -93,7 +93,7 @@ public class ViewServicesResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "RegisteredOMAGServicesResponse{" +
+        return "ViewServicesResponse{" +
                        "services=" + services +
                        ", relatedHTTPCode=" + getRelatedHTTPCode() +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
