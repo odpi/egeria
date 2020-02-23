@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.commonservices.ffdc.rest;
+package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GUIDListResponse is the response structure used on the OMAS REST API calls that return a
- * list of unique identifiers (guids) as a response.
+ * ConnectionListResponse is the response structure used on the OMAS REST API calls that return a
+ * list of connections as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GUIDListResponse extends FFDCResponseBase
+public class ConnectionListResponse extends FFDCResponseBase
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<String> guids = null;
+    private List<Connection> connections = null;
 
 
     /**
      * Default constructor
      */
-    public GUIDListResponse()
+    public ConnectionListResponse()
     {
         super();
     }
@@ -42,67 +44,60 @@ public class GUIDListResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public GUIDListResponse(GUIDListResponse template)
+    public ConnectionListResponse(ConnectionListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.guids = template.getGUIDs();
+            this.connections = template.getConnections();
         }
     }
 
 
     /**
-     * Return the guids result.
+     * Return the connection list result.
      *
-     * @return list of unique identifiers
+     * @return list of objects
      */
-    public List<String> getGUIDs()
+    public List<Connection> getConnections()
     {
-        if (guids == null)
+        if (connections == null)
         {
             return null;
         }
-        else if (guids.isEmpty())
+        else if (connections.isEmpty())
         {
             return null;
         }
         else
         {
-            return guids;
+            return connections;
         }
     }
 
 
     /**
-     * Set up the guids result.
+     * Set up the connection list result.
      *
-     * @param guids list of unique identifiers
+     * @param connections list of objects
      */
-    public void setGUIDs(List<String> guids)
+    public void setConnections(List<Connection> connections)
     {
-        this.guids = guids;
+        this.connections = connections;
     }
 
 
     /**
      * JSON-style toString
      *
-     * @return return string containing the property names and values
+     * @return return string containing the connections and values
      */
     @Override
     public String toString()
     {
-        return "GUIDListResponse{" +
-                "guids=" + guids +
-                ", GUIDs=" + getGUIDs() +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
+        return "ConnectionListResponse{" +
+                "connections=" + connections +
                 '}';
     }
 
@@ -120,7 +115,7 @@ public class GUIDListResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof GUIDListResponse))
+        if (!(objectToCompare instanceof ConnectionListResponse))
         {
             return false;
         }
@@ -128,8 +123,8 @@ public class GUIDListResponse extends FFDCResponseBase
         {
             return false;
         }
-        GUIDListResponse that = (GUIDListResponse) objectToCompare;
-        return Objects.equals(guids, that.guids);
+        ConnectionListResponse that = (ConnectionListResponse) objectToCompare;
+        return Objects.equals(connections, that.connections);
     }
 
 
@@ -141,6 +136,6 @@ public class GUIDListResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(guids);
+        return Objects.hash(connections);
     }
 }

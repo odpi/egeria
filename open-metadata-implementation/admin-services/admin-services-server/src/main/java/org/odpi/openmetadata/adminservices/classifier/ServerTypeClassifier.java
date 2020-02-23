@@ -94,7 +94,8 @@ public class ServerTypeClassifier
         /*
          * All servers need the repository services
          */
-        if (repositoryServicesConfig == null) {
+        if (repositoryServicesConfig == null)
+        {
             /*
              * To get here, then another service is configured but not the repository services.
              */
@@ -114,7 +115,12 @@ public class ServerTypeClassifier
          */
         if (accessServiceConfigList != null)
         {
-            if (this.detectLocalRepository(repositoryServicesConfig))
+            LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
+            if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
             {
                 serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
             }
@@ -712,7 +718,17 @@ public class ServerTypeClassifier
              * Last attempt to classify is the repository proxy.
              * The repository proxy has the local repository and nothing else.
              */
-            if (this.detectLocalRepository(repositoryServicesConfig))
+            LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
+
+            if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else
             {
                 serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
             }
@@ -785,11 +801,25 @@ public class ServerTypeClassifier
      * Determine if the server is to have a local repository or not.
      *
      * @param repositoryServicesConfig repository services config section of configuration document
-     * @return true if there is a local repository, otherwise false.
+     * @return The local repository mode.
      */
-    private boolean detectLocalRepository(RepositoryServicesConfig  repositoryServicesConfig)
+    private LocalRepositoryMode detectLocalRepository(RepositoryServicesConfig  repositoryServicesConfig)
     {
-        return repositoryServicesConfig.getLocalRepositoryConfig() != null;
+        LocalRepositoryConfig localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+
+        if (localRepositoryConfig == null)
+        {
+            return LocalRepositoryMode.NO_REPOSITORY;
+        }
+
+        LocalRepositoryMode localRepositoryMode = localRepositoryConfig.getLocalRepositoryMode();
+
+        if (localRepositoryMode == null)
+        {
+            return LocalRepositoryMode.UNCLASSIFIED;
+        }
+
+        return localRepositoryMode;
     }
 
 

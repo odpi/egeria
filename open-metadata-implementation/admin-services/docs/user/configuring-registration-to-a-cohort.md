@@ -11,7 +11,7 @@ open metadata repository cohorts.
 Before calling these commands, make sure that the [default settings for the event bus](configuring-event-bus.md)
 are configured.
 
-## Enable access to a cohort
+## Add access to a cohort
 
 The following command registers the server with a cohort.
 Each cohort has a memorable name - eg `cocoCohort`.
@@ -20,14 +20,43 @@ Each cohort has a memorable name - eg `cocoCohort`.
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
 ```
 
-## Override the default value for the cohort topic
+## Query the name of the cohort topic
 
 At the heart of a cohort is the cohort topic.  This is a topic on an event bus that
 the members use to exchange metadata on.
 
 The default topic name is `egeria.omag.openmetadata.repositoryservices.cohort.{cohortName}.OMRSTopic`.
 
+It is possible to query the topic name in use for the cohort so it can be configured in
+the event bus for environments where topics are not auto-created on use.
+
 It is possible to change the topic name used by a cohort with the following command.
+```
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
+```
+This is an example of the result for a configured cohort:
+```json
+{
+    "class": "StringResponse",
+    "relatedHTTPCode": 200,
+    "resultString": "egeria.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic"
+}
+```
+If the cohort name is not known, the result looks like this:
+```json
+{
+    "class": "StringResponse",
+    "relatedHTTPCode": 400,
+    "exceptionClassName": "org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException",
+    "exceptionErrorMessage": "OMAG-ADMIN-400-033 The OMAG server cocoMDS1 is unable to override the cohort topic until the cocoCohortXXX cohort is set up",
+    "exceptionSystemAction": "No change has occurred in this server's configuration document.",
+    "exceptionUserAction": "Add the cohort configuration using the administration services and retry the request."
+}
+```
+
+## Override the value for the cohort topic
+
+It is also possible to change the topic name used by a cohort with the following command.
 The `{newTopicName}` flows in the request body.
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override

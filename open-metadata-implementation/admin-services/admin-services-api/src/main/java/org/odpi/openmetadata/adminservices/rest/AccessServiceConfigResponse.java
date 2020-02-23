@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 
 import java.util.Objects;
 
@@ -14,23 +14,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * DiscoveryEngineServicesConfigResponse is the response structure used on the OMAG REST API calls that returns a
- * DiscoveryEngineServicesConfig object as a response.
+ * AccessServiceConfigResponse is the response structure used on the OMAG REST API calls that returns a
+ * AccessServiceConfig object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIResponse
+public class AccessServiceConfigResponse extends AdminServicesAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private DiscoveryEngineServicesConfig config = null;
+    private AccessServiceConfig config = null;
 
 
     /**
      * Default constructor
      */
-    public DiscoveryEngineServicesConfigResponse()
+    public AccessServiceConfigResponse()
     {
     }
 
@@ -38,9 +38,9 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
     /**
      * Return the config object.
      *
-     * @return DiscoveryEngineServicesConfig object
+     * @return AccessServiceConfig object
      */
-    public DiscoveryEngineServicesConfig getConfig()
+    public AccessServiceConfig getConfig()
     {
         if (config == null)
         {
@@ -48,7 +48,7 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
         }
         else
         {
-            return new DiscoveryEngineServicesConfig(config);
+            return new AccessServiceConfig(config);
         }
     }
 
@@ -56,9 +56,9 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
     /**
      * Set up the config object.
      *
-     * @param config - DiscoveryEngineServicesConfig object
+     * @param config - AccessServiceConfig object
      */
-    public void setConfig(DiscoveryEngineServicesConfig config)
+    public void setConfig(AccessServiceConfig config)
     {
         this.config = config;
     }
@@ -72,7 +72,7 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
     @Override
     public String toString()
     {
-        return "DiscoveryEngineServicesConfig{" +
+        return "AccessServiceConfig{" +
                 "config=" + config +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
@@ -97,7 +97,7 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
         {
             return true;
         }
-        if (!(objectToCompare instanceof DiscoveryEngineServicesConfigResponse))
+        if (!(objectToCompare instanceof AccessServiceConfigResponse))
         {
             return false;
         }
@@ -105,7 +105,7 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
         {
             return false;
         }
-        DiscoveryEngineServicesConfigResponse that = (DiscoveryEngineServicesConfigResponse) objectToCompare;
+        AccessServiceConfigResponse that = (AccessServiceConfigResponse) objectToCompare;
         return Objects.equals(config, that.config);
     }
 
