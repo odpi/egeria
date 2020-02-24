@@ -186,7 +186,7 @@
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.0</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-RC3</spotbugs.version>
+        <spotbugs.version>4.0.0</spotbugs.version>
         <maven-download.version>1.5.0</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
