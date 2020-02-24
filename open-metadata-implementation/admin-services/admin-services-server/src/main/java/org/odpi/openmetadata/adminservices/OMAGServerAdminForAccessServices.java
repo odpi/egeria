@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -87,11 +87,12 @@ public class OMAGServerAdminForAccessServices
              */
             if ((accessServiceConfigList != null) && (! accessServiceConfigList.isEmpty()))
             {
+                List<RegisteredOMAGService> services = new ArrayList<>();
                 for (AccessServiceConfig accessServiceConfig : accessServiceConfigList)
                 {
                     if (accessServiceConfig != null)
                     {
-                        if (accessServiceConfig.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                        if (accessServiceConfig.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
@@ -99,8 +100,13 @@ public class OMAGServerAdminForAccessServices
                             service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
                             service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
                             service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
+                            services.add(service);
                         }
                     }
+                }
+                if (!services.isEmpty())
+                {
+                    response.setServices(services);
                 }
 
             }
@@ -230,7 +236,7 @@ public class OMAGServerAdminForAccessServices
                                                    String              serverName,
                                                    Map<String, Object> accessServiceOptions)
     {
-        final String methodName = "enableAccessServices";
+        final String methodName = "configureAllAccessServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -264,7 +270,7 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (registration != null)
                     {
-                        if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             accessServiceConfigList.add(createAccessServiceConfig(registration,
                                                                                   accessServiceOptions,
@@ -324,7 +330,7 @@ public class OMAGServerAdminForAccessServices
      * @param localServerId unique Id for this server
      * @return newly created config object
      */
-    private AccessServiceConfig  createAccessServiceConfig(AccessServiceRegistration   registration,
+    private AccessServiceConfig  createAccessServiceConfig(AccessServiceRegistration registration,
                                                            Map<String, Object>         accessServiceOptions,
                                                            EventBusConfig              eventBusConfig,
                                                            String                      serverName,
