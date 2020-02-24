@@ -27,10 +27,10 @@ import java.util.List;
  */
 public class AssetLineageAdmin extends AccessServiceAdmin {
 
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
-    private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
 
     /**
      * Default constructor
