@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.errors.RetriableException;
 import org.apache.kafka.common.errors.WakeupException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -114,9 +115,28 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                  * This may be a simple timeout or something else more
                  */
                 log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
+
+                if( !isExceptionRetryable(error)) {
+                    /* kafka thinks this isn't a retryable problem */
+                    /* so let the caller try */
+                    log.error("Exception in sendEvent " + error.toString());
+                    KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                            topicName,
+                            error.getMessage());
+
+                    throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            error);
+                }
                 if (eventRetryCount == 10)
                 {
-                    eventRetryCount = 0;
+                    /* we've retried now let the caller retry */
+                    break;
                 }
                 else
                 {
@@ -165,7 +185,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                 /*
                  * Producers have a thread and an in memory buffer
                  */
-                producer.flush();
+                producer.close();
             }
         }
 
@@ -224,11 +244,19 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             catch (Throwable   error)
             {
                 log.error("Bad exception from sending events " + error.getMessage());
-                this.recoverAfterError();
+
+                if( isExceptionRetryable(error) ) {
+                    this.recoverAfterError();
+                }
+                else {
+
+                    /* This is an unrecoverable error so clean up and shutdown*/
+                    break;
+                }
             }
         }
 
-        this.producer.close();
+        /* producer already closed by exception handler in publishEvent */
         this.producer = null;
 
         auditCode = KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN;
@@ -337,4 +365,16 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         running = false;
     }
 
+    private boolean isExceptionRetryable( Throwable throwable)
+    {
+
+        Throwable nested = null;
+        while ((nested = throwable.getCause()) != null) {
+             if( nested instanceof RetriableException) {
+                 return true;
+             }
+           throwable = throwable.getCause();
+       }
+        return false;
+    }
 }
