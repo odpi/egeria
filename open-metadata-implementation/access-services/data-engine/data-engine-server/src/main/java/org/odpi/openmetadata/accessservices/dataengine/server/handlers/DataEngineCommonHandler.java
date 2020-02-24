@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,8 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Optional;
-
-import static org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
 /**
  * DataEngineCommonHandler manages objects from the property server. It runs server-side in the DataEngine OMAS
@@ -134,23 +131,23 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<EntityDetail> findEntity(String userId, String qualifiedName, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                                PropertyServerException,
-                                                                                                                InvalidParameterException {
+    protected Optional<EntityDetail> findEntity(String userId, String qualifiedName, String entityTypeName) throws UserNotAuthorizedException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   InvalidParameterException {
         final String methodName = "findEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, QUALIFIED_NAME_PROPERTY_NAME,
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 qualifiedName, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
-        return Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, properties,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
+        return Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
     }
 
     /**
@@ -175,8 +172,8 @@ public class DataEngineCommonHandler {
         final String methodName = "addExternalRelationshipRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(firstGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateGUID(secondGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(firstGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(secondGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
 
@@ -205,10 +202,10 @@ public class DataEngineCommonHandler {
     protected void removeEntity(String userId, String entityGUID, String entityTypeName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException {
-        final String methodName = "removePort";
+        final String methodName = "removeEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(entityGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
         repositoryHandler.removeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);

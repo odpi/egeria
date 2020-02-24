@@ -42,8 +42,6 @@ import java.util.stream.Collectors;
  * DataEngine OMAS and creates and retrieves schema type entities through the OMRSRepositoryConnector.
  */
 public class DataEngineSchemaTypeHandler {
-    private static final Logger log = LoggerFactory.getLogger(DataEngineSchemaTypeHandler.class);
-
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -239,7 +237,7 @@ public class DataEngineSchemaTypeHandler {
                 createSchemaAttribute(userId, schemaTypeGUID, schemaAttribute, attribute.getDataType(), externalSourceName);
             } else {
                 String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
-                EntityDetail updatedSchemaAttributeEntity = buildSchemaAttributeEntityDetail(schemaTypeGUID, schemaAttribute);
+                EntityDetail updatedSchemaAttributeEntity = buildSchemaAttributeEntityDetail(schemaAttributeGUID, schemaAttribute);
                 EntityDetailDifferences entityDetailDifferences = repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity.get(),
                         updatedSchemaAttributeEntity, true);
 
@@ -250,14 +248,14 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private EntityDetail buildSchemaAttributeEntityDetail(String schemaTypeGUID, SchemaAttribute schemaAttribute) throws InvalidParameterException {
+    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, SchemaAttribute schemaAttribute) throws InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
 
         SchemaAttributeBuilder builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(), schemaAttribute.getAttributeName(),
                 schemaAttribute.getElementPosition(), schemaAttribute.getCardinality(), schemaAttribute.getDefaultValueOverride(),
                 schemaAttribute.getAdditionalProperties(), schemaAttribute.getExtendedProperties(), repositoryHelper, serviceName, serverName);
 
-        return dataEngineCommonHandler.buildEntityDetail(schemaTypeGUID, builder.getInstanceProperties(methodName));
+        return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, builder.getInstanceProperties(methodName));
     }
 
     private String createSchemaAttribute(String userId, String schemaTypeGUID, SchemaAttribute schemaAttribute, String dataType,
