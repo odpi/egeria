@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssetKnowledgeInterface provides basic information about the types of access supported in the open metadata ecosystem
@@ -26,4 +27,18 @@ public interface AssetKnowledgeInterface
     List<String> getTypesOfAsset(String userId) throws InvalidParameterException,
                                                        UserNotAuthorizedException,
                                                        PropertyServerException;
+
+
+    /**
+     * Return the asset subtype names mapped to their descriptions.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset mapped to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    Map<String, String> getTypesOfAssetWithDescriptions(String userId) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 }

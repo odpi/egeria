@@ -799,12 +799,105 @@ public class RepositoryHandler
                                                 obsoleteEntity.getProperties(),
                                                 methodName);
 
-                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+                this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
             }
         }
         catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException error)
         {
             throw error;
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+    }
+
+
+    /**
+     * Remove an entity from the repository if it is no longer connected to any other entity.
+     *
+     * @param userId calling user
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param guidParameterName name of parameter that passed the entity guid
+     * @param entityTypeGUID unique identifier for the entity's type
+     * @param entityTypeName name of the entity's type
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException the entity guid is not known
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void removeEntityOnLastUse(String                  userId,
+                                      String                  obsoleteEntityGUID,
+                                      String                  guidParameterName,
+                                      String                  entityTypeGUID,
+                                      String                  entityTypeName,
+                                      String                  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        try
+        {
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            obsoleteEntityGUID,
+                                                                                            null,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            5);
+
+            if ((relationships == null) || (relationships.isEmpty()))
+            {
+                this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, obsoleteEntityGUID, entityTypeName, methodName, guidParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+        {
+            this.purgeEntity(userId, entityTypeGUID,entityTypeName, obsoleteEntityGUID, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+    }
+
+
+    /**
+     * Remove an entity from the open metadata repository after checking that is is not connected to
+     * anything else.  The repository handler helps to ensure that all relationships are deleted explicitly
+     * ensuring the events are created and making it easier for third party repositories to keep track of
+     * changes rather than have to implement the implied deletes from the logical graph.
+     *
+     * @param userId calling user
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param entityTypeGUID type of entity to delete
+     * @param entityTypeName name of the entity's type
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeIsolatedEntity(String           userId,
+                                     String           obsoleteEntityGUID,
+                                     String           entityTypeGUID,
+                                     String           entityTypeName,
+                                     String           methodName) throws UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        // Todo - validate that the entity is in fact isolated.
+        try
+        {
+            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
         {
@@ -815,6 +908,7 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName);
         }
     }
+
 
 
     /**
@@ -953,64 +1047,6 @@ public class RepositoryHandler
         }
     }
 
-
-    /**
-     * Remove an entity from the repository if it is no longer connected to any other entity.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of the entity
-     * @param guidParameterName name of parameter that passed the entity guid
-     * @param entityTypeGUID unique identifier for the entity's type
-     * @param entityTypeName name of the entity's type
-     * @param methodName name of calling method
-     *
-     * @throws InvalidParameterException the entity guid is not known
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public void removeEntityOnLastUse(String                  userId,
-                                      String                  entityGUID,
-                                      String                  guidParameterName,
-                                      String                  entityTypeGUID,
-                                      String                  entityTypeName,
-                                      String                  methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        try
-        {
-            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            entityGUID,
-                                                                                            null,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            5);
-
-            if ((relationships == null) || (relationships.isEmpty()))
-            {
-                metadataCollection.deleteEntity(userId, entityTypeGUID,entityTypeName, entityGUID);
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
-            errorHandler.handleUnknownEntity(error, entityGUID, entityTypeName, methodName, guidParameterName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-        {
-            this.purgeEntity(userId, entityTypeGUID,entityTypeName, entityGUID, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
-        }
-    }
 
 
     /**
@@ -2051,6 +2087,8 @@ public class RepositoryHandler
                     log.debug("No relationships of type " + relationshipTypeName +
                               " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
+
+                return null;
             }
 
             return relationships;

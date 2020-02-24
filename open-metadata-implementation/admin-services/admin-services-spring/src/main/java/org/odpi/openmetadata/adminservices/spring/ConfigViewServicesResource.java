@@ -65,13 +65,14 @@ public class ConfigViewServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/{serviceURLMarker}")
-    public VoidResponse configureViewService(@PathVariable                     String              userId,
-                                               @PathVariable                   String              serverName,
-                                               @PathVariable                   String              serviceURLMarker,
-                                               @RequestBody                    OMAGServerClientConfig clientConfig)
+    public VoidResponse configureViewService(@PathVariable  String                 userId,
+                                             @PathVariable  String                 serverName,
+                                             @PathVariable  String                 serviceURLMarker,
+                                             @RequestBody   OMAGServerClientConfig clientConfig)
     {
         return adminAPI.configureViewService(userId, serverName, serviceURLMarker, clientConfig);
     }
+
 
     /**
      * Enable all view services that are registered with this server platform.
