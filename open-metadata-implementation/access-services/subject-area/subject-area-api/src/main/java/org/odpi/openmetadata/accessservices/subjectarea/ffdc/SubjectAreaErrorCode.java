@@ -311,7 +311,10 @@ public enum SubjectAreaErrorCode {
             "The OMAG server name is null",
             "The system is unable to connect to the OMAG Server to retrieve metadata properties.",
             "Ensure a valid OMAG Server name is passed to the Subject Area OMAS when it is created."),
-
+    UNEXPECTED_EXCEPTION(400, "OMAS-SUBJECT-AREA-400-070 ",
+            "An unexpected Exception occurred while processing method {0}. The Exception message is {1}.",
+            "The system is got unexpected exception.",
+            "Review the exception message to assess whether this is a logic error (in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",

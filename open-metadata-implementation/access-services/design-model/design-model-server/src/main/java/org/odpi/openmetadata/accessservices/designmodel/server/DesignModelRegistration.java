@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.designmodel.server;
 import org.odpi.openmetadata.accessservices.designmodel.admin.DesignModelAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -25,7 +25,7 @@ public class DesignModelRegistration
         AccessServiceDescription myDescription = AccessServiceDescription.DESIGN_MODEL_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  DesignModelAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
