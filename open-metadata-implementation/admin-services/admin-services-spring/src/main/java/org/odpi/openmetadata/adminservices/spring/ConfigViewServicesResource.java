@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForViewServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.rest.ViewServiceConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class ConfigViewServicesResource
 
 
     /**
-     * Return the list of view services that are configured for this server.
+     * Return the list of registered view services that are configured for this server.
      *
      * @param userId calling user
      * @param serverName name of server
@@ -35,6 +35,20 @@ public class ConfigViewServicesResource
                                                                     @PathVariable String serverName)
     {
         return adminAPI.getConfiguredViewServices(userId, serverName);
+    }
+
+    /**
+     * Return the list of view services for this server.
+     *
+     * @param userId calling user
+     * @param serverName name of server
+     * @return response containing the list of enabled view services
+     */
+    @GetMapping()
+    public ViewServicesResponse getViewServices(@PathVariable String userId,
+                                                @PathVariable String serverName)
+    {
+        return adminAPI.getViewServices(userId, serverName);
     }
 
 
