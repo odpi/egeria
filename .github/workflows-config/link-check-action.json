@@ -1,6 +1,10 @@
 {
   "ignorePatterns": [
     { "pattern": "^http://localhost" },
-    { "pattern": "^https://localhost" }
+    { "pattern": "^https://localhost" },
+    { "pattern": "^https://en.wikipedia.org/wiki/Egeria_(mythology\\)$"},
+    { "pattern": "^https://atlas.apache.org$" },
+    { "pattern": "^https://maven.apache.org/download.cgi$" },
+    { "pattern": "^https://zookeeper.apache.org/doc/current/zookeeperStarted.html$" }
   ]
 }

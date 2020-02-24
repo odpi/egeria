@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.projectmanagement.server;
 import org.odpi.openmetadata.accessservices.projectmanagement.admin.ProjectManagementAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -25,7 +25,7 @@ public class ProjectManagementRegistration
         AccessServiceDescription myDescription = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  ProjectManagementAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

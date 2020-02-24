@@ -3,7 +3,7 @@
 
 # Why is this project called "Egeria"?
 
-![Egeria Logo](../../../assets/img/egeria2.png)
+![Egeria Logo](../../../assets/img/egeria2.png#pagewidth)
 
 The ideas behind Egeria came from the project founders' extensive work in
 building big data solutions.  At that time, these were
@@ -23,7 +23,7 @@ The name needed to be available for trademark and a member of the
 community came up with "Egeria".
 
 Egeria was a Roman Water Nymph and a wise counselor.
-(See [Wikipedia for more details](https://en.wikipedia.org/wiki/Egeria_(mythology\))).
+(See [Wikipedia for more details](https://en.wikipedia.org/wiki/Egeria_%28mythology%29 )).
 The water theme seemed to fit with the data lake origin and since
 the Egeria technology shares knowledge between communities that
 use different tools, the notion of a "counselor" seemed to fit as well.

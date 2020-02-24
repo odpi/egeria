@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SubjectArea;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,6 +31,16 @@ public class UnexpectedExceptionResponse extends SubjectAreaOMASAPIResponse
     public UnexpectedExceptionResponse()
     {
         this.setResponseCategory(ResponseCategory.UnexpectedException);
+    }
+    public UnexpectedExceptionResponse(String methodName, String errorMessage)
+    {
+        this.setResponseCategory(ResponseCategory.UnexpectedException);
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST;
+        this.exceptionErrorMessage = errorCode.getErrorMessageId()
+                + errorCode.getFormattedErrorMessage(methodName,errorMessage);
+        this.exceptionSystemAction = errorCode.getSystemAction();
+        this.exceptionUserAction = errorCode.getUserAction();
+
     }
     public UnexpectedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
