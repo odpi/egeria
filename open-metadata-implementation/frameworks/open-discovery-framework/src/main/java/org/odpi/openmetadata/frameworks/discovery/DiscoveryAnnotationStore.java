@@ -195,48 +195,17 @@ public abstract class DiscoveryAnnotationStore
 
 
     /**
-     * Link an existing annotation to another object.  The anchor object my be a Referenceable.
-     *
-     * @param anchorGUID unique identifier that the annotation is to be linked to
-     * @param annotationGUID unique identifier of the annotation
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    public abstract void    linkAnnotation(String anchorGUID,
-                                           String annotationGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
-
-
-    /**
-     * Remove the relationship between an annotation and another object.
-     *
-     * @param anchorGUID unique identifier that the annotation is to be unlinked from
-     * @param annotationGUID unique identifier of the annotation
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    public abstract void    unlinkAnnotation(String anchorGUID,
-                                             String annotationGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
-
-
-    /**
      * Replace the current properties of an annotation.
      *
      * @param annotation new properties
      *
-     * @return fully filled out annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    public abstract Annotation  updateAnnotation(Annotation annotation) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+    public abstract void  updateAnnotation(Annotation annotation) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**

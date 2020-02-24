@@ -1040,7 +1040,7 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-service-connectors</artifactId>
-                <scope>runtime</scope>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 

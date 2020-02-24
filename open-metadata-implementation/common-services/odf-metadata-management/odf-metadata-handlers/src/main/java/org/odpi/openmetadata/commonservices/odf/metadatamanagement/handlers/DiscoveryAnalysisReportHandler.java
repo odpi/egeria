@@ -13,7 +13,6 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -21,6 +20,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestSta
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +79,6 @@ public class DiscoveryAnalysisReportHandler
      * @param discoveryEngineGUID unique identifier of the discovery engine that is running the discovery service
      * @param discoveryServiceGUID unique identifier of the discovery service creating the report
      * @param additionalProperties additional properties for the report
-     * @param classifications classifications to attach to the report
      * @param methodName calling method
      *
      * @return The new discovery report.
@@ -87,21 +86,20 @@ public class DiscoveryAnalysisReportHandler
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or report
      * @throws PropertyServerException there was a problem in the store whether the asset/report properties are kept.
      */
-    public DiscoveryAnalysisReport createDiscoveryAnalysisReport(String                  userId,
-                                                                 String                  qualifiedName,
-                                                                 String                  displayName,
-                                                                 String                  description,
-                                                                 Date                    creationDate,
-                                                                 Map<String, String>     analysisParameters,
-                                                                 DiscoveryRequestStatus discoveryRequestStatus,
-                                                                 String                  assetGUID,
-                                                                 String                  discoveryEngineGUID,
-                                                                 String                  discoveryServiceGUID,
-                                                                 Map<String, String>     additionalProperties,
-                                                                 List<Classification>    classifications,
-                                                                 String                  methodName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+    public String createDiscoveryAnalysisReport(String                 userId,
+                                                String                 qualifiedName,
+                                                String                 displayName,
+                                                String                 description,
+                                                Date                   creationDate,
+                                                Map<String, String>    analysisParameters,
+                                                DiscoveryRequestStatus discoveryRequestStatus,
+                                                String                 assetGUID,
+                                                String                 discoveryEngineGUID,
+                                                String                 discoveryServiceGUID,
+                                                Map<String, String>    additionalProperties,
+                                                String                 methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String   nameParameterName = "qualifiedName";
         final String   assetGUIDParameterName = "assetGUID";
@@ -131,9 +129,6 @@ public class DiscoveryAnalysisReportHandler
                                                                                     creationDate,
                                                                                     analysisParameters,
                                                                                     discoveryRequestStatus,
-                                                                                    assetGUID,
-                                                                                    discoveryEngineGUID,
-                                                                                    discoveryServiceGUID,
                                                                                     additionalProperties,
                                                                                     null,
                                                                                     repositoryHelper,
@@ -170,7 +165,7 @@ public class DiscoveryAnalysisReportHandler
                                                  methodName);
         }
 
-        return null;
+        return reportGUID;
     }
 
 
@@ -180,16 +175,15 @@ public class DiscoveryAnalysisReportHandler
      * @param userId calling user.
      * @param updatedReport updated report - this will replace what was previous stored.
      * @param discoveryReportGUID identifier of the discovery report
-     * @return the new values stored in the repository
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public DiscoveryAnalysisReport  updateDiscoveryAnalysisReport(String                  userId,
-                                                                  String                  discoveryReportGUID,
-                                                                  DiscoveryAnalysisReport updatedReport) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    public void  updateDiscoveryAnalysisReport(String                  userId,
+                                               String                  discoveryReportGUID,
+                                               DiscoveryAnalysisReport updatedReport) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String   methodName = "updateDiscoveryAnalysisReport";
         final String   reportParameterName = "updatedReport";
@@ -199,8 +193,24 @@ public class DiscoveryAnalysisReportHandler
         invalidParameterHandler.validateObject(updatedReport, reportParameterName, methodName);
         invalidParameterHandler.validateGUID(updatedReport.getGUID(), reportGUIDParameterName, methodName);
 
-        // TODO
-        return null;
+        DiscoveryAnalysisReportBuilder builder = new DiscoveryAnalysisReportBuilder(updatedReport.getQualifiedName(),
+                                                                                    updatedReport.getDisplayName(),
+                                                                                    updatedReport.getDescription(),
+                                                                                    updatedReport.getCreationDate(),
+                                                                                    updatedReport.getAnalysisParameters(),
+                                                                                    updatedReport.getDiscoveryRequestStatus(),
+                                                                                    updatedReport.getAdditionalProperties(),
+                                                                                    updatedReport.getExtendedProperties(),
+                                                                                    repositoryHelper,
+                                                                                    serviceName,
+                                                                                    serverName);
+
+        repositoryHandler.updateEntity(userId,
+                                       discoveryReportGUID,
+                                       DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
+                                       DiscoveryAnalysisReportMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                       builder.getInstanceProperties(methodName),
+                                       methodName);
     }
 
 
@@ -271,7 +281,37 @@ public class DiscoveryAnalysisReportHandler
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        // todo
+        List<EntityDetail>  entities = repositoryHandler.getEntitiesForRelationshipType(userId,
+                                                                                        assetGUID,
+                                                                                        AssetMapper.ASSET_TYPE_NAME,
+                                                                                        DiscoveryAnalysisReportMapper.REPORT_TO_ASSET_TYPE_GUID,
+                                                                                        DiscoveryAnalysisReportMapper.REPORT_TO_ASSET_TYPE_NAME,
+                                                                                        startingFrom,
+                                                                                        queryPageSize,
+                                                                                        methodName);
+
+        if (entities != null)
+        {
+            List<DiscoveryAnalysisReport> discoveryAnalysisReports = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    DiscoveryAnalysisReportConverter converter = new DiscoveryAnalysisReportConverter(entity,
+                                                                                                      repositoryHelper,
+                                                                                                      serviceName);
+
+                    discoveryAnalysisReports.add(converter.getBean());
+                }
+            }
+
+            if (! discoveryAnalysisReports.isEmpty())
+            {
+                return discoveryAnalysisReports;
+            }
+        }
+
         return null;
     }
 
@@ -317,7 +357,7 @@ public class DiscoveryAnalysisReportHandler
 
 
     /**
-     * Return the list of annotations from previous runs of the discovery service that are set to a specific status.
+     * Return the list of annotations from previous runs of the discovery services that are set to a specific status.
      * If status is null then annotations that have been reviewed, approved and/or actioned are returned from
      * discovery reports that are not waiting or in progress.
      *
@@ -342,10 +382,6 @@ public class DiscoveryAnalysisReportHandler
                                                                                                 PropertyServerException
     {
         final String   assetGUIDParameterName = "assetGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
         return null;
@@ -373,13 +409,23 @@ public class DiscoveryAnalysisReportHandler
     {
         final String   annotationParameterName = "annotation";
         final String   reportGUIDParameterName = "discoveryReportGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryReportGUID, reportGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
-        // todo
-        return null;
+        String annotationGUID = annotationHandler.addNewAnnotation(userId, annotation, methodName);
+
+        if (annotationGUID != null)
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 DiscoveryAnalysisReportMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                                 annotationGUID,
+                                                 discoveryReportGUID,
+                                                 null,
+                                                 methodName);
+        }
+
+        return annotationGUID;
     }
 }
