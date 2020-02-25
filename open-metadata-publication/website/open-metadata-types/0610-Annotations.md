@@ -13,7 +13,7 @@ It also links to each asset that the annotation relates to.
 Strings are used in many of the attributes to keep the model open
 for discovery service developers and the tools that process them.
 
-![UML](0610-Annotations.png)
+![UML](0610-Annotations.png#pagewidth)
 
 * **annotationType** - descriptive string that acts as an identifier for the specific annotation type.  This is a simple means to sub-type any one of the annotation subclasses.
 * **summary** - a human readable string to describe the annotation.

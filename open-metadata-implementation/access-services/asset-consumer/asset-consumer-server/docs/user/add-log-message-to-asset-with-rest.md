@@ -7,7 +7,7 @@
 Creates an Audit log record for the asset.  This log record is stored in the local server's Audit Log.
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/log-records
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/assets/{assetGUID}/log-records
 ```
 
 ```java

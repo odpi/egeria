@@ -55,7 +55,7 @@ public enum OCFErrorCode
             "Class {0} passed in connection {1} is not a Connector Provider",
             "The system is unable to create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider. ",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
-   INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008 ",
+    INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008 ",
             "Invalid Connector Provider class {0} passed in connection {1}",
             "The system is unable to create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),

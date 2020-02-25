@@ -638,6 +638,4 @@ public class DetectUtils {
         }
         return response;
     }
-
-
 }

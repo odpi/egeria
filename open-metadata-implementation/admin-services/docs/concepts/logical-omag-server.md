@@ -8,6 +8,8 @@ runs as a tenant inside the [OMAG server platform](omag-server-platform.md).
 This is why it is sometimes referred to as a "logical" server rather than a physical server
 that runs in its own process.
 
+![OMAG Servers and Platforms](omag-server-deployment-choices.png)
+
 
 
 

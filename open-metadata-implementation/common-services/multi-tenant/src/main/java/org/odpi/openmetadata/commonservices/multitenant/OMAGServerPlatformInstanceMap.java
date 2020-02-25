@@ -3,10 +3,8 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
@@ -105,7 +103,7 @@ public class OMAGServerPlatformInstanceMap
             {
                 if (registration != null)
                 {
-                    if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                    if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
                         response.add(getServiceDescription(registration.getAccessServiceName(),
                                                            registration.getAccessServiceURLMarker(),
@@ -125,7 +123,53 @@ public class OMAGServerPlatformInstanceMap
         return response;
     }
 
+    /**
+     * Return the list of view services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a server.
+     *
+     * @param userId calling user
+     * @return list of view service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredViewServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
 
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of View Services implemented in this server.
+         */
+        List<ViewServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
+
+        /*
+         * Set up the available view services.
+         */
+        if ((viewServiceRegistrationList != null) && (! viewServiceRegistrationList.isEmpty()))
+        {
+            for (ViewServiceRegistration registration : viewServiceRegistrationList)
+            {
+                if (registration != null)
+                {
+                    if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                    {
+                        response.add(getServiceDescription(registration.getViewServiceName(),
+                                                           registration.getViewServiceURLMarker(),
+                                                           registration.getViewServiceDescription(),
+                                                           registration.getViewServiceWiki()));
+                    }
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
     /**
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of a governance server.
@@ -243,6 +287,13 @@ public class OMAGServerPlatformInstanceMap
             response.addAll(services);
         }
 
+        services = getRegisteredViewServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
         services = getRegisteredGovernanceServices(userId);
 
         if ((services != null) && (! services.isEmpty()))
@@ -319,7 +370,7 @@ public class OMAGServerPlatformInstanceMap
      *
      * @param localServerUserId server's userId
      * @param serverName name of the server
-     * @param auditLog logging destination for the metadata security verifier
+     * @param auditLog logging destination
      * @param connection connection for the server's security validator
      * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connector is not valid.
@@ -418,9 +469,12 @@ public class OMAGServerPlatformInstanceMap
         else
         {
             handleBadServerName(userId, serverName, serviceOperationName);
-        }
 
-        return null;
+            /*
+             * Note, this return is unreachable because handleBadServerName always throws an exception.
+             */
+            return null;
+        }
     }
 
 
@@ -886,7 +940,7 @@ public class OMAGServerPlatformInstanceMap
      *
      * @param localServerUserId userId for local server
      * @param serverName name of the server
-     * @param auditLog logging destination for the metadata security verifier
+     * @param auditLog logging destination
      * @param connection connection properties for open metadata security connector for server (can be null for no security)
      * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connection is invalid

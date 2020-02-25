@@ -5,7 +5,12 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.adminservices.rest.CohortConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.ConnectionListResponse;
+import org.odpi.openmetadata.adminservices.rest.LocalRepositoryConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,15 +47,17 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/audit-log-destinations/default")
-    public VoidResponse setDefaultAuditLog(@PathVariable String userId,
-                                           @PathVariable String serverName)
+    public VoidResponse setDefaultAuditLog(@PathVariable String                            userId,
+                                           @PathVariable String                            serverName,
+                                           @RequestBody(required = false)  NullRequestBody requestBody)
     {
-        return adminAPI.setDefaultAuditLog(userId, serverName);
+        return adminAPI.setDefaultAuditLog(userId, serverName, requestBody);
     }
 
 
@@ -150,23 +157,6 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Clears all audit log destinations for this server.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @PostMapping(path = "/audit-log-destinations/none")
-    public VoidResponse clearAuditLogDestinations(@PathVariable String userId,
-                                                  @PathVariable String serverName)
-    {
-        return adminAPI.clearAuditLogDestinations(userId, serverName);
-    }
-
-
-    /**
      * Add a new open metadata archive to load at startup.
      *
      * @param userId  user that is issuing the request.
@@ -209,15 +199,17 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/local-repository/mode/in-memory-repository")
-    public VoidResponse setInMemLocalRepository(@PathVariable String userId,
-                                                @PathVariable String serverName)
+    public VoidResponse setInMemLocalRepository(@PathVariable                   String          userId,
+                                                @PathVariable                   String          serverName,
+                                                @RequestBody(required = false)  NullRequestBody requestBody)
     {
-        return adminAPI.setInMemLocalRepository(userId, serverName);
+        return adminAPI.setInMemLocalRepository(userId, serverName, requestBody);
     }
 
 
@@ -226,18 +218,36 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param storageProperties  properties used to configure Egeria Graph DB
+     * @param storageProperties  properties used to configure the back end storage for the graph
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/local-repository/mode/local-graph-repository")
-    public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
-                                                @PathVariable                  String serverName,
+    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
+                                                @PathVariable                  String              serverName,
                                                 @RequestBody @Nullable         Map<String, Object> storageProperties)
     {
         return adminAPI.setGraphLocalRepository(userId, serverName, storageProperties);
+    }
+
+
+    /**
+     * Set up a read only local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/local-repository/mode/read-only-repository")
+    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
+                                                @PathVariable                  String              serverName)
+    {
+        return adminAPI.setReadOnlyLocalRepository(userId, serverName);
     }
 
 
@@ -390,12 +400,80 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the event bus is not set.
      */
     @PostMapping(path = "/cohorts/{cohortName}")
-    public VoidResponse enableCohortRegistration(@PathVariable                   String               userId,
-                                                 @PathVariable                   String               serverName,
-                                                 @PathVariable                   String               cohortName,
-                                                 @RequestBody(required = false)  Map<String, Object>  additionalProperties)
+    public VoidResponse addCohortConfig(@PathVariable                   String               userId,
+                                        @PathVariable                   String               serverName,
+                                        @PathVariable                   String               cohortName,
+                                        @RequestBody(required = false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.enableCohortRegistration(userId, serverName, cohortName, additionalProperties);
+        return adminAPI.addCohortConfig(userId, serverName, cohortName, additionalProperties);
+    }
+
+
+    /**
+     * Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return cohort config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @GetMapping(path = "/cohorts/{cohortName}")
+    public CohortConfigResponse getCohortConfig(@PathVariable String userId,
+                                                @PathVariable String serverName,
+                                                @PathVariable String cohortName)
+    {
+        return adminAPI.getCohortConfig(userId, serverName, cohortName);
+    }
+
+
+    /**
+     * Retrieve the current topic name for the cohort.  This call can only be made once the cohort
+     * is set up with enableCohortRegistration().
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return void or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter or
+     * OMAGConfigurationErrorException the cohort is not set up.
+     */
+    @GetMapping(path = "/cohorts/{cohortName}/topic-name")
+    public StringResponse getCohortTopicName(@PathVariable  String userId,
+                                             @PathVariable  String serverName,
+                                             @PathVariable  String cohortName)
+    {
+        return adminAPI.getCohortTopicName(userId, serverName, cohortName);
+    }
+
+
+    /**
+     * Override the current topic name for the cohort.  This call can only be made once the cohort
+     * is set up with enableCohortRegistration().
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @param topicName new name for the topic.
+     * @return void or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter or
+     * OMAGConfigurationErrorException the cohort is not set up.
+     */
+    @PostMapping(path = "/cohorts/{cohortName}/topic-name-override")
+    public VoidResponse overrideCohortTopicName(@PathVariable  String userId,
+                                                @PathVariable  String serverName,
+                                                @PathVariable  String cohortName,
+                                                @RequestBody   String topicName)
+    {
+        return adminAPI.overrideCohortTopicName(userId, serverName, cohortName, topicName);
     }
 
 
@@ -410,11 +488,11 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
     @DeleteMapping(path = "/cohorts/{cohortName}")
-    public VoidResponse disableCohortRegistration(@PathVariable String          userId,
-                                                  @PathVariable String          serverName,
-                                                  @PathVariable String          cohortName)
+    public VoidResponse clearCohortConfig(@PathVariable String          userId,
+                                          @PathVariable String          serverName,
+                                          @PathVariable String          cohortName)
     {
-        return adminAPI.disableCohortRegistration(userId, serverName, cohortName);
+        return adminAPI.clearCohortConfig(userId, serverName, cohortName);
     }
 
 
@@ -445,6 +523,41 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return connection list response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @GetMapping(path = "/audit-log-destinations")
+    public ConnectionListResponse getAuditLogDestinations(@PathVariable String                userId,
+                                                          @PathVariable String                serverName)
+    {
+        return adminAPI.getAuditLogDestinations(userId, serverName);
+    }
+
+
+    /**
+     * Clears all audit log destinations for this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @DeleteMapping(path = "/audit-log-destinations")
+    public VoidResponse clearAuditLogDestinations(@PathVariable String userId,
+                                                  @PathVariable String serverName)
+    {
+        return adminAPI.clearAuditLogDestinations(userId, serverName);
+    }
+
+
+    /**
      * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
      * repository start up.
      *
@@ -465,6 +578,42 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Return the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return connection list response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @GetMapping(path = "/open-metadata-archives")
+    public ConnectionListResponse getOpenMetadataArchives(@PathVariable String userId,
+                                                          @PathVariable String serverName)
+    {
+        return adminAPI.getOpenMetadataArchives(userId, serverName);
+    }
+
+
+    /**
+     * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @DeleteMapping(path = "/open-metadata-archives")
+    public VoidResponse clearOpenMetadataArchives(@PathVariable String           userId,
+                                                  @PathVariable String           serverName)
+    {
+        return adminAPI.clearOpenMetadataArchives(userId, serverName);
+    }
+
+
+    /**
      * Set up the configuration for the local repository.  This overrides the current values.
      *
      * @param userId  user that is issuing the request.
@@ -477,9 +626,44 @@ public class ConfigRepositoryServicesResource
     @PostMapping(path = "/local-repository/configuration")
     public VoidResponse setLocalRepositoryConfig(@PathVariable String                userId,
                                                  @PathVariable String                serverName,
-                                                 @RequestBody LocalRepositoryConfig localRepositoryConfig)
+                                                 @RequestBody  LocalRepositoryConfig localRepositoryConfig)
     {
         return adminAPI.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+    }
+
+
+    /**
+     * Return the configuration for the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return local repository response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.
+     */
+    @GetMapping(path = "/local-repository/configuration")
+    public LocalRepositoryConfigResponse getLocalRepositoryConfig(@PathVariable String userId,
+                                                                  @PathVariable String serverName)
+    {
+        return adminAPI.getLocalRepositoryConfig(userId, serverName);
+    }
+
+
+    /**
+     * Remove all configuration for a local repository.  The default is no local repository.  This call
+     * can be used to remove subsequent local repository configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @DeleteMapping(path = "/local-repository/configuration")
+    public VoidResponse clearLocalRepositoryConfig(@PathVariable String userId,
+                                                   @PathVariable String serverName)
+    {
+        return adminAPI.clearLocalRepositoryConfig(userId, serverName);
     }
 
 

@@ -6,7 +6,7 @@
 Governance Action Classifications describe the common (ie typical) types of classifications
 that are used in the governance controls.
 
-![UML](0422-Governance-Action-Classifications.png)
+![UML](0422-Governance-Action-Classifications.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

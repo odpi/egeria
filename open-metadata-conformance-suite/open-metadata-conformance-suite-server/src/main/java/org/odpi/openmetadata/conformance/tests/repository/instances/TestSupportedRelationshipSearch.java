@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,40 +62,40 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private static final String assertionMsg3  = "repository supports creation of instances of type ";
 
     private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " repository property matchProperties search returned expected number of results for type ";
+    private static final String assertionMsg4  = "findRelationshipsByProperty found {0}/{1} expected results using parameters: {2}";
 
     private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " repository property matchProperties search returned expected results for type ";
+    private static final String assertionMsg5  = "findRelationshipsByProperty returned {0} unexpected results using parameters: {1}";
 
     private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " repository property matchProperties search returned expected number of results for type ";
+    private static final String assertionMsg6  = assertionMsg4;
 
     private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " repository property matchProperties search returned expected results for type ";
+    private static final String assertionMsg7  = assertionMsg5;
 
     private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " repository property value search returned expected number of results for type ";
+    private static final String assertionMsg8  = "findRelationshipsByPropertyValue found {0}/{1} expected results using parameters: {2}";
 
     private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " repository property value search returned expected results for type ";
+    private static final String assertionMsg9  = "findRelationshipsByPropertyValue found {0} unexpected results using parameters: {1}";
 
     private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10  = " repository property matchProperties search wth type filter returned expected number of relationships for type ";
+    private static final String assertionMsg10  = assertionMsg4;
 
     private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = " repository property matchProperties search wth type filter returned expected relationships for type ";
+    private static final String assertionMsg11  = assertionMsg5;
 
     private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = " repository property value search with general regex returned expected number of results for type ";
+    private static final String assertionMsg12  = "findRelationshipsByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
 
     private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " repository property value search with general regex returned expected results for type ";
+    private static final String assertionMsg13  = "findRelationshipsByPropertyValue with general regex found {0} unexpected results using parameters: {1}";
 
     private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = " repository property matchProperties search with general regex returned expected number of results for type ";
+    private static final String assertionMsg14  = "findRelationshipsByProperty with general regex found {0}/{1} expected results using parameters: {2}";
 
     private static final String assertion15     = testCaseId + "-15";
-    private static final String assertionMsg15  = "repository property matchProperties search with general regex returned expected results for type ";
+    private static final String assertionMsg15  = "findRelationshipsByProperty with general regex found {0} unexpected results using parameters: {1}";
 
     private static final String assertion101    = testCaseId + "-101";
     private static final String assertionMsg101 = "findRelationshipsByPropertyValue supports general regular expressions: ";
@@ -102,6 +103,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     private static final String assertion102    = testCaseId + "-102";
     private static final String assertionMsg102 = "findRelationshipsByProperty supports general regular expressions: ";
 
+    private static final String missingExpectedGuids = "(results missing expected GUIDs)";
 
 
     private RepositoryConformanceWorkPad              workPad;
@@ -342,10 +344,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             String methodName = "findRelationshipsByProperty";
             String operationDescription = "find relationships of type " + relationshipDef.getName();
             Map<String,String> parameters = new HashMap<>();
-            parameters.put("typeFilter"                    , relationshipDef.getGUID());
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
             parameters.put("matchProperties"               , emptyMatchProperties.toString());
             parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-            parameters.put("fromEntityElement"             , Integer.toString(0));
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
             parameters.put("limitResultsByStatus"          , "null");
             parameters.put("asOfTime"                      , "null");
             parameters.put("sequencingProperty"            , "null");
@@ -993,6 +995,17 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
             List<Relationship> result = null;
 
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+            parameters.put("matchProperties"               , matchProperties.toString());
+            parameters.put("matchCriteria"                 , matchCriteria.getName());
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+
             try {
 
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
@@ -1027,16 +1040,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , matchCriteria.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
@@ -1118,9 +1121,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+            String assertionMessage = MessageFormat.format(assertionMsg4, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
                             assertion4,
-                            assertionMsg4 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
+                            assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1143,12 +1147,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
 
-                boolean matchingResult = true;
+                String unexpectedResult = "0";
 
                 if (!pageLimited) {
 
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        matchingResult = false;
+                        unexpectedResult = missingExpectedGuids;
 
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -1178,11 +1182,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                             case ANY:
                                                 /* This is a single property test, so ANY and ALL are equivalent */
                                                 if (!primitiveValue.equals(value))
-                                                    matchingResult = false;
+                                                    unexpectedResult = "('" + primitiveValue.toString() + "' for guid=" + relationship.getGUID() + ")";
                                                 break;
                                             case NONE:
                                                 if (primitiveValue.equals(value))
-                                                    matchingResult = false;
+                                                    unexpectedResult = "('" + primitiveValue.toString() + "' for guid=" + relationship.getGUID() + ")";
                                                 break;
                                             default:
                                                 /* Invalid matchCriteria value passed */
@@ -1195,10 +1199,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-
-                assertCondition(matchingResult,
+                assertionMessage = MessageFormat.format(assertionMsg5, unexpectedResult, parameters);
+                assertCondition(unexpectedResult.equals("0"),
                                 assertion5,
-                                assertionMsg5 + testTypeName + " attribute " + attributeName + " match criteria " + matchCriteria,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1300,6 +1304,17 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+            parameters.put("matchProperties"               , matchProperties.toString());
+            parameters.put("matchCriteria"                 , matchCriteria.getName());
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+
             try {
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                         relationshipDef.getGUID(),
@@ -1334,16 +1349,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , matchCriteria.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
@@ -1382,9 +1387,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+            String assertionMessage = MessageFormat.format(assertionMsg6, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
                             assertion6,
-                            assertionMsg6 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria,
+                            assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1406,11 +1412,13 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
 
-                boolean matchingResult = true;
+                String unexpectedResult = "0";
+                String alpha = "";
+                String beta = "";
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        matchingResult = false;
+                        unexpectedResult = missingExpectedGuids;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -1433,6 +1441,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                     if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
                                         Object primitiveValue = alphaIPValue.valueAsObject();
                                         alphaMatch = primitiveValue.equals(alphaValue);
+                                        alpha = primitiveValue.toString();
                                     }
                                 }
                             }
@@ -1447,6 +1456,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                     if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
                                         Object primitiveValue = betaIPValue.valueAsObject();
                                         betaMatch = primitiveValue.equals(betaValue);
+                                        beta = primitiveValue.toString();
                                     }
                                 }
                             }
@@ -1455,15 +1465,15 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             switch (matchCriteria) {
                                 case ALL:
                                     if (!(alphaMatch && betaMatch))
-                                        matchingResult = false;
+                                        unexpectedResult = "(" + alphaAttributeName + "='" + alpha + "', " + betaAttributeName + "='" + beta + "' for guid=" + relationship.getGUID() + ")";
                                     break;
                                 case ANY:
                                     if (!(alphaMatch || betaMatch))
-                                        matchingResult = false;
+                                        unexpectedResult = "(" + alphaAttributeName + "='" + alpha + "', " + betaAttributeName + "='" + beta + "' for guid=" + relationship.getGUID() + ")";
                                     break;
                                 case NONE:
                                     if (!(!alphaMatch && !betaMatch))
-                                        matchingResult = false;
+                                        unexpectedResult = "(" + alphaAttributeName + "='" + alpha + "', " + betaAttributeName + "='" + beta + "' for guid=" + relationship.getGUID() + ")";
                                     break;
                                 default:
                                     /* Invalid matchCriteria value passed */
@@ -1473,10 +1483,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-
-                assertCondition(matchingResult,
+                assertionMessage = MessageFormat.format(assertionMsg7, unexpectedResult, parameters);
+                assertCondition(unexpectedResult.equals("0"),
                                 assertion7,
-                                assertionMsg7 + testTypeName + " attributes " + alphaAttributeName +"," + betaAttributeName + " match criteria " + matchCriteria,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
@@ -1629,6 +1639,16 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+            parameters.put("searchCriteria"                , literalisedValue);
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+
             try {
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
                                                                     relationshipDef.getGUID(),
@@ -1661,15 +1681,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByPropertyValue";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                parameters.put("searchCriteria"                , literalisedValue);
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
@@ -1696,9 +1707,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+            String assertionMessage = MessageFormat.format(assertionMsg8, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
                             assertion8,
-                            assertionMsg8 + testTypeName + " match type "+matchType + " literalised value " + literalisedValue,
+                            assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
@@ -1721,11 +1733,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
 
-                boolean matchingResult = true;
+                String unexpectedResult = "0";
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        matchingResult = false;
+                        unexpectedResult = missingExpectedGuids;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -1784,15 +1796,15 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 }
                             }
                             if (!validRelationship)
-                                matchingResult = false;
+                                unexpectedResult = "(guid=" + relationship.getGUID() + ")";
                         }
                     }
                 }
 
-
-                assertCondition(matchingResult,
+                assertionMessage = MessageFormat.format(assertionMsg9, unexpectedResult, parameters);
+                assertCondition(unexpectedResult.equals("0"),
                                 assertion9,
-                                assertionMsg9 + testTypeName + " match type "+matchType + " literalised value " + literalisedValue,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
             }
@@ -2069,10 +2081,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships with no type filter";
                 Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , "null");
+                parameters.put("relationshipTypeGUID"          , "null");
                 parameters.put("matchProperties"               , matchProperties.toString());
                 parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
+                parameters.put("fromRelationshipElement"       , Integer.toString(0));
                 parameters.put("limitResultsByStatus"          , "null");
                 parameters.put("asOfTime"                      , "null");
                 parameters.put("sequencingProperty"            , "null");
@@ -2123,6 +2135,17 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 result = null;
 
+                Map<String,String> parameters = new HashMap<>();
+                parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+                parameters.put("matchProperties"               , matchProperties.toString());
+                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+                parameters.put("fromRelationshipElement"       , Integer.toString(0));
+                parameters.put("limitResultsByStatus"          , "null");
+                parameters.put("asOfTime"                      , "null");
+                parameters.put("sequencingProperty"            , "null");
+                parameters.put("sequencingOrder"               , "null");
+                parameters.put("pageSize"                      , Integer.toString(pageSize));
+
                 try {
                     result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                             relationshipDef.getGUID(),
@@ -2156,16 +2179,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                     String methodName = "findRelationshipsByProperty";
                     String operationDescription = "find relationships of type " + relationshipDef.getName();
-                    Map<String,String> parameters = new HashMap<>();
-                    parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                    parameters.put("matchProperties"               , matchProperties.toString());
-                    parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                    parameters.put("fromEntityElement"             , Integer.toString(0));
-                    parameters.put("limitResultsByStatus"          , "null");
-                    parameters.put("asOfTime"                      , "null");
-                    parameters.put("sequencingProperty"            , "null");
-                    parameters.put("sequencingOrder"               , "null");
-                    parameters.put("pageSize"                      , Integer.toString(pageSize));
                     String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                     throw new Exception( msg , exc );
@@ -2191,9 +2204,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                 boolean limited_small_case = wildSearchPageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
                 boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+                String assertionMessage = MessageFormat.format(assertionMsg10, resultCount, expectedRelationshipCount, parameters);
                 assertCondition((acceptable_result_size),
                                 assertion10,
-                                assertionMsg10 + testTypeName + " attribute " + attributeName,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -2216,12 +2230,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                      * of a narrower search. But not if the original result set was under the page limit.
                      */
 
-                    boolean matchingResult = true;
+                    String unexpectedResult = "0";
 
                     if (!pageLimited) {
 
                         if (!resultGUIDs.containsAll(expectedGUIDs))
-                            matchingResult = false;
+                            unexpectedResult = missingExpectedGuids;
 
                     } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -2249,7 +2263,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                              */
 
                                             if (!primitiveValue.equals(value))
-                                                matchingResult = false;
+                                                unexpectedResult = "('" + primitiveValue.toString() + "' for guid=" + relationship.getGUID() + ")";
 
 
                                         }
@@ -2259,10 +2273,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                         }
                     }
 
-
-                    assertCondition(matchingResult,
+                    assertionMessage = MessageFormat.format(assertionMsg11, unexpectedResult, parameters);
+                    assertCondition(unexpectedResult.equals("0"),
                                     assertion11,
-                                    assertionMsg11 + testTypeName + " attribute " + attributeName,
+                                    assertionMessage,
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                 }
@@ -2412,6 +2426,16 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
+            Map<String,String> parameters = new HashMap<>();
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+            parameters.put("searchCriteria"                , regexValue);
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
+
             try {
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
                                                                     relationshipDef.getGUID(),
@@ -2451,15 +2475,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByPropertyValue";
                 String operationDescription = "find relationships with general regex for type " + relationshipDef.getName();
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                parameters.put("searchCriteria"                , regexValue);
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
@@ -2485,9 +2500,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+            String assertionMessage = MessageFormat.format(assertionMsg12, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
                             assertion12,
-                            assertionMsg12 + testTypeName + " match type " + matchType + " regex " + regexValue,
+                            assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
@@ -2510,11 +2526,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
 
-                boolean matchingResult = true;
+                String unexpectedResult = "0";
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        matchingResult = false;
+                        unexpectedResult = missingExpectedGuids;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -2573,15 +2589,15 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 }
                             }
                             if (!validRelationship)
-                                matchingResult = false;
+                                unexpectedResult = "(guid=" + relationship.getGUID() + ")";
                         }
                     }
                 }
 
-
-                assertCondition(matchingResult,
+                assertionMessage = MessageFormat.format(assertionMsg13, unexpectedResult, parameters);
+                assertCondition(unexpectedResult.equals("0"),
                                 assertion13,
-                                assertionMsg13 + testTypeName + " match type " + matchType + " regex " + regexValue,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
             }
@@ -2603,6 +2619,17 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
 
             result = null;
+
+            parameters = new HashMap<>();
+            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
+            parameters.put("matchProperties"               , matchProperties.toString());
+            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
+            parameters.put("fromRelationshipElement"       , Integer.toString(0));
+            parameters.put("limitResultsByStatus"          , "null");
+            parameters.put("asOfTime"                      , "null");
+            parameters.put("sequencingProperty"            , "null");
+            parameters.put("sequencingOrder"               , "null");
+            parameters.put("pageSize"                      , Integer.toString(pageSize));
 
             try {
 
@@ -2646,16 +2673,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("typeFilter"                    , relationshipDef.getGUID());
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
@@ -2680,9 +2697,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
+            assertionMessage = MessageFormat.format(assertionMsg14, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
                             assertion14,
-                            assertionMsg14 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
+                            assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
@@ -2705,11 +2723,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * of a narrower search. But not if the original result set was under the page limit.
                  */
 
-                boolean matchingResult = true;
+                String unexpectedResult = "0";
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        matchingResult = false;
+                        unexpectedResult = missingExpectedGuids;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -2768,15 +2786,15 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 }
                             }
                             if (!validRelationship)
-                                matchingResult = false;
+                                unexpectedResult = "(guid=" + relationship.getGUID() + ")";
                         }
                     }
                 }
 
-
-                assertCondition(matchingResult,
+                assertionMessage = MessageFormat.format(assertionMsg15, unexpectedResult, parameters);
+                assertCondition(unexpectedResult.equals("0"),
                                 assertion15,
-                                assertionMsg15 + testTypeName + " attribute " + attributeName + " match type " + matchType + " regex " + regexValue,
+                                assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }

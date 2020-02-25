@@ -17,7 +17,7 @@ public class DiscoveryAnalysisReportMapper
     public static final String CREATION_DATE_PROPERTY_NAME            = "executionDate";              /* from OpenDiscoveryAnalysisReport entity */
     public static final String ANALYSIS_PARAMS_PROPERTY_NAME          = "analysisParameters";         /* from OpenDiscoveryAnalysisReport entity */
     public static final String ANALYSIS_STEP_PROPERTY_NAME            = "discoveryRequestStep";       /* from OpenDiscoveryAnalysisReport entity */
-    public static final String DISCOVERY_REQUEST_STATUS_PROPERTY_NAME = "discoveryRequestStatus";     /* from OpenDiscoveryAnalysisReport entity */
+    public static final String DISCOVERY_SERVICE_STATUS_PROPERTY_NAME = "discoveryServiceStatus";     /* from OpenDiscoveryAnalysisReport entity */
     public static final String ANCHOR_GUID_PROPERTY_NAME              = "anchorGUID";                 /* from OpenDiscoveryAnalysisReport entity */
 
     public static final String REPORT_TO_ASSET_TYPE_GUID              = "7eded424-f176-4258-9ae6-138a46b2845f";     /* from Area 6 */

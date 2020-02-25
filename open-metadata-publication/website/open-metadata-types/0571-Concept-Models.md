@@ -11,7 +11,7 @@ and there are three main subtypes:
 * ConceptBeadAttribute - an attribute of the concept bead.
 * ConceptBead link - a relationship between two concept beads.
 
-![UML](0571-Concept-Models.png)
+![UML](0571-Concept-Models.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

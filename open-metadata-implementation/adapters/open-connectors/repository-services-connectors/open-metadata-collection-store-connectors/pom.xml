@@ -34,6 +34,7 @@
     <modules>
         <module>graph-repository-connector</module>
         <module>inmemory-repository-connector</module>
+        <module>readonly-repository-connector</module>
         <module>omrs-rest-repository-connector</module>
     </modules>
 

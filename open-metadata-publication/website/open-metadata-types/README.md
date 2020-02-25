@@ -12,7 +12,7 @@ agreement on what data should be stored and in what format (structures).
 Figure 1 shows the different areas of metadata that a metadata repository needs
 to support a wide range of metadata management and governance tasks.
 
-![Figure 1: Common metadata areas](Figure-1-Open-Metadata-Areas.png)
+![Figure 1: Common metadata areas](Figure-1-Open-Metadata-Areas.png#pagewidth)
 > Figure 1: Common metadata areas
 
 * **[Area 0](Area-0-models.md)** describes base types and infrastructure.  This includes types for Asset, DataSet, Infrastructure, Process, Referenceable, Server and Host.
@@ -27,7 +27,7 @@ to support a wide range of metadata management and governance tasks.
 
 Figure 2 provides more detail of the metadata structures in each area.
 
-![Figure 2: Metadata detail within the metadata areas](Figure-2-Open-Metadata-Areas-Detail.png)
+![Figure 2: Metadata detail within the metadata areas](Figure-2-Open-Metadata-Areas-Detail.png#pagewidth)
 > Figure 2: Metadata detail within the metadata areas
 
 Within each area, the definitions are broken down into numbered packages to help identify

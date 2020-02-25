@@ -6,11 +6,14 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCl
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.DiscoveryEngineServicesConfigResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -26,7 +29,8 @@ public class OMAGServerConfigDiscoveryEngineServices
     private static final String serviceName    = GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName();
     private static final String accessService  = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName();
 
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerConfigDiscoveryEngineServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerConfigDiscoveryEngineServices.class),
+                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -41,15 +45,16 @@ public class OMAGServerConfigDiscoveryEngineServices
      * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setAccessServiceLocation(String                    userId,
-                                                 String                    serverName,
-                                                 OMAGServerClientConfig clientConfig)
+    public VoidResponse setClientConfig(String                    userId,
+                                        String                    serverName,
+                                        OMAGServerClientConfig clientConfig)
     {
-        final String methodName = "setAccessServiceLocation";
+        final String methodName = "setClientConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -117,7 +122,7 @@ public class OMAGServerConfigDiscoveryEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -131,7 +136,8 @@ public class OMAGServerConfigDiscoveryEngineServices
      * @param discoveryEngineNames  list of discovery engine qualified names describing which discovery engines run in this server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     public VoidResponse setDiscoveryEngines(String       userId,
                                             String       serverName,
@@ -139,7 +145,7 @@ public class OMAGServerConfigDiscoveryEngineServices
     {
         final String methodName = "setDiscoveryEngines";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -194,7 +200,7 @@ public class OMAGServerConfigDiscoveryEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -207,18 +213,21 @@ public class OMAGServerConfigDiscoveryEngineServices
      * @param serverName  local server name.
      * @param servicesConfig full configuration for the service.
      * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse addService(String userId, String serverName, DiscoveryEngineServicesConfig servicesConfig)
+    public VoidResponse setDiscoveryEngineServicesConfig(String userId, String serverName, DiscoveryEngineServicesConfig servicesConfig)
     {
-        final String methodName = "addService";
+        final String methodName = "setDiscoveryEngineServicesConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            this.setAccessServiceLocation(userId, serverName, servicesConfig);
+            this.setClientConfig(userId, serverName, servicesConfig);
             this.setDiscoveryEngines(userId, serverName, servicesConfig.getDiscoveryEngineNames());
         }
         catch (Throwable  error)
@@ -226,7 +235,48 @@ public class OMAGServerConfigDiscoveryEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add this service to the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return  full configuration for the service.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public DiscoveryEngineServicesConfigResponse getDiscoveryEngineServicesConfig(String userId, String serverName)
+    {
+        final String methodName = "getDiscoveryEngineServicesConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DiscoveryEngineServicesConfigResponse response = new DiscoveryEngineServicesConfigResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                response.setConfig(serverConfig.getDiscoveryEngineServicesConfig());
+            }
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -239,11 +289,11 @@ public class OMAGServerConfigDiscoveryEngineServices
      * @param serverName  local server name.
      * @return void response
      */
-    public VoidResponse deleteService(String userId, String serverName)
+    public VoidResponse clearDiscoveryEngineServicesConfig(String userId, String serverName)
     {
-        final String methodName = "deleteService";
+        final String methodName = "clearDiscoveryEngineServicesConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -281,7 +331,7 @@ public class OMAGServerConfigDiscoveryEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

@@ -6,7 +6,7 @@
 Return the Informal Tag for the supplied unique identifier (guid).
 
 ```
-GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/{{tagGUID}}
+GET {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/tags/{tagGUID}
 ```   
 
 ```java

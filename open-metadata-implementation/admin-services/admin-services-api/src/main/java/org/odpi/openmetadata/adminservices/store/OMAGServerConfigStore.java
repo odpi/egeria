@@ -11,6 +11,14 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 public interface OMAGServerConfigStore
 {
     /**
+     * Set up the name of the server for this configuration document.
+     *
+     * @param serverName name of the server
+     */
+    void setServerName(String  serverName);
+
+
+    /**
      * Save the server configuration.
      *
      * @param configuration configuration properties to save

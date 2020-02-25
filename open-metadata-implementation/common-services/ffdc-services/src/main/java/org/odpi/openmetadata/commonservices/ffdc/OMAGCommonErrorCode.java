@@ -81,7 +81,7 @@ public enum OMAGCommonErrorCode
     NULL_CONNECTION_PARAMETER(400, "OMAG-COMMON-400-011 ",
                               "The connection value passed on the {0} parameter of the {1} operation is null",
                               "The system is unable to process the request without this value.",
-                              "Correct the code in the caller to provide the name."),
+                              "Correct the code in the caller to provide the connection."),
 
     NULL_ENUM(400, "OMAG-COMMON-400-012 ",
               "The enumeration value passed on the {0} parameter of the {1} operation is null",
@@ -143,6 +143,11 @@ public enum OMAGCommonErrorCode
                        "The system is unable to process the request.",
                        "Ensure the element is no longer in use before retrying the operation."),
 
+    NULL_CONNECTOR_TYPE_PARAMETER(400, "OMAG-COMMON-400-024 ",
+             "The connection value passed on the {0} parameter of the {1} operation has a null connector type",
+             "The system is unable to process the request without this value.",
+             "Correct the code in the caller to provide the connector type."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails.",
@@ -157,7 +162,7 @@ public enum OMAGCommonErrorCode
                                "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
                                "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
                                "Look for errors in the local server's console to understand and correct the source of the error.")
-            ;
+    ;
 
     private int    httpErrorCode;
     private String errorMessageId;

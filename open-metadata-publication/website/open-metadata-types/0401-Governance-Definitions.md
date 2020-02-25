@@ -24,7 +24,7 @@ They are authored in the metadata repository.
 They inherit from [Referenceable](0010-Base-Model.md),
 which means they have a unique identifier and link to external references for more information.
 
-![UML](0401-Governance-Definitions.png)
+![UML](0401-Governance-Definitions.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

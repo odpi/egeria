@@ -39,9 +39,14 @@ public enum OMAGAdminErrorCode
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     INCOMPATIBLE_SERVER_NAMES(400, "OMAG-ADMIN-400-002 ",
-            "OMAG server has been called with server name {0} and a configuration document where the server name is {1}",
-            "The system is unable to start the local server.",
-            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "OMAG Server Platform was requested to start OMAG Server {0} but the configuration document retrieved for it " +
+                    "has the server name set to {1}",
+            "The system is unable to start the OMAG server because it can not retrieve the correct configuration document.",
+            "The configuration is retrieved from the configuration document store connector.  " +
+                                      "This connector is set up for the OMAG Server Platform.  " +
+                                      "It is either not configured correctly, or there is an error in its " +
+                                      "implementation because it is not retrieving the correct configuration document for" +
+                                      "the requested server."),
 
     NULL_LOCAL_SERVER_USERID(400, "OMAG-ADMIN-400-003 ",
                    "OMAG server {0} has been configured with a null local server user identifier (userId)",
@@ -218,6 +223,57 @@ public enum OMAGAdminErrorCode
             "The system returns an exception and does not update the configuration document for the server.",
             "Retry the configuration request with the property value set up correctly."),
 
+    COHORT_NOT_KNOWN(400, "OMAG-ADMIN-400-033 ",
+            "The OMAG server {0} is unable to override the cohort topic until the {1} cohort is set up",
+            "No change has occurred in this server's configuration document.",
+            "Add the cohort configuration using the administration services and retry the request."),
+
+    COHORT_TOPIC_STRANGE(400, "OMAG-ADMIN-400-034 ",
+            "The OMAG server {0} is unable to override the cohort topic for the {1} cohort because the contents of the topic connection do not " +
+                    "follow the expected pattern",
+            "No change has occurred in this server's configuration document because the topic connection in the cohort configuration does not " +
+                                 "follow the same structure as Egeria expects and so any update may have unexpected consequences.",
+            "Use the setCohortConfig() method to manually update the cohort topic in the cohort configuration."),
+
+    UNCLASSIFIABLE_SERVER(400, "OMAG-ADMIN-400-035 ",
+            "Unable to classify the type of server for OMAG server {0} from its configuration document.",
+            "The system is unable to initialize the local server instance.",
+            "Analyse the server's configuration document to determine why the type of server it requests " +
+                                  "is not identified.  Update the server's configuration document to provide " +
+                                  "a valid server configuration."),
+
+    VIEW_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-036 ",
+                                "Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform",
+                                "The system is unable to add this view service to the server's configuration document.",
+                                "Check that the name of the view service is correctly specified in the configuration request.  " +
+                                        "If you are not sure, issue the call to list the registered view services and verify the " +
+                                        "values you are using.  If the name is right, but the view service should be registered," +
+                                        "then the developer of the view service needs to add this registration to the code of the view " +
+                                        "service. An view service is registered in the " +
+                                        "OMAG Server Platform by adding a description of the view service to the " +
+                                        "view service registration. Once the view service being " +
+                                        "requested is registered, retry the configuration request."),
+
+    VIEW_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-036 ",
+                             "Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform",
+                             "The system is unable to configure the local server.",
+                             "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
+
+    NULL_CLIENT_CONFIG(400, "OMAG-ADMIN-400-037 ",
+                           "OMAG server {0} has been called by {1} with a null client config",
+                           "The system is unable to configure the local server.",
+                           "The client config is supplied by the caller to the OMAG server. This call needs to be supplied, including the name and URL of the OMAG server, before the server can operate correctly."),
+
+    NULL_OMAG_SERVER_ROOT_URL(400, "OMAG-ADMIN-400-038 ",
+                                 "The {0} service of OMAG server {1} has been configured with a null root URL for the OMAG Server",
+                                 "The system is unable to accept this value in the configuration properties.",
+                                 "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_OMAG_SERVER_NAME(400, "OMAG-ADMIN-400-039 ",
+                          "The {0} service of server {1} has been configured with a null OMAG Server name",
+                          "The system is unable to accept this value in the configuration properties.",
+                          "The OMAG Server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.",
@@ -240,6 +296,11 @@ public enum OMAGAdminErrorCode
             "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  " +
                                                 "If you are stuck, raise an issue."),
 
+    CLIENT_SIDE_REST_API_ERROR(503, "OMAG-ADMIN-503-001 ",
+            "A client-side exception was received from API call {0} to OMAG Server Platform at {1}.  The error message was {2}",
+            "The server has issued a call to the open metadata admin service REST API in a remote server and has received an exception from the " +
+                                       "local client libraries.",
+            "Look for errors in the local client's console to understand and correct the source of the error.")
 
     ;
 

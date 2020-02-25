@@ -3,12 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataEventProtocolVersion;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
@@ -135,21 +130,19 @@ public class OMRSConfigurationFactory
     /**
      * Returns the basic configuration for a local repository.
      *
-     * @param repositoryName name of the local repository
      * @param localServerName name of the local server
      * @param localServerURL URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
-    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String              repositoryName,
-                                                                  String              localServerName,
+    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String              localServerName,
                                                                   String              localServerURL)
     {
         LocalRepositoryConfig localRepositoryConfig = new LocalRepositoryConfig();
 
         localRepositoryConfig.setMetadataCollectionId(UUID.randomUUID().toString());
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.NO_REPOSITORY);
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getDefaultLocalRepositoryLocalConnection());
-        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(repositoryName,
-                                                                                                                                         localServerName,
+        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(localServerName,
                                                                                                                                          localServerURL));
         localRepositoryConfig.setEventsToSaveRule(this.getDefaultEventsToSaveRule());
         localRepositoryConfig.setSelectedTypesToSave(this.getDefaultSelectedTypesToSave());
@@ -170,14 +163,11 @@ public class OMRSConfigurationFactory
      */
     public LocalRepositoryConfig getInMemoryLocalRepositoryConfig(String localServerName, String localServerURL)
     {
-        final String  repositoryName = "In-memory repository";
-
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
-                                                                                           localServerName,
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(repositoryName,
-                                                                                                                                        localServerName));
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection());
 
         return localRepositoryConfig;
     }
@@ -196,16 +186,31 @@ public class OMRSConfigurationFactory
                                                                     String              localServerURL,
                                                                     Map<String, Object> storageProperties)
     {
-        final String   repositoryName = "Graph Open Metadata Repository";
-
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
-                                                                                           localServerName,
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
         localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(repositoryName,
-                                                                                                                       localServerName,
-                                                                                                                       storageProperties));
+                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(storageProperties));
+
+        return localRepositoryConfig;
+    }
+
+
+    /**
+     * Return the configuration for an in-memory local repository.
+     *
+     * @param localServerName name of the local server
+     * @param localServerURL  URL root of local server used for REST calls
+     * @return LocalRepositoryConfig object
+     */
+    public LocalRepositoryConfig getReadOnlyLocalRepositoryConfig(String localServerName, String localServerURL)
+    {
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+                                                                                           localServerURL);
+
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.METADATA_CACHE);
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getReadOnlyLocalRepositoryLocalConnection());
 
         return localRepositoryConfig;
     }
@@ -220,12 +225,10 @@ public class OMRSConfigurationFactory
      */
     public LocalRepositoryConfig getRepositoryProxyLocalRepositoryConfig(String localServerName, String localServerURL)
     {
-        final String   repositoryName = "Repository Proxy";
-
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
-                                                                                           localServerName,
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.REPOSITORY_PROXY);
         localRepositoryConfig.setLocalRepositoryLocalConnection(null);
 
         return localRepositoryConfig;
@@ -300,16 +303,15 @@ public class OMRSConfigurationFactory
     /**
      * Returns a repository services config with the audit log set up.
      *
-     * @param localServerName name of the local server
      * @return minimally configured repository services config
      */
-    public RepositoryServicesConfig getDefaultRepositoryServicesConfig(String localServerName)
+    public RepositoryServicesConfig getDefaultRepositoryServicesConfig()
     {
         RepositoryServicesConfig repositoryServicesConfig = new RepositoryServicesConfig();
 
         List<Connection>   auditLogStoreConnections = new ArrayList<>();
 
-        auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection(localServerName));
+        auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection());
 
         repositoryServicesConfig.setAuditLogConnections(auditLogStoreConnections);
 

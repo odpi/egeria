@@ -19,7 +19,7 @@ import java.util.List;
 public class ServerTypeClassifier
 {
     private static final String ACCESS_SERVICES_NAME = "Open Metadata Access Services (OMAS)";
-
+    private static final String VIEW_SERVICES_NAME = "Open Metadata View Services (OMVS)";
     private OMAGServerConfig  configurationDocument;
     private String            serverName;
 
@@ -49,12 +49,13 @@ public class ServerTypeClassifier
     {
         final String methodName = "getServerType";
 
-        ServerTypeClassification serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+        ServerTypeClassification serverTypeClassification = null;
 
         this.validateConfigurationDocumentNotNull(serverName, configurationDocument, methodName);
 
         RepositoryServicesConfig        repositoryServicesConfig        = configurationDocument.getRepositoryServicesConfig();
         List<AccessServiceConfig>       accessServiceConfigList         = configurationDocument.getAccessServicesConfig();
+        List<ViewServiceConfig>         viewServiceConfigList           = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig          = configurationDocument.getConformanceSuiteConfig();
         DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = configurationDocument.getDiscoveryEngineServicesConfig();
         OpenLineageServerConfig         openLineageServerConfig         = configurationDocument.getOpenLineageServerConfig();
@@ -67,6 +68,7 @@ public class ServerTypeClassifier
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
+                (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
                 (discoveryEngineServicesConfig == null) &&
                 (openLineageServerConfig == null) &&
@@ -88,7 +90,6 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
-        this.validateConfigServerName(serverName, configurationDocument.getLocalServerName(), methodName);
 
         /*
          * All servers need the repository services
@@ -98,8 +99,8 @@ public class ServerTypeClassifier
             /*
              * To get here, then another service is configured but not the repository services.
              */
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_REPOSITORY_CONFIG;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_REPOSITORY_CONFIG;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
             throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                                                       this.getClass().getName(),
@@ -109,8 +110,25 @@ public class ServerTypeClassifier
                                                       errorCode.getUserAction());
         }
 
+        /*
+         * The access service list is only allowed in a metadata server or metadata access point.
+         */
         if (accessServiceConfigList != null)
         {
+            LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
+            if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+            }
+
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
@@ -155,16 +173,24 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
                                                 virtualizationConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
         }
 
-        if (conformanceSuiteConfig != null)
-        {
+        if (conformanceSuiteConfig != null) {
             serverTypeClassification = ServerTypeClassification.CONFORMANCE_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -207,14 +233,17 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (dataEngineProxyConfig != null)
-        {
+        if (dataEngineProxyConfig != null) {
             serverTypeClassification = ServerTypeClassification.DATA_ENGINE_PROXY;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -257,8 +286,7 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (dataPlatformServicesConfig != null)
-        {
+        if (dataPlatformServicesConfig != null) {
             serverTypeClassification = ServerTypeClassification.DATA_PLATFORM_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
@@ -268,6 +296,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                 conformanceSuiteConfig);
 
@@ -307,14 +340,17 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (discoveryEngineServicesConfig != null)
-        {
+        if (discoveryEngineServicesConfig != null) {
             serverTypeClassification = ServerTypeClassification.DISCOVERY_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -357,8 +393,7 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (openLineageServerConfig != null)
-        {
+        if (openLineageServerConfig != null) {
             serverTypeClassification = ServerTypeClassification.OPEN_LINEAGE_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
@@ -368,6 +403,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                 conformanceSuiteConfig);
 
@@ -407,14 +447,17 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (securitySyncConfig != null)
-        {
+        if (securitySyncConfig != null) {
             serverTypeClassification = ServerTypeClassification.SECURITY_SYNC_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -457,14 +500,17 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (securityOfficerConfig != null)
-        {
+        if (securityOfficerConfig != null) {
             serverTypeClassification = ServerTypeClassification.SECURITY_OFFICER_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -507,14 +553,17 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (stewardshipEngineServicesConfig != null)
-        {
+        if (stewardshipEngineServicesConfig != null) {
             serverTypeClassification = ServerTypeClassification.STEWARDSHIP_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -557,9 +606,60 @@ public class ServerTypeClassifier
                                                 virtualizationConfig);
         }
 
-        if (virtualizationConfig != null)
-        {
+        if (virtualizationConfig != null) {
             serverTypeClassification = ServerTypeClassification.VIRTUALIZER_SERVER;
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                ACCESS_SERVICES_NAME,
+                                                accessServiceConfigList);
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                VIEW_SERVICES_NAME,
+                                                viewServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
+                                                conformanceSuiteConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                                                dataEngineProxyConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
+                                                dataPlatformServicesConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
+                                                discoveryEngineServicesConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                openLineageServerConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
+                                                securitySyncConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
+                                                securityOfficerConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
+                                                stewardshipEngineServicesConfig);
+        }
+        if (viewServiceConfigList != null) {
+            serverTypeClassification = ServerTypeClassification.VIEW_SERVER;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -605,8 +705,36 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
                                                 stewardshipEngineServicesConfig);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                                virtualizationConfig);
         }
 
+        if (serverTypeClassification == null)
+        {
+            /*
+             * Last attempt to classify is the repository proxy.
+             * The repository proxy has the local repository and nothing else.
+             */
+            LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
+
+            if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else
+            {
+                serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
+            }
+        }
+
+        this.validateServerClassificationNotNull(serverName, serverTypeClassification, methodName);
         return serverTypeClassification;
     }
 
@@ -639,6 +767,63 @@ public class ServerTypeClassifier
 
 
     /**
+     * Checks that a classification has been derived for a configuration document.
+     * This should never be called.  If it is occurring then there has probably been a new type
+     * of server configuration added to Egeria without a corresponding update to the
+     * server classifier.
+     *
+     * @param serverName requested server
+     * @param serverTypeClassification classification value derived from the analysis of the
+     *                                 configuration document
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     */
+    private void validateServerClassificationNotNull(String                    serverName,
+                                                     ServerTypeClassification  serverTypeClassification,
+                                                     String                    methodName) throws OMAGInvalidParameterException
+    {
+        if (serverTypeClassification == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Determine if the server is to have a local repository or not.
+     *
+     * @param repositoryServicesConfig repository services config section of configuration document
+     * @return The local repository mode.
+     */
+    private LocalRepositoryMode detectLocalRepository(RepositoryServicesConfig  repositoryServicesConfig)
+    {
+        LocalRepositoryConfig localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+
+        if (localRepositoryConfig == null)
+        {
+            return LocalRepositoryMode.NO_REPOSITORY;
+        }
+
+        LocalRepositoryMode localRepositoryMode = localRepositoryConfig.getLocalRepositoryMode();
+
+        if (localRepositoryMode == null)
+        {
+            return LocalRepositoryMode.UNCLASSIFIED;
+        }
+
+        return localRepositoryMode;
+    }
+
+
+    /**
      * Check that the server configuration does not include a subsystem that it should not have.
      *
      * @param serverName name of the server that the configuration belongs to
@@ -667,35 +852,6 @@ public class ServerTypeClassifier
                                                       errorMessage,
                                                       errorCode.getSystemAction(),
                                                       errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param configServerName serverName passed in config (should match request name)
-     * @param methodName  method being called
-     * @throws OMAGConfigurationErrorException incompatible server names
-     */
-    private void validateConfigServerName(String serverName,
-                                          String configServerName,
-                                          String methodName) throws OMAGConfigurationErrorException
-    {
-        if (! serverName.equals(configServerName))
-        {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
-
         }
     }
 }

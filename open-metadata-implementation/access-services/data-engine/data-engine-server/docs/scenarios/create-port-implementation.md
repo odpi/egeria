@@ -6,7 +6,7 @@
 Create a PortImplementation, with associated SchemaType and PortSchema relationship.
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/port-implementations
 
 {
   "portImplementation": {

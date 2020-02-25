@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -19,7 +20,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilename = "omag.server.config";
+    private static final String defaultFilenameTemplate = "omag.server.{0}.config";
 
     /*
      * Variables used in writing to the file.
@@ -40,22 +41,30 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     }
 
 
+    /**
+     * Set up the name of the file store
+     *
+     * @throws ConnectorCheckedException something went wrong
+     */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
+        String configStoreTemplateName = null;
         if (endpoint != null)
         {
-            configStoreName = endpoint.getAddress();
+            configStoreTemplateName = endpoint.getAddress();
         }
 
-        if (configStoreName == null)
+        if (configStoreTemplateName == null)
         {
-            configStoreName = defaultFilename;
+            configStoreTemplateName = defaultFilenameTemplate;
         }
+
+        configStoreName = super.getStoreName(configStoreTemplateName, serverName);
     }
 
 

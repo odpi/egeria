@@ -7,7 +7,7 @@
 Retrieve list of tables belonging to a database using pagination
 
 ```
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/databases/{{database-guid}}/tables?pageSize=10&startFrom=0
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/databases/{databaseGUID}/tables?pageSize=10&startFrom=0
 ```
 
 `TableListResponse` response with list of tables from database or

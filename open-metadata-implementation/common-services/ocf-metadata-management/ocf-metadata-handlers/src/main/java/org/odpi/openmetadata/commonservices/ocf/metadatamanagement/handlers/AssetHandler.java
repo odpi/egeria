@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classificati
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -149,11 +150,68 @@ public class AssetHandler
     }
 
 
+    /**
+     * Return the list of supported zones for this asset.  This originates from the configuration of the access server.
+     * but may be changed by the security verifier.
+     *
+     * @param userId calling user
+     * @param serviceName called service
+     * @return list of zone names
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem from the verifier
+     */
     private List<String> getSupportedZones(String      userId,
                                            String      serviceName) throws InvalidParameterException,
                                                                            PropertyServerException
     {
         return securityVerifier.setSupportedZonesForUser(supportedZones, serviceName, userId);
+    }
+
+
+    /**
+     * Return the list of asset subtype names.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public List<String> getTypesOfAssetList()
+    {
+        return repositoryHelper.getSubTypesOf(serviceName, AssetMapper.ASSET_TYPE_NAME);
+    }
+
+
+    /**
+     * Return the list of asset subtype names mapped to their descriptions.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public Map<String, String> getTypesOfAssetDescriptions()
+    {
+        List<String>        assetTypeList = repositoryHelper.getSubTypesOf(serviceName, AssetMapper.ASSET_TYPE_NAME);
+        Map<String, String> assetDescriptions = new HashMap<>();
+
+        if (assetTypeList != null)
+        {
+            for (String  assetTypeName : assetTypeList)
+            {
+                if (assetTypeName != null)
+                {
+                    TypeDef assetTypeDef = repositoryHelper.getTypeDefByName(serviceName, assetTypeName);
+
+                    if (assetTypeDef != null)
+                    {
+                        assetDescriptions.put(assetTypeName, assetTypeDef.getDescription());
+                    }
+                }
+            }
+
+        }
+
+        if (assetDescriptions.isEmpty())
+        {
+            return null;
+        }
+
+        return assetDescriptions;
     }
 
 

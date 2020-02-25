@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -36,7 +38,8 @@ import java.util.List;
  */
 public class OMAGServerAdminSecurityServices
 {
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminSecurityServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminSecurityServices.class),
+                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
     private OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
@@ -55,7 +58,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "setPlatformSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -87,7 +90,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -103,7 +106,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "getPlatformSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
 
@@ -120,7 +123,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -137,7 +140,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "clearPlatformSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
 
@@ -154,7 +157,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -174,7 +177,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "setServerSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -214,7 +217,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -232,7 +235,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "getServerSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
 
@@ -254,7 +257,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -273,7 +276,7 @@ public class OMAGServerAdminSecurityServices
     {
         final String methodName = "clearServerSecurityConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
 
@@ -309,7 +312,7 @@ public class OMAGServerAdminSecurityServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
