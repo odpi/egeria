@@ -6,7 +6,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The converter is used for creating and mapping required properties between different objects.
