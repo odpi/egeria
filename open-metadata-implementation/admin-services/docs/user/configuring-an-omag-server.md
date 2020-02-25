@@ -15,7 +15,7 @@ Figure 1 shows the different types of OMAG Servers.  The hierarchy
 in the diagram groups these servers according to their role in
 the ecosystem.
 
-![Figure 1](../concepts/types-of-omag-servers.png)
+![Figure 1](../concepts/types-of-omag-servers.png#pagesize)
 > **Figure 1:** The different types of OMAG Servers organized into a hierarchy
 > that shows the types of roles they perform and how they integrate together
 

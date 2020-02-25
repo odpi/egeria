@@ -68,6 +68,12 @@ When you are designing the deployment of Egeria, the first step is to identify t
 that you want to integrate.  This will determine which type of OMAG Servers you need.
 Once the OMAG Servers are selected, they are assembled and connected together as shown in Figure 3.
 
+The [Administration Guide](../../../open-metadata-implementation/admin-services/docs/user)
+describes how to configure an OMAG Server Platform
+and the OMAG Servers that run on it.
+
+## More detail
+
 The text above is a very high level overview of the planning process.
 More detail will be added to this guide as time permits.
 
@@ -98,6 +104,8 @@ and OMAG Servers.
 * Plan your use of the event bus - which technology to use (Apache Kafka is the default)
   and the names of the topics that your OMAG Servers will use.
 
+----
+Return to the [Home Page](../../../index.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

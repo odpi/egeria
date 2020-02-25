@@ -15,35 +15,43 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ConfigMetadataServerSample illustrates how to use the MetadataServerConfigurationClient to configure a Metadata Server.
+ * ConfigMetadataServerSample illustrates how to use the MetadataServerConfigurationClient
+ * to configure a Metadata Server.
  */
 public class ConfigMetadataServerSample
 {
     /*
      * These are the values used to configure the metadata server
      */
-    static final String defaultAdminPlatformURLRoot = "http://localhost:8080";
-    static final String defaultAdminUserId          = "garygeeke";
+    private static final String defaultAdminPlatformURLRoot = "http://localhost:8080";
+    private static final String defaultAdminUserId          = "garygeeke";
+    private static final String eventBusURLRoot             = "localhost:9092";
+    private static final String metadataServerName          = "cocoMDS1";
+    private static final String metadataServerPlatform      = "http://localhost:8081";
+    private static final String metadataServerUserId        = "cocoMDS1npa";
+    private static final String metadataServerPassword      = "cocoMDS1passw0rd";
+    private static final String metadataCollectionName      = "Data Lake Catalog";
+    private static final String organizationName            = "Coco Pharmaceuticals";
+    private static final String cohortName                  = "cocoCohort";
+    private static final String topicRoot                   = "egeria";
 
-    static final String eventBusURLRoot = "localhost:9092";
+    private static final int   maxPageSize = 100;
 
-    static final String metadataServerName          = "cocoMDS1";
-    static final String metadataServerPlatform      = "http://localhost:8081";
-    static final String metadataServerUserId        = "cocoMDS1npa";
-    static final String metadataServerPassword      = "cocoMDS1passw0rd";
-    static final String metadataCollectionName      = "Data Lake Catalog";
-    static final String organizationName            = "Coco Pharmaceuticals";
-    static final String cohortName                  = "cocoCohort";
+    private static final String securityConnectorProvider = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
 
-    static final int   maxPageSize = 100;
+    private static final String[] supportedZones = { "quarantine", "clinical-trials", "research", "data-lake", "trash-can" };
+    private static final String[] defaultZones   = { "quarantine" };
 
-    static final String securityConnectorProvider = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private MetadataServerConfigurationClient configurationClient;
 
-    static final String[] supportedZones = { "quarantine", "clinical-trials", "research", "data-lake", "trash-can" };
-    static final String[] defaultZones   = { "quarantine" };
 
-    private MetadataServerConfigurationClient configurationClient = null;
-
+    /**
+     * Create a configuration client that does not have any security in the HTTP header.
+     *
+     * @param adminPlatformURLRoot root URL where the platform is registered
+     * @param adminUserId administrator's userId
+     * @throws OMAGInvalidParameterException one of the parameters is invalid
+     */
     private ConfigMetadataServerSample(String adminPlatformURLRoot,
                                        String adminUserId) throws OMAGInvalidParameterException
     {
@@ -59,10 +67,20 @@ public class ConfigMetadataServerSample
         configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot);
     }
 
+
+    /**
+     * Create a configuration client with security in the HTTP header.
+     *
+     * @param adminPlatformURLRoot root URL where the platform is registered
+     * @param adminUserId administrator's userId
+     * @param connectionUserId userId for HTTP header
+     * @param connectionPassword password for the HTTP header
+     * @throws OMAGInvalidParameterException one of the parameters is invalid
+     */
     private ConfigMetadataServerSample(String adminPlatformURLRoot,
                                        String adminUserId,
                                        String connectionUserId,
-                                       String connectionPassword)
+                                       String connectionPassword) throws OMAGInvalidParameterException
     {
         System.out.println("=================================");
         System.out.println("Configure Metadata Server Sample ");
@@ -74,12 +92,20 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuring server: " + metadataServerName);
 
+        configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot, connectionUserId, connectionPassword);
     }
 
 
-    void run() throws OMAGNotAuthorizedException,
-                      OMAGInvalidParameterException,
-                      OMAGConfigurationErrorException
+    /**
+     * Run the configuration - no exceptions are expected.
+     *
+     * @throws OMAGNotAuthorizedException admin userId is not authorized to the platform
+     * @throws OMAGInvalidParameterException one of the parameters is invalid
+     * @throws OMAGConfigurationErrorException problem with the configuration server
+     */
+    private void run() throws OMAGNotAuthorizedException,
+                              OMAGInvalidParameterException,
+                              OMAGConfigurationErrorException
     {
         configurationClient.setServerURLRoot(metadataServerPlatform);
         configurationClient.setMaxPageSize(maxPageSize);
@@ -104,7 +130,7 @@ public class ConfigMetadataServerSample
         configurationProperties.put("producer", kafkaProperties);
         configurationProperties.put("consumer", kafkaProperties);
 
-        configurationClient.setEventBus(null, null, configurationProperties);
+        configurationClient.setEventBus(null, topicRoot, configurationProperties);
 
         configurationClient.setInMemLocalRepository();
         configurationClient.setLocalMetadataCollectionName(metadataCollectionName);
@@ -136,8 +162,10 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuration complete");
         System.out.println("  Local Metadata collection id: " + configurationClient.getLocalMetadataCollectionId());
-        System.out.println("  Server Type: " + configurationClient.getServerClassification().toString());
-        System.out.println("  Full configuration: " + configurationClient.getOMAGServerConfig().toString());
+        System.out.println("  Server classification:        " + configurationClient.getServerClassification().toString());
+        System.out.println("  Cohort topic:                 " + configurationClient.getCohortTopicName(cohortName));
+        System.out.println("  Access Service topics:        " + configurationClient.getAllAccessServiceTopicNames());
+        System.out.println("  Full configuration:           " + configurationClient.getOMAGServerConfig().toString());
     }
 
 

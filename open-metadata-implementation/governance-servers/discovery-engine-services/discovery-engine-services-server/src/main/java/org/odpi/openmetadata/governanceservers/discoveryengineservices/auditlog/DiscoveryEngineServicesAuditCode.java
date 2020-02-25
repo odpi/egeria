@@ -31,7 +31,7 @@ public enum DiscoveryEngineServicesAuditCode
                                  "Within the discovery server are one or more discovery engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "discovery engines is retrieved from the metadata server and the discovery engines are initialized.",
-                        "No action is required.  This is part of the normal operation of the service."),
+                        "Verify that the start up sequence goes on to initialize the configured discovery engines."),
 
     NO_OMAS_SERVER_URL("DISCOVERY-ENGINE-SERVICES-0002",
                          OMRSAuditLogRecordSeverity.ERROR,
@@ -59,8 +59,7 @@ public enum DiscoveryEngineServicesAuditCode
                         "The discovery server is initializing a discovery engine to analyze the " +
                                 "content of assets on demand and create annotation metadata.  The configuration for this discovery engine is " +
                                 "retrieved from the Discovery Engine OMAS running in the metadata server",
-                        "No action is required.  This is part of the normal operation of the service."),
-
+                        "Verify that this discovery engine successfully retrieves its configuration from the metadata server."),
     SERVER_NOT_AUTHORIZED("DISCOVERY-ENGINE-SERVICES-0007",
                      OMRSAuditLogRecordSeverity.EXCEPTION,
                      "Discovery server {0} is not authorized to retrieve any its configuration from the Discovery Engine " +
@@ -77,7 +76,7 @@ public enum DiscoveryEngineServicesAuditCode
                              "Discovery engine {0} in discovery server {1} is configured to process discovery requests of type {2}",
                              "The discovery engine has successfully retrieved the configuration to run analysis requests for the named discovery " +
                                      "request type.  It is ready to run discovery requests of this type",
-                             "No action is required if this discovery request type is correct for the discovery engine."),
+                             "Verify that this is an appropriate discovery request type for the discovery engine."),
 
     NO_SUPPORTED_REQUEST_TYPES("DISCOVERY-ENGINE-SERVICES-0009",
                                OMRSAuditLogRecordSeverity.ERROR,
@@ -101,7 +100,7 @@ public enum DiscoveryEngineServicesAuditCode
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The discovery engine {0} in discovery server {1} has initialized",
                         "The discovery engine has completed initialization and is ready to receive discovery requests.",
-                        "No action is required.  This is part of the normal operation of the service."),
+                        "Verify that the discovery engine has been initialized wit the correct list of discovery request types."),
 
     SERVICE_INSTANCE_FAILURE("DISCOVERY-ENGINE-SERVICES-0012",
                              OMRSAuditLogRecordSeverity.ERROR,
@@ -113,43 +112,47 @@ public enum DiscoveryEngineServicesAuditCode
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The discovery server {0} has initialized",
                        "The discovery server has completed initialization.",
-                       "No action is required.  This is part of the normal operation of the service."),
+                       "Verify that all of the configured discovery engines have successfully started and retrieved their configuration."),
 
     SERVER_SHUTTING_DOWN("DISCOVERY-ENGINE-SERVICES-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The discovery server {0} is shutting down",
                     "The local administrator has requested shut down of this discovery server.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that this server is no longer needed and the shutdown is expected."),
 
     ENGINE_SHUTDOWN("DISCOVERY-ENGINE-SERVICES-0015",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The discovery engine {0} in discovery server {1} is shutting down",
                     "The local administrator has requested shut down of this discovery engine.  No more discovery requests will be processed by this engine.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that this shutdown is intended and the discovery engine is no longer needed."),
 
     SERVER_SHUTDOWN("DISCOVERY-ENGINE-SERVICES-0016",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The discovery server {0} has completed shutdown",
                          "The local administrator has requested shut down of this discovery server and the operation has completed.",
-                         "No action is required.  This is part of the normal operation of the service."),
+                         "Verify that all configured discovery engines shut down successfully."),
 
     DISCOVERY_SERVICE_STARTING("DISCOVERY-ENGINE-SERVICES-0017",
                     OMRSAuditLogRecordSeverity.STARTUP,
-                    "The discovery service {0} is starting to analyze asset {1} of type {2} in discovery engine {3} (guid={4}); the results will be stored in discovery analysis report {5}",
+                    "The discovery service {0} is starting to analyze asset {1} with discovery request type {2} in discovery engine {3} (guid={4});" +
+                                       " the results will be stored in discovery analysis report {5}",
                     "A new discovery request is being processed.",
                     "No action is required.  This is part of the normal operation of the service."),
 
     DISCOVERY_SERVICE_FAILED("DISCOVERY-ENGINE-SERVICES-0018",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} of type {4} in discovery engine {5} (guid={6}). The error message was {7}",
+                    "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} " +
+                                     "during discovery request type {4} in discovery engine {5} (guid={6}). The error message was {7}",
                     "A discovery services failed to complete the analysis of .",
                     "No action is required.  This is part of the normal operation of the service."),
 
     DISCOVERY_SERVICE_COMPLETE("DISCOVERY-ENGINE-SERVICES-0019",
                                OMRSAuditLogRecordSeverity.SHUTDOWN,
-                               "The discovery service {0} has completed the analysis of asset {1} of type {2} in {3} milliseconds; results stored in report {4}",
+                               "The discovery service {0} has completed the analysis of asset {1} with discovery request type {2} in {3} " +
+                                       "milliseconds; the results are stored in discovery analysis report {4}",
                                "A discovery request has completed.",
-                               "No action is required.  This is part of the normal operation of the service."),
+                               "It is possible to query the result of the discovery request through the discovery server's discovery engine " +
+                                       "services interface."),
 
     NO_DISCOVERY_ENGINES_STARTED("DISCOVERY-ENGINE-SERVICES-0020",
                          OMRSAuditLogRecordSeverity.ERROR,
@@ -159,7 +162,8 @@ public enum DiscoveryEngineServicesAuditCode
 
     EXC_ON_ERROR_STATUS_UPDATE("DISCOVERY-ENGINE-SERVICES-0021",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
-                                 "Discovery engine {0} is unable to update failed status for discovery service {1}.  The exception was {2} with error message {3}",
+                                 "Discovery engine {0} is unable to update the status for discovery service {1}.  The exception was {2} with error " +
+                                       "message {3}",
                                  "The server is not able to record the failed result for a discovery request. The discovery report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the discovery request."),
 
