@@ -39,7 +39,7 @@ public class GraphFactory extends IndexingFactory {
      * @return JanusGraph instance with schema and indexes
      */
     public JanusGraph openGraph(String graphDB, ConnectionProperties connectionProperties) throws JanusConnectorException {
-        final String methodName = "open";
+        final String methodName = "openGraph";
         JanusGraph janusGraph;
 
         String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
@@ -49,7 +49,7 @@ public class GraphFactory extends IndexingFactory {
             janusGraph = config.open();
             return initializeGraph(janusGraph, graphType);
         } catch (Exception e) {
-            log.error("{} could not open graph store with the specified configuration", e);
+            log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),

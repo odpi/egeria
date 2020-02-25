@@ -58,7 +58,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * {@inheritDoc}
      */
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
-        String methodName = "MainGraphConnector.lineage";
+        String methodName = "lineage";
 
         GraphTraversalSource g = mainGraph.traversal();
         try {
