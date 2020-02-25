@@ -407,7 +407,7 @@ public class DataEngineRESTServices {
 
         DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        return handler.createExternalDataEngine(userId, softwareServerCapability);
+        return handler.createOrUpdateExternalDataEngine(userId, softwareServerCapability);
     }
 
     /**
