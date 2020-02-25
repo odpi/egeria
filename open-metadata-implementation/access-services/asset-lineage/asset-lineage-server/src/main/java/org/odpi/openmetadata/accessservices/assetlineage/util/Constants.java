@@ -17,6 +17,7 @@ public final class Constants {
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";
+    public static final String VALUE_FOR_ACTIVE = "Active";
 
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
@@ -83,4 +84,16 @@ public final class Constants {
 
     public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
 
+    private static final List<String> validLineageEntityEvents = new ArrayList<>();
+
+    static{
+        validLineageEntityEvents.add(GLOSSARY_TERM);
+        validLineageEntityEvents.add(TABULAR_COLUMN);
+        validLineageEntityEvents.add(RELATIONAL_COLUMN);
+        validLineageEntityEvents.add(RELATIONAL_TABLE);
+        validLineageEntityEvents.add(DATA_FILE);
+        validLineageEntityEvents.add(PROCESS);
+    }
+
+    public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
 }

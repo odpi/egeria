@@ -20,24 +20,31 @@ public enum AssetLineageAuditCode {
             "No action is required.  This is part of the normal operation of the server."),
 
 
-    SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0005",
+    SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Lineage OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0006",
+    SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Asset Lineage OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),
 
 
-    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0009",
+    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0004",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    EVENT_PROCESSING_ERROR("OMAS-ASSET-LINEAGE-0005",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "An exception occurred while processing incoming event {0}",
+            "The event could not be processed",
+            "Review the exception to determine the source of the error and correct it."),
+
     ;
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAuditCode.class);
