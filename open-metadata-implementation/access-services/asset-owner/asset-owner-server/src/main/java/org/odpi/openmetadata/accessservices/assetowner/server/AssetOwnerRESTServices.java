@@ -77,7 +77,44 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            response.setNames(handler.getTypesOfAsset());
+            response.setNames(handler.getTypesOfAssetList());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the asset subtype names with their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public StringMapResponse getTypesOfAssetDescriptions(String serverName,
+                                                         String userId)
+    {
+        final String   methodName = "getTypesOfAssetDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            response.setStringMap(handler.getTypesOfAssetDescriptions());
         }
         catch (Throwable error)
         {

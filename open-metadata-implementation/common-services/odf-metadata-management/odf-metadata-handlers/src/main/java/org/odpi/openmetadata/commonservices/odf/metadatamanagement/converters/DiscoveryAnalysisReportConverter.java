@@ -83,7 +83,7 @@ public class DiscoveryAnalysisReportConverter extends ReferenceableConverter
 
 
     /**
-     * Retrieve the StarRating enum property from the instance properties of an entity
+     * Retrieve the Discovery request status enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return   enum value
@@ -96,7 +96,7 @@ public class DiscoveryAnalysisReportConverter extends ReferenceableConverter
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME);
+            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
             if (instancePropertyValue instanceof EnumPropertyValue)
             {
@@ -109,23 +109,31 @@ public class DiscoveryAnalysisReportConverter extends ReferenceableConverter
                         break;
 
                     case 1:
-                        requestStatus = DiscoveryRequestStatus.IN_PROGRESS;
+                        requestStatus = DiscoveryRequestStatus.ACTIVATING;
                         break;
 
                     case 2:
-                        requestStatus = DiscoveryRequestStatus.FAILED;
+                        requestStatus = DiscoveryRequestStatus.IN_PROGRESS;
                         break;
 
                     case 3:
+                        requestStatus = DiscoveryRequestStatus.FAILED;
+                        break;
+
+                    case 4:
                         requestStatus = DiscoveryRequestStatus.COMPLETED;
                         break;
 
+                    case 5:
+                        requestStatus = DiscoveryRequestStatus.OTHER;
+                        break;
+
                     default:
-                        requestStatus = DiscoveryRequestStatus.ACTIVATING;
+                        requestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS;
                         break;
                 }
 
-                instancePropertiesMap.remove(DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME);
+                instancePropertiesMap.remove(DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
                 properties.setInstanceProperties(instancePropertiesMap);
             }

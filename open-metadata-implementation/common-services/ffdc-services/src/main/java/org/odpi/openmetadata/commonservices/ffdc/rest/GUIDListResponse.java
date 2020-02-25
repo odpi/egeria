@@ -60,7 +60,18 @@ public class GUIDListResponse extends FFDCResponseBase
      */
     public List<String> getGUIDs()
     {
-        return guids;
+        if (guids == null)
+        {
+            return null;
+        }
+        else if (guids.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return guids;
+        }
     }
 
 

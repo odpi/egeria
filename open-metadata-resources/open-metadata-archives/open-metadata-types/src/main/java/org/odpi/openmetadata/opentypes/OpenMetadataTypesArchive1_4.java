@@ -78,7 +78,7 @@ public class OpenMetadataTypesArchive1_4
 
 
     /**
-     * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
+     * Chained constructor sets up the archive builder.  This in turn sets up the header for the archive.
      *
      * @param archiveBuilder accumulator for types
      */

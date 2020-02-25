@@ -45,6 +45,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
+
     /**
      * Issue a GET REST call that returns a list of names.
      *
@@ -69,6 +70,33 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a list of names mapped to their descriptions.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return StringMapResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public StringMapResponse callStringMapGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        StringMapResponse restResult = this.callGetRESTCall(methodName, StringMapResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 
     /**
      * Issue a GET REST call that returns a GUIDResponse object.

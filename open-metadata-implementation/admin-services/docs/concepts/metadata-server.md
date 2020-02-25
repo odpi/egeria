@@ -13,6 +13,8 @@ can exchange metadata with other members of the cohort.
 
 The metadata server typically has the [access services](../../../access-services)
 configured and so can act as a [metadata access point](metadata-access-point.md).
+It is important to have at least one metadata server in each cohort in order to
+support all types of metadata.
 
 
 ## Configuring a Metadata Server
