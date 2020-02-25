@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
@@ -106,6 +107,33 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                          userId);
 
         return restResult.getNames();
+    }
+
+
+    /**
+     * Return the asset subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Map<String, String>  getTypesOfAssetWithDescriptions(String userId) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String   methodName = "getTypesOfAssetWithDescriptions";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/sub-types/descriptions";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        StringMapResponse restResult = restClient.callStringMapGetRESTCall(methodName,
+                                                                           serverPlatformRootURL + urlTemplate,
+                                                                           serverName,
+                                                                           userId);
+
+        return restResult.getStringMap();
     }
 
 
@@ -826,6 +854,59 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         return restResult.getDiscoveryAnalysisReports();
     }
 
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  getTypesOfAnnotation(String userId) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String   methodName = "getTypesOfAnnotation";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/annotations/sub-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId);
+
+        return restResult.getNames();
+    }
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param userId calling user
+     * @return map of type names that are subtypes of annotation to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Map<String, String>  getTypesOfAnnotationWithDescriptions(String userId) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String   methodName = "getTypesOfAnnotationWithDescriptions";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/annotations/sub-types/descriptions";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        StringMapResponse restResult = restClient.callStringMapGetRESTCall(methodName,
+                                                                           serverPlatformRootURL + urlTemplate,
+                                                                           serverName,
+                                                                           userId);
+
+        return restResult.getStringMap();
+    }
 
 
     /**

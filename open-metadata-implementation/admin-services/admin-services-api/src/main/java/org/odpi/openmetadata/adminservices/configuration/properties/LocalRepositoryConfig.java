@@ -68,6 +68,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
 
     private String                   metadataCollectionId            = null;
     private String                   metadataCollectionName          = null;
+    private LocalRepositoryMode      localRepositoryMode             = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
     private OpenMetadataExchangeRule eventsToSaveRule                = null;
@@ -100,6 +101,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         {
             this.metadataCollectionId = template.getMetadataCollectionId();
             this.metadataCollectionName = template.getMetadataCollectionName();
+            this.localRepositoryMode = template.getLocalRepositoryMode();
             this.localRepositoryLocalConnection = template.getLocalRepositoryLocalConnection();
             this.localRepositoryRemoteConnection = template.getLocalRepositoryRemoteConnection();
             this.eventsToSaveRule = template.getEventsToSaveRule();
@@ -154,6 +156,30 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     public void setMetadataCollectionName(String metadataCollectionName)
     {
         this.metadataCollectionName = metadataCollectionName;
+    }
+
+
+    /**
+     * Return the mode that the local repository is operating in.  The enum implementation has the
+     * description of each mode.
+     *
+     * @return LocalRepositoryMode enum
+     */
+    public LocalRepositoryMode getLocalRepositoryMode()
+    {
+        return localRepositoryMode;
+    }
+
+
+    /**
+     * Set up the mode that the local repository is operating in.  The enum implementation has the
+     * description of each mode.
+     *
+     * @param localRepositoryMode LocalRepositoryMode enum
+     */
+    public void setLocalRepositoryMode(LocalRepositoryMode localRepositoryMode)
+    {
+        this.localRepositoryMode = localRepositoryMode;
     }
 
 
@@ -376,6 +402,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         return "LocalRepositoryConfig{" +
                 "metadataCollectionId='" + metadataCollectionId + '\'' +
                 ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", localRepositoryMode=" + localRepositoryMode +
                 ", localRepositoryLocalConnection=" + localRepositoryLocalConnection +
                 ", localRepositoryRemoteConnection=" + localRepositoryRemoteConnection +
                 ", eventsToSaveRule=" + eventsToSaveRule +
@@ -405,15 +432,16 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
             return false;
         }
         LocalRepositoryConfig that = (LocalRepositoryConfig) objectToCompare;
-        return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
-                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
-                Objects.equals(getLocalRepositoryLocalConnection(), that.getLocalRepositoryLocalConnection()) &&
-                Objects.equals(getLocalRepositoryRemoteConnection(), that.getLocalRepositoryRemoteConnection()) &&
-                getEventsToSaveRule() == that.getEventsToSaveRule() &&
-                Objects.equals(getSelectedTypesToSave(), that.getSelectedTypesToSave()) &&
-                getEventsToSendRule() == that.getEventsToSendRule() &&
-                Objects.equals(getSelectedTypesToSend(), that.getSelectedTypesToSend()) &&
-                Objects.equals(getEventMapperConnection(), that.getEventMapperConnection());
+        return Objects.equals(metadataCollectionId, that.metadataCollectionId) &&
+                Objects.equals(metadataCollectionName, that.metadataCollectionName) &&
+                localRepositoryMode == that.localRepositoryMode &&
+                Objects.equals(localRepositoryLocalConnection, that.localRepositoryLocalConnection) &&
+                Objects.equals(localRepositoryRemoteConnection, that.localRepositoryRemoteConnection) &&
+                eventsToSaveRule == that.eventsToSaveRule &&
+                Objects.equals(selectedTypesToSave, that.selectedTypesToSave) &&
+                eventsToSendRule == that.eventsToSendRule &&
+                Objects.equals(selectedTypesToSend, that.selectedTypesToSend) &&
+                Objects.equals(eventMapperConnection, that.eventMapperConnection);
     }
 
 
@@ -425,8 +453,9 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryLocalConnection(),
-                            getLocalRepositoryRemoteConnection(), getEventsToSaveRule(), getSelectedTypesToSave(),
+        return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryMode(),
+                            getLocalRepositoryLocalConnection(), getLocalRepositoryRemoteConnection(),
+                            getEventsToSaveRule(), getSelectedTypesToSave(),
                             getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection());
     }
 }

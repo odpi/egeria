@@ -4,16 +4,22 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.builders.AnnotationBuilder;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.converters.AnnotationConverter;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.AnnotationMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelatedEntitiesIterator;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * AnnotationHandler manages the storage and retrieval of metadata relating to annotations
@@ -67,36 +73,38 @@ public class AnnotationHandler
 
 
     /**
-     * Return the annotations linked direction to the report.
+     * Return the list of annotation subtype names mapped to their descriptions.
      *
-     * @param userId identifier of calling user
-     * @param anchorGUID identifier of the anchor for the annotations.
-     * @param anchorGUIDParameterName parameter that passed the identifier of the anchor for the annotations.
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     * @param methodName calling method
-     *
-     * @return list of annotations
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem that occurred within the property server.
+     * @return list of type names that are subtypes of asset
      */
-    List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
-                                                  String            anchorGUID,
-                                                  String            anchorGUIDParameterName,
-                                                  int               startingFrom,
-                                                  int               maximumResults,
-                                                  String            methodName) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public Map<String, String> getTypesOfAnnotationDescriptions()
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        List<String>        annotationTypeList = repositoryHelper.getSubTypesOf(serviceName, AnnotationMapper.ANNOTATION_TYPE_NAME);
+        Map<String, String> annotationDescriptions = new HashMap<>();
 
-        // todo
-        return null;
+        if (annotationTypeList != null)
+        {
+            for (String  annotationTypeName : annotationTypeList)
+            {
+                if (annotationTypeName != null)
+                {
+                    TypeDef annotationTypeDef = repositoryHelper.getTypeDefByName(serviceName, annotationTypeName);
+
+                    if (annotationTypeDef != null)
+                    {
+                        annotationDescriptions.put(annotationTypeName, annotationTypeDef.getDescription());
+                    }
+                }
+            }
+
+        }
+
+        if (annotationDescriptions.isEmpty())
+        {
+            return null;
+        }
+
+        return annotationDescriptions;
     }
 
 
@@ -105,6 +113,7 @@ public class AnnotationHandler
      *
      * @param userId identifier of calling user
      * @param anchorGUID identifier of the anchor for the annotations.
+     * @param anchorGUIDTypeName parameter that passed the type name of the anchor for the annotations.
      * @param anchorGUIDParameterName parameter that passed the identifier of the anchor for the annotations.
      * @param annotationStatus limit the results to this annotation status
      * @param startingFrom initial position in the stored list.
@@ -119,7 +128,10 @@ public class AnnotationHandler
      */
     List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
                                                   String            anchorGUID,
+                                                  String            anchorGUIDTypeName,
                                                   String            anchorGUIDParameterName,
+                                                  String            relationshipTypeGUID,
+                                                  String            relationshipTypeName,
                                                   AnnotationStatus  annotationStatus,
                                                   int               startingFrom,
                                                   int               maximumResults,
@@ -131,12 +143,53 @@ public class AnnotationHandler
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        // todo
-        return null;
+        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                           userId,
+                                                                                           anchorGUID,
+                                                                                           anchorGUIDTypeName,
+                                                                                           relationshipTypeGUID,
+                                                                                           relationshipTypeName,
+                                                                                           startingFrom,
+                                                                                           queryPageSize,
+                                                                                           methodName);
+
+        List<Annotation> results = new ArrayList<>();
+        while (iterator.moreToReceive())
+        {
+            EntityDetail annotationEntity = iterator.getNext();
+            Relationship annotationReviewLink = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                              annotationEntity.getGUID(),
+                                                                                              AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                                                                              AnnotationMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
+                                                                                              AnnotationMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
+                                                                                              methodName);
+            EntityDetail annotationReviewEntity = null;
+
+            if (annotationReviewLink != null)
+            {
+                annotationReviewEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                           annotationReviewLink.getEntityTwoProxy().getGUID(),
+                                                                           "annotationReviewLink.end2.getGUID",
+                                                                           AnnotationMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                           methodName);
+            }
+
+            AnnotationConverter converter = new AnnotationConverter(annotationEntity,
+                                                                    annotationReviewLink,
+                                                                    annotationReviewEntity,
+                                                                    repositoryHelper,
+                                                                    serviceName);
+
+            results.add(converter.getBean());
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+
+        return results;
     }
-
-
-
 
 
     /**
@@ -166,12 +219,16 @@ public class AnnotationHandler
     {
         final String   annotationGUIDParameter = "annotationGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameter, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
-
-        // todo
-        return null;
+        return this.getAnnotationsLinkedToAnchor(userId,
+                                                 annotationGUID,
+                                                 AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                                 annotationGUIDParameter,
+                                                 AnnotationMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
+                                                 AnnotationMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
+                                                 annotationStatus,
+                                                 startingFrom,
+                                                 maximumResults,
+                                                 methodName);
     }
 
 
@@ -189,55 +246,30 @@ public class AnnotationHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public  Annotation        getAnnotation(String   userId,
-                                            String   annotationGUID,
-                                            String   methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public  Annotation  getAnnotation(String   userId,
+                                      String   annotationGUID,
+                                      String   methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        return null;
-    }
+        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                annotationGUID,
+                                                                annotationGUIDParameterName,
+                                                                AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                                                methodName);
 
+        AnnotationConverter converter = new AnnotationConverter(entity,
+                                                                null,
+                                                                null,
+                                                                repositoryHelper,
+                                                                methodName);
 
-    /**
-     * Add a new annotation to the annotation store as a top level annotation linked directly off of the report.
-     *
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier of the anchor for the annotation
-     * @param anchorGUIDParameterName name of parameter
-     * @param relationshipTypeGUID guid for the relationship between the anchor and the annotation
-     * @param relationshipTypeName name of the relationship between the anchor and the annotation
-     * @param annotation annotation object
-     * @param methodName calling method
-     * @return unique identifier of new annotation
-     * @throws InvalidParameterException the annotation is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
-     */
-    private  String addAnnotationToAnchor(String     userId,
-                                          String     anchorGUID,
-                                          String     anchorGUIDParameterName,
-                                          String     relationshipTypeGUID,
-                                          String     relationshipTypeName,
-                                          Annotation annotation,
-                                          String     methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        final String   annotationParameterName = "annotation";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
-
-        // todo
-        return null;
+        return converter.getBean();
     }
 
 
@@ -253,84 +285,83 @@ public class AnnotationHandler
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    public  Annotation  addAnnotationToAnnotation(String     userId,
-                                                  String     anchorAnnotationGUID,
-                                                  Annotation annotation,
-                                                  String     methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public  String  addAnnotationToAnnotation(String     userId,
+                                              String     anchorAnnotationGUID,
+                                              Annotation annotation,
+                                              String     methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String   annotationGUIDParameterName = "anchorAnnotationGUID";
         final String   annotationParameterName = "annotation";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/extended-annotations";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorAnnotationGUID, annotationGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
-        // todo
-        return null;
+        String annotationGUID = this.addNewAnnotation(userId, annotation, methodName);
+
+        if (annotationGUID != null)
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 AnnotationMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
+                                                 anchorAnnotationGUID,
+                                                 annotationGUID,
+                                                 null,
+                                                 methodName);
+        }
+
+        return annotationGUID;
     }
 
 
     /**
-     * Link an existing annotation to another object.  The anchor object must be a Referenceable.
-     *
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be linked to
-     * @param annotationGUID unique identifier of the annotation
+     * Save a new annotation as an entity.  The calling method will link it to its anchor.
+     * @param userId calling user
+     * @param annotation annotation to save
      * @param methodName calling method
+     * @return unique identifier of the annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
+     * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    public  void    linkAnnotation(String userId,
-                                   String anchorGUID,
-                                   String annotationGUID,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    String addNewAnnotation(String     userId,
+                            Annotation annotation,
+                            String     methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
-        final String   anchorGUIDParameterName = "anchorGUID";
-        final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/related-instances{3}";
+        final String  parameterName     = "annotation";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(annotation, parameterName, methodName);
 
-        // todo
+        // todo this implementation is storing all annotations as the root object.
+        // todo specific builders need to be created for specific types of annotations.
+        AnnotationBuilder builder = new AnnotationBuilder(annotation.getAnnotationType(),
+                                                          annotation.getSummary(),
+                                                          annotation.getConfidenceLevel(),
+                                                          annotation.getExpression(),
+                                                          annotation.getExplanation(),
+                                                          annotation.getAnalysisStep(),
+                                                          annotation.getJsonProperties(),
+                                                          annotation.getAnnotationStatus(),
+                                                          annotation.getReviewDate(),
+                                                          annotation.getSteward(),
+                                                          annotation.getReviewComment(),
+                                                          annotation.getAdditionalProperties(),
+                                                          annotation.getExtendedProperties(),
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        String annotationGUID = repositoryHandler.createEntity(userId,
+                                                               AnnotationMapper.ANNOTATION_TYPE_GUID,
+                                                               AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                                               builder.getAnnotationInstanceProperties(methodName),
+                                                               methodName);
+
+        return annotationGUID;
     }
-
-
-    /**
-     * Remove the relationship between an annotation and another object.
-     *
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be unlinked from
-     * @param annotationGUID unique identifier of the annotation
-     * @param methodName calling method
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    public  void    unlinkAnnotation(String userId,
-                                     String anchorGUID,
-                                     String annotationGUID,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
-    {
-        final String   anchorGUIDParameterName = "anchorGUID";
-        final String   annotationGUIDParameterName = "annotationGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
-
-        // todo
-    }
-
 
     /**
      * Replace the current properties of an annotation.
@@ -340,17 +371,16 @@ public class AnnotationHandler
      * @param annotation new properties
      * @param methodName calling method
      *
-     * @return fully filled out annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    public  Annotation  updateAnnotation(String     userId,
-                                         String     annotationGUID,
-                                         Annotation annotation,
-                                         String     methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public  void  updateAnnotation(String     userId,
+                                   String     annotationGUID,
+                                   Annotation annotation,
+                                   String     methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String   annotationParameterName = "annotation";
         final String   annotationGUIDParameterName = "annotationGUID";
@@ -359,8 +389,28 @@ public class AnnotationHandler
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        // todo
-        return null;
+        AnnotationBuilder builder = new AnnotationBuilder(annotation.getAnnotationType(),
+                                                          annotation.getSummary(),
+                                                          annotation.getConfidenceLevel(),
+                                                          annotation.getExpression(),
+                                                          annotation.getExplanation(),
+                                                          annotation.getAnalysisStep(),
+                                                          annotation.getJsonProperties(),
+                                                          annotation.getAnnotationStatus(),
+                                                          annotation.getReviewDate(),
+                                                          annotation.getSteward(),
+                                                          annotation.getReviewComment(),
+                                                          annotation.getAdditionalProperties(),
+                                                          annotation.getExtendedProperties(),
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+        repositoryHandler.updateEntity(userId,
+                                       annotationGUID,
+                                       AnnotationMapper.ANNOTATION_TYPE_GUID,
+                                       AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                       builder.getAnnotationInstanceProperties(methodName),
+                                       methodName);
     }
 
 
@@ -385,6 +435,11 @@ public class AnnotationHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        // todo
+        // todo remove relationships before deleting annotation
+        repositoryHandler.removeIsolatedEntity(userId,
+                                               annotationGUID,
+                                               AnnotationMapper.ANNOTATION_TYPE_GUID,
+                                               AnnotationMapper.ANNOTATION_TYPE_NAME,
+                                               methodName);
     }
 }

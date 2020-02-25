@@ -88,6 +88,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>readonly-repository-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>omrs-rest-repository-connector</artifactId>
         </dependency>
 
@@ -115,6 +120,7 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>virtualization-services-api</artifactId>
         </dependency>
+
 
     </dependencies>
 

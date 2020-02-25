@@ -7,10 +7,11 @@
 A [Metadata Server](../concepts/metadata-server.md) supports a local metadata repository that has
 native support for the
 [Open Metadata Repository Services (OMRS) types and instances](../../../repository-services/docs/metadata-meta-model.md).
-Egeria provides tow implementations of such a repository:
+Egeria provides three implementations of such a repository:
 
-* A Graph Repository based on JanusGraph
-* An in memory repository useful for demos and testing
+* A graph repository based on JanusGraph.
+* An in memory repository useful for demos and testing.
+* A read only repository for hosting fixed content.
 
 ## Enable the graph repository
 
@@ -21,14 +22,32 @@ and uses the local disk to store the metadata.
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serever}/local-repository/mode/local-graph-repository
 ```
 
+
 ## Enable the in-memory repository
 
 The in-memory repository maintains an in-memory store of metadata. It is useful for demos and testing.
 No metadata is kept if the open metadata services are deactivated,
-or the server is shutdown.
+or the server is shutdown.  It should nto be used in a production environment.
 
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/in-memory-repository
+```
+
+
+## Enable the read-only repository
+
+The read only repository connector provides a compliant implementation of a local
+repository that can be configured into a Metadata Server.
+It does not support the interfaces for create, update, delete.
+However it does support the search interfaces and is able to cache metadata.
+
+This means it can be loaded with metadata from an [Open Metadata Archive](../../../../open-metadata-resources/open-metadata-archives)
+and connected to a cohort.
+The content from the archive will be shared with other members of the cohort.
+
+
+```
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/read-only-repository
 ```
 
 

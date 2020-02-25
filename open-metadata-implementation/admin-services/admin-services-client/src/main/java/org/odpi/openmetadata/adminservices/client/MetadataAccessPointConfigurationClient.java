@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.HashMap;
@@ -173,6 +174,139 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
                                         accessServiceOptions,
                                         adminUserId,
                                         serverName);
+    }
+
+
+    /**
+     * Retrieve the topic names for this access service
+     *
+     * @param serviceURLMarker string indicating which access service it requested
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public Map<String, String> getAccessServiceTopicNames(String  serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                                           OMAGInvalidParameterException,
+                                                                                           OMAGConfigurationErrorException
+    {
+        final String methodName    = "getAccessServiceTopicNames";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error);
+        }
+
+        StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         adminUserId,
+                                                                         serverName,
+                                                                         serviceURLMarker);
+
+        return response.getStringMap();
+    }
+
+
+    /**
+     * Retrieve the topic names for all configured access service
+     **
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public Map<String, String> getAllAccessServiceTopicNames() throws OMAGNotAuthorizedException,
+                                                                      OMAGInvalidParameterException,
+                                                                      OMAGConfigurationErrorException
+    {
+        final String methodName    = "getAllAccessServiceTopicNames";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/topic-names";
+
+        StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         adminUserId,
+                                                                         serverName);
+
+        return response.getStringMap();
+    }
+
+
+    /**
+     * Override the topic name for the in topic of a single access service.
+     *
+     * @param serviceURLMarker string indicating which access service it is configuring
+     * @param topicName new topic name
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void overrideAccessServiceInTopic(String  serviceURLMarker,
+                                             String  topicName) throws OMAGNotAuthorizedException,
+                                                                       OMAGInvalidParameterException,
+                                                                       OMAGConfigurationErrorException
+    {
+        final String methodName    = "overrideAccessServiceInTopic";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names/in-topic";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        topicName,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
+
+    /**
+     * Override the topic name for the in topic of a single access service.
+     *
+     * @param serviceURLMarker string indicating which access service it is configuring
+     * @param topicName new topic name
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void overrideAccessServiceOutTopic(String  serviceURLMarker,
+                                              String  topicName) throws OMAGNotAuthorizedException,
+                                                                        OMAGInvalidParameterException,
+                                                                        OMAGConfigurationErrorException
+    {
+        final String methodName    = "overrideAccessServiceOutTopic";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names/out-topic";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        topicName,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
     }
 
 

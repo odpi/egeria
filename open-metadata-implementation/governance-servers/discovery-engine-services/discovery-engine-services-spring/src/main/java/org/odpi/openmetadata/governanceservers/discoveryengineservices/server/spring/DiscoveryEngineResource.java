@@ -8,7 +8,6 @@ import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.Annotati
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestRequestBody;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.DiscoveryEngineStatusResponse;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,11 +75,11 @@ public class DiscoveryEngineResource
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets")
 
-    public VoidResponse scanAllAssets(@PathVariable String                       serverName,
-                                      @PathVariable String                       discoveryEngineName,
-                                      @PathVariable String                       userId,
-                                      @PathVariable String                       discoveryRequestType,
-                                      @RequestBody  DiscoveryRequestRequestBody  requestBody)
+    public VoidResponse scanAllAssets(@PathVariable                  String                       serverName,
+                                      @PathVariable                  String                       discoveryEngineName,
+                                      @PathVariable                  String                       userId,
+                                      @PathVariable                  String                       discoveryRequestType,
+                                      @RequestBody(required = false) DiscoveryRequestRequestBody  requestBody)
     {
         return restAPI.scanAllAssets(serverName,
                                      discoveryEngineName,

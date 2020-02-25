@@ -101,4 +101,28 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
                                         adminUserId,
                                         serverName);
     }
+
+
+    /**
+     * Set up an read only local repository.  This repository manages metadata in memory but does not
+     * support the ability to store new metadata.  This means it can safely be used to host read only content
+     * from an open metadata archive within a production cohort.
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setReadOnlyLocalRepository() throws OMAGNotAuthorizedException,
+                                                 OMAGConfigurationErrorException,
+                                                 OMAGInvalidParameterException
+    {
+        final String methodName  = "setReadOnlyLocalRepository";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/read-only-repository";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        adminUserId,
+                                        serverName);
+    }
 }
