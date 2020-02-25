@@ -45,11 +45,6 @@
             <artifactId>ffdc-services</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
