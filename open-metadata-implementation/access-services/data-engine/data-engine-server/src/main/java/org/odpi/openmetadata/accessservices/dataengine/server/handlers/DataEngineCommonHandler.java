@@ -9,11 +9,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -29,6 +32,7 @@ public class DataEngineCommonHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
 
+    private static final Logger log = LoggerFactory.getLogger(DataEngineCommonHandler.class);
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -146,8 +150,12 @@ public class DataEngineCommonHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
-        return Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
+        Optional<EntityDetail> retrievedEntity = Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
+                CommonMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
+
+        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName, retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
+
+        return retrievedEntity;
     }
 
     /**
