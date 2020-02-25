@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
@@ -55,8 +56,7 @@ public class ClassificationHandler {
      */
     public Map<String, Set<GraphContext>> getAssetContextByClassification(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
-
-        if (!entityDetail.getClassifications().isEmpty() && checkLineageClassificationTypes(entityDetail)) {
+        if (!CollectionUtils.isEmpty(entityDetail.getClassifications()) && checkLineageClassificationTypes(entityDetail)) {
 
             graph = new AssetContext();
             String methodName = "getAssetContextByClassification";
