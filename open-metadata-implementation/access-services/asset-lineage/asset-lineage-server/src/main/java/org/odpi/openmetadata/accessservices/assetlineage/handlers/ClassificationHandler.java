@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableQualifiedLineageClassifications;
 
@@ -34,7 +33,6 @@ public class ClassificationHandler {
     private static final Logger log = LoggerFactory.getLogger(AssetContextHandler.class);
 
     private InvalidParameterHandler invalidParameterHandler;
-    private AssetContext graph;
 
 
     /**
@@ -50,81 +48,54 @@ public class ClassificationHandler {
     /**
      * Gets asset context from the entity by classification type.
      *
-     * @param userId       the user id
      * @param entityDetail the entity for retrieving the classifications attached to it
      * @return the asset context by classification
      */
-    public Map<String, Set<GraphContext>> getAssetContextByClassification(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-
-        if (!CollectionUtils.isEmpty(entityDetail.getClassifications()) && checkLineageClassificationTypes(entityDetail)) {
-
-            graph = new AssetContext();
-            String methodName = "getAssetContextByClassification";
-            invalidParameterHandler.validateUserId(userId, methodName);
-            invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-            buildGraphContextByClassificationType(entityDetail, graph);
-            return graph.getNeighbors();
-        } else {
-            log.info("No valid lineage classification found from entity {} ", entityDetail.getGUID());
-            return null;
-        }
-    }
-
-    private boolean checkLineageClassificationTypes(EntityDetail entityDetail) {
-        for (String classificationType : immutableQualifiedLineageClassifications) {
-            if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType))) {
-                return true;
-            }
-        }
-        return false;
+    public Map<String, Set<GraphContext>> buildClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        String methodName = "buildClassificationEvent";
+        AssetContext assetContext = new AssetContext();
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        buildGraphContext(entityDetail, assetContext);
+        return assetContext.getNeighbors();
     }
 
     /**
-     * Build graph edge by classification type list.
+     * Build graph context
      *
-     * @param classifiedEntity the start entity
+     * @param entityDetail the start entity
      * @param graph            the graph
      * @return the list
      */
-    private List<LineageEntity> buildGraphContextByClassificationType(EntityDetail classifiedEntity,  AssetContext graph) throws OCFCheckedExceptionBase {
+    private void buildGraphContext(EntityDetail entityDetail, AssetContext graph) throws OCFCheckedExceptionBase {
+        List<LineageEntity> classificationVertices = new ArrayList<>();
 
-        List<LineageEntity> classificationEntities = new ArrayList<>();
+        if (entityDetail.getStatus() != InstanceStatus.ACTIVE)
+            return;
 
-        if (classifiedEntity.getStatus() == InstanceStatus.ACTIVE) {
-            for (Classification classification : classifiedEntity.getClassifications()) {
-                if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
+        if (CollectionUtils.isEmpty(entityDetail.getClassifications()))
+            return;
 
-                    LineageEntity lineageClassificationEntity = new LineageEntity();
-                    lineageClassificationEntity.setGuid(classifiedEntity.getGUID());
-
-                    mapClassificationsToLineageEntity(classification, lineageClassificationEntity);
-                    classificationEntities.add(lineageClassificationEntity);
-                    log.debug("Adding Classification {} ", classification.toString());
-                }
+        for (Classification classification : entityDetail.getClassifications()) {
+            if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
+                LineageEntity originalEntityVertex = new LineageEntity();
+                originalEntityVertex.setGuid(entityDetail.getGUID());
+                copyClassificationProperties(originalEntityVertex, classification);
+                classificationVertices.add(originalEntityVertex);
             }
-
-            Converter converter = new Converter();
-            LineageEntity startVertex = converter.createLineageEntity(classifiedEntity);
-
-            for (LineageEntity endVertex : classificationEntities) {
-
-                graph.addVertex(startVertex);
-                graph.addVertex(endVertex);
-
-                /* Set the edge guid same as the classified entity guid */
-                GraphContext edge = new GraphContext(endVertex.getTypeDefName(), startVertex.getGuid(), startVertex, endVertex);
-                graph.addEdge(edge);
-
-            }
-            return classificationEntities;
         }
-        return null;
+
+        Converter converter = new Converter();
+        LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
+
+        for (LineageEntity classificationVertex : classificationVertices) {
+            graph.addVertex(classificationVertex);
+            GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), originalEntityVertex.getGuid(), originalEntityVertex, classificationVertex);
+            graph.addGraphContext(graphContext);
+        }
     }
 
-    private void mapClassificationsToLineageEntity(Classification classification, LineageEntity lineageEntity) throws OCFCheckedExceptionBase {
-
-        final String methodName = "mapClassificationsToLineageEntity";
-
+    private void copyClassificationProperties(LineageEntity lineageEntity, Classification classification) throws OCFCheckedExceptionBase {
+        final String methodName = "copyClassificationProperties";
         Converter converter = new Converter();
 
         try {

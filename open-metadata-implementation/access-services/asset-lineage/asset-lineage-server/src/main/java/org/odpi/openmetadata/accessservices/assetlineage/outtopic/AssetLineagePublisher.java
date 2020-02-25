@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
@@ -69,7 +70,7 @@ public class AssetLineagePublisher {
      *
      * @param entityDetail entity to get context
      */
-    public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishProcessEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
@@ -77,7 +78,7 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishAssetEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String technicalGuid = entityDetail.getGUID();
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
         Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
@@ -90,12 +91,12 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
-                serverUserName,
-                entityDetail);
-        if (classificationContext == null || classificationContext.isEmpty())
+    public void publishClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationEvent(entityDetail);
+        if (MapUtils.isEmpty(classificationContext)) {
+            log.debug("Entity {} does not contain classifications that are relevant for the Asset Lineage OMAS", entityDetail.getGUID());
             return;
+        }
         LineageEvent event = new LineageEvent();
         event.setAssetContext(classificationContext);
         event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);

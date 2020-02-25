@@ -192,12 +192,12 @@ public class CommonHandler {
         }
 
 
-        GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
+        GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))) {
+        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))) {
             graph.addVertex(startVertex);
             graph.addVertex(endVertex);
-            graph.addEdge(edge);
+            graph.addGraphContext(graphContext);
         }
 
         return endEntity;
