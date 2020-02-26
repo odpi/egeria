@@ -10,9 +10,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServ
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -21,14 +25,12 @@ import java.util.List;
  * the Asset Lineage OMAS. The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class AssetLineageAdmin extends AccessServiceAdmin
-{
+public class AssetLineageAdmin extends AccessServiceAdmin {
 
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
-    private String serverUserName;
-
 
     /**
      * Default constructor
@@ -54,7 +56,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
-        this.serverUserName = serverUserName;
 
         auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
@@ -82,15 +83,10 @@ public class AssetLineageAdmin extends AccessServiceAdmin
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
-                AssetLineageOMRSTopicListener omrsTopicListener;
-
-                omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        accessServiceConfig.getAccessServiceOutTopic(),
-                        repositoryConnector.getRepositoryHelper(),
-                        auditLog,
-                        serverUserName,
-                        serverName);
+            Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
+            if (outTopicConnection != null) {
+                OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(serverName, serverUserName, repositoryConnector.getRepositoryHelper(), outTopicConnector, auditLog);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
                         omrsTopicConnector,
@@ -107,8 +103,10 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         } catch (OMAGConfigurationErrorException error) {
+            log.error("The Asset Lineage OMAS could not be started", error);
             throw error;
         } catch (Throwable error) {
+            log.error("The Asset Lineage OMAS could not be started", error);
             auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
@@ -120,6 +118,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                     error);
         }
     }
+
 
     /**
      * Shutdown the access service.

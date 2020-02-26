@@ -32,7 +32,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
      * @param auditLog            destination for audit log events.
      * @param localServerUserId   userId used for server initiated actions
-     *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
@@ -40,49 +39,43 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                                         OMRSAuditLog auditLog,
                                         String localServerUserId) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
-              repositoryConnector,
-              auditLog,
-              localServerUserId,
-              repositoryConnector.getMaxPageSize());
+                repositoryConnector,
+                auditLog,
+                localServerUserId,
+                repositoryConnector.getMaxPageSize());
 
-        final String methodName = "new ServiceInstance";
+        final String methodName = "AssetLineageServicesInstance";
 
         super.supportedZones = supportedZones;
 
-        if (repositoryHandler != null)  {
-            glossaryHandler = new GlossaryHandler(serviceName,
-                    serverName,
+        if (repositoryHandler != null) {
+            glossaryHandler = new GlossaryHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler);
 
-            assetContextHandler = new AssetContextHandler(serviceName,
-                    serverName,
+            assetContextHandler = new AssetContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
                     supportedZones);
 
-            commonHandler = new CommonHandler(serviceName,
-                    serverName,
+            commonHandler = new CommonHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler);
 
-            processContextHandler = new ProcessContextHandler(serviceName,
-                    serverName,
+            processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
                     supportedZones);
 
-            classificationHandler = new ClassificationHandler(serviceName,
-                    serverName,
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler);
+            classificationHandler = new ClassificationHandler(
+                    invalidParameterHandler
+            );
 
-        }else {
+        } else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
@@ -100,8 +93,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return glossary handler
      */
-    GlossaryHandler getGlossaryHandler()
-    {
+    GlossaryHandler getGlossaryHandler() {
         return glossaryHandler;
     }
 
@@ -111,8 +103,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return context handler
      */
-    AssetContextHandler getAssetContextHandler()
-    {
+    AssetContextHandler getAssetContextHandler() {
         return assetContextHandler;
     }
 
@@ -121,8 +112,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return common handler
      */
-    CommonHandler getCommonHandler()
-    {
+    CommonHandler getCommonHandler() {
         return commonHandler;
     }
 
@@ -131,8 +121,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return process handler
      */
-    ProcessContextHandler getProcessContextHandler()
-    {
+    ProcessContextHandler getProcessContextHandler() {
         return processContextHandler;
     }
 
