@@ -68,6 +68,8 @@ the conformance suite tests.  These commands include:
 * Retrieve the results from all failed test cases.
 * Retrieve the results from a specific test cases.
 
+NOTE: The resulting reports can be large. Ensure the jvm running the CTS server has at least 1GB heap to avoid any Java Heap errors. 
+
 The Open Metadata Conformance Suite also has a 
 client called `OpenMetadataConformanceTestReport` that will retrieve
 the conformance report and push it to a file called `openmetadata.conformance.testlab.results`.
