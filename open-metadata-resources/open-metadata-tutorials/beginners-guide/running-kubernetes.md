@@ -32,11 +32,9 @@ Install [Helm v3.1 or above](https://github.com/helm/helm/releases) & ensure it 
    
 1. Navigate to the `open-metadata-resources/open-metadata-deployment/charts` directory
    
-1. First we need to add an additional repository & retrieve dependencies we use for Egeria:
+1. First we need to retrieve dependencies we use for Egeria:
 
     ```bash
-    $ helm repo add bitnami https://charts.bitnami.com/bitnami
-    $ helm repo update
     $ helm dep update odpi-egeria-lab
     ```
     
