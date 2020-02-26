@@ -121,7 +121,7 @@ apachezookeeper:
 debug:
   egeriaJVM: false
 
-# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
+# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. 
 logging:
   level: OFF
 
