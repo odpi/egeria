@@ -34,7 +34,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             event = OBJECT_MAPPER.readValue(eventAsString, LineageEvent.class);
             log.info("Started processing OpenLineageEvent");
             processEventBasedOnType(event);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             log.error("Exception processing event from in topic", e);
             OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.PROCESS_EVENT_EXCEPTION;
 
