@@ -14,11 +14,12 @@ order to use it natively.
 
 Follow the [OMAG Server Platform tutorial](../omag-server-tutorial/task-starting-the-omag-server-platform.md)
 for instructions on how to set up and run a platform yourself.
-You need to start three OMAG Server Platforms at the following URLs - remembering to use the `-Dserver.port=nnnn` option:
+You need to start four OMAG Server Platforms at the following URLs - remembering to use the `-Dserver.port=nnnn` option:
 
 - `http://localhost:8080`
 - `http://localhost:8081`
 - `http://localhost:8082`
+- `http://localhost:8083`
 
 
 ## Java
@@ -74,6 +75,19 @@ information. It is therefore typically a pre-requisite to using Apache Kafka.
 The [QuickStart Guide provided by Kafka itself](https://kafka.apache.org/quickstart) includes quick-and-dirty
 instructions on running a minimal ZooKeeper server necessary for Kafka's use. For more detailed information,
 you will want to read the [ZooKeeper Getting Started Guide](https://zookeeper.apache.org/doc/current/zookeeperStarted.html).
+
+## Jupyter
+
+[Project Jupyter](https://jupyter.org) provides tools for interactive computing. In particular, we use
+Jupyter Notebooks to provide an interactive tutorial that shows rich instructions, allows you to run
+code, and to see the output all in the same interface.
+
+Our notebooks are found under open-metadata-resources/open-metadata-labs/ - either start jupyter with this as the current
+directory, or navigate to it in the web ui. (this is automatic when using the other execution options).
+
+## Help
+
+For additional help refer to our slack channels at `http://odpi.slack.com`
 
 
 ----
