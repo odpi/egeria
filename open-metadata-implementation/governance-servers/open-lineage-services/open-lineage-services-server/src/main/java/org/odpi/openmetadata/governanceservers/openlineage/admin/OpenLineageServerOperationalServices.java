@@ -85,8 +85,8 @@ public class OpenLineageServerOperationalServices {
             initializeOLS(openLineageServerConfig);
         } catch (OMAGConfigurationErrorException e) {
             throw e;
-        } catch (Throwable e) {
-            throwableToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_INITIALIZING_OLS, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_OLS, actionDescription);
+        } catch (Exception e) {
+            exceptionToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_INITIALIZING_OLS, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_OLS, actionDescription);
         }
     }
 
@@ -130,8 +130,8 @@ public class OpenLineageServerOperationalServices {
             connector = new ConnectorBroker().getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        } catch (Throwable e) {
-            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
+        } catch (Exception e) {
+            exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
         return connector;
     }
@@ -187,8 +187,8 @@ public class OpenLineageServerOperationalServices {
             connector.initializeGraphDB();
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        } catch (Throwable e) {
-            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
+        } catch (Exception e) {
+            exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
     }
 
@@ -207,8 +207,8 @@ public class OpenLineageServerOperationalServices {
             connector.start();
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        } catch (Throwable e) {
-            throwableToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
+        } catch (Exception e) {
+            exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
     }
 
@@ -229,8 +229,8 @@ public class OpenLineageServerOperationalServices {
             inTopicConnector.start();
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
-        } catch (Throwable e) {
-            throwableToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, auditCode, actionDescription);
+        } catch (Exception e) {
+            exceptionToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, auditCode, actionDescription);
         }
         logRecord(OpenLineageServerAuditCode.SERVER_REGISTERED_WITH_IN_TOPIC, actionDescription);
     }
@@ -259,14 +259,14 @@ public class OpenLineageServerOperationalServices {
 
 
     /**
-     * Convert a Throwable to an OMAGConfigurationErrorException
+     * Convert a Exception to an OMAGConfigurationErrorException
      *
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void throwableToOMAGConfigurationError(Throwable e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+    private void exceptionToOMAGConfigurationError(Exception e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
             auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         logException(auditCode, actionDescription, e);
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -279,14 +279,14 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Convert a Throwable to a PropertyServerException
+     * Convert a Exception to a PropertyServerException
      *
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws PropertyServerException The service had trouble shutting down.
      */
-    private void throwableToPropertyServerException(Throwable e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
+    private void exceptionToPropertyServerException(Exception e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
             auditCode, String actionDescription) throws PropertyServerException {
         logException(auditCode, actionDescription, e);
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -360,8 +360,8 @@ public class OpenLineageServerOperationalServices {
             return;
         try {
             connector.disconnect();
-        } catch (Throwable e) {
-            throwableToPropertyServerException(e, errorCode, methodName, auditCode, actionDescription);
+        } catch (Exception e) {
+            exceptionToPropertyServerException(e, errorCode, methodName, auditCode, actionDescription);
         }
     }
 
@@ -376,8 +376,8 @@ public class OpenLineageServerOperationalServices {
             return;
         try {
             inTopicConnector.disconnect();
-        } catch (Throwable e) {
-            throwableToPropertyServerException(e, OpenLineageServerErrorCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, actionDescription);
+        } catch (Exception e) {
+            exceptionToPropertyServerException(e, OpenLineageServerErrorCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, methodName, OpenLineageServerAuditCode.ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR, actionDescription);
         }
     }
 
@@ -405,7 +405,7 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription Describes what the user could do to prevent the error from occurring.
      * @param e                 The exception object that was thrown.
      */
-    private void logException(OpenLineageServerAuditCode auditCode, String actionDescription, Throwable e) {
+    private void logException(OpenLineageServerAuditCode auditCode, String actionDescription, Exception e) {
         auditLog.logException(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
