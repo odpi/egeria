@@ -23,9 +23,7 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
     private Date                   creationDate           = null;
     private Map<String, String>    analysisParameters     = null;
     private DiscoveryRequestStatus discoveryRequestStatus = null;
-    private String                 assetGUID              = null;
-    private String                 discoveryEngineGUID    = null;
-    private String                 discoveryServiceGUID   = null;
+
 
 
     /**
@@ -81,12 +79,8 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
      * @param displayName new value for the display name.
      * @param description long description
      * @param creationDate date that the report ran
-     * @param assetGUID unique identifier of the asset described in the discovery report
      * @param discoveryRequestStatus status of the discovery request (is it still running?)
      * @param analysisParameters list of zones that this discovery service belongs to.
-     * @param assetGUID unique identifier of the asset described in the discovery report
-     * @param discoveryEngineGUID unique identifier of the engine that ran the discovery service.
-     * @param discoveryServiceGUID unique identifier of the discovery service that created this report.
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
@@ -99,9 +93,6 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
                                           Date                   creationDate,
                                           Map<String, String>    analysisParameters,
                                           DiscoveryRequestStatus discoveryRequestStatus,
-                                          String                 assetGUID,
-                                          String                 discoveryEngineGUID,
-                                          String                 discoveryServiceGUID,
                                           Map<String, String>    additionalProperties,
                                           Map<String, Object>    extendedProperties,
                                           OMRSRepositoryHelper   repositoryHelper,
@@ -120,9 +111,6 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
         this.creationDate = creationDate;
         this.analysisParameters = analysisParameters;
         this.discoveryRequestStatus = discoveryRequestStatus;
-        this.assetGUID = assetGUID;
-        this.discoveryEngineGUID = discoveryEngineGUID;
-        this.discoveryServiceGUID = discoveryServiceGUID;
     }
 
 
@@ -175,7 +163,7 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 
         if (discoveryRequestStatus != null)
         {
-            properties = this.addDiscoveryRequestStatusToProperties(properties, methodName);
+            properties = this.addDiscoveryServiceRequestStatusToProperties(properties, methodName);
         }
 
         return properties;
@@ -208,14 +196,15 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 
 
     /**
-     * Add the OwnerType enum to the properties.
+     * Add the DiscoveryServiceRequestStatus enum to the properties.
+     * NOTE: DiscoveryServiceRequestStatus replaces DiscoveryRequestStatus
      *
      * @param properties current properties
      * @param methodName calling method
      * @return updated properties
      */
-    protected InstanceProperties addDiscoveryRequestStatusToProperties(InstanceProperties properties,
-                                                                       String             methodName)
+    private InstanceProperties addDiscoveryServiceRequestStatusToProperties(InstanceProperties properties,
+                                                                            String             methodName)
     {
         InstanceProperties resultingProperties = properties;
 
@@ -224,18 +213,29 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
             case WAITING:
                 resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                  resultingProperties,
-                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
                                                                                  0,
                                                                                  "Waiting",
                                                                                  "Discovery request is waiting to execute.",
                                                                                  methodName);
                 break;
 
+            case ACTIVATING:
+                resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                 resultingProperties,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                                 1,
+                                                                                 "Activating",
+                                                                                 "Discovery service is being initialized in the discovery engine.",
+                                                                                 methodName);
+                break;
+
+
             case IN_PROGRESS:
                 resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                  resultingProperties,
-                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME,
-                                                                                 1,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                                 2,
                                                                                  "InProgress",
                                                                                  "Discovery request is executing.",
                                                                                  methodName);
@@ -244,8 +244,8 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
             case FAILED:
                 resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                  resultingProperties,
-                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME,
-                                                                                 1,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                                 3,
                                                                                  "Failed",
                                                                                  "Discovery request has failed.",
                                                                                  methodName);
@@ -254,17 +254,27 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
             case COMPLETED:
                 resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                  resultingProperties,
-                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME,
-                                                                                 1,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                                 4,
                                                                                  "Completed",
                                                                                  "Discovery request has completed successfully.",
+                                                                                 methodName);
+                break;
+
+            case OTHER:
+                resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                 resultingProperties,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                                 98,
+                                                                                 "Other",
+                                                                                 "Discovery service has a status that is not covered by this enum.",
                                                                                  methodName);
                 break;
 
             case UNKNOWN_STATUS:
                 resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                  resultingProperties,
-                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_REQUEST_STATUS_PROPERTY_NAME,
+                                                                                 DiscoveryAnalysisReportMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
                                                                                  99,
                                                                                  "Unknown",
                                                                                  "Discovery request status is unknown.",

@@ -32,8 +32,8 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
     private static final long    serialVersionUID = 1L;
 
     /* Properties needed to call the OMAG Server REST APIs */
-    private String omagServerPlatformRootURL = null;
-    private String omagServerName            = null;
+    protected String omagServerPlatformRootURL = null;
+    protected String omagServerName            = null;
 
     /**
      * Default constructor

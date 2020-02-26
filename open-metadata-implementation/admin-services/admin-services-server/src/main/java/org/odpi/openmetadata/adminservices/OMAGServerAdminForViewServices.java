@@ -14,13 +14,13 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OMAGServerAdminForViewServices provides the server-side support for the services that add view services
@@ -85,6 +85,64 @@ public class OMAGServerAdminForViewServices {
                             service.setServiceURLMarker(viewServiceConfig.getViewServiceURLMarker());
                             service.setServiceWiki(viewServiceConfig.getViewServiceWiki());
                             services.add(service);
+                        }
+                    }
+                }
+                if (!services.isEmpty()) {
+                    response.setServices(services);
+                }
+            }
+        } catch (OMAGInvalidParameterException error) {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        } catch (OMAGNotAuthorizedException error) {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Return the list of enabled view services for this server.
+     *
+     * @param userId     calling user
+     * @param serverName name of server
+     * @return view services response
+     */
+    public ViewServicesResponse getViewServices(String userId,
+                                                                    String serverName) {
+        final String methodName = "getConfiguredViewServices";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ViewServicesResponse response = new ViewServicesResponse();
+
+        try {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            /*
+             * Get the list of View Services configured in this server.
+             */
+            List<ViewServiceConfig> viewServiceConfigList = serverConfig.getViewServicesConfig();
+
+            /*
+             * Set up the available view services.
+             */
+            if ((viewServiceConfigList != null) && (!viewServiceConfigList.isEmpty())) {
+                List<ViewServiceConfig> services = new ArrayList<>();
+                for (ViewServiceConfig viewServiceConfig : viewServiceConfigList) {
+                    if (viewServiceConfig != null) {
+                        if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
+                            services.add(viewServiceConfig);
                         }
                     }
                 }

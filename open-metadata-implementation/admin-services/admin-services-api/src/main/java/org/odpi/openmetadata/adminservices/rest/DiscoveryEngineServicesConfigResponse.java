@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 
 import java.util.Objects;
 
@@ -37,9 +36,9 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
 
 
     /**
-     * Return the OMAGServerConfig object.
+     * Return the config object.
      *
-     * @return OMAGServerConfig object
+     * @return DiscoveryEngineServicesConfig object
      */
     public DiscoveryEngineServicesConfig getConfig()
     {
@@ -55,7 +54,7 @@ public class DiscoveryEngineServicesConfigResponse extends AdminServicesAPIRespo
 
 
     /**
-     * Set up the DiscoveryEngineServicesConfig object.
+     * Set up the config object.
      *
      * @param config - DiscoveryEngineServicesConfig object
      */

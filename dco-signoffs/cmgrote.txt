@@ -11,4 +11,5 @@ ab258dfd070106919b6c2b023f7d25aeae670075 Minor cleanups for code readability
 238b7b5a899b86862412b7959369c38cd5bad05e Corrects links to license examples
 4cf4347dd867118db2a4ecf30efbaa50568641e0 Fixes spacing
 9b95b66202b8826aafa1ade25f65e9fb45d391cb Capitalises Egeria for consistency and minor grammatical cleanups
+2b01dd67cf42cf4ac40bb3a737f9715cb70628aa Revert "Removes version-checking of typedefs to resolve #2326"
 

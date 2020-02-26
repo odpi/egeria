@@ -198,6 +198,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         assetOnboarding.add(peterProfileUserId);
         assetOnboarding.add(erinOverviewUserId);
+        assetOnboarding.add(findItDL01UserId);
+        assetOnboarding.add(fixItDL01UserId);
         assetOnboardingExit.add(erinOverviewUserId);
 
         serverAdmins.add(garyGeekeUserId);

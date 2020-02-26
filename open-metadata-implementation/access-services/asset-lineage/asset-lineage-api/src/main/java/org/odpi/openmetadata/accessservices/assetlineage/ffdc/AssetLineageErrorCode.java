@@ -42,9 +42,9 @@ public enum AssetLineageErrorCode {
             "Check that the server where the Asset Lineage OMAS is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-LINEAGE-008",
-                                     "The Asset Lineage Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
-                                     "The access service has not been passed valid configuration for its out topic connection.",
-                                     "Correct the configuration and restart the service."),
+            "The Asset Lineage Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
+            "The access service has not been passed valid configuration for its out topic connection.",
+            "Correct the configuration and restart the service."),
     ENTITY_NOT_FOUND(404, "OMAS-ASSET-LINEAGE-404-009",
             "Cannot get entity from repository, entity does not exist.",
             "The system is unable to get the full context for the queried entity.",
@@ -54,12 +54,11 @@ public enum AssetLineageErrorCode {
             "The system is unable to get the relationships for the queried entity.",
             "Check if the relationship queried is available on the repository in the cohort."),
     CLASSIFICATION_MAPPING_ERROR(400, "OMAS-ASSET-LINEAGE-404-011 ",
-            "The attempt to map a lineage entity and a classification failed because the properties could not be mapped for classification with name {0} in {1} method of class {2} to asset lineage omas {3}",
+            "The attempt to map a lineage entity and a classification failed for classification {0}",
             "The system was unable to perform the classification mapping request.",
             "Correct the caller's code and retry the request.");
 
-    public int getHTTPErrorCode()
-    {
+    public int getHTTPErrorCode() {
         return httpErrorCode;
     }
 

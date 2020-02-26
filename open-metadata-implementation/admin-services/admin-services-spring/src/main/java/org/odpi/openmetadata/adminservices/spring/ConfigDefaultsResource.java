@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.rest.EventBusConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -99,5 +100,23 @@ public class ConfigDefaultsResource
                                     @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
         return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
+    }
+
+
+    /**
+     * Return the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return event bus config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "/event-bus")
+    public EventBusConfigResponse getEventBus(@PathVariable String userId,
+                                              @PathVariable String serverName)
+    {
+        return adminAPI.getEventBus(userId, serverName);
     }
 }
