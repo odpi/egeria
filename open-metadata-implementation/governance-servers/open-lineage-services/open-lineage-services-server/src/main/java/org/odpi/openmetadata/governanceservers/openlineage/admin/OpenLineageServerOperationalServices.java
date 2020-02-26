@@ -259,7 +259,7 @@ public class OpenLineageServerOperationalServices {
 
 
     /**
-     * Convert a Exception to an OMAGConfigurationErrorException
+     * Convert an Exception to an OMAGConfigurationErrorException
      *
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
@@ -279,7 +279,7 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     * Convert a Exception to a PropertyServerException
+     * Convert an Exception to a PropertyServerException
      *
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
