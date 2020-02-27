@@ -593,7 +593,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/governance-servers/admin-services/admin-services-client/target</directory>
+            <directory>../../open-metadata-implementation/admin-services/admin-services-client/target</directory>
             <outputDirectory>./clients</outputDirectory>
             <includes>
                 <include>*.jar</include>

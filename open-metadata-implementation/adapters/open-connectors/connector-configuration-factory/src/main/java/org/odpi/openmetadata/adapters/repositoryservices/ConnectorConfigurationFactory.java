@@ -142,7 +142,7 @@ public class ConnectorConfigurationFactory
     public Connection getFileBasedAuditLogConnection(String       localServerName,
                                                      List<String> supportedSeverities)
     {
-        String endpointAddress = localServerName + ".auditlog";
+        String endpointAddress = "omag.server." + localServerName + ".auditlog";
 
         Endpoint endpoint = new Endpoint();
 
@@ -711,7 +711,7 @@ public class ConnectorConfigurationFactory
 
         if (connectorProviderClassName != null)
         {
-                Class      connectorProviderClass = Class.forName(connectorProviderClassName);
+                Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
                 ConnectorProvider  connectorProvider = (ConnectorProvider)potentialConnectorProvider;
