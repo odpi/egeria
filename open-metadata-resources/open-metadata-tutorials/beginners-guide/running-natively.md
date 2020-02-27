@@ -4,7 +4,7 @@
 # Running Egeria natively
 
 These technologies are what Egeria itself uses to operate. They are included when using the
-[self-contained environments](running-self-contained.md), but they can also be installed and run natively (directly)
+self-contained environments, but they can also be installed and run natively (directly)
 on your system.
 
 Just be aware that running them natively on your system will require the additional effort of downloading, installing,
