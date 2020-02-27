@@ -23,7 +23,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
 
     <url>https://egeria.odpi.org</url>
 
