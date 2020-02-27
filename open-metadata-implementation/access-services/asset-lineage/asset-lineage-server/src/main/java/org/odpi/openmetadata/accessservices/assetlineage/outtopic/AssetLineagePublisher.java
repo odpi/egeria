@@ -94,7 +94,7 @@ public class AssetLineagePublisher {
     public void publishClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationEvent(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
-            log.debug("Entity {} does not contain classifications that are relevant for the Asset Lineage OMAS", entityDetail.getGUID());
+            log.debug("Asset Lineage OMAS did not find relevant classifications for the entity {}", entityDetail.getGUID());
             return;
         }
         LineageEvent event = new LineageEvent();

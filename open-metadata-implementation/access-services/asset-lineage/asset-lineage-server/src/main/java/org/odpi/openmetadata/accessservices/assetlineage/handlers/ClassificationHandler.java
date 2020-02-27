@@ -69,9 +69,6 @@ public class ClassificationHandler {
     private void buildGraphContext(EntityDetail entityDetail, AssetContext graph) throws OCFCheckedExceptionBase {
         List<LineageEntity> classificationVertices = new ArrayList<>();
 
-        if (entityDetail.getStatus() != InstanceStatus.ACTIVE)
-            return;
-
         if (CollectionUtils.isEmpty(entityDetail.getClassifications()))
             return;
 
@@ -106,10 +103,7 @@ public class ClassificationHandler {
             lineageEntity.setCreateTime(classification.getCreateTime());
             lineageEntity.setUpdateTime(classification.getUpdateTime());
             lineageEntity.setProperties(converter.getMapProperties(classification.getProperties()));
-
-            log.debug("Classification mapping for lineage entity {}: ", lineageEntity);
-
-        } catch (Throwable e) { //TODO This is basically catching nullpointers, so check for null instead
+        } catch (Exception e) { //TODO This is basically catching nullpointers, so check for null instead
 
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.CLASSIFICATION_MAPPING_ERROR;
             String formattedErrorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName());
