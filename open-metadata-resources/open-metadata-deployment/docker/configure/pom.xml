@@ -63,6 +63,9 @@
                         <goals>
                             <goal>build</goal>
                         </goals>
+                        <configuration>
+                            <tag>${project.version}</tag>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>tag-version</id>
