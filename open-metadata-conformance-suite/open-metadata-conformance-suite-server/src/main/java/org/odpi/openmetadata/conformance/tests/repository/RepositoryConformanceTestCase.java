@@ -387,7 +387,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 propertyValue.setPrimitiveValue((byte)(1 + instanceCount));    // always distinct
                 break;
             case OM_PRIMITIVE_TYPE_CHAR:
-                propertyValue.setPrimitiveValue((char)('o'));                  // never distinct
+                propertyValue.setPrimitiveValue('o');                  // never distinct
                 break;
             case OM_PRIMITIVE_TYPE_LONG:
                 if (distinct)
