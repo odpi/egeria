@@ -6,8 +6,7 @@
 These technologies are needed in order to build and develop Egeria.
 
 If you simply want to try out and explore Egeria, or if you find yourself lost in all of these technologies,
-you will likely want to consider starting with a [self-contained environment](running-self-contained.md)
-to explore Egeria (at least initially).
+choose one of the [self-contained environments](README.md) instead.
 
 ## Git
 
