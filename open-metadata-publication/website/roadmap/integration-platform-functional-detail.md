@@ -3,11 +3,30 @@
 
 # Integration Platform Functional Detail
 
+![log](integration-platform-logo.png)
+
+
 Figure 1 summarizes the function that belongs in Egeria's
 **Integration Platform**.
 
-![Figure 1](egeria-status-integration-platform-functional-detail.png#pagewidth)
+![Figure 1](integration-platform-functional-detail.png#pagewidth)
 > **Figure 1:** Key capabilities in Egeria's Integration Platform
+
+## Egeria Integration User Interface
+
+Server and platform configuration; cohort monitoring; type explorer and repository explorer.
+
+
+## Utilities and converters
+Support for different standard formats to load industry standard definitions, models, glossaries,
+and other content packs built on industry standard definitions, models,
+glossaries and other content packs.  Examples include JSON-LD, OWL/RDF, XML, ...
+
+## Pre-canned Connectors to third party technologies
+Popular metadata repositories, databases, data formats and platforms;
+data movement engines, data virtualization engines, dev ops tools,
+analytics/AI tools, data catalogs, MDM and user directories, CMDBs, SDLC tools, ...
+
 
 ----
 Return to [Status Overview](.)
