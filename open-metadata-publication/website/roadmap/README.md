@@ -17,22 +17,41 @@ Although some progress has been made on all layers,
 they do build on one another.
 So, not surprisingly, most of the work has been focused on
 establishing the frameworks, connector APIs and other
-services to provide the developer toolkit.
+services to provide the developer platform.
 
 In recent months, and going into 2020, our focus is
 shifting to the integration platform as we add
 connector implementations for popular third party
-technologies and expand out the governance servers.
+technologies and expand out the user interfaces (UIs).
 
-The support for the governance solution will then naturally
-follow along.
+The support for the governance solutions will then naturally
+follow along.  
 
-Follow the links for more information about the
-three layers:
+The governance solutions themselves sit naturally along side specific metadata and governance
+solutions available in the market today.  Egeria is focused on filling in the gaps to
+support individuals that are setting up and running an open metadata ecosystem and wish to
+take advantage of the enterprise perspective it beings.
+
+Figure 2 steps into a little more detail and expands out the types of functions
+found in each layer:
+
+![Figure 2](functional-organization.png#pagewidth)
+> **Figure 2:** Functions found in each layer of capability for Egeria
+
+Follow the links for more information about the functions shown in the three layers:
 
 * [Governance Solution](governance-solution-functional-detail.md)
 * [Integration Platform](integration-platform-functional-detail.md)
-* [Developer Toolkit](developer-toolkit-functional-detail.md)
+* [Developer Platform](developer-platform-functional-detail.md)
+
+Figure 3 shows an overview of the status of the functions.  Green means that
+there is function that is either [released or technical preview](../content-status).
+Orange means there is work going on and red means it is planned by not started.
+
+![Figure 3](functional-organization-showing-implementation-status-for-1.5.png#pagewidth)
+> **Figure 3:** Status of the functions found in each layer of capability for Egeria release 1.5
+
+This chart will be updated with each [release](../../../release-notes).
 
 ----
 Return to [Home Page](../../../index.md)

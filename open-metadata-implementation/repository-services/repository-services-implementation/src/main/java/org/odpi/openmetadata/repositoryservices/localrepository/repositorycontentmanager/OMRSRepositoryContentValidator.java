@@ -2040,7 +2040,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * Need to step through each of the proposed properties and validate that the name and value are
          * present and they match the typeDef
          */
-        Iterator    propertyList = properties.getPropertyNames();
+        Iterator<?>    propertyList = properties.getPropertyNames();
 
         while (propertyList.hasNext())
         {

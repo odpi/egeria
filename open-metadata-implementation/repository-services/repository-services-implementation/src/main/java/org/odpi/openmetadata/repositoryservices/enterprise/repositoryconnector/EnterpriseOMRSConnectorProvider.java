@@ -73,7 +73,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
     {
         super();
 
-        Class    connectorClass = EnterpriseOMRSRepositoryConnector.class;
+        Class<?>    connectorClass = EnterpriseOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

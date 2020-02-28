@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.builders.AnnotationBuilder;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.builders.SuspectDuplicateAnnotationBuilder;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.converters.AnnotationConverter;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.AnnotationMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -14,7 +15,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.discovery.properties.SuspectDuplicateAnnotation;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -316,7 +319,164 @@ public class AnnotationHandler
 
 
     /**
+     * Convert the properties in the annotation into OMRS instance properties.
+     *
+     * @param userId calling user
+     * @param annotation annotation to save
+     * @param methodName calling method
+     * @return unique identifier of the annotation
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving annotations in the annotation store.
+     */
+    private InstanceProperties getAnnotationInstanceProperties(String     userId,
+                                                               Annotation annotation,
+                                                               String     methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String  parameterName  = "annotation";
+
+        invalidParameterHandler.validateObject(annotation, parameterName, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (annotation instanceof SuspectDuplicateAnnotation)
+        {
+            SuspectDuplicateAnnotation suspectDuplicateAnnotation = (SuspectDuplicateAnnotation)annotation;
+
+            SuspectDuplicateAnnotationBuilder builder
+                    = new SuspectDuplicateAnnotationBuilder(suspectDuplicateAnnotation.getAnnotationType(),
+                                                            suspectDuplicateAnnotation.getSummary(),
+                                                            suspectDuplicateAnnotation.getConfidenceLevel(),
+                                                            suspectDuplicateAnnotation.getExpression(),
+                                                            suspectDuplicateAnnotation.getExplanation(),
+                                                            suspectDuplicateAnnotation.getAnalysisStep(),
+                                                            suspectDuplicateAnnotation.getJsonProperties(),
+                                                            suspectDuplicateAnnotation.getDuplicateAnchorGUIDs(),
+                                                            suspectDuplicateAnnotation.getMatchingPropertyNames(),
+                                                            suspectDuplicateAnnotation.getMatchingClassificationNames(),
+                                                            suspectDuplicateAnnotation.getMatchingAttachmentGUIDs(),
+                                                            suspectDuplicateAnnotation.getMatchingRelationshipGUIDs(),
+                                                            suspectDuplicateAnnotation.getAdditionalProperties(),
+                                                            repositoryHelper,
+                                                            serviceName,
+                                                            serverName);
+
+            return builder.getAnnotationInstanceProperties(methodName);
+        }
+        else
+        {
+            // todo this implementation is storing all annotations as the root object.
+            // todo specific builders need to be created for specific types of annotations.
+            AnnotationBuilder builder = new AnnotationBuilder(annotation.getAnnotationType(),
+                                                              annotation.getSummary(),
+                                                              annotation.getConfidenceLevel(),
+                                                              annotation.getExpression(),
+                                                              annotation.getExplanation(),
+                                                              annotation.getAnalysisStep(),
+                                                              annotation.getJsonProperties(),
+                                                              annotation.getAdditionalProperties(),
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              serverName);
+
+            return builder.getAnnotationInstanceProperties(methodName);
+        }
+    }
+
+
+    /**
+     * Determine the type identifier of the entity to save.
+     *
+     * @param annotation annotation to save
+     * @return unique identifier of the annotation's type
+     */
+    String getAnnotationTypeGUID(Annotation annotation)
+    {
+        String typeGUID = null;
+
+        /*
+         * If the type is defined in the annotation then this value is used.
+         */
+        if ((annotation != null) && (annotation.getType() != null))
+        {
+            typeGUID = annotation.getType().getElementTypeId();
+        }
+
+        /*
+         * If no type is provided in the annotation then we use the class of the bean.
+         */
+        if (typeGUID == null)
+        {
+            if (annotation instanceof SuspectDuplicateAnnotation)
+            {
+                typeGUID = AnnotationMapper.SUSPECT_DUPLICATE_ANNOTATION_TYPE_GUID;
+            }
+        }
+
+        /*
+         * If we have a type detected then use it.
+         */
+        if (typeGUID != null)
+        {
+            return typeGUID;
+        }
+
+        /*
+         * Otherwise use the default annotation type guid.
+         */
+        return AnnotationMapper.ANNOTATION_TYPE_GUID;
+    }
+
+
+
+    /**
+     * Determine the type name of the entity to save.
+     *
+     * @param annotation annotation to save
+     * @return unique name of the annotation's type
+     */
+    String getAnnotationTypeName(Annotation annotation)
+    {
+        String typeName = null;
+
+        /*
+         * If the type is defined in the annotation then this value is used.
+         */
+        if ((annotation != null) && (annotation.getType() != null))
+        {
+            typeName = annotation.getType().getElementTypeName();
+        }
+
+        /*
+         * If no type is provided in the annotation then we use the class of the bean.
+         */
+        if (typeName == null)
+        {
+            if (annotation instanceof SuspectDuplicateAnnotation)
+            {
+                typeName = AnnotationMapper.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME;
+            }
+        }
+
+        /*
+         * If we have a type detected then use it.
+         */
+        if (typeName != null)
+        {
+            return typeName;
+        }
+
+        /*
+         * Otherwise use the default annotation type name.
+         */
+        return AnnotationMapper.ANNOTATION_TYPE_NAME;
+    }
+
+
+    /**
      * Save a new annotation as an entity.  The calling method will link it to its anchor.
+     *
      * @param userId calling user
      * @param annotation annotation to save
      * @param methodName calling method
@@ -331,36 +491,13 @@ public class AnnotationHandler
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        final String  parameterName     = "annotation";
+        InstanceProperties instanceProperties = getAnnotationInstanceProperties(userId, annotation, methodName);
 
-        invalidParameterHandler.validateObject(annotation, parameterName, methodName);
-
-        // todo this implementation is storing all annotations as the root object.
-        // todo specific builders need to be created for specific types of annotations.
-        AnnotationBuilder builder = new AnnotationBuilder(annotation.getAnnotationType(),
-                                                          annotation.getSummary(),
-                                                          annotation.getConfidenceLevel(),
-                                                          annotation.getExpression(),
-                                                          annotation.getExplanation(),
-                                                          annotation.getAnalysisStep(),
-                                                          annotation.getJsonProperties(),
-                                                          annotation.getAnnotationStatus(),
-                                                          annotation.getReviewDate(),
-                                                          annotation.getSteward(),
-                                                          annotation.getReviewComment(),
-                                                          annotation.getAdditionalProperties(),
-                                                          annotation.getExtendedProperties(),
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        String annotationGUID = repositoryHandler.createEntity(userId,
-                                                               AnnotationMapper.ANNOTATION_TYPE_GUID,
-                                                               AnnotationMapper.ANNOTATION_TYPE_NAME,
-                                                               builder.getAnnotationInstanceProperties(methodName),
-                                                               methodName);
-
-        return annotationGUID;
+        return repositoryHandler.createEntity(userId,
+                                              getAnnotationTypeGUID(annotation),
+                                              getAnnotationTypeName(annotation),
+                                              instanceProperties,
+                                              methodName);
     }
 
     /**
@@ -382,34 +519,17 @@ public class AnnotationHandler
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String   annotationParameterName = "annotation";
         final String   annotationGUIDParameterName = "annotationGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
-        AnnotationBuilder builder = new AnnotationBuilder(annotation.getAnnotationType(),
-                                                          annotation.getSummary(),
-                                                          annotation.getConfidenceLevel(),
-                                                          annotation.getExpression(),
-                                                          annotation.getExplanation(),
-                                                          annotation.getAnalysisStep(),
-                                                          annotation.getJsonProperties(),
-                                                          annotation.getAnnotationStatus(),
-                                                          annotation.getReviewDate(),
-                                                          annotation.getSteward(),
-                                                          annotation.getReviewComment(),
-                                                          annotation.getAdditionalProperties(),
-                                                          annotation.getExtendedProperties(),
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
+        InstanceProperties instanceProperties = getAnnotationInstanceProperties(userId, annotation, methodName);
+
         repositoryHandler.updateEntity(userId,
                                        annotationGUID,
                                        AnnotationMapper.ANNOTATION_TYPE_GUID,
                                        AnnotationMapper.ANNOTATION_TYPE_NAME,
-                                       builder.getAnnotationInstanceProperties(methodName),
+                                       instanceProperties,
                                        methodName);
     }
 
