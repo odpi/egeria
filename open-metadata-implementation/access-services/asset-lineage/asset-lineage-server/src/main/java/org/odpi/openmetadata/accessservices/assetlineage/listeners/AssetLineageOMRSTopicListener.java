@@ -82,10 +82,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
         OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
 
-        if (instanceEventOriginator == null)
-            return;
-
         EntityDetail entityDetail = instanceEvent.getEntity();
+
+        if (instanceEventOriginator == null || entityDetail.getGUID() == null) {
+            return;
+        }
+
 
         try {
             switch (instanceEventType) {
@@ -121,7 +123,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //                break;
             }
         } catch (OCFCheckedExceptionBase e) {
-            log.error("An exception occurred while processing an OMRSTopic event \n \n" + e.toString(), e);
+            log.error("An exception occurred while processing an OMRSTopic event concerning entity" + entityDetail.getGUID() + "\n \n" + e.toString(), e);
             logExceptionToAudit(instanceEvent, e);
         } catch (Exception e) {
             log.error("An exception occurred while processing an OMRSTopic event concerning entity " + entityDetail.getGUID(), e);
