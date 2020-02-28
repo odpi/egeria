@@ -57,30 +57,36 @@ public class DataEngineRegistrationHandler {
      *
      * @return unique identifier of the external data engine in the repository
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
-    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
-                                                                                                             InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException {
+    public String createOrUpdateExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
+                                                                                                                     InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException {
         final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(softwareServerCapability.getQualifiedName(),
-                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(softwareServerCapability.getQualifiedName(), DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
-        ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(
-                softwareServerCapability.getQualifiedName(), softwareServerCapability.getDisplayName(),
-                softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
-                softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
-                softwareServerCapability.getSource(), null, null, repositoryHelper, serviceName, serverName);
-
+        ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(softwareServerCapability.getQualifiedName(),
+                softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
+                softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
+                null, null, repositoryHelper, serviceName, serverName);
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
-        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
+
+        String externalEngineGUID = getExternalDataEngineByQualifiedName(userId, softwareServerCapability.getQualifiedName());
+        if (externalEngineGUID == null) {
+            externalEngineGUID = repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
+        } else {
+            repositoryHandler.updateEntity(userId, externalEngineGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
+        }
+
+        return externalEngineGUID;
     }
 
     /**
@@ -91,9 +97,9 @@ public class DataEngineRegistrationHandler {
      *
      * @return the guid of the the external data engine
      *
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem retrieving the discovery engine definition
+     * @throws PropertyServerException    problem retrieving the discovery engine definition
      */
     public String getExternalDataEngineByQualifiedName(String userId, String qualifiedName) throws
                                                                                             InvalidParameterException,
@@ -111,11 +117,9 @@ public class DataEngineRegistrationHandler {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
-                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
-                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), methodName);
+                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName);
 
         if (retrievedEntity == null) {
             return null;
