@@ -69,11 +69,12 @@ public class ClassificationHandler {
     private void buildGraphContext(EntityDetail entityDetail, AssetContext graph) throws OCFCheckedExceptionBase {
         List<LineageEntity> classificationVertices = new ArrayList<>();
 
-        if (CollectionUtils.isEmpty(entityDetail.getClassifications()))
+        if (entityDetail.getClassifications() == null )
             return;
 
         for (Classification classification : entityDetail.getClassifications()) {
-            if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
+        //    if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
+            if (true) {
                 LineageEntity originalEntityVertex = new LineageEntity();
                 originalEntityVertex.setGuid(entityDetail.getGUID());
                 copyClassificationProperties(originalEntityVertex, classification);

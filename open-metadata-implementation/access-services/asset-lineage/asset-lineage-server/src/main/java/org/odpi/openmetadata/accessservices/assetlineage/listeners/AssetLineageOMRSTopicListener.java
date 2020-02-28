@@ -109,18 +109,18 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 case RECLASSIFIED_ENTITY_EVENT:
                     processReclassifiedEntityEvent(entityDetail);
                     break;
-//                case DECLASSIFIED_ENTITY_EVENT:
-//                    processDeclassifiedEntityEvent(entityDetail);
+                case DECLASSIFIED_ENTITY_EVENT:
+                    processDeclassifiedEntityEvent(entityDetail);
+                    break;
+//                case NEW_RELATIONSHIP_EVENT:
+//                    processNewRelationship(entityDetail);
 //                    break;
-//            case NEW_RELATIONSHIP_EVENT:
-//                processNewRelationship(entityDetail);
-//                break;
-//            case UPDATED_RELATIONSHIP_EVENT:
-//                processUpdatedRelationshipEvent(entityDetail);
-//                break;
-//            case DELETED_RELATIONSHIP_EVENT:
-//                processDeletedRelationshipEvent(entityDetail);
-//                break;
+//                case UPDATED_RELATIONSHIP_EVENT:
+//                    processUpdatedRelationshipEvent(entityDetail);
+//                    break;
+//                case DELETED_RELATIONSHIP_EVENT:
+//                    processDeletedRelationshipEvent(entityDetail);
+//                    break;
             }
         } catch (OCFCheckedExceptionBase e) {
             log.error("An exception occurred while processing an OMRSTopic event concerning entity" + entityDetail.getGUID() + "\n \n" + e.toString(), e);
@@ -171,8 +171,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishClassificationEvent(entityDetail);
     }
 
-    private void processDeclassifiedEntityEvent(EntityDetail entityDetail) {
+    private void processDeclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
+            return;
         log.debug("Asset Lineage OMAS is processing a DeClassified Entity event concerning entity {}: ", entityDetail.getGUID());
+        publisher.publishClassificationEvent(entityDetail);
     }
 
     private void processNewRelationship(EntityDetail entityDetail) {
