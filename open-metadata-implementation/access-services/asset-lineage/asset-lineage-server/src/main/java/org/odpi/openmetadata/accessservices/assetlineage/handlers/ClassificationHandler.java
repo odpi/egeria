@@ -75,10 +75,10 @@ public class ClassificationHandler {
         for (Classification classification : entityDetail.getClassifications()) {
         //    if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
             if (true) {
-                LineageEntity originalEntityVertex = new LineageEntity();
-                originalEntityVertex.setGuid(entityDetail.getGUID());
-                copyClassificationProperties(originalEntityVertex, classification);
-                classificationVertices.add(originalEntityVertex);
+                LineageEntity classificationVertex = new LineageEntity();
+                classificationVertex.setGuid(entityDetail.getGUID());
+                copyClassificationProperties(classificationVertex, classification);
+                classificationVertices.add(classificationVertex);
             }
         }
 
