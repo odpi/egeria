@@ -43,27 +43,28 @@ public class Converter {
     public Map<String, String> getMapProperties(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
-        if(properties == null) {return  attributes;}
+        if (properties == null)
+            return attributes;
 
         Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-        if(instanceProperties == null ) {return attributes;}
+
+        if (instanceProperties == null)
+            return attributes;
 
         for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
 
-            if (property.getValue() == null) {return  attributes;}
+            if (property.getValue() == null)
+                continue;
 
             String propertyValue = getStringForPropertyValue(property.getValue());
-            if (!propertyValue.equals("")) {
+            if (propertyValue.equals(""))
+                return attributes;
 
-                if (property.getKey().equals("name")) {
-                    attributes.put("displayName", propertyValue);
-                    }
-                else {
-                    attributes.put(property.getKey(), propertyValue);
-                    }
-                }
-            }
-
+            if (property.getKey().equals("name"))
+                attributes.put("displayName", propertyValue);
+            else
+                attributes.put(property.getKey(), propertyValue);
+        }
         return attributes;
     }
 
@@ -99,8 +100,7 @@ public class Converter {
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
-            }
-            else {
+            } else {
                 return "";
             }
         }
