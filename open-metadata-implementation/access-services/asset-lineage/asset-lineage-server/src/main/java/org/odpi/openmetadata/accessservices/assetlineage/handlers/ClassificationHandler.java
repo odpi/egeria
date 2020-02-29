@@ -24,7 +24,6 @@ public class ClassificationHandler {
 
     private InvalidParameterHandler invalidParameterHandler;
 
-
     /**
      * Instantiates a new Classification handler.
      *
@@ -43,37 +42,26 @@ public class ClassificationHandler {
      */
     public Map<String, Set<GraphContext>> buildClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         String methodName = "buildClassificationEvent";
-        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-        AssetContext assetContext = new AssetContext();
-        buildGraphContext(entityDetail, assetContext);
-        return assetContext.getNeighbors();
-    }
+        if (entityDetail.getClassifications() == null)
+            return null;
 
-    /**
-     * Build graph context
-     *
-     * @param entityDetail the start entity
-     * @param graph        the graph
-     * @return the list
-     */
-    private void buildGraphContext(EntityDetail entityDetail, AssetContext graph) {
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
         Converter converter = new Converter();
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
-        graph.addVertex(originalEntityVertex);
-
-        if (entityDetail.getClassifications() == null)
-            return;
+        AssetContext assetContext = new AssetContext();
+        assetContext.addVertex(originalEntityVertex);
 
         for (Classification classification : entityDetail.getClassifications()) {
             if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
                 LineageEntity classificationVertex = new LineageEntity();
                 classificationVertex.setGuid(entityDetail.getGUID());
                 copyClassificationProperties(classificationVertex, classification);
-                graph.addVertex(classificationVertex);
+                assetContext.addVertex(classificationVertex);
                 GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), originalEntityVertex.getGuid(), originalEntityVertex, classificationVertex);
-                graph.addGraphContext(graphContext);
+                assetContext.addGraphContext(graphContext);
             }
         }
+        return assetContext.getNeighbors();
     }
 
     private void copyClassificationProperties(LineageEntity lineageEntity, Classification classification) {
@@ -86,6 +74,5 @@ public class ClassificationHandler {
 
         Converter converter = new Converter();
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
-
     }
 }

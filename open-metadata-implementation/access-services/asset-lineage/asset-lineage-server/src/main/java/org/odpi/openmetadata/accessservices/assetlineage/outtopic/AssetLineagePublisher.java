@@ -94,7 +94,7 @@ public class AssetLineagePublisher {
     public void publishClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationEvent(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
-            log.debug("Asset Lineage OMAS did not find relevant classifications for the entity {}", entityDetail.getGUID());
+            log.debug("No valid lineage classifications were found for the entity {} ", entityDetail.getGUID());
             return;
         }
         LineageEvent event = new LineageEvent();
@@ -110,10 +110,12 @@ public class AssetLineagePublisher {
      * @param event event to send
      */
     public void publishEvent(AssetLineageEventHeader event) throws JsonProcessingException, ConnectorCheckedException {
-        if (outTopicConnector != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
-        }
+        if (outTopicConnector == null)
+            return;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
+        log.debug("Asset Lineage OMAS has published an event of type {} ", event.getAssetLineageEventType());
     }
 }
 
