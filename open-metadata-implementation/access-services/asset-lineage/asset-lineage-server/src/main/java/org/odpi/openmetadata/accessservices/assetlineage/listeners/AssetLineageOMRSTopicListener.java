@@ -81,13 +81,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
         OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
-
         EntityDetail entityDetail = instanceEvent.getEntity();
 
-        if (instanceEventOriginator == null || entityDetail.getGUID() == null) {
+        if (instanceEventOriginator == null || entityDetail == null || entityDetail.getGUID() == null)
             return;
-        }
-
 
         try {
             switch (instanceEventType) {

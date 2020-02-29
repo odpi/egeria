@@ -30,17 +30,17 @@ public class Converter {
         lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
         lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
         lineageEntity.setVersion(entityDetail.getVersion());
-        lineageEntity.setProperties(getMapProperties(entityDetail.getProperties()));
+        lineageEntity.setProperties(instancePropertiesToMap(entityDetail.getProperties()));
         return lineageEntity;
     }
 
     /**
-     * Gets map properties.
+     * Retrieve the properties from an InstanceProperties object and return them as a map
      *
      * @param properties the properties
      * @return the map properties
      */
-    public Map<String, String> getMapProperties(InstanceProperties properties) {
+    public Map<String, String> instancePropertiesToMap(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
         if (properties == null)
@@ -58,7 +58,7 @@ public class Converter {
 
             String propertyValue = getStringForPropertyValue(property.getValue());
             if (propertyValue.equals(""))
-                return attributes;
+                continue;
 
             if (property.getKey().equals("name"))
                 attributes.put("displayName", propertyValue);
