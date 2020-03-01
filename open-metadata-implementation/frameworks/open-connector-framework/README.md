@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
 
 # Open Connector Framework (OCF)
 
@@ -110,7 +111,7 @@ These are read only facades around the beans.
 
 ## Related Modules
 
-The [OCF Metadata Managment](../../common-services/ocf-metadata-management) supports the retrieval
+The [OCF Metadata Management](../../common-services/ocf-metadata-management) supports the retrieval
 of connection and connected asset properties from the open metadata
 repository/repositories.
 
@@ -124,6 +125,9 @@ These connectors are collectively called the [OMRS Connectors](../../repository-
 Many of the [Open Metadata Governance Servers](../../governance-servers) make use of OCF connectors to
 loosely-couple integration with a variety of underlying technologies.
 
+
+----
+Return to [frameworks](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

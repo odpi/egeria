@@ -1,5 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-  
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # In Memory Repository Connector
 
 The In-memory OMRS Repository Connector provides a simple repository

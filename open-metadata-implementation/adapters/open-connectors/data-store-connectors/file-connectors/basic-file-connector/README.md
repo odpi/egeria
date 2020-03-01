@@ -1,15 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
 ![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
 
-# Data Folder connector
+# Basic File Connector
 
-The data folder connector is for accessing data that is
-stored as a number of files within a folder (directory).
-
-
-
+The basic file connector provides support to
+read and write to a file using the Java File object.
 
 ----
 Return to the [file-connectors](..) module.
