@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
@@ -26,6 +27,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private PortHandler portHandler;
+    private DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -49,12 +51,14 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
-            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    schemaTypeHandler, dataEngineRegistrationHandler);
+            dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, dataEngineRegistrationHandler);
+            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, assetHandler,
+                    dataEngineCommonHandler, defaultZones, supportedZones);
+            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, schemaTypeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineRegistrationHandler);
+                    dataEngineCommonHandler);
 
             if (securityVerifier != null) {
                 processHandler.setSecurityVerifier(securityVerifier);
