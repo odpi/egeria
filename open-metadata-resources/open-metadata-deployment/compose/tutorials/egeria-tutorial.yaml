@@ -104,7 +104,10 @@ services:
         command: /bin/bash -c "java -jar /opt/egeria/user-interface/ui-chassis-spring-${egeria_version}.jar"
         environment:
             - OMAS_SERVER_URL=http://datalake:8080
-            - OMAS_SERVER_NAME=cocoMDS4
+            - OMAS_SERVER_NAME=cocoMDS1
+            - OPEN_LINEAGE_SERVER_URL=http://datalake:8080
+            - OPEN_LINEAGE_SERVER_NAME=open-lineage
+            - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
         ports:
             - '18443:8443'
         networks:
