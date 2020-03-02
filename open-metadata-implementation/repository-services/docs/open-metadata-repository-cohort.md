@@ -3,11 +3,10 @@
 
 # Open Metadata Repository Cohort
 
-An **open metadata repository cohort** is a collection of metadata servers
-and repository proxies
+An **open metadata repository cohort** is a collection of [servers](../../admin-services/docs/concepts/cohort-member.md)
 sharing metadata using the **[Open Metadata Repository Services (OMRS)](..)**.
 This sharing is peer-to-peer.  
-Once a metadata repository becomes a member of the cohort, it can share
+Once a server becomes a member of the cohort, it can share
 metadata with, and receive metadata from, any other member.
 
 OMRS needs to be flexible to support different performance and availability requirements.
