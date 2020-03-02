@@ -133,9 +133,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             return;
         log.debug("Asset Lineage OMAS is processing a NewEntity event concerning entity {}", entityDetail.getGUID());
         if (entityDetail.getType().getTypeDefName().equals(PROCESS))
-            publisher.publishProcessEvent(entityDetail);
+            publisher.publishProcessContext(entityDetail);
         else
-            publisher.publishAssetEvent(entityDetail);
+            publisher.publishAssetContext(entityDetail);
     }
 
     private void processUpdatedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
@@ -158,21 +158,21 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug("Asset Lineage OMAS is processing a Classified Entity event concerning entity {}", entityDetail.getGUID());
-        publisher.publishClassificationEvent(entityDetail);
+        publisher.publishClassificationContext(entityDetail);
     }
 
     private void processReclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug("Asset Lineage OMAS is processing a ReClassified Entity event concerning entity {}", entityDetail.getGUID());
-        publisher.publishClassificationEvent(entityDetail);
+        publisher.publishClassificationContext(entityDetail);
     }
 
     private void processDeclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug("Asset Lineage OMAS is processing a DeClassified Entity event concerning entity {}", entityDetail.getGUID());
-        publisher.publishClassificationEvent(entityDetail);
+        publisher.publishClassificationContext(entityDetail);
     }
 
     private void processNewRelationship(EntityDetail entityDetail) {

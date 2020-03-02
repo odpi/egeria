@@ -70,7 +70,7 @@ public class AssetLineagePublisher {
      *
      * @param entityDetail entity to get context
      */
-    public void publishProcessEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
@@ -78,7 +78,7 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishAssetEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String technicalGuid = entityDetail.getGUID();
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
         Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
@@ -91,7 +91,7 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationEvent(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
             log.debug("No valid lineage classifications were found for the entity {} ", entityDetail.getGUID());
