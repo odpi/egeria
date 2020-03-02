@@ -74,6 +74,8 @@ services:
         depends_on:
             - kafka
         image: '${egeria_repo}/egeria:${egeria_version}'
+        environment:
+            - LOADER_PATH=/opt/egeria/lib
         ports:
             - '18081:8080'
         networks:
