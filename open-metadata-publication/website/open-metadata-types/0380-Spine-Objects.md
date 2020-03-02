@@ -11,7 +11,7 @@ data stores and APIs.
 Model 0380 shows the relationships and classifications used to
 describe spine object.
 
-![UML](0380-Spine-Objects.png)
+![UML](0380-Spine-Objects.png#pagewidth)
 
 * **SpineObject** - is a classification to say the term represents a type of object
 * **SpineAttribute** - is a classification to say the term represents a type of attribute that is common for a spine object.

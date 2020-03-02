@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Implementation</name>
@@ -35,6 +35,7 @@
         <module>common-services</module>
         <module>repository-services</module>
         <module>access-services</module>
+        <module>view-services</module>
         <module>governance-servers</module>
         <module>admin-services</module>
         <module>platform-services</module>

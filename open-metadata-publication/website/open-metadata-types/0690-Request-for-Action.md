@@ -14,7 +14,7 @@ a steward or a curator's action.
 The governance action framework is configured to
 respond to the requests for actions (RfAs).
 
-![UML](0690-Request-for-Action.png)
+![UML](0690-Request-for-Action.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

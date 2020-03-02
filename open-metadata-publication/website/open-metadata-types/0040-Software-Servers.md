@@ -20,7 +20,7 @@ correlate the server with the changes to the metadata
 See model 0110 Actors in Area 1 for details of how user identifiers
 are correlated with people and teams).
 
-![UML](0040-Software-Servers.png)
+![UML](0040-Software-Servers.png#pagewidth)
 
 Open metadata may also capture the network endpoint(s) that the server
 is connected to and the host it is deployed to.

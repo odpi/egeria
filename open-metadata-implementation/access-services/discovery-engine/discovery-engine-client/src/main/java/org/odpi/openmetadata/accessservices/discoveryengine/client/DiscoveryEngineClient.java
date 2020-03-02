@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
@@ -366,27 +365,25 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @param discoveryEngineGUID unique identifier of the discovery engine that is running the discovery service
      * @param discoveryServiceGUID unique identifier of the discovery service creating the report
      * @param additionalProperties additional properties for the report
-     * @param classifications classifications to attach to the report
      *
-     * @return The new discovery report.
+     * @return unique identifier of new discovery report.
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or report
      * @throws PropertyServerException there was a problem in the store whether the asset/report properties are kept.
      */
-    public  DiscoveryAnalysisReport  createDiscoveryAnalysisReport(String                  userId,
-                                                                   String                  qualifiedName,
-                                                                   String                  displayName,
-                                                                   String                  description,
-                                                                   Date                    creationDate,
-                                                                   Map<String, String>     analysisParameters,
-                                                                   DiscoveryRequestStatus  discoveryRequestStatus,
-                                                                   String                  assetGUID,
-                                                                   String                  discoveryEngineGUID,
-                                                                   String                  discoveryServiceGUID,
-                                                                   Map<String, String>     additionalProperties,
-                                                                   List<Classification>    classifications) throws InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   PropertyServerException
+    public  String  createDiscoveryAnalysisReport(String                  userId,
+                                                  String                  qualifiedName,
+                                                  String                  displayName,
+                                                  String                  description,
+                                                  Date                    creationDate,
+                                                  Map<String, String>     analysisParameters,
+                                                  DiscoveryRequestStatus  discoveryRequestStatus,
+                                                  String                  assetGUID,
+                                                  String                  discoveryEngineGUID,
+                                                  String                  discoveryServiceGUID,
+                                                  Map<String, String>     additionalProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String   methodName = "createDiscoveryAnalysisReport";
         final String   nameParameterName = "qualifiedName";
@@ -412,16 +409,15 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setDiscoveryEngineGUID(discoveryEngineGUID);
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);
         requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setClassifications(classifications);
 
-        DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportPostRESTCall(methodName,
-                                                                                                        serverPlatformRootURL + urlTemplate,
-                                                                                                        requestBody,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        assetGUID);
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID);
 
-        return restResult.getAnalysisReport();
+        return restResult.getGUID();
     }
 
 
@@ -430,15 +426,14 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      *
      * @param userId calling user.
      * @param updatedReport updated report - this will replace what was previous stored.
-     * @return the new values stored in the repository
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public DiscoveryAnalysisReport  updateDiscoveryAnalysisReport(String                  userId,
-                                                                  DiscoveryAnalysisReport updatedReport) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    public void  updateDiscoveryAnalysisReport(String                  userId,
+                                               DiscoveryAnalysisReport updatedReport) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String   methodName = "updateDiscoveryAnalysisReport";
         final String   reportParameterName = "updatedReport";
@@ -449,14 +444,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(updatedReport, reportParameterName, methodName);
         invalidParameterHandler.validateGUID(updatedReport.getGUID(), reportGUIDParameterName, methodName);
 
-        DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportPostRESTCall(methodName,
-                                                                                                        serverPlatformRootURL + urlTemplate,
-                                                                                                        updatedReport,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        updatedReport.getGUID());
+        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  updatedReport,
+                                                                  serverName,
+                                                                  userId,
+                                                                  updatedReport.getGUID());
 
-        return restResult.getAnalysisReport();
     }
 
 
@@ -499,8 +493,8 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public void setDiscoveryStatus(String                  userId,
-                                   String                  discoveryReportGUID,
+    public void setDiscoveryStatus(String                 userId,
+                                   String                 discoveryReportGUID,
                                    DiscoveryRequestStatus newStatus) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -547,6 +541,60 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                                        discoveryReportGUID);
 
         return restResult.getAnalysisReport();
+    }
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<String>  getTypesOfAnnotation(String userId) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        final String   methodName = "getTypesOfAnnotation";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/sub-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId);
+
+        return restResult.getNames();
+    }
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param userId calling user
+     * @return map of type names that are subtypes of annotation to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    Map<String, String>  getTypesOfAnnotationWithDescriptions(String userId) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String   methodName = "getTypesOfAnnotationWithDescriptions";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/sub-types/descriptions";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        StringMapResponse restResult = restClient.callStringMapGetRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                           serverName,
+                                                                           userId);
+
+        return restResult.getStringMap();
     }
 
 
@@ -825,98 +873,21 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
 
     /**
-     * Link an existing annotation to another object.  The anchor object must be a Referenceable.
-     *
-     * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param anchorGUID unique identifier that the annotation is to be linked to
-     * @param annotationGUID unique identifier of the annotation
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    void    linkAnnotation(String userId,
-                           String discoveryReportGUID,
-                           String anchorGUID,
-                           String annotationGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
-    {
-        final String   methodName = "linkAnnotation";
-        final String   anchorGUIDParameterName = "anchorGUID";
-        final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations/{3}/related-instances/{4}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        discoveryReportGUID,
-                                        annotationGUID,
-                                        anchorGUID);
-    }
-
-
-    /**
-     * Remove the relationship between an annotation and another object.
-     *
-     * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param anchorGUID unique identifier that the annotation is to be unlinked from
-     * @param annotationGUID unique identifier of the annotation
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    void    unlinkAnnotation(String userId,
-                             String discoveryReportGUID,
-                             String anchorGUID,
-                             String annotationGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
-    {
-        final String   methodName = "unlinkAnnotation";
-        final String   anchorGUIDParameterName = "anchorGUID";
-        final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations/{3}/related-instances{4}/delete";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        discoveryReportGUID,
-                                        annotationGUID,
-                                        anchorGUID);
-    }
-
-
-    /**
      * Replace the current properties of an annotation.
      *
      * @param userId identifier of calling user
      * @param discoveryReportGUID identifier of the discovery report.
      * @param annotation new properties
      *
-     * @return fully filled out annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    Annotation  updateAnnotation(String     userId,
-                                 String     discoveryReportGUID,
-                                 Annotation annotation) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    void  updateAnnotation(String     userId,
+                           String     discoveryReportGUID,
+                           Annotation annotation) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
         final String   methodName = "updateAnnotation";
         final String   annotationParameterName = "annotation";
@@ -928,14 +899,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
         invalidParameterHandler.validateGUID(annotation.getGUID(), annotationGUIDParameterName, methodName);
 
-        AnnotationResponse restResult = restClient.callAnnotationPostRESTCall(methodName,
-                                                                              serverPlatformRootURL + urlTemplate,
-                                                                              annotation,
-                                                                              serverName,
-                                                                              userId,
-                                                                              discoveryReportGUID,
-                                                                              annotation.getGUID());
-        return restResult.getAnnotation();
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        annotation,
+                                        serverName,
+                                        userId,
+                                        discoveryReportGUID,
+                                        annotation.getGUID());
     }
 
 

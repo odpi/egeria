@@ -9,7 +9,7 @@ It can be used to show linkage between a glossary and the primary top level cate
 a glossary term and its implementation.  It is a looser association that a relationship
 such as [Semantic Assignment](0370-Semantic-Assignment.md).
 
-![UML](0019-More-Information.png)
+![UML](0019-More-Information.png#pagewidth)
 
 Return to [Area 0](Area-0-models.md).
 

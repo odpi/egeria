@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -81,27 +81,6 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
-
-    /**
-     * Returns the connection for the user interface server configuration file.
-     *
-     * @param serverName  name of the server
-     * @return Connection object
-     */
-    public Connection getUIServerConfigConnection(String serverName)
-    {
-        Endpoint   endpoint = new Endpoint();
-        endpoint.setAddress("ui.server." + serverName + ".config");
-
-        Connection connection = new Connection();
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedUIServerConfigStoreProvider.class.getName()));
-        connection.setQualifiedName(endpoint.getAddress());
-
-        return connection;
-    }
-
-
     /**
      * Return the connection for the default audit log.
      * By default, the Audit log written to stdout.
@@ -163,7 +142,7 @@ public class ConnectorConfigurationFactory
     public Connection getFileBasedAuditLogConnection(String       localServerName,
                                                      List<String> supportedSeverities)
     {
-        String endpointAddress = localServerName + ".auditlog";
+        String endpointAddress = "omag.server." + localServerName + ".auditlog";
 
         Endpoint endpoint = new Endpoint();
 
@@ -350,6 +329,21 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
+
+        return connection;
+    }
+
+
+    /**
+     * Return the read only local repository connection.  This is using the ReadOnlyOMRSRepositoryConnector.
+     *
+     * @return Connection object
+     */
+    public Connection getReadOnlyLocalRepositoryLocalConnection()
+    {
+        Connection connection = new Connection();
+
+        connection.setConnectorType(getConnectorType(ReadOnlyOMRSRepositoryConnectorProvider.class.getName()));
 
         return connection;
     }
@@ -717,7 +711,7 @@ public class ConnectorConfigurationFactory
 
         if (connectorProviderClassName != null)
         {
-                Class      connectorProviderClass = Class.forName(connectorProviderClassName);
+                Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
                 ConnectorProvider  connectorProvider = (ConnectorProvider)potentialConnectorProvider;

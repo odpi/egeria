@@ -10,7 +10,7 @@ on the **DocumentSchemaAttribute** through the [TypeEmbeddedAttribute](0505-Sche
 recall that the [NestedSchemaAttribute](0505-Schema-Attributes.md) relationship can be used to capture nested
 (hierarchical) structures within such documents.
 
-![UML](0531-Document-Schemas.png)
+![UML](0531-Document-Schemas.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

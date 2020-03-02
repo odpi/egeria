@@ -37,8 +37,8 @@ public class SubjectAreaImpl implements SubjectArea {
      */
     public SubjectAreaImpl(String serverName, String omasServerURL) throws InvalidParameterException {
         String methodName = "SubjectAreaImpl";
-        InputValidator.validateMetadataServerURLNotNull(className, methodName, serverName);
-        InputValidator.validateMetadataServerURLNotNull(className, methodName, omasServerURL);
+        InputValidator.validateRemoteServerNameNotNull(className, methodName, serverName);
+        InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
         this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
         this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
         this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);

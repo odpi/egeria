@@ -59,7 +59,7 @@
 #### 4. Update master version & cleanup notes
 * `git checkout master`
 * `git pull upstream master`
-* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '1.5-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
+* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '1.6-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
 * If using an IDE like IntelliJ make sure you have all hits by searching again as by default only a limited number of hits are shown - see https://youtrack.jetbrains.com/issue/IDEA-157855 for Intellij advice.
 * Commit
 * Now remove all the release notes from the 'release-notes' directory other than README.md - so users will always get directed to the latest in master
@@ -101,7 +101,6 @@
 * Fill in the release notes using a title of 'Release x.y' and copy the notes from the appropriate release notes at https://github.com/odpi/egeria/tree/master/release-notes
 * Artifacts will be available on maven central within around half a day.
 * Source archives will be added to the release on git within an hour or so.
-* Maven central artifacts should appear within 24 hours
 
 ## Useful links
 * Azure pipelines - https://dev.azure.com/odpi/egeria/_build

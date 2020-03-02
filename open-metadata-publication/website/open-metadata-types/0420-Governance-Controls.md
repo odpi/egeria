@@ -6,7 +6,7 @@
 Governance is enabled through People, Process and Technology.
 These are controlled through a combination of technical controls (implemented IT function) and organizational controls (training, responsibility, buddy-checking etc).
 
-![UML](0420-Governance-Controls.png)
+![UML](0420-Governance-Controls.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

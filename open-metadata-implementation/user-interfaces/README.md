@@ -14,7 +14,6 @@ experience of open metadata.
 
 
 * [ui-chassis](ui-chassis) the user interface platform.
-* [ui-admin-services](ui-admin-services) supports UI administration, used to configure and operate the UI server.
 
 Return to [open-metadata-implementation](..).
 

@@ -15,7 +15,7 @@ Figure 1 shows the different types of OMAG Servers.  The hierarchy
 in the diagram groups these servers according to their role in
 the ecosystem.
 
-![Figure 1](../concepts/types-of-omag-servers.png)
+![Figure 1](../concepts/types-of-omag-servers.png#pagesize)
 > **Figure 1:** The different types of OMAG Servers organized into a hierarchy
 > that shows the types of roles they perform and how they integrate together
 
@@ -78,7 +78,7 @@ GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{se
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.5-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.6-SNAPSHOT)".
 
 ```
 GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/servers/{serverName}/server-platform-origin

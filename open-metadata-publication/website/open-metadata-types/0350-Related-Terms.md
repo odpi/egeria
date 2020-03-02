@@ -5,7 +5,7 @@
 
 The Related Terms model contains relationships used to show how the assets of different terms are related to one another.
 
-![UML](0350-Related-Terms.png)
+![UML](0350-Related-Terms.png#pagewidth)
 
 
 The **TermRelationshipStatus** defines how reliable the relationship is between two glossary terms:

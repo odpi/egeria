@@ -6,7 +6,7 @@
 Collections provide a general mechanism for grouping
 resources together.
 
-![UML](0120-Collections.png)
+![UML](0120-Collections.png#pagewidth)
 
 The classifications associated with Collection allows it
 to be specialized for particular uses.

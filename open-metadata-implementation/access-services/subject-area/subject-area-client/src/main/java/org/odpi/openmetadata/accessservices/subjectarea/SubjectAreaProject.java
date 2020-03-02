@@ -228,7 +228,8 @@ public interface SubjectAreaProject
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server     */
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
 
      Project deleteProject(String userId, String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,

@@ -43,9 +43,9 @@ Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
 
 ## Build warnings
 
-Build output should be checked for any warnings ie '[WARNING]' and these should be eliminated. 
+Build output should be checked for any warnings ie `[WARNING]` and these should be eliminated.
 
-For example the java compiler is set to use '-Xlint:all' and may report warnings about deprecated function, unsafe casts, unchecked conversions etc which should be addressed.
+For example the java compiler is set to use `-Xlint:all` and may report warnings about deprecated function, unsafe casts, unchecked conversions etc which should be addressed.
 
 Other tools used in the build may also result in warnings which should also be addressed, whilst testcases should ensure output is captured to avoid such warnings appear in the build logs.
 

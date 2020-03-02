@@ -7926,23 +7926,17 @@ public class OMRSRepositoryRESTServices
 
         if (auditLog != null)
         {
-            OMRSAuditCode auditCode;
-
-            StringWriter stackTrace = new StringWriter();
-            error.printStackTrace(new PrintWriter(stackTrace));
-
-
-            auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                                methodName,
-                                                                message,
-                                                                stackTrace.toString()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION;
+            auditLog.logException(methodName,
+                                  auditCode.getLogMessageId(),
+                                  auditCode.getSeverity(),
+                                  auditCode.getFormattedLogMessage(error.getClass().getName(),
+                                                                   methodName,
+                                                                   message),
+                                  null,
+                                  auditCode.getSystemAction(),
+                                  auditCode.getUserAction(),
+                                  error);
         }
     }
 

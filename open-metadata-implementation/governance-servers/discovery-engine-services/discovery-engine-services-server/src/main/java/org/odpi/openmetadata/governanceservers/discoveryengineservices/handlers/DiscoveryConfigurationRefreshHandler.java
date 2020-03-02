@@ -144,6 +144,8 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
 
             while (configToRetrieve.size() != 0)
             {
+                List<DiscoveryEngineHandler>  configFailed = new ArrayList<>();
+
                 for (DiscoveryEngineHandler discoveryEngineHandler : configToRetrieve)
                 {
                     if (discoveryEngineHandler != null)
@@ -156,7 +158,6 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
                         try
                         {
                             discoveryEngineHandler.refreshConfig();
-                            configToRetrieve.remove(discoveryEngineHandler);
                         }
                         catch (Throwable error)
                         {
@@ -171,9 +172,13 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
                                                   auditCode.getSystemAction(),
                                                   auditCode.getUserAction(),
                                                   error);
+
+                            configFailed.add(discoveryEngineHandler);
                         }
                     }
                 }
+
+                configToRetrieve = configFailed;
 
                 waitToRetry();
             }

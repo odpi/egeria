@@ -8,7 +8,7 @@ to allow hosts to be grouped into the networks they are connected to.
 This can show details such as where hosts are isolated in private networks,
 where the gateways onto the Internet. 
 
-![UML](0070-Networks-and-Gateways.png)
+![UML](0070-Networks-and-Gateways.png#pagewidth)
 
 
 Return to [Area 0](Area-0-models.md).

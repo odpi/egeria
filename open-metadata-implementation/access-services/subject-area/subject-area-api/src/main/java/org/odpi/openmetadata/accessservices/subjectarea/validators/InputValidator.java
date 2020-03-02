@@ -20,7 +20,7 @@ public class InputValidator {
      * @param omasServerURL - metadata server url.
      * @throws InvalidParameterException - the org.odpi.openmetadata.accessservices.subjectarea.server URL is not set
      */
-    static public void validateMetadataServerURLNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
+    static public void validateRemoteServerURLNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
     {
         if (omasServerURL == null)
         {
@@ -50,7 +50,7 @@ public class InputValidator {
      * @param omasServerURL - metadata server url.
      * @throws InvalidParameterException - the org.odpi.openmetadata.accessservices.subjectarea.server URL is not set
      */
-    static public void validateMetadataServerNameNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
+    static public void validateRemoteServerNameNotNull(String className, String methodName, String omasServerURL) throws InvalidParameterException
     {
         if (omasServerURL == null)
         {

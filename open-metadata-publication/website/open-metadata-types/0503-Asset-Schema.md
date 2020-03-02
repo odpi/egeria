@@ -10,7 +10,7 @@ A physical data store may be made up of one or more Assets.
 Each of these Assets may point to the appropriate SchemaType that describes
 the structure of the Asset.
 
-![UML](0503-Asset-Schema.png)
+![UML](0503-Asset-Schema.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

@@ -30,8 +30,8 @@ public class ConfigResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @GetMapping(path = "/configuration")
-    public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
-                                                            @PathVariable String serverName)
+    public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String userId,
+                                                           @PathVariable String serverName)
     {
         return adminAPI.getStoredConfiguration(userId, serverName);
     }
@@ -53,6 +53,23 @@ public class ConfigResource
                                             @RequestBody  OMAGServerConfig omagServerConfig)
     {
         return adminAPI.setOMAGServerConfig(userId, serverName, omagServerConfig);
+    }
+
+
+    /**
+     * Clear the configuration properties for an OMAG Server in a single command.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
+     */
+    @DeleteMapping(path = "/configuration")
+    public VoidResponse clearOMAGServerConfig(@PathVariable String userId,
+                                              @PathVariable String serverName)
+    {
+        return adminAPI.clearOMAGServerConfig(userId, serverName);
     }
 
 

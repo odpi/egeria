@@ -8,7 +8,7 @@ are properly protected and comply with data sovereignty laws.
 The open metadata model allows location information to be captured
 at many levels of granularity.
 
-![UML](0025-Locations.png)
+![UML](0025-Locations.png#pagewidth)
 
 The NestedLocation relationship allows hierarchical groupings of locations
 to be represented.
