@@ -52,14 +52,14 @@ public class ClassificationHandler {
         assetContext.addVertex(originalEntityVertex);
 
         for (Classification classification : entityDetail.getClassifications()) {
-            if (immutableQualifiedLineageClassifications.contains(classification.getName())) {
-                LineageEntity classificationVertex = new LineageEntity();
-                classificationVertex.setGuid(entityDetail.getGUID());
-                copyClassificationProperties(classificationVertex, classification);
-                assetContext.addVertex(classificationVertex);
-                GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), originalEntityVertex.getGuid(), originalEntityVertex, classificationVertex);
-                assetContext.addGraphContext(graphContext);
-            }
+            if (!immutableQualifiedLineageClassifications.contains(classification.getName()))
+                continue;
+            LineageEntity classificationVertex = new LineageEntity();
+            classificationVertex.setGuid(entityDetail.getGUID());
+            copyClassificationProperties(classificationVertex, classification);
+            assetContext.addVertex(classificationVertex);
+            GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), originalEntityVertex.getGuid(), originalEntityVertex, classificationVertex);
+            assetContext.addGraphContext(graphContext);
         }
         return assetContext.getNeighbors();
     }

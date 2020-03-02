@@ -54,7 +54,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        log.debug("Ignoring registry event" + event.toString());
+        log.debug("Ignoring registry event: " + event.toString());
     }
 
     /**
@@ -63,7 +63,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        log.debug("Ignoring type event" + event.toString());
+        log.debug("Ignoring type event: " + event.toString());
     }
 
     /**
@@ -83,7 +83,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
         EntityDetail entityDetail = instanceEvent.getEntity();
 
-        if (instanceEventOriginator == null || entityDetail == null || entityDetail.getGUID() == null)
+        if (instanceEventOriginator == null)
             return;
 
         try {
@@ -120,10 +120,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //                    break;
             }
         } catch (OCFCheckedExceptionBase e) {
-            log.error("An exception occurred while processing an OMRSTopic event concerning entity" + entityDetail.getGUID() + "\n \n" + e.toString(), e);
+            log.error("The following exception occurred: \n" + e.toString() + "\n \nWhile processing OMRSTopic event: \n" + instanceEvent.toString(), e);
             logExceptionToAudit(instanceEvent, e);
         } catch (Exception e) {
-            log.error("An exception occurred while processing an OMRSTopic event concerning entity " + entityDetail.getGUID(), e);
+            log.error("An exception occurred while processing OMRSTopic event: \n " + instanceEvent.toString(), e);
             logExceptionToAudit(instanceEvent, e);
         }
     }
