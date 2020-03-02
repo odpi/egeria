@@ -14,12 +14,19 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.VALUE_FOR_ACTIVE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableValidLineageEntityEvents;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -113,12 +120,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //            case NEW_RELATIONSHIP_EVENT:
 //                processNewRelationship(entityDetail);
 //                break;
-//            case UPDATED_RELATIONSHIP_EVENT:
-//                processUpdatedRelationshipEvent(entityDetail);
-//                break;
-//            case DELETED_RELATIONSHIP_EVENT:
-//                processDeletedRelationshipEvent(entityDetail);
-//                break;
+                case UPDATED_RELATIONSHIP_EVENT:
+                    processUpdatedRelationshipEvent(instanceEvent.getRelationship());
+                    break;
+                case DELETED_RELATIONSHIP_EVENT:
+                    processDeletedRelationshipEvent(instanceEvent.getRelationship());
+                    break;
             }
         } catch (OCFCheckedExceptionBase e) {
             log.error("An exception occurred while processing an OMRSTopic event \n \n" + e.toString(), e);
@@ -170,16 +177,29 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Asset Lineage OMAS is processing a DeClassified Entity event which contains the following entity {}: ", entityDetail.getGUID());
     }
 
-    private void processNewRelationship(EntityDetail entityDetail) {
-        log.debug("Asset Lineage OMAS is processing a NewRelationship event which contains the following entity {}: ", entityDetail.getGUID());
+    private void processNewRelationship(Relationship relationship) {
+        log.debug("Asset Lineage OMAS is processing a NewRelationship event which contains the following relationship {}: ", relationship.getGUID());
     }
 
-    private void processUpdatedRelationshipEvent(EntityDetail entityDetail) {
-        log.debug("Asset Lineage OMAS is processing an UpdatedRelationship event which contains the following entity {}: ", entityDetail.getGUID());
+    private void processUpdatedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
+        if (!immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName()) ||
+                !immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))
+            return;
+
+        log.debug("Asset Lineage OMAS is processing an UpdatedRelationship event which contains the following relationship {}: ",
+                relationship.getGUID());
+
+        publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT);
     }
 
-    private void processDeletedRelationshipEvent(EntityDetail entityDetail) {
-        log.debug("Asset Lineage OMAS is processing a DeletedRelationship event which contains the following entity {}: ", entityDetail.getGUID());
+    private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
+        if (!immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName()) ||
+                !immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))
+            return;
+        log.debug("Asset Lineage OMAS is processing a DeletedRelationship event which contains the following relationship {}: ",
+                relationship.getGUID());
+
+        publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.DELETE_RELATIONSHIP_EVENT);
     }
 
     private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
