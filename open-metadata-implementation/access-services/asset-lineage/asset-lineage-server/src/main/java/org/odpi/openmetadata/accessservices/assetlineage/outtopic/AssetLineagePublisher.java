@@ -109,14 +109,17 @@ public class AssetLineagePublisher {
      * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}
      *
      * @param lineageRelationship the LineageRelationship to be published
-     * @param eventType the type on the event
+     * @param eventType           the type on the event
      *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
-     * @throws JsonProcessingException exception parsing the event json
+     * @throws JsonProcessingException   exception parsing the event json
      */
     public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
                                                                                                                           ConnectorCheckedException,
                                                                                                                           JsonProcessingException {
+        log.debug("Asset Lineage OMAS is processing an {} event which contains the following relationship {}: ", eventType,
+                lineageRelationship.getGuid());
+
         LineageRelationshipEvent event = new LineageRelationshipEvent();
         event.setLineageRelationship(lineageRelationship);
         event.setAssetLineageEventType(eventType);

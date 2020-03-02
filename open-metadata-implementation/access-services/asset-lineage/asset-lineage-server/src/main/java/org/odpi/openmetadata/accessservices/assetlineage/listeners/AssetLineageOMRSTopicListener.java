@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.VALUE_FOR_ACTIVE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableValidLineageEntityEvents;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableValidLineageRelationshipTypes;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -182,22 +183,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processUpdatedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        if (!immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName()) ||
-                !immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))
+        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
             return;
-
-        log.debug("Asset Lineage OMAS is processing an UpdatedRelationship event which contains the following relationship {}: ",
-                relationship.getGUID());
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT);
     }
 
     private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        if (!immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName()) ||
-                !immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))
+        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
             return;
-        log.debug("Asset Lineage OMAS is processing a DeletedRelationship event which contains the following relationship {}: ",
-                relationship.getGUID());
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.DELETE_RELATIONSHIP_EVENT);
     }
