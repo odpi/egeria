@@ -10,39 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class DemoInMemoryInitializingBean implements InitializingBean {
-
-    private static final String FIRST_NAME = "FNAME";
-    private static final String EMPLOYEE_STATUS = "EMPSTATUS";
-    private static final String ANUAL_SALARY = "SALARY";
-    private static final String DATE_OF_BIRTH = "DATE_OF_BIRTH";
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public void afterPropertiesSet() {
-        addUser("user",
-                "John", "user",
-                "/resources/img/user.png");
-        addUser("admin",
-                "Administrator", "admin",
-                "/resources/img/admin.png");
-
-
-        addUser("faith",
-                "Faith Broker ", "admin",
-                "/resources/img/faith.png");
-
-        addUser("callie",
-                "Callie Quartile ", "admin",
-                "/resources/img/callie.png");
+        addUser("user","John", "user","/resources/img/user.png");
+        addUser("admin","Administrator", "admin","/resources/img/admin.png",Role.ADMIN);
 
         /* In addition to original demo users, we add the full coco Pharmaceutical's set to support simple demos #1490 */
+        addUser("faith","Faith Broker ", "admin","/resources/img/faith.png",Role.DATA_ANALYST);
+        addUser("callie","Callie Quartile ", "admin","/resources/img/callie.png",Role.HR);
         addUser("zach", "Zach Now", "admin", "/resources/img/user.png" );
         addUser("steves", "Steve Starter", "admin", "/resources/img/user.png" );
         addUser("terri", "Terri Daring", "admin", "/resources/img/user.png" );
@@ -75,26 +60,26 @@ public class DemoInMemoryInitializingBean implements InitializingBean {
     private void addUser(String username,
                          String name,
                          String password,
-                         String avatarUrl) {
+                         String avatarUrl,
+                         Role... roles
+                         ) {
 
-        List<String> roles = new ArrayList<>();
-
-        if (username.equals("admin")){
-            roles.add(Role.ADMIN.name());
-        }else if(username.equals("faith")){
-            roles.add(Role.HR.name());
-        }else if(username.equals("callie")){
-            roles.add(Role.DATA_ANALYST.name());
-        }else {
-            roles.add(Role.USER.name());
-        }
-
+        List<String> rolesList= Stream.of(roles).map(Role::name).collect(Collectors.toList());
         User user = new User();
         user.setUsername(username);
         user.setPassword(new BCryptPasswordEncoder().encode(password));
-        user.setRoles(roles);
+        user.setRoles(rolesList);
         user.setName(name);
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
     }
+
+    private void addUser(String username,
+                         String name,
+                         String password,
+                         String avatarUrl
+    ) {
+        addUser(username, name, password, avatarUrl, Role.USER);
+    }
+
 }
