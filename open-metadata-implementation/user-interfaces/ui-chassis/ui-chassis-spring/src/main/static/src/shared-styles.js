@@ -61,7 +61,6 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             max-width: 600px;
             width: 100%;
         }
-        
         .circle {
             display: inline-block;
             width: 64px;
@@ -78,12 +77,13 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             color: #24272a;
             font-size: 22px;
         }
-        
+        paper-button {
+          text-transform: none;
+        }
         paper-button:not([disabled]) {
             background: var(--egeria-primary-color);
             color: white;
         }
-        
         .breadcrumbs {
           padding: 8px 15px;
           margin-bottom: 20px;
@@ -91,7 +91,6 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
           background-color: #eeeeee;
           border-radius: 4px;
         } 
-        
     </style>
   </template>
 </dom-module>`;
