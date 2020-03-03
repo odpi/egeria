@@ -42,7 +42,19 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String groupSearchFilter;
 
     @Value("${ldap.url}")
-    private String url;
+    private String ldapURL;
+
+    @Value("${ldap.user.dn.patterns}")
+    private String userDnPatterns;
+
+    @Value("${ldap.npa.dn}")
+    private String npaDn;
+
+    @Value("${ldap.npa.password}")
+    private String npaPassword;
+
+    @Value("${ldap.group.role.attribute}")
+    private String roleAttribute;
 
     @Value("${authentication.source}")
     private String authenticationSource;
@@ -97,18 +109,26 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        if (authenticationSource.equals("ldap"))
+        if (authenticationSource.equals("ldap")) {
+
             auth
                     .ldapAuthentication()
-                    .userSearchBase(userSearchBase)
-                    .userSearchFilter(userSearchFilter)
+                    .userDetailsContextMapper(userContextMapper())
                     .groupSearchBase(groupSearchBase)
                     .groupSearchFilter(groupSearchFilter)
+                    .userSearchBase(userSearchBase)
+                    .userSearchFilter(userSearchFilter)
+                    .groupRoleAttribute(roleAttribute)
                     .rolePrefix("")
-                    .userDetailsContextMapper(userContextMapper())
                     .contextSource()
-                    .url(url);
-        else auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+                    .url(ldapURL )
+                    .managerDn(npaDn)
+                    .managerPassword(npaPassword)
+                    .and()
+                    .userDnPatterns(userDnPatterns);
+        }  else  {
+            auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        }
 
     }
 
