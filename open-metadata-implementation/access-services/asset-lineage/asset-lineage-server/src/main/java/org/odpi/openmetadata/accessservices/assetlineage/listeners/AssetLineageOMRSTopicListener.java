@@ -36,6 +36,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.i
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
+    private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing an {} event which contains the following relationship {}: ";
 
     private AssetLineagePublisher publisher;
     private OMRSAuditLog auditLog;
@@ -179,10 +180,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processNewRelationship(Relationship relationship) {
-        log.debug("Asset Lineage OMAS is processing a NewRelationship event which contains the following relationship {}: ", relationship.getGUID());
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, "NewRelationship", relationship.getGUID());
     }
 
     private void processUpdatedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT, relationship.getGUID());
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
             return;
 
@@ -190,6 +192,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.DELETE_RELATIONSHIP_EVENT, relationship.getGUID());
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
             return;
 

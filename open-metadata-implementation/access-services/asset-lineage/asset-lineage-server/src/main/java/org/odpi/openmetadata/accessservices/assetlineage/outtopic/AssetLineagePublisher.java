@@ -117,8 +117,6 @@ public class AssetLineagePublisher {
     public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
                                                                                                                           ConnectorCheckedException,
                                                                                                                           JsonProcessingException {
-        log.debug("Asset Lineage OMAS is processing an {} event which contains the following relationship {}: ", eventType,
-                lineageRelationship.getGuid());
 
         LineageRelationshipEvent event = new LineageRelationshipEvent();
         event.setLineageRelationship(lineageRelationship);
