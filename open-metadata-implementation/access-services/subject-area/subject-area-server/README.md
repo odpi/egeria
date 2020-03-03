@@ -5,14 +5,13 @@
 
 The Subject Area OMAS server-side support is organized in the following top level packages 
 
-* admin -  The SubjectAreaAdmin controls this OMAS's lifecycle. It is initalised here receiving the access service configuration. It is shutdown here.
-* auditlog - this is a list of the autid log messages
-* constraints 
-* generated - generated code 
-* initialization
+* admin -  The SubjectAreaAdmin controls this OMAS's lifecycle. It is initialised here receiving the access service configuration. It is shutdown here.
+* auditlog - this is a list of the audit log messages
+* initialization 
+* internal response
 * listener
 * outtopic 
-* publisher - messaginbg publishing
+* publisher - messaging publishing
 * server - server services
 * utilities - utilities - including helper methods
 * validators - methods to do validation

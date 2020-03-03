@@ -3,7 +3,7 @@
 
 # 0450 Governance Rollout
 
-![UML](0450-Governance-Rollout.png)
+![UML](0450-Governance-Rollout.png#pagewidth)
 
 Return to [Area 4](Area-4-models.md).
 

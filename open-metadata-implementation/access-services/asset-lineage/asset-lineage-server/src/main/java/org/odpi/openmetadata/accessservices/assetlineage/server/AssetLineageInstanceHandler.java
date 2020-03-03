@@ -62,7 +62,7 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    public AssetContextHandler getContextHandler(String userId, String serverName, String serviceOperationName)
+    public AssetContextHandler getAssetContextHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);

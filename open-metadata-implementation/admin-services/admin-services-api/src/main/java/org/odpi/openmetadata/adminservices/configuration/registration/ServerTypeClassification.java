@@ -80,6 +80,10 @@ public enum ServerTypeClassification
                 "Server that manages the configuration for a data virtualization platform",
                  ServerTypeClassification.INTEGRATION_DAEMON,
                 "https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/virtualizer.html"),
+    VIEW_SERVER("View Server",
+                "A View Server is an OMAG Server that hosts the view services to support a User Interface.",
+                ServerTypeClassification.OMAG_SERVER,
+                "https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/view-server.html"),
     ;
 
     private String                   serverTypeName;

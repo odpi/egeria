@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -236,6 +236,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-officer-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-author-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 

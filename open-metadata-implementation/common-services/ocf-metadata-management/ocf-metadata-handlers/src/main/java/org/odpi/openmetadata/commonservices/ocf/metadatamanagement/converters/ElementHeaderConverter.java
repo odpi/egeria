@@ -21,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * entity (eg Discovery Engine Properties).  The other is for an object built from a combination of connected
  * entities.  In this second case, the root entity and possibly a relevant relationship is passed on the constructor.
  */
-class ElementHeaderConverter
+public class ElementHeaderConverter
 {
     protected EntityDetail           entity;
     protected Relationship           relationship = null;
@@ -53,10 +53,10 @@ class ElementHeaderConverter
      * @param repositoryHelper helper object to parse entity/relationship
      * @param serviceName name of this component
      */
-    ElementHeaderConverter(EntityDetail         entity,
-                           Relationship         relationship,
-                           OMRSRepositoryHelper repositoryHelper,
-                           String               serviceName)
+    public ElementHeaderConverter(EntityDetail         entity,
+                                  Relationship         relationship,
+                                  OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName)
     {
         this.entity = entity;
         this.relationship = relationship;
@@ -70,7 +70,7 @@ class ElementHeaderConverter
      *
      * @param bean output bean
      */
-    void updateBean(ElementHeader bean)
+    public void updateBean(ElementHeader bean)
     {
         if (entity != null)
         {

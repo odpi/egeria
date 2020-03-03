@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -31,6 +32,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
+    private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
     private DiscoveryServerOperationalServices   operationalDiscoveryServer          = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
@@ -142,6 +144,27 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
     {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
+    }
+
+    /**
+     * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @return list of ViewServiceAdmin objects
+     */
+    List<ViewServiceAdmin> getOperationalViewServiceAdminList()
+    {
+        return operationalViewServiceAdminList;
+    }
+
+
+    /**
+     * Set up the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @param operationalViewServiceAdminList list of ViewServiceAdmin objects
+     */
+    void setOperationalViewServiceAdminList(List<ViewServiceAdmin> operationalViewServiceAdminList)
+    {
+        this.operationalViewServiceAdminList = operationalViewServiceAdminList;
     }
 
 

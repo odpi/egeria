@@ -5,7 +5,7 @@
 
 The dictionary model adds some basic term classification used to show how particular terms are used.
 
-![UML](0340-Dictionary.png)
+![UML](0340-Dictionary.png#pagewidth)
 
 * **ActivityDescription** is a classification used to indicate that the term describes a verb, or an activity.
 Most term definitions are nouns, they describe concepts or things.

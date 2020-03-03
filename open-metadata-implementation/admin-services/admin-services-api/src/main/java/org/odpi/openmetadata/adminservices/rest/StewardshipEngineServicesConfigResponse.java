@@ -36,9 +36,9 @@ public class StewardshipEngineServicesConfigResponse extends AdminServicesAPIRes
 
 
     /**
-     * Return the OMAGServerConfig object.
+     * Return the config object.
      *
-     * @return OMAGServerConfig object
+     * @return StewardshipEngineServicesConfig object
      */
     public StewardshipEngineServicesConfig getConfig()
     {
@@ -54,7 +54,7 @@ public class StewardshipEngineServicesConfigResponse extends AdminServicesAPIRes
 
 
     /**
-     * Set up the StewardshipEngineServicesConfig object.
+     * Set up the config object.
      *
      * @param config - StewardshipEngineServicesConfig object
      */

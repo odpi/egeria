@@ -33,6 +33,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -312,12 +314,14 @@ public class DataEngineRESTServices {
 
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        String portAliasGUID = portHandler.findPortAlias(userId, portAlias.getQualifiedName());
+        Optional<EntityDetail> portEntity = portHandler.findPortAliasEntity(userId, portAlias.getQualifiedName());
 
-        if (StringUtils.isEmpty(portAliasGUID)) {
+        String portAliasGUID;
+        if (!portEntity.isPresent()) {
             portAliasGUID = portHandler.createPortAlias(userId, portAlias, externalSourceName);
         } else {
-            portHandler.updatePortAlias(userId, portAliasGUID, portAlias);
+            portAliasGUID = portEntity.get().getGUID();
+            portHandler.updatePortAlias(userId, portEntity.get(), portAlias);
         }
 
         if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
@@ -355,12 +359,14 @@ public class DataEngineRESTServices {
 
         String schemaTypeGUID = createOrUpdateSchemaType(userId, serverName, portImplementation.getSchemaType(), externalSourceName);
 
-        String portImplementationGUID = portHandler.findPortImplementation(userId, portImplementation.getQualifiedName());
+        Optional<EntityDetail> portEntity = portHandler.findPortImplementationEntity(userId, portImplementation.getQualifiedName());
 
-        if (StringUtils.isEmpty(portImplementationGUID)) {
+        String portImplementationGUID;
+        if (!portEntity.isPresent()) {
             portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation, externalSourceName);
         } else {
-            portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation);
+            portImplementationGUID = portEntity.get().getGUID();
+            portHandler.updatePortImplementation(userId, portEntity.get(), portImplementation);
 
             if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
                 deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.findSchemaTypeForPort(userId, portImplementationGUID));
@@ -401,7 +407,7 @@ public class DataEngineRESTServices {
 
         DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        return handler.createExternalDataEngine(userId, softwareServerCapability);
+        return handler.createOrUpdateExternalDataEngine(userId, softwareServerCapability);
     }
 
     /**
@@ -433,12 +439,10 @@ public class DataEngineRESTServices {
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         for (String portQualifiedName : portQualifiedNames) {
-            String portGUID = portHandler.findPortAlias(userId, portQualifiedName);
-            if (StringUtils.isEmpty(portGUID)) {
-                portGUID = portHandler.findPortImplementation(userId, portQualifiedName);
+            Optional<EntityDetail> portEntity = portHandler.findPortEntity(userId, portQualifiedName);
+            if (portEntity.isPresent()) {
+                processHandler.addProcessPortRelationship(userId, processGUID, portEntity.get().getGUID(), externalSourceName);
             }
-
-            processHandler.addProcessPortRelationship(userId, processGUID, portGUID, externalSourceName);
         }
     }
 
@@ -702,12 +706,13 @@ public class DataEngineRESTServices {
 
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            String processGUID = processHandler.findProcess(userId, qualifiedName);
-
-            if (StringUtils.isEmpty(processGUID)) {
+            Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
+            String processGUID;
+            if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
-                processHandler.updateProcess(userId, processGUID, process);
+                processGUID = processEntity.get().getGUID();
+                processHandler.updateProcess(userId, processEntity.get(), process);
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {

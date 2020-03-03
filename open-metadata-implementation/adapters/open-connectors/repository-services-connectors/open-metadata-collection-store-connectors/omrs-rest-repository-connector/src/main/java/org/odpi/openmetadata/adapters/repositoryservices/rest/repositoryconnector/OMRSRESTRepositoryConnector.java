@@ -45,6 +45,7 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
              * Initialize the metadata collection.
              */
             metadataCollection = new OMRSRESTMetadataCollection(this,
+                                                                super.serverName,
                                                                 super.repositoryName,
                                                                 repositoryHelper,
                                                                 repositoryValidator,

@@ -6,24 +6,25 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.AccessServiceConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OMAGServerAdminForAccessServices provides the server-side support for the services that add access services
@@ -87,11 +88,12 @@ public class OMAGServerAdminForAccessServices
              */
             if ((accessServiceConfigList != null) && (! accessServiceConfigList.isEmpty()))
             {
+                List<RegisteredOMAGService> services = new ArrayList<>();
                 for (AccessServiceConfig accessServiceConfig : accessServiceConfigList)
                 {
                     if (accessServiceConfig != null)
                     {
-                        if (accessServiceConfig.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                        if (accessServiceConfig.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
@@ -99,8 +101,13 @@ public class OMAGServerAdminForAccessServices
                             service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
                             service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
                             service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
+                            services.add(service);
                         }
                     }
+                }
+                if (!services.isEmpty())
+                {
+                    response.setServices(services);
                 }
 
             }
@@ -230,7 +237,7 @@ public class OMAGServerAdminForAccessServices
                                                    String              serverName,
                                                    Map<String, Object> accessServiceOptions)
     {
-        final String methodName = "enableAccessServices";
+        final String methodName = "configureAllAccessServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -264,7 +271,7 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (registration != null)
                     {
-                        if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             accessServiceConfigList.add(createAccessServiceConfig(registration,
                                                                                   accessServiceOptions,
@@ -409,7 +416,7 @@ public class OMAGServerAdminForAccessServices
     public VoidResponse clearAllAccessServices(String          userId,
                                                String          serverName)
     {
-        final String methodName = "disableAccessServices";
+        final String methodName = "clearAllAccessServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -443,6 +450,463 @@ public class OMAGServerAdminForAccessServices
 
         return response;
     }
+
+
+    /**
+     * Remove an access services.  This removes all configuration for the access services
+     * and disables the enterprise repository services.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serviceURLMarker access service name used in URL
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName  parameter.
+     */
+    public AccessServiceConfigResponse getAccessServiceConfig(String userId,
+                                                              String serverName,
+                                                              String serviceURLMarker)
+    {
+        final String methodName = "getAccessServiceConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AccessServiceConfigResponse response = new AccessServiceConfigResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<AccessServiceConfig> currentList = serverConfig.getAccessServicesConfig();
+
+            if (currentList != null)
+            {
+                for (AccessServiceConfig existingConfig : currentList)
+                {
+                    if (existingConfig != null)
+                    {
+                        if (serviceURLMarker.equals(existingConfig.getAccessServiceURLMarker()))
+                        {
+                            response.setConfig(existingConfig);
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove an access service.  This removes all configuration for the access service.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serviceURLMarker access service name used in URL
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName  parameter.
+     */
+    public VoidResponse clearAccessService(String userId,
+                                           String serverName,
+                                           String serviceURLMarker)
+    {
+        final String methodName = "clearAccessService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<AccessServiceConfig> currentList = serverConfig.getAccessServicesConfig();
+            List<AccessServiceConfig> newList     = new ArrayList<>();
+
+            if (currentList != null)
+            {
+                for (AccessServiceConfig existingConfig : currentList)
+                {
+                    if (existingConfig != null)
+                    {
+                        if (! serviceURLMarker.equals(existingConfig.getAccessServiceURLMarker()))
+                        {
+                            newList.add(existingConfig);
+                        }
+                    }
+                }
+
+                serverConfig.setAccessServicesConfig(newList);
+                configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the topic names for this access service
+     *
+     * @param userId                user that is issuing the request.
+     * @param serverName            local server name.
+     * @param serviceURLMarker string indicating which access service it requested
+     *
+     * @return map of topic names or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     */
+    public StringMapResponse  getAccessServiceTopicNames(String userId,
+                                                         String serverName,
+                                                         String serviceURLMarker)
+    {
+        final String methodName   = "getAccessServiceTopicNames";
+        final String propertyName = "serviceURLMarker";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceURLMarker, propertyName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
+
+            if (configuredAccessServices != null)
+            {
+                for (AccessServiceConfig accessServiceConfig : configuredAccessServices)
+                {
+                    if (accessServiceConfig != null)
+                    {
+                        if (serviceURLMarker.equals(accessServiceConfig.getAccessServiceURLMarker()))
+                        {
+                            /*
+                             * Found it - just need to set up response
+                             */
+                            Map<String, String>  topicNames = new HashMap<>();
+
+                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
+                                           accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+
+                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                                           accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+
+                            response.setStringMap(topicNames);
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the topic names for this access service
+     *
+     * @param userId                user that is issuing the request.
+     * @param serverName            local server name.
+     *
+     * @return map of topic names or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     */
+    public StringMapResponse  getAllAccessServiceTopicNames(String userId,
+                                                            String serverName)
+    {
+        final String methodName   = "getAccessServiceTopicNames";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
+
+            if (configuredAccessServices != null)
+            {
+                Map<String, String>  topicNames = new HashMap<>();
+
+                for (AccessServiceConfig accessServiceConfig : configuredAccessServices)
+                {
+                    if (accessServiceConfig != null)
+                    {
+                        topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
+                                       accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+
+                        topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                                       accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                    }
+                }
+
+                response.setStringMap(topicNames);
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Update the in topic name for a specific access service.
+     *
+     * @param userId                user that is issuing the request.
+     * @param serverName            local server name.
+     * @param serviceURLMarker string indicating which access service it requested
+     * @param topicName string for new topic name
+     *
+     * @return map of topic names or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     */
+    public VoidResponse  overrideAccessServiceInTopicName(String userId,
+                                                          String serverName,
+                                                          String serviceURLMarker,
+                                                          String topicName)
+    {
+        final String methodName   = "overrideAccessServiceInTopicName";
+        final String serviceURLMarkerPropertyName = "serviceURLMarker";
+        final String topicPropertyName = "topicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(topicName, topicPropertyName, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerPropertyName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
+
+            if (configuredAccessServices != null)
+            {
+                for (AccessServiceConfig accessServiceConfig : configuredAccessServices)
+                {
+                    if (accessServiceConfig != null)
+                    {
+                        if (serviceURLMarker.equals(accessServiceConfig.getAccessServiceURLMarker()))
+                        {
+                            /*
+                             * Found it - just need to set up topic Name
+                             */
+                            Connection connection = accessServiceConfig.getAccessServiceInTopic();
+
+                            if (connection != null)
+                            {
+                                Endpoint endpoint = connection.getEndpoint();
+
+                                if (endpoint != null)
+                                {
+                                    endpoint.setAddress(topicName);
+                                    connection.setEndpoint(endpoint);
+                                    accessServiceConfig.setAccessServiceInTopic(connection);
+                                    setAccessServicesConfig(userId, serverName, configuredAccessServices);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the out topic name for a specific access service.
+     *
+     * @param userId                user that is issuing the request.
+     * @param serverName            local server name.
+     * @param serviceURLMarker string indicating which access service it requested
+     * @param topicName string for new topic name
+     *
+     * @return map of topic names or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     */
+    public VoidResponse  overrideAccessServiceOutTopicName(String userId,
+                                                           String serverName,
+                                                           String serviceURLMarker,
+                                                           String topicName)
+    {
+        final String methodName   = "overrideAccessServiceOutTopicName";
+        final String serviceURLMarkerPropertyName = "serviceURLMarker";
+        final String topicPropertyName = "topicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(topicName, topicPropertyName, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerPropertyName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
+
+            if (configuredAccessServices != null)
+            {
+                for (AccessServiceConfig accessServiceConfig : configuredAccessServices)
+                {
+                    if (accessServiceConfig != null)
+                    {
+                        if (serviceURLMarker.equals(accessServiceConfig.getAccessServiceURLMarker()))
+                        {
+                            /*
+                             * Found it - just need to set up topic Name
+                             */
+                            Connection connection = accessServiceConfig.getAccessServiceOutTopic();
+
+                            if (connection != null)
+                            {
+                                Endpoint endpoint = connection.getEndpoint();
+
+                                if (endpoint != null)
+                                {
+                                    endpoint.setAddress(topicName);
+                                    connection.setEndpoint(endpoint);
+                                    accessServiceConfig.setAccessServiceOutTopic(connection);
+                                    setAccessServicesConfig(userId, serverName, configuredAccessServices);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**

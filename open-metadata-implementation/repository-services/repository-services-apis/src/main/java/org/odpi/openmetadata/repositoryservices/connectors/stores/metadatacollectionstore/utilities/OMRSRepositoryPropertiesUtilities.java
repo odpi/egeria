@@ -1735,7 +1735,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     {
                         /*
                          * The existing properties are initially preserved.  The new properties from the
-                         * patch will be added over the top as lon as they are compatible.
+                         * patch will be added over the top as long as they are compatible.
                          */
                         if (propertyDefinition != null)
                         {

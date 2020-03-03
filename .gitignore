@@ -71,7 +71,6 @@ __MACOSX
 
 # specific Egeria config files
 omag.server.*.config
-ui.server.*.config
 
 *.registrystore
 *.testlab.results

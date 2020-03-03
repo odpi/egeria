@@ -23,7 +23,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -128,7 +128,7 @@
         <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.2.4</mockito.version>
+        <mockito.version>3.3.0</mockito.version>
         <testng.version>7.1.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.30</slf4j.version>
@@ -137,12 +137,12 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.4.0</kafka.version>
         <janus.version>0.4.1</janus.version>
-        <gremlin.version>3.4.5</gremlin.version>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-        <spring.version>5.2.3.RELEASE</spring.version>
+        <gremlin.version>3.4.6</gremlin.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring.version>5.2.4.RELEASE</spring.version>
         <spring-security.version>5.2.2.RELEASE</spring-security.version>
-        <spring-data.version>2.2.4.RELEASE</spring-data.version>
-        <tomcat.version>9.0.30</tomcat.version>
+        <spring-data.version>2.2.5.RELEASE</spring-data.version>
+        <tomcat.version>9.0.31</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-lang.version>3.9</commons-lang.version>
@@ -161,14 +161,14 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
         <guava.version>23.0</guava.version>
-        <tink.version>1.3.0-rc3</tink.version>
+        <tink.version>1.3.0-rc4</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.14</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.4.0</oss.version>
-        <spotbugs-annotations.version>3.1.12</spotbugs-annotations.version>
+        <oss.version>4.5.0</oss.version>
+        <spotbugs-annotations.version>4.0.0</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.5</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
@@ -186,7 +186,7 @@
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.0</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-RC3</spotbugs.version>
+        <spotbugs.version>4.0.0</spotbugs.version>
         <maven-download.version>1.5.0</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -578,41 +578,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>admin-services-spring</artifactId>
-                <scope>runtime</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services</artifactId>
-                <scope>runtime</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1075,7 +1040,7 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-service-connectors</artifactId>
-                <scope>runtime</scope>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
@@ -1522,6 +1487,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>readonly-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>repository-handler</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1782,6 +1754,20 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>subject-area-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-author-view-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-author-view-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>

@@ -5,7 +5,7 @@
 
 Ports are used to define the interfaces of Processes.
 
-![UML](0290-Ports.png)
+![UML](0290-Ports.png#pagewidth)
 
 - **PortImplementation** - at the most detailed level, a PortImplementation defines the specific
     interface of a process: for example, its expected inputs or produced outputs.

@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM jupyter/base-notebook:latest
-ARG version=1.5-SNAPSHOT
+ARG version=1.6-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -27,6 +27,12 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.version = "$version" \
       org.opencontainers.image.documentation = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/jupyter/" \
       org.opencontainers.image.ext.vcs-date = "$VCS_DATE"
+
+# Add in any extra packages needed
+COPY requirements.txt /tmp/
+RUN conda install --yes --file /tmp/requirements.txt && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 USER root
 

@@ -50,7 +50,7 @@ of tool.
 Figure 3 shows the OMAG Servers implemented today and how they are related.
 This picture will expand as we embrace new types of technology.
 
-![Figure 3](../../../open-metadata-implementation/admin-services/docs/concepts/types-of-omag-servers.png)
+![Figure 3](../../../open-metadata-implementation/admin-services/docs/concepts/types-of-omag-servers.png#pagewidth)
 > **Figure 3:** Types of OMAG Servers
 
 The **cohort members** communicate with one another
@@ -61,12 +61,18 @@ The governance servers connect to a metadata access point / metadata server.
 
 Figure 4 shows how the servers connect together.
 
-![Figure 4](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-ecosystem.png)
+![Figure 4](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-ecosystem.png#pagewidth)
 > **Figure 4:** How the OMAG Servers interact
 
 When you are designing the deployment of Egeria, the first step is to identify the technology
 that you want to integrate.  This will determine which type of OMAG Servers you need.
 Once the OMAG Servers are selected, they are assembled and connected together as shown in Figure 3.
+
+The [Administration Guide](../../../open-metadata-implementation/admin-services/docs/user)
+describes how to configure an OMAG Server Platform
+and the OMAG Servers that run on it.
+
+## More detail
 
 The text above is a very high level overview of the planning process.
 More detail will be added to this guide as time permits.
@@ -98,6 +104,8 @@ and OMAG Servers.
 * Plan your use of the event bus - which technology to use (Apache Kafka is the default)
   and the names of the topics that your OMAG Servers will use.
 
+----
+Return to the [Home Page](../../../index.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
