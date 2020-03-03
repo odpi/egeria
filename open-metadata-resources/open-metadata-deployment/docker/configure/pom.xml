@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-docker</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -63,6 +63,9 @@
                         <goals>
                             <goal>build</goal>
                         </goals>
+                        <configuration>
+                            <tag>${project.version}</tag>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>tag-version</id>

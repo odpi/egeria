@@ -19,23 +19,21 @@ as the basis of a workbook for using Egeria within a specific organization.
 ## Running the Labs
 
 There are three main ways to set up the software to run these labs.  These are listed below.
-They each create exactly the same environment that supports the labs.
+They each create exactly the same environment that supports the labs. 
 
-* [Using Docker Compose](../open-metadata-tutorials/beginners-guide/running-self-contained.md) to run them in a
+The easiest option is listed first ....
+
+* [Using Docker Compose](../open-metadata-tutorials/beginners-guide/running-docker-compose.md) to run them in a
 self-contained environment on your own system.
-* [Using Kubernetes (with Helm)](../open-metadata-tutorials/beginners-guide/running-self-contained.md) to run them in a more
+* [Using Kubernetes](../open-metadata-tutorials/beginners-guide/running-kubernetes.md) to run them in a more
 flexible, possibly public cloud self-contained environment.
 * [Using your own local environment directly](../open-metadata-tutorials/beginners-guide/running-natively.md).
 
-Once the software is in place, you then go to the `JupyterLab` browser window and
-navigate to the directory where the notebooks are located (typically `egeria/open-metadata-resources/open-metadata-labs`).
-
-We suggest that you begin with the
-[read-me-first.ipynb](./read-me-first.ipynb) lab notebook to familiarize yourself with the tutorial tools. (You can
-start running it by simply double-clicking the filename in the left pane of the Jupyter interface.)
+Once the software is in place, you then go to the `JupyterLab` browser window and begin with the
+[read-me-first.ipynb](./read-me-first.ipynb) lab notebook to familiarize yourself with the tutorial tools. 
+You can start running it by simply double-clicking the filename in the left pane of the Jupyter interface.
 
 This notebook will guide you to the rest of the labs.
-
 
 ----
 Return to [open-metadata-resources](..).

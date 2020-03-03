@@ -3,8 +3,9 @@
 
 # Platform Services
 
-The platform services provides the APIs for configuring the 
-[Open Metadata and Governance (OMAG) Server Platform](../../open-metadata-publication/website/omag-server)
+The platform services provides the
+APIs for querying the
+[Open Metadata and Governance (OMAG) Server Platform](../admin-services/docs/concepts/omag-server-platform.md)
 and discovering information about the
 OMAG Servers that it is hosting.
 
