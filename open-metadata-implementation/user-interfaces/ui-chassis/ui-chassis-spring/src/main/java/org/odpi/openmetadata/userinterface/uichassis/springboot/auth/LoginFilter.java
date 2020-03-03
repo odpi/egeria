@@ -45,7 +45,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
                                               AuthenticationException failed) throws IOException, ServletException {
         super.unsuccessfulAuthentication(request, response, failed);
         if(failed instanceof BadCredentialsException){
-            log.warn("Bad credentials FAIL AUTH for user: {}", request.getParameter("username"));
+            log.warn("Bad credentials UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter("username"));
+        }else{
+            log.warn("UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter("username"), failed);
         }
     }
 
