@@ -8,6 +8,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions;
  */
 public class MockCheckedExceptionBase extends GovernanceProgramCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *
