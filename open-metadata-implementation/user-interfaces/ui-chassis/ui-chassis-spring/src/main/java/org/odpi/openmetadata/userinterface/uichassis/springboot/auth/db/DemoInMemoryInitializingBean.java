@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.uichassis.springboot.init;
+package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.Role;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.repository.UserRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
+@ConditionalOnProperty(value = "authentication.source", havingValue = "db")
 public class DemoInMemoryInitializingBean implements InitializingBean {
 
     @Autowired
