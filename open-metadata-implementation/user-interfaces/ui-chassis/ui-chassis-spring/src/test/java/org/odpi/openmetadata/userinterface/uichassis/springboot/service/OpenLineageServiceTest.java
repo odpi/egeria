@@ -63,11 +63,12 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(guid), eq(""), eq(true), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
+        Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true, true);
         checkResponse(ultimateSource);
     }
 
@@ -75,11 +76,12 @@ public class OpenLineageServiceTest {
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(guid), eq(""), eq(true), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, guid, true, true);
         checkResponse(response);
     }
 
@@ -88,11 +90,12 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(guid), eq(""), eq(true), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, guid, true, true);
         checkResponse(response);
     }
 
@@ -100,11 +103,12 @@ public class OpenLineageServiceTest {
     @DisplayName("Source and Destination")
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(guid), eq(""), eq(true), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, guid, true, true);
         checkResponse(response);
     }
 
@@ -112,11 +116,12 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(guid), eq(""), eq(true), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid, true, true);
         checkResponse(response);
     }
 

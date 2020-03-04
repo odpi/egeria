@@ -8,7 +8,12 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryPar
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
@@ -35,7 +40,8 @@ public class OpenLineageResource {
             @PathVariable("userId") String userId,
             @PathVariable("guid") String guid,
             @RequestBody LineageQueryParameters params) {
-        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.getIncludeProcesses());
+        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(),
+                params.isIncludeProcesses(), params.isIncludeGlossaryTerms());
     }
 
     /**

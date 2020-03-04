@@ -21,7 +21,8 @@ public class OpenLineageRestServices {
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
-    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain,
+                                   boolean includeProcesses, boolean includeGlossaryTerms) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         final String debugMessage = "Open Lineage Services: An exception occurred during a lineage HTTP request";
@@ -29,7 +30,7 @@ public class OpenLineageRestServices {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
                     methodName);
-            response = openLineageHandler.lineage(scope, guid, displayNameMustContain, includeProcesses);
+            response = openLineageHandler.lineage(scope, guid, displayNameMustContain, includeProcesses, includeGlossaryTerms);
         } catch (InvalidParameterException e) {
             openLineageExceptionHandler.captureInvalidParameterException(response, e);
             log.debug(debugMessage, e);
