@@ -7,6 +7,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
  */
 public class MockAPIResponse extends FFDCResponseBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

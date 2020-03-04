@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class DataScienceOMASAPIResponse extends FFDCResponseBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */
