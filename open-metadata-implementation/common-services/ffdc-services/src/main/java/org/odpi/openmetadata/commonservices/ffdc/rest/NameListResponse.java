@@ -60,7 +60,18 @@ public class NameListResponse extends FFDCResponseBase
      */
     public List<String> getNames()
     {
-        return names;
+        if (names == null)
+        {
+            return null;
+        }
+        else if (names.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return names;
+        }
     }
 
 

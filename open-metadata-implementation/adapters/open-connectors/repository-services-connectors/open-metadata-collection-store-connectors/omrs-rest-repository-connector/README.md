@@ -6,6 +6,12 @@ The [OMRS REST Repository Connector](../../../../../repository-services/docs/com
 [OMRS REST API](../../../../../repository-services/docs/component-descriptions/omrs-rest-services.md) in a remote server
 in order to access and maintain metadata in a remote [open metadata repository](../../../../../repository-services/docs/open-metadata-repository.md).
 
+
+
+----
+Return to the [open-metadata-collection-store-connectors](..)
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

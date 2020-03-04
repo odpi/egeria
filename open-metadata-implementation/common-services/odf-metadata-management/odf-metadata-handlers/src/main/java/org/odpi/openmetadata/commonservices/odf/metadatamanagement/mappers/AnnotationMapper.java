@@ -25,14 +25,6 @@ public class AnnotationMapper
     public static final String ANNOTATION_TO_EXTENSION_TYPE_NAME   = "Annotation";
     /* End1 = (extended)Annotation; End 2 = Annotation(Extension) */
 
-    public static final String REPORT_TO_ENGINE_TYPE_GUID          = "2c318c3a-5dc2-42cd-a933-0087d852f67f";    /* from Area 6 */
-    public static final String REPORT_TO_ENGINE_TYPE_NAME          = "DiscoveryEngineReport";
-    /* End1 = OpenDiscoveryEngine; End 2 = OpenDiscoveryAnalysisReport */
-
-    public static final String REPORT_TO_SERVICE_TYPE_GUID          = "1744d72b-903d-4273-9229-de20372a17e2";   /* from Area 6 */
-    public static final String REPORT_TO_SERVICE_TYPE_NAME          = "DiscoveryInvocationReport";
-    /* End1 = OpenDiscoveryService; End 2 = OpenDiscoveryAnalysisReport */
-
     /* For AnnotationReview entity */
     public static final String ANNOTATION_REVIEW_TYPE_GUID         = "6cea5b53-558c-48f1-8191-11d48db29fb4";
     public static final String ANNOTATION_REVIEW_TYPE_NAME         = "AnnotationReview";
@@ -75,7 +67,7 @@ public class AnnotationMapper
     public static final String QUALITY_SCORE_PROPERTY_NAME            = "qualityScore";  /* from QualityAnnotation entity */
 
     /* For SuspectDuplicateAnnotation entity */
-    public static final String SUSPECT_DUPLICATE_ANNOTATION_TYPE_GUID = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String SUSPECT_DUPLICATE_ANNOTATION_TYPE_GUID = "f703a621-4078-4c07-ab22-e7c334b94235";
     public static final String SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME = "SuspectDuplicateAnnotation";
     /* plus Annotation */
 
@@ -86,42 +78,42 @@ public class AnnotationMapper
     public static final String MATCHING_RELATIONSHIP_GUIDS_PROPERTY_NAME   = "matchingRelationshipGUIDs"; /* from SuspectDuplicateAnnotation entity */
 
     /* For DivergentDuplicateAnnotation entity */
-    public static final String DIVERGENT_DUPLICATE_ANNOTATION_TYPE_GUID                = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_DUPLICATE_ANNOTATION_TYPE_GUID                = "251e443c-dee0-47fa-8a73-1a9d511915a0";
     public static final String DIVERGENT_DUPLICATE_ANNOTATION_TYPE_NAME                = "DivergentDuplicateAnnotation";
     /* plus Annotation */
 
     /* For DivergentValueAnnotation entity */
-    public static final String DIVERGENT_VALUE_ANNOTATION_TYPE_GUID                    = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_VALUE_ANNOTATION_TYPE_GUID                    = "b86cdded-1078-4e42-b6ba-a718c2c67f62";
     public static final String DIVERGENT_VALUE_ANNOTATION_TYPE_NAME                    = "DivergentValueAnnotation";
     /* plus DivergentDuplicateAnnotation */
 
     /* For DivergentClassificationAnnotation entity */
-    public static final String DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_GUID           = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_GUID           = "8efd6257-a53e-451d-abfc-8e4899c38b1f";
     public static final String DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_NAME           = "DivergentClassificationAnnotation";
     /* plus DivergentDuplicateAnnotation */
 
     /* For DivergentRelationshipAnnotation entity */
-    public static final String DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_GUID             = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_GUID             = "b6c6938a-fdc9-438f-893c-0b5b1d4a5bb3";
     public static final String DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_NAME             = "DivergentRelationshipAnnotation";
     /* plus DivergentDuplicateAnnotation */
 
     /* For DivergentAttachmentAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_GUID               = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_GUID               = "f3ed48bc-b0ea-4e1f-a8ab-75f9f3cf87a6";
     public static final String DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_NAME               = "DivergentAttachmentAnnotation";
     /* plus DivergentDuplicateAnnotation */
 
     /* For DivergentAttachmentValueAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_VALUE_ANNOTATION_TYPE_GUID         = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_ATTACHMENT_VALUE_ANNOTATION_TYPE_GUID         = "e22a1ffe-bd90-4faf-b6a1-13fafb7948a2";
     public static final String DIVERGENT_ATTACHMENT_VALUE_ANNOTATION_TYPE_NAME         = "DivergentAttachmentValueAnnotation";
     /* plus DivergentAttachmentAnnotation */
 
     /* For DivergentAttachmentClassificationAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_GUID         = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_GUID         = "a2a5cb74-f8e0-470f-be71-26b7e32166a6";
     public static final String DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_NAME         = "DivergentAttachmentClassificationAnnotation";
     /* plus DivergentAttachmentAnnotation */
 
     /* For DivergentAttachmentRelationshipAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_GUID           = "6cea5b53-558c-48f1-8191-11d48db29fb4";
+    public static final String DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_GUID           = "5613677a-865f-474e-8044-4167fa5a31b9";
     public static final String DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_NAME           = "DivergentAttachmentRelationshipAnnotation";
     /* plus DivergentAttachmentAnnotation */
 

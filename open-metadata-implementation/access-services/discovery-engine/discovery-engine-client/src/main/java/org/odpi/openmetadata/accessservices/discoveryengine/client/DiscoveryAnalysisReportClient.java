@@ -41,22 +41,17 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
 
         this.discoveryEngineClient    = discoveryEngineClient;
 
-        DiscoveryAnalysisReport discoveryReport = discoveryEngineClient.createDiscoveryAnalysisReport(userId,
-                                                                                                      reportQualifiedName,
-                                                                                                      reportDisplayName,
-                                                                                                      reportDescription,
-                                                                                                      super.creationDate,
-                                                                                                      analysisParameters,
-                                                                                                      DiscoveryRequestStatus.WAITING,
-                                                                                                      assetGUID,
-                                                                                                      discoveryEngineGUID,
-                                                                                                      discoveryServiceGUID,
-                                                                                                      null,
-                                                                                                      null);
-        if (discoveryReport != null)
-        {
-            super.discoveryReportGUID = discoveryReport.getDiscoveryEngineGUID();
-        }
+        super.discoveryReportGUID = discoveryEngineClient.createDiscoveryAnalysisReport(userId,
+                                                                                        reportQualifiedName,
+                                                                                        reportDisplayName,
+                                                                                        reportDescription,
+                                                                                        super.creationDate,
+                                                                                        analysisParameters,
+                                                                                        DiscoveryRequestStatus.WAITING,
+                                                                                        assetGUID,
+                                                                                        discoveryEngineGUID,
+                                                                                        discoveryServiceGUID,
+                                                                                        null);
     }
 
 

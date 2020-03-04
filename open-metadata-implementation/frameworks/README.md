@@ -22,7 +22,11 @@ or the organization in some way.
 (called discovery services) that access data-related assets and extract characteristics 
 about the data that can be stored in an open metadata repository.
 
-Both the discovery services and the governance actions
+* **[Audit Log Framework (ALF)](audit-log-framework)** provides interfaces and classes to
+enable connectors of all types to support natural language diagnostic messages for both
+exceptions and the audit log.
+
+**Note:** Both the discovery services and the governance actions
 are specialized OCF connectors, making the OCF the
 only plug-in mechanism in the open metadata and governance
 technology.

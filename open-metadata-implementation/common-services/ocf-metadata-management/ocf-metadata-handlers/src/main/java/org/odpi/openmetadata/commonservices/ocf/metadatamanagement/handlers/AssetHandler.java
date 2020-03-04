@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classificati
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -168,13 +169,49 @@ public class AssetHandler
 
 
     /**
-     * Return the asset subtype names.
+     * Return the list of asset subtype names.
      *
      * @return list of type names that are subtypes of asset
      */
-    public List<String>  getTypesOfAsset()
+    public List<String> getTypesOfAssetList()
     {
         return repositoryHelper.getSubTypesOf(serviceName, AssetMapper.ASSET_TYPE_NAME);
+    }
+
+
+    /**
+     * Return the list of asset subtype names mapped to their descriptions.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public Map<String, String> getTypesOfAssetDescriptions()
+    {
+        List<String>        assetTypeList = repositoryHelper.getSubTypesOf(serviceName, AssetMapper.ASSET_TYPE_NAME);
+        Map<String, String> assetDescriptions = new HashMap<>();
+
+        if (assetTypeList != null)
+        {
+            for (String  assetTypeName : assetTypeList)
+            {
+                if (assetTypeName != null)
+                {
+                    TypeDef assetTypeDef = repositoryHelper.getTypeDefByName(serviceName, assetTypeName);
+
+                    if (assetTypeDef != null)
+                    {
+                        assetDescriptions.put(assetTypeName, assetTypeDef.getDescription());
+                    }
+                }
+            }
+
+        }
+
+        if (assetDescriptions.isEmpty())
+        {
+            return null;
+        }
+
+        return assetDescriptions;
     }
 
 
@@ -1069,70 +1106,12 @@ public class AssetHandler
                                            assetBuilder.getInstanceProperties(methodName),
                                            methodName);
 
-            if (originalAsset.getZoneMembership() == null)
-            {
-                if (updatedAsset.getZoneMembership() != null)
-                {
-                    repositoryHandler.classifyEntity(userId,
-                                                     originalAsset.getGUID(),
-                                                     AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                     AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                     assetBuilder.getZoneMembershipProperties(methodName),
-                                                     methodName);
-                }
-            }
-            else {
-                if (updatedAsset.getZoneMembership() == null)
-                {
-                    repositoryHandler.declassifyEntity(userId,
-                                                       originalAsset.getGUID(),
-                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                       methodName);
-                }
-                if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
-                {
-                    repositoryHandler.reclassifyEntity(userId,
-                                                       originalAsset.getGUID(),
-                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                       assetBuilder.getZoneMembershipProperties(methodName),
-                                                       methodName);
-                }
-            }
-
-            if (originalAsset.getOwner() == null)
-            {
-                if (updatedAsset.getOwner() != null)
-                {
-                    repositoryHandler.classifyEntity(userId,
-                                                     originalAsset.getGUID(),
-                                                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                     assetBuilder.getOwnerProperties(methodName),
-                                                     methodName);
-                }
-            }
-            else {
-                if (updatedAsset.getOwner() == null)
-                {
-                    repositoryHandler.declassifyEntity(userId,
-                                                       originalAsset.getGUID(),
-                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                       methodName);
-                }
-
-                if (!(originalAsset.getOwner().equals(updatedAsset.getOwner())))
-                {
-                    repositoryHandler.reclassifyEntity(userId,
-                                                       originalAsset.getGUID(),
-                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                       assetBuilder.getOwnerProperties(methodName),
-                                                       methodName);
-                }
-            }
+            this.reclassifyAsset(userId,
+                                originalAsset,
+                                updatedAsset,
+                                assetBuilder.getZoneMembershipProperties(methodName),
+                                assetBuilder.getOwnerProperties(methodName),
+                                methodName);
 
             this.saveAssociatedConnection(userId,
                                           originalAsset,
@@ -1150,6 +1129,93 @@ public class AssetHandler
         }
 
         return null;
+    }
+
+    /**
+     * Reclassifies an asset based on the new properties.
+     *
+     * @param userId userId
+     * @param originalAsset current content of the asset
+     * @param updatedAsset new asset values
+     * @param zoneMembershipProperties zone membership properties
+     * @param ownerProperties owner properties
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+     public void reclassifyAsset(String userId,
+                                 Asset originalAsset,
+                                 Asset updatedAsset,
+                                 InstanceProperties zoneMembershipProperties,
+                                 InstanceProperties ownerProperties,
+                                 String methodName) throws UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        if (originalAsset.getZoneMembership() == null)
+        {
+            if (updatedAsset.getZoneMembership() != null)
+            {
+                repositoryHandler.classifyEntity(userId,
+                                                 originalAsset.getGUID(),
+                                                 AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                 AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                 zoneMembershipProperties,
+                                                 methodName);
+            }
+        }
+        else {
+            if (updatedAsset.getZoneMembership() == null)
+            {
+                repositoryHandler.declassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                   methodName);
+            }
+            if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+            {
+                repositoryHandler.reclassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                   zoneMembershipProperties,
+                                                   methodName);
+            }
+        }
+
+        if (originalAsset.getOwner() == null)
+        {
+            if (updatedAsset.getOwner() != null)
+            {
+                repositoryHandler.classifyEntity(userId,
+                                                 originalAsset.getGUID(),
+                                                 AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                 AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                 ownerProperties,
+                                                 methodName);
+            }
+        }
+        else {
+            if (updatedAsset.getOwner() == null)
+            {
+                repositoryHandler.declassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                   methodName);
+            }
+
+            if (!(originalAsset.getOwner().equals(updatedAsset.getOwner())))
+            {
+                repositoryHandler.reclassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                   ownerProperties,
+                                                   methodName);
+            }
+        }
     }
 
 

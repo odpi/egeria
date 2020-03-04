@@ -10,7 +10,7 @@
     <parent>
         <artifactId>discovery-engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -88,6 +88,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-service-connectors</artifactId>
         </dependency>
 
     </dependencies>

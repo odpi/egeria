@@ -1318,14 +1318,35 @@ public class OMRSArchiveBuilder
 
         if (typeDef != null)
         {
+            long   latestVersion     = typeDef.getVersion();
+            String latestVersionName = typeDef.getVersionName();
+
+            if (!typeDefPatchList.isEmpty())
+            {
+                for (TypeDefPatch typeDefPatch : typeDefPatchList)
+                {
+                    if (typeDefPatch != null)
+                    {
+                        if (typeName.equals(typeDefPatch.getTypeDefName()))
+                        {
+                            if (typeDefPatch.getUpdateToVersion() > latestVersion)
+                            {
+                                latestVersion     = typeDefPatch.getUpdateToVersion();
+                                latestVersionName = typeDefPatch.getNewVersionName();
+                            }
+                        }
+                    }
+                }
+            }
+
             TypeDefPatch patch = new TypeDefPatch();
 
             patch.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
             patch.setTypeDefGUID(typeDef.getGUID());
             patch.setTypeDefName(typeDef.getName());
-            patch.setApplyToVersion(typeDef.getVersion());
-            patch.setUpdateToVersion(typeDef.getVersion() + 1);
-            patch.setNewVersionName(typeDef.getVersionName());
+            patch.setApplyToVersion(latestVersion);
+            patch.setUpdateToVersion(latestVersion + 1);
+            patch.setNewVersionName(latestVersionName);
 
             return patch;
         }

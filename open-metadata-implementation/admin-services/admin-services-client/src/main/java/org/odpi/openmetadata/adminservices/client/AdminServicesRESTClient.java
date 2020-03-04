@@ -9,9 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 
 
 /**
@@ -182,6 +180,32 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
+    StringResponse callStringGetRESTCall(String    methodName,
+                                         String    urlTemplate,
+                                         Object... params) throws OMAGInvalidParameterException,
+                                                                  OMAGNotAuthorizedException,
+                                                                  OMAGConfigurationErrorException
+    {
+        StringResponse restResult = this.callGetRESTCall(methodName, StringResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a GUIDResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return GUIDResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
     GUIDResponse callGUIDGetRESTCall(String    methodName,
                                      String    urlTemplate,
                                      Object... params) throws OMAGInvalidParameterException,
@@ -189,6 +213,32 @@ class AdminServicesRESTClient
                                                               OMAGConfigurationErrorException
     {
         GUIDResponse restResult = this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a StringMapResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return StringMapResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    StringMapResponse callStringMapGetRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object... params) throws OMAGInvalidParameterException,
+                                                                        OMAGNotAuthorizedException,
+                                                                        OMAGConfigurationErrorException
+    {
+        StringMapResponse restResult = this.callGetRESTCall(methodName, StringMapResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
 

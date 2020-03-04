@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -141,7 +142,7 @@ public class ConnectorConfigurationFactory
     public Connection getFileBasedAuditLogConnection(String       localServerName,
                                                      List<String> supportedSeverities)
     {
-        String endpointAddress = localServerName + ".auditlog";
+        String endpointAddress = "omag.server." + localServerName + ".auditlog";
 
         Endpoint endpoint = new Endpoint();
 
@@ -328,6 +329,21 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
+
+        return connection;
+    }
+
+
+    /**
+     * Return the read only local repository connection.  This is using the ReadOnlyOMRSRepositoryConnector.
+     *
+     * @return Connection object
+     */
+    public Connection getReadOnlyLocalRepositoryLocalConnection()
+    {
+        Connection connection = new Connection();
+
+        connection.setConnectorType(getConnectorType(ReadOnlyOMRSRepositoryConnectorProvider.class.getName()));
 
         return connection;
     }
@@ -695,7 +711,7 @@ public class ConnectorConfigurationFactory
 
         if (connectorProviderClassName != null)
         {
-                Class      connectorProviderClass = Class.forName(connectorProviderClassName);
+                Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
                 ConnectorProvider  connectorProvider = (ConnectorProvider)potentialConnectorProvider;

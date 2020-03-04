@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
@@ -113,8 +114,44 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
 
 
     /**
+     * Retrieve the current topic name for the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param cohortName  name of the cohort.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public String getCohortTopicName(String cohortName) throws OMAGNotAuthorizedException,
+                                                               OMAGInvalidParameterException,
+                                                               OMAGConfigurationErrorException
+    {
+        final String methodName          = "getCohortTopicName";
+        final String parameterName       = "cohortName";
+        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error);
+        }
+
+        StringResponse response = restClient.callStringGetRESTCall(methodName,
+                                                                   serverPlatformRootURL + urlTemplate,
+                                                                   adminUserId,
+                                                                   serverName,
+                                                                   cohortName);
+
+        return response.getResultString();
+    }
+
+
+    /**
      * Override the current topic name for the cohort.  This call can only be made once the cohort
-     * is set up with enableCohortRegistration().
+     * is set up with addCohortRegistration().
      *
      * @param cohortName  name of the cohort.
      * @param topicName new name for the topic.
