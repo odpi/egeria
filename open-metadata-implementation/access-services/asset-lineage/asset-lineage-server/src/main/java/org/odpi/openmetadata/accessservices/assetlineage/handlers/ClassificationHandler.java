@@ -40,7 +40,7 @@ public class ClassificationHandler {
      * @param entityDetail the entity for retrieving the classifications attached to it
      * @return the asset context by classification
      */
-    public Map<String, Set<GraphContext>> buildClassificationEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         String methodName = "buildClassificationEvent";
         if (entityDetail.getClassifications() == null)
             return null;

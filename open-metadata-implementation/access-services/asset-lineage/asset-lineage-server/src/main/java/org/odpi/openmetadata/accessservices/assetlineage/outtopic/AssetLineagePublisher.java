@@ -92,7 +92,7 @@ public class AssetLineagePublisher {
     }
 
     public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationEvent(entityDetail);
+        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationContext(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
             log.debug("No valid lineage classifications were found for the entity {} ", entityDetail.getGUID());
             return;

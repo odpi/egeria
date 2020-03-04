@@ -56,7 +56,7 @@ public class Converter {
             if (property.getValue() == null)
                 continue;
 
-            String propertyValue = getStringForPropertyValue(property.getValue());
+            String propertyValue = propertyValueToString(property.getValue());
             if (propertyValue.equals(""))
                 continue;
 
@@ -68,7 +68,7 @@ public class Converter {
         return attributes;
     }
 
-    private String getStringForPropertyValue(InstancePropertyValue ipv) {
+    private String propertyValueToString(InstancePropertyValue ipv) {
 
         if (ipv instanceof PrimitivePropertyValue) {
             PrimitiveDefCategory primtype =
