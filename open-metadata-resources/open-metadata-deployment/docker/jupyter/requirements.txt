@@ -3,3 +3,4 @@
 
 # Add any additional python modules here. Install uses 'conda'
 pandas
+kafka-python==2.0.1
