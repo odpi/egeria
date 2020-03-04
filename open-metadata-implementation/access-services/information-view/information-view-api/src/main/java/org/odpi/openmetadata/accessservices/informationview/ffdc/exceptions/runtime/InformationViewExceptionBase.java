@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class InformationViewExceptionBase extends RuntimeException{
 
+    private static final long    serialVersionUID = 1L;
+
     private int httpErrorCode;
     private String reportingClassName;
     private String reportedErrorMessage;
