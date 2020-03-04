@@ -26,8 +26,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -192,9 +190,9 @@ public class DataEngineSchemaTypeHandler {
             throwInvalidParameterException(targetSchemaAttributeQualifiedName, methodName);
         }
 
-        dataEngineCommonHandler.addExternalRelationshipRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
                 targetSchemaAttributeEntity.get().getGUID(), SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName);
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
     }
 
     /**

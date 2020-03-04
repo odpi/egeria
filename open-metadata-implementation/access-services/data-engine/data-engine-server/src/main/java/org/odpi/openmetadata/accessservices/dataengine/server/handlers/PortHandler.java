@@ -209,8 +209,8 @@ public class PortHandler {
                                                                                                                             InvalidParameterException,
                                                                                                                             UserNotAuthorizedException,
                                                                                                                             PropertyServerException {
-        dataEngineCommonHandler.addExternalRelationshipRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME,
-                PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName);
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME,
+                PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName, null);
     }
 
     /**
@@ -275,8 +275,8 @@ public class PortHandler {
             String delegatedPortType = getPortType(delegatedPortEntity.get());
 
             if (portType.getName().equalsIgnoreCase(delegatedPortType)) {
-                dataEngineCommonHandler.addExternalRelationshipRelationship(userId, portGUID, delegatedPortEntity.get().getGUID(),
-                        PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName);
+                dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, portGUID, delegatedPortEntity.get().getGUID(),
+                        PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName, null);
             } else {
                 throwInvalidParameterException(portGUID, DataEngineErrorCode.INVALID_PORT_TYPE, delegatesToQualifiedName, delegatedPortType,
                         methodName);

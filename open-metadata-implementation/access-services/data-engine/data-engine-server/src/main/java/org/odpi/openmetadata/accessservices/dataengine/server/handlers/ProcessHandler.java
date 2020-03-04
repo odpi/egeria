@@ -207,8 +207,8 @@ public class ProcessHandler {
                                                                                                                           InvalidParameterException,
                                                                                                                           UserNotAuthorizedException,
                                                                                                                           PropertyServerException {
-        dataEngineCommonHandler.addExternalRelationshipRelationship(userId, processGUID, portGUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName);
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, processGUID, portGUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName, null);
     }
 
     /**
