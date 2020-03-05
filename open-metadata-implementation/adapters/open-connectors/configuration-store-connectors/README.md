@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-  
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
 # Configuration Store Connectors
 
 The configuration store connectors contain the connector implementations that manage

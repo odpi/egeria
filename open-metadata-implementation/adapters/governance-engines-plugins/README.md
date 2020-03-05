@@ -1,5 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
- <!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
 
 # Governance Engines Plugins
 

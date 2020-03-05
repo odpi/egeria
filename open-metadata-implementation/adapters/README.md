@@ -23,6 +23,7 @@ The **[governance-engines-plugins](governance-engines-plugins)** support plugins
 to enable them to use open metadata settings in their validation
 and enforcement decisions and the resulting actions they take.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

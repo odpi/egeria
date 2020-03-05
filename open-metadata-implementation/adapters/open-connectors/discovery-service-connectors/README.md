@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2019. -->
 
+![TechPreview](../../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Discovery Service Connectors
 
 The discovery service connectors contain the implementation of the

@@ -33,6 +33,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
  */
 public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties
 {
+    private static final long    serialVersionUID = 1L;
+
     private String               serviceName;
     private String               remoteServerName;
     private String               userId              = null;

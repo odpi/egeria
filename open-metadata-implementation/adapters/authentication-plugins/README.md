@@ -12,9 +12,9 @@ access to data/metadata.
 
 * [HTTP Helper](http-helper) - A plug-in for managing Transport Level Security (TLS) in the server.
 
-
+----
 Return to [adapters](..) module.
  
- ----
- License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
- Copyright Contributors to the ODPi Egeria project.
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
