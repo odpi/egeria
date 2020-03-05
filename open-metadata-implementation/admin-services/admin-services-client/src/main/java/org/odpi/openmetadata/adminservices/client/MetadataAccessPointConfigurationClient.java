@@ -182,6 +182,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
      *
      * @param serviceURLMarker string indicating which access service it requested
      *
+     * @return map of topic names to descriptions
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
@@ -215,7 +216,8 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
 
     /**
      * Retrieve the topic names for all configured access service
-     **
+     *
+     * @return map of topic names to descriptions
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
