@@ -18,11 +18,15 @@
         <fileSet>
             <directory>../../open-metadata-resources/open-metadata-labs</directory>
             <outputDirectory>./notebooks</outputDirectory>
-            <includes>
-                <include>**/*.ipynb</include>
-                <include>**/*.md</include>
-                <include>**/resources/**</include>
-            </includes>
+            <excludes>
+                <exclude>pom.xml</exclude>
+                <exclude>*.iml</exclude>
+                <exclude>.classpath</exclude>
+                <exclude>.project</exclude>
+                <exclude>.settings/**</exclude>
+                <exclude>.ipynb_checkpoints/**</exclude>
+                <exclude>**/target/**</exclude>
+            </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>

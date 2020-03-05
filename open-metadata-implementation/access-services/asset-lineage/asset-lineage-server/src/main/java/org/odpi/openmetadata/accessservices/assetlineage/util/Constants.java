@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,4 +97,8 @@ public final class Constants {
     }
 
     public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
+
+    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(SCHEMA_ATTRIBUTE,
+            ATTRIBUTE_FOR_SCHEMA, COMPLEX_SCHEMA_TYPE, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
+            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY));
 }

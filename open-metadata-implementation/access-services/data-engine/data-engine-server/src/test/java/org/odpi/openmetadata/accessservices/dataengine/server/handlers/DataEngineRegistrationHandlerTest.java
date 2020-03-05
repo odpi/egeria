@@ -72,7 +72,7 @@ class DataEngineRegistrationHandlerTest {
         when(repositoryHandler.createEntity(USER, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                 DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null, methodName)).thenReturn(GUID);
 
-        String response = registrationHandler.createExternalDataEngine(USER, getSoftwareServerCapability());
+        String response = registrationHandler.createOrUpdateExternalDataEngine(USER, getSoftwareServerCapability());
 
         assertEquals(GUID, response);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -95,7 +95,7 @@ class DataEngineRegistrationHandlerTest {
                 DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                registrationHandler.createExternalDataEngine(USER, getSoftwareServerCapability()));
+                registrationHandler.createOrUpdateExternalDataEngine(USER, getSoftwareServerCapability()));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
