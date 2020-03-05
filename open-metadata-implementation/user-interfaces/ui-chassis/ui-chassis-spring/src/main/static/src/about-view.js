@@ -63,6 +63,13 @@ class AboutView extends PolymerElement {
                 </paper-item-body>
               </paper-item>
               
+              <paper-item>
+                <paper-item-body two-line>
+                  <div>Version</div>
+                  <div secondary>[[a.version]]</div>
+                </paper-item-body>
+              </paper-item>
+              
                <paper-item>
                 <paper-item-body two-line>
                   <div>Build time</div>
