@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
@@ -354,9 +355,18 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
 
         if (connectionProperties != null)
         {
-            if (connectionProperties.getConnectionName() != null)
+            if (connectionProperties.getDisplayName() != null)
             {
-                destinationName = connectionProperties.getConnectionName();
+                destinationName = connectionProperties.getDisplayName();
+            }
+            else if (connectionProperties.getConnectorType() != null)
+            {
+                ConnectorTypeProperties connectorType = connectionProperties.getConnectorType();
+
+                if (connectorType.getDisplayName() != null)
+                {
+                    destinationName = connectorType.getDisplayName();
+                }
             }
 
             Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();

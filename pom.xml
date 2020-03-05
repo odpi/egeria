@@ -703,6 +703,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-framework</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>audit-log-slf4j-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

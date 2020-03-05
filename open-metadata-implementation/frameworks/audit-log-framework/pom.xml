@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>repository-services</artifactId>
+        <artifactId>frameworks</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.5-SNAPSHOT</version>
     </parent>
@@ -21,12 +21,14 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Repository Services General APIs</name>
+    <name>Audit Log Framework (ALF)</name>
     <description>
-        The repository services general APIs used by all components that depend on the OMRS.
+        The Audit Log Framework (ALF) provides interface definitions
+        and classes to enable connectors to support natural language enabled
+        diagnostics such as exception messages and audit log messages.
     </description>
 
-    <artifactId>repository-services-apis</artifactId>
+    <artifactId>audit-log-framework</artifactId>
 
     <dependencies>
         <dependency>
@@ -36,24 +38,9 @@
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>audit-log-framework</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
-        </dependency>
-
+        
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
