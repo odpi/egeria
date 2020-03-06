@@ -174,15 +174,9 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
             /*
              * It is not possible to create a connector without a connection.
              */
-            OCFErrorCode errorCode    = OCFErrorCode.NULL_CONNECTION;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTION.getMessageDefinition(),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
 
@@ -195,15 +189,9 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
              * This instance of the connector provider is not initialised with the connector's class name so
              * throw an exception because a connector can not be generated.
              */
-            OCFErrorCode   errorCode = OCFErrorCode.NULL_CONNECTOR_CLASS;
-            String         errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_CLASS.getMessageDefinition(),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
 
@@ -229,17 +217,10 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
             /*
              * Wrap exception in the ConnectionCheckedException with a suitable message
              */
-            OCFErrorCode  errorCode = OCFErrorCode.UNKNOWN_CONNECTOR;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.UNKNOWN_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                     connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  classException);
         }
         catch (ClassCastException  castException)
@@ -247,17 +228,10 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
             /*
              * Wrap class cast exception in a connection exception with error message to say that
              */
-            OCFErrorCode  errorCode = OCFErrorCode.NOT_CONNECTOR;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NOT_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                 connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  castException);
         }
         catch (Throwable unexpectedSomething)
@@ -266,17 +240,10 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
              * Wrap throwable in a connection exception with error message to say that there was a problem with
              * the connector implementation.
              */
-            OCFErrorCode     errorCode = OCFErrorCode.INVALID_CONNECTOR;
-            String           connectionName = connection.getConnectionName();
-            String           errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                     connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  unexpectedSomething);
         }
 

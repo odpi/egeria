@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +27,10 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
     private static final Logger log = LoggerFactory.getLogger(OCFCheckedExceptionBase.class);
 
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
-     */
+    private static final MessageFormatter messageFormatter = new MessageFormatter();
+
+    protected ExceptionMessageDefinition messageDefinition = null;
+
     private int                 reportedHTTPCode;
     private String              reportingClassName;
     private String              reportingActionDescription;
@@ -41,6 +44,96 @@ public abstract class OCFCheckedExceptionBase extends Exception
     /**
      * This is the typical constructor used for creating an OCFCheckedException.
      *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     */
+    public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription)
+    {
+        this(messageDefinition, className, actionDescription, (Map<String, Object>)null);
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an OCFCheckedException.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Map<String, Object>        relatedProperties)
+    {
+        super(messageFormatter.getFormattedMessage(messageDefinition));
+
+        this.messageDefinition = messageDefinition;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.relatedProperties = relatedProperties;
+
+        this.validateCoreProperties();
+
+        log.debug("{}, {}, {}", messageDefinition, className, actionDescription);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OCFCheckedException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError)
+    {
+        this(messageDefinition, className, actionDescription, caughtError, null);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OCFCheckedException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError,
+                                   Map<String, Object>        relatedProperties)
+    {
+        super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
+
+        this.messageDefinition = messageDefinition;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.relatedProperties = relatedProperties;
+        this.reportedCaughtException = caughtError;
+
+        this.validateCoreProperties();
+
+        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is a deprecated constructor used for creating an OCFCheckedException.
+     *
      * @param httpCode   http response code to use if this exception flows over a REST call
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
@@ -48,6 +141,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      */
+    @Deprecated
     public OCFCheckedExceptionBase(int    httpCode,
                                    String className,
                                    String actionDescription,
@@ -55,16 +149,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                                    String systemAction,
                                    String userAction)
     {
-        super(errorMessage);
-
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-
-        this.validateCoreProperties();
+        this(httpCode, className, actionDescription, errorMessage, systemAction, userAction, (Map<String, Object>)null);
     }
 
 
@@ -79,6 +164,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param userAction   instructions for correcting the error
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OCFCheckedExceptionBase(int                 httpCode,
                                    String              className,
                                    String              actionDescription,
@@ -112,6 +198,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param userAction   instructions for correcting the error
      * @param caughtError   previous error causing this exception
      */
+    @Deprecated
     public OCFCheckedExceptionBase(int       httpCode,
                                    String    className,
                                    String    actionDescription,
@@ -120,17 +207,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                                    String    userAction,
                                    Throwable caughtError)
     {
-        super(errorMessage, caughtError);
-
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-        this.reportedCaughtException = caughtError;
-
-        this.validateCoreProperties();
+        this(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, null);
     }
 
 
@@ -146,6 +223,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param caughtError   previous error causing this exception
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OCFCheckedExceptionBase(int                 httpCode,
                                    String              className,
                                    String              actionDescription,
@@ -173,7 +251,8 @@ public abstract class OCFCheckedExceptionBase extends Exception
     /**
      * This is the copy/clone constructor used for creating an OCFCheckedException.
      *
-     * @param errorMessage message for the exception
+     * @param errorMessage message for the exception - overrides the value from the
+     *                     caught exception
      * @param template   object to copy
      */
     public OCFCheckedExceptionBase(String                  errorMessage,
@@ -183,12 +262,14 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
         if (template != null)
         {
+            this.messageDefinition = template.getMessageDefinition();
             this.reportedHTTPCode = template.getReportedHTTPCode();
             this.reportingClassName = template.getReportingClassName();
             this.reportingActionDescription = template.getReportingActionDescription();
             this.reportedErrorMessage = errorMessage;
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
+            this.reportedCaughtException = template.getReportedCaughtException();
         }
 
         this.validateCoreProperties();
@@ -212,6 +293,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
             this.reportedErrorMessage = template.getErrorMessage();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
+            this.reportedCaughtException = template.getReportedCaughtException();
         }
 
         this.validateCoreProperties();
@@ -223,19 +305,27 @@ public abstract class OCFCheckedExceptionBase extends Exception
      */
     private void validateCoreProperties()
     {
-        if (reportedHTTPCode == 0)
+        if (messageDefinition == null)
         {
-            log.error("Zero HTTP code passed to an exception");
-        }
+            if (reportedHTTPCode == 0)
+            {
+                log.error("Zero HTTP code passed to an exception");
+            }
 
-        if (reportingClassName == null)
-        {
-            log.error("Null class name passed to an exception");
-        }
+            if (reportedErrorMessage == null)
+            {
+                log.error("Null error message passed to an exception");
+            }
 
-        if (reportedErrorMessage == null)
-        {
-            log.error("Null error message passed to an exception");
+            if (reportedSystemAction == null)
+            {
+                log.error("Null system action passed to an exception");
+            }
+
+            if (reportedUserAction == null)
+            {
+                log.error("Null user action passed to an exception");
+            }
         }
 
         if (reportingActionDescription == null)
@@ -243,14 +333,9 @@ public abstract class OCFCheckedExceptionBase extends Exception
             log.error("Null action description passed to an exception");
         }
 
-        if (reportedSystemAction == null)
+        if (reportingClassName == null)
         {
-            log.error("Null system action passed to an exception");
-        }
-
-        if (reportedUserAction == null)
-        {
-            log.error("Null user action passed to an exception");
+            log.error("Null class name passed to an exception");
         }
     }
 
@@ -262,8 +347,16 @@ public abstract class OCFCheckedExceptionBase extends Exception
      */
     public int getReportedHTTPCode()
     {
-        return reportedHTTPCode;
+        if (messageDefinition == null)
+        {
+            return reportedHTTPCode;
+        }
+        else
+        {
+            return messageDefinition.getHttpErrorCode();
+        }
     }
+
 
     /**
      * The class that created this exception.
@@ -295,7 +388,14 @@ public abstract class OCFCheckedExceptionBase extends Exception
      */
     public String getErrorMessage()
     {
-        return reportedErrorMessage;
+        if (messageDefinition == null)
+        {
+            return reportedErrorMessage;
+        }
+        else
+        {
+            return messageFormatter.getFormattedMessage(messageDefinition);
+        }
     }
 
 
@@ -306,7 +406,14 @@ public abstract class OCFCheckedExceptionBase extends Exception
      */
     public String getReportedSystemAction()
     {
-        return reportedSystemAction;
+        if (messageDefinition == null)
+        {
+            return reportedSystemAction;
+        }
+        else
+        {
+            return messageDefinition.getSystemAction();
+        }
     }
 
 
@@ -317,7 +424,14 @@ public abstract class OCFCheckedExceptionBase extends Exception
      */
     public String getReportedUserAction()
     {
-        return reportedUserAction;
+        if (messageDefinition == null)
+        {
+            return reportedUserAction;
+        }
+        else
+        {
+            return messageDefinition.getUserAction();
+        }
     }
 
 
@@ -353,6 +467,18 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
+     * Return the saved message definition.  This can be used to reformat the message into
+     * another language.
+     *
+     * @return message definition
+     */
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return messageDefinition;
+    }
+
+
+    /**
      * Compare the values of the supplied object with those stored in the current object.
      *
      * @param objectToCompare supplied object
@@ -365,19 +491,20 @@ public abstract class OCFCheckedExceptionBase extends Exception
         {
             return true;
         }
-        if (!(objectToCompare instanceof OCFCheckedExceptionBase))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         OCFCheckedExceptionBase that = (OCFCheckedExceptionBase) objectToCompare;
-        return getReportedHTTPCode() == that.getReportedHTTPCode() &&
-                Objects.equals(getReportingClassName(), that.getReportingClassName()) &&
-                Objects.equals(getReportingActionDescription(), that.getReportingActionDescription()) &&
+        return reportedHTTPCode == that.reportedHTTPCode &&
+                Objects.equals(messageDefinition, that.messageDefinition) &&
+                Objects.equals(reportingClassName, that.reportingClassName) &&
+                Objects.equals(reportingActionDescription, that.reportingActionDescription) &&
                 Objects.equals(reportedErrorMessage, that.reportedErrorMessage) &&
-                Objects.equals(getReportedSystemAction(), that.getReportedSystemAction()) &&
-                Objects.equals(getReportedUserAction(), that.getReportedUserAction()) &&
-                Objects.equals(getRelatedProperties(), that.getRelatedProperties()) &&
-                Objects.equals(getReportedCaughtException(), that.getReportedCaughtException());
+                Objects.equals(reportedSystemAction, that.reportedSystemAction) &&
+                Objects.equals(reportedUserAction, that.reportedUserAction) &&
+                Objects.equals(reportedCaughtException, that.reportedCaughtException) &&
+                Objects.equals(relatedProperties, that.relatedProperties);
     }
 
 
@@ -389,15 +516,8 @@ public abstract class OCFCheckedExceptionBase extends Exception
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getReportedHTTPCode(),
-                            getReportingClassName(),
-                            getReportingActionDescription(),
-                            reportedErrorMessage,
-                            getReportedSystemAction(),
-                            getReportedUserAction(),
-                            getRelatedProperties(),
-                            getReportedCaughtException());
+        return Objects.hash(messageDefinition, reportedHTTPCode, reportingClassName, reportingActionDescription, reportedErrorMessage,
+                            reportedSystemAction, reportedUserAction, reportedCaughtException, relatedProperties);
     }
 
 
@@ -410,6 +530,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
     public String toString()
     {
         return "OCFCheckedExceptionBase{" +
+                "messageDefinition=" + messageDefinition +
                 ", reportedHTTPCode=" + reportedHTTPCode +
                 ", reportingClassName='" + reportingClassName + '\'' +
                 ", reportingActionDescription='" + reportingActionDescription + '\'' +
@@ -418,7 +539,6 @@ public abstract class OCFCheckedExceptionBase extends Exception
                 ", reportedUserAction='" + reportedUserAction + '\'' +
                 ", reportedCaughtException=" + reportedCaughtException +
                 ", relatedProperties=" + relatedProperties +
-                ", errorMessage='" + getErrorMessage() + '\'' +
                 '}';
     }
 }

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,6 +27,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
      * @param userAction   instructions for correcting the error
      * @param parameterName name of the invalid parameter if known
      */
+    @Deprecated
     public InvalidParameterException(int    httpCode,
                                      String className,
                                      String actionDescription,
@@ -51,6 +54,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
      * @param parameterName name of the invalid parameter if known
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public InvalidParameterException(int                  httpCode,
                                      String               className,
                                      String               actionDescription,
@@ -78,6 +82,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
      * @param caughtError the error that resulted in this exception.
      * @param parameterName name of the invalid parameter if known
      */
+    @Deprecated
     public InvalidParameterException(int       httpCode,
                                      String    className,
                                      String    actionDescription,
@@ -106,6 +111,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
      * @param parameterName name of the invalid parameter if known
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public InvalidParameterException(int                  httpCode,
                                      String               className,
                                      String               actionDescription,
@@ -117,6 +123,90 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
                                      Map<String, Object>  relatedProperties)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
+
+        this.parameterName = parameterName;
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an exception.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param parameterName name of the invalid parameter if known
+     */
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     String                     parameterName)
+    {
+        super(messageDefinition, className, actionDescription);
+
+        this.parameterName = parameterName;
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an exception.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param parameterName name of the invalid parameter if known
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     String                     parameterName,
+                                     Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+
+        this.parameterName = parameterName;
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception that resulted from a previous error.
+     *
+     * @param messageDefinition content of message
+     * @param className name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param caughtError the error that resulted in this exception.
+     * @param parameterName name of the invalid parameter if known
+     */
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     Throwable                  caughtError,
+                                     String                     parameterName)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+
+        this.parameterName = parameterName;
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception that resulted from a previous error.
+     *
+     * @param messageDefinition content of message
+     * @param className name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param caughtError the error that resulted in this exception.
+     * @param parameterName name of the invalid parameter if known
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     Throwable                  caughtError,
+                                     String                     parameterName,
+                                     Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
 
         this.parameterName = parameterName;
     }

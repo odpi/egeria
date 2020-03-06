@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,10 @@ public class OCFRuntimeException extends RuntimeException
 {
     private static final long    serialVersionUID = 1L;
 
+    private static final MessageFormatter messageFormatter = new MessageFormatter();
+
+    private ExceptionMessageDefinition messageDefinition = null;
+
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
@@ -33,6 +39,133 @@ public class OCFRuntimeException extends RuntimeException
 
     private static final Logger log = LoggerFactory.getLogger(OCFRuntimeException.class);
 
+
+
+    /**
+     * This is the typical constructor used for creating an OCFRuntimeException.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     */
+    public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
+                               String                     className,
+                               String                     actionDescription)
+    {
+        this(messageDefinition, className, actionDescription, (Map<String, Object>)null);
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an OCFRuntimeException.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
+                               String                     className,
+                               String                     actionDescription,
+                               Map<String, Object>        relatedProperties)
+    {
+        super(messageFormatter.getFormattedMessage(messageDefinition));
+
+        this.messageDefinition = messageDefinition;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.relatedProperties = relatedProperties;
+
+        log.debug("{}, {}, {}", messageDefinition, className, actionDescription);
+        this.validateCoreProperties();
+    }
+
+
+    /**
+     * This is the constructor used for creating a OCFRuntimeException that results from a previous error/exception
+     * being thrown.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
+                               String                     className,
+                               String                     actionDescription,
+                               Throwable                  caughtError)
+    {
+        this(messageDefinition, className, actionDescription, caughtError, null);
+    }
+
+
+    /**
+     * This is the constructor used for creating a OCFRuntimeException that results from a previous error/exception
+     * being thrown.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
+                               String                     className,
+                               String                     actionDescription,
+                               Throwable                  caughtError,
+                               Map<String, Object>        relatedProperties)
+    {
+        super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.reportedCaughtException = caughtError;
+        this.relatedProperties = relatedProperties;
+
+        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+        this.validateCoreProperties();
+    }
+
+
+    /**
+     * Check that essential details of the exception are populated.
+     */
+    private void validateCoreProperties()
+    {
+        if (messageDefinition == null)
+        {
+            if (reportedHTTPCode == 0)
+            {
+                log.error("Zero HTTP code passed to an exception");
+            }
+
+            if (reportedErrorMessage == null)
+            {
+                log.error("Null error message passed to an exception");
+            }
+
+            if (reportedSystemAction == null)
+            {
+                log.error("Null system action passed to an exception");
+            }
+
+            if (reportedUserAction == null)
+            {
+                log.error("Null user action passed to an exception");
+            }
+        }
+
+        if (reportingActionDescription == null)
+        {
+            log.error("Null action description passed to an exception");
+        }
+
+        if (reportingClassName == null)
+        {
+            log.error("Null class name passed to an exception");
+        }
+    }
+
+
     /**
      * This is the typical constructor used for creating an OCFRuntimeException.
      *
@@ -43,6 +176,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      */
+    @Deprecated
     public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
     {
         super(errorMessage);
@@ -54,6 +188,7 @@ public class OCFRuntimeException extends RuntimeException
         this.reportedUserAction = userAction;
 
         log.debug(httpCode + ", " + className + ", " + actionDescription);
+        this.validateCoreProperties();
     }
 
 
@@ -68,6 +203,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param userAction   instructions for correcting the error
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Map<String, Object> relatedProperties)
     {
         super(errorMessage);
@@ -95,6 +231,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param userAction   instructions for correcting the error
      * @param caughtError   previous error causing this exception
      */
+    @Deprecated
     public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(errorMessage, caughtError);
@@ -123,6 +260,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param caughtError   previous error causing this exception
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError, Map<String, Object> relatedProperties)
     {
         super(errorMessage, caughtError);
@@ -146,8 +284,16 @@ public class OCFRuntimeException extends RuntimeException
      */
     public int getReportedHTTPCode()
     {
-        return reportedHTTPCode;
+        if (messageDefinition == null)
+        {
+            return reportedHTTPCode;
+        }
+        else
+        {
+            return messageDefinition.getHttpErrorCode();
+        }
     }
+
 
     /**
      * The class that created this exception.
@@ -179,7 +325,14 @@ public class OCFRuntimeException extends RuntimeException
      */
     public String getErrorMessage()
     {
-        return reportedErrorMessage;
+        if (messageDefinition == null)
+        {
+            return reportedErrorMessage;
+        }
+        else
+        {
+            return messageFormatter.getFormattedMessage(messageDefinition);
+        }
     }
 
 
@@ -190,7 +343,14 @@ public class OCFRuntimeException extends RuntimeException
      */
     public String getReportedSystemAction()
     {
-        return reportedSystemAction;
+        if (messageDefinition == null)
+        {
+            return reportedSystemAction;
+        }
+        else
+        {
+            return messageDefinition.getSystemAction();
+        }
     }
 
 
@@ -201,7 +361,14 @@ public class OCFRuntimeException extends RuntimeException
      */
     public String getReportedUserAction()
     {
-        return reportedUserAction;
+        if (messageDefinition == null)
+        {
+            return reportedUserAction;
+        }
+        else
+        {
+            return messageDefinition.getUserAction();
+        }
     }
 
 
@@ -237,6 +404,19 @@ public class OCFRuntimeException extends RuntimeException
 
 
     /**
+     * Return the saved message definition.  This can be used to reformat the message into
+     * another language.
+     *
+     * @return message definition
+     */
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return messageDefinition;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return string of property names and values for this enum
@@ -245,7 +425,8 @@ public class OCFRuntimeException extends RuntimeException
     public String toString()
     {
         return "OCFRuntimeException{" +
-                "reportedHTTPCode=" + reportedHTTPCode +
+                "messageDefinition=" + messageDefinition +
+                ", reportedHTTPCode=" + reportedHTTPCode +
                 ", reportingClassName='" + reportingClassName + '\'' +
                 ", reportingActionDescription='" + reportingActionDescription + '\'' +
                 ", reportedErrorMessage='" + reportedErrorMessage + '\'' +
@@ -253,6 +434,7 @@ public class OCFRuntimeException extends RuntimeException
                 ", reportedUserAction='" + reportedUserAction + '\'' +
                 ", reportedCaughtException=" + reportedCaughtException +
                 ", relatedProperties=" + relatedProperties +
+                ", errorMessage='" + getErrorMessage() + '\'' +
                 '}';
     }
 

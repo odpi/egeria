@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,6 +18,91 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
 
     private String  userId;
 
+
+    /**
+     * This is the typical constructor used for creating an exception.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param userId failing userId
+     */
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String                     className,
+                                      String                     actionDescription,
+                                      String                     userId)
+    {
+        super(messageDefinition, className, actionDescription);
+
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an exception.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param userId failing userId
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String                     className,
+                                      String                     actionDescription,
+                                      String                     userId,
+                                      Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception that resulted from a previous error.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   the error that resulted in this exception.
+     * @param userId failing userId
+     */
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String                     className,
+                                      String                     actionDescription,
+                                      Throwable                  caughtError,
+                                      String                     userId)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception that resulted from a previous error.
+     *
+     * @param messageDefinition content of message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   the error that resulted in this exception.
+     * @param userId failing userId
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String                     className,
+                                      String                     actionDescription,
+                                      Throwable                  caughtError,
+                                      String                     userId,
+                                      Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+
+        this.userId = userId;
+    }
+
+
     /**
      * This is the typical constructor used for creating an exception.
      *
@@ -27,6 +114,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
      * @param userAction   instructions for correcting the error
      * @param userId failing userId
      */
+    @Deprecated
     public UserNotAuthorizedException(int    httpCode,
                                       String className,
                                       String actionDescription,
@@ -53,6 +141,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
      * @param userId failing userId
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public UserNotAuthorizedException(int                 httpCode,
                                       String              className,
                                       String              actionDescription,
@@ -80,6 +169,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
      * @param caughtError   the error that resulted in this exception.
      * @param userId failing userId
      */
+    @Deprecated
     public UserNotAuthorizedException(int       httpCode,
                                       String    className,
                                       String    actionDescription,
@@ -108,6 +198,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
      * @param userId failing userId
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public UserNotAuthorizedException(int                 httpCode,
                                       String              className,
                                       String              actionDescription,
