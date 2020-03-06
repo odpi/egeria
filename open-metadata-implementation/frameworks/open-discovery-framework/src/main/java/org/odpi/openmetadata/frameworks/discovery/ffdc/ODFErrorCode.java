@@ -2,19 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.ffdc;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * The ODF error code is used to define first failure data capture (FFDC) for errors that occur when working with
