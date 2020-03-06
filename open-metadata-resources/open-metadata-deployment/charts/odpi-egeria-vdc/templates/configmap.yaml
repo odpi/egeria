@@ -19,6 +19,10 @@ data:
   STRICT_SSL: "false"
   LOGGING_LEVEL_ROOT: "{{ .Values.logging.level }}"
   EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service:8080
+  EGERIA_ARTIFACTORY_RELEASE: https://odpi.jfrog.io/odpi/egeria-release-local
+  EGERIA_ARTIFACTORY_STAGING: https://odpi.jfrog.io/odpi/egeria-staging-local
+  EGERIA_ARTIFACTORY_SNAPSHOT: https://odpi.jfrog.io/odpi/egeria-snapshot-local
+  EGERIA_VERSION: {{ .Values.egeria.version }}
 
   {{ if .Values.kafka.internal.enabled }}
   KAFKA_ENDPOINT: {{ .Release.Name }}-egeriakafka:9092
@@ -38,7 +42,7 @@ data:
   ATLAS_USER: {{ .Values.atlas.user }}
   ATLAS_PASS: {{ .Values.atlas.password }}
   ATLAS_KAFKA_ENDPOINT: {{ include "myapp.fullname" . }}-atlas-service:9027
-  ATLAS_CONNECTOR_URL: https://odpi.jfrog.io/odpi/egeria-{{ .Values.connectors.repo }}-local/org/odpi/egeria/egeria-connector-apache-atlas-package/{{ .Values.connectors.version }}/egeria-connector-apache-atlas-package-{{ .Values.connectors.version }}-jar-with-dependencies.jar
+  ATLAS_CONNECTOR_URL_PATH: org/odpi/egeria/egeria-connector-apache-atlas-package
   {{ end }}
 
   {{ if or .Values.postgresql.enabled .Values.ranger.enabled }}
@@ -65,7 +69,7 @@ data:
   IBMIGC_USER: {{ .Values.ibmigc.user }}
   IBMIGC_PASS: {{ .Values.ibmigc.password }}
   IBMIGC_SERVER: {{ .Values.ibmigc.proxyserver }}
-  IBMIGC_CONNECTOR_URL: https://odpi.jfrog.io/odpi/egeria-{{ .Values.connectors.repo }}-local/org/odpi/egeria/egeria-connector-ibm-information-server-package/{{ .Values.connectors.version }}/egeria-connector-ibm-information-server-package-{{ .Values.connectors.version }}-jar-with-dependencies.jar
+  IBMIGC_CONNECTOR_URL_PATH: org/odpi/egeria/egeria-connector-ibm-information-server-package
   {{ end }}
 
   # Used by User Interface
