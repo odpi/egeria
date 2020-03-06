@@ -18,7 +18,7 @@ public abstract class OpenMetadataTopicProvider extends ConnectorProviderBase
      */
     protected OpenMetadataTopicProvider()
     {
-        Class        connectorClass = OpenMetadataTopicConnector.class;
+        Class<OpenMetadataTopicConnector> connectorClass = OpenMetadataTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

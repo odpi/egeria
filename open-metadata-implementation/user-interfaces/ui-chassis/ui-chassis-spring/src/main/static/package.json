@@ -23,6 +23,7 @@
     "@polymer/iron-form": "^3.0.1",
     "@polymer/iron-icons": "^3.0.1",
     "@polymer/iron-iconset-svg": "^3.0.1",
+    "@polymer/iron-label": "^3.0.1",
     "@polymer/iron-localstorage": "^3.0.1",
     "@polymer/iron-media-query": "^3.0.1",
     "@polymer/iron-overlay-behavior": "^3.0.2",

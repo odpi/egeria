@@ -59,9 +59,8 @@ public class DiscoveryServiceHandler implements Runnable
     @Override
     public void run()
     {
-        DiscoveryEngineServicesAuditCode auditCode;
-        Date                             startTime;
-        Date                             endTime;
+        Date startTime;
+        Date endTime;
 
         final String actionDescription = "Analyse an Asset";
 
@@ -73,19 +72,13 @@ public class DiscoveryServiceHandler implements Runnable
 
             discoveryReportGUID = discoveryReport.getDiscoveryReportGUID();
 
-            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_STARTING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(discoveryServiceName,
-                                                                discoveryContext.getAssetGUID(),
-                                                                assetDiscoveryType,
-                                                                discoveryEngineProperties.getQualifiedName(),
-                                                                discoveryEngineProperties.getGUID(),
-                                                                discoveryReport.getDiscoveryReportGUID()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_STARTING.getMessageDefinition(discoveryServiceName,
+                                                                                                                 discoveryContext.getAssetGUID(),
+                                                                                                                 assetDiscoveryType,
+                                                                                                                 discoveryEngineProperties.getQualifiedName(),
+                                                                                                                 discoveryEngineProperties.getGUID(),
+                                                                                                                 discoveryReport.getDiscoveryReportGUID()));
 
 
             discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.IN_PROGRESS);
@@ -97,39 +90,29 @@ public class DiscoveryServiceHandler implements Runnable
             discoveryService.start();
             endTime = new Date();
 
-            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_COMPLETE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(discoveryServiceName,
-                                                                discoveryContext.getAssetGUID(),
-                                                                assetDiscoveryType,
-                                                                Long.toString(endTime.getTime() - startTime.getTime()),
-                                                                discoveryReport.getDiscoveryReportGUID()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_COMPLETE.getMessageDefinition(discoveryServiceName,
+                                                                                                                 discoveryContext.getAssetGUID(),
+                                                                                                                 assetDiscoveryType,
+                                                                                                                 Long.toString(endTime.getTime() - startTime.getTime()),
+                                                                                                                 discoveryReport.getDiscoveryReportGUID()));
 
             discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.COMPLETED);
             discoveryService.disconnect();
         }
         catch (Throwable  error)
         {
-            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_FAILED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(discoveryServiceName,
-                                                                error.getClass().getName(),
-                                                                discoveryReportGUID,
-                                                                discoveryContext.getAssetGUID(),
-                                                                assetDiscoveryType,
-                                                                discoveryEngineProperties.getQualifiedName(),
-                                                                discoveryEngineProperties.getGUID(),
-                                                                error.getMessage()),
-                               error.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_FAILED.getMessageDefinition(discoveryServiceName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 discoveryReportGUID,
+                                                                                                                 discoveryContext.getAssetGUID(),
+                                                                                                                 assetDiscoveryType,
+                                                                                                                 discoveryEngineProperties.getQualifiedName(),
+                                                                                                                 discoveryEngineProperties.getGUID(),
+                                                                                                                 error.getMessage()),
+                                  error.toString(),
+                                  error);
 
             try
             {
@@ -138,17 +121,12 @@ public class DiscoveryServiceHandler implements Runnable
             }
             catch (Throwable statusError)
             {
-                auditCode = DiscoveryEngineServicesAuditCode.EXC_ON_ERROR_STATUS_UPDATE;
                 auditLog.logException(actionDescription,
-                                      auditCode.getLogMessageId(),
-                                      auditCode.getSeverity(),
-                                      auditCode.getFormattedLogMessage(discoveryEngineProperties.getDisplayName(),
-                                                                       discoveryServiceName,
-                                                                       statusError.getClass().getName(),
-                                                                       statusError.getMessage()),
+                                      DiscoveryEngineServicesAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(discoveryEngineProperties.getDisplayName(),
+                                                                                                                       discoveryServiceName,
+                                                                                                                       statusError.getClass().getName(),
+                                                                                                                       statusError.getMessage()),
                                       statusError.toString(),
-                                      auditCode.getSystemAction(),
-                                      auditCode.getUserAction(),
                                       statusError);
             }
         }

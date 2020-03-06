@@ -107,6 +107,7 @@ public class ConfigAccessServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param serviceURLMarker string indicating which access service it is configuring
      * @return AccessServiceConfig response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or
@@ -208,6 +209,7 @@ public class ConfigAccessServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or

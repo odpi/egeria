@@ -11,6 +11,13 @@ The OMRS Audit Log supports multiple instances of the Audit Log Store
 and will pass audit log records to each configured instance of the
 Audit Log Store Connectors.
 
+Implementations of this type of connector are
+located in the
+[adapters/open-connectors/repository-services-connectors/audit-log-connectors](../../../../adapters/open-connectors/repository-services-connectors/audit-log-connectors)
+module.
+
+----
+Return to [repository services connectors](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
