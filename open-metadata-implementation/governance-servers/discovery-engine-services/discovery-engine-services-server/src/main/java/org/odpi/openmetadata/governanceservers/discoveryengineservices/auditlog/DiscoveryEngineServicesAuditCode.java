@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
+
 
 /**
  * The DiscoveryServerAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,7 +21,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum DiscoveryEngineServicesAuditCode
+public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
 {
     SERVER_INITIALIZING("DISCOVERY-ENGINE-SERVICES-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
@@ -137,14 +136,14 @@ public enum DiscoveryEngineServicesAuditCode
                     "The discovery service {0} is starting to analyze asset {1} with discovery request type {2} in discovery engine {3} (guid={4});" +
                                        " the results will be stored in discovery analysis report {5}",
                     "A new discovery request is being processed.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that the discovery service ran to completion."),
 
     DISCOVERY_SERVICE_FAILED("DISCOVERY-ENGINE-SERVICES-0018",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} " +
                                      "during discovery request type {4} in discovery engine {5} (guid={6}). The error message was {7}",
-                    "A discovery services failed to complete the analysis of .",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "A discovery service failed to complete the analysis of an asset.",
+                    "Review the exception to determine the cause of the error."),
 
     DISCOVERY_SERVICE_COMPLETE("DISCOVERY-ENGINE-SERVICES-0019",
                                OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -257,8 +256,6 @@ public enum DiscoveryEngineServicesAuditCode
     private String                     systemAction;
     private String                     userAction;
 
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryEngineServicesAuditCode.class);
-
 
     /**
      * The constructor for DiscoveryServerAuditCode expects to be passed one of the enumeration rows defined in
@@ -289,71 +286,34 @@ public enum DiscoveryEngineServicesAuditCode
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== DiscoveryServerAuditCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> DiscoveryServerAuditCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }

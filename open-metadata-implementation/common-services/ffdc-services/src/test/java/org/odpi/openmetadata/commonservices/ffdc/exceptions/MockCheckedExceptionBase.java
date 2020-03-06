@@ -8,6 +8,8 @@ package org.odpi.openmetadata.commonservices.ffdc.exceptions;
  */
 public class MockCheckedExceptionBase extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

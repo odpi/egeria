@@ -12,5 +12,8 @@ The OMAS documentation is divided in the following parts:
 
 
 ----
+Return to the top level [access-services](..) module.
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

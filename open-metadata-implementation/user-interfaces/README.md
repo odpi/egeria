@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
  
+![InDev](../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Open Metadata User Interface
 
 Egeria provides a basic user interface (UI() to demonstrate the power of the open
@@ -15,6 +17,7 @@ experience of open metadata.
 
 * [ui-chassis](ui-chassis) the user interface platform.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Governance Program Open Metadata Access Service (OMAS)
 
 The Governance Program OMAS provides APIs and events for tools and applications
@@ -40,3 +42,13 @@ that are used both by the client and the server.
 of the access service and its related event management.
 * [governance-program-spring](governance-program-spring) supports the REST API using
 the [Spring](../../../developer-resources/Spring.md) libraries.
+
+
+
+----
+Return to the [access-services](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

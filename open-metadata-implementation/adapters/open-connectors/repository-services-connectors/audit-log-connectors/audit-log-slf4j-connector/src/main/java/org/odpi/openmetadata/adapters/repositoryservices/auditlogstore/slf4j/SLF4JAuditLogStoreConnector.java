@@ -38,13 +38,13 @@ public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 
         super.validateLogRecord(logRecord, methodName);
 
-        String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getReportingComponent().getComponentName();
+        String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getOriginatorComponent().getComponentName();
         Logger log = LoggerFactory.getLogger(loggerName);
 
         if (super.isSupportedSeverity(logRecord))
         {
             if ((OMRSAuditLogRecordSeverity.ERROR.getName().equals(logRecord.getSeverity())) ||
-                    (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity())))
+                (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity())))
             {
                 log.error(logRecord.getOriginator().getServerName() + logRecord.getGUID() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
                 if (logRecord.getExceptionClassName() != null)

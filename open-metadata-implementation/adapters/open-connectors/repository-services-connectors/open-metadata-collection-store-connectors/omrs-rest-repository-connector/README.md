@@ -1,5 +1,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # OMRS REST API Repository Connector Implementation
 
 The [OMRS REST Repository Connector](../../../../../repository-services/docs/component-descriptions/rest-repository-connector.md) calls the 

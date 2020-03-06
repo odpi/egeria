@@ -34,14 +34,14 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
      * @param accessServiceServerName name of the server where the access service is running.
      * @param discoveryEngineInstances active discovery engines in this server.
      */
-    public DiscoveryServerInstance(String                              serverName,
-                                   String                              serviceName,
-                                   OMRSAuditLog                        auditLog,
-                                   String                              localServerUserId,
-                                   int                                 maxPageSize,
-                                   String                              accessServiceRootURL,
-                                   String                              accessServiceServerName,
-                                   Map<String, DiscoveryEngineHandler> discoveryEngineInstances)
+    DiscoveryServerInstance(String                              serverName,
+                            String                              serviceName,
+                            OMRSAuditLog                        auditLog,
+                            String                              localServerUserId,
+                            int                                 maxPageSize,
+                            String                              accessServiceRootURL,
+                            String                              accessServiceServerName,
+                            Map<String, DiscoveryEngineHandler> discoveryEngineInstances)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize, accessServiceRootURL, accessServiceServerName);
 

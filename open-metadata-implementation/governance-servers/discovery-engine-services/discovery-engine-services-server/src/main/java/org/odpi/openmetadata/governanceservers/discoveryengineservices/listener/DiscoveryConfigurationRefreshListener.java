@@ -49,7 +49,6 @@ public class DiscoveryConfigurationRefreshListener extends DiscoveryEngineEventL
     public void processEvent(DiscoveryEngineEvent event)
     {
         final String actionDescription = "Process configuration event";
-        DiscoveryEngineServicesAuditCode auditCode;
 
         if (event != null)
         {
@@ -67,17 +66,12 @@ public class DiscoveryConfigurationRefreshListener extends DiscoveryEngineEventL
                     }
                     catch (Exception error)
                     {
-                        auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_NO_CONFIG;
                         auditLog.logException(actionDescription,
-                                              auditCode.getLogMessageId(),
-                                              auditCode.getSeverity(),
-                                              auditCode.getFormattedLogMessage(discoveryServiceEvent.getRegisteredDiscoveryServiceGUID(),
-                                                                               discoveryServiceEvent.getDiscoveryRequestTypes().toString(),
-                                                                               error.getClass().getName(),
-                                                                               error.getMessage()),
+                                              DiscoveryEngineServicesAuditCode.DISCOVERY_SERVICE_NO_CONFIG.getMessageDefinition(discoveryServiceEvent.getRegisteredDiscoveryServiceGUID(),
+                                                                                                                                discoveryServiceEvent.getDiscoveryRequestTypes().toString(),
+                                                                                                                                error.getClass().getName(),
+                                                                                                                                error.getMessage()),
                                               discoveryServiceEvent.toString(),
-                                              auditCode.getSystemAction(),
-                                              auditCode.getUserAction(),
                                               error);
                     }
                 }
@@ -96,16 +90,11 @@ public class DiscoveryConfigurationRefreshListener extends DiscoveryEngineEventL
                     }
                     catch (Exception error)
                     {
-                        auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_ENGINE_NO_CONFIG;
                         auditLog.logException(actionDescription,
-                                              auditCode.getLogMessageId(),
-                                              auditCode.getSeverity(),
-                                              auditCode.getFormattedLogMessage(discoveryEngineEvent.getDiscoveryEngineName(),
-                                                                               error.getClass().getName(),
-                                                                               error.getMessage()),
+                                              DiscoveryEngineServicesAuditCode.DISCOVERY_ENGINE_NO_CONFIG.getMessageDefinition(discoveryEngineEvent.getDiscoveryEngineName(),
+                                                                                                                               error.getClass().getName(),
+                                                                                                                               error.getMessage()),
                                               discoveryEngineEvent.toString(),
-                                              auditCode.getSystemAction(),
-                                              auditCode.getUserAction(),
                                               error);
                     }
                 }

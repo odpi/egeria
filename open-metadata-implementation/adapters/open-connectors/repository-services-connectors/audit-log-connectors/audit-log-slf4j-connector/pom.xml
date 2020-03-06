@@ -29,10 +29,17 @@
     <artifactId>audit-log-slf4j-connector</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

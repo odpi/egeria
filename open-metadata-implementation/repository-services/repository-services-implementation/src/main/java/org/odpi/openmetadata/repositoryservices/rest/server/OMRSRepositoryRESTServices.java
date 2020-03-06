@@ -23,8 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -100,6 +98,7 @@ public class OMRSRepositoryRESTServices
      * Set up the local repository connector that will service the local repository REST Calls.
      *
      * @param localServerName               name of this local server
+     * @param masterAuditLog                top level audit Log destination
      * @param localRepositoryConnector      link to the local repository responsible for servicing the REST calls.
      *                                      If localRepositoryConnector is null when a REST calls is received, the request
      *                                      is rejected.
@@ -109,9 +108,24 @@ public class OMRSRepositoryRESTServices
      * @param auditLog                      auditLog destination
      * @param maxPageSize                   max number of results to return on single request.
      */
-    public static void setServerRepositories(String localServerName, LocalOMRSRepositoryConnector localRepositoryConnector, OMRSRepositoryConnector enterpriseRepositoryConnector, OMRSMetadataHighwayManager metadataHighwayManager, String localServerURL, OMRSAuditLog auditLog, int maxPageSize)
+    public static void setServerRepositories(String                       localServerName,
+                                             OMRSAuditLog                 masterAuditLog,
+                                             LocalOMRSRepositoryConnector localRepositoryConnector,
+                                             OMRSRepositoryConnector      enterpriseRepositoryConnector,
+                                             OMRSMetadataHighwayManager   metadataHighwayManager,
+                                             String                       localServerURL,
+                                             OMRSAuditLog                 auditLog,
+                                             int                          maxPageSize)
     {
-        new OMRSRepositoryServicesInstance(localServerName, localRepositoryConnector, enterpriseRepositoryConnector, metadataHighwayManager, localServerURL, serviceName, auditLog, maxPageSize);
+        new OMRSRepositoryServicesInstance(localServerName,
+                                           masterAuditLog,
+                                           localRepositoryConnector,
+                                           enterpriseRepositoryConnector,
+                                           metadataHighwayManager,
+                                           localServerURL,
+                                           serviceName,
+                                           auditLog,
+                                           maxPageSize);
     }
 
 

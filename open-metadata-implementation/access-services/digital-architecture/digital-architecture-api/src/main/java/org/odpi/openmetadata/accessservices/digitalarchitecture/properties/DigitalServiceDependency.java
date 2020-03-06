@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class DigitalServiceDependency extends DigitalArchitectureElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private String  callerDigitalServiceGUID = null;
     private String  calledDigitalServiceGUID = null;
 
