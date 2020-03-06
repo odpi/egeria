@@ -63,8 +63,7 @@ public class MainGraphConnector extends MainGraphConnectorBase {
     /**
      * {@inheritDoc}
      */
-    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses,
-                                   boolean includeGlossaryTerms) throws OpenLineageException {
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "lineage";
 
         GraphTraversalSource g = mainGraph.traversal();
@@ -83,10 +82,8 @@ public class MainGraphConnector extends MainGraphConnectorBase {
 
 
         List<String> edgeLabels = new ArrayList<>();
+        edgeLabels.add(EDGE_LABEL_SEMANTIC);
         edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
-        if(includeGlossaryTerms) {
-            edgeLabels.add(EDGE_LABEL_SEMANTIC);
-        }
 
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 

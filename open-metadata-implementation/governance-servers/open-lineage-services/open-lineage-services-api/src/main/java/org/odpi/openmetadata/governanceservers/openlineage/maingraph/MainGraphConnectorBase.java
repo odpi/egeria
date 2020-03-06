@@ -20,8 +20,7 @@ public abstract class MainGraphConnectorBase extends ConnectorBase implements Ma
      * {@inheritDoc}
      */
     @Override
-    public abstract LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses,
-                                            boolean includeGlossaryTerms) throws OpenLineageException;
+    public abstract LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * {@inheritDoc}

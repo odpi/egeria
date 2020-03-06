@@ -49,7 +49,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                                            boolean includeGlossaryTerms)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.lineage";
-        LineageQueryParameters postBody = new LineageQueryParameters(scope, displayNameMustContain, includeProcesses, includeGlossaryTerms);
+        LineageQueryParameters postBody = new LineageQueryParameters(scope, displayNameMustContain, includeProcesses);
 
         LineageResponse lineageResponse = callPostRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES, postBody, serverName, userId, guid);

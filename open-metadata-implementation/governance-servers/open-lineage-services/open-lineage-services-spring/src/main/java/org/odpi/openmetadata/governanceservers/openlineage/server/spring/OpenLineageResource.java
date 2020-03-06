@@ -40,8 +40,7 @@ public class OpenLineageResource {
             @PathVariable("userId") String userId,
             @PathVariable("guid") String guid,
             @RequestBody LineageQueryParameters params) {
-        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(),
-                params.isIncludeProcesses(), params.isIncludeGlossaryTerms());
+        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.isIncludeProcesses());
     }
 
     /**

@@ -16,11 +16,9 @@ public interface MainGraph extends OpenLineageGraphConnector {
      * @param guid                   The guid of the node of which the lineage is queried from.
      * @param displayNameMustContain Used to filter out nodes which displayname does not contain this value.
      * @param includeProcesses       Will filter out all processes and subprocesses from the response if false.
-     * @param includeGlossaryTerms   Will include glossary terms in the response if true.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses,
-                            boolean includeGlossaryTerms) throws OpenLineageException;
+    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * Initialize the mainGraph database.

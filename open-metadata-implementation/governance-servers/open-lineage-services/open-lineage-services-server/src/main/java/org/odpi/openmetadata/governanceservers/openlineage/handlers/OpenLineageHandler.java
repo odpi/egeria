@@ -22,12 +22,10 @@ public class OpenLineageHandler {
      * @param guid                   The guid of the node of which the lineage is queried from.
      * @param displayNameMustContain
      * @param includeProcesses
-     * @param includeGlossaryTerms
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses,
-                                   boolean includeGlossaryTerms) throws OpenLineageException {
-        return mainGraph.lineage(scope, guid, displayNameMustContain, includeProcesses, includeGlossaryTerms);
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+        return mainGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
     }
 
     /**

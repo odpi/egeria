@@ -23,16 +23,14 @@ public class LineageQueryParameters {
     private Scope scope;
     private String displayNameMustContain;
     private boolean includeProcesses;
-    private  boolean includeGlossaryTerms;
 
     public LineageQueryParameters() {
     }
 
-    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses, boolean includeGlossaryTerms) {
+    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses ) {
         this.scope = scope;
         this.displayNameMustContain = displayNameMustContain;
         this.includeProcesses = includeProcesses;
-        this.includeGlossaryTerms = includeGlossaryTerms;
     }
 
     public Scope getScope() {
@@ -59,21 +57,12 @@ public class LineageQueryParameters {
         this.includeProcesses = includeProcesses;
     }
 
-    public boolean isIncludeGlossaryTerms() {
-        return includeGlossaryTerms;
-    }
-
-    public void setIncludeGlossaryTerms(boolean includeGlossaryTerms) {
-        this.includeGlossaryTerms = includeGlossaryTerms;
-    }
-
     @Override
     public String toString() {
         return "LineageQueryParams{" +
                 "scope=" + scope +
                 ", displayNameMustContain='" + displayNameMustContain + '\'' +
                 ", includeProcesses=" + includeProcesses +
-                ", includeGlossaryTerms=" + includeGlossaryTerms +
                 '}';
     }
 }

@@ -133,7 +133,7 @@ public class OpenLineageServiceTest {
         List nodes = ultimateSource.get("nodes");
         assertNotNull("List of nodes is null", nodes);
         List<String> nodesIds = (List)nodes.stream().map(e -> ((Node) e).getId()).collect(Collectors.toList());
-        assertEquals("Response should contain 3 nodes", 3, nodes.size());
+        assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
     }
 }
