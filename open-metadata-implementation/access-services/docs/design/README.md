@@ -213,7 +213,8 @@ implementing the OMAS one scenario at a time.
 * Design and implement the event handling.
 
   Log each event that is picked up (inbound) to be processed by the OMAS into its audit log using the `EVENT` severity.
-  This ensures a record is kept of the asynchronous processing done by the OMAS.
+  Also log each event that is produced (outbound) by the OMAS into its audit log using the `EVENT` severity. This
+  ensures a record is kept of the asynchronous processing done by the OMAS.
 
   Log the first error of a given kind via audit log as well, using the appropriate severity. For example, if an event is
   picked up that triggers some logic in the OMAS that requires the OMAS to communicate with an external system for
