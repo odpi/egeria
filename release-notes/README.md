@@ -23,11 +23,18 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
-* [Release 1.4](release-notes-1-4.md) - Planned January 2020
-    * Bug fixes, documentation
+* [Release 1.5 (February 2020)](release-notes-1-5.md) 
+    * Metadata de-duplication identification and notification
+    * Asset catalog search (with UI) technical preview
+    * Design Lineage technical preview
+    * Audit Log Framework (ALF) technical preview
+    * PostgreSQL data connector technical preview
 
 ## Older Releases
 
+* [Release 1.4 (January 2020)](release-notes-1-4.md) 
+    * Bug fixes, documentation
+    
 * [Release 1.3 (December 2019)](release-notes-1-3.md)
     * Conformance test suite improvements
     * Open Metadata Archives
@@ -55,13 +62,6 @@ So you will see support for much more function than is officially released.
 This way you can monitor and feedback on future items as they are developed.
 
 The draft release notes for our future planned releases are below:
-    
-* [Release 1.5](release-notes-1-5.md) - Planned February 2020
-    * Metadata de-duplication identification and notification
-    * Asset catalog search (with UI) technical preview
-    * Design Lineage technical preview
-    * Audit Log Framework (ALF) technical preview
-    * PostgreSQL data connector technical preview
     
 * [Release 1.6](release-notes-1-6.md) - Planned March 2020
     * Governance Roles, Profiles and Collaboration
