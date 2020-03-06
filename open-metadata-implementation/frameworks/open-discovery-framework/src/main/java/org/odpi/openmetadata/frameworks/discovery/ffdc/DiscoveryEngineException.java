@@ -14,7 +14,7 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
     private static final long serialVersionUID = 1L;
 
     /**
-     * This is the typical constructor used for creating a ConnectorCheckedException.
+     * This is the typical constructor used for creating a DiscoveryEngineException.
      *
      * @param messageDefinition content of message
      * @param className name of class reporting error
@@ -29,7 +29,7 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
 
 
     /**
-     * This is the constructor used for creating a ConnectorCheckedException in response to a previous exception.
+     * This is the constructor used for creating a DiscoveryEngineException in response to a previous exception.
      *
      * @param messageDefinition content of message
      * @param className name of class reporting error
