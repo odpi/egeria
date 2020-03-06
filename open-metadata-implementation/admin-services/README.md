@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
  
+![Released](../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Administration Services
 
 The administration services support the configuration of the open metadata and governance services

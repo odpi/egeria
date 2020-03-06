@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.dataprivacy.responses;
  */
 public class MockAPIResponse extends DataPrivacyOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
  */
 public class MockRuntimeExceptionConnectorProvider extends ConnectorProviderBase
 {
-
     /**
      * The constructor sets up the name of the connector class.
      */

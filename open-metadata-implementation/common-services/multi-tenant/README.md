@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # OMAG Multi-Tenant Services
 
 The Open Metadata and Governance (OMAG) Multi-Tenant Services supports the management of

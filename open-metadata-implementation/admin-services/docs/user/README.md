@@ -1,11 +1,19 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMAG Server Configuration User Guide
+# Egeria Administration User Guide
 
-The Egeria technology principally runs on the **[Open Metadata and Governance (OMAG) Server Platform](../concepts/omag-server-platform.md)**.
-This platform hosts one or more **[OMAG servers](../concepts/omag-server.md)**, 
+The Egeria technology principally runs on the [Open Metadata and Governance (OMAG) Server Platform](../concepts/omag-server-platform.md).
+This platform hosts one or more [OMAG Servers](../concepts/omag-server.md), 
 each supporting a variety of open metadata and governance capabilities. 
+
+In Figure 1, the OMAG Server Platforms are the blue rounded boxes and the 
+orange circles are the OMAG Servers.
+
+![Figure 1](../../../../open-metadata-publication/website/images/egeria-distributed-operation.png)
+> **Figure 1:** OMAG Server Platforms running in different cloud platforms and/or data centers,
+> each hosting OMAG Servers that are providing specialist integration capability
+> for different tools.
 
 This guide explains how the configure the OMAG Server Platform
 and the different types of OMAG Servers that run on it.
@@ -15,6 +23,10 @@ to the configuration instructions.
 
 * [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
 * [Configuring an OMAG Server](configuring-an-omag-server.md)
+
+and once you have your OMAG Servers configured:
+
+* [Operating an OMAG Server](operating-omag-server.md)
 
 What follows is more background on the administration services.
 
@@ -36,10 +48,10 @@ instances of the OMAG Server running in an OMAG Server Platform, each performing
 Each of these server instances would have their own configuration document allowing them
 to have different subsystems active.
 
-Figure 1 shows different choices for distributing OMAG Servers on the OMAG Platforms.
+Figure 2 shows different choices for distributing OMAG Servers on the OMAG Platforms.
 
-![Figure 1](../concepts/omag-server-deployment-choices.png)
-> **Figure 1:** OMAG Server deployment choices.  An OMAG Server may have multiple copies of the
+![Figure 2](../concepts/omag-server-deployment-choices.png)
+> **Figure 2:** OMAG Server deployment choices.  An OMAG Server may have multiple copies of the
 > same type of OMAG Server on a platform (multi-tenant operation for a cloud service),
 > or different types of OMAG Server on a platform, or a separate platform for each OMAG Server.
 >([more information](../concepts/omag-server.md)).

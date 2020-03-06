@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchem
 
 class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Typical constructor creates an AssetComplexSchemaType object primed with information to retrieve an asset's schema
      * information.

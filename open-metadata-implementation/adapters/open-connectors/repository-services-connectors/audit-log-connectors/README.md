@@ -15,3 +15,11 @@ The audit log connectors supports different destinations for audit log messages.
 
 All of these connectors support the **supportedSeverities** configuration property which defines which log records are
 sent to the destination based on their severity.
+
+
+----
+Return to [repository-services-connectors](..)
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

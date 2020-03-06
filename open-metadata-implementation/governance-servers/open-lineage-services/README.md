@@ -1,7 +1,20 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Starting the Open Lineage Services
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
+# Open Lineage Services
+
+The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are sent out 
+by the Asset Lineage OMAS, and stores lineage data in a database. This lineage can then be queried through
+the Open Lineage Services client and by its REST API, for example by a lineage GUI. 
+
+While the data format of events sent
+out by the Asset Lineage OMAS are in the Open Metadata format, Open Lineage services store lineage data in a very basic
+data format in order to optimize query performance. Instructions on how to configure an OMAG server to run the 
+Open Lineage Services can be found further below.
+
+## Starting the Open Lineage Services
 
 1. Build the open-lineage-janus-connector jar by running:
 
@@ -70,7 +83,7 @@ With the following body:
 POST {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/instance
 ```
 
-# Removing the Open Lineage Services from the server configuration
+## Removing the Open Lineage Services from the server configuration
 
 Remove the Open Lineage Services from the server configuration by issuing the following HTTP request:
     
@@ -78,14 +91,7 @@ Remove the Open Lineage Services from the server configuration by issuing the fo
 DELETE {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage/configuration
 ```
 
-# About the Open Lineage Services
-
-The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are send out 
-by the Asset Lineage OMAS, and stores lineage data in a database. This lineage can then be queried through
-the Open Lineage Services client and by its REST API, for example by a lineage GUI. While the data format of events sent
-out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage services store lineage data in a very basic
-data format in order to optimize query performance. Instructions on how to configure an OMAG server to run the 
-Open Lineage Services can be found further below.
+## Inside the Open Lineage Services
 
 The Open Lineage Services data format is structured as follows:
 

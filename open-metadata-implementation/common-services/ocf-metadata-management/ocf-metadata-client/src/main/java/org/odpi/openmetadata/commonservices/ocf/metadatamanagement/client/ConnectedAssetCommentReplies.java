@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class ConnectedAssetCommentReplies extends AssetCommentReplies
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
