@@ -37,11 +37,35 @@ public class MessageFormatter
      * @param messageDefinition details about the message to format.
      * @return formatted message
      */
-    public String getFormattedMessage(MessageDefinition messageDefinition)
+    public String getFormattedMessageText(MessageDefinition messageDefinition)
     {
         MessageFormat mf = new MessageFormat(messageDefinition.getMessageTemplate());
 
         String formattedMessage = mf.format(messageDefinition.getMessageParams());
+
+        log.debug("New message: {}", formattedMessage);
+
+        return formattedMessage;
+    }
+
+
+    /**
+     * Create a formatted message from a message definition instance.  This instance
+     * contains the unique message identifier, the default message template and the
+     * parameters to insert into it.  The Audit Log controls whether to use the default
+     * message template or substitute it for a version in a different language.
+     *
+     * The method is public to allow external components to format messages - for example,
+     * from exceptions.
+     *
+     * @param messageDefinition details about the message to format.
+     * @return formatted message
+     */
+    public String getFormattedMessage(MessageDefinition messageDefinition)
+    {
+        MessageFormat mf = new MessageFormat(messageDefinition.getMessageTemplate());
+
+        String formattedMessage = messageDefinition.getMessageId() + " " + mf.format(messageDefinition.getMessageParams());
 
         log.debug("New message: {}", formattedMessage);
 
