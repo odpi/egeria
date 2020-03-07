@@ -2,12 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OMAGAdminAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,7 +20,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum OMAGAdminAuditCode
+public enum OMAGAdminAuditCode implements AuditLogMessageSet
 {
     MAX_PAGE_SIZE("OMAG-ADMIN-0001",
                       OMRSAuditLogRecordSeverity.STARTUP,
@@ -162,7 +160,7 @@ public enum OMAGAdminAuditCode
                     "are not sufficient to resolve the problem, raise an issue with the author of the access service to get this " +
                     "improved.  Once the root cause of the error is resolved, restart the server."),
 
-    NULL_ACCESS_SERVICE_ADMIN_CLASS("OMAG-ADMIN-400-011 ",
+    NULL_ACCESS_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0018",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for access service {1}",
             "The system is unable to initialize this access service. The server failed to start.",
@@ -245,7 +243,7 @@ public enum OMAGAdminAuditCode
                     "are not sufficient to resolve the problem, raise an issue with the author of the view service to get this " +
                     "improved.  Once the root cause of the error is resolved, restart the server."),
 
-    NULL_VIEW_SERVICE_ADMIN_CLASS("OMAG-ADMIN-400-028 ",
+    NULL_VIEW_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0028 ",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for view service {1}",
             "The system is unable to initialize this view service. The server failed to start.",
@@ -285,6 +283,84 @@ public enum OMAGAdminAuditCode
                                        "expecting is not available.  If there are no additional error messages then raise an issue with the Egeria " +
                                        "community to get this improved.  Once the root cause of the problem is resolved, restart the server."),
 
+
+    ALL_ZONES("OMAG-ADMIN-0201",
+              OMRSAuditLogRecordSeverity.STARTUP,
+              "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",
+              "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                      "This means it is providing access to all Assets irrespective of the zone(s) they are assigned to.",
+              "No action is required.  This is part of the normal operation of the service."),
+
+    SUPPORTED_ZONES("OMAG-ADMIN-0202",
+                    OMRSAuditLogRecordSeverity.STARTUP,
+                    "The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}",
+                    "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                            "This means it is only providing access to the Assets from these zone(s).",
+                    "No action is required.  This is part of the normal operation of the service."),
+
+    DEFAULT_ZONES("OMAG-ADMIN-0203",
+                  OMRSAuditLogRecordSeverity.STARTUP,
+                  "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}",
+                  "The access service was passed a list of governance zones in the DefaultZones property of the access services options.",
+                  "No action is required.  This is part of the normal operation of the service."),
+
+    KARMA_POINT_COLLECTION_INCREMENT("OMAG-ADMIN-0204",
+                                     OMRSAuditLogRecordSeverity.STARTUP,
+                                     "The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata",
+                                     "The access service was passed this value in the KarmaPointInterval property of the access service's options.",
+                                     "No action is required.  This is part of the normal operation of the service."),
+
+    NO_KARMA_POINT_COLLECTION("OMAG-ADMIN-0205",
+                              OMRSAuditLogRecordSeverity.STARTUP,
+                              "The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server",
+                              "The access service can be configured to collect karma points by setting the KarmaPointIncrement property of the access service's options.",
+                              "No action is required.  This is part of the normal operation of the service."),
+
+    PLATEAU_THRESHOLD("OMAG-ADMIN-0206",
+                      OMRSAuditLogRecordSeverity.STARTUP,
+                      "The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}",
+                      "The access service was passed this value in the KarmaPointThreshold property of the access service's options.",
+                      "No action is required.  This is part of the normal operation of the service."),
+
+    DEFAULT_PLATEAU_THRESHOLD("OMAG-ADMIN-0207",
+                              OMRSAuditLogRecordSeverity.STARTUP,
+                              "The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}",
+                              "This default value can be overridden with the KarmaPointThreshold property of the access service's options.",
+                              "No action is required.  This is part of the normal operation of the service."),
+
+    BAD_CONFIG_PROPERTY("OMAG-ADMIN-0208",
+                        OMRSAuditLogRecordSeverity.ERROR,
+                        "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property",
+                        "The access service has not been passed valid configuration.",
+                        "Correct the configuration and restart the service."),
+
+    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAG-ADMIN-0209",
+                                             OMRSAuditLogRecordSeverity.STARTUP,
+                                             "The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}",
+                                             "The OMAS is registering to receive events from the open metadata repositories registered with the cohort.",
+                                             "No action is required.  This is part of the normal operation of the server."),
+
+    NO_ENTERPRISE_TOPIC("OMAG-ADMIN-0210",
+                        OMRSAuditLogRecordSeverity.ERROR,
+                        "The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null",
+                        "The OMAS is registering to receive events from the open metadata repositories registered with the cohort but is unable to because the enterprise OMRS topic is null.",
+                        "Review other error messages to determine why the connector to the enterprise topic is missing."),
+
+    BAD_TOPIC_CONNECTOR("OMAG-ADMIN-0211",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  " +
+                                "The error message was {3}",
+                        "The access service has not been passed valid configuration. The service failed to start.",
+                        "Correct the configuration and restart the service."),
+
+    BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-ADMIN-0212",
+                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
+                                         "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
+                                 "This is an internal error.  The access service is not using a valid connector provider.",
+                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+
+
     ;
 
     private String                     logMessageId;
@@ -292,8 +368,6 @@ public enum OMAGAdminAuditCode
     private String                     logMessage;
     private String                     systemAction;
     private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(OMAGAdminAuditCode.class);
 
 
     /**
@@ -325,71 +399,34 @@ public enum OMAGAdminAuditCode
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== OMAG Admin Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> OMAG Admin Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.ffdc.auditlog;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.testng.annotations.Test;
 
@@ -40,7 +41,7 @@ public class AuditLogTest
         }
     }
 
-    private void testSingleErrorCodeValues(OMAGCommonAuditCode  testValue)
+    private void testSingleErrorCodeValues(OMAGCommonAuditCode testValue)
     {
         String                  testInfo;
 
