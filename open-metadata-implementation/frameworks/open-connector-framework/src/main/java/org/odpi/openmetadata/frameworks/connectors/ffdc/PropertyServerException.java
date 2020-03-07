@@ -89,7 +89,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
                                    String                     className,
                                    String                     actionDescription,
                                    Throwable                  caughtError,
-                                   Map<String, Object>       relatedProperties)
+                                   Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
     }
