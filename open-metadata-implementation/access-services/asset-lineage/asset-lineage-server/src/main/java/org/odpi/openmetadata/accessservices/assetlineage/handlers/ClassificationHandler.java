@@ -55,10 +55,11 @@ public class ClassificationHandler {
             if (!immutableQualifiedLineageClassifications.contains(classification.getName()))
                 continue;
             LineageEntity classificationVertex = new LineageEntity();
-            classificationVertex.setGuid(entityDetail.getGUID());
+            String classificationGUID = classification.getName() + entityDetail.getGUID();
+            classificationVertex.setGuid(classificationGUID);
             copyClassificationProperties(classificationVertex, classification);
             assetContext.addVertex(classificationVertex);
-            GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), originalEntityVertex.getGuid(), originalEntityVertex, classificationVertex);
+            GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(), classificationGUID, originalEntityVertex, classificationVertex);
             assetContext.addGraphContext(graphContext);
         }
         return assetContext.getNeighbors();

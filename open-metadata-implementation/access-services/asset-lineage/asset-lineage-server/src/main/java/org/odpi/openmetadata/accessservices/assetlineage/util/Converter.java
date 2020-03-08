@@ -91,7 +91,6 @@ public class Converter {
     }
 
     private String propertyValueToString(InstancePropertyValue ipv) {
-
         if (ipv instanceof PrimitivePropertyValue) {
             PrimitiveDefCategory primtype =
                     ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();

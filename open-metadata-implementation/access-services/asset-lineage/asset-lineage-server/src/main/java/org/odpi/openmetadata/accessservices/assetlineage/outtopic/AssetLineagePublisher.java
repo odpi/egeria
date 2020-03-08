@@ -30,6 +30,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.Set;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableQualifiedLineageClassifications;
+
 /**
  * AssetLineagePublisher is the connector responsible for publishing lineage context information about
  * new and changed assets.
@@ -111,13 +113,12 @@ public class AssetLineagePublisher {
      *
      * @param lineageRelationship the LineageRelationship to be published
      * @param eventType           the type on the event
-     *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
     public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
-                                                                                                                          ConnectorCheckedException,
-                                                                                                                          JsonProcessingException {
+            ConnectorCheckedException,
+            JsonProcessingException {
 
         LineageRelationshipEvent event = new LineageRelationshipEvent();
         event.setLineageRelationship(lineageRelationship);
