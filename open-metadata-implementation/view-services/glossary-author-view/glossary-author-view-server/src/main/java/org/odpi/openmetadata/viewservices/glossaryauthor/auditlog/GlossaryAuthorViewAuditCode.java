@@ -57,6 +57,12 @@ public enum GlossaryAuthorViewAuditCode {
             "The local handlers has requested shut down of the Glossary Author OMVS.",
             "No action is required. This is part of the normal operation of the service."),
 
+    UNEXPECTED_EXCEPTION("OMVS-GLOSSARY-AUTHOR-0006",
+                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
+                         "The request returns a PropertyServerException.",
+                         "This is probably a logic error. Review the stack trace to identify where the error " +
+                                 "occurred and work to resolve the cause.")
     ;
 
     private String                     logMessageId;
