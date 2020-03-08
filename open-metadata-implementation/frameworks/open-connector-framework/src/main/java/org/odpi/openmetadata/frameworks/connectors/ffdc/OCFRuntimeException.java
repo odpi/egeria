@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,28 +24,25 @@ public class OCFRuntimeException extends RuntimeException
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();
 
-    private ExceptionMessageDefinition messageDefinition = null;
+    private static final Logger log = LoggerFactory.getLogger(OCFRuntimeException.class);
 
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
-     */
     private int                 reportedHTTPCode;
     private String              reportingClassName;
     private String              reportingActionDescription;
     private String              reportedErrorMessage;
+    private String              reportedErrorMessageId;
+    private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
     private Throwable           reportedCaughtException = null;
+    private String              reportedCaughtExceptionClassName = null;
     private Map<String, Object> relatedProperties = null;
-
-    private static final Logger log = LoggerFactory.getLogger(OCFRuntimeException.class);
-
 
 
     /**
      * This is the typical constructor used for creating an OCFRuntimeException.
      *
-     * @param messageDefinition content of message
+     * @param messageDefinition  content of the message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
      */
@@ -58,8 +56,9 @@ public class OCFRuntimeException extends RuntimeException
 
     /**
      * This is the typical constructor used for creating an OCFRuntimeException.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param messageDefinition content of message
+     * @param messageDefinition  content of the message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
@@ -71,21 +70,27 @@ public class OCFRuntimeException extends RuntimeException
     {
         super(messageFormatter.getFormattedMessage(messageDefinition));
 
-        this.messageDefinition = messageDefinition;
+        this.reportedHTTPCode = messageDefinition.getHttpErrorCode();
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = messageFormatter.getFormattedMessage(messageDefinition);
+        this.reportedErrorMessageId = messageDefinition.getMessageId();
+        this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
+        this.reportedSystemAction = messageDefinition.getSystemAction();
+        this.reportedUserAction = messageDefinition.getUserAction();
         this.relatedProperties = relatedProperties;
 
-        log.debug("{}, {}, {}", messageDefinition, className, actionDescription);
         this.validateCoreProperties();
+
+        log.debug("{}, {}, {}", messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the constructor used for creating a OCFRuntimeException that results from a previous error/exception
-     * being thrown.
+     * This is the constructor used for creating an OCFRuntimeException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param messageDefinition content of message
+     * @param messageDefinition  content of the message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
      * @param caughtError   previous error causing this exception
@@ -100,10 +105,10 @@ public class OCFRuntimeException extends RuntimeException
 
 
     /**
-     * This is the constructor used for creating a OCFRuntimeException that results from a previous error/exception
-     * being thrown.
+     * This is the constructor used for creating an OCFRuntimeException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param messageDefinition content of message
+     * @param messageDefinition  content of the message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
      * @param caughtError   previous error causing this exception
@@ -116,12 +121,122 @@ public class OCFRuntimeException extends RuntimeException
                                Map<String, Object>        relatedProperties)
     {
         super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
+
+        this.reportedHTTPCode = messageDefinition.getHttpErrorCode();
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = messageFormatter.getFormattedMessage(messageDefinition);
+        this.reportedErrorMessageId = messageDefinition.getMessageId();
+        this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
+        this.reportedSystemAction = messageDefinition.getSystemAction();
+        this.reportedUserAction = messageDefinition.getUserAction();
         this.reportedCaughtException = caughtError;
+        this.reportedCaughtExceptionClassName = caughtError.getClass().getName();
         this.relatedProperties = relatedProperties;
 
+        this.validateCoreProperties();
+
         log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used when receiving an exception from a remote server.  The values are
+     * stored directly in the response object and are passed explicitly to the new exception.
+     * Notice that the technical aspects of the exception - such as class name creating the exception
+     * are local values so that the implementation of the server is not exposed.
+     *
+     * @param httpCode   http response code to use if this exception flows over a REST call
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param errorMessage   description of error
+     * @param errorMessageId unique identifier for the message
+     * @param errorMessageParameters parameters that were inserted in the message
+     * @param systemAction   actions of the system as a result of the error
+     * @param userAction   instructions for correcting the error
+     * @param caughtErrorClassName   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFRuntimeException(int                 httpCode,
+                               String              className,
+                               String              actionDescription,
+                               String              errorMessage,
+                               String              errorMessageId,
+                               String[]            errorMessageParameters,
+                               String              systemAction,
+                               String              userAction,
+                               String              caughtErrorClassName,
+                               Map<String, Object> relatedProperties)
+    {
+        super(errorMessage);
+
+        this.reportedHTTPCode = httpCode;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = errorMessage;
+        this.reportedErrorMessageId = errorMessageId;
+        this.reportedErrorMessageParameters = errorMessageParameters;
+        this.reportedSystemAction = systemAction;
+        this.reportedUserAction = userAction;
+        this.reportedCaughtExceptionClassName = caughtErrorClassName;
+        this.relatedProperties = relatedProperties;
+
+        this.validateCoreProperties();
+
+        log.debug("{}, {}, {}, {}", errorMessage, className, actionDescription, caughtErrorClassName);
+    }
+    
+
+    /**
+     * This is the copy/clone constructor used for creating an OCFRuntimeException.
+     *
+     * @param errorMessage message for the exception - overrides the value from the
+     *                     caught exception
+     * @param template   object to copy
+     */
+    public OCFRuntimeException(String              errorMessage,
+                               OCFRuntimeException template)
+    {
+        super(errorMessage, template);
+
+        if (template != null)
+        {
+            this.reportedHTTPCode = template.getReportedHTTPCode();
+            this.reportingClassName = template.getReportingClassName();
+            this.reportingActionDescription = template.getReportingActionDescription();
+            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedErrorMessageId = template.getReportedErrorMessageId();
+            this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
+            this.reportedSystemAction = template.getReportedSystemAction();
+            this.reportedUserAction = template.getReportedUserAction();
+            this.reportedCaughtException = template.getReportedCaughtException();
+            this.relatedProperties = template.getRelatedProperties();
+        }
+
+        this.validateCoreProperties();
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an OCFRuntimeException.
+     *
+     * @param template   object to copy
+     */
+    public OCFRuntimeException(OCFRuntimeException template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.reportedHTTPCode = template.getReportedHTTPCode();
+            this.reportingClassName = template.getReportingClassName();
+            this.reportingActionDescription = template.getReportingActionDescription();
+            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedSystemAction = template.getReportedSystemAction();
+            this.reportedUserAction = template.getReportedUserAction();
+            this.reportedCaughtException = template.getReportedCaughtException();
+        }
+
         this.validateCoreProperties();
     }
 
@@ -131,27 +246,29 @@ public class OCFRuntimeException extends RuntimeException
      */
     private void validateCoreProperties()
     {
-        if (messageDefinition == null)
+        if (reportedHTTPCode == 0)
         {
-            if (reportedHTTPCode == 0)
-            {
-                log.error("Zero HTTP code passed to an exception");
-            }
+            log.error("Zero HTTP code passed to an exception");
+        }
 
-            if (reportedErrorMessage == null)
-            {
-                log.error("Null error message passed to an exception");
-            }
+        if (reportedErrorMessage == null)
+        {
+            log.error("Null error message passed to an exception");
+        }
 
-            if (reportedSystemAction == null)
-            {
-                log.error("Null system action passed to an exception");
-            }
+        if (reportedErrorMessageId == null)
+        {
+            log.error("Null error message Id passed to an exception");
+        }
 
-            if (reportedUserAction == null)
-            {
-                log.error("Null user action passed to an exception");
-            }
+        if (reportedSystemAction == null)
+        {
+            log.error("Null system action passed to an exception");
+        }
+
+        if (reportedUserAction == null)
+        {
+            log.error("Null user action passed to an exception");
         }
 
         if (reportingActionDescription == null)
@@ -163,6 +280,224 @@ public class OCFRuntimeException extends RuntimeException
         {
             log.error("Null class name passed to an exception");
         }
+    }
+
+
+    /**
+     * Return the HTTP response code to use with this exception.
+     *
+     * @return reportedHTTPCode
+     */
+    public int getReportedHTTPCode()
+    {
+        return reportedHTTPCode;
+    }
+
+
+    /**
+     * The class that created this exception.
+     *
+     * @return reportingClassName
+     */
+    public String getReportingClassName()
+    {
+        return reportingClassName;
+    }
+
+
+    /**
+     * The type of request that the class was performing when the condition occurred that resulted in this
+     * exception.
+     *
+     * @return reportingActionDescription
+     */
+    public String getReportingActionDescription()
+    {
+        return reportingActionDescription;
+    }
+
+
+    /**
+     * A formatted short description of the cause of the condition that resulted in this exception.
+     * It includes the message id and is formatted with the message parameters.  The message is defined in En_US.
+     * The method is deprecated because it is inconsistent in its naming compared with other methods.
+     *
+     * @return string message
+     */
+    @Deprecated
+    public String getErrorMessage()
+    {
+        return reportedErrorMessage;
+    }
+
+    /**
+     * A formatted short description of the cause of the condition that resulted in this exception.
+     * It includes the message id and is formatted with the message parameters.  The message is defined in En_US.
+     *
+     * @return string message
+     */
+    public String getReportedErrorMessage()
+    {
+        return reportedErrorMessage;
+    }
+
+    /**
+     * Return the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return string message id
+     */
+    public String getReportedErrorMessageId()
+    {
+        return reportedErrorMessageId;
+    }
+
+
+    /**
+     * Return the parameters that were inserted in the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return list of parameter values
+     */
+    public String[] getReportedErrorMessageParameters()
+    {
+        return reportedErrorMessageParameters;
+    }
+
+
+    /**
+     * A description of the action that the system took as a result of the error condition.
+     *
+     * @return reportedSystemAction
+     */
+    public String getReportedSystemAction()
+    {
+        return reportedSystemAction;
+    }
+
+
+    /**
+     * A description of the action necessary to correct the error.
+     *
+     * @return reportedUserAction
+     */
+    public String getReportedUserAction()
+    {
+        return reportedUserAction;
+    }
+
+
+    /**
+     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
+     * either newly created and not the result of a previous exception or the exception occurred in a remote
+     * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
+     *
+     * @return reportedCaughtException Throwable object
+     */
+    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+
+
+    /**
+     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
+     * the result of a newly detected error and not caused by another exception.
+     *
+     * @return full class name of the original exception
+     */
+    public String getReportedCaughtExceptionClassName()
+    {
+        return reportedCaughtExceptionClassName;
+    }
+
+
+    /**
+     * Return any additional properties that were added to the exception to aid diagnosis.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getRelatedProperties()
+    {
+        if (relatedProperties == null)
+        {
+            return null;
+        }
+        else if (relatedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(relatedProperties);
+        }
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        OCFRuntimeException that = (OCFRuntimeException) objectToCompare;
+        return reportedHTTPCode == that.reportedHTTPCode &&
+                Objects.equals(reportingClassName, that.reportingClassName) &&
+                Objects.equals(reportingActionDescription, that.reportingActionDescription) &&
+                Objects.equals(reportedErrorMessage, that.reportedErrorMessage) &&
+                Objects.equals(reportedErrorMessageId, that.reportedErrorMessageId) &&
+                Arrays.equals(reportedErrorMessageParameters, that.reportedErrorMessageParameters) &&
+                Objects.equals(reportedSystemAction, that.reportedSystemAction) &&
+                Objects.equals(reportedUserAction, that.reportedUserAction) &&
+                Objects.equals(reportedCaughtException, that.reportedCaughtException) &&
+                Objects.equals(relatedProperties, that.relatedProperties);
+    }
+
+    /**
+     * Provide a common implementation of hashCode for all OCF Exception objects.
+     *
+     * @return integer hash code based on the values in the attributes
+     */
+    @Override
+    public int hashCode()
+    {
+        int result = Objects.hash(reportedHTTPCode, reportingClassName, reportingActionDescription, reportedErrorMessage, reportedErrorMessageId,
+                                  reportedSystemAction, reportedUserAction, reportedCaughtException, relatedProperties);
+        result = 31 * result + Arrays.hashCode(reportedErrorMessageParameters);
+        return result;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "OCFRuntimeException{" +
+                "reportedHTTPCode=" + reportedHTTPCode +
+                ", reportingClassName='" + reportingClassName + '\'' +
+                ", reportingActionDescription='" + reportingActionDescription + '\'' +
+                ", reportedErrorMessage='" + reportedErrorMessage + '\'' +
+                ", reportedErrorMessageId='" + reportedErrorMessageId + '\'' +
+                ", reportedErrorMessageParameters=" + Arrays.toString(reportedErrorMessageParameters) +
+                ", reportedSystemAction='" + reportedSystemAction + '\'' +
+                ", reportedUserAction='" + reportedUserAction + '\'' +
+                ", reportedCaughtException=" + reportedCaughtException +
+                ", relatedProperties=" + relatedProperties +
+                '}';
     }
 
 
@@ -275,215 +610,4 @@ public class OCFRuntimeException extends RuntimeException
 
         log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
     }
-
-
-    /**
-     * Return the HTTP response code to use with this exception.
-     *
-     * @return reportedHTTPCode
-     */
-    public int getReportedHTTPCode()
-    {
-        if (messageDefinition == null)
-        {
-            return reportedHTTPCode;
-        }
-        else
-        {
-            return messageDefinition.getHttpErrorCode();
-        }
-    }
-
-
-    /**
-     * The class that created this exception.
-     *
-     * @return reportingClassName
-     */
-    public String getReportingClassName()
-    {
-        return reportingClassName;
-    }
-
-
-    /**
-     * The type of request that the class was performing when the condition occurred that resulted in this
-     * exception.
-     *
-     * @return reportingActionDescription
-     */
-    public String getReportingActionDescription()
-    {
-        return reportingActionDescription;
-    }
-
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     *
-     * @return reportedErrorMessage
-     */
-    public String getErrorMessage()
-    {
-        if (messageDefinition == null)
-        {
-            return reportedErrorMessage;
-        }
-        else
-        {
-            return messageFormatter.getFormattedMessage(messageDefinition);
-        }
-    }
-
-
-    /**
-     * A description of the action that the system took as a result of the error condition.
-     *
-     * @return reportedSystemAction
-     */
-    public String getReportedSystemAction()
-    {
-        if (messageDefinition == null)
-        {
-            return reportedSystemAction;
-        }
-        else
-        {
-            return messageDefinition.getSystemAction();
-        }
-    }
-
-
-    /**
-     * A description of the action necessary to correct the error.
-     *
-     * @return reportedUserAction
-     */
-    public String getReportedUserAction()
-    {
-        if (messageDefinition == null)
-        {
-            return reportedUserAction;
-        }
-        else
-        {
-            return messageDefinition.getUserAction();
-        }
-    }
-
-
-    /**
-     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
-     * newly created and not the result of a previous exception.
-     *
-     * @return reportedCaughtException
-     */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
-
-
-    /**
-     * Return any additional properties that were added to the exception to aid diagnosis.
-     *
-     * @return property map
-     */
-    public Map<String, Object> getRelatedProperties()
-    {
-        if (relatedProperties == null)
-        {
-            return null;
-        }
-        else if (relatedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(relatedProperties);
-        }
-    }
-
-
-    /**
-     * Return the saved message definition.  This can be used to reformat the message into
-     * another language.
-     *
-     * @return message definition
-     */
-    public ExceptionMessageDefinition getMessageDefinition()
-    {
-        return messageDefinition;
-    }
-
-
-
-    /**
-     * JSON-style toString
-     *
-     * @return string of property names and values for this enum
-     */
-    @Override
-    public String toString()
-    {
-        return "OCFRuntimeException{" +
-                "messageDefinition=" + messageDefinition +
-                ", reportedHTTPCode=" + reportedHTTPCode +
-                ", reportingClassName='" + reportingClassName + '\'' +
-                ", reportingActionDescription='" + reportingActionDescription + '\'' +
-                ", reportedErrorMessage='" + reportedErrorMessage + '\'' +
-                ", reportedSystemAction='" + reportedSystemAction + '\'' +
-                ", reportedUserAction='" + reportedUserAction + '\'' +
-                ", reportedCaughtException=" + reportedCaughtException +
-                ", relatedProperties=" + relatedProperties +
-                ", errorMessage='" + getErrorMessage() + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof OCFRuntimeException))
-        {
-            return false;
-        }
-        OCFRuntimeException that = (OCFRuntimeException) objectToCompare;
-        return getReportedHTTPCode() == that.getReportedHTTPCode() &&
-                Objects.equals(getReportingClassName(), that.getReportingClassName()) &&
-                Objects.equals(getReportingActionDescription(), that.getReportingActionDescription()) &&
-                Objects.equals(getErrorMessage(), that.getErrorMessage()) &&
-                Objects.equals(getReportedSystemAction(), that.getReportedSystemAction()) &&
-                Objects.equals(getReportedUserAction(), that.getReportedUserAction()) &&
-                Objects.equals(getRelatedProperties(), that.getRelatedProperties()) &&
-                Objects.equals(getReportedCaughtException(), that.getReportedCaughtException());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getReportedHTTPCode(),
-                            getReportingClassName(),
-                            getReportingActionDescription(),
-                            getErrorMessage(),
-                            getReportedSystemAction(),
-                            getReportedUserAction(),
-                            getRelatedProperties(),
-                            getReportedCaughtException());
-    }
-
 }
