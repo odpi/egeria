@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/assets")
 public class AssetSearchController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class AssetSearchController {
      * @param searchCriteria the query parameter with the search phrase
      * @return list of assets
      */
-    @GetMapping( path = "/assets/search")
+    @GetMapping( path = "/search")
     public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
