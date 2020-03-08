@@ -9,12 +9,14 @@ import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -50,7 +52,7 @@ public class AssetLineagePublisher {
      *
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
-     * @param repositoryHelper
+     * @param repositoryHelper  provides utilities for manipulating the repository services objects
      * @param outTopicConnector connection to the out topic
      */
     public AssetLineagePublisher(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector)
@@ -103,6 +105,25 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
+
+    /**
+     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}
+     *
+     * @param lineageRelationship the LineageRelationship to be published
+     * @param eventType           the type on the event
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+                                                                                                                          ConnectorCheckedException,
+                                                                                                                          JsonProcessingException {
+
+        LineageRelationshipEvent event = new LineageRelationshipEvent();
+        event.setLineageRelationship(lineageRelationship);
+        event.setAssetLineageEventType(eventType);
+        publishEvent(event);
+    }
 
     /**
      * Output a new asset event.

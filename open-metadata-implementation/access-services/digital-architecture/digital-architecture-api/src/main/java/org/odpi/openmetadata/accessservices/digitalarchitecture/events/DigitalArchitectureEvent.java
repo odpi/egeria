@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private DigitalArchitectureEventType eventType              = null;
     private DigitalService               originalDigitalService = null;
     private DigitalService               digitalService         = null;

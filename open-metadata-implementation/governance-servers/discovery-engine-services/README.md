@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![TechPreview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Discovery Engine Services
 
 The discovery engine services provide the core subsystem for a
@@ -47,6 +49,9 @@ calls is a [discovery analysis report](../../frameworks/open-discovery-framework
 
 The discovery engine calls the Discovery Engine OMAS to retrieve information about the Asset's supported discovery
 services and to attach the discovery analysis report to the Asset.
+
+----
+Return to [governance servers](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.responses;
  */
 public class MockAPIResponse extends DigitalArchitectureOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

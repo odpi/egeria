@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Configuration File Store Connector
 
 The configuration file store connector supports managing the

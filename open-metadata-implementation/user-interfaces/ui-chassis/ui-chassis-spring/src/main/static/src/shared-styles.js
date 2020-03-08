@@ -61,7 +61,6 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             max-width: 600px;
             width: 100%;
         }
-        
         .circle {
             display: inline-block;
             width: 64px;
@@ -74,16 +73,30 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             line-height: 64px;
         }
         h1 {
-            margin: 16px 0;
-            color: #24272a;
-            font-size: 22px;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 2.2em !important;
+            color: var(--egeria-secondary-color) !important;
+            line-height: 1.2em;
+            padding-top: 3% !important;
+            padding-bottom: 2% !important;
+            letter-spacing: 0.004em !important;
         }
         
+        h2 {
+            font-family: 'Lato', sans-serif !important;
+            font-size: 1.5em !important;
+            letter-spacing: 0.01em;
+            color: var(--egeria-primary-color) !important;
+            margin-top: 3% !important;
+            margin-bottom: 2% !important;
+        }
+        paper-button {
+          text-transform: none;
+        }
         paper-button:not([disabled]) {
             background: var(--egeria-primary-color);
             color: white;
         }
-        
         .breadcrumbs {
           padding: 8px 15px;
           margin-bottom: 20px;
@@ -91,7 +104,6 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
           background-color: #eeeeee;
           border-radius: 4px;
         } 
-        
     </style>
   </template>
 </dom-module>`;

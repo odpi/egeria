@@ -12,14 +12,6 @@ egeria:
   cohort: coco
   server: myserver
 
-# Connectors information
-# - repo should be either 'snapshot' or 'release'
-#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.6-SNAPSHOT)
-#   - when 'release', version should be <version>  (eg. 1.3)
-connectors:
-  repo: snapshot
-  version: 1.6-SNAPSHOT
-
 # Default values used for images
 # 'tag' is only used for images other than connectors/egeria where the version above is used
 imageDefaults:

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class DeleteRelationshipException extends InformationViewExceptionBase{
 
+    private static final long    serialVersionUID = 1L;
 
     public DeleteRelationshipException(String className, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
         super(className, errorMessage, systemAction, userAction, caughtError);

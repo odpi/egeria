@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
@@ -23,17 +24,28 @@ public class Converter {
      */
     public LineageEntity createLineageEntity(EntityDetail entityDetail) {
         LineageEntity lineageEntity = new LineageEntity();
-        lineageEntity.setGuid(entityDetail.getGUID());
-        lineageEntity.setCreatedBy(entityDetail.getCreatedBy());
-        lineageEntity.setCreateTime(entityDetail.getCreateTime());
-        lineageEntity.setTypeDefName(entityDetail.getType().getTypeDefName());
-        lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
-        lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
-        lineageEntity.setVersion(entityDetail.getVersion());
+        setInstanceHeaderProperties(entityDetail, lineageEntity);
         lineageEntity.setProperties(instancePropertiesToMap(entityDetail.getProperties()));
         return lineageEntity;
     }
 
+
+    /**
+     * Creates the lineage relationship.
+     *
+     * @param relationship the relationship details
+     * @return the lineage relationship
+     */
+    public LineageRelationship createLineageRelationship(Relationship relationship) {
+        LineageRelationship lineageRelationship = new LineageRelationship();
+        setInstanceHeaderProperties(relationship, lineageRelationship);
+        lineageRelationship.setProperties(instancePropertiesToMap(relationship.getProperties()));
+
+        lineageRelationship.setFirstEndGUID(relationship.getEntityTwoProxy().getGUID());
+        lineageRelationship.setSecondEndGUID(relationship.getEntityTwoProxy().getGUID());
+
+        return lineageRelationship;
+    }
     /**
      * Retrieve the properties from an InstanceProperties object and return them as a map
      *
@@ -66,6 +78,16 @@ public class Converter {
                 attributes.put(property.getKey(), propertyValue);
         }
         return attributes;
+    }
+
+    private void setInstanceHeaderProperties(InstanceHeader instanceHeader, LineageEntity lineageEntity) {
+        lineageEntity.setGuid(instanceHeader.getGUID());
+        lineageEntity.setCreatedBy(instanceHeader.getCreatedBy());
+        lineageEntity.setCreateTime(instanceHeader.getCreateTime());
+        lineageEntity.setTypeDefName(instanceHeader.getType().getTypeDefName());
+        lineageEntity.setUpdatedBy(instanceHeader.getUpdatedBy());
+        lineageEntity.setUpdateTime(instanceHeader.getUpdateTime());
+        lineageEntity.setVersion(instanceHeader.getVersion());
     }
 
     private String propertyValueToString(InstancePropertyValue ipv) {

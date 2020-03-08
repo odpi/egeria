@@ -74,20 +74,11 @@ public class DiscoveryServerOperationalServices
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
 
-        DiscoveryEngineServicesAuditCode auditCode;
-        ODFRESTClient                    restClient;
+        ODFRESTClient            restClient;
 
         this.auditLog = auditLog;
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
-
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_INITIALIZING.getMessageDefinition(localServerName));
 
         try
         {
@@ -165,14 +156,7 @@ public class DiscoveryServerOperationalServices
 
             if (discoveryEngineHandlers == null)
             {
-                auditCode = DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES_STARTED;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(localServerName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES_STARTED.getMessageDefinition(localServerName));
 
                 DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES_STARTED;
                 String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -215,15 +199,9 @@ public class DiscoveryServerOperationalServices
         }
         catch (Throwable error)
         {
-            auditCode = DiscoveryEngineServicesAuditCode.SERVICE_INSTANCE_FAILURE;
-
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(localServerName, error.getMessage()),
+                                  DiscoveryEngineServicesAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),
                                   error.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.SERVICE_INSTANCE_FAILURE;
@@ -256,14 +234,8 @@ public class DiscoveryServerOperationalServices
             final String actionDescription = "Validate discovery engine services configuration.";
             final String methodName        = "getAccessServiceRootURL";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_URL;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localServerName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName));
 
             DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_URL;
             String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -296,14 +268,8 @@ public class DiscoveryServerOperationalServices
             final String actionDescription = "Validate discovery engine services configuration.";
             final String methodName        = "getAccessServiceServerName";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_NAME;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localServerName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName));
 
             DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_NAME;
             String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -335,14 +301,7 @@ public class DiscoveryServerOperationalServices
             final String actionDescription = "Validate discovery engine services configuration.";
             final String methodName        = "getAccessServiceRootURL";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES.getMessageDefinition());
 
             DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES;
             String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
@@ -386,7 +345,7 @@ public class DiscoveryServerOperationalServices
         {
             if (discoveryEngineName != null)
             {
-                DiscoveryEngineClient discoveryEngineClient = null;
+                DiscoveryEngineClient discoveryEngineClient;
                 try
                 {
                     discoveryEngineClient = new DiscoveryEngineClient(accessServiceServerName,
@@ -445,28 +404,12 @@ public class DiscoveryServerOperationalServices
      */
     public void terminate()
     {
-
         final String                     actionDescription = "terminate";
-        DiscoveryEngineServicesAuditCode auditCode;
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_SHUTTING_DOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
         discoveryServerInstance.shutdown();
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }
 }

@@ -1,5 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-  
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+![InDev](../../../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Security Officer Connectors
 
 Provides plugins to the
@@ -7,6 +10,7 @@ Provides plugins to the
 to allow the [Security Officer Services](../../../../governance-servers/security-officer-services)
 to set up security classifications on data assets.
 
+----
 Return to [governance-daemon-connectors](..) module.
 
 ----

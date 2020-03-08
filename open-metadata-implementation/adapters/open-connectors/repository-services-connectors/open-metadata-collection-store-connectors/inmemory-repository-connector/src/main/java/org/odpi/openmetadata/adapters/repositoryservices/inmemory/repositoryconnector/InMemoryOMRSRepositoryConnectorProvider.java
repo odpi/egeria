@@ -29,7 +29,7 @@ public class InMemoryOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
      */
     public InMemoryOMRSRepositoryConnectorProvider()
     {
-        Class    connectorClass = InMemoryOMRSRepositoryConnector.class;
+        Class<?>    connectorClass = InMemoryOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
