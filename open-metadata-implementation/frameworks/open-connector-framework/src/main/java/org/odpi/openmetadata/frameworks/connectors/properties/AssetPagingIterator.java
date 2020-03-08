@@ -211,7 +211,7 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
                     /*
                      * Problem retrieving next cache.  The exception includes a detailed error message,
                      */
-                    throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getErrorMessage(),
+                    throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
                                                                                                              this.toString()),
                                                   this.getClass().getName(),
                                                   "next",
