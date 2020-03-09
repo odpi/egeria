@@ -59,22 +59,21 @@ public final class AssetLineageConstants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
 
-    public static final String CLASSIFICATION_CONFIDENTIALITY = "Confidentiality";
-    public static final String CLASSIFICATION_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
-    public static final String CLASSIFICATION_SUBJECT_AREA = "SubjectArea";
-    public static final String CLASSIFICATION_ASSET_OWNERSHIP = "AssetOwnership";
+    public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
+    public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
+    public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
+    public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
 
     private static final List<String> defaultLineageClassifications = new ArrayList<>();
 
     static {
-        defaultLineageClassifications.add(CLASSIFICATION_CONFIDENTIALITY);
-        defaultLineageClassifications.add(CLASSIFICATION_ASSET_ZONE_MEMBERSHIP);
-        defaultLineageClassifications.add(CLASSIFICATION_SUBJECT_AREA);
-        defaultLineageClassifications.add(CLASSIFICATION_ASSET_OWNERSHIP);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_CONFIDENTIALITY);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_SUBJECT_AREA);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_OWNERSHIP);
     }
 
     public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
-
 
     // Map of entities to relationship types
     private static final Map<String, String> processRelationshipsTypes = new HashMap<>();
