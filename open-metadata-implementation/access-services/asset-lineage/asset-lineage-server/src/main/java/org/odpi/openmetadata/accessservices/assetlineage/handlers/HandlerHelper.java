@@ -6,7 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Constants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -19,8 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -216,7 +214,7 @@ public class HandlerHelper {
                 .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP)).findFirst();
 
         if (assetZoneMembership.isPresent()) {
-            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(Constants.ASSET_LINEAGE_OMAS, ZONE_MEMBERSHIP,
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(AssetLineageConstants.ASSET_LINEAGE_OMAS, ZONE_MEMBERSHIP,
                     assetZoneMembership.get().getProperties(), methodName);
 
             if (CollectionUtils.isNotEmpty(zoneMembership)) {

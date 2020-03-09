@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class Constants {
+public final class AssetLineageConstants {
 
-    private Constants() {}
+    private AssetLineageConstants() {}
 
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
@@ -59,18 +59,21 @@ public final class Constants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
 
-    //Classification Types
-    public static final String CLASSIFIED_ENTITY = "ClassifiedEntity";
-    public static final String CLASSIFIED_ENTITY_GUID = "b04047c5-50fc-4010-a07a-544bead159dc";
-    public static final String TYPE_EMBEDDED_ATTRIBUTE = "TypeEmbeddedAttribute";
+    public static final String CLASSIFICATION_CONFIDENTIALITY = "Confidentiality";
+    public static final String CLASSIFICATION_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
+    public static final String CLASSIFICATION_SUBJECT_AREA = "SubjectArea";
+    public static final String CLASSIFICATION_ASSET_OWNERSHIP = "AssetOwnership";
 
-    private static final List<String> qualifiedLineageClassifications = new ArrayList<>();
+    private static final List<String> defaultLineageClassifications = new ArrayList<>();
 
     static {
-        qualifiedLineageClassifications.add(TYPE_EMBEDDED_ATTRIBUTE);
+        defaultLineageClassifications.add(CLASSIFICATION_CONFIDENTIALITY);
+        defaultLineageClassifications.add(CLASSIFICATION_ASSET_ZONE_MEMBERSHIP);
+        defaultLineageClassifications.add(CLASSIFICATION_SUBJECT_AREA);
+        defaultLineageClassifications.add(CLASSIFICATION_ASSET_OWNERSHIP);
     }
 
-    public static final ImmutableList<String> immutableQualifiedLineageClassifications = ImmutableList.copyOf(qualifiedLineageClassifications);
+    public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
 
 
     // Map of entities to relationship types

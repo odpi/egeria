@@ -29,14 +29,15 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
-     * @param auditLog            destination for audit log events.
+     * @param lineageClassificationTypes
      * @param localServerUserId   userId used for server initiated actions
+     * @param auditLog            destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
-                                        OMRSAuditLog auditLog,
-                                        String localServerUserId) throws NewInstanceException {
+                                        List<String> lineageClassificationTypes,
+                                        String localServerUserId, OMRSAuditLog auditLog) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
                 repositoryConnector,
                 auditLog,
@@ -66,7 +67,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     supportedZones);
 
             classificationHandler = new ClassificationHandler(
-                    invalidParameterHandler
+                    invalidParameterHandler,
+                    lineageClassificationTypes
             );
 
         } else {

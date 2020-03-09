@@ -11,11 +11,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableQualifiedLineageClassifications;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 
 /**
  * The classification handler maps classifications attached with an entity to an lineage entity.
@@ -23,14 +23,16 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.i
 public class ClassificationHandler {
 
     private InvalidParameterHandler invalidParameterHandler;
+    private List<String> lineageClassificationTypes;
 
     /**
      * Instantiates a new Classification handler.
      *
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
+        this.lineageClassificationTypes = lineageClassificationTypes;
     }
 
 
@@ -41,7 +43,7 @@ public class ClassificationHandler {
      * @return the asset context by classification
      */
     public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        String methodName = "buildClassificationEvent";
+        String methodName = "buildClassificationContext";
         if (entityDetail.getClassifications() == null)
             return null;
 
@@ -52,7 +54,7 @@ public class ClassificationHandler {
         assetContext.addVertex(originalEntityVertex);
 
         for (Classification classification : entityDetail.getClassifications()) {
-            if (!immutableQualifiedLineageClassifications.contains(classification.getName()))
+            if (!this.lineageClassificationTypes.contains(classification.getName()))
                 continue;
             LineageEntity classificationVertex = new LineageEntity();
             String classificationGUID = classification.getName() + entityDetail.getGUID();

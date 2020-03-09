@@ -8,8 +8,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.REFERENCEABLE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.REFERENCEABLE;
 
 
 public class SuperTypesRetriever {

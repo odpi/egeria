@@ -27,7 +27,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,13 +49,14 @@ public class AssetLineagePublisher {
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *  @param repositoryHelper  provides utilities for manipulating the repository services objects
+     *
+     * @param repositoryHelper  provides utilities for manipulating the repository services objects
      * @param outTopicConnector connection to the out topic
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
-     * @param lineageClassificationTypes
      */
-    public AssetLineagePublisher(OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName, List<String> lineageClassificationTypes)
+    public AssetLineagePublisher(OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector,
+                                 String serverName, String serverUserName)
             throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
         this.outTopicConnector = outTopicConnector;
@@ -97,7 +97,7 @@ public class AssetLineagePublisher {
     public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationContext(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
-            log.debug("No valid lineage classifications were found for the entity {} ", entityDetail.getGUID());
+            log.debug("No lineage classifications were found for the entity {} ", entityDetail.getGUID());
             return;
         }
         LineageEvent event = new LineageEvent();

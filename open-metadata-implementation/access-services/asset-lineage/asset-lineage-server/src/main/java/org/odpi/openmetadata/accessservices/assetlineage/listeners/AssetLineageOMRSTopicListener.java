@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -46,22 +46,19 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
-     * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
-     * @param serverName        name of this server instance
-     * @param serverUserName    name of the user of the server instance
-     * @param lineageClassificationTypes
+     *  @param repositoryHelper           helper object for building and querying TypeDefs and metadata instances
+     * @param outTopicConnector          The connector used for the Asset Lineage OMAS Out Topic
+     * @param serverName                 name of this server instance
+     * @param serverUserName             name of the user of the server instance
      */
-    public AssetLineageOMRSTopicListener(
-            OMRSRepositoryHelper repositoryHelper,
-            OpenMetadataTopicConnector outTopicConnector,
-            String serverName, String serverUserName,
-            List<String> lineageClassificationTypes, OMRSAuditLog auditLog)
+    public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
+                                         OpenMetadataTopicConnector outTopicConnector,
+                                         String serverName, String serverUserName, List<String> lineageClassificationTypes,
+                                         OMRSAuditLog auditLog)
             throws OCFCheckedExceptionBase {
-
-        this.publisher = new AssetLineagePublisher(repositoryHelper, outTopicConnector, serverName, serverUserName, lineageClassificationTypes);
-        this.auditLog = auditLog;
+        this.publisher = new AssetLineagePublisher(repositoryHelper, outTopicConnector, serverName, serverUserName);
         this.lineageClassificationTypes = lineageClassificationTypes;
+        this.auditLog = auditLog;
     }
 
     /**
@@ -128,7 +125,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 //                case NEW_RELATIONSHIP_EVENT:
 //                    processNewRelationship(entityDetail);
 //                    break;
-
                 case UPDATED_RELATIONSHIP_EVENT:
                     processUpdatedRelationshipEvent(instanceEvent.getRelationship());
                     break;
@@ -189,7 +185,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "declassifiedEntity", entityDetail.getGUID());
-        if (anyValidClassificationsLeft(entityDetail)) {
+        if (anyLineageClassificationsLeft(entityDetail)) {
             publisher.publishClassificationContext(entityDetail);
             return;
         }
@@ -222,7 +218,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     }
 
-    private boolean anyValidClassificationsLeft(EntityDetail entityDetail) {
+    private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
         for (String classificationType : lineageClassificationTypes)
             if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType)))
                 return true;

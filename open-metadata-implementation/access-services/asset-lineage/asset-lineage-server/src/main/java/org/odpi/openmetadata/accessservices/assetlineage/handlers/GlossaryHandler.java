@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The glossary handler provide methods to provide business glossary terms for lineage.

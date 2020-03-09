@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The Asset Context handler provides methods to build graph context for assets that has been created.

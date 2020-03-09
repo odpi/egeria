@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -74,10 +75,10 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     accessServiceConfig.getAccessServiceName(),
                     auditLog);
 
+            List<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfig);
             this.instance = new AssetLineageServicesInstance(repositoryConnector,
-                    supportedZones,
-                    auditLog,
-                    serverUserName);
+                    supportedZones, lineageClassificationTypes, serverUserName, auditLog
+            );
             this.serverName = instance.getServerName();
 
 
@@ -87,12 +88,12 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
-                List<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfig);
 
                 AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
                         repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
                         serverUserName,
-                        lineageClassificationTypes, auditLog);
+                        lineageClassificationTypes,
+                        auditLog);
 
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
@@ -130,13 +131,13 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         List<String> lineageClassificationTypes = null;
         if (accessServiceConfig.getAccessServiceOptions() != null) {
             Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(LINEAGE_CLASSIFICATION_TYPES);
-            if (supportedTypesProperty != null) {
+            if (supportedTypesProperty != null)
                 lineageClassificationTypes = (List<String>) supportedTypesProperty;
-            }
         }
+        else
+            lineageClassificationTypes = AssetLineageConstants.immutableDefaultLineageClassifications;
         return lineageClassificationTypes;
     }
-
 
 
     /**
@@ -146,9 +147,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         final String actionDescription = "shutdown";
         AssetLineageAuditCode auditCode;
 
-        if (instance != null) {
+        if (instance != null)
             this.instance.shutdown();
-        }
 
         auditCode = AssetLineageAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
