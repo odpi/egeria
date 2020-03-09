@@ -508,8 +508,12 @@ public class DataEngineRESTServices {
         {
             GUIDResponse guidResponse = createOrUpdateProcess(userId, serverName, process, externalSourceName);
             if (guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value()) {
-                process.setGUID(guidResponse.getGUID());
-                updateProcessStatus(userId, serverName, guidResponse, InstanceStatus.ACTIVE);
+                String processGUID = guidResponse.getGUID();
+                process.setGUID(processGUID);
+                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE);
+                if (updateStatusResponse.getRelatedHTTPCode() != 200) {
+                    captureException(updateStatusResponse, guidResponse);
+                }
                 createdProcesses.add(guidResponse);
             } else {
                 failedProcesses.add(guidResponse);
@@ -644,24 +648,25 @@ public class DataEngineRESTServices {
         failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
     }
 
-    private void captureException(FFDCResponseBase guidResponse, GUIDListResponse response) {
-        response.setExceptionErrorMessage(guidResponse.getExceptionErrorMessage());
-        response.setExceptionClassName(guidResponse.getExceptionClassName());
-        response.setExceptionSystemAction(guidResponse.getExceptionSystemAction());
-        response.setExceptionUserAction(guidResponse.getExceptionUserAction());
-        response.setRelatedHTTPCode(guidResponse.getRelatedHTTPCode());
-        response.setExceptionProperties(guidResponse.getExceptionProperties());
+    private void captureException(FFDCResponseBase initialResponse, FFDCResponseBase response) {
+        response.setExceptionErrorMessage(initialResponse.getExceptionErrorMessage());
+        response.setExceptionClassName(initialResponse.getExceptionClassName());
+        response.setExceptionSystemAction(initialResponse.getExceptionSystemAction());
+        response.setExceptionUserAction(initialResponse.getExceptionUserAction());
+        response.setRelatedHTTPCode(initialResponse.getRelatedHTTPCode());
+        response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
-    private void updateProcessStatus(String userId, String serverName, GUIDResponse response, InstanceStatus instanceStatus) {
+    private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus) {
         final String methodName = "updateProcessStatus";
 
         log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
+        VoidResponse response = new VoidResponse();
         try {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            processHandler.updateProcessStatus(userId, response.getGUID(), instanceStatus);
+            processHandler.updateProcessStatus(userId, processGUID, instanceStatus);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -671,6 +676,8 @@ public class DataEngineRESTServices {
         }
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+
+        return response;
     }
 
     /**
@@ -751,19 +758,14 @@ public class DataEngineRESTServices {
         ArrayList<String> failedGUIDS = new ArrayList<>();
 
         // add the ProcessHierarchy relationships only for successfully created processes
-        processes.stream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
+        processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
             List<ParentProcess> parentProcesses = process.getParentProcesses();
+            String processGUID = process.getGUID();
             if (CollectionUtils.isNotEmpty(parentProcesses)) {
                 try {
-                    String processGUID = process.getGUID();
-                    VoidResponse voidResponse = addProcessHierarchyRelationships(userId, serverName, parentProcesses, processGUID,
-                            externalSourceName);
-                    // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
-                    // to the list of failed processes
-                    if (voidResponse.getRelatedHTTPCode() != 200) {
-                        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-                        processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT);
-                        failedGUIDS.add(processGUID);
+                    ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+                    for (ParentProcess parentProcess : parentProcesses) {
+                        processHandler.addProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
                 } catch (InvalidParameterException error) {
                     restExceptionHandler.captureInvalidParameterException(response, error);
@@ -773,35 +775,17 @@ public class DataEngineRESTServices {
                     restExceptionHandler.captureUserNotAuthorizedException(response, error);
                 }
             }
+            // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
+            // to the list of failed processes
+            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
+                updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT);
+                failedGUIDS.add(processGUID);
+            }
         });
 
         // update the ProcessListResponse to reflect the updated status for the created/failed processes
         response.getGUIDs().removeAll(failedGUIDS);
         response.getFailedGUIDs().addAll(failedGUIDS);
-    }
-
-    private VoidResponse addProcessHierarchyRelationships(String userId, String serverName, List<ParentProcess> parentProcesses, String processGUID,
-                                                          String externalSourceName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException {
-        final String methodName = "addProcessHierarchyRelationships";
-
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-        VoidResponse response = new VoidResponse();
-
-        parentProcesses.parallelStream().forEach(parentProcess -> {
-            try {
-                processHandler.addProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
-            } catch (InvalidParameterException error) {
-                restExceptionHandler.captureInvalidParameterException(response, error);
-            } catch (PropertyServerException error) {
-                restExceptionHandler.capturePropertyServerException(response, error);
-            } catch (UserNotAuthorizedException error) {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
-            }
-        });
-
-        return response;
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
@@ -843,8 +827,7 @@ public class DataEngineRESTServices {
         Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
 
         // delete ports that are not in the process payload anymore
-        List<String> obsoletePorts =
-                oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
+        List<String> obsoletePorts = oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
         obsoletePorts.parallelStream().forEach(portGUID -> {
             try {
                 portHandler.removePort(userId, portGUID, portTypeName);
@@ -898,9 +881,7 @@ public class DataEngineRESTServices {
         Set<String> portAliasGUIDs = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(portAliases)) {
-
-            portAliases.parallelStream().forEach(portAlias ->
-            {
+            portAliases.parallelStream().forEach(portAlias -> {
                 try {
                     portAliasGUIDs.add(createOrUpdatePortAliasWithDelegation(userId, serverName, portAlias, externalSourceName));
                 } catch (InvalidParameterException error) {

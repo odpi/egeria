@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -329,9 +330,9 @@ public class ProcessHandler {
             dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID,
                     ProcessPropertiesMapper.PROCESS_HIERARCHY_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
                     relationshipProperties);
-        }
-        else {
-            //TODO throw exception
+        } else {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
+                    parentProcess.getQualifiedName());
         }
     }
 }

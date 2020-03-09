@@ -184,10 +184,12 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
 
         if (!sourceSchemaAttributeEntity.isPresent()) {
-            throwInvalidParameterException(sourceSchemaAttributeQualifiedName, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+                    sourceSchemaAttributeQualifiedName);
         }
         if (!targetSchemaAttributeEntity.isPresent()) {
-            throwInvalidParameterException(targetSchemaAttributeQualifiedName, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+                    targetSchemaAttributeQualifiedName);
         }
 
         dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
@@ -246,7 +248,8 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, SchemaAttribute schemaAttribute) throws InvalidParameterException {
+    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, SchemaAttribute schemaAttribute) throws
+                                                                                                                       InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
 
         SchemaAttributeBuilder builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(), schemaAttribute.getAttributeName(),
@@ -395,13 +398,5 @@ public class DataEngineSchemaTypeHandler {
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException {
         dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
-    }
-
-    private void throwInvalidParameterException(String qualifiedName, String methodName) throws InvalidParameterException {
-        DataEngineErrorCode errorCode = DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(qualifiedName);
-
-        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                errorCode.getSystemAction(), errorCode.getUserAction(), SchemaTypePropertiesMapper.GUID_PROPERTY_NAME);
     }
 }

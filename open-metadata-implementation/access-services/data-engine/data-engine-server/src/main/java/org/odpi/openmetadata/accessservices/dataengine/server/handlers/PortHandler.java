@@ -278,11 +278,12 @@ public class PortHandler {
                 dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, portGUID, delegatedPortEntity.get().getGUID(),
                         PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName, null);
             } else {
-                throwInvalidParameterException(portGUID, DataEngineErrorCode.INVALID_PORT_TYPE, delegatesToQualifiedName, delegatedPortType,
-                        methodName);
+                dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName,
+                        delegatedPortType);
             }
         } else {
-            throwInvalidParameterException(portGUID, DataEngineErrorCode.PORT_NOT_FOUND, delegatesToQualifiedName, portGUID, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName, delegatesToQualifiedName,
+                    portGUID);
         }
     }
 
@@ -384,13 +385,5 @@ public class PortHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(displayName, PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-    }
-
-    private void throwInvalidParameterException(String qualifiedName, DataEngineErrorCode errorCode, String delegatedQualifiedName,
-                                                String delegatedPortType, String methodName) throws InvalidParameterException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(delegatedQualifiedName, qualifiedName);
-
-        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                errorCode.getSystemAction(), errorCode.getUserAction(), delegatedPortType);
     }
 }
