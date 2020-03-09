@@ -151,7 +151,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     _itemName(item){
         if(item.properties.displayName && item.properties.displayName!=null)
             return item.properties.displayName;
-        else if(itemp.roperties.name && item.properties.name!=null)
+        else if(item.properties.name && item.properties.name!=null)
             return item.properties.name;
         else
             return 'N/A';
