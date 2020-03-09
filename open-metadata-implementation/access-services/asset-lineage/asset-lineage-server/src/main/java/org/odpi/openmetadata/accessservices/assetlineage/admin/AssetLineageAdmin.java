@@ -129,9 +129,9 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private List<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
         List<String> lineageClassificationTypes = null;
         if (accessServiceConfig.getAccessServiceOptions() != null) {
-            Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
-            if (supportedTypesProperty != null)
-                lineageClassificationTypes = (List<String>) supportedTypesProperty;
+            Object lineageClassificationTypesProperty = accessServiceConfig.getAccessServiceOptions().get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
+            if (lineageClassificationTypesProperty != null)
+                lineageClassificationTypes = (List<String>) lineageClassificationTypesProperty;
         }
         else
             lineageClassificationTypes = AssetLineageConstants.immutableDefaultLineageClassifications;
