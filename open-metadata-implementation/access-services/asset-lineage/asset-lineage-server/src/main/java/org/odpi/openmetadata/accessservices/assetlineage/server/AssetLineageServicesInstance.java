@@ -21,7 +21,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
     private AssetContextHandler assetContextHandler;
-    private CommonHandler commonHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
 
@@ -59,11 +58,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler,
                     supportedZones);
-
-            commonHandler = new CommonHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler);
 
             processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
@@ -105,15 +99,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      */
     AssetContextHandler getAssetContextHandler() {
         return assetContextHandler;
-    }
-
-    /**
-     * Return the specialized common handler for Asset Lineage OMAS.
-     *
-     * @return common handler
-     */
-    CommonHandler getCommonHandler() {
-        return commonHandler;
     }
 
     /**

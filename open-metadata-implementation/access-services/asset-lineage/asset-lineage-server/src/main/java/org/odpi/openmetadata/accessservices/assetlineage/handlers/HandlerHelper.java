@@ -31,9 +31,8 @@ import java.util.Optional;
 /**
  * The common handler provide common methods that is generic and reusable for other handlers.
  */
-public class CommonHandler {
+public class HandlerHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonHandler.class);
     private static final String GUID_PARAMETER = "guid";
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
@@ -43,14 +42,12 @@ public class CommonHandler {
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public CommonHandler(InvalidParameterHandler invalidParameterHandler,
+    public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler) {
         this.invalidParameterHandler = invalidParameterHandler;

@@ -21,18 +21,17 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      */
     public AssetLineageInstanceHandler() {
         super(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName());
-
     }
 
-    public void registerAccessService(){
+    public void registerAccessService() {
         AssetLineageRegistration.registerAccessService();
     }
 
     /**
      * Retrieve the specific handler for the access service.
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the calling operation
      * @return handler for use by the requested instance
      * @throws InvalidParameterException  no available instance for the requested server
@@ -43,19 +42,16 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getGlossaryHandler();
-        }
-
         return null;
     }
 
     /**
      * Retrieve the specific handler for the access service.
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the calling operation
      * @return handler for use by the requested instance
      * @throws InvalidParameterException  no available instance for the requested server
@@ -66,34 +62,8 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getAssetContextHandler();
-        }
-
-        return null;
-    }
-
-    /**
-     * Retrieve common handler for the access service.
-     *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the calling operation
-     * @return handler for use by the requested instance
-     * @throws InvalidParameterException  no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException    error in the requested server
-     */
-    public CommonHandler getCommonHandler(String userId, String serverName, String serviceOperationName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-
-        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
-            return instance.getCommonHandler();
-        }
-
         return null;
     }
 
@@ -101,11 +71,8 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getProcessContextHandler();
-        }
-
         return null;
     }
 
@@ -124,11 +91,8 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getClassificationHandler();
-        }
-
         return null;
     }
 }
