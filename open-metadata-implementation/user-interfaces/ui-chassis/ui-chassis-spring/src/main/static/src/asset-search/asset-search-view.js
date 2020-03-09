@@ -66,7 +66,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>
                     <vaadin-button theme="tertiary" on-tap="_showItemDetails">
-                        [[item.properties.displayName]]
+                        [[_itemName(item)]]
                     </vaadin-button>
                 </template>
             </vaadin-grid-column>
@@ -108,7 +108,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         return {
             q: {
                 type: Object,
-                notify: true
+                notify: true,
             },
             searchResp: {
                 type: Array,
@@ -126,14 +126,15 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
-        this.$.tokenAjaxTypes.url = '/api/types';
+        // this.q = this.domHost.queryParams.q;
+        this.$.tokenAjaxTypes.url = '/api/assets/types';
         this.$.tokenAjaxTypes._go();
-
     }
 
     _search() {
-        this.$.searchForm.validate();
-        console.log('searching: '+ this.q);
+        // this.$.searchForm.validate();
+        // this.domHost.queryParams.q = this.q;
+        console.debug('searching: '+ this.q);
         var types = [];
 
         this.$.combo.selectedItems.forEach(function(item){
@@ -144,20 +145,28 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         this.$.tokenAjax._go();
     }
 
+    _itemName(item){
+        if(item.properties.displayName && item.properties.displayName!=null)
+            return item.properties.displayName;
+        else if(itemp.roperties.name && item.properties.name!=null)
+            return item.properties.name;
+        else
+            return 'N/A';
+    }
+
     _showItemDetails(e){
         // alert(e.model.item.properties.name + e.model.item.properties.displayName);
         var  properties = e.model.item.properties;
 
-        if (properties.displayName == null && properties.name != null) {
-                properties.displayName = properties.name;
-        }
-
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
-            detail: {page: "asset-lineage",
-                     subview: "ultimateSource"
+            detail: {
+                page: "asset-search",
+                subview: "view",
+                guid: properties.guid
             }}));
+
     }
 
     attached() {
