@@ -326,6 +326,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     _onPageChanged(event) {
         this.page = event.detail.page;
+        this.subview = event.detail.subview;
+        this.guid = event.detail.guid;
     }
 
     _onLogout(event) {
