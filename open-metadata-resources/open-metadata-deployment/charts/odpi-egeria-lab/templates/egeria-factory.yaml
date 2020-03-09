@@ -68,6 +68,9 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
+          env:
+            - name: LOGGING_LEVEL_ROOT
+              value:  "{{ .Values.egeria.loglevel | default "NONE" }}"
       restartPolicy: Always
 
 status: {}

@@ -77,6 +77,8 @@ spec:
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
               value: "http://{{ .Release.Name }}-datalake:8080"
+            - name: LOGGING_LEVEL_ROOT
+              value: "{{ .Values.egeria.loglevel | default "NONE" }}"
       restartPolicy: Always
 
 status: {}

@@ -14,6 +14,7 @@ service:
 
 egeria:
   version: 1.6-SNAPSHOT
+  loglevel: NONE
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 # Note for egeria provided images we use the version specified above
