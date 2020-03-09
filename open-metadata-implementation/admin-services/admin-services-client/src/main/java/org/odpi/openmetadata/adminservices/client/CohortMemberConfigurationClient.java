@@ -118,6 +118,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      * is set up with addCohortRegistration().
      *
      * @param cohortName  name of the cohort.
+     * @return string topic name
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.

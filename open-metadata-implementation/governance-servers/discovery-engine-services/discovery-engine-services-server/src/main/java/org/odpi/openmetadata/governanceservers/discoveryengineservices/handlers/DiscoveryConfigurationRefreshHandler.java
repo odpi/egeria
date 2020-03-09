@@ -72,8 +72,6 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
     {
         final String actionDescription = "Register configuration listener";
 
-        DiscoveryEngineServicesAuditCode auditCode;
-
         boolean  listenerRegistered = false;
         List<DiscoveryEngineHandler>  configToRetrieve;
 
@@ -96,46 +94,28 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
                                                                                                                       auditLog));
                     listenerRegistered = true;
 
-                    auditCode = DiscoveryEngineServicesAuditCode.CONFIGURATION_LISTENER_REGISTERED;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(localServerName,
-                                                                        accessServiceServerName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        DiscoveryEngineServicesAuditCode.CONFIGURATION_LISTENER_REGISTERED.getMessageDefinition(localServerName,
+                                                                                                                                accessServiceServerName));
                 }
                 catch (UserNotAuthorizedException error)
                 {
-                    auditCode = DiscoveryEngineServicesAuditCode.SERVER_NOT_AUTHORIZED;
                     auditLog.logException(actionDescription,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(localServerName,
-                                                                           accessServiceServerName,
-                                                                           accessServiceRootURL,
-                                                                           localServerUserId,
-                                                                           error.getErrorMessage()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                                          DiscoveryEngineServicesAuditCode.SERVER_NOT_AUTHORIZED.getMessageDefinition(localServerName,
+                                                                                                                      accessServiceServerName,
+                                                                                                                      accessServiceRootURL,
+                                                                                                                      localServerUserId,
+                                                                                                                      error.getErrorMessage()),
                                           error);
                     waitToRetry();
                 }
                 catch (Throwable error)
                 {
-                    auditCode = DiscoveryEngineServicesAuditCode.NO_CONFIGURATION_LISTENER;
                     auditLog.logException(actionDescription,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(localServerName,
-                                                                           accessServiceServerName,
-                                                                           error.getClass().getName(),
-                                                                           error.getMessage()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                                          DiscoveryEngineServicesAuditCode.NO_CONFIGURATION_LISTENER.getMessageDefinition(localServerName,
+                                                                                                                          accessServiceServerName,
+                                                                                                                          error.getClass().getName(),
+                                                                                                                          error.getMessage()),
                                           error);
 
                     waitToRetry();
@@ -161,16 +141,11 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
                         }
                         catch (Throwable error)
                         {
-                            auditCode = DiscoveryEngineServicesAuditCode.DISCOVERY_ENGINE_NO_CONFIG;
                             auditLog.logException(actionDescription,
-                                                  auditCode.getLogMessageId(),
-                                                  auditCode.getSeverity(),
-                                                  auditCode.getFormattedLogMessage(discoveryEngineHandler.getDiscoveryEngineName(),
-                                                                                   error.getClass().getName(),
-                                                                                   error.getMessage()),
+                                                  DiscoveryEngineServicesAuditCode.DISCOVERY_ENGINE_NO_CONFIG.getMessageDefinition(discoveryEngineHandler.getDiscoveryEngineName(),
+                                                                                                                                   error.getClass().getName(),
+                                                                                                                                   error.getMessage()),
                                                   error.toString(),
-                                                  auditCode.getSystemAction(),
-                                                  auditCode.getUserAction(),
                                                   error);
 
                             configFailed.add(discoveryEngineHandler);

@@ -36,6 +36,7 @@ for a particular type of governance server.
 * **[virtualization-services](virtualization-services)** - Automatically configures a data virtualization
    platform as new data sets are cataloged.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

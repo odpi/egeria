@@ -23,6 +23,8 @@ import java.util.List;
  */
 class ConnectedAssetCertifications extends AssetCertifications
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

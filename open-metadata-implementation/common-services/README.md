@@ -30,6 +30,7 @@ different types of metadata defined in the asset properties.
 
 * **[GAF Metadata Management](gaf-metadata-management)** - managing metadata about governance requirements and actions.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

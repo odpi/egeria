@@ -24,6 +24,11 @@ class UserOptions extends PolymerElement {
           box-sizing: border-box;
           background-color: #DDD;
         }
+        
+        paper-item a{
+            text-decoration: none;
+            color: var(--egeria-secondary-color);
+        }
       </style>
         <token-ajax id="userAjax" last-response="{{user}}" url="/api/users/current" auto></token-ajax>
         <div style="float: right">
@@ -43,7 +48,7 @@ class UserOptions extends PolymerElement {
                 <hr>
                 <paper-item>Settings</paper-item>
                 <paper-item>Help</paper-item>
-                <paper-item>About</paper-item>
+                <paper-item><a href="[[rootPath]]#/about">About</a></paper-item>
                 <hr>
                 <paper-item>
                     <paper-button on-tap="_logout" icon="exit-to-app" title="Exit">Sign out</paper-button>

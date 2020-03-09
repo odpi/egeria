@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -685,8 +686,12 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                 repositoryName = serverName;
             }
 
+            ComponentDescription componentDescription = OMRSAuditingComponent.REMOTE_REPOSITORY_CONNECTOR;
             repositoryConnector.setRepositoryName(repositoryName);
-            repositoryConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.REMOTE_REPOSITORY_CONNECTOR));
+            repositoryConnector.setAuditLog(auditLog.createNewAuditLog(componentDescription.getComponentId(),
+                                                                       componentDescription.getComponentName() + " for " + serverName,
+                                                                       componentDescription.getComponentType(),
+                                                                       componentDescription.getComponentWikiURL()));
             repositoryConnector.setServerName(serverName);
             repositoryConnector.setServerType(serverType);
             repositoryConnector.setServerUserId(localServerUserId);

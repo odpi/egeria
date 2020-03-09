@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# Open Metadata View Services (OMVS)
+![InDev](../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
 
-![In Development](../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
+# Open Metadata View Services (OMVS)
 
 The Open Metadata View Services (OMVS) provide task oriented, domain-specific services
 for user interfaces to integrate with open metadata. 
@@ -107,7 +107,7 @@ remote server called 'Server1' is:
 }
 ```
 
-
+----
 Return to [open-metadata-implementation](..).
 
 

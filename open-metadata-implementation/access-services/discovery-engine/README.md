@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![TechPreview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Discovery Engine Open Metadata Access Service (OMAS)
 
 The Discovery Engine OMAS provides APIs and events for metadata discovery tools
@@ -124,3 +126,12 @@ Each REST API endpoint delegates immediately to an
 equivalent function in the server module.
 It is, however, a useful place to look to get a view of the
 REST API supported by this OMAS.
+
+
+----
+Return to the [access-services](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

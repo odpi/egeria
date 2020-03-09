@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

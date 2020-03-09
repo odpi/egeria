@@ -86,7 +86,10 @@ spec:
             - "-c"
             - >
                 cd /opt/egeria/connectors &&
-                wget ${ATLAS_CONNECTOR_URL}
+                wget ${EGERIA_ARTIFACTORY_RELEASE}/${ATLAS_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-apache-atlas-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch RELEASE;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_STAGING}/${ATLAS_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-apache-atlas-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch STAGING; fi;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_SNAPSHOT}/${ATLAS_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-apache-atlas-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch SNAPSHOT; fi;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_SNAPSHOT}/${ATLAS_CONNECTOR_URL_PATH}/${EGERIA_VERSION}-SNAPSHOT/egeria-connector-apache-atlas-package-${EGERIA_VERSION}-SNAPSHOT-jar-with-dependencies.jar && touch SNAPSHOT; fi
           volumeMounts:
             - mountPath: /opt/egeria/connectors
               name: egeria-connector-volume
