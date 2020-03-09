@@ -20,11 +20,9 @@ public interface OpenLineageInterface {
      * @param guid The guid of the node of which the lineage is queried of.
      * @param displaynameMustContain Used to filter out nodes which displayname does not contain this value.
      * @param includeProcesses  Will filter out all processes and subprocesses from the response if false.
-     * @param includeGlossaryTerms If true, will include glossary terms in the response
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    LineageVerticesAndEdges lineage(String userId, Scope scope, String guid, String displaynameMustContain, boolean includeProcesses,
-                                    boolean includeGlossaryTerms)
+    LineageVerticesAndEdges lineage(String userId, Scope scope, String guid, String displaynameMustContain, boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException;
 }
