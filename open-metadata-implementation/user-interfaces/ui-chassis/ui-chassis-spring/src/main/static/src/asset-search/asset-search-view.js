@@ -32,6 +32,11 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         vaadin-grid {
           height: calc(100vh - 160px);
         }
+        a {
+            color : var(--egeria-primary-color);
+            text-decoration: none;
+            cursor: grab;
+        }
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
@@ -65,9 +70,9 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
                 </template>
                 <template>
-                    <vaadin-button theme="tertiary" on-tap="_showItemDetails">
+                   <a href="#/asset-search/view/[[item.guid]]">
                         [[_itemName(item)]]
-                    </vaadin-button>
+                   </a>
                 </template>
             </vaadin-grid-column>
                
@@ -132,8 +137,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     }
 
     _search() {
-        // this.$.searchForm.validate();
-        // this.domHost.queryParams.q = this.q;
         console.debug('searching: '+ this.q);
         var types = [];
 
@@ -152,21 +155,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             return item.properties.name;
         else
             return 'N/A';
-    }
-
-    _showItemDetails(e){
-        // alert(e.model.item.properties.name + e.model.item.properties.displayName);
-        var  properties = e.model.item.properties;
-
-        this.dispatchEvent(new CustomEvent('open-page', {
-            bubbles: true,
-            composed: true,
-            detail: {
-                page: "asset-search",
-                subview: "view",
-                guid: properties.guid
-            }}));
-
     }
 
     attached() {
