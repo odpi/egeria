@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Open Metadata Security
 
 Open Metadata Security provides fine-grained authorization services for open metadata services, types and instances.

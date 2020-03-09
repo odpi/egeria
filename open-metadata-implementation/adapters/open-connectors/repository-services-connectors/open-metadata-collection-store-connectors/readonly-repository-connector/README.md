@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Read-only Repository Connector
 
 The read only repository connector provides a compliant implementation of a local repository

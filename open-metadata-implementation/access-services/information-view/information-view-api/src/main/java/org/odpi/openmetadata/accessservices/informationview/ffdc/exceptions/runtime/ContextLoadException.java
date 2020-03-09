@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class ContextLoadException extends InformationViewExceptionBase {
 
+    private static final long    serialVersionUID = 1L;
+
     public ContextLoadException(String className, String errorMessage, String systemAction, String userAction,
                                 Throwable caughtError) {
         super(className, errorMessage, systemAction, userAction, caughtError);

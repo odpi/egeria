@@ -29,7 +29,7 @@ public class ReadOnlyOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
      */
     public ReadOnlyOMRSRepositoryConnectorProvider()
     {
-        Class    connectorClass = ReadOnlyOMRSRepositoryConnector.class;
+        Class<?> connectorClass = ReadOnlyOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

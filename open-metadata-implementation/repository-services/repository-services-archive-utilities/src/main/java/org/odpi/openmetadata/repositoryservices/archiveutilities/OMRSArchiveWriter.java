@@ -40,33 +40,12 @@ public class OMRSArchiveWriter
      */
     protected Connection getOpenMetadataArchiveFileConnection(String fileName)
     {
-        final String endpointGUID      = "45877b9c-9192-44ba-a2b7-6817bc753969";
-        final String connectionGUID    = "447bbb33-84f9-4a56-a712-addeebdcd764";
-
-        final String endpointDescription = "Open metadata archive for " + fileName;
-
-        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + fileName;
-
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setType(this.getEndpointType());
-        endpoint.setGUID(endpointGUID);
-        endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
-        endpoint.setDescription(endpointDescription);
         endpoint.setAddress(fileName);
-
-        final String connectionDescription = "Open metadata archive connection.";
-
-        String connectionName = "OpenMetadataArchive.Connection." + fileName;
 
         Connection connection = new Connection();
 
-        connection.setType(this.getConnectionType());
-        connection.setGUID(connectionGUID);
-        connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
-        connection.setDescription(connectionDescription);
         connection.setConnectorType(this.getConnectorType(FileBasedOpenMetadataArchiveStoreProvider.class.getName()));
         connection.setEndpoint(endpoint);
 
@@ -89,7 +68,7 @@ public class OMRSArchiveWriter
         {
             try
             {
-                Class      connectorProviderClass = Class.forName(connectorProviderClassName);
+                Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
                 ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;

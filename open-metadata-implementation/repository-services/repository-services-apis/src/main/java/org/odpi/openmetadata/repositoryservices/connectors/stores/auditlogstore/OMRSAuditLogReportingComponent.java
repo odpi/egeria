@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -18,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogReportingComponent implements Serializable
+public class OMRSAuditLogReportingComponent implements Serializable, ComponentDescription
 {
     private static final long    serialVersionUID = 1L;
 
@@ -36,7 +37,7 @@ public class OMRSAuditLogReportingComponent implements Serializable
      * @param componentDescription  description of the component.
      * @param componentWikiURL  link to more information.
      */
-    public OMRSAuditLogReportingComponent(int componentId,
+    public OMRSAuditLogReportingComponent(int    componentId,
                                           String componentName,
                                           String componentDescription,
                                           String componentWikiURL)
@@ -47,8 +48,28 @@ public class OMRSAuditLogReportingComponent implements Serializable
         this.componentWikiURL = componentWikiURL;
     }
 
+
+
     /**
-     * Return the numerical code for this enum.
+     * Construct the description of the reporting component.
+     *
+     * @param template  object to copy.
+     */
+    public OMRSAuditLogReportingComponent(ComponentDescription template)
+    {
+        if (template != null)
+        {
+            this.componentId          = template.getComponentId();
+            this.componentName        = template.getComponentName();
+            this.componentDescription = template.getComponentType();
+            this.componentWikiURL     = template.getComponentWikiURL();
+        }
+    }
+
+
+
+    /**
+     * Return the numerical code for this component.
      *
      * @return int componentId
      */
@@ -76,7 +97,7 @@ public class OMRSAuditLogReportingComponent implements Serializable
      *
      * @return String description
      */
-    public String getComponentDescription()
+    public String getComponentType()
     {
         return componentDescription;
     }
@@ -131,7 +152,7 @@ public class OMRSAuditLogReportingComponent implements Serializable
         OMRSAuditLogReportingComponent that = (OMRSAuditLogReportingComponent) objectToCompare;
         return getComponentId() == that.getComponentId() &&
                 Objects.equals(getComponentName(), that.getComponentName()) &&
-                Objects.equals(getComponentDescription(), that.getComponentDescription()) &&
+                Objects.equals(getComponentType(), that.getComponentType()) &&
                 Objects.equals(getComponentWikiURL(), that.getComponentWikiURL());
     }
 
@@ -144,6 +165,6 @@ public class OMRSAuditLogReportingComponent implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComponentId(), getComponentName(), getComponentDescription(), getComponentWikiURL());
+        return Objects.hash(getComponentId(), getComponentName(), getComponentType(), getComponentWikiURL());
     }
 }

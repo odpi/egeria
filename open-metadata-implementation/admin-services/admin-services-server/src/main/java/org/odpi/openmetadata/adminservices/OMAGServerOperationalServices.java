@@ -305,18 +305,7 @@ public class OMAGServerOperationalServices
             /*
              * A this point the type of server influences the start up sequence.
              */
-
-            if (ServerTypeClassification.VIEW_SERVER.equals(serverTypeClassification))
-            {
-                initializeViewServices(instance,
-                                       configuration.getViewServicesConfig(),
-                                       operationalRepositoryServices,
-                                       configuration.getLocalServerUserId(),
-                                       serverName,
-                                       activatedServiceList,
-                                       configuration.getMaxPageSize(),
-                                       auditLog);
-            } else if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
+            if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.REPOSITORY_PROXY.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification)))
@@ -324,7 +313,7 @@ public class OMAGServerOperationalServices
                 /*
                  * This server is a source of metadata and is capable of joining an open metadata repository cohort.
                  */
-                operationalRepositoryServices.initializeMetadataServer(configuration.getRepositoryServicesConfig());
+                operationalRepositoryServices.initializeCohortMember(configuration.getRepositoryServicesConfig());
 
                 /*
                  * Set up the server instance - ensure it is active and the security has been set up correctly.
@@ -444,8 +433,45 @@ public class OMAGServerOperationalServices
                     }
                 }
             }
+            else if (ServerTypeClassification.VIEW_SERVER.equals(serverTypeClassification))
+            {
+                /*
+                 * Set up the repository services REST API
+                 */
+                operationalRepositoryServices.initializeViewServer(configuration.getRepositoryServicesConfig());
+
+                /*
+                 * Set up the server instance - ensure it is active and the security has been set up correctly.
+                 */
+                platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
+                                                          serverName,
+                                                          operationalRepositoryServices.getAuditLog(
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
+                                                          configuration.getServerSecurityConnection());
+
+
+                /*
+                 * Set up the view services that are the speciality of the view server.
+                 */
+                initializeViewServices(instance,
+                                       configuration.getViewServicesConfig(),
+                                       operationalRepositoryServices,
+                                       configuration.getLocalServerUserId(),
+                                       serverName,
+                                       activatedServiceList,
+                                       configuration.getMaxPageSize(),
+                                       auditLog);
+            }
             else /* governance servers */
             {
+                /*
+                 * Set up the repository services REST API
+                 */
+                operationalRepositoryServices.initializeGovernanceServer(configuration.getRepositoryServicesConfig());
+
                 /*
                  * Governance servers are varied in nature.  Many host connectors that exchange metadata with third party technologies.
                  * However they may also host specific types of engines, or provide an implementation of a complete governance service.
@@ -462,6 +488,7 @@ public class OMAGServerOperationalServices
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
                                                           configuration.getServerSecurityConnection());
+
 
                 /*
                  * Start up the governance services subsystem.   Each type of governance server has its own type of governance services
@@ -809,13 +836,13 @@ public class OMAGServerOperationalServices
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
     private void initializeViewServices(OMAGOperationalServicesInstance instance,
-                                        List<ViewServiceConfig> viewServiceConfigList,
-                                        OMRSOperationalServices operationalRepositoryServices,
-                                        String localServerUserId,
-                                        String serverName,
-                                        List<String> activatedServiceList,
-                                        int maxPageSize,
-                                        OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
+                                        List<ViewServiceConfig>         viewServiceConfigList,
+                                        OMRSOperationalServices         operationalRepositoryServices,
+                                        String                          localServerUserId,
+                                        String                          serverName,
+                                        List<String>                    activatedServiceList,
+                                        int                             maxPageSize,
+                                        OMRSAuditLog                    auditLog) throws OMAGConfigurationErrorException
     {
         final String methodName = "initializeViewServices";
         final String actionDescription = "Initialize View Services";
@@ -840,10 +867,10 @@ public class OMAGServerOperationalServices
 
             for (ViewServiceConfig viewServiceConfig : viewServiceConfigList)
             {
-
                 configuredViewServiceCount++;
 
-                if (ServiceOperationalStatus.ENABLED.equals(viewServiceConfig.getViewServiceOperationalStatus())) {
+                if (ServiceOperationalStatus.ENABLED.equals(viewServiceConfig.getViewServiceOperationalStatus()))
+                {
                     enabledViewServiceCount++;
 
                     try
@@ -867,7 +894,8 @@ public class OMAGServerOperationalServices
                         operationalViewServiceAdminList.add(viewServiceAdmin);
                         activatedServiceList.add(viewServiceConfig.getViewServiceFullName());
 
-                    } catch (OMAGConfigurationErrorException error)
+                    }
+                    catch (OMAGConfigurationErrorException error)
                     {
                         auditCode = OMAGAdminAuditCode.VIEW_SERVICE_INSTANCE_FAILURE;
                         auditLog.logException(methodName,
@@ -879,7 +907,8 @@ public class OMAGServerOperationalServices
                                               auditCode.getUserAction(),
                                               error);
                         throw error;
-                    } catch (Throwable error)
+                    }
+                    catch (Throwable error)
                     {
                         auditCode = OMAGAdminAuditCode.VIEW_SERVICE_INSTANCE_FAILURE;
                         auditLog.logException(methodName,
