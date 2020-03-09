@@ -15,6 +15,7 @@ public final class AssetLineageConstants {
 
     private AssetLineageConstants() {}
 
+    public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";

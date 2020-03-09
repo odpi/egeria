@@ -29,7 +29,6 @@ import java.util.List;
 public class AssetLineageAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
-    public static final String LINEAGE_CLASSIFICATION_TYPES = "lineageClassificationTypes";
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
@@ -130,7 +129,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private List<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
         List<String> lineageClassificationTypes = null;
         if (accessServiceConfig.getAccessServiceOptions() != null) {
-            Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(LINEAGE_CLASSIFICATION_TYPES);
+            Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
             if (supportedTypesProperty != null)
                 lineageClassificationTypes = (List<String>) supportedTypesProperty;
         }
