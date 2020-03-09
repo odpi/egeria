@@ -28,6 +28,7 @@ import java.util.List;
 public class AssetLineageAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
+    public static final String LINEAGE_CLASSIFICATION_TYPES = "lineageClassificationTypes";
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
@@ -86,7 +87,13 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection, accessServiceConfig.getAccessServiceName(), auditLog);
-                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(serverName, serverUserName, repositoryConnector.getRepositoryHelper(), outTopicConnector, auditLog);
+                List<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfig);
+
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
+                        repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
+                        serverUserName,
+                        lineageClassificationTypes, auditLog);
+
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
                         omrsTopicConnector,
@@ -118,6 +125,18 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     error);
         }
     }
+
+    private List<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
+        List<String> lineageClassificationTypes = null;
+        if (accessServiceConfig.getAccessServiceOptions() != null) {
+            Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(LINEAGE_CLASSIFICATION_TYPES);
+            if (supportedTypesProperty != null) {
+                lineageClassificationTypes = (List<String>) supportedTypesProperty;
+            }
+        }
+        return lineageClassificationTypes;
+    }
+
 
 
     /**

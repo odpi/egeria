@@ -21,7 +21,6 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      */
     public AssetLineageInstanceHandler() {
         super(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName());
-
     }
 
     public void registerAccessService(){
@@ -41,13 +40,9 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      */
     public GlossaryHandler getGlossaryHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getGlossaryHandler();
-        }
-
         return null;
     }
 
@@ -64,13 +59,9 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      */
     public AssetContextHandler getAssetContextHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null) {
+        if (instance != null)
             return instance.getAssetContextHandler();
-        }
-
         return null;
     }
 

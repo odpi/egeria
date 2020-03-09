@@ -24,6 +24,8 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 /**
@@ -39,20 +41,27 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private AssetLineagePublisher publisher;
     private OMRSAuditLog auditLog;
     private Converter converter = new Converter();
+    private List<String> lineageClassificationTypes;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *
-     * @param serverName        name of this server instance
-     * @param serverUserName    name of the user of the server instance
      * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
      * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
+     * @param serverName        name of this server instance
+     * @param serverUserName    name of the user of the server instance
+     * @param lineageClassificationTypes
      */
-    public AssetLineageOMRSTopicListener(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector, OMRSAuditLog auditLog)
+    public AssetLineageOMRSTopicListener(
+            OMRSRepositoryHelper repositoryHelper,
+            OpenMetadataTopicConnector outTopicConnector,
+            String serverName, String serverUserName,
+            List<String> lineageClassificationTypes, OMRSAuditLog auditLog)
             throws OCFCheckedExceptionBase {
-        this.publisher = new AssetLineagePublisher(serverName, serverUserName, repositoryHelper, outTopicConnector);
+
+        this.publisher = new AssetLineagePublisher(repositoryHelper, outTopicConnector, serverName, serverUserName, lineageClassificationTypes);
         this.auditLog = auditLog;
+        this.lineageClassificationTypes = lineageClassificationTypes;
     }
 
     /**
@@ -214,7 +223,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private boolean anyValidClassificationsLeft(EntityDetail entityDetail) {
-        for (String classificationType : immutableQualifiedLineageClassifications)
+        for (String classificationType : lineageClassificationTypes)
             if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType)))
                 return true;
         return false;
