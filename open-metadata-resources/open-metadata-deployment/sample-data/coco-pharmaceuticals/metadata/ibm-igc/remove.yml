@@ -172,7 +172,7 @@
   become: yes
   when: >
     ('ibm_information_server_engine' in group_names)
-    and __cocopharma_projects_list.stdout.find('minimal') != -1
+    and __cocopharma_projects_list.stdout.find('cocopharma') != -1
 
 - name: list Information Analyzer projects
   uri:
