@@ -314,11 +314,11 @@ public class ProcessHandler {
         }
     }
 
-    public void addProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID, String externalSourceName) throws
-                                                                                                                                           InvalidParameterException,
-                                                                                                                                           PropertyServerException,
-                                                                                                                                           UserNotAuthorizedException {
-        final String methodName = "addProcessHierarchyRelationship";
+    public void createOrUpdateProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,
+                                                           String externalSourceName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcessHierarchyRelationship";
 
         ProcessContainmentType processContainmentType = parentProcess.getProcessContainmentType();
         InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName, null,

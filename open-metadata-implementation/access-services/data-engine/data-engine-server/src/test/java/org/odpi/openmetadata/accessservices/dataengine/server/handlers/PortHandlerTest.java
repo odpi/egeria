@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
@@ -335,21 +336,21 @@ class PortHandlerTest {
                                                                 InvalidParameterException {
         mockDelegatedPortEntity(PortType.OUTIN_PORT);
 
-        InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
-                portHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+        portHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        assertEquals("OMAS-DATA-ENGINE-400-001 The port type passed for the delegated is invalid, or different from guid", thrown.getMessage());
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE,
+                "addPortDelegationRelationship", DELEGATED_QUALIFIED_NAME, PortType.OUTIN_PORT.getName());
     }
 
 
     @Test
     void addPortDelegationRelationship() throws UserNotAuthorizedException, PropertyServerException,
-                                                                InvalidParameterException {
+                                                InvalidParameterException {
         mockDelegatedPortEntity(PortType.INPUT_PORT);
 
         portHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(0)).createOrUpdateExternalRelationship(USER, GUID, PORT_GUID,
+        verify(dataEngineCommonHandler, times(1)).createOrUpdateExternalRelationship(USER, GUID, PORT_GUID,
                 PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 

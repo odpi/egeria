@@ -186,10 +186,12 @@ public class DataEngineSchemaTypeHandler {
         if (!sourceSchemaAttributeEntity.isPresent()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
                     sourceSchemaAttributeQualifiedName);
+            return;
         }
         if (!targetSchemaAttributeEntity.isPresent()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
                     targetSchemaAttributeQualifiedName);
+            return;
         }
 
         dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),

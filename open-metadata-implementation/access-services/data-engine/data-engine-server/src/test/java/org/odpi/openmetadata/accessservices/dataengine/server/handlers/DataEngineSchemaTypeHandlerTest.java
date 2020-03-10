@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
@@ -232,17 +233,17 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void addLineageMappingRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
-                                                                                 PropertyServerException,
-                                                                                 InvalidParameterException {
+                                                                                PropertyServerException,
+                                                                                InvalidParameterException {
         when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
-        InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                        EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-005 "));
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+                "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
     }
+
     @Test
     void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         //mock getSchemaAttributesForSchemaType

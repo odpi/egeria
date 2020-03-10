@@ -28,7 +28,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHa
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -765,7 +764,7 @@ public class DataEngineRESTServices {
                 try {
                     ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
                     for (ParentProcess parentProcess : parentProcesses) {
-                        processHandler.addProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
+                        processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
                 } catch (InvalidParameterException error) {
                     restExceptionHandler.captureInvalidParameterException(response, error);
