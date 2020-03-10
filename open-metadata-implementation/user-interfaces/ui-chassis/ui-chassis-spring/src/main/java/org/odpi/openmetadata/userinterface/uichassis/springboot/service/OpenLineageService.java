@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +87,8 @@ public class OpenLineageService {
     public Map<String, List> getUltimateDestination(String userId, String guid, boolean includeProcesses) {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "", includeProcesses);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
+                    includeProcesses);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -122,7 +122,8 @@ public class OpenLineageService {
     public Map<String, List> getSourceAndDestination(String userId, String guid, boolean includeProcesses) {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "", includeProcesses);
+            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
+                    includeProcesses);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }

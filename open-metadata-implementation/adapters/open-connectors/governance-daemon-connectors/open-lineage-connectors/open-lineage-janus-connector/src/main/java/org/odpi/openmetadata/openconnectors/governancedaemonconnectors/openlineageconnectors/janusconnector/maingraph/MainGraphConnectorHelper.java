@@ -11,13 +11,36 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.model.*;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
 
 public class MainGraphConnectorHelper {
 
@@ -31,17 +54,17 @@ public class MainGraphConnectorHelper {
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param edgeLabel The view queried by the user: tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param edgeLabels Traversed edges
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges ultimateSource(String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateSource(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = mainGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
-                until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV().simplePath()).
+                until(inE(edgeLabels).count().is(0)).
+                repeat(inE(edgeLabels).outV().simplePath()).
                 dedup().toList();
 
         detectProblematicCycle(methodName, sourcesList);
@@ -64,16 +87,17 @@ public class MainGraphConnectorHelper {
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param edgeLabel The view queried by the user: tableview, columnview.
      * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
+     * @param edgeLabels Traversed edges
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges ultimateDestination(String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateDestination(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = mainGraph.traversal();
 
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV().simplePath()).
+        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
+                until(outE(edgeLabels).count().is(0)).
+                repeat(outE(edgeLabels).inV().simplePath()).
                 dedup().toList();
 
         detectProblematicCycle(methodName, destinationsList);
@@ -94,21 +118,21 @@ public class MainGraphConnectorHelper {
     /**
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
-     *
-     * @param edgeLabel The view queried by the user: tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
+     *
+     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param edgeLabels Traversed edges
      */
-    LineageVerticesAndEdges endToEnd(String edgeLabel, String guid) {
+    LineageVerticesAndEdges endToEnd(String guid, String... edgeLabels) {
         GraphTraversalSource g = mainGraph.traversal();
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
                         union(
-                                until(inE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()),
-                                until(outE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
+                                until(inE(edgeLabels).count().is(0)).
+                                        repeat((Traversal) inE(edgeLabels).subgraph("subGraph").outV().simplePath()),
+                                until(outE(edgeLabels).count().is(0)).
+                                        repeat((Traversal) outE(edgeLabels).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
         LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(endToEndGraph);
@@ -119,22 +143,22 @@ public class MainGraphConnectorHelper {
      * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param edgeLabel The view queried by the user: tableview, columnview.
-     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param edgeLabels Traversed edges
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges sourceAndDestination(String edgeLabel, String guid) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels ) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = mainGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
-                until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV().simplePath()).
+                until(inE(edgeLabels).count().is(0)).
+                repeat(inE(edgeLabels).outV().simplePath()).
                 dedup().toList();
 
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
-                until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV().simplePath()).
+                until(outE(edgeLabels).count().is(0)).
+                repeat(outE(edgeLabels).inV().simplePath()).
                 dedup().toList();
 
         detectProblematicCycle(methodName, sourcesList);

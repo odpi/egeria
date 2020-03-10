@@ -21,7 +21,8 @@ public class OpenLineageRestServices {
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
-    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain,
+                                   boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
         final String debugMessage = "An exception occurred during a lineage HTTP request";
