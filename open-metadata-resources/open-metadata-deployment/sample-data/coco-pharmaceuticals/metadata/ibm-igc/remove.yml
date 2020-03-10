@@ -91,7 +91,25 @@
   vars:
     type: category
     conditions:
+      - { property: "parent_category.name", operator: "=", value: "Classifications" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
       - { property: "name", operator: "=", value: "Coco Pharmaceuticals" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
+      - { property: "name", operator: "=", value: "Classifications" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
+      - { property: "name", operator: "=", value: "Default Glossary" }
 
 - name: list OpenIGC bundles
   uri:
