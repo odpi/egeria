@@ -100,7 +100,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         boolean                  eventSent = false;
         long                     eventRetryCount = 0;
 
-        if( producer == null){
+        if( producer == null)
+        {
             log.debug("Creating Producer");
             producer = new KafkaProducer<>(producerProperties);
         }
@@ -121,14 +122,14 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                  */
                 log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
 
-                if( !isExceptionRetryable(error)) {
+                if( !isExceptionRetryable(error))
+                {
                     /* kafka thinks this isn't a retryable problem */
                     /* so let the caller try */
 
                     producer.close();
                     producer = null;
 
-                    log.error("Execution Exception closed producer ");
                     KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
                     String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
                             topicName,
