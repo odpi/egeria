@@ -5,11 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OMAGCommonAuditCode is used to define the message content for the OMRS Audit Log.
@@ -40,8 +36,6 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
     private String                     logMessage;
     private String                     systemAction;
     private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(OMAGCommonAuditCode.class);
 
 
     /**
