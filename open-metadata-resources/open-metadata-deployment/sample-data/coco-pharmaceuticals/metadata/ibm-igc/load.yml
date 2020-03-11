@@ -332,21 +332,21 @@
       Content-Type: "application/json"
   changed_when: False
   register: __cocopharma_lineage
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: enable lineage on cocopharma
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
             /ibm/iis/igc-rest/v1/assets/{{ __cocopharma_lineage.json['items'][0]._id }}/include_for_lineage"
     method: PUT
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: '"setToTrue"'
     body_format: json
     validate_certs: no
     status_code: 200
     headers:
       Content-Type: "application/json"
-  when: __cocopharma_lineage.json['items'][0].include_for_lineage == "setToFalse"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
+  when: ('ibm_information_server_engine' in group_names) and __cocopharma_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
 - import_role: name=IBM.infosvr-import-export
   vars:
@@ -470,14 +470,13 @@
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/search/"
     method: POST
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: '{"properties":["principal_id"],"types":["user"],"pageSize":"1000"}'
     body_format: json
     validate_certs: no
     status_code: 200
     headers:
       Content-Type: "application/json"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
   changed_when: False
   register: __cocopharma_existing_users_rids
   when: ('ibm_information_server_engine' in group_names)
@@ -486,8 +485,6 @@
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/administration/stewards"
     method: POST
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: >
       {"id":"{{ __cocopharma_existing_users_rids.json | json_query("items[?principal_id=='" + item.username + "']._id") | first }}"}
     body_format: json
@@ -495,10 +492,19 @@
     status_code: 200
     headers:
       Content-Type: "application/json"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
+
+- name: close session
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
+    method: GET
+    headers:
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: discover database sources
   include_role:
