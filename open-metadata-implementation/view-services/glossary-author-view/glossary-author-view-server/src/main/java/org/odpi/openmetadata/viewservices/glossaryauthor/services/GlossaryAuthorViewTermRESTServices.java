@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.TermHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -96,7 +96,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -146,7 +146,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -211,7 +211,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -262,7 +262,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -327,7 +327,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -380,7 +380,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
